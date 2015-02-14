@@ -786,7 +786,7 @@
 
 
                             </p:tab>  
-                            <p:tab id="asuransiId" title="Asuransi">  
+                            <p:tab id="asuransiId" title="#{appmsg['global.assurance']}">  
                                 <p:dataTable  id="tableBioInsuranceId" var="bioInsuranceData"  value="#{bioDataDetilController.bioInsurances}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
@@ -999,7 +999,7 @@
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{bioDataDetilController.doUpdateBioSpesifikasiAbility()}" >
+                                                         action="#{bioDataDetilController.doUpdateBioSpesifikasiAbility()}" ajax="true" immediate="true">
                                             <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataDetilController.selectedDioSpesifikasiAbility}" />
                                             <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSpesifikasiAbility}"  update="tableSpecAbilityId,:growlBioDetailFormId"/>
                                         </p:commandButton>
@@ -1379,7 +1379,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.educationLevel}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.score}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>

@@ -108,10 +108,11 @@
                                     <f:setPropertyActionListener value="#{medicalCareData}" target="#{medicalCareViewController.selectedMedicalCare}" />
                                 </p:commandButton>
                                 -
-<!--                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.cancel']}" label="#{appmsg['global.cancel']}"  
-                                				 style="font-size: 10px!important" action="#{medicalCareViewController.doCancellation()}">
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}"  
+                                				 style="font-size: 10px!important" action="#{medicalCareViewController.doUpdate()}">
                                     <f:setPropertyActionListener value="#{medicalCareData}" target="#{medicalCareViewController.selectedMedicalCare}" />
-                                </p:commandButton> -->
+                                </p:commandButton> 
+                                -
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                                  action="#{medicalCareViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMedicalCare.show()">

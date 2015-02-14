@@ -99,7 +99,7 @@
                                     <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.endDate}">
                                         <f:validator validatorId="backDateValidator"  />
                                         <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId"/>
-                                        
+
                                     </p:calendar>
                                     <p:message for="endDateId"/>
                                 </p:column>
@@ -129,19 +129,30 @@
                                     <p:outputLabel for="hospitalId" value="#{appmsg['hospital.hospital']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close" styleClass="label_button" >
-                                        <p:ajax update="hospitalId" listener="#{medicalCareFormController.onChangeHospitalCheckbox()}" />
-                                    </p:selectBooleanButton>
-                                    <p:autoComplete id="hospitalId" title="#{appmsg['global.employee']}" disabled="#{!medicalCareFormController.disabledHospital}"
-                                                    value="#{medicalCareFormController.model.hospitalId}"
-                                                    completeMethod="#{medicalCareFormController.doAutoCompleteHospital}"                                                
-                                                    var="hospital"
-                                                    itemValue="#{hospital}"
-                                                    itemLabel="#{hospital.name}"
-                                                    converter="hospitalConverter"
-                                                    required="true" styleClass="isitext_hrm" size="45">
-                                    </p:autoComplete>
+                                    <p:row>
+                                        <p:column>
+                                            <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                                   offIcon="ui-icon-close" styleClass="label_button" >
+                                                <p:ajax update="hospitalId" listener="#{medicalCareFormController.onChangeHospitalCheckbox()}" />
+                                            </p:selectBooleanButton>
+        <!--                                    <p:autoComplete id="hospitalId" title="#{appmsg['global.employee']}" disabled="#{!medicalCareFormController.disabledHospital}"
+                                                            value="#{medicalCareFormController.model.hospitalId}"
+                                                            completeMethod="#{medicalCareFormController.doAutoCompleteHospital}"                                                
+                                                            var="hospital"
+                                                            itemValue="#{hospital}"
+                                                            itemLabel="#{hospital.name}"
+                                                            converter="hospitalConverter"
+                                                            required="true" styleClass="isitext_hrm" size="45">
+                                            </p:autoComplete>-->
+                                        </p:column>
+                                        &nbsp;
+                                        <p:column>
+                                            <p:selectOneMenu id="hospitalId" value="#{medicalCareFormController.model.hospital}" disabled="#{!medicalCareFormController.disabledHospital}" style="width: 156px;margin-bottom: -9px;" >
+                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                <f:selectItems value="#{medicalCareFormController.dropDownHospital}"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
                                     <p:message for="hospitalId"/>
                                 </p:column>
                             </p:row> 
@@ -164,7 +175,7 @@
                                     <p:outputLabel for="diseaseId" value="#{appmsg['disease.disease']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">                                    
-                                    <p:autoComplete id="diseaseId" title="#{appmsg['disease.disease']}" 
+<!--                                    <p:autoComplete id="diseaseId" title="#{appmsg['disease.disease']}" 
                                                     value="#{medicalCareFormController.model.diseaseId}"
                                                     completeMethod="#{medicalCareFormController.doAutoCompleteDisease}"                                                
                                                     var="disease"
@@ -172,7 +183,11 @@
                                                     itemLabel="#{disease.name}"
                                                     converter="diseaseConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
-                                    </p:autoComplete>
+                                    </p:autoComplete>-->
+                                    <p:selectOneMenu id="diseaseId" value="#{medicalCareFormController.model.disease}" style="width: 156px;" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{medicalCareFormController.dropDownDisease}"/>
+                                    </p:selectOneMenu>
                                     <p:message for="diseaseId"/>
                                 </p:column>
                             </p:row> 

@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -83,6 +84,7 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         criteria.setFetchMode("nationality", FetchMode.JOIN);
         return criteria.list();
     }
+
     @Override
     public List<BioData> getByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -90,7 +92,7 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("firstName", name, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("lastName", name, MatchMode.ANYWHERE));
-       
+
         criteria.add(disjunction);
         criteria.add(Restrictions.isEmpty("empDatas"));
         criteria.addOrder(Order.asc("firstName"));
@@ -103,6 +105,56 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
     public List<EmpDataMatrixModel> getAllAgeFromBirthDate() {
         final StringBuilder query = new StringBuilder("SELECT DISTINCT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS ages2");
         query.append(" FROM hrm.bio_data GROUP BY ages2 ORDER BY ages2 ASC");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(EmpDataMatrixModel.class))
+                .list();
+    }
+
+    @Override
+    public Integer getTotalAgeByGenderMaleFromBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM(SELECT COUNT(*) AS banyak_data,");
+        query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS age");
+        query.append(" FROM bio_data WHERE gender=1");
+        query.append(" GROUP BY age ORDER BY age ASC) as jumlahData");
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        return Integer.valueOf(hbm.uniqueResult().toString());
+    }
+
+    @Override
+    public Integer getTotalAgeByGenderFemaleFromBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM(SELECT COUNT(*) AS banyak_data,");
+        query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+1 AS age");
+        query.append(" FROM bio_data WHERE gender=0");
+        query.append(" GROUP BY age ORDER BY age ASC) as jumlahData");
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        return Integer.valueOf(hbm.uniqueResult().toString());
+    }
+
+    @Override
+    public List<EmpDataMatrixModel> getTotalByAgeAndGenderMaleFromBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) AS banyakDatas,");
+        query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS ages2 FROM bio_data WHERE gender = 1");
+        query.append(" GROUP BY ages2 ORDER BY ages2 ASC");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(EmpDataMatrixModel.class))
+                .list();
+    }
+
+    @Override
+    public List<EmpDataMatrixModel> getTotalByAgeAndGenderFemaleFromBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) AS banyakDatas,");
+        query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS ages2 FROM bio_data WHERE gender = 0");
+        query.append(" GROUP BY ages2 ORDER BY ages2 ASC");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(EmpDataMatrixModel.class))
+                .list();
+    }
+
+    @Override
+    public List<EmpDataMatrixModel> getAllAgeByGenderFromBirthDate() {
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) AS banyakDatas, gender AS genders,");
+        query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS ages2 FROM bio_data");
+        query.append(" GROUP BY ages2,genders ORDER BY ages2 ASC");
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(EmpDataMatrixModel.class))
                 .list();

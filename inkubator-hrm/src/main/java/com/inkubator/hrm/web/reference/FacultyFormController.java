@@ -43,6 +43,7 @@ public class FacultyFormController extends BaseController {
                 if (faculty != null) {
                     facultyModel.setId(faculty.getId());
                     facultyModel.setFacultyName(faculty.getFacultyName());
+                    facultyModel.setFacultyCode(faculty.getCode());
                     facultyModel.setDescription(faculty.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
@@ -104,6 +105,7 @@ public class FacultyFormController extends BaseController {
         }
         faculty.setFacultyName(facultyModel.getFacultyName());
         faculty.setDescription(facultyModel.getDescription());
+        faculty.setCode(facultyModel.getFacultyCode());
         return faculty;
     }
 }

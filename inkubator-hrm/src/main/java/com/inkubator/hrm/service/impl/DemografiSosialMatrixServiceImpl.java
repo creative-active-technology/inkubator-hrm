@@ -8,12 +8,15 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
-import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.DemografiSosialMatrixService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -51,10 +54,12 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         } else if (param.equals("gender")) {
             listAbsisToShow.add("F");
             listAbsisToShow.add("M");
-        } else if (param.equals("umur")){
+        } else if (param.equals("umur")) {
             List<EmpDataMatrixModel> listAge = bioDataDao.getAllAgeFromBirthDate();
             for (EmpDataMatrixModel empDataMatrixModel : listAge) {
-                listAbsisToShow.add(String.valueOf(empDataMatrixModel.getAges()));
+                if (empDataMatrixModel.getAges2() != null) {
+                    listAbsisToShow.add(String.valueOf(empDataMatrixModel.getAges2()));
+                }
             }
         }
         listAbsisToShow.add("Total");
@@ -62,14 +67,14 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
     }
 
     @Override
-    public List<EmpDataMatrixModel> getAllNameOrderByLevelWithModel() throws Exception {
+    public List<EmpDataMatrixModel> getAllDataPendidikanVsGender() throws Exception {
         List<EducationLevel> listEducationLevel = educationLevelDao.getAllNameOrderByLevel();
         List<String> listEducationShow;
         EmpDataMatrixModel empDataMatrixModel;
         Long totalMale;
         Long totalFemale;
         Long totalDataBerdasarkanEdukasi;
-        long tempTotalAllMale = 0 ;
+        long tempTotalAllMale = 0;
         long tempTotalAllFemale = 0;
         List<EmpDataMatrixModel> listDataModel = new ArrayList<EmpDataMatrixModel>();
         for (EducationLevel educationLevel : listEducationLevel) {
@@ -87,10 +92,10 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
             empDataMatrixModel.setListGender(listEducationShow);
             listDataModel.add(empDataMatrixModel);
         }
-        
+
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
         List<String> listTotalBawah = new ArrayList<String>();
-        
+
         for (int i = 0; i < 1; i++) {
             listTotalBawah.add("TotalBawah");
             listTotalBawah.add(String.valueOf(tempTotalAllFemale));
@@ -103,7 +108,7 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
     }
 
     @Override
-    public List<EmpDataMatrixModel> getAllNameByGenderOrderByLevelWithModel() throws Exception {
+    public List<EmpDataMatrixModel> getAllDataGenderVsPendidikan() throws Exception {
         List<EducationLevel> listEducationLevel = educationLevelDao.getAllNameOrderByLevel();
         List<String> listEducationShow = new ArrayList<String>();
         EmpDataMatrixModel empDataMatrixModel = null;
@@ -145,7 +150,7 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
             empDataMatrixModel.setListGender(listEducationShow);
             listDataModel.add(empDataMatrixModel);
         }
-        
+
         // Total Data Paling Bawah
         List<String> listTotalBawah = new ArrayList<String>();
         EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
@@ -174,8 +179,209 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
     }
 
     @Override
-    public List<String> getAllAgeForAbsis() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<EmpDataMatrixModel> getAllDataUmurVsGender() throws Exception {
+        List<String> gender = new ArrayList<String>();
+        List<Double> listTotalFemale = new ArrayList<Double>();
+        List<Double> listTotalMale = new ArrayList<Double>();
+        List<String> listEducationShow = new ArrayList<String>();
+        Map<Double, Double> ageMapMale = new HashMap<Double, Double>();
+        Map<Double, Double> ageMapFemale = new HashMap<Double, Double>();
+        EmpDataMatrixModel empDataMatrixModel = null;
+        gender.add("F");
+        gender.add("M");
+        List<EmpDataMatrixModel> listDataModel = new ArrayList<EmpDataMatrixModel>();
+        int j;
+        List<EmpDataMatrixModel> listAge = bioDataDao.getAllAgeFromBirthDate();
+
+        int pembandingTerbanyak = listAge.size();
+        List<EmpDataMatrixModel> listAgeFemale = bioDataDao.getTotalByAgeAndGenderFemaleFromBirthDate();
+        List<EmpDataMatrixModel> listAgeMale = bioDataDao.getTotalByAgeAndGenderMaleFromBirthDate();
+        for (EmpDataMatrixModel ages : listAgeMale) {
+            ageMapMale.put(ages.getAges2(), ages.getBanyakDatas().doubleValue());
+        }
+        for (EmpDataMatrixModel ages : listAgeFemale) {
+            ageMapFemale.put(ages.getAges2(), ages.getBanyakDatas().doubleValue());
+        }
+        System.out.println(listAgeFemale.size() + " = " + listAgeMale.size());
+        Double totalMale = null;
+        Double totalFemale = null;
+        Double totalSamping;
+        int compareDouble = 0;
+        j = 0;
+        while (j < pembandingTerbanyak) {
+            if (j < listAgeFemale.size()) {
+                if (listAgeFemale.get(j).getAges2() != null) {
+                    if (ageMapFemale.get(listAge.get(j).getAges2()) == null) {
+                        ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                    }
+                }
+            }
+            if (j < listAgeMale.size()) {
+                if (listAgeMale.get(j).getAges2() != null) {
+                    if (ageMapMale.get(listAge.get(j).getAges2()) == null) {
+                        ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                    }
+                }
+            } else {
+                if (ageMapMale.get(listAge.get(j).getAges2()) == null) {
+                    ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                }
+            }
+            j++;
+        }
+
+        for (int i = 0; i < 2; i++) {
+            j = 0;
+            totalSamping = 0.0;
+            empDataMatrixModel = new EmpDataMatrixModel();
+            listEducationShow = new ArrayList<String>();
+            listEducationShow.add(gender.get(i));
+
+            while (j < pembandingTerbanyak) {
+                if (i == 0) {
+                    if (j < ageMapFemale.size()) {
+                        if (listAge.get(j).getAges2() != null) {
+                            if (ageMapFemale.get(listAge.get(j).getAges2()) != null) {
+                                totalFemale = ageMapFemale.get(listAge.get(j).getAges2());
+                                totalSamping = totalSamping + totalFemale;
+                                listTotalFemale.add(totalFemale);
+                            }
+
+                            listEducationShow.add(String.valueOf(totalFemale));
+                        }
+                    }
+                } else if (i == 1) {
+                    if (j < ageMapMale.size()) {
+                        if (listAge.get(j).getAges2() != null) {
+                            if (ageMapMale.get(listAge.get(j).getAges2()) != null) {
+                                totalMale = ageMapMale.get(listAge.get(j).getAges2());
+                                totalSamping = totalSamping + totalMale;
+                                listTotalMale.add(totalMale);
+                            }
+
+                            listEducationShow.add(String.valueOf(totalMale));
+                        }
+
+                    } else {
+
+                    }
+                }
+
+                j++;
+            }
+            listEducationShow.add(String.valueOf(totalSamping));
+            empDataMatrixModel.setListGender(listEducationShow);
+            listDataModel.add(empDataMatrixModel);
+        }
+
+        // Total Data Paling Bawah
+        List<String> listTotalBawah = new ArrayList<String>();
+        EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
+        Double tempTotalMaleAndFemale;
+        Double totalFemaleAndMale = 0.0;
+        totalFemaleAndMale = 0.0;
+        tempTotalMaleAndFemale = 0.0;
+        j = 0;
+        listEducationShow = new ArrayList<String>();
+        empDataMatrixModel = new EmpDataMatrixModel();
+        listTotalBawah.add("TotalBawah");
+        while (j < pembandingTerbanyak) {
+            if (j < listTotalFemale.size()) {
+                totalFemaleAndMale = listTotalFemale.get(j) + listTotalMale.get(j);
+                tempTotalMaleAndFemale = tempTotalMaleAndFemale + totalFemaleAndMale;
+                listTotalBawah.add(String.valueOf(totalFemaleAndMale));
+            }
+            j = j + 1;
+        }
+        listTotalBawah.add(String.valueOf(tempTotalMaleAndFemale));
+        totalBawah.setListGender(listTotalBawah);
+        listDataModel.add(totalBawah);
+
+        return listDataModel;
+    }
+
+    @Override
+    public List<EmpDataMatrixModel> getAllDataGenderVsUmur() throws Exception {
+        List<EmpDataMatrixModel> listAge = bioDataDao.getAllAgeFromBirthDate();
+        List<String> listEducationShow;
+        EmpDataMatrixModel empDataMatrixModel;
+        Double totalMale;
+        Double totalFemale;
+        Double totalDataBerdasarkanEdukasi;
+        Double tempTotalAllMale = 0.0;
+        Double tempTotalAllFemale = 0.0;
+        int pembandingTerbanyak = listAge.size();
+        int j;
+        Map<Double, Double> ageMapMale = new HashMap<Double, Double>();
+        Map<Double, Double> ageMapFemale = new HashMap<Double, Double>();
+        List<EmpDataMatrixModel> listDataModel = new ArrayList<EmpDataMatrixModel>();
+        List<EmpDataMatrixModel> listAgeFemale = bioDataDao.getTotalByAgeAndGenderFemaleFromBirthDate();
+        List<EmpDataMatrixModel> listAgeMale = bioDataDao.getTotalByAgeAndGenderMaleFromBirthDate();
+        for (EmpDataMatrixModel ages : listAgeMale) {
+            ageMapMale.put(ages.getAges2(), ages.getBanyakDatas().doubleValue());
+        }
+        for (EmpDataMatrixModel ages : listAgeFemale) {
+            ageMapFemale.put(ages.getAges2(), ages.getBanyakDatas().doubleValue());
+        }
+        j = 0;
+        while (j < pembandingTerbanyak) {
+            if (j < listAgeFemale.size()) {
+                if (listAgeFemale.get(j).getAges2() != null) {
+                    if (ageMapFemale.get(listAge.get(j).getAges2()) == null) {
+                        ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                    }
+                }
+            }
+            if (j < listAgeMale.size()) {
+                if (listAgeMale.get(j).getAges2() != null) {
+                    if (ageMapMale.get(listAge.get(j).getAges2()) == null) {
+                        ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                    }
+                }
+            } else {
+                if (ageMapMale.get(listAge.get(j).getAges2()) == null) {
+                    ageMapMale.put(listAge.get(j).getAges2(), 0.0);
+                }
+            }
+            j++;
+        }
+        j = 0;
+        for (EmpDataMatrixModel age : listAge) {
+            listEducationShow = new ArrayList<String>();
+            empDataMatrixModel = new EmpDataMatrixModel();
+            if (listAge.get(j).getAges2() != null) {
+//            totalMale = bioEducationHistoryDao.getTotalByGenderMaleAndEducationLevel(educationLevel.getId());
+//            totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
+//            tempTotalAllFemale = tempTotalAllFemale + totalFemale;
+//            tempTotalAllMale = tempTotalAllMale + totalMale;
+//            System.out.println(totalMale + " - total");
+
+                totalFemale = ageMapFemale.get(listAge.get(j).getAges2());
+                totalMale = ageMapMale.get(listAge.get(j).getAges2());
+                tempTotalAllFemale = tempTotalAllFemale + totalFemale;
+                tempTotalAllMale = tempTotalAllMale + totalMale;
+                listEducationShow.add(String.valueOf(age.getAges2()));
+                listEducationShow.add(String.valueOf(totalFemale));
+                listEducationShow.add(String.valueOf(totalMale));
+                listEducationShow.add(String.valueOf(totalMale + totalFemale));
+                empDataMatrixModel.setListGender(listEducationShow);
+                listDataModel.add(empDataMatrixModel);
+            }
+            j++;
+        }
+
+        EmpDataMatrixModel totalBawah = new EmpDataMatrixModel();
+        List<String> listTotalBawah = new ArrayList<String>();
+
+        for (int i = 0; i < 1; i++) {
+            listTotalBawah.add("TotalBawah");
+            listTotalBawah.add(String.valueOf(tempTotalAllFemale));
+            listTotalBawah.add(String.valueOf(tempTotalAllMale));
+            listTotalBawah.add(String.valueOf(tempTotalAllFemale + tempTotalAllMale));
+            totalBawah.setListGender(listTotalBawah);
+            listDataModel.add(totalBawah);
+        }
+        return listDataModel;
     }
 
 }

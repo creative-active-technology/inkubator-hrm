@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.ReligionService;
+import com.inkubator.hrm.web.search.ReligionSearchParameter;
 
 /**
 *
@@ -20,12 +21,12 @@ import com.inkubator.hrm.service.ReligionService;
 public class ReligionLazyDataModel extends LazyDataModel<Religion> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(ReligionLazyDataModel.class);
-    private final String parameter;
+    private final ReligionSearchParameter parameter;
     private final ReligionService religionService;
     private List<Religion> religions = new ArrayList<>();
     private Integer total;
 
-    public ReligionLazyDataModel(String parameter, ReligionService religionService) {
+    public ReligionLazyDataModel(ReligionSearchParameter parameter, ReligionService religionService) {
         this.parameter = parameter;
         this.religionService = religionService;
     }
