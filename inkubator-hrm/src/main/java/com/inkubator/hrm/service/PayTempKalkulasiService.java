@@ -16,6 +16,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
@@ -53,5 +54,6 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception;
 
-    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);    
+   
 }

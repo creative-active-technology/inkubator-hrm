@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogListOfTransferDao;
 import com.inkubator.hrm.entity.LogListOfTransfer;
+import com.inkubator.hrm.web.model.BankTransferDistributionReportModel;
+import java.util.List;
 
 /**
 *
@@ -28,5 +30,10 @@ public class LogListOfTransferDaoImpl extends IDAOImpl<LogListOfTransfer> implem
         query.executeUpdate();
 		
 	}
+
+    @Override
+    public List<BankTransferDistributionReportModel> getBankTransferDistributionByPayrollHistoryReport(Long periodeId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

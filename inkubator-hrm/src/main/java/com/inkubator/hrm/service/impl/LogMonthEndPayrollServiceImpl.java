@@ -26,6 +26,8 @@ import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 /**
@@ -335,4 +337,22 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 		logMonthEndPayrollDao.deleteByPeriodId(periodId);
 		
 	}
+        
+        @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
+        return logMonthEndPayrollDao.getByParamForPayrollHistoryReport(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamForPayrollHistoryReport(String searchParameter) {
+        return logMonthEndPayrollDao.getTotalByParamForPayrollHistoryReport(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId) {
+        return logMonthEndPayrollDao.getSalaryPerDepartmentPayrollHistoryReport(periodeId);
+    }
 }
