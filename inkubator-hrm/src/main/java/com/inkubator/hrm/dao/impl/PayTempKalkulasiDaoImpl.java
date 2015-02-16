@@ -26,6 +26,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import java.math.BigDecimal;
@@ -353,4 +354,6 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
         return (PayTempKalkulasi) criteria.uniqueResult();
     }
+
+    
 }

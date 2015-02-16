@@ -7,6 +7,13 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogListOfTransferDao;
 import com.inkubator.hrm.entity.LogListOfTransfer;
+import com.inkubator.hrm.web.model.BankTransferDistributionReportModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 /**
 *
@@ -28,5 +35,26 @@ public class LogListOfTransferDaoImpl extends IDAOImpl<LogListOfTransfer> implem
         query.executeUpdate();
 		
 	}
+
+    @Override
+    public List<BankTransferDistributionReportModel> getBankTransferDistributionByPayrollHistoryReport(Long periodeId) {
+         final StringBuilder query = new StringBuilder("SELECT lt.bankName AS bankName, COUNT(lt.accountNumber) AS totalAccountNumber "
+                + "  FROM LogListOfTransfer lt "
+                + "  WHERE lt.periodeId = :periodeId "
+                + "  GROUP BY lt.bankName  ");       
+      
+         return getCurrentSession().createQuery(query.toString()) 
+               .setParameter("periodeId", periodeId)
+               .setResultTransformer(Transformers.aliasToBean(BankTransferDistributionReportModel.class))
+               .list();
+       
+    }
+
+    @Override
+    public Long getTotalBankTransferByPayrollHistoryReport(Long periodeId) {
+       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+       criteria.add(Restrictions.eq("periodeId", periodeId));
+       return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 
 }
