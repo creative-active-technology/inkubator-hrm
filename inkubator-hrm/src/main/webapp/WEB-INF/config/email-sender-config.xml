@@ -10,7 +10,7 @@
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     
     <context:property-placeholder location="classpath*:mail_config.properties" />
-    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+<!--    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -21,8 +21,8 @@
         </property>
         <property name="username" value="noreplayoptimahr@gmail.com" />
         <property name="password" value="optima@123Hris" />
-    </bean>
-<!--    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+    </bean>-->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">false</prop>
@@ -33,7 +33,7 @@
         </property>
         <property name="username" value="noreply_hr@incubatechnology.com" />
         <property name="password" value="optima@123Hris" />
-    </bean>-->
+    </bean>
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" lazy-init="true">
         <property name="velocityProperties" >
             <value>
