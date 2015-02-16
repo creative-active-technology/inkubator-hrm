@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -12,6 +13,8 @@ public class ProvinceModel implements Serializable {
     private String provinceCode;
     private String provinceName;
     private Long countryId;
+    private String description;
+    private String provincePhoneCode;
 
     public Long getId() {
         return id;
@@ -43,6 +46,23 @@ public class ProvinceModel implements Serializable {
 
     public void setCountryId(Long countryId) {
         this.countryId = countryId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
+    public String getProvincePhoneCode() {
+        return provincePhoneCode;
+    }
+
+    public void setProvincePhoneCode(String provincePhoneCode) {
+        this.provincePhoneCode = provincePhoneCode;
     }
 
     

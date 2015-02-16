@@ -15,6 +15,9 @@ import java.io.Serializable;
 public class FamilyRelationModel implements Serializable{
     private  Long id;
     private String relationName;
+    private String code;
+    private String description;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -30,6 +33,30 @@ public class FamilyRelationModel implements Serializable{
 
     public void setRelationName(String relationName) {
         this.relationName = relationName;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
     
     

@@ -16,6 +16,8 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 /**
@@ -127,6 +129,67 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
         query.executeUpdate();
 		
 	}
+        
+        @Override
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
+       
+       final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
+                + " lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
+                + " WHERE lme.paySalaryCompId = 100 ");
+        
+        query.append(" GROUP BY lme.periodeId ");
+      
+        if (order.toString().contains("jumlahKaryawan") || order.toString().contains("nominal")) {
+            query.append(" ORDER BY " + order);
+        } else {
+            query.append(" ORDER BY lme." + order);
+        }
+        if (searchParameter != null) {
+            return getCurrentSession().createQuery(query.toString())
+                    //.setParameter("name", '%' + searchParameter + '%')
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
+                    .list();
+        } else {
+            return getCurrentSession().createQuery(query.toString())
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
+                    .list();
+        }
+    }
+
+    @Override
+    public Long getTotalByParamForPayrollHistoryReport(String searchParameter) {
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM ( SELECT lme.id AS id, "
+                + " lme.periode_start AS tglAwalPeriode, lme.periode_end AS tglAkhirPeriode, "              
+                + " COUNT(lme.emp_data_id) AS jumlahKaryawan, SUM(lme.nominal) AS nominal "
+                + " FROM log_month_end_payroll lme "
+                + " WHERE lme.pay_salary_comp_id = 100 GROUP BY lme.periode_id  ) AS jumlahRow ");
+        
+     
+
+        
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+            return Long.valueOf(hbm.uniqueResult().toString());
+    }
+
+    @Override
+    public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId) {
+        
+        final StringBuilder query = new StringBuilder("SELECT D.department_name AS departmentName, D.id AS departmentId, " +               
+                " SUM(A.nominal) as nominal from log_month_end_payroll A " +
+                " INNER JOIN pay_salary_component B ON A.pay_salary_comp_id = B.id AND A.pay_salary_comp_id = 100 " +
+                " INNER JOIN wt_periode W ON A.periode_id = W.id AND A.periode_id = :periodeId " +
+                " INNER JOIN emp_data E ON A.emp_data_id = E.id  " +
+                " INNER JOIN jabatan J ON E.jabatan_id = J.id " +
+                " INNER JOIN department D ON J.departement_id = D.id " +
+                " GROUP BY D.department_name ");
+        
+        return getCurrentSession().createSQLQuery(query.toString())   
+                    .setParameter("periodeId",periodeId)
+                    .setResultTransformer(Transformers.aliasToBean(SalaryPerDepartmentReportModel.class))
+                    .list();
+    }
 
 	@Override
 	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId) {
@@ -137,5 +200,32 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 		criteria.add(Restrictions.eq("periodeId", periodeId));
 		return criteria.list();
 	}
+
+    @Override
+    public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport() {
+       final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
+                + " lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
+                + " WHERE lme.paySalaryCompId = 100 ");        
+        query.append(" GROUP BY lme.periodeId ");
+        
+         return getCurrentSession().createQuery(query.toString())                   
+                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
+                    .list();
+        
+       
+    }
+
+    @Override
+    public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd) {
+        final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
+                + " lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
+                + " WHERE lme.paySalaryCompId = 100 AND lme.id = :idLogMonthEnd ");        
+        query.append(" GROUP BY lme.periodeId ");
+        
+         return (PayrollHistoryReportModel) getCurrentSession().createQuery(query.toString())    
+                    .setParameter("idLogMonthEnd", idLogMonthEnd)
+                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
+                    .uniqueResult();
+    }
     
 }

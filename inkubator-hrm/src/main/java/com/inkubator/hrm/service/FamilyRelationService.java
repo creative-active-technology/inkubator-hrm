@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -16,9 +17,9 @@ import org.hibernate.criterion.Order;
  */
 public interface FamilyRelationService extends IService<FamilyRelation> {
 
-    public List<FamilyRelation> getByParam(String parameter, int firstResult, int maxResults, Order ordertable) throws Exception;
+    public List<FamilyRelation> getByParam(FamilyRelationSearchParameter parameter, int firstResult, int maxResults, Order ordertable) throws Exception;
 
-    public Long getTotalFamilyRelationByParam(String parameter) throws Exception;
+    public Long getTotalFamilyRelationByParam(FamilyRelationSearchParameter parameter) throws Exception;
 
     public Long getTotalByName(String name) throws Exception;
 
