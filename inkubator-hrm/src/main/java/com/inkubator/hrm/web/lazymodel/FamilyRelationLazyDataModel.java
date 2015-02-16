@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.lazymodel;
 
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.service.FamilyRelationService;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,12 @@ import org.primefaces.model.SortOrder;
 public class FamilyRelationLazyDataModel extends LazyDataModel<FamilyRelation> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(FamilyRelationLazyDataModel.class);
-    private final String parameter;
+    private final FamilyRelationSearchParameter parameter;
     private final FamilyRelationService familyRelationService;
     private List<FamilyRelation> familyRelations = new ArrayList<>();
     private Integer total;
 
-    public FamilyRelationLazyDataModel(String parameter, FamilyRelationService familyRelationService) {
+    public FamilyRelationLazyDataModel(FamilyRelationSearchParameter parameter, FamilyRelationService familyRelationService) {
         this.parameter = parameter;
         this.familyRelationService = familyRelationService;
     }

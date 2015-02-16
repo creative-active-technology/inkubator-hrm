@@ -95,6 +95,8 @@ public class FamilyRelationFormController extends BaseController {
             familyRelation.setId(religionModel.getId());
         }
         familyRelation.setRelasiName(religionModel.getRelationName());
+        familyRelation.setCode(religionModel.getCode());
+        familyRelation.setDescription(religionModel.getDescription());
         return familyRelation;
     }
 

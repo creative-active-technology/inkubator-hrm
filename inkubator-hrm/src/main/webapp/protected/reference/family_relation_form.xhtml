@@ -34,21 +34,61 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 39%">
+                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:focus for ="code">
+                                    <p:inputText id="code" title="#{appmsg['global.code']}" value="#{familyRelationFormController.familyRelationModel.code}" label="#{appmsg['family_relation_view.realtion_name']}"
+                                                 required="true"  maxlength="60" styleClass="isitext_hrm" style="width:250px;" requiredMessage="#{appmsg['family_relation.validator_should_not_be_empty']}" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="nameId" value="#{appmsg['family_relation_view.realtion_name']}" styleClass="label_hrm" />
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:focus for ="nameId">
+                                <!--<p:focus for ="nameId">-->
                                     <p:inputText id="nameId" title="#{appmsg['family_relation_view.realtion_name']}" value="#{familyRelationFormController.familyRelationModel.relationName}" label="#{appmsg['family_relation_view.realtion_name']}"
-                                                 required="true"  maxlength="60" styleClass="isitext_hrm" style="width:200px;" requiredMessage="#{appmsg['family_relation.validator_should_not_be_empty']}" />
-                                </p:focus>
+                                                 required="true"  maxlength="60" styleClass="isitext_hrm" style="width:250px;" requiredMessage="#{appmsg['family_relation.validator_should_not_be_empty']}" />
+                                <!--</p:focus>-->
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <!--<p:focus for ="description">-->
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{familyRelationFormController.familyRelationModel.description}" 
+                                                 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                <!--</p:focus>-->
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 25%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                     </p:panelGrid>

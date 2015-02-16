@@ -31,6 +31,9 @@ public class FamilyRelation implements java.io.Serializable {
     private Date updatedOn;
     private Set<BioEmergencyContact> bioEmergencyContacts = new HashSet<BioEmergencyContact>(0);
     private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
+    private String code;
+    private String description;
+    private Boolean isActive;
 
     public FamilyRelation() {
     }
@@ -39,13 +42,16 @@ public class FamilyRelation implements java.io.Serializable {
         this.id = id;
     }
 
-    public FamilyRelation(long id, String relasiName, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public FamilyRelation(long id, String relasiName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String description, Boolean isActive) {
         this.id = id;
         this.relasiName = relasiName;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.code = code;
+        this.description = description;
+        this.isActive = isActive;
     }
 
     @Id
@@ -132,6 +138,33 @@ public class FamilyRelation implements java.io.Serializable {
 
     public void setBioFamilyRelationships(Set<BioFamilyRelationship> bioFamilyRelationships) {
         this.bioFamilyRelationships = bioFamilyRelationships;
+    }
+
+    @Column(name = "code", unique = true, nullable = false)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(name = "description", length = 225)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(name = "status_active")
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     
