@@ -22,6 +22,7 @@ import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogListOfTransferService;
+import com.inkubator.hrm.web.model.BankTransferDistributionReportModel;
 
 /**
 *
@@ -269,6 +270,9 @@ public class LogListOfTransferServiceImpl extends IServiceImpl implements LogLis
 			logListOfTransfer.setEmpDataId(payTempKalkulasi.getEmpData().getId());
 			logListOfTransfer.setEmpNik(payTempKalkulasi.getEmpData().getNik());
 			logListOfTransfer.setEmpName(payTempKalkulasi.getEmpData().getBioData().getFullName());
+			logListOfTransfer.setEmpJabatanCode(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getCode());
+			logListOfTransfer.setEmpJabatanName(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getName());
+			logListOfTransfer.setEmpGolJabatan(payTempKalkulasi.getEmpData().getGolonganJabatan().getCode());
 			logListOfTransfer.setBankName(payReceiverBankAccount.getBioBankAccount().getBank().getBankName());
 			logListOfTransfer.setAccountName(payReceiverBankAccount.getBioBankAccount().getOwnerName());
 			logListOfTransfer.setAccountNumber(payReceiverBankAccount.getBioBankAccount().getAccountNumber());
@@ -281,5 +285,17 @@ public class LogListOfTransferServiceImpl extends IServiceImpl implements LogLis
 			logListOfTransferDao.save(logListOfTransfer);
 		}
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<BankTransferDistributionReportModel> getBankTransferDistributionByPayrollHistoryReport(Long periodeId) {
+        return logListOfTransferDao.getBankTransferDistributionByPayrollHistoryReport(periodeId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalBankTransferByPayrollHistoryReport(Long periodeId) {
+        return logListOfTransferDao.getTotalBankTransferByPayrollHistoryReport(periodeId);
+    }
 
 }

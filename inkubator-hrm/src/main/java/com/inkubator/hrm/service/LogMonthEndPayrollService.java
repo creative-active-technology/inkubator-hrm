@@ -8,6 +8,8 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 
 /**
@@ -25,5 +27,15 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
 	public void afterMonthEndProcess() throws Exception;
 	
 	public void deleteByPeriodId(Long periodId) throws Exception;
+        
+         public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order);
+
+        public Long getTotalByParamForPayrollHistoryReport(String searchParameter);
+        
+        public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId);
+        
+        public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport();
+        
+        public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd);
 
 }

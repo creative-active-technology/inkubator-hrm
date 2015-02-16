@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.web.search.FamilyRelationSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -32,7 +33,7 @@ public class FamilyRelationDaoImpl extends IDAOImpl<FamilyRelation> implements F
     }
 
     @Override
-    public List<FamilyRelation> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+    public List<FamilyRelation> getByParam(FamilyRelationSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchFamilyRelationByParam(parameter, criteria);
         criteria.addOrder(orderable);
@@ -42,7 +43,7 @@ public class FamilyRelationDaoImpl extends IDAOImpl<FamilyRelation> implements F
     }
 
     @Override
-    public Long getTotalFamilyRelationByParam(String parameter) {
+    public Long getTotalFamilyRelationByParam(FamilyRelationSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchFamilyRelationByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
@@ -63,9 +64,12 @@ public class FamilyRelationDaoImpl extends IDAOImpl<FamilyRelation> implements F
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchFamilyRelationByParam(String parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter)) {
-            criteria.add(Restrictions.like("relasiName", parameter, MatchMode.ANYWHERE));
+    private void doSearchFamilyRelationByParam(FamilyRelationSearchParameter parameter, Criteria criteria) {
+        if (parameter.getRelasiName() != null) {
+            criteria.add(Restrictions.like("relasiName", parameter.getRelasiName(), MatchMode.ANYWHERE));
+        }
+        if (parameter.getCode() != null) {
+            criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
