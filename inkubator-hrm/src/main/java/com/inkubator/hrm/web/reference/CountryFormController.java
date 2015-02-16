@@ -79,6 +79,7 @@ public class CountryFormController extends BaseController {
                 countryModel.setCountryName(country.getCountryName());
                 countryModel.setFlagIcon(country.getFlagIcon());
                 countryModel.setPhoneCode(country.getPhoneCode());
+                countryModel.setDescription(country.getDescription());
                 isUpdate = Boolean.TRUE;
                 infoRendered = Boolean.TRUE;
 
@@ -222,6 +223,7 @@ public class CountryFormController extends BaseController {
         country.setPhoneCode(countryModel.getPhoneCode());
         country.setLatitude(String.valueOf(lat));
         country.setLongitude(String.valueOf(lng));
+        country.setDescription(countryModel.getDescription());
         return country;
     }
 
