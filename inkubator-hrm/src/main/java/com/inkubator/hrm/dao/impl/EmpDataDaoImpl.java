@@ -828,10 +828,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId, int firstResult, int maxResults, Order order) {
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order) {
+        System.out.println(departementId.size() + " dao " + educationId.size());
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+//        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("", order));
+        criteria.createAlias("bioData.educationHistories", "ed", JoinType.INNER_JOIN);
+//        criteria.add(Restrictions.in("department.id", departementId));
+        criteria.add(Restrictions.in("ed.id", educationId));
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         criteria.addOrder(order);

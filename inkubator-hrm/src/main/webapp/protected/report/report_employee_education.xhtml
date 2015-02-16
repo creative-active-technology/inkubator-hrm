@@ -21,7 +21,7 @@
                         <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['jobspek.list_of_job_spek']}" styleClass="header_big" />
+                                <p:outputLabel value="Report Employee Education" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -37,7 +37,7 @@
                                         <p:outputLabel  value="Education Level" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.dualListModel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
+                                        <p:pickList value="#{reportEmployeeEducationViewController.dualListEducationLevel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
                                                     itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
@@ -49,25 +49,76 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Jenis Profesi" style="font-weight: bold"/>
+                                        <p:outputLabel  value="Departement" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
-                                        <p:pickList value="#{jabatanSpesifikasiDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="occupationTypeConverter" id="picklistOccupation"
-                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
-                                                    itemLabel="#{role.occupationTypeName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        <p:pickList value="#{reportEmployeeEducationViewController.dualListDepartement}" var="role" itemValue="#{role}" converter="departmentConverter" id="picklistDepartment"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Department" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
-                                        <p:message for="picklistOccupation" />
+                                        <p:message for="picklistDepartment" />
                                     </p:column>
                                 </div>
                             </p:row>
                             
                         </p:panelGrid>
-                        <p:commandButton value="#{appmsg['global.save']}" actionListener="#{jabatanSpesifikasiDetailController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":userViewGrowlId">
+                        <p:commandButton value="#{appmsg['global.search']}" actionListener="#{reportEmployeeEducationViewController.doSearch()}" title="#{appmsg['global.search']}" label="#{appmsg['global.search']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update="tableId">
                                 <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
                         </p:commandButton>
 
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        
+                        <p:dataTable  var="data"  value="#{reportEmployeeEducationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Nama Karyawan"/>
+                            </f:facet> 
+<!--                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" style="width: 43%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 43%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}" />
+                            </p:column>-->
+<!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                                 action="#{savingTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{savingTypeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                </p:commandButton> 
+                            </p:column> -->
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportEmployeeEducationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
                         
                         <div style="clear: both"/>
                     </h:form>

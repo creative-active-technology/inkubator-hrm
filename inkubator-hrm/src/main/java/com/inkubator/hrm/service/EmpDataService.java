@@ -6,6 +6,8 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -110,5 +112,5 @@ public interface EmpDataService extends IService<EmpData> {
     
     public BioDataModel getEmpNameWithNearestBirthDate();
 
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception;
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) throws Exception;
 }

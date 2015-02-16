@@ -138,7 +138,7 @@ public class BioEducationHistoryFormController extends BaseController{
                 long educationId = Long.parseLong(param.substring(1));
                 BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
                 model.setId(educationHistory.getId());
-                model.setBiodataId(educationHistory.getBiodata().getId());
+                model.setBiodataId(educationHistory.getBioData().getId());
                 if(educationHistory.getEducationLevel() != null){
                     model.setEducationLevelId(educationHistory.getEducationLevel().getId());
                 }
@@ -158,7 +158,7 @@ public class BioEducationHistoryFormController extends BaseController{
                 }
                 model.setYearIn(educationHistory.getYearIn());
                 model.setYearOut(educationHistory.getYearOut());
-                bioDataId = educationHistory.getBiodata().getId();
+                bioDataId = educationHistory.getBioData().getId();
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -241,7 +241,7 @@ public class BioEducationHistoryFormController extends BaseController{
         if (model.getId() != null) {
             educationHistory.setId(model.getId());
         }
-        educationHistory.setBiodata(new BioData(bioDataId));
+        educationHistory.setBioData(new BioData(bioDataId));
         educationHistory.setEducationLevel(new EducationLevel(model.getEducationLevelId()));
         educationHistory.setInstitutionEducation(new InstitutionEducation(model.getInstitutionEducationId()));
         educationHistory.setFaculty(new Faculty(model.getFacultyId()));

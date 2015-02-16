@@ -114,5 +114,5 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public BioDataModel getEmpNameWithNearestBirthDate();
 
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId, int firstResult, int maxResults, Order order);
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order);
 }

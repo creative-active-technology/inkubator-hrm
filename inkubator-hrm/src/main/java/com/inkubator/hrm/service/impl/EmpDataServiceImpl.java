@@ -40,6 +40,7 @@ import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -746,7 +747,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) throws Exception {
+        List<Long> listEducationId = new ArrayList();
+        List<Long> listDepartmentId = new ArrayList();
+        for (EducationLevel education : educationId) {
+            listEducationId.add(education.getId());
+        }
+        for (Department department : departementId) {
+            listDepartmentId.add(department.getId());
+        }
+        System.out.println(listEducationId.size());
+        return empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationId, firstResult, maxResults, order);
     }
 }

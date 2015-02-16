@@ -27,7 +27,7 @@ import javax.persistence.Version;
 public class BioEducationHistory implements java.io.Serializable{
      private long id;
      private Integer version;
-     private BioData biodata;
+     private BioData bioData;
      private EducationLevel educationLevel;
      private InstitutionEducation institutionEducation;
      private Faculty faculty;
@@ -50,10 +50,10 @@ public class BioEducationHistory implements java.io.Serializable{
         this.id = id;
     }
 
-    public BioEducationHistory(long id, Integer version, BioData biodata, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String certificateNumber, String pathFoto, Double score, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer yearIn, Integer yearOut, City city) {
+    public BioEducationHistory(long id, Integer version, BioData bioData, EducationLevel educationLevel, InstitutionEducation institutionEducation, Faculty faculty, Major major, String certificateNumber, String pathFoto, Double score, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer yearIn, Integer yearOut, City city) {
         this.id = id;
         this.version = version;
-        this.biodata = biodata;
+        this.bioData = bioData;
         this.educationLevel = educationLevel;
         this.institutionEducation = institutionEducation;
         this.faculty = faculty;
@@ -98,12 +98,12 @@ public class BioEducationHistory implements java.io.Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "biodata_id")
-    public BioData getBiodata() {
-        return biodata;
+    public BioData getBioData() {
+        return bioData;
     }
 
-    public void setBiodata(BioData biodata) {
-        this.biodata = biodata;
+    public void setBioData(BioData bioData) {
+        this.bioData = bioData;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
