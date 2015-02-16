@@ -110,4 +110,5 @@ public interface EmpDataService extends IService<EmpData> {
     
     public BioDataModel getEmpNameWithNearestBirthDate();
 
+    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception;
 }

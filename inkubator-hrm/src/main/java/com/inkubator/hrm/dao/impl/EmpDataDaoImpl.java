@@ -827,4 +827,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 .uniqueResult();
     }
 
+    @Override
+    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("", order));
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        criteria.addOrder(order);
+        return criteria.list();
+    }
+
 }

@@ -744,4 +744,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public BioDataModel getEmpNameWithNearestBirthDate() {
         return this.empDataDao.getEmpNameWithNearestBirthDate();
     }
+
+    @Override
+    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
