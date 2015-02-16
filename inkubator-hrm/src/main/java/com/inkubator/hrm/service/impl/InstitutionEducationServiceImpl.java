@@ -255,6 +255,7 @@ public class InstitutionEducationServiceImpl extends IServiceImpl implements Ins
         institutionEducation.setEducationLevel(this.educationLevelDao.getEntiyByPK(b.getEducationLevel().getId()));
         institutionEducation.setAddress(b.getAddress());
         institutionEducation.setPostalCode(b.getPostalCode());
+        institutionEducation.setDescription(b.getDescription());
         institutionEducation.setUpdatedBy(UserInfoUtil.getUserName());
         institutionEducation.setUpdatedOn(new Date());
         institutionEducationDao.update(institutionEducation);
