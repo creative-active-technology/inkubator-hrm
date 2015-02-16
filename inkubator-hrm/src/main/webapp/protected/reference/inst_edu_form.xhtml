@@ -71,6 +71,7 @@
                                 <p:message for="nameId"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="addresId" value="#{appmsg['institutionEducation.address']}" styleClass="label_hrm"/>
@@ -96,30 +97,11 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="educationLevel" value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="educationLevel" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="educationLevel" value="#{institutionEducationFormController.institutionEducationModel.educationLevelId}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{institutionEducationFormController.dropDownEducationLevel}"/>
-                                    </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="educationLevel"/>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
                             <p:column colspan="3">
                                 <p:message for="addresId"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 29%" >
                                 <p:outputLabel for="countryId" value="#{appmsg['country.country_name']}" styleClass="label_hrm"/>
@@ -141,6 +123,7 @@
                                 <p:message for="countryId"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 29%;" >
                                 <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
@@ -163,6 +146,7 @@
                                 <p:message for="provinceIdA"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="cityId" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
@@ -186,6 +170,7 @@
                                 <p:message for="cityIdA"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="postalId" value="#{appmsg['institutionEducation.postal_code']}" styleClass="label_hrm"/>
@@ -207,6 +192,44 @@
                             </p:column>
                         </p:row>
 
+						<p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="educationLevel" value="#{appmsg['educationhistory.education_level']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="educationLevel" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="educationLevel" value="#{institutionEducationFormController.institutionEducationModel.educationLevelId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{institutionEducationFormController.dropDownEducationLevel}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="educationLevel"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 59%">
+                                <p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{institutionEducationFormController.institutionEducationModel.description}" 
+                                                 required="true" maxlength="500" styleClass="isitext_hrm" style="width:300px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descId"/>
+                            </p:column>
+                        </p:row>
 
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
