@@ -184,6 +184,7 @@
 	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
 	    									inner join fetch payTempKalkulasi.empData as empData
 	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
 	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch empData.employeeType as employeeType
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
@@ -195,6 +196,8 @@
 	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
 	    									inner join fetch payTempKalkulasi.empData as empData
 	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
+	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
 	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
 	    									where modelComponent.spesific = :spesific"/>
@@ -227,8 +230,8 @@
         <property name="sql">
             <value>
             <![CDATA[        
-            	insert into log_month_end_payroll(emp_data_id,emp_gol_jabatan,emp_name,emp_nik,emp_status,factor,nominal,model_comp_specific,pay_salary_comp_id,pay_salary_comp_code,pay_salary_desc,periode_id,periode_start,periode_end,created_by,created_on,version) 
-            	values (:empDataId,:empGolJabatan,:empName,:empNik,:empStatus,:factor,:nominal,:modelCompSpecific,:paySalaryCompId,:paySalaryCompCode,:paySalaryDesc,:periodeId,:periodeStart,:periodeEnd,:createdBy,:createdOn,0)
+            	insert into log_month_end_payroll(emp_data_id,emp_name,emp_nik,emp_jabatan_code,emp_jabatan_name,emp_gol_jabatan,emp_status,factor,nominal,model_comp_specific,pay_salary_comp_id,pay_salary_comp_code,pay_salary_desc,periode_id,periode_start,periode_end,created_by,created_on,version) 
+            	values (:empDataId,:empName,:empNik,:empJabatanCode,:empJabatanName,:empGolJabatan,:empStatus,:factor,:nominal,:modelCompSpecific,:paySalaryCompId,:paySalaryCompCode,:paySalaryDesc,:periodeId,:periodeStart,:periodeEnd,:createdBy,:createdOn,0)
             ]]>
             </value>
         </property>
