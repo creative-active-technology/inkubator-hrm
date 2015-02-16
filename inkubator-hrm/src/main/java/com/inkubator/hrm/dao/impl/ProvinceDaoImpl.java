@@ -95,11 +95,25 @@ public class ProvinceDaoImpl extends IDAOImpl<Province> implements ProvinceDao {
         return criteria.list();
     }
 
-	@Override
-	public List<Province> getByCountryId(Long countryId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("country.id", countryId));
-		return criteria.list();		
-	}
+    @Override
+    public List<Province> getByCountryId(Long countryId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("country.id", countryId));
+        return criteria.list();
+    }
 
+    @Override
+    public Long getTotalByPhoneCode(String phoneCode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("provincePhoneCode", phoneCode));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByPhoneCodeAndNotId(String phoneCode, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("provincePhoneCode", phoneCode));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }
