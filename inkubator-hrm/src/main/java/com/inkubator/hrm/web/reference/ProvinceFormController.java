@@ -64,6 +64,8 @@ public class ProvinceFormController extends BaseController {
                         provinceModel.setProvinceCode(province.getProvinceCode());
                         provinceModel.setProvinceName(province.getProvinceName());
                         provinceModel.setCountryId(province.getCountry().getId());
+                        provinceModel.setDescription(province.getDescription());
+                        provinceModel.setProvincePhoneCode(province.getProvincePhoneCode());
                         isUpdate = Boolean.TRUE;
                     }
                     
@@ -144,6 +146,8 @@ public class ProvinceFormController extends BaseController {
         }
         province.setProvinceCode(provinceModel.getProvinceCode());
         province.setProvinceName(provinceModel.getProvinceName());
+        province.setProvincePhoneCode(provinceModel.getProvincePhoneCode());
+        province.setDescription(provinceModel.getDescription());
         province.setCountry(new Country(provinceModel.getCountryId()));
         return province;
     }
