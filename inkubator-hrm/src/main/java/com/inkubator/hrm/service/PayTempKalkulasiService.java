@@ -32,7 +32,7 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public PayTempKalkulasi getEntityByPkWithDetail(Long id) throws Exception;
 
-    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date payrollCalculationDate, String createdBy) throws Exception;
+    public List<PayTempKalkulasi> getAllDataCalculatedPayment(Date startPeriodDate, Date endPeriodDate, Date createdOn, String createdBy) throws Exception;
 
     public void deleteAllData() throws Exception;
 

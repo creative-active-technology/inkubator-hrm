@@ -20,6 +20,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
+import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
@@ -41,11 +42,13 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	@Autowired
 	private LogMonthEndPayrollDao logMonthEndPayrollDao;
 	@Autowired
-	private PayTempKalkulasiDao payTempKalkulasiDao;
-	@Autowired
 	private WtPeriodeDao wtPeriodeDao;
 	@Autowired
 	private WtHolidayDao wtHolidayDao;
+	@Autowired
+	private PayTempKalkulasiDao payTempKalkulasiDao;
+	@Autowired
+	private PayTempKalkulasiEmpPajakDao payTempKalkulasiEmpPajakDao;
 
 	@Override
 	public LogMonthEndPayroll getEntiyByPK(String id) throws Exception {
@@ -327,8 +330,9 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 			wtPeriodeDao.update(wtp);
 		}		
 		
+		/** delete all the record in the temporary table **/
 		payTempKalkulasiDao.deleteAllData();
-		
+		payTempKalkulasiEmpPajakDao.deleteAllData();
 	}
 
 	@Override

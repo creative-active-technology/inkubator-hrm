@@ -34,4 +34,6 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
 
 	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId);
 
+	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId);
+
 }
