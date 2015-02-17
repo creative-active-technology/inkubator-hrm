@@ -112,5 +112,7 @@ public interface EmpDataService extends IService<EmpData> {
     
     public BioDataModel getEmpNameWithNearestBirthDate();
 
-    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) throws Exception;
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation) throws Exception;
 }

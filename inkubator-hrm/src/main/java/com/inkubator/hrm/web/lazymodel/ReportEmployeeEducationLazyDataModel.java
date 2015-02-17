@@ -52,7 +52,7 @@ public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData>
                     order = Order.desc("bioData");
                 }
                 empDataList = service.getAllDataByDepartementAndEducation(listDepartment, listEducationLevel,  first, pageSize, order);
-//                jumlahData = Integer.parseInt(String.valueOf(service.getTotalSavingTypeByParam(searchParameter)));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalDataByDepartementAndEducation(listDepartment, listEducationLevel)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -60,7 +60,7 @@ public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData>
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);
-        setRowCount(11);
+        setRowCount(jumlahData);
         return empDataList;
     }
     

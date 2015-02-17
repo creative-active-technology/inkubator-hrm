@@ -35,6 +35,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
@@ -829,18 +830,72 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getAllDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order) {
-        System.out.println(departementId.size() + " dao " + educationId.size());
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-//        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-//        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.createAlias("bioData.educationHistories", "ed", JoinType.INNER_JOIN);
-//        criteria.add(Restrictions.in("department.id", departementId));
-        criteria.add(Restrictions.in("ed.id", educationId));
+        doCreateAliasByDepartmentAndEducation(departementId, educationId, criteria);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         criteria.addOrder(order);
         return criteria.list();
+    }
+
+    @Override
+    public Long getTotalDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doCreateAliasByDepartmentAndEducation(departementId, educationId, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    public void doCreateAliasByDepartmentAndEducation(List<Long> departementId, List<Long> educationId, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData.educationHistories", "educationHistories", JoinType.INNER_JOIN);
+        criteria.createAlias("educationHistories.educationLevel", "educationLevel", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        if (departementId.isEmpty() != Boolean.TRUE) {
+            criteria.add(Restrictions.in("department.id", departementId));
+        }
+        if (educationId.isEmpty() != Boolean.TRUE) {
+            criteria.add(Restrictions.in("educationLevel.id", educationId));
+        }
+    }
+
+    @Override
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order) {
+        final StringBuilder query = new StringBuilder("select department.departmentName as department,");
+        query.append(" emp.nik as nik,");
+        query.append(" emp.nik as nik,");
+        query.append(" bio.firstName as firstName,");
+        query.append(" bio.lastName as lastName,");
+        query.append(" jabatanByJabatanId.name as jabatan,");
+        query.append(" educationLevel.name as graduated,");
+        query.append(" institutionEducation.institutionEducationName as from,");
+        query.append(" eduHistory.yearOut as graduatedYear");
+        query.append(" FROM EmpData emp");
+        query.append(" INNER JOIN emp.bioData bio");
+        query.append(" INNER JOIN bio.educationHistories eduHistory");
+        query.append(" INNER JOIN eduHistory.educationLevel educationLevel");
+        query.append(" INNER JOIN eduHistory.institutionEducation institutionEducation");
+        query.append(" INNER JOIN emp.jabatanByJabatanId jabatanByJabatanId");
+        query.append(" INNER JOIN jabatanByJabatanId.department department");
+        if (departementId.isEmpty() != Boolean.TRUE) {
+            query.append(" WHERE department.id IN :idDept");
+        }
+        if (educationId.isEmpty() != Boolean.TRUE) {
+            query.append(" AND educationLevel.id IN :idEdu");
+        }
+        if (departementId.isEmpty() != Boolean.TRUE || educationId.isEmpty() != Boolean.TRUE) {
+            return getCurrentSession().createQuery(query.toString())
+                    .setParameterList("idDept", departementId)
+                    .setParameterList("idEdu", educationId)
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
+                    .list();
+        } else {
+            return getCurrentSession().createQuery(query.toString())
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
+                    .list();
+        }
     }
 
 }

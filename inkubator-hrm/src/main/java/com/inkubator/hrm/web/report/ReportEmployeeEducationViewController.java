@@ -15,6 +15,8 @@ import com.inkubator.hrm.web.lazymodel.ReportEmployeeEducationLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -39,8 +41,8 @@ public class ReportEmployeeEducationViewController extends BaseController {
     private EducationLevelService educationLevelService;
     private DualListModel<EducationLevel> dualListEducationLevel = new DualListModel<>();
     private List<EducationLevel> sourceEducationLevel = new ArrayList<>();
-    private DualListModel<Department> dualListDepartement = new DualListModel<>();
-    private List<Department> sourceDepartement = new ArrayList<>();
+    private DualListModel<Department> dualListDepartment = new DualListModel<>();
+    private List<Department> sourceDepartment = new ArrayList<>();
     private LazyDataModel<EmpData> lazyDataModel;
 
     @PostConstruct
@@ -48,25 +50,26 @@ public class ReportEmployeeEducationViewController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
-
             sourceEducationLevel = educationLevelService.getAllDataOrderByLevel();
-            sourceDepartement = departmentService.getAllData();
-            dualListDepartement.setSource(sourceDepartement);
+            sourceDepartment = departmentService.getAllData();
+            
+            dualListDepartment.setSource(sourceDepartment);
             dualListEducationLevel.setSource(sourceEducationLevel);
-
-        } catch (Exception e) {
-            LOGGER.error("Error", e);
+        } catch (Exception ex) {
+            Logger.getLogger(ReportEmployeeEducationViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     @PreDestroy
-    public void cleanAndExit() {
-        dualListEducationLevel = null;
-        sourceEducationLevel = null;
-        dualListEducationLevel = null;
-        dualListDepartement = null;
-        sourceEducationLevel = null;
-        sourceDepartement = null;
+    private void cleanAndExit() {
+       empDataService = null;
+       departmentService = null;
+       educationLevelService = null;
+       dualListDepartment = null;
+       dualListEducationLevel = null;
+       sourceDepartment = null;
+       sourceEducationLevel = null;
     }
 
     public void doSearch() {
@@ -113,25 +116,25 @@ public class ReportEmployeeEducationViewController extends BaseController {
         this.sourceEducationLevel = sourceEducationLevel;
     }
 
-    public DualListModel<Department> getDualListDepartement() {
-        return dualListDepartement;
+    public DualListModel<Department> getDualListDepartment() {
+        return dualListDepartment;
     }
 
-    public void setDualListDepartement(DualListModel<Department> dualListDepartement) {
-        this.dualListDepartement = dualListDepartement;
+    public void setDualListDepartment(DualListModel<Department> dualListDepartment) {
+        this.dualListDepartment = dualListDepartment;
     }
 
-    public List<Department> getSourceDepartement() {
-        return sourceDepartement;
+    public List<Department> getSourceDepartment() {
+        return sourceDepartment;
     }
 
-    public void setSourceDepartement(List<Department> sourceDepartement) {
-        this.sourceDepartement = sourceDepartement;
+    public void setSourceDepartment(List<Department> sourceDepartment) {
+        this.sourceDepartment = sourceDepartment;
     }
 
     public LazyDataModel<EmpData> getLazyDataModel() {
-        if (lazyDataModel == null) {
-            lazyDataModel = new ReportEmployeeEducationLazyDataModel(dualListDepartement.getTarget(), dualListEducationLevel.getTarget(), empDataService);
+        if(lazyDataModel == null){
+            lazyDataModel = new ReportEmployeeEducationLazyDataModel(dualListDepartment.getTarget(), dualListEducationLevel.getTarget(), empDataService);
         }
         return lazyDataModel;
     }
@@ -140,4 +143,5 @@ public class ReportEmployeeEducationViewController extends BaseController {
         this.lazyDataModel = lazyDataModel;
     }
 
+    
 }

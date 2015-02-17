@@ -77,7 +77,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         entity.setCity(city);
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        entity.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         entity.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         entity.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
         entity.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
@@ -99,7 +99,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         City city = cityDao.getEntiyByPK(entity.getCity().getId());
         update.setCity(city);
         }
-        update.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
+        update.setBiodata(bioDataDao.getEntiyByPK(entity.getBiodata().getId()));
         update.setEducationLevel(educationLevelDao.getEntiyByPK(entity.getEducationLevel().getId()));
         update.setInstitutionEducation(institutionEducationDao.getEntiyByPK(entity.getInstitutionEducation().getId()));
         update.setFaculty(facultyDao.getEntiyByPK(entity.getFaculty().getId()));
