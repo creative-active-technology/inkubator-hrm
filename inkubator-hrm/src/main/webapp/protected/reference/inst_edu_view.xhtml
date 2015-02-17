@@ -76,13 +76,13 @@
                             </p:column>                            
                             <p:column sortBy="institutionEducationCode"  style="width: 22%;">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}" style="text-align: center;"/>
+                                    <h:outputText value="#{appmsg['institutionEducation.institution_code']}" style="text-align: center;"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationCode}"/>
                             </p:column>  
                             <p:column sortBy="institutionEducationName"  style="width: 65%; ">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}" style=""/>
+                                    <h:outputText value="#{appmsg['institutionEducation.institution_name']}" style=""/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationName}"/>
                             </p:column>
@@ -174,7 +174,11 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['institutionEducation.postal_code']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.postalCode}" styleClass="label_hrm"/></p:column>
-                        </p:row>  
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{institutionEducationViewController.selectedInstitutionEducation.description}" styleClass="label_hrm"/></p:column>
+                        </p:row> 
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['institutionEducation.institutionEducation']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
