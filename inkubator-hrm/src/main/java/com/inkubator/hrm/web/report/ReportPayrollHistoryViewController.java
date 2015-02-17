@@ -67,25 +67,12 @@ public class ReportPayrollHistoryViewController extends BaseController {
     }
     
     public void doShowChart(){
-         Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 600);
-        options.put("contentHeight", 400);
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        //dataIsi.add(String.valueOf(selecWtHoliday.getId()));
-        dataToSend.put("param", dataIsi);
-        RequestContext.getCurrentInstance().openDialog("chart_payroll_hist_report", options, dataToSend);
+         
     }
     
-    public String doDetail() {
-        //FacesContext.getCurrentInstance().getExternalContext().getFlash().put("selectedPayrollHistData", selectedPayrollHistData);  
-  
-        //return "carDetail?faces-redirect=true";  
+    public String doDetail() {       
         return "/protected/report/report_payroll_history_detail.htm?faces-redirect=true&execution=e" + selectedPayrollHistData.getId();
-        //return "/protected/report/report_payroll_history_detail.htm?faces-redirect=true";
+        
     }
 
     public PayrollHistoryReportModel getSelectedPayrollHistData() {

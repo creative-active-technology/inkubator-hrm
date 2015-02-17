@@ -68,6 +68,7 @@ public class ReportPayrollHistoryDetailController extends BaseController {
             super.initialization(); 
             idLogMonthEnd = Long.valueOf(FacesUtil.getRequestParameter("execution").substring(1));
             SimpleDateFormat  dateFormat = new SimpleDateFormat("MMMM yyyy");
+            
             payrollHistoryReportModelList = logMonthEndPayrollService.getDataForPayrollHistoryReport();
             cartModelSalaryEveryMonth = new CartesianChartModel();
             
@@ -80,7 +81,7 @@ public class ReportPayrollHistoryDetailController extends BaseController {
             
             cartModelSalaryEveryMonth.addSeries(chartSeriesPayrollPerMonth);
             selectedPayrollHistoryReportModel = logMonthEndPayrollService.getDataPayrollHistoryReportModelByIdLogMonthEnd(idLogMonthEnd);
-            ///selectedPayrollHistoryReportModel = (PayrollHistoryReportModel) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("selectedPayrollHistData");
+           
             listSalaryPerDep = logMonthEndPayrollService.getSalaryPerDepartmentPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
             cartModelSalaryDistributionPerDep = new CartesianChartModel();            
 
