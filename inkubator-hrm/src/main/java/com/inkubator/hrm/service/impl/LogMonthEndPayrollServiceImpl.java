@@ -359,4 +359,16 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
     public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId) {
         return logMonthEndPayrollDao.getSalaryPerDepartmentPayrollHistoryReport(periodeId);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport() {
+        return logMonthEndPayrollDao.getDataForPayrollHistoryReport();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd) {
+        return logMonthEndPayrollDao.getDataPayrollHistoryReportModelByIdLogMonthEnd(idLogMonthEnd);
+    }
 }

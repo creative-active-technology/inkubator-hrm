@@ -33,5 +33,9 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
         public Long getTotalByParamForPayrollHistoryReport(String searchParameter);
         
         public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId);
+        
+        public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport();
+        
+        public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd);
 
 }

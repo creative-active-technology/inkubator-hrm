@@ -74,18 +74,44 @@
                         </p:panelGrid>
                          <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                              <p:row>
+                                  <p:column style="width: 50%;color: #990000" colspan="2">                        	
+                                     <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 420px" >
+                                         <h:panelGrid style="margin-bottom: 3px" columns="2">
+                                             <p:outputLabel value="#{appmsg['report.salary_per_month_in_million']}"  styleClass="header_big"  />                                             
+                                         </h:panelGrid>
+                                         <p:barChart id="chartSalaryPerMonth" orientation="vertical" value="#{reportPayrollHistoryDetailController.cartModelSalaryEveryMonth}" legendPosition="ne"  
+                                                     stacked="false" seriesColors="990000"   animate="false"
+                                                     showDatatip="true"  legendCols="1" max="1000" min="0" 
+                                                     style="height:380px;font-size: 11px"/> 
+
+                                     </p:panel>
+                                 </p:column>
+                             </p:row>
+                              </p:panelGrid>
+                              <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                             <p:row>
                                  <p:column style="width: 50%;color: #990000" colspan="2">                        	
                                      <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 420px" >
                                          <h:panelGrid style="margin-bottom: 3px" columns="2">
                                              <p:outputLabel value="#{appmsg['report.salary_distribution_per_dep_in_million']}"  styleClass="header_big"  />                                             
                                          </h:panelGrid>
-                                         <p:barChart id="basic" orientation="horizontal" value="#{reportPayrollHistoryDetailController.cartModelSalaryDistributionPerDep}" legendPosition="se"  
-                                                     stacked="false" seriesColors="990000"   animate="false"
+                                         <p:barChart id="chartSalaryPerDep" orientation="horizontal" value="#{reportPayrollHistoryDetailController.cartModelSalaryDistributionPerDep}" legendPosition="ne"  
+                                                     stacked="false" seriesColors="003366"   animate="false"
                                                      showDatatip="true"  legendCols="6" max="300" min="0" 
                                                      style="height:380px;font-size: 11px"/> 
 
                                      </p:panel>
                                  </p:column>
+                                 <p:column style="width: 50%;color: #990099">
+                                    <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 420px;"> 
+                                        <h:panelGrid style="margin-bottom: 3px">
+                                            <p:outputLabel value="#{appmsg['report.bank_transfer_in_percent']}" styleClass="header_big" />                                    
+                                        </h:panelGrid>
+
+                                        <p:pieChart id="pieBank" value="#{reportPayrollHistoryDetailController.bankTransferPieModel}" legendPosition="e" fill="true" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
+                                                    style="height:380px;font-size: 11px" sliceMargin="4" diameter="240" />  
+                                    </p:panel>
+                                </p:column>
                              </p:row>
                             
                          </p:panelGrid>

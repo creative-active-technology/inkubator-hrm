@@ -15,5 +15,7 @@ public interface LogListOfTransferDao extends IDAO<LogListOfTransfer> {
 	public void deleteByPeriodId(Long periodId);
         
         public List<BankTransferDistributionReportModel> getBankTransferDistributionByPayrollHistoryReport(Long periodeId);
+        
+        public Long getTotalBankTransferByPayrollHistoryReport(Long periodeId);
 	
 }
