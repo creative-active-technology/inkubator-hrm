@@ -48,7 +48,7 @@
                                 <p:column style="width: 37%">
                                     <p:outputLabel value="#{countryDetailController.selectedCountry.countryCode}" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column style="width: 50%" colspan="2" rowspan="6">
+                                <p:column style="width: 50%" colspan="2" rowspan="7">
 
                                     <p:gmap id="gmap" center="#{countryDetailController.selectedCountry.latitude},#{countryDetailController.selectedCountry.longitude}" zoom="4" type="HYBRID" style="width:600px;height:400px"
                                             model="#{countryDetailController.emptyModel}"  widgetVar="map" />
@@ -106,6 +106,14 @@
                                 <p:column  style="width: 37%">
                                     <p:outputLabel value="#{countryDetailController.selectedCountry.longitude}" styleClass="label_hrm"/>
                                 </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['country.country_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 37%">
+                                    <p:outputLabel value="#{countryDetailController.selectedCountry.description}" styleClass="label_hrm"/>
+                                </p:column>    
                             </p:row>
 
                         </p:panelGrid>
