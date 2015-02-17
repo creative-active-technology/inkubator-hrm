@@ -204,6 +204,11 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
             throw new BussinessException("province.error_duplicate_province_code");
         }
 
+        // check duplicate phone code
+        long totalDuplicatePhoneCodes = provinceDao.getTotalByPhoneCode(province.getProvincePhoneCode());
+        if (totalDuplicatePhoneCodes > 0) {
+            throw new BussinessException("province.error_duplicate_province_phone_code");
+        }
         province.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         province.setCountry(this.countryDao.getEntiyByPK(province.getCountry().getId()));
         province.setCreatedBy(UserInfoUtil.getUserName());
@@ -244,9 +249,16 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
             throw new BussinessException("province.error_duplicate_province_code");
         }
 
+        // check duplicate phone code
+        long totalDuplicatePhoneCodes = provinceDao.getTotalByPhoneCodeAndNotId(b.getProvincePhoneCode(), b.getId());
+        if (totalDuplicatePhoneCodes > 0) {
+            throw new BussinessException("province.error_duplicate_province_phone_code");
+        }
         Province province = provinceDao.getEntiyByPK(b.getId());
         province.setProvinceCode(b.getProvinceCode());
         province.setProvinceName(b.getProvinceName());
+        province.setProvincePhoneCode(b.getProvincePhoneCode());
+        province.setDescription(b.getDescription());
         province.setCountry(this.countryDao.getEntiyByPK(province.getCountry().getId()));
         province.setUpdatedBy(UserInfoUtil.getUserName());
         province.setUpdatedOn(new Date());
@@ -270,23 +282,23 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
     public Long getTotalByParam(ProvinceSearchParameter parameter) throws Exception {
         return this.provinceDao.getTotalProvinceByParam(parameter);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public Province getProvinceByIdWithDetail(Long id) throws Exception {
         return this.provinceDao.getProvinceByIdWithDetail(id);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Province> getByCountryIdWithDetail(Long id) throws Exception {
         return this.provinceDao.getByCountryIdWithDetail(id);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Province> getByCountryId(Long countryId) throws Exception {
-    	return this.provinceDao.getByCountryId(countryId);
+        return this.provinceDao.getByCountryId(countryId);
     }
 
 }

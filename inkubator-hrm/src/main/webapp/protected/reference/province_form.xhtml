@@ -34,14 +34,69 @@
                         <h:outputLabel value="#{appmsg['province.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 34%">
+                                <p:outputLabel for="codeId" value="#{appmsg['province.province_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 65%">
+                                <p:inputText id="codeId" title="#{appmsg['province.province_code']}" value="#{provinceFormController.provinceModel.provinceCode}" 
+                                             required="true" requiredMessage="#{appmsg['province.province_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%">
+                                <p:outputLabel for="nameId" value="#{appmsg['province.province_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 65%">
+                                <p:inputText id="nameId" title="#{appmsg['province.province_name']}" value="#{provinceFormController.provinceModel.provinceName}" 
+                                             required="true" requiredMessage="#{appmsg['province.province_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%">
+                                <p:outputLabel for="phoneCodeId" value="#{appmsg['province.province_phone_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="phoneCodeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 65%">
+                                <p:inputText id="phoneCodeId" title="#{appmsg['province.province_phone_code']}" value="#{provinceFormController.provinceModel.provincePhoneCode}" 
+                                             required="true" requiredMessage="#{appmsg['province.province_phone_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="phoneCodeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%">
                                 <p:outputLabel for="countryId" value="#{appmsg['province.country_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 65%">
                                 <p:focus for ="countryId">
                                     <p:selectOneMenu id="countryId" value="#{provinceFormController.provinceModel.countryId}" required="true"
                                                      style="width: 250px" filter="true" requiredMessage="#{appmsg['province.country_should_not_be_empty']}">
@@ -58,42 +113,33 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="codeId" value="#{appmsg['province.province_code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:inputText id="codeId" title="#{appmsg['province.province_code']}" value="#{provinceFormController.provinceModel.provinceCode}" 
-                                             required="true" requiredMessage="#{appmsg['province.province_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{provinceFormController.provinceModel.description}" 
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 65%">
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="codeId"/>
+                                <p:message for="descriptionId"/>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="nameId" value="#{appmsg['province.province_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:inputText id="nameId" title="#{appmsg['province.province_name']}" value="#{provinceFormController.provinceModel.provinceName}" 
-                                             required="true" requiredMessage="#{appmsg['province.province_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="nameId"/>
-                            </p:column>
-                        </p:row>
-                        
-
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
