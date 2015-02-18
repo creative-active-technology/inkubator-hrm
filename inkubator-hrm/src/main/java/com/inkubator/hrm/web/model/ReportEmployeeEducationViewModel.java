@@ -12,6 +12,7 @@ import java.io.Serializable;
  * @author Deni
  */
 public class ReportEmployeeEducationViewModel implements Serializable {
+    private Long id;
     private String department;
     private String nik;
     private String firstName;
@@ -22,6 +23,14 @@ public class ReportEmployeeEducationViewModel implements Serializable {
     private Integer graduatedYear;
     private String year;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public String getDepartment() {
         return department;
     }

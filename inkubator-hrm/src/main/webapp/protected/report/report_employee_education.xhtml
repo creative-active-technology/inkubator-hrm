@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['jobspek.list_of_job_spek']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['reportEmployeeEducation.list_of_report_employee_education']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['reportEmployeeEducation.report_employee_education_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,7 +34,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['educationlevel.education_level']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{reportEmployeeEducationViewController.dualListEducationLevel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
@@ -49,7 +49,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Departement" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{reportEmployeeEducationViewController.dualListDepartment}" var="role" itemValue="#{role}" converter="departmentConverter" id="picklistDepartment"
@@ -68,12 +68,26 @@
 
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        
+                                                <p:toolbar  style="margin-top: 10px">
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Employee_Education"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmployeeEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
                         <p:dataTable  var="data"  value="#{reportEmployeeEducationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['savingType.savingType_list']}"/>
+                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -81,51 +95,38 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 20%">
+                            <p:column sortBy="firstName" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.nik} #{data.bioData.fullName}" />
+                                <h:outputLabel value= "#{data.nik} #{data.firstName} #{data.lastName}" />
                             </p:column>
 
-                            <p:column sortBy="code" style="width: 20%">
+                            <p:column sortBy="department" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jabatanByJabatanId.department.departmentName}" />
+                                <h:outputLabel value= "#{data.department}" />
                             </p:column>
 
-                            <p:column sortBy="name" style="width: 20%">
+                            <p:column sortBy="jabatan" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jabatanByJabatanId.name}" />
+                                <h:outputLabel value= "#{data.jabatan}" />
                             </p:column>
-                            <!--                            <p:column sortBy="name" style="width: 20%">
-                                                            <f:facet name="header">
-                                                                <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
-                                                            </f:facet>
-                                                            <h:outputLabel value= "" />
-                                                        </p:column>-->
-                            <!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                                            <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                                             onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                                             style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
-                                                                <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                                            </p:commandButton>
-                                                            - 
-                                                            <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                                                             style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                                             action="#{savingTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                                                <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                                            </p:commandButton>
-                                                            -
-                                                            <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                                              action="#{savingTypeViewController.doEdit()}" >
-                                                                <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                                                <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
-                                                            </p:commandButton> 
-                                                        </p:column> -->
+                            <p:column sortBy="graduated" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['biodata.Education_history']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.graduated} #{data.from}" />
+                            </p:column>
+                            <p:column sortBy="graduatedYear" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.year']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.graduatedYear}" />
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{reportEmployeeEducationViewController.lazyDataModel.rowCount}"/>

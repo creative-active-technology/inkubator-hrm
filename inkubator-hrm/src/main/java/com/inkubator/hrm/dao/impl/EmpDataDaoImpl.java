@@ -862,12 +862,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order) {
         final StringBuilder query = new StringBuilder("select department.departmentName as department,");
-        query.append(" emp.nik as nik,");
+        query.append(" emp.id as id,");
         query.append(" emp.nik as nik,");
         query.append(" bio.firstName as firstName,");
         query.append(" bio.lastName as lastName,");
         query.append(" jabatanByJabatanId.name as jabatan,");
-        query.append(" educationLevel.name as graduated,");
+        query.append(" educationLevel.code as graduated,");
         query.append(" institutionEducation.institutionEducationName as from,");
         query.append(" eduHistory.yearOut as graduatedYear");
         query.append(" FROM EmpData emp");
@@ -877,15 +877,33 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         query.append(" INNER JOIN eduHistory.institutionEducation institutionEducation");
         query.append(" INNER JOIN emp.jabatanByJabatanId jabatanByJabatanId");
         query.append(" INNER JOIN jabatanByJabatanId.department department");
-        if (departementId.isEmpty() != Boolean.TRUE) {
+        if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE ) {
+            query.append(" WHERE department.id IN :idDept AND educationLevel.id IN :idEdu");
+        }else if(departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE){
             query.append(" WHERE department.id IN :idDept");
+        }else if(departementId.isEmpty() == Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE){
+            query.append(" WHERE educationLevel.id IN :idEdu");
         }
-        if (educationId.isEmpty() != Boolean.TRUE) {
-            query.append(" AND educationLevel.id IN :idEdu");
+        if (order.toString().contains("firstName") || order.toString().contains("department") || order.toString().contains("jabatan") || order.toString().contains("graduated") || order.toString().contains("graduatedYear")) {
+            query.append(" order by " + order);
+        } else {
+            query.append(" order by bio.firstName");
         }
-        if (departementId.isEmpty() != Boolean.TRUE || educationId.isEmpty() != Boolean.TRUE) {
+        if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE) {
             return getCurrentSession().createQuery(query.toString())
                     .setParameterList("idDept", departementId)
+                    .setParameterList("idEdu", educationId)
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
+                    .list();
+        }else if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE) {
+            return getCurrentSession().createQuery(query.toString())
+                    .setParameterList("idDept", departementId)
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
+                    .list();
+        } else if (departementId.isEmpty() == Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE) {
+            return getCurrentSession().createQuery(query.toString())
                     .setParameterList("idEdu", educationId)
                     .setMaxResults(maxResults).setFirstResult(firstResult)
                     .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))

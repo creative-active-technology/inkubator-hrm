@@ -12,6 +12,7 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.web.lazymodel.ReportEmployeeEducationLazyDataModel;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class ReportEmployeeEducationViewController extends BaseController {
     private List<EducationLevel> sourceEducationLevel = new ArrayList<>();
     private DualListModel<Department> dualListDepartment = new DualListModel<>();
     private List<Department> sourceDepartment = new ArrayList<>();
-    private LazyDataModel<EmpData> lazyDataModel;
+    private LazyDataModel<ReportEmployeeEducationViewModel> lazyDataModel;
 
     @PostConstruct
     @Override
@@ -132,14 +133,14 @@ public class ReportEmployeeEducationViewController extends BaseController {
         this.sourceDepartment = sourceDepartment;
     }
 
-    public LazyDataModel<EmpData> getLazyDataModel() {
+    public LazyDataModel<ReportEmployeeEducationViewModel> getLazyDataModel() {
         if(lazyDataModel == null){
             lazyDataModel = new ReportEmployeeEducationLazyDataModel(dualListDepartment.getTarget(), dualListEducationLevel.getTarget(), empDataService);
         }
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<ReportEmployeeEducationViewModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
