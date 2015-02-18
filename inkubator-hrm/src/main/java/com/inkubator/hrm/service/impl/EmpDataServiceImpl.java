@@ -765,25 +765,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         for (Department department : listDepartement) {
             listDepartmentId.add(department.getId());
         }
-        //ambil list
-        List<EmpData> listEmpData = empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
-        List<ReportEmployeeEducationViewModel> listEmpDataHql = empDataDao.getAllDataByDepartementAndEducationWithHql(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
-//        List<BioEducationHistory> listBioEducationHistory;
-//        List<EmpData> listEmpDataToShow = new ArrayList<EmpData>();
-//        //isi listnya
-//        for (EmpData empData : listEmpData) {
-//            listBioEducationHistory = bioEducationHistoryDao.getAllDataByBioDataId(empData.getBioData().getId());
-//            empData.setListBioEducationHistory(listBioEducationHistory);
-//            listEmpDataToShow.add(empData);
-//        }
-//        int i = 0;
-//        for (EmpData empDataShow : listEmpDataToShow) {
-//            if(empDataShow.getBioData().getId() == 41){
-//                System.out.println(empDataShow.getListBioEducationHistory().get(i));
-//            }
-//            i++;
-//        }
-        return listEmpData;
+        return empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
+        
     }
 
     @Override
@@ -800,5 +783,20 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         }
 
         return empDataDao.getTotalDataByDepartementAndEducation(listDepartmentId, listEducationLevelId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : educationId) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : departementId) {
+            listDepartmentId.add(department.getId());
+        }
+        return empDataDao.getAllDataByDepartementAndEducationWithHql(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
     }
 }

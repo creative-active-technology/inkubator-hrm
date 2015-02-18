@@ -9,6 +9,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,12 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni
  */
-public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData> implements Serializable{
+public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<ReportEmployeeEducationViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(ReportEmployeeEducationLazyDataModel.class);
     private final List<Department> listDepartment;
     private final List<EducationLevel> listEducationLevel;
     private final EmpDataService service;
-    private List<EmpData> empDataList = new ArrayList<>();
+    private List<ReportEmployeeEducationViewModel> empDataList = new ArrayList<>();
     private Integer jumlahData;
 
     public ReportEmployeeEducationLazyDataModel(List<Department> listDepartment, List<EducationLevel> listEducationLevel, EmpDataService service) {
@@ -41,7 +42,7 @@ public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData>
 
     
     @Override
-    public List<EmpData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ReportEmployeeEducationViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {
@@ -51,7 +52,7 @@ public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData>
                 }else{
                     order = Order.desc("bioData");
                 }
-                empDataList = service.getAllDataByDepartementAndEducation(listDepartment, listEducationLevel,  first, pageSize, order);
+                empDataList = service.getAllDataByDepartementAndEducationWithHql(listDepartment, listEducationLevel,  first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalDataByDepartementAndEducation(listDepartment, listEducationLevel)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -65,15 +66,15 @@ public class ReportEmployeeEducationLazyDataModel extends LazyDataModel<EmpData>
     }
     
     @Override
-    public Object getRowKey(EmpData empData) {
-        return empData.getId();
+    public Object getRowKey(ReportEmployeeEducationViewModel reportEmployeeEducationViewModel) {
+        return reportEmployeeEducationViewModel.getId();
     }
 
     @Override
-    public EmpData getRowData(String id) {
-        for (EmpData empData : empDataList) {
-            if (id.equals(String.valueOf(empData.getId()))) {
-                return empData;
+    public ReportEmployeeEducationViewModel getRowData(String id) {
+        for (ReportEmployeeEducationViewModel reportEmployeeEducationViewModel : empDataList) {
+            if (id.equals(String.valueOf(reportEmployeeEducationViewModel.getId()))) {
+                return reportEmployeeEducationViewModel;
             }
         }
         return null;

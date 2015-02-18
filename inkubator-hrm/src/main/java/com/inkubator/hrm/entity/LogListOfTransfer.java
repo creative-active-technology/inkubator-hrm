@@ -34,6 +34,9 @@ public class LogListOfTransfer implements Serializable {
     private String empJabatanCode;
     private String empJabatanName;
     private String empGolJabatan;
+    private Long departmentId;
+    private String departmentName;
+    private Long bankId;
     private String bankName;
     private String accountNumber;
     private String accountName;
@@ -135,6 +138,33 @@ public class LogListOfTransfer implements Serializable {
 
 	public void setEmpGolJabatan(String empGolJabatan) {
 		this.empGolJabatan = empGolJabatan;
+	}
+	
+	@Column(name = "department_id", nullable = false)
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	@Column(name="department_name", length=60, nullable=false)
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	@Column(name = "bank_id", nullable = false)
+	public Long getBankId() {
+		return bankId;
+	}
+
+	public void setBankId(Long bankId) {
+		this.bankId = bankId;
 	}
 
 	@Column(name="bank_name", length=60, nullable=false)
