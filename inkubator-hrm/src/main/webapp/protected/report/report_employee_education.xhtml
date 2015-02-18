@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['reportEmployeeEducation.list_of_report_employee_education']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['reportEmployeeEducation.report_employee_education_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="jobTitleViewId">
+
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['educationlevel.education_level']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportEmployeeEducationViewController.dualListEducationLevel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="educationLevelId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportEmployeeEducationViewController.dualListDepartment}" var="role" itemValue="#{role}" converter="departmentConverter" id="picklistDepartment"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="picklistDepartment" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:commandButton value="#{appmsg['global.search']}" actionListener="#{reportEmployeeEducationViewController.doSearch()}" title="#{appmsg['global.search']}" label="#{appmsg['global.search']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update="tableId">
+                                <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
+                        </p:commandButton>
+
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        
+                                                <p:toolbar  style="margin-top: 10px">
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Employee_Education"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmployeeEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
+                        <p:dataTable  var="data"  value="#{reportEmployeeEducationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="firstName" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nik} #{data.firstName} #{data.lastName}" />
+                            </p:column>
+
+                            <p:column sortBy="department" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['department.department']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.department}" />
+                            </p:column>
+
+                            <p:column sortBy="jabatan" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jabatan}" />
+                            </p:column>
+                            <p:column sortBy="graduated" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['biodata.Education_history']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.graduated} #{data.from}" />
+                            </p:column>
+                            <p:column sortBy="graduatedYear" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.year']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.graduatedYear}" />
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportEmployeeEducationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

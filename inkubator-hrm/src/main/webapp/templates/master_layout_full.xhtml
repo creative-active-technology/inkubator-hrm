@@ -232,9 +232,9 @@
                                     <h:commandLink id="calculatorId" title="Calculator">
                                         <p:graphicImage library="images" name="calculator_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
-<!--                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
-                                        <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
-                                    </p:commandLink>-->
+                                    <!--                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
+                                                                            <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
+                                                                        </p:commandLink>-->
                                     <h:commandLink id="helpId" title="Need Help Clik Me">
                                         <p:graphicImage library="images" name="help_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
@@ -249,8 +249,8 @@
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
                                     <pe:tooltip for="calculatorId"  value="Need Calculation Click Me" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/> 
-<!--                                    <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
-                                                hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
+                                    <!--                                    <pe:tooltip for="calendarId" value="To See Calendar" showEffect="slideToggle"
+                                                                                    hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>-->
                                     <pe:tooltip for="userId" value="My User Profile" showEffect="slideToggle"
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                                     <pe:tooltip for="logoutId" value="Logout and Exit" showEffect="slideToggle"
@@ -326,19 +326,19 @@
                                                     <p:menuitem value="#{appmsg['resourceName.resourceName']}" icon="img-resource_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceName.resourceName']}" url="/protected/reference/resource_name_view.htm" />
                                                 </p:submenu>
                                                 <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['costcenter.costcenter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter']}" url="/protected/organisation/cc_view.htm" icon="img-cost-center"/>
-                                                <p:menuitem value="#{appmsg['organizationletter.organization_letter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organizationletter.organization_letter']}" url="/protected/organisation/organization_letter_view.htm" icon="img-organization-letter"/> 
-                                                <p:menuitem value="#{appmsg['costcenter.costcenter2']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter2']}" url="/protected/organisation/cc_dept_view.htm" icon="img-cost-center"/>
-                                                <p:menuitem value="#{appmsg['menu.department']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.department']}" url="/protected/organisation/department_view.htm" icon="img-department"/>
-                                                <p:menuitem value="#{appmsg['unitkerja.unit_kerja']}" icon="img-unit-kerja" style="color: #003366" title="#{appmsg['unitkerja.unit_kerja']}" url="/protected/reference/unit_kerja_view.htm" />
-                                                <p:menuitem value="#{appmsg['employeetype.employee_type']}" icon="img-employee-type" style="color: #003366" title="#{appmsg['employeetype.employee_type']}" url="/protected/organisation/employee_type_view.htm" />
-                                                <p:menuitem value="#{appmsg['position.position']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['position.position']}" url="/protected/organisation/position_view.htm" icon="img-position"/>
-                                                <p:menuitem value="#{appmsg['functiongroup.function_group']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['functiongroup.function_group']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
-                                                <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
-                                                <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
-                                                <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
-                                            </p:submenu>
+                                                    <p:menuitem value="#{appmsg['costcenter.costcenter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter']}" url="/protected/organisation/cc_view.htm" icon="img-cost-center"/>
+                                                    <p:menuitem value="#{appmsg['organizationletter.organization_letter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organizationletter.organization_letter']}" url="/protected/organisation/organization_letter_view.htm" icon="img-organization-letter"/> 
+                                                    <p:menuitem value="#{appmsg['costcenter.costcenter2']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter2']}" url="/protected/organisation/cc_dept_view.htm" icon="img-cost-center"/>
+                                                    <p:menuitem value="#{appmsg['menu.department']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.department']}" url="/protected/organisation/department_view.htm" icon="img-department"/>
+                                                    <p:menuitem value="#{appmsg['unitkerja.unit_kerja']}" icon="img-unit-kerja" style="color: #003366" title="#{appmsg['unitkerja.unit_kerja']}" url="/protected/reference/unit_kerja_view.htm" />
+                                                    <p:menuitem value="#{appmsg['employeetype.employee_type']}" icon="img-employee-type" style="color: #003366" title="#{appmsg['employeetype.employee_type']}" url="/protected/organisation/employee_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['position.position']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['position.position']}" url="/protected/organisation/position_view.htm" icon="img-position"/>
+                                                    <p:menuitem value="#{appmsg['functiongroup.function_group']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['functiongroup.function_group']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
+                                                    <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" /> 
+                                                    <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
+                                                    <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
+                                                    <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
+                                                </p:submenu>
                                             </p:submenu>           
                                             <p:submenu label="#{appmsg['personalia.setting_personalia']}"  styleClass="menu_child">
                                                 <p:submenu label="#{appmsg['personalia.dinas']}"  styleClass="menu_child" >
@@ -377,6 +377,8 @@
                                             <p:menuitem value="Matrikulasi Demografi" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="" url="/protected/personalia/demografi_sosial_matrix_view.htm" />
                                             <p:menuitem value="#{appmsg['report.pension_preparation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparation']}" url="#" />
                                             <p:menuitem value="#{appmsg['report.employee_family_data']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_family_data']}" url="/protected/report/report_emp_fam_view.htm" />
+                                            <p:menuitem value="#{appmsg['report.education_employee']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.education_employee']}" url="/protected/report/report_employee_education.htm" />
+
                                         </p:submenu>
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
