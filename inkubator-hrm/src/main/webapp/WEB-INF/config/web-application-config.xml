@@ -14,7 +14,7 @@
     <import resource="webmvc-config.xml" />
     <import resource="webflow-config.xml" />
     <import resource="security-config.xml"/>
-    <import resource="web-messaging-config_NON_XA.xml" />
+    <import resource="web-messaging-config.xml" />
      <import resource="scheduler_config.xml"/>
     <import resource="batch-config.xml" />
      
