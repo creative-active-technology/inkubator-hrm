@@ -212,7 +212,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         }
         
         // check duplicate code
-        long totalDuplicateCode = educationLevelDao.getTotalByCode(educationLevel.getName());
+        long totalDuplicateCode = educationLevelDao.getTotalByCode(educationLevel.getCode());
         if (totalDuplicateCode > 0) {
             throw new BussinessException("educationlevel.error_duplicate_code");
         }
@@ -257,7 +257,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         }
 
         // check duplicate code
-        long totalDuplicateCode = educationLevelDao.getTotalByCodeAndNotId(edu.getName(), edu.getId());
+        long totalDuplicateCode = educationLevelDao.getTotalByCodeAndNotId(edu.getCode(), edu.getId());
         if (totalDuplicateCode > 0) {
             throw new BussinessException("educationlevel.error_duplicate_code");
         }

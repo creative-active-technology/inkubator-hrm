@@ -82,6 +82,10 @@ public class LoginController extends BaseController {
         userService = null;
     }
 
+    public void setDeviceResolver(DeviceResolver deviceResolver) {
+        this.deviceResolver = deviceResolver;
+    }
+    
     public String getUserId() {
         return userId;
     }
@@ -163,10 +167,6 @@ public class LoginController extends BaseController {
             LOGGER.error("Error", ex);
         }
         context.addCallbackParam("emailIsExist", emailIsExist);
-    }
-
-    public void setDeviceResolver(DeviceResolver deviceResolver) {
-        this.deviceResolver = deviceResolver;
     }
 
 }

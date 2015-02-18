@@ -22,5 +22,4 @@
         <property name="ppsSizeLimit" value="${application.pps_file_size_limit}"/>
     </bean>
     <bean class="org.springframework.mobile.device.LiteDeviceResolver" init-method="init"  id="deviceResolver" lazy-init="true"/>
-    
 </beans>

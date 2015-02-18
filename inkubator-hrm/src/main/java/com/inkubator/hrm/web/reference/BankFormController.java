@@ -34,12 +34,12 @@ public class BankFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        String param = FacesUtil.getRequestParameter("param");
+        String param = FacesUtil.getRequestParameter("execution");
         bankModel = new BankModel();
         isUpdate = Boolean.FALSE;
-        if (StringUtils.isNumeric(param)) {
+        if (StringUtils.isNotEmpty(param)) {
             try {
-                Bank bank = bankService.getEntiyByPK(Long.parseLong(param));
+                Bank bank = bankService.getEntiyByPK(Long.parseLong(param.substring(1)));
                 if (bank != null) {
                     bankModel.setId(bank.getId());
                     bankModel.setBankCode(bank.getBankCode());
@@ -48,6 +48,12 @@ public class BankFormController extends BaseController {
                     bankModel.setIban(bank.getIban());
                     bankModel.setBankIdentificationNumber(bank.getBankIdentificationNo());
                     bankModel.setDescription(bank.getDescription());
+                    bankModel.setBranchCode(bank.getBranchCode());
+                    bankModel.setBranchName(bank.getBranchName());
+                    bankModel.setAddress(bank.getAddress());
+                    bankModel.setBankPhone(bank.getBankPhone());
+                    bankModel.setBankFax(bank.getBankFax());
+                    bankModel.setBankGroup(bank.getBankGroup());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -83,22 +89,28 @@ public class BankFormController extends BaseController {
         this.bankService = bankService;
     }
 
-    public void doSave() {
+    public String doSave() {
+        System.out.println("masuk method");
         Bank bank = getEntityFromViewModel(bankModel);
+        System.out.println("berhasil bikin object");
         try {
             if (isUpdate) {
                 bankService.update(bank);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
                 bankService.save(bank);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
+            
+        MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        return "/protected/reference/bank_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+        
+        return null;
     }
 
     private Bank getEntityFromViewModel(BankModel bankModel) {
@@ -112,6 +124,30 @@ public class BankFormController extends BaseController {
         bank.setIban(bankModel.getIban());
         bank.setBankIdentificationNo(bankModel.getBankIdentificationNumber());
         bank.setDescription(bankModel.getDescription());
+        bank.setBranchCode(bankModel.getBranchCode());
+        bank.setBranchName(bankModel.getBranchName());
+        bank.setAddress(bankModel.getAddress());
+        bank.setBankPhone(bankModel.getBankPhone());
+        bank.setBankFax(bankModel.getBankFax());
+        bank.setBankGroup(bankModel.getBankGroup());
         return bank;
+    }
+    
+    public void doReset(){
+        bankModel.setAddress(null);
+        bankModel.setBankCode(null);
+        bankModel.setBankFax(null);
+        bankModel.setBankGroup(null);
+        bankModel.setBankName(null);
+        bankModel.setBankPhone(null);
+        bankModel.setBranchCode(null);
+        bankModel.setBranchName(null);
+        bankModel.setIban(null);
+        bankModel.setSwiftCode(null);
+        bankModel.setDescription(null);
+    }
+    
+    public String doBack() {
+        return "/protected/reference/bank_view.htm?faces-redirect=true";
     }
 }
