@@ -13,6 +13,7 @@ public class CountryModel implements Serializable {
     private String countryName;
     private byte[] flagIcon;
     private Integer phoneCode;
+    private String description;
 
     public Long getId() {
         return id;
@@ -54,6 +55,12 @@ public class CountryModel implements Serializable {
         this.phoneCode = phoneCode;
     }
 
-    
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 }

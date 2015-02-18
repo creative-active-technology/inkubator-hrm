@@ -18,6 +18,10 @@ public interface ResourceNameDao extends IDAO<ResourceName>{
     public List<ResourceName> getByParam(ResourceNameSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalResourceNameByParam(ResourceNameSearchParameter searchParameter);
-    
+
     public ResourceName getEntityByPkWithDetail(Long id);
+
+    public Long getTotalByBarCodeId(String barcodeId);
+
+    public Long getTotalByBarCodeIdAndNotId(String barCodeId, Long id);
 }

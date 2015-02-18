@@ -92,7 +92,7 @@ public class HospitalViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selectedHospital = this.hospitalService.getEntiyByPK(selectedHospital.getId());
+            selectedHospital = this.hospitalService.getEntityByPKWithDetail(selectedHospital.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

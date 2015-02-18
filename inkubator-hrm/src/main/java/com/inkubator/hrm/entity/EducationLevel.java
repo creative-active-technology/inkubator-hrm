@@ -26,6 +26,8 @@ public class EducationLevel implements Serializable {
     private Long id;
     private Integer version;
     private String name;
+    private String code;
+    private String description;
     private Integer level;
     private String createdBy;
     private String updatedBy;
@@ -170,18 +172,19 @@ public class EducationLevel implements Serializable {
     public void setInstitutionEducations(Set<InstitutionEducation> institutionEducations) {
         this.institutionEducations = institutionEducations;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Objects.hashCode(this.version);
-        hash = 53 * hash + Objects.hashCode(this.name);
-        hash = 53 * hash + Objects.hashCode(this.level);
-        hash = 53 * hash + Objects.hashCode(this.createdBy);
-        hash = 53 * hash + Objects.hashCode(this.updatedBy);
-        hash = 53 * hash + Objects.hashCode(this.createdOn);
-        hash = 53 * hash + Objects.hashCode(this.updatedOn);
+        hash = 73 * hash + Objects.hashCode(this.id);
+        hash = 73 * hash + Objects.hashCode(this.name);
+        hash = 73 * hash + Objects.hashCode(this.code);
+        hash = 73 * hash + Objects.hashCode(this.description);
+        hash = 73 * hash + Objects.hashCode(this.level);
+        hash = 73 * hash + Objects.hashCode(this.createdBy);
+        hash = 73 * hash + Objects.hashCode(this.updatedBy);
+        hash = 73 * hash + Objects.hashCode(this.createdOn);
+        hash = 73 * hash + Objects.hashCode(this.updatedOn);
         return hash;
     }
 
@@ -197,10 +200,13 @@ public class EducationLevel implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.version, other.version)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.name, other.name)) {
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
             return false;
         }
         if (!Objects.equals(this.level, other.level)) {
@@ -219,6 +225,26 @@ public class EducationLevel implements Serializable {
             return false;
         }
         return true;
+    }
+    
+    
+
+    @Column(name="code", unique=true, length=8)
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(name="description", length=65535, columnDefinition="Text")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     

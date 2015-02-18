@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,6 +38,7 @@ public class InstitutionEducation implements java.io.Serializable {
     private String institutionEducationName;
     private String address;
     private Integer postalCode;
+    private String description;
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
 
     public InstitutionEducation() {
@@ -174,8 +176,17 @@ public class InstitutionEducation implements java.io.Serializable {
     public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
+        
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
+    public String getDescription() {
+		return description;
+	}
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "institutionEducation")
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "institutionEducation")
     public Set<BioEducationHistory> getEducationHistorys() {
         return educationHistorys;
     }

@@ -88,7 +88,8 @@ public class ResourceNameFormController extends BaseController{
         model.setName(entity.getName());
         model.setDateOfOwnership(entity.getDateOfOwnership());
         model.setResourceTypeId(entity.getResourceType().getId());
-        model.setDescription(entity.getDescription());
+//        model.setDescription(entity.getDescription());
+        model.setBarCodeId(entity.getBarcodeId());
         model.setIsActive(entity.getIsActive());
         return model;
     }
@@ -102,7 +103,8 @@ public class ResourceNameFormController extends BaseController{
         resourceName.setName(model.getName());
         resourceName.setDateOfOwnership(model.getDateOfOwnership());
         resourceName.setResourceType(new ResourceType(model.getResourceTypeId()));
-        resourceName.setDescription(model.getDescription());
+//        resourceName.setDescription(model.getDescription());
+        resourceName.setBarcodeId(model.getBarCodeId());
         resourceName.setIsActive(model.getIsActive());
         return resourceName;
     }
