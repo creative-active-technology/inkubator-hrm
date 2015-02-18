@@ -23,6 +23,7 @@ public class PayrollHistoryReportModel implements Serializable {
     private String tahunPeriode;
     private Integer bulanPeriode;
     private Date tglAwalPeriode;
+    private String tglAwalPeriodeInString;
     private Date tglAkhirPeriode;
     private BigDecimal nominal;
     private Date createdOn;
@@ -35,6 +36,16 @@ public class PayrollHistoryReportModel implements Serializable {
     private Long jumlahKaryawanKeseluruhan;
     private Date startDate;
     private Date endDate;
+
+    public String getTglAwalPeriodeInString() {
+        return tglAwalPeriodeInString;
+    }
+
+    public void setTglAwalPeriodeInString(String tglAwalPeriodeInString) {
+        this.tglAwalPeriodeInString = tglAwalPeriodeInString;
+    }
+    
+    
 
     public Long getPeriodeId() {
         return periodeId;

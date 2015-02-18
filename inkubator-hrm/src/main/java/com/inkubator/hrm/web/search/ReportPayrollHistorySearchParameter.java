@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class ReportPayrollHistoryParameter extends SearchParameter{
+public class ReportPayrollHistorySearchParameter extends SearchParameter{
     
     private Date startDate;
     private Date endDate;
@@ -40,5 +40,4 @@ public class ReportPayrollHistoryParameter extends SearchParameter{
         this.endDate = endDate;
     }
     
-	
 }
