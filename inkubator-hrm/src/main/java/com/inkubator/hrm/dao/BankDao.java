@@ -30,4 +30,5 @@ public interface BankDao extends IDAO<Bank> {
         
         public Long getTotalByIdentificationNumberAndNotId(String identificationNumber, Long id);
 
+        public Bank getEntityWithDetail(Long id);
 }
