@@ -55,21 +55,27 @@ public class LoginController extends BaseController {
     public void initialization() {
         Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
         if (device.isMobile()) {
-            LOGGER.info("Mobile");
+            try {
+                LOGGER.info("Mobile");
+                FacesUtil.getExternalContext().redirect("/MOBILE-HR");
+            } catch (IOException ex) {
+                LOGGER.error(ex, ex);
+            }
         }
         if (device.isNormal()) {
-            LOGGER.info("Normal Dekstop");
+            LOGGER.info("NOrmal Desktop");
+            if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
+                selectedLanguage = "in";
+                FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
+            } else {
+                selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
+            }
+            FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
         }
         if (device.isTablet()) {
             LOGGER.info("TABLET");
         }
-        if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
-            selectedLanguage = "in";
-            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-        } else {
-            selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-        }
-        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
+
     }
 
     @PreDestroy
