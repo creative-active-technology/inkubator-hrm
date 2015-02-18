@@ -5,13 +5,7 @@
  */
 package com.inkubator.hrm.web.report;
 
-import com.inkubator.hrm.web.payroll.*;
-import com.inkubator.common.util.AESUtil;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.BenefitGroupRate;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.BenefitGroupRateService;
+
 import com.inkubator.hrm.service.LogListOfTransferService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.web.model.BankTransferDistributionReportModel;
@@ -59,35 +53,41 @@ public class ReportPayrollHistoryDetailController extends BaseController {
     private PieChartModel bankTransferPieModel;
     private List<BankTransferDistributionReportModel> listBankTransferDistribution;
     private Long totalBankTransfer;
-    private Long idLogMonthEnd;
+    private Long periodeId;
     
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization(); 
-            idLogMonthEnd = Long.valueOf(FacesUtil.getRequestParameter("execution").substring(1));
+            
+            //Get selected periodeId
+            periodeId = Long.valueOf(FacesUtil.getRequestParameter("execution").substring(1));
             SimpleDateFormat  dateFormat = new SimpleDateFormat("MMMM yyyy");
             
+            //Get List payrollHistoryReportModel
             payrollHistoryReportModelList = logMonthEndPayrollService.getDataForPayrollHistoryReport();
             cartModelSalaryEveryMonth = new CartesianChartModel();
             
             ChartSeries chartSeriesPayrollPerMonth = new ChartSeries();
             chartSeriesPayrollPerMonth.setLabel("Gaji Perbulan (Dalam Jutaan Rupiah)");
             
+            //fill data from payrollModel
             for(PayrollHistoryReportModel payrollModel : payrollHistoryReportModelList){
                 chartSeriesPayrollPerMonth.set(dateFormat.format(payrollModel.getTglAwalPeriode()), payrollModel.getNominal().doubleValue()/1000000);         
             }
             
             cartModelSalaryEveryMonth.addSeries(chartSeriesPayrollPerMonth);
-            selectedPayrollHistoryReportModel = logMonthEndPayrollService.getDataPayrollHistoryReportModelByIdLogMonthEnd(idLogMonthEnd);
-           
+            selectedPayrollHistoryReportModel = logMonthEndPayrollService.getDataPayrollHistoryReportModelByPeriodeId(periodeId);
+            
+            //Get Salary Distribution per Department of selected periodeId
             listSalaryPerDep = logMonthEndPayrollService.getSalaryPerDepartmentPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
             cartModelSalaryDistributionPerDep = new CartesianChartModel();            
 
             ChartSeries chartSeries = new ChartSeries();
             chartSeries.setLabel("Distribusi Gaji Per Departemen (Dalam Jutaan Rupiah)");
             
+            //fill data salary distribution
             for(SalaryPerDepartmentReportModel salaryPerDep : listSalaryPerDep){           
                 chartSeries.set(salaryPerDep.getDepartmentName(), salaryPerDep.getNominal().doubleValue()/1000000);            
             }
@@ -95,18 +95,26 @@ public class ReportPayrollHistoryDetailController extends BaseController {
             cartModelSalaryDistributionPerDep.addSeries(chartSeries);
             
             bankTransferPieModel = new PieChartModel();
+            
+            //Get list bank transfer Distribution of selected periodeId
             listBankTransferDistribution = logListOfTransferService.getBankTransferDistributionByPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
+            
+            //Get total transfer from whole Bank of selected periodeId, this is for count  the percentage of total transfer from each bank
             totalBankTransfer = logListOfTransferService.getTotalBankTransferByPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
+            
+            // variable for percentage lower than 5%
             Double totalPercentageLainLain = 0.0;
             
             for(BankTransferDistributionReportModel bankTransferModel : listBankTransferDistribution){
-                Double bankPercentage = bankTransferModel.getTotalAccountNumber().doubleValue() / totalBankTransfer.doubleValue();
-                LOGGER.info("Bank : " + bankTransferModel.getBankName() +
-                        " totalAccountNumber : " + bankTransferModel.getTotalAccountNumber() + 
-                        " bankPercentage : " + bankPercentage);
+                
+                //count the percentage of each bank
+                Double bankPercentage = bankTransferModel.getTotalAccountNumber().doubleValue() / totalBankTransfer.doubleValue();                
+                
+                //set to pie model if greater than 5%
                 if(bankPercentage >= 0.05){
                     bankTransferPieModel.set(bankTransferModel.getBankName(), bankPercentage);
                 }else{
+                    //accumulate to totalPercentageLainLain if lower than 5%
                     totalPercentageLainLain += bankPercentage;
                 }                
             }

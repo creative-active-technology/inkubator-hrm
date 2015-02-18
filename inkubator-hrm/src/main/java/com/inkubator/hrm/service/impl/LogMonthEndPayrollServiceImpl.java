@@ -30,6 +30,7 @@ import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 
 /**
  *
@@ -342,7 +343,7 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 		
 	}
         
-        @Override
+    @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
         return logMonthEndPayrollDao.getByParamForPayrollHistoryReport(searchParameter, firstResult, maxResults, order);
@@ -368,7 +369,13 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd) {
-        return logMonthEndPayrollDao.getDataPayrollHistoryReportModelByIdLogMonthEnd(idLogMonthEnd);
+    public PayrollHistoryReportModel getDataPayrollHistoryReportModelByPeriodeId(Long periodeId) {
+        return logMonthEndPayrollDao.getDataPayrollHistoryReportModelByPeriodeId(periodeId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistorySearchParameter searchParameter) {
+       return logMonthEndPayrollDao.getByParamForPayrollHistoryReport(searchParameter);
     }
 }

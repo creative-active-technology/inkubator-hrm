@@ -67,11 +67,17 @@ public class ReportPayrollHistoryViewController extends BaseController {
     }
     
     public void doShowChart(){
-         
+        Map<String, Object> options = new HashMap<>(); 
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 460);
+        RequestContext.getCurrentInstance().openDialog("chart_payroll_hist_report", options, null);
     }
     
     public String doDetail() {       
-        return "/protected/report/report_payroll_history_detail.htm?faces-redirect=true&execution=e" + selectedPayrollHistData.getId();
+        return "/protected/report/report_payroll_history_detail.htm?faces-redirect=true&execution=e" + selectedPayrollHistData.getPeriodeId();
         
     }
 
