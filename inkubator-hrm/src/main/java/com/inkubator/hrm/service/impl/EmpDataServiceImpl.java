@@ -40,6 +40,7 @@ import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -54,6 +55,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
@@ -61,6 +63,7 @@ import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 
 
 /**
@@ -736,5 +739,52 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioDataModel getEmpNameWithNearestBirthDate() {
         return this.empDataDao.getEmpNameWithNearestBirthDate();
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : listEducation) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : listDepartement) {
+            listDepartmentId.add(department.getId());
+        }
+        return empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
+        
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation) throws Exception {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : listEducation) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : listDepartement) {
+            listDepartmentId.add(department.getId());
+        }
+
+        return empDataDao.getTotalDataByDepartementAndEducation(listDepartmentId, listEducationLevelId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : educationId) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : departementId) {
+            listDepartmentId.add(department.getId());
+        }
+        return empDataDao.getAllDataByDepartementAndEducationWithHql(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
     }
 }
