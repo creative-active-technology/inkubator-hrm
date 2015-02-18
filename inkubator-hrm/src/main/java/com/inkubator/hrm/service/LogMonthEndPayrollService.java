@@ -11,6 +11,7 @@ import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 
 /**
  *
@@ -36,6 +37,8 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
         
         public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport();
         
-        public PayrollHistoryReportModel getDataPayrollHistoryReportModelByIdLogMonthEnd(Long idLogMonthEnd);
+        public PayrollHistoryReportModel getDataPayrollHistoryReportModelByPeriodeId(Long periodeId);
+        
+        public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistorySearchParameter searchParameter);
 
 }

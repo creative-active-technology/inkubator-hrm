@@ -29,7 +29,7 @@
         <property name="allowCustomIsolationLevels" value="true" />
     </bean>
     <!--Data Soruve ke Sumber database dari Jboss lewat JNDI-->
-    <jee:jndi-lookup id="dataSourceJBoss" jndi-name="java:jboss/MysqlXaDsHrm" 
+    <jee:jndi-lookup id="dataSourceJBoss" jndi-name="java:jboss/HrmSqlXADs" 
                      expected-type="javax.sql.DataSource"/>
     
     <!-- Enables the caching on annotated class, the context is in service, the implementation using ehcache  -->

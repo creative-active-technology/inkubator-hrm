@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.primefaces.context.RequestContext;
+import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;
 
 /**
@@ -52,7 +53,16 @@ public class LoginController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("Nilia " + deviceResolver.resolveDevice(FacesUtil.getRequest()));
+        Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
+        if (device.isMobile()) {
+            LOGGER.info("Mobile");
+        }
+        if (device.isNormal()) {
+            LOGGER.info("Normal Dekstop");
+        }
+        if (device.isTablet()) {
+            LOGGER.info("TABLET");
+        }
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
             selectedLanguage = "in";
             FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
@@ -158,4 +168,5 @@ public class LoginController extends BaseController {
         }
         context.addCallbackParam("emailIsExist", emailIsExist);
     }
+
 }

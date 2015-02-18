@@ -35,13 +35,6 @@
                                 <h:panelGrid columns="5" >
                                      <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-<!--                                    <p:selectOneMenu id="pencarianSelectId" value="#{reportPayrollHistoryViewController.keyParam}"
-                                                     style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.month']}" itemValue="NIK"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.year']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['menu.workgroup']}" itemValue="workGroup" />                                        
-                                    </p:selectOneMenu>-->
                                     <p:inputText id="searchId" value="#{reportPayrollHistoryViewController.searchParameter}" style="width: 180px" styleClass="label_button"/>
                                      <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
