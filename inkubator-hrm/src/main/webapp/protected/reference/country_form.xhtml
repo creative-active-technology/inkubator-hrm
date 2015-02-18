@@ -50,7 +50,7 @@
                                     </p:focus>
                                     <p:message for="codeId"/>
                                 </p:column>
-                                <p:column style="width: 50%" colspan="2" rowspan="6">
+                                <p:column style="width: 50%" colspan="2" rowspan="7">
                                     <h:outputLabel value="#{appmsg['country.dialog_info_5']}" styleClass="label_hrm" style="font-weight: normal!important;"/>
                                     <p:gmap id="gmap" center="#{countryFormController.defaultLat},#{countryFormController.defaultLng} " zoom="4" type="HYBRID" style="width:600px;height:400px; margin-top: 10px;"
                                             model="#{countryFormController.emptyModel}" widgetVar="map" >
@@ -122,11 +122,17 @@
                                     <p:message for="longitudeId"/>
                                 </p:column>
                             </p:row>
-
+                            <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{countryFormController.countryModel.description}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:75%;" />
+	                                <p:message for="descId"/>
+	                            </p:column>
+	                        </p:row>
                         </p:panelGrid>
-
-
-
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">

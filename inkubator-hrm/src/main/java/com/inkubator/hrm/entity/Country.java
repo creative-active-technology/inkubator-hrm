@@ -5,6 +5,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,6 +40,7 @@ public class Country  implements java.io.Serializable {
      private Integer phoneCode;
      private String latitude;
      private String longitude;
+     private String description;
      private Set<Province> provinces = new HashSet<Province>(0);
      private Set<Currency> currency = new HashSet<Currency>(0);
      private Set<Company> companiesByTaxCountry = new HashSet<Company>(0);
@@ -186,6 +188,15 @@ public class Country  implements java.io.Serializable {
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
+    
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="country")
     public Set<Province> getProvinces() {
