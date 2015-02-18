@@ -207,6 +207,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.add(Restrictions.ne("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+//        criteria.addOrder(Order.asc("modelComponent.spesific"));
         return criteria.list();
     }
 

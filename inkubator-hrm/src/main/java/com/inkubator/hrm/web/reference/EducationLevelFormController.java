@@ -44,6 +44,8 @@ public class EducationLevelFormController extends BaseController {
                     educationLevelModel.setId(educationLevel.getId());
                     educationLevelModel.setName(educationLevel.getName());
                     educationLevelModel.setLevel(educationLevel.getLevel());
+                    educationLevelModel.setCode(educationLevel.getCode());
+                    educationLevelModel.setDescription(educationLevel.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -104,6 +106,8 @@ public class EducationLevelFormController extends BaseController {
         }
         educationLevel.setName(model.getName());
         educationLevel.setLevel(model.getLevel());
+        educationLevel.setCode(model.getCode());
+        educationLevel.setDescription(model.getDescription());
         return educationLevel;
     }
 }

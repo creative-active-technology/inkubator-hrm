@@ -113,6 +113,7 @@ public class PayTempKalkulasiEmpPajakDaoImpl extends IDAOImpl<PayTempKalkulasiEm
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("taxComponent", "taxComponent", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.addOrder(Order.asc("taxComponent.id"));
         return criteria.list();
     }
 }

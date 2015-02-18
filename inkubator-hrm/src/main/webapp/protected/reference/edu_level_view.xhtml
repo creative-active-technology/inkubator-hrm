@@ -75,7 +75,13 @@
                                     <f:converter converterId="romanovConverter" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name"  style="width: 80%">
+                            <p:column sortBy="code"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{educationLevelData.code}"/>
+                            </p:column>
+                            <p:column sortBy="name"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
