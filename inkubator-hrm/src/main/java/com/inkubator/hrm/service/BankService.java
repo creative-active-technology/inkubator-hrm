@@ -17,5 +17,7 @@ public interface BankService extends IService<Bank> {
 	public List<Bank> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalByParam(BankSearchParameter parameter) throws Exception;
+        
+        public Bank getEntityWithDetail(Long id) throws Exception;
 
 }

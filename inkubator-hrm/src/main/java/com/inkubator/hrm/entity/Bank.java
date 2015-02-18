@@ -43,6 +43,12 @@ public class Bank  implements java.io.Serializable {
      private String iban;
      private String bankIdentificationNo;
      private Set<CompanyBankAccount> companyBankAccounts = new HashSet<CompanyBankAccount>(0);
+     private String branchCode;
+     private String branchName;
+     private String address;
+     private String bankPhone;
+     private String bankFax;
+     private Long bankGroup;
 
     public Bank() {
     }
@@ -51,7 +57,7 @@ public class Bank  implements java.io.Serializable {
     public Bank(long id) {
         this.id = id;
     }
-    public Bank(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String bankCode, String bankName, String description,String swiftCcode,String iban,String bankIdentificationNo) {
+    public Bank(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String bankCode, String bankName, String description,String swiftCcode,String iban,String bankIdentificationNo, String branchCode, String branchName, String address, String bankPhone, String bankFax, Long bankGroup) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
@@ -63,6 +69,12 @@ public class Bank  implements java.io.Serializable {
        this.swiftCcode = swiftCcode;
        this.iban = iban;
        this.bankIdentificationNo = bankIdentificationNo;
+       this.branchCode = branchCode;
+       this.branchName = branchName;
+       this.address = address;
+       this.bankPhone = bankPhone;
+       this.bankFax = bankFax;
+       this.bankGroup = bankGroup;
     }
    
      @Id 
@@ -192,6 +204,60 @@ public class Bank  implements java.io.Serializable {
 	public void setCompanyBankAccounts(Set<CompanyBankAccount> companyBankAccounts) {
 		this.companyBankAccounts = companyBankAccounts;
 	}
+
+    @Column(name="branch_code", unique=true, length=8)    
+    public String getBranchCode() {
+        return branchCode;
+    }
+
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    @Column(name="branch_name", length=60)
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    @Column(name="address", length=225)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Column(name="bank_phone", length=20)
+    public String getBankPhone() {
+        return bankPhone;
+    }
+
+    public void setBankPhone(String bankPhone) {
+        this.bankPhone = bankPhone;
+    }
+
+    @Column(name="bank_fax", length=20)
+    public String getBankFax() {
+        return bankFax;
+    }
+
+    public void setBankFax(String bankFax) {
+        this.bankFax = bankFax;
+    }
+
+    @Column(name="bank_group", length=30)
+    public Long getBankGroup() {
+        return bankGroup;
+    }
+
+    public void setBankGroup(Long bankGroup) {
+        this.bankGroup = bankGroup;
+    }
 }
 
 
