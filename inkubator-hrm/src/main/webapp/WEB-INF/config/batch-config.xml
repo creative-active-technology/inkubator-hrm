@@ -197,6 +197,7 @@
 	    									inner join fetch payTempKalkulasi.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
+	    									inner join fetch jabatanByJabatanId.department as department
 	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
 	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
