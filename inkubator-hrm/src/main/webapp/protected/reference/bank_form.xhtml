@@ -4,171 +4,163 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-
+                Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlBankFormlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formBankFormId">
-                    <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="bank.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['bank.form_bank']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['bank.bank_data_from_reference']}" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bank.dialog_info_3']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="codeId" value="#{appmsg['bank.bank_code']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="codeId">
-                                    <p:inputText id="codeId" title="#{appmsg['bank.bank_code']}" value="#{bankFormController.bankModel.bankCode}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="codeId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="swiftCode" value="#{appmsg['bank.swift_code']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="swiftCode" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="swiftCode">
-                                    <p:inputText id="swiftCode" title="swiftCode" value="#{bankFormController.bankModel.swiftCode}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="swiftCode"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="identificationNumber" value="#{appmsg['bank.identification_number']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="identificationNumber" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 59%">
-                                <p:focus for ="identificationNumber">
-                                    <p:inputText id="identificationNumber" title="identificationNumber" value="#{bankFormController.bankModel.bankIdentificationNumber}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="identificationNumber"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="iban" value="#{appmsg['bank.iban']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="iban" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="iban">
-                                    <p:inputText id="iban" title="iban" value="#{bankFormController.bankModel.iban}" 
-                                                 required="true" requiredMessage="#{appmsg['bank.bank_code_should_not_be_empty']}" maxlength="20" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="iban"/>
-                            </p:column>
-                        </p:row>
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Formulir Bank" styleClass="header_big" />
+                                    <p:outputLabel value="Data Bank dari Referensi" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.bank_code']}"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{bankFormController.bankModel.bankCode}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.branch_code']}"  for="branchCode" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="branchCode" value="#{bankFormController.bankModel.branchCode}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="branchCode"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.bank_name']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{bankFormController.bankModel.bankName}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.branch_name']}"  for="branchName" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="branchName" value="#{bankFormController.bankModel.branchName}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="branchName"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.address']}"  for="addressId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{bankFormController.bankModel.address}" 
+                                                 required="false" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="addressId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.phone']}"  for="bankPhone" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="bankPhone" value="#{bankFormController.bankModel.bankPhone}" 
+                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="bankPhone"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.fax']}"  for="bankFax" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="bankFax" value="#{bankFormController.bankModel.bankFax}" 
+                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="bankFax"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.group']}"  for="bankGroup" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="bankGroup" value="" disabled="true" style="width:270px;" >
+                                        <f:selectItem itemLabel="Selection" itemValue=""/>
+                                    </p:selectOneMenu>
+                                    <p:message for="bankGroup"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="IBAN/SWIFT"  for="ibanSwift" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="ibanSwift" value="#{bankFormController.bankModel.iban}" 
+                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="ibanSwift"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}"  for="description" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="description" title="#{appmsg['global.address']}" value="#{bankFormController.bankModel.address}" 
+                                                 required="false" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="description"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:focus context="formId" />
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
                         
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="nameId" value="#{appmsg['bank.bank_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:inputText id="nameId" title="#{appmsg['bank.bank_name']}" value="#{bankFormController.bankModel.bankName}" 
-                                             required="true" requiredMessage="#{appmsg['bank.bank_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="nameId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{bankFormController.bankModel.description}" 
-                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 1%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 70%">
-                                <h:outputText id="counter" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="descriptionId"/>
-                            </p:column>
-                        </p:row>
-
-                    </p:panelGrid>
-                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBankFormId,:growlBankFormlId"
-                                         action="#{bankFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBankFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formBankFormId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{bankFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{bankFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{bankFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
                 </h:form>
             </ui:define>
 

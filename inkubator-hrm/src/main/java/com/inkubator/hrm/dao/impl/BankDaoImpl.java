@@ -99,4 +99,11 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public Bank getEntityWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (Bank) criteria.uniqueResult();
+    }
+
 }
