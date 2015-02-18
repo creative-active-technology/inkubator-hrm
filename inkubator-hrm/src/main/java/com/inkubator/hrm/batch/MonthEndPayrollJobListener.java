@@ -12,6 +12,7 @@ import org.springframework.batch.core.JobExecutionListener;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogListOfTransferService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.service.LogMonthEndTaxesService;
 import com.inkubator.hrm.service.LogSalaryJournalService;
 import com.inkubator.hrm.service.WtPeriodeService;
 
@@ -25,7 +26,8 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	private WtPeriodeService wtPeriodeService;
 	private LogMonthEndPayrollService logMonthEndPayrollService;
 	private LogListOfTransferService logListOfTransferService;
-	private LogSalaryJournalService logSalaryJournalService;	
+	private LogSalaryJournalService logSalaryJournalService;
+	private LogMonthEndTaxesService logMonthEndTaxesService;
 	
 	@Override
 	public void beforeJob(JobExecution jobExecution) {		
@@ -36,6 +38,7 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 			logMonthEndPayrollService.deleteByPeriodId(periode.getId());
 			logListOfTransferService.deleteByPeriodId(periode.getId());
 			logSalaryJournalService.deleteByPeriodId(periode.getId());
+			logMonthEndTaxesService.deleteByPeriodId(periode.getId());
 			
 		} catch (Exception e) {
 			jobExecution.stop(); //jika ada error, canceled the jobs
@@ -96,6 +99,15 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	public void setLogSalaryJournalService(
 			LogSalaryJournalService logSalaryJournalService) {
 		this.logSalaryJournalService = logSalaryJournalService;
+	}
+
+	public LogMonthEndTaxesService getLogMonthEndTaxesService() {
+		return logMonthEndTaxesService;
+	}
+
+	public void setLogMonthEndTaxesService(
+			LogMonthEndTaxesService logMonthEndTaxesService) {
+		this.logMonthEndTaxesService = logMonthEndTaxesService;
 	}	
 
 }
