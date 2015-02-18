@@ -33,9 +33,12 @@ public class LogMonthEndPayroll implements Serializable {
     private Long empDataId;
     private String empNik;
     private String empName;
+    private Long empJabatanId;
     private String empJabatanCode;
     private String empJabatanName;
     private String empGolJabatan;
+    private Long departmentId;
+    private String departmentName;
     private String empStatus;
     private Integer modelCompSpecific;
     private Long paySalaryCompId;
@@ -132,6 +135,15 @@ public class LogMonthEndPayroll implements Serializable {
 		this.empName = empName;
 	}
 	
+	@Column(name = "emp_jabatan_id", nullable = false)
+	public Long getEmpJabatanId() {
+		return empJabatanId;
+	}
+
+	public void setEmpJabatanId(Long empJabatanId) {
+		this.empJabatanId = empJabatanId;
+	}
+	
 	@Column(name = "emp_jabatan_code", length = 12, nullable = false)
 	public String getEmpJabatanCode() {
 		return empJabatanCode;
@@ -159,6 +171,24 @@ public class LogMonthEndPayroll implements Serializable {
 		this.empGolJabatan = empGolJabatan;
 	}
 
+	@Column(name = "department_id", nullable = false)
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	@Column(name="department_name", length=60, nullable=false)
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	
 	@Column(name = "emp_status", nullable = false)
 	public String getEmpStatus() {
 		return empStatus;

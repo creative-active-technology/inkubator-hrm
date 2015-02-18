@@ -28,9 +28,12 @@ public class LogListOfTransfer implements Serializable {
     private Integer version;
     
     private Long periodeId;
+    private Date periodeStart;
+    private Date periodeEnd;
     private Long empDataId;
     private String empNik;
     private String empName;
+    private Long empJabatanId;
     private String empJabatanCode;
     private String empJabatanName;
     private String empGolJabatan;
@@ -86,6 +89,26 @@ public class LogListOfTransfer implements Serializable {
 		this.periodeId = periodeId;
 	}
 
+	@Temporal(TemporalType.DATE)
+    @Column(name = "periode_start", length = 10, nullable = false)
+	public Date getPeriodeStart() {
+		return periodeStart;
+	}
+
+	public void setPeriodeStart(Date periodeStart) {
+		this.periodeStart = periodeStart;
+	}
+
+	@Temporal(TemporalType.DATE)
+    @Column(name = "periode_end", length = 10, nullable = false)
+	public Date getPeriodeEnd() {
+		return periodeEnd;
+	}
+
+	public void setPeriodeEnd(Date periodeEnd) {
+		this.periodeEnd = periodeEnd;
+	}
+
 	@Column(name = "emp_data_id", nullable = false)
 	public Long getEmpDataId() {
 		return empDataId;
@@ -113,6 +136,15 @@ public class LogListOfTransfer implements Serializable {
 		this.empName = empName;
 	}
 	
+	@Column(name = "emp_jabatan_id", nullable = false)
+	public Long getEmpJabatanId() {
+		return empJabatanId;
+	}
+
+	public void setEmpJabatanId(Long empJabatanId) {
+		this.empJabatanId = empJabatanId;
+	}
+
 	@Column(name = "emp_jabatan_code", length = 12, nullable = false)
 	public String getEmpJabatanCode() {
 		return empJabatanCode;
