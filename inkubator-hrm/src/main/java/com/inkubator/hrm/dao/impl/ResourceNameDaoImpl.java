@@ -72,4 +72,18 @@ public class ResourceNameDaoImpl extends IDAOImpl<ResourceName> implements Resou
         return (ResourceName) criteria.uniqueResult();
     }
     
+    @Override
+    public Long getTotalByBarCodeId(String barcodeId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("barcodeId", barcodeId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByBarCodeIdAndNotId(String barCodeId, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("barcodeId", barCodeId));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

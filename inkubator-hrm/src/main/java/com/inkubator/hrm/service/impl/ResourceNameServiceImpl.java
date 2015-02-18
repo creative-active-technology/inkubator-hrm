@@ -69,13 +69,20 @@ public class ResourceNameServiceImpl extends IServiceImpl implements ResourceNam
         // check duplicate code
         long totalDuplicates = resourceNameDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
-            throw new BussinessException("marital.error_duplicate_marital_code");
+            throw new BussinessException("resourceName.error_duplicate_resource_name");
+        }
+        
+        // check duplicate barcode id
+        long totalDuplicateBarcode = resourceNameDao.getTotalByBarCodeId(entity.getBarcodeId());
+        if (totalDuplicateBarcode > 0) {
+            throw new BussinessException("resourceName.error_duplicate_barcode_id");
         }
         entity.setCode(entity.getCode());
         entity.setName(entity.getName());
         entity.setDateOfOwnership(entity.getDateOfOwnership());
-        entity.setDescription(entity.getDescription());
+//        entity.setDescription(entity.getDescription());
         entity.setIsActive(entity.getIsActive());
+        entity.setBarcodeId(entity.getBarcodeId());
         entity.setResourceType(resourceTypeDao.getEntiyByPK(entity.getResourceType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -88,14 +95,22 @@ public class ResourceNameServiceImpl extends IServiceImpl implements ResourceNam
         // check duplicate code
         long totalDuplicates = resourceNameDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("marital.error_duplicate_marital_code");
+            throw new BussinessException("resourceName.error_duplicate_resource_name");
         }
+        
+        // check duplicate barcode id
+        long totalDuplicateBarcode = resourceNameDao.getTotalByBarCodeIdAndNotId(entity.getBarcodeId(), entity.getId());
+        if (totalDuplicateBarcode > 0) {
+            throw new BussinessException("resourceName.error_duplicate_barcode_id");
+        }
+        
         ResourceName update = resourceNameDao.getEntiyByPK(entity.getId());
         update.setCode(entity.getCode());
         update.setName(entity.getName());
         update.setResourceType(resourceTypeDao.getEntiyByPK(entity.getResourceType().getId()));
         update.setDateOfOwnership(entity.getDateOfOwnership());
-        update.setDescription(entity.getDescription());
+//        update.setDescription(entity.getDescription());
+        update.setBarcodeId(entity.getBarcodeId());
         update.setIsActive(entity.getIsActive());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());

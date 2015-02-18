@@ -6,6 +6,7 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -19,6 +20,7 @@ public class ResourceNameModel implements Serializable{
     private Date dateOfOwnership;
     private String description;
     private Boolean isActive;
+    private String barCodeId;
 
     public Long getId() {
         return id;
@@ -74,6 +76,15 @@ public class ResourceNameModel implements Serializable{
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    @Pattern(regexp = "^[A-Za-z1-9]+", message = "{error_barcode_id}")
+    public String getBarCodeId() {
+        return barCodeId;
+    }
+
+    public void setBarCodeId(String barCodeId) {
+        this.barCodeId = barCodeId;
     }
     
     

@@ -26,26 +26,31 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "resource_name", catalog = "hrm_personalia", uniqueConstraints =
-        @UniqueConstraint(columnNames = "code"))
+@Table(name = "resource_name", catalog = "hrm",
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = "code"),
+            @UniqueConstraint(columnNames = "barcode_id")
+        })
 public class ResourceName implements Serializable {
+
     private Long id;
     private Integer version;
-    
+
     private String code;
     private String name;
+    private String barcodeId;
     private ResourceType resourceType;
     private Date dateOfOwnership;
     private String description;
     private Boolean isActive;
-    
+
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator = "resource_name_seq_gen")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "resource_name_seq_gen")
     @Column(name = "id", unique = true, nullable = false)
     @SequenceGenerator(name = "resource_name_seq_gen", sequenceName = "RESOURCE_NAME_SEQ")
     public Long getId() {
@@ -73,6 +78,15 @@ public class ResourceName implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Column(name = "barcode_id", unique = true, nullable = false, length = 12)
+    public String getBarcodeId() {
+        return barcodeId;
+    }
+
+    public void setBarcodeId(String barcodeId) {
+        this.barcodeId = barcodeId;
     }
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
@@ -159,6 +173,5 @@ public class ResourceName implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
-    
-    
+
 }

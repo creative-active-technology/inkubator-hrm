@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.BioEducationHistory;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "bioEducationHistoryDao")
 @Lazy
-public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> implements BioEducationHistoryDao{
+public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> implements BioEducationHistoryDao {
 
     @Override
     public Class<BioEducationHistory> getEntityClass() {
@@ -54,8 +55,8 @@ public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> im
         criteria.setFetchMode("major", FetchMode.JOIN);
         return criteria.list();
     }
-    
-        @Override
+
+    @Override
     public Long getTotalByGenderMaleAndEducationLevel(Long educationId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("biodata", "biodata", JoinType.INNER_JOIN);
@@ -73,6 +74,16 @@ public class BioEducationHistoryDaoImpl extends IDAOImpl<BioEducationHistory> im
         criteria.add(Restrictions.eq("biodata.gender", HRMConstant.GLOBAL_FEMALE));
         criteria.add(Restrictions.eq("educationLevel.id", educationId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<BioEducationHistory> getByBioDataIdAndEducationLevelId(Long bioDataid) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("biodata", "biodata", JoinType.INNER_JOIN);
+        criteria.createAlias("educationLevel", "educationLevel", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("biodata.id", bioDataid));
+        criteria.addOrder(Order.desc("educationLevel.level"));
+        return criteria.list();
     }
 
 }
