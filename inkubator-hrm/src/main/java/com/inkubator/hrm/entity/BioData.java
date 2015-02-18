@@ -56,6 +56,9 @@ public class BioData implements java.io.Serializable {
     private String noKK;
     private String jamsostek;
     private String npwp;
+    private String graduatedFrom;
+    private Integer graduatedYear;
+    private List<Long> listEducationHistoryId = new ArrayList<Long>();
     private Set<BioEducationHistory> educationHistories = new HashSet<BioEducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
     private Set<BioPeopleInterest> peopleInterests = new HashSet<BioPeopleInterest>(0);
@@ -530,8 +533,35 @@ public class BioData implements java.io.Serializable {
     public void setListEmpData(List<EmpData> listEmpData) {
         this.listEmpData = listEmpData;
     }
-    
-    
 
+    @Transient
+    public String getGraduatedFrom() {
+        return graduatedFrom;
+    }
+
+    public void setGraduatedFrom(String graduatedFrom) {
+        this.graduatedFrom = graduatedFrom;
+    }
+
+    @Transient
+    public Integer getGraduatedYear() {
+        return graduatedYear;
+    }
+
+    public void setGraduatedYear(Integer graduatedYear) {
+        this.graduatedYear = graduatedYear;
+    }
+
+    @Transient
+    public List<Long> getListEducationHistoryId() {
+        return listEducationHistoryId;
+    }
+
+    public void setListEducationHistoryId(List<Long> listEducationHistoryId) {
+        this.listEducationHistoryId = listEducationHistoryId;
+    }
+    
+    
+    
     
 }

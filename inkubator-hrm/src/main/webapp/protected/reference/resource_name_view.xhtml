@@ -82,6 +82,12 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
+                            <p:column sortBy="resourceType.resourceType" style="width: 18%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['resourceType.resourceType']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.resourceType.resourceType}" />
+                            </p:column>
                             <p:column sortBy="dateOfOwnership" style="width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['resourceName.date_ownership']}"/>
@@ -89,12 +95,6 @@
                                 <h:outputLabel value= "#{data.dateOfOwnership}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="resourceType.resourceType" style="width: 18%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['resourceType.resourceType']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.resourceType.resourceType}" />
                             </p:column>
                             <p:column sortBy="resourceType.isActive" style="text-align: center;width: 12%">
                                 <f:facet name="header">

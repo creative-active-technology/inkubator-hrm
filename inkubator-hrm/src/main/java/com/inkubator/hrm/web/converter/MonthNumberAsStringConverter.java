@@ -7,12 +7,16 @@ package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.webcore.util.FacesUtil;
+
 import java.text.DateFormatSymbols;
 import java.util.Locale;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -28,11 +32,16 @@ public class MonthNumberAsStringConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        String data = value.toString();
-        Integer month = Integer.valueOf(data);
-        DateFormatSymbols dfs = new DateFormatSymbols(new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	String monthAsString = StringUtils.EMPTY;
+    	String data = value.toString();
         
-        return dfs.getMonths()[month - 1];
+        if(StringUtils.isNumeric(data)){
+	        Integer month = Integer.valueOf(data);
+	        DateFormatSymbols dfs = new DateFormatSymbols(new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+	        monthAsString = dfs.getMonths()[month - 1];
+        }
+        
+        return monthAsString;
     }
     
 }

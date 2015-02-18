@@ -105,6 +105,7 @@ public class InstitutionEducationFormController extends BaseController {
                             institutionEducationModel.setEducationLevelId(institutionEducation.getEducationLevel().getId());
                         }
                         institutionEducationModel.setPostalCode(institutionEducation.getPostalCode());
+                        institutionEducationModel.setDescription(institutionEducation.getDescription());
                         isUpdate = Boolean.TRUE;
                         disabledCity = Boolean.FALSE;
                         disabledProvince = Boolean.FALSE;
@@ -252,6 +253,7 @@ public class InstitutionEducationFormController extends BaseController {
         institutionEducation.setEducationLevel(new EducationLevel(institutionEducationModel.getEducationLevelId()));
         institutionEducation.setAddress(institutionEducationModel.getAddress());
         institutionEducation.setPostalCode(institutionEducationModel.getPostalCode());
+        institutionEducation.setDescription(institutionEducationModel.getDescription());
         return institutionEducation;
     }
 

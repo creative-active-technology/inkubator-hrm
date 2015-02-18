@@ -129,7 +129,7 @@
         <!--<jms:listener destination="notificationMassJadwalKerja" ref="jadwalKerjaMassMessagesListener" method="onMessage"  />-->
     </jms:listener-container>
     
-<!--    <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
+    <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
         <property name="connectionFactory" ref="connectionFactoryComsume"/>
-    </bean>-->
+    </bean>
 </beans>

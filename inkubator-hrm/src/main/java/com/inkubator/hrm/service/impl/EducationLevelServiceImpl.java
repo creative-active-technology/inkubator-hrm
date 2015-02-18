@@ -210,6 +210,12 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         if (totalDuplicates > 0) {
             throw new BussinessException("educationlevel.error_duplicate_name");
         }
+        
+        // check duplicate code
+        long totalDuplicateCode = educationLevelDao.getTotalByCode(educationLevel.getName());
+        if (totalDuplicateCode > 0) {
+            throw new BussinessException("educationlevel.error_duplicate_code");
+        }
 
         educationLevel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         educationLevel.setCreatedBy(UserInfoUtil.getUserName());
@@ -250,9 +256,16 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
             throw new BussinessException("educationlevel.error_duplicate_name");
         }
 
+        // check duplicate code
+        long totalDuplicateCode = educationLevelDao.getTotalByCodeAndNotId(edu.getName(), edu.getId());
+        if (totalDuplicateCode > 0) {
+            throw new BussinessException("educationlevel.error_duplicate_code");
+        }
         EducationLevel educationLevel = educationLevelDao.getEntiyByPK(edu.getId());
         educationLevel.setName(edu.getName());
         educationLevel.setLevel(edu.getLevel());
+        educationLevel.setDescription(edu.getDescription());
+        educationLevel.setCode(edu.getCode());
         educationLevel.setUpdatedBy(UserInfoUtil.getUserName());
         educationLevel.setUpdatedOn(new Date());
         educationLevelDao.update(educationLevel);
