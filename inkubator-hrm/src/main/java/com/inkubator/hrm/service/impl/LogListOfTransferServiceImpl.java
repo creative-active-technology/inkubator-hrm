@@ -267,10 +267,13 @@ public class LogListOfTransferServiceImpl extends IServiceImpl implements LogLis
 		for(PayReceiverBankAccount payReceiverBankAccount : listPayReceiverBankAccount){
 			LogListOfTransfer logListOfTransfer = new LogListOfTransfer();
 			logListOfTransfer.setPeriodeId(periode.getId());
+			logListOfTransfer.setPeriodeStart(periode.getFromPeriode());
+			logListOfTransfer.setPeriodeEnd(periode.getUntilPeriode());
 			logListOfTransfer.setPayrollDate(periode.getPayrollDate());
 			logListOfTransfer.setEmpDataId(payTempKalkulasi.getEmpData().getId());
 			logListOfTransfer.setEmpNik(payTempKalkulasi.getEmpData().getNik());
 			logListOfTransfer.setEmpName(payTempKalkulasi.getEmpData().getBioData().getFullName());
+			logListOfTransfer.setEmpJabatanId(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getId());
 			logListOfTransfer.setEmpJabatanCode(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getCode());
 			logListOfTransfer.setEmpJabatanName(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getName());
 			logListOfTransfer.setEmpGolJabatan(payTempKalkulasi.getEmpData().getGolonganJabatan().getCode());
