@@ -203,6 +203,12 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
         if (totalDuplicates > 0) {
             throw new BussinessException("province.error_duplicate_province_code");
         }
+        
+        // check duplicate phone code
+        long totalDuplicatePhoneCodes = provinceDao.getTotalByPhoneCode(province.getProvincePhoneCode());
+        if (totalDuplicatePhoneCodes > 0) {
+            throw new BussinessException("province.error_duplicate_province_phone_code");
+        }
 
         province.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         province.setCountry(this.countryDao.getEntiyByPK(province.getCountry().getId()));
@@ -244,9 +250,17 @@ public class ProvinceServiceImpl extends IServiceImpl implements ProvinceService
             throw new BussinessException("province.error_duplicate_province_code");
         }
 
+        // check duplicate phone code
+        long totalDuplicatePhoneCodes = provinceDao.getTotalByPhoneCodeAndNotId(b.getProvincePhoneCode(), b.getId());
+        if (totalDuplicatePhoneCodes > 0) {
+            throw new BussinessException("province.error_duplicate_province_phone_code");
+        }
+        
         Province province = provinceDao.getEntiyByPK(b.getId());
         province.setProvinceCode(b.getProvinceCode());
         province.setProvinceName(b.getProvinceName());
+        province.setProvincePhoneCode(b.getProvincePhoneCode());
+        province.setDescription(b.getDescription());
         province.setCountry(this.countryDao.getEntiyByPK(province.getCountry().getId()));
         province.setUpdatedBy(UserInfoUtil.getUserName());
         province.setUpdatedOn(new Date());

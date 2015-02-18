@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlHolidayFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formHolidayFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="holiday.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['payroll.payroll_emp_chart']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['payroll.payroll_emp_chart_month_based']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['menu.period']}" style="font-weight: bold"/>
+                            </p:column>
+                            <p:column style="width: 80%">                                               
+                                <p:calendar  id="startDate" pattern="MMMM yyyy" value="#{chartPayrollHistoryReportController.reportParameter.startDate}"  readonly="false" >
+                                    
+                                </p:calendar>
+                                <p:outputLabel  value="   " style="font-weight: bold"/>
+                                <p:outputLabel  value="#{appmsg['global.to']}" style="font-weight: bold"/>
+                                <p:outputLabel  value="   " style="font-weight: bold"/>
+                                <p:calendar  id="endDate" pattern="MMMM yyyy" value="#{chartPayrollHistoryReportController.reportParameter.endDate}" readonly="false"/>
+                                <p:outputLabel  value="   " style="font-weight: bold"/>
+                                <p:commandButton value="#{appmsg['global.go']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.go']}" update="chartSalaryPerMonth" action="#{chartPayrollHistoryReportController.doShowChart()}" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                  <p:column style="width: 100%;color: #990000" colspan="2">                        	
+                                      <p:scrollPanel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 420px" >
+                                         <h:panelGrid style="margin-bottom: 3px" columns="2">
+                                             <p:outputLabel value="#{appmsg['report.salary_per_month_in_million']}"  styleClass="header_big"  />                                             
+                                         </h:panelGrid>
+                                         <p:barChart id="chartSalaryPerMonth" orientation="vertical" value="#{chartPayrollHistoryReportController.cartModelSalaryEveryMonth}" legendPosition="ne"  
+                                                     stacked="false"   animate="false"
+                                                     showDatatip="true"  legendCols="1" max="1200" min="0" 
+                                                     style="height:380px;font-size: 11px" /> 
+
+                                      </p:scrollPanel>
+                                 </p:column>
+                             </p:row>
+
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                   
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

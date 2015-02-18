@@ -24,8 +24,10 @@ import javax.persistence.Version;
 @Entity
 @Table(name="province"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="province_code") 
-)
+    , uniqueConstraints = {
+            @UniqueConstraint(columnNames="province_code"), 
+            @UniqueConstraint(columnNames="province_phone_code")
+    } )
 public class Province  implements java.io.Serializable {
 
 
@@ -38,6 +40,8 @@ public class Province  implements java.io.Serializable {
      private Date updatedOn;
      private String provinceCode;
      private String provinceName;
+     private String provincePhoneCode;
+     private String description;
      private Set<City> cities = new HashSet<City>(0);
 
     public Province() {
@@ -111,6 +115,14 @@ public class Province  implements java.io.Serializable {
         this.createdOn = createdOn;
     }
 
+    @Column(name="description", length=65535, columnDefinition="Text")
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
     
     @Column(name="updated_by", length=45)
     public String getUpdatedBy() {
@@ -141,6 +153,14 @@ public class Province  implements java.io.Serializable {
         this.provinceCode = provinceCode;
     }
 
+    @Column(name="province_phone_code", unique=true, length=8)
+    public String getProvincePhoneCode() {
+        return provincePhoneCode;
+    }
+
+    public void setProvincePhoneCode(String provincePhoneCode) {
+        this.provincePhoneCode = provincePhoneCode;
+    }
     
     @Column(name="province_name", length=60)
     public String getProvinceName() {

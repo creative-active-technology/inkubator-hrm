@@ -26,6 +26,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
+import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import java.math.BigDecimal;
@@ -206,6 +207,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
         criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.add(Restrictions.ne("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+//        criteria.addOrder(Order.asc("modelComponent.spesific"));
         return criteria.list();
     }
 
@@ -353,4 +355,6 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
         return (PayTempKalkulasi) criteria.uniqueResult();
     }
+
+    
 }

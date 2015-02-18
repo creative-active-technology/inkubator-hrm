@@ -1,20 +1,17 @@
 package com.inkubator.hrm.web;
 
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesIO;
-import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -41,22 +38,22 @@ public class ImageFileTemplateStreamerController extends BaseController {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
                 path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/"));
-                path.append("\\");
+//                path.append("\\");
                 switch (extension) {
 					case "csv":
-						path.append("pay_salary_upload.csv");
+						path.append("/pay_salary_upload.csv");
 						fileName = "pay_salary_upload_template.csv";
 						break;
 					case "xls":
-						path.append("pay_salary_upload.xls");
+						path.append("/pay_salary_upload.xls");
 						fileName = "pay_salary_upload_template.xls";
 						break;
 					case "xlsx":
-						path.append("pay_salary_upload.xlsx");
+						path.append("/pay_salary_upload.xlsx");
 						fileName = "pay_salary_upload_template.xlsx";
 						break;
 					default:
-						path.append("pay_salary_upload.csv");
+						path.append("/pay_salary_upload.csv");
 						fileName = "pay_salary_upload_template.csv";
 						break;
 				}
@@ -82,22 +79,22 @@ public class ImageFileTemplateStreamerController extends BaseController {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
                 path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/pay_attendance/"));
-                path.append("\\");
+//                path.append("\\");
                 switch (extension) {
 					case "csv":
-						path.append("pay_temp_attendance_upload.csv");
+						path.append("/pay_temp_attendance_upload.csv");
 						fileName = "pay_temp_attendance_upload_template.csv";
 						break;
 					case "xls":
-						path.append("pay_temp_attendance_upload.xls");
+						path.append("/pay_temp_attendance_upload.xls");
 						fileName = "pay_temp_attendance_upload_template.xls";
 						break;
 					case "xlsx":
-						path.append("pay_temp_attendance_upload.xlsx");
+						path.append("/pay_temp_attendance_upload.xlsx");
 						fileName = "pay_temp_attendance_upload_template.xlsx";
 						break;
 					default:
-						path.append("pay_temp_attendance_upload.csv");
+						path.append("/pay_temp_attendance_upload.csv");
 						fileName = "pay_temp_attendance_upload_template.csv";
 						break;
 				}
@@ -123,22 +120,22 @@ public class ImageFileTemplateStreamerController extends BaseController {
             	String fileName = StringUtils.EMPTY;
                 StringBuffer path = new StringBuffer();
                 path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/loan/"));
-                path.append("\\");
+//                path.append("\\");
                 switch (extension) {
 					case "csv":
-						path.append("loan_upload.csv");
+						path.append("/loan_upload.csv");
 						fileName = "loan_upload_template.csv";
 						break;
 					case "xls":
-						path.append("loan_upload.xls");
+						path.append("/loan_upload.xls");
 						fileName = "loan_upload_template.xls";
 						break;
 					case "xlsx":
-						path.append("loan_upload.xlsx");
+						path.append("/loan_upload.xlsx");
 						fileName = "loan_upload_template.xlsx";
 						break;
 					default:
-						path.append("loan_upload.csv");
+						path.append("/loan_upload.csv");
 						fileName = "loan_upload_template.csv";
 						break;
 				}

@@ -23,11 +23,16 @@ public class MonthEndPayrollProcessor implements ItemProcessor<PayTempKalkulasi,
 	@Override
 	public LogMonthEndPayroll process(PayTempKalkulasi item) throws Exception {
 		LogMonthEndPayroll out = new LogMonthEndPayroll();
-		out.setEmpDataId(item.getEmpData().getId());
-		out.setEmpGolJabatan(item.getEmpData().getGolonganJabatan().getCode());
+		out.setEmpDataId(item.getEmpData().getId());		
 		out.setEmpName(item.getEmpData().getBioData().getFullName());
 		out.setEmpNik(item.getEmpData().getNik());
+		out.setEmpJabatanId(item.getEmpData().getJabatanByJabatanId().getId());
+		out.setEmpJabatanCode(item.getEmpData().getJabatanByJabatanId().getCode());
+		out.setEmpJabatanName(item.getEmpData().getJabatanByJabatanId().getName());
+		out.setEmpGolJabatan(item.getEmpData().getGolonganJabatan().getCode());
 		out.setEmpStatus(item.getEmpData().getEmployeeType().getName());
+		out.setDepartmentId(item.getEmpData().getJabatanByJabatanId().getDepartment().getId());
+		out.setDepartmentName(item.getEmpData().getJabatanByJabatanId().getDepartment().getDepartmentName());
 		out.setFactor(item.getFactor());
 		out.setModelCompSpecific(item.getPaySalaryComponent().getModelComponent().getSpesific());
 		out.setNominal(item.getNominal());
