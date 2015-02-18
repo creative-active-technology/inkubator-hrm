@@ -91,7 +91,7 @@ public class ResourceNameViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 370);
         RequestContext.getCurrentInstance().openDialog("resource_name_form", options, params);
     }
     

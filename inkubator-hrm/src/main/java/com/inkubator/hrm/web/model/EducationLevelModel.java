@@ -10,6 +10,8 @@ public class EducationLevelModel implements Serializable {
 
 	private Long id;
 	private String name;
+        private String code;
+        private String description;
 	private Integer level;
 	
 	public Long getId() {
@@ -30,6 +32,22 @@ public class EducationLevelModel implements Serializable {
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 	
 	
 }

@@ -6,6 +6,8 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -13,6 +15,7 @@ import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
@@ -110,5 +113,9 @@ public interface EmpDataService extends IService<EmpData> {
     
     public BioDataModel getEmpNameWithNearestBirthDate();
 
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception;
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order);
+
+    public Long getTotalDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation) throws Exception;
 }

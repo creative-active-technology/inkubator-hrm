@@ -29,6 +29,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -39,7 +40,9 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -55,6 +58,7 @@ import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
@@ -99,6 +103,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private HrmUserDao hrmUserDao;
     @Autowired
     private TaxFreeDao taxFreeDao;
+    @Autowired
+    private BioEducationHistoryDao bioEducationHistoryDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -600,14 +606,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable) throws Exception {
         return this.empDataDao.getAllDataReportEmpWorkingGroupByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception{
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception {
         return this.empDataDao.getTotalReportEmpWorkingGroupByParam(param);
 
     }
@@ -632,14 +638,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception {
         return this.empDataDao.getAllDataReportEmpDepartmentJabatanByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) throws Exception{
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) throws Exception {
         return this.empDataDao.getTotalReportEmpDepartmentJabatanByParam(param);
 
     }
@@ -709,14 +715,14 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) throws Exception{
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) throws Exception {
         return this.empDataDao.getAllDataSalaryConfirmationByParam(param, firstResult, maxResults, orderable);
 
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) throws Exception{
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param) throws Exception {
         return this.empDataDao.getTotalSalaryConfirmationByParam(param);
 
     }
@@ -745,8 +751,52 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getEmpNameWithNearestBirthDate();
     }
 
+    private int counter;
+
     @Override
-    public List<EmpData> getAllDataByDepartementAndEducation(Long departementId, Long educationId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : listEducation) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : listDepartement) {
+            listDepartmentId.add(department.getId());
+        }
+        return empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
+        
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation) throws Exception {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : listEducation) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : listDepartement) {
+            listDepartmentId.add(department.getId());
+        }
+
+        return empDataDao.getTotalDataByDepartementAndEducation(listDepartmentId, listEducationLevelId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartmentId = new ArrayList<Long>();
+        List<Long> listEducationLevelId = new ArrayList<Long>();
+        for (EducationLevel educationLevel : educationId) {
+            listEducationLevelId.add(educationLevel.getId());
+        }
+
+        for (Department department : departementId) {
+            listDepartmentId.add(department.getId());
+        }
+        return empDataDao.getAllDataByDepartementAndEducationWithHql(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
     }
 }
