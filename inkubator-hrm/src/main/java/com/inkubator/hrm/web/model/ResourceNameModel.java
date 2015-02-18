@@ -78,7 +78,7 @@ public class ResourceNameModel implements Serializable{
         this.isActive = isActive;
     }
 
-    @Pattern(regexp = "^[A-Za-z1-9]+", message = "{errorr_first_name}")
+    @Pattern(regexp = "^[A-Za-z1-9]+", message = "{error_barcode_id}")
     public String getBarCodeId() {
         return barCodeId;
     }

@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.primefaces.context.RequestContext;
+import org.springframework.mobile.device.DeviceResolver;
 
 /**
  *
@@ -45,10 +46,13 @@ public class LoginController extends BaseController {
     private DateFormatter dateFormatter;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService userService;
+    @ManagedProperty(value = "#{deviceResolver}")
+    private DeviceResolver deviceResolver;
 
     @PostConstruct
     @Override
     public void initialization() {
+        System.out.println("Nilia " + deviceResolver.resolveDevice(FacesUtil.getRequest()));
         if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
             selectedLanguage = "in";
             FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
@@ -68,6 +72,10 @@ public class LoginController extends BaseController {
         userService = null;
     }
 
+    public void setDeviceResolver(DeviceResolver deviceResolver) {
+        this.deviceResolver = deviceResolver;
+    }
+    
     public String getUserId() {
         return userId;
     }
