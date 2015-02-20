@@ -35,7 +35,6 @@
                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}" height="178" width="150" style="border:  2px solid #003366 !important; border-radius: 5px !important;margin-top: 10px" cache="false" >
                                         <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}"/>
                                     </p:graphicImage>
-
                                 </p:column>
 
                                 <p:column style="width: 87%;vertical-align: middle !important" >
@@ -54,11 +53,7 @@
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.department.departmentName}" />
-
-                                                <!--</p:outputLabel>-->
                                             </p:column>
-
-
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -67,8 +62,6 @@
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.name}" />
                                             </p:column>
-
-
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -76,11 +69,7 @@
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.bioData.firstName} #{empDataDetilController.selectedEmpData.bioData.lastName}" />
-
-
                                             </p:column>
-
-
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -91,8 +80,6 @@
                                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                                 </p:outputLabel>
                                             </p:column>
-
-
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -100,12 +87,8 @@
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.employeeType.name}"/>
-
                                             </p:column>
-
-
                                         </p:row>
-
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                                 <p:outputLabel  value="#{appmsg['jabatan.unit_kerja']}" style="font-weight: bold"/>
@@ -113,8 +96,6 @@
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.unitKerja.name}" />
                                             </p:column>
-
-
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -123,19 +104,7 @@
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empDataDetilController.selectedEmpData.wtGroupWorking.name}" />
                                             </p:column>
-
-
                                         </p:row>
-                                        <!--                                        <p:row>
-                                                                                    <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                                                        <p:outputLabel  value="Mobile Phone" style="font-weight: bold"/>
-                                                                                    </p:column>
-                                                                                    <p:column style="width: 80%">
-                                                                                        <p:outputLabel  value="#{bioDataDetilController.selectedBioData.mobilePhone}" />
-                                                                                    </p:column>
-                                        
-                                                                                </p:row>-->
-
                                     </p:panelGrid>
                                 </p:column>
                             </p:row>
@@ -154,7 +123,6 @@
                                             <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}"/>
                                         </p:column>
                                     </p:row>
-
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
                                             <p:outputLabel  value="#{appmsg['placement.mutation_date']}" style="font-weight: bold"/>
@@ -180,9 +148,6 @@
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.golonganJabatan.code} - #{empDataDetilController.selectedEmpData.golonganJabatan.pangkat.pangkatName}"/>
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -191,9 +156,6 @@
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppmp}" />
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -202,9 +164,6 @@
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ppip}" />
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -215,9 +174,6 @@
                                                 <f:converter converterId="booleanMessageConverter"/>
                                             </p:outputLabel>
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -227,9 +183,6 @@
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
                                                 <f:converter converterId="booleanMessageConverter"/></p:outputLabel>
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -239,12 +192,7 @@
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.heatlyPremi}" >
                                                 <f:converter converterId="booleanMessageConverter"/>
                                             </p:outputLabel>
-
-
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -255,9 +203,6 @@
                                                 <f:converter converterId="mariedMessageConverter"/>
                                             </p:outputLabel>
                                         </p:column>
-
-
-
                                     </p:row>
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -266,16 +211,12 @@
                                         <p:column style="width: 75%">
                                             <p:outputLabel  value="#{empDataDetilController.selectedEmpData.ptkpNumber}" />
                                         </p:column>
-
-
-
                                     </p:row>
-
                                 </p:panelGrid>
                             </p:tab>  
+                            
                             <p:tab id="spekJabatanId" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}">  
-                                <p:dataTable value="#{empDataDetilController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
-                                             >
+                                <p:dataTable value="#{empDataDetilController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId">
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
@@ -300,9 +241,7 @@
                                         </f:facet>
                                         <p:outputLabel value="#{listJobSpecifikasi.value}" />
                                     </p:column>
-                                </p:dataTable>  
-
-
+                                </p:dataTable> 
                             </p:tab>  
 
                             <p:tab id="alamatId" title="#{appmsg['jobdescription.job_description']}">
@@ -337,11 +276,10 @@
                                         </p:outputLabel>
                                     </p:column>
                                 </p:dataTable> 
-
                             </p:tab>
+                            
                             <p:tab id="riwayatKerjaId" title="#{appmsg['placement.career']}">  
-                                <p:dataTable value="#{empDataDetilController.listCareerHistory}" var="listCareerHistory" rowIndexVar="no" id="careerHistoryId"
-                                             >
+                                <p:dataTable value="#{empDataDetilController.listCareerHistory}" var="listCareerHistory" rowIndexVar="no" id="careerHistoryId">
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
@@ -376,14 +314,10 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}"/>
                                         </f:facet>
-
                                         <p:outputLabel value="#{listCareerHistory.salary}" rendered="#{sec:areAnyGranted('SUPERVISOR_FINANCE_ROLE')}">
                                             <f:converter converterId="salaryConverter" />
                                         </p:outputLabel>
-                                        <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}">
-
-                                        </p:outputLabel>
-
+                                        <p:outputLabel value="#.###.###" rendered="#{sec:areNotGranted('SUPERVISOR_FINANCE_ROLE')}"/>
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
@@ -397,21 +331,76 @@
                                         <f:facet name="header">  
                                             <h:outputText value="Status Karyawan"/>
                                         </f:facet>
-                                         <p:outputLabel value="#{listCareerHistory.employeeType.name}" >
-                                            
-                                        </p:outputLabel>
+                                         <p:outputLabel value="#{listCareerHistory.employeeType.name}" />
                                     </p:column>
-                                </p:dataTable>  
-
-
+                                </p:dataTable> 
                             </p:tab>  
-                            <p:tab id="pendidikanId" title="#{appmsg['placement.pinjaman']}">  
-                                <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
+                            
+                            <p:tab id="loanId" title="#{appmsg['placement.pinjaman']}">  
+                                <p:dataTable value="#{empDataDetilController.listLoan}" var="loan" rowIndexVar="no">
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loantype.loantype_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{loan.loanSchema.name}" />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.nominal']}"/>
+                                        </f:facet>
+                                        <h:outputText value="Rp. "/>
+                                        <h:outputLabel value="#{loan.nominalPrincipal}">
+                                        	<f:convertNumber pattern="###,###" type="currency"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loan.monthlyInstallment']}"/>
+                                        </f:facet>
+                                        <h:outputText value="Rp. "/>
+                                        <h:outputLabel value="#{loan.monthlyInstallment}">
+                                        	<f:convertNumber pattern="###,###" type="currency"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loan.duration']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{loan.termin}"/>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loan.loan_date']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{loan.loanDate}">
+                                        	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loan.interest_model']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{loan.typeOfInterest}">
+                                        	<f:converter converterId="typeOfInterestConverter"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                     <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loan.interest']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{loan.interestRate} %"/>
+                                    </p:column>
+                                </p:dataTable> 
                             </p:tab>  
 
                             <p:tab id="achievementTabId" title="#{appmsg['placement.prestasi']}">  
-                                <p:dataTable value="#{empDataDetilController.listPersonAchievement}" var="achievement" rowIndexVar="no" id="achievementId"
-                                             >
+                                <p:dataTable value="#{empDataDetilController.listPersonAchievement}" var="achievement" rowIndexVar="no" id="achievementId">
                                     <p:column style="text-align: center;width: 3%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}." />
@@ -440,9 +429,9 @@
                                     </p:column>
                                 </p:dataTable> 
                             </p:tab>  
+                            
                             <p:tab id="personalDisciplineTabId" title="#{appmsg['placement.tata_tertib']}">  
-                                <p:dataTable value="#{empDataDetilController.listPersonalDiscipline}" var="discipline" rowIndexVar="no" id="personalDisciplineId"
-                                             >
+                                <p:dataTable value="#{empDataDetilController.listPersonalDiscipline}" var="discipline" rowIndexVar="no" id="personalDisciplineId">
                                     <p:column style="text-align: center;width: 3%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}." />
@@ -479,18 +468,14 @@
                                     </p:column>
                                 </p:dataTable> 
                             </p:tab>  
+                            
                             <p:tab id="documentId" title="#{appmsg['placement.riwayat_penilaian']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
-
-
-
                             </p:tab>  
+                            
                             <p:tab id="bank" title="#{appmsg['placement.riwayat_pelatihan']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
-
                             </p:tab> 
-
-
                         </p:tabView>
                         <p:separator/>
                         <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">

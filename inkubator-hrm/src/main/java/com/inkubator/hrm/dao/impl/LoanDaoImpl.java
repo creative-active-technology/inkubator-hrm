@@ -100,6 +100,15 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.add(Restrictions.eq("empData.id", empDataId));
         return criteria.list();
     }
+    
+    @Override
+	public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) {
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_DISBURSED));
+        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+        return criteria.list();
+	}
 
     @Override
     public Long getCurrentMaxId() {
@@ -127,8 +136,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         doSearchByParam(parameter, criteria);
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
-    
+    }    
 
 }
 
