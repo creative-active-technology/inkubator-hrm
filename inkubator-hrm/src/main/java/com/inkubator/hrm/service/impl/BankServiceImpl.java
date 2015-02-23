@@ -210,11 +210,17 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         }
 
         bank.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        bank.setSwiftCcode(bank.getSwiftCcode());
-        bank.setBankIdentificationNo(bank.getBankIdentificationNo());
-        bank.setIban(bank.getIban());
+//        bank.setSwiftCcode(bank.getSwiftCcode());
+//        bank.setBankIdentificationNo(bank.getBankIdentificationNo());
+//        bank.setIban(bank.getIban());
         bank.setCreatedBy(UserInfoUtil.getUserName());
         bank.setCreatedOn(new Date());
+//        bank.setBranchCode(bank.getBranchCode());
+//        bank.setBranchName(bank.getBranchName());
+//        bank.setAddress(bank.getAddress());
+//        bank.setBankPhone(bank.getBankPhone());
+//        bank.setBankFax(bank.getBankFax());
+//        bank.setBankGroup(bank.getBankGroup());
         bankDao.save(bank);
     }
 
@@ -268,6 +274,12 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         bank.setDescription(b.getDescription());
         bank.setUpdatedBy(UserInfoUtil.getUserName());
         bank.setUpdatedOn(new Date());
+        bank.setBranchCode(b.getBranchCode());
+        bank.setBranchName(b.getBranchName());
+        bank.setAddress(b.getAddress());
+        bank.setBankPhone(b.getBankPhone());
+        bank.setBankFax(b.getBankFax());
+        bank.setBankGroup(b.getBankGroup());
         bankDao.update(bank);
     }
 
@@ -287,6 +299,13 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(BankSearchParameter parameter) throws Exception {
         return this.bankDao.getTotalBankByParam(parameter);
+    }
+
+    
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
+    public Bank getEntityWithDetail(Long id) throws Exception {
+        return bankDao.getEntityWithDetail(id);
     }
 
 }

@@ -10,15 +10,19 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmpPersonAchievement;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.PersonalDiscipline;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
@@ -53,7 +57,12 @@ public class EmpDataDetilController extends BaseController {
     private EmpPersonAchievementService empPersonAchievementService;
     private List<EmpPersonAchievement> listPersonAchievement;
     private String formData;
-
+    
+    //Loan
+    @ManagedProperty(value = "#{loanService}")
+    private LoanService loanService;
+    private List<Loan> listLoan;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -67,7 +76,7 @@ public class EmpDataDetilController extends BaseController {
             listCareerHistory = empCareerHistoryService.getEmployeeCareerByBioId(selectedEmpData.getBioData().getId());
             listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
-
+            listLoan = loanService.getAllDataByEmpDataIdAndStatusDisbursed(selectedEmpData.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -176,7 +185,19 @@ public class EmpDataDetilController extends BaseController {
         this.listPersonAchievement = listPersonAchievement;
     }
 
-    @PreDestroy
+    public List<Loan> getListLoan() {
+		return listLoan;
+	}
+
+	public void setListLoan(List<Loan> listLoan) {
+		this.listLoan = listLoan;
+	}
+
+	public void setLoanService(LoanService loanService) {
+		this.loanService = loanService;
+	}
+
+	@PreDestroy
     public void cleanAndExit() {
         empDataService = null;
         selectedEmpData = null;
@@ -189,7 +210,8 @@ public class EmpDataDetilController extends BaseController {
         listPersonalDiscipline = null;
         empPersonAchievementService = null;
         listPersonAchievement = null;
-
+        loanService = null;
+        listLoan = null;
     }
 
 }

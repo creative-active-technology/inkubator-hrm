@@ -50,10 +50,9 @@
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableBankId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Bank"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{bankViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{bankViewController.onDialogReturn}"  update="tableBankId,:growlBankViewlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{bankViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!--<p:ajax event="dialogReturn" listener="#{bankViewController.onDialogReturn}"  update="tableBankId,:growlBankViewlId"/>-->
                                     </p:commandButton>
-                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{bankViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -73,23 +72,35 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="bankCode"  style="width: 17%">
+                            <p:column sortBy="bankCode"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{bankData.bankCode}"/>
-                            </p:column>  
-                            <p:column sortBy="bankName"  style="width: 70%">
+                            </p:column>
+                            <p:column sortBy="branchCode"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bank.branch_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{bankData.branchCode}"/>
+                            </p:column> 
+                            <p:column sortBy="bankName"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{bankData.bankName}"/>
-                            </p:column>  
+                            </p:column>
+                            <p:column sortBy="branchName"  style="width: 27%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['bank.branch_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{bankData.branchName}"/>
+                            </p:column> 
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{bankViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBank.show()">                        
+                                                 style="font-size: 10px!important"
+                                                 action="#{bankViewController.doDetails()}" >                        
                                     <f:setPropertyActionListener value="#{bankData}" target="#{bankViewController.selectedBank}" />
                                 </p:commandButton>
                                 - 
@@ -100,9 +111,8 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{bankViewController.doUpdate()}" >
+                                                 action="#{bankViewController.doUpdates()}" >
                                     <f:setPropertyActionListener value="#{bankData}" target="#{bankViewController.selectedBank}" />
-                                    <p:ajax event="dialogReturn" listener="#{bankViewController.onDialogReturn}"  update="tableBankId,:growlBankViewlId"/>
                                 </p:commandButton>
                             </p:column>                        
                             <f:facet name="footer">

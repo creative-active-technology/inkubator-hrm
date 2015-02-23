@@ -236,4 +236,10 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
 		return wtPeriodeDao.getEntityByDateBetween(dt.toDate());
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtPeriode getEntityByMonthAndYear(Integer month, String year) throws Exception {		// 
+		return wtPeriodeDao.getEntityByMonthAndYear(month, year);
+	}
+
 }

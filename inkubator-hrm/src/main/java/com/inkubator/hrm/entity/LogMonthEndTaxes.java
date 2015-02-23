@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,9 +19,9 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name="log_month_end_payroll", catalog="hrm"
+@Table(name="log_month_end_taxes", catalog="hrm"
 )
-public class LogMonthEndPayroll implements Serializable {
+public class LogMonthEndTaxes implements Serializable {
 
 	private Long id;
     private Integer version;
@@ -40,27 +39,24 @@ public class LogMonthEndPayroll implements Serializable {
     private Long departmentId;
     private String departmentName;
     private String empStatus;
-    private Integer modelCompSpecific;
-    private Long paySalaryCompId;
-    private String paySalaryCompCode;
-    private String paySalaryDesc;
-    private Integer factor;
-    private BigDecimal nominal;
+    private Long taxCompId;
+    private String taxCompName;
+    private Double nominal;
     private String createdBy;
     private Date createdOn;
     
-    public LogMonthEndPayroll(){
+    public LogMonthEndTaxes(){
     	
     }
     
-    public LogMonthEndPayroll(Long id){
+    public LogMonthEndTaxes(Long id){
     	this.id = id;
     }
     
     @Id
     @Column(name = "id", unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "log_month_end_payroll_seq_gen")
-    @SequenceGenerator(name = "log_month_end_payroll_seq_gen", sequenceName = "LOG_MONTH_END_PAYROLL_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "log_month_end_taxes_seq_gen")
+    @SequenceGenerator(name = "log_month_end_taxes_seq_gen", sequenceName = "LOG_MONTH_END_TAXES_SEQ")
     public Long getId() {
         return this.id;
     }
@@ -196,61 +192,34 @@ public class LogMonthEndPayroll implements Serializable {
 
 	public void setEmpStatus(String empStatus) {
 		this.empStatus = empStatus;
-	}	
-
-	@Column(name = "model_comp_specific", nullable = false)
-	public Integer getModelCompSpecific() {
-		return modelCompSpecific;
-	}
-
-	public void setModelCompSpecific(Integer modelCompSpecific) {
-		this.modelCompSpecific = modelCompSpecific;
-	}
-
-	@Column(name = "pay_salary_comp_id", nullable = false)
-	public Long getPaySalaryCompId() {
-		return paySalaryCompId;
-	}
-
-	public void setPaySalaryCompId(Long paySalaryCompId) {
-		this.paySalaryCompId = paySalaryCompId;
-	}
-
-	@Column(name = "pay_salary_comp_code", nullable = false, length = 45)
-	public String getPaySalaryCompCode() {
-		return paySalaryCompCode;
-	}
-
-	public void setPaySalaryCompCode(String paySalaryCompCode) {
-		this.paySalaryCompCode = paySalaryCompCode;
-	}
-
-	@Column(name = "pay_salary_desc", length = 65535, columnDefinition = "Text")
-	public String getPaySalaryDesc() {
-		return paySalaryDesc;
-	}
-
-	public void setPaySalaryDesc(String paySalaryDesc) {
-		this.paySalaryDesc = paySalaryDesc;
-	}
-
-	@Column(name = "factor")
-    public Integer getFactor() {
-		return factor;
-	}
-
-	public void setFactor(Integer factor) {
-		this.factor = factor;
-	}
+	}		
 	
-	@Column(name = "nominal", precision = 10, scale = 0, nullable = false)
-	public BigDecimal getNominal() {
-		return nominal;
+	@Column(name = "tax_comp_id", nullable = false)
+	public Long getTaxCompId() {
+		return taxCompId;
 	}
 
-	public void setNominal(BigDecimal nominal) {
-		this.nominal = nominal;
+	public void setTaxCompId(Long taxCompId) {
+		this.taxCompId = taxCompId;
 	}
+
+	@Column(name="tax_comp_name", nullable=false, length=255)
+	public String getTaxCompName() {
+		return taxCompName;
+	}
+
+	public void setTaxCompName(String taxCompName) {
+		this.taxCompName = taxCompName;
+	}
+
+	@Column(name="nominal", precision=22, scale=0, nullable = false)
+    public Double getNominal() {
+        return this.nominal;
+    }
+    
+    public void setNominal(Double nominal) {
+        this.nominal = nominal;
+    }
 
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {

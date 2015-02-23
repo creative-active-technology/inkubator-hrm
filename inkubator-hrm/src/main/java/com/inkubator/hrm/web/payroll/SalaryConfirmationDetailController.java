@@ -5,31 +5,32 @@
  */
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.PaySalaryComponentService;
-import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
-import com.inkubator.hrm.service.PayTempKalkulasiService;
-import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
-import static org.joda.time.DateTime.now;
-import org.joda.time.DurationFieldType;
 import org.joda.time.Years;
+
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.PayTempKalkulasi;
+import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.PayReceiverBankAccountService;
+import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
+import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.web.model.PayReceiverAccountModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -45,10 +46,13 @@ public class SalaryConfirmationDetailController extends BaseController {
     private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{payTempKalkulasiEmpPajakService}")
     private PayTempKalkulasiEmpPajakService payTempKalkulasiEmpPajakService;
+    @ManagedProperty(value = "#{payReceiverBankAccountService}")
+    private PayReceiverBankAccountService payReceiverBankAccountService;
     private PayTempKalkulasi selectedPayTempKalkulasi;
     private String yearMonth;
     private List<PayTempKalkulasi> listPayTempKalkulasi;
     private List<PayTempKalkulasiEmpPajak> listTempKalkulasiPajak;
+    private List<PayReceiverAccountModel> listPayReceiverAccountModel;
 
     @PostConstruct
     @Override
@@ -70,8 +74,9 @@ public class SalaryConfirmationDetailController extends BaseController {
             yearMonth = years.getYears() +" " + messages.getString("global.year") + " " + totalMonthDifference + " " + messages.getString("global.month");
             
             //list pay temp kalkulasi
-            listPayTempKalkulasi = payTempKalkulasiService.getAllDataByEmpDataId(Long.valueOf(empDataId.substring(1)));
+            listPayTempKalkulasi = payTempKalkulasiService.getAllDataByEmpDataIdAndExcludeCompTHP(Long.valueOf(empDataId.substring(1)));
             listTempKalkulasiPajak = payTempKalkulasiEmpPajakService.getAllDataByEmpDataId(Long.valueOf(empDataId.substring(1)));
+            listPayReceiverAccountModel = payReceiverBankAccountService.getAllDataByEmpDataId(Long.valueOf(empDataId.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -86,6 +91,8 @@ public class SalaryConfirmationDetailController extends BaseController {
         wtPeriodeService = null;
         listPayTempKalkulasi = null;
         listTempKalkulasiPajak = null;
+        listPayReceiverAccountModel = null;
+        payReceiverBankAccountService = null;
     }
     
     public PayTempKalkulasiService getPayTempKalkulasiService() {
@@ -143,6 +150,23 @@ public class SalaryConfirmationDetailController extends BaseController {
     public void setListTempKalkulasiPajak(List<PayTempKalkulasiEmpPajak> listTempKalkulasiPajak) {
         this.listTempKalkulasiPajak = listTempKalkulasiPajak;
     }
-    
+
+	public PayReceiverBankAccountService getPayReceiverBankAccountService() {
+		return payReceiverBankAccountService;
+	}
+
+	public void setPayReceiverBankAccountService(
+			PayReceiverBankAccountService payReceiverBankAccountService) {
+		this.payReceiverBankAccountService = payReceiverBankAccountService;
+	}
+
+	public List<PayReceiverAccountModel> getListPayReceiverAccountModel() {
+		return listPayReceiverAccountModel;
+	}
+
+	public void setListPayReceiverAccountModel(
+			List<PayReceiverAccountModel> listPayReceiverAccountModel) {
+		this.listPayReceiverAccountModel = listPayReceiverAccountModel;
+	}
     
 }

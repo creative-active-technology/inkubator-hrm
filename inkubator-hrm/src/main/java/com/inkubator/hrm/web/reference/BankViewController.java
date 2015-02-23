@@ -97,6 +97,10 @@ public class BankViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    public String doDetails(){
+        return "/protected/reference/bank_detail.htm?faces-redirect=true&execution=e" + selectedBank.getId();
+    }
 
     public void doDelete() {
         try {
@@ -111,8 +115,9 @@ public class BankViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+    public String doAdd() {
+//        showDialog(null);
+        return "/protected/reference/bank_form.htm?faces-redirect=true";
     }
 
     public void doUpdate() {
@@ -122,14 +127,18 @@ public class BankViewController extends BaseController {
         dataToSend.put("param", values);
         showDialog(dataToSend);
     }
+    
+    public String doUpdates(){
+        return "/protected/reference/bank_form.htm?faces-redirect=true&execution=e" + selectedBank.getId();
+    } 
 
     private void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 550);
-        options.put("contentHeight", 475);
+        options.put("contentWidth", 470);
+        options.put("contentHeight", 575);
         RequestContext.getCurrentInstance().openDialog("bank_form", options, params);
     }
 

@@ -34,15 +34,15 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 48%">
                                 <p:outputLabel for="name" value="#{appmsg['interesttype.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 59%">
+                            <p:column  style="width: 51%">
                                 <p:inputText id="name"  value="#{interestTypeFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:260px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:240px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -51,15 +51,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 27%">
+                            <p:column style="width: 48%">
                                 <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 60%" >
+                            <p:column style="width: 51%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{interestTypeFormController.model.description}" 
-                                                 style="width: 260px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                 style="width: 240px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
