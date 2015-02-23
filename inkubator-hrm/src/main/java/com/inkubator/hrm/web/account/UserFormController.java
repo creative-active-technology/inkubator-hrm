@@ -210,6 +210,7 @@ public class UserFormController extends BaseController {
                     hrmUserRole.setHrmUser(hrmUser);
                     dataToSave.add(hrmUserRole);
                 }
+                
                 hrmUser.setHrmUserRoles(dataToSave);
                 hrmUserService.update(hrmUser);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",

@@ -86,9 +86,9 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     }
 
     @Override
-    public WtPeriode getEntityByMonthAndYear(String month, String year) {
+    public WtPeriode getEntityByMonthAndYear(Integer month, String year) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("bulan", Integer.valueOf(month)));
+        criteria.add(Restrictions.eq("bulan", month));
         criteria.add(Restrictions.eq("tahun", year));
         return (WtPeriode) criteria.uniqueResult();
     }

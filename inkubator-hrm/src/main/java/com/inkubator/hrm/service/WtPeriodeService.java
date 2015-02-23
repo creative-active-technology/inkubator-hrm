@@ -28,4 +28,6 @@ public interface WtPeriodeService extends IService<WtPeriode> {
     public WtPeriode getEntityByPreviousPayrollTypeActive() throws Exception;
     
     public List<WtPeriode> getAllYears() throws Exception;
+    
+    public WtPeriode getEntityByMonthAndYear(Integer month, String year) throws Exception;
 }

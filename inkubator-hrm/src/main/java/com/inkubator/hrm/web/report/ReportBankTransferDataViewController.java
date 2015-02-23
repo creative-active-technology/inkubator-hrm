@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
@@ -40,8 +41,10 @@ public class ReportBankTransferDataViewController extends BaseController {
 	private LazyDataModel<LogListOfTransfer> lazyDataModel;
 	private DualListModel<String> golJabDualModel;
 	private List<Department> listDepartment;
-	private List<WtPeriode> listPeriode;
+	private List<WtPeriode> listPeriodeYears;
 	private List<Bank> listBank;
+	private String periodeMonth;
+    private String periodeYear;
 	@ManagedProperty(value = "#{logListOfTransferService}")
     private LogListOfTransferService logListOfTransferService;
 	@ManagedProperty(value = "#{golonganJabatanService}")
@@ -61,9 +64,9 @@ public class ReportBankTransferDataViewController extends BaseController {
         	searchParameter = new ReportBankTransferDataSearchParameter();
         	List<GolonganJabatan> listGolonganJabatans =  golonganJabatanService.getAllData();
         	golJabDualModel = new DualListModel<String>(Lambda.extract(listGolonganJabatans, Lambda.on(GolonganJabatan.class).getCode()), new ArrayList<String>());
+        	listPeriodeYears = wtPeriodeService.getAllYears();
         	listBank =  bankService.getAllData();
-        	listDepartment = departmentService.getAllData();
-        	listPeriode = wtPeriodeService.getAllData();
+        	listDepartment = departmentService.getAllData();        	
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -71,17 +74,19 @@ public class ReportBankTransferDataViewController extends BaseController {
 	
 	@PreDestroy
     public void cleanAndExit() {
-		lazyDataModel = null;
 		searchParameter = null;
 		lazyDataModel = null;
 		golJabDualModel = null;
+		listDepartment = null;
+		listPeriodeYears = null;
+		listBank = null;
+		periodeMonth = null;
+		periodeYear = null;
 		logListOfTransferService = null;
 		golonganJabatanService = null;
-		listDepartment = null;
-		listPeriode = null;
-		listBank = null;
+		departmentService = null;
 		wtPeriodeService = null;
-		bankService = null;
+		bankService = null;		
 	}
 
 	public LazyDataModel<LogListOfTransfer> getLazyDataModel() {
@@ -129,12 +134,12 @@ public class ReportBankTransferDataViewController extends BaseController {
 		this.listDepartment = listDepartment;
 	}
 
-	public List<WtPeriode> getListPeriode() {
-		return listPeriode;
+	public List<WtPeriode> getListPeriodeYears() {
+		return listPeriodeYears;
 	}
 
-	public void setListPeriode(List<WtPeriode> listPeriode) {
-		this.listPeriode = listPeriode;
+	public void setListPeriodeYears(List<WtPeriode> listPeriodeYears) {
+		this.listPeriodeYears = listPeriodeYears;
 	}
 
 	public List<Bank> getListBank() {
@@ -178,9 +183,42 @@ public class ReportBankTransferDataViewController extends BaseController {
 		this.bankService = bankService;
 	}
 
+	public String getPeriodeMonth() {
+		return periodeMonth;
+	}
+
+	public void setPeriodeMonth(String periodeMonth) {
+		this.periodeMonth = periodeMonth;
+	}
+
+	public String getPeriodeYear() {
+		return periodeYear;
+	}
+
+	public void setPeriodeYear(String periodeYear) {
+		this.periodeYear = periodeYear;
+	}
+
 	public void doSearch(){
 		searchParameter.setListGolJab(golJabDualModel.getTarget());
+		Long periodeId = null;
+		try {
+			if(!StringUtils.isEmpty(periodeMonth) && !StringUtils.isEmpty(periodeYear)){
+				WtPeriode p = wtPeriodeService.getEntityByMonthAndYear(Integer.parseInt(periodeMonth), periodeYear);
+				periodeId = p == null ? 0 : p.getId();
+			}
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
+		searchParameter.setPeriodeId(periodeId);
+
 		lazyDataModel = null;		
 	}
 	
+	public void onChangeMonth(){
+		if(StringUtils.isEmpty(periodeMonth)){
+			periodeYear = null;
+		}
+	}
+		
 }

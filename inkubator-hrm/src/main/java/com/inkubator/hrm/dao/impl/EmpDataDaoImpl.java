@@ -41,6 +41,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
+import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import org.hibernate.transform.Transformers;
 
@@ -913,6 +914,37 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                     .setMaxResults(maxResults).setFirstResult(firstResult)
                     .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
                     .list();
+        }
+    }
+
+    @Override
+    public List<EmpData> getReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doCreateAliasByDepartmentAndEmployeeType(listDepartmentId, listEmpTypeId, criteria);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        criteria.addOrder(order);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doCreateAliasByDepartmentAndEmployeeType(listDepartmentId, listEmpTypeId, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+     public void doCreateAliasByDepartmentAndEmployeeType(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);    
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        if (!listDepartmentId.isEmpty()) {
+            criteria.add(Restrictions.in("department.id", listDepartmentId));
+        }
+        if (!listEmployeeTypeId.isEmpty()) {
+            criteria.add(Restrictions.in("employeeType.id", listEmployeeTypeId));
         }
     }
 

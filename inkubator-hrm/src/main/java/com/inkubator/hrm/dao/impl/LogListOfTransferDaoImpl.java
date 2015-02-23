@@ -77,7 +77,7 @@ public class LogListOfTransferDaoImpl extends IDAOImpl<LogListOfTransfer> implem
 	}
 	
 	private void doSearchReportBankTransferData(Criteria criteria, ReportBankTransferDataSearchParameter parameter){
-		if(parameter.getPeriodeId() != null && parameter.getPeriodeId() != 0){
+		if(parameter.getPeriodeId() != null){
 			criteria.add(Restrictions.eq("periodeId", parameter.getPeriodeId()));
 		}
 		
