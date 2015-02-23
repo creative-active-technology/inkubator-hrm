@@ -35,6 +35,25 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 29%">
+                                <p:outputLabel for="codeId" value="#{appmsg['faculty.faculty_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="codeId">
+                                    <p:inputText id="codeId" title="#{appmsg['faculty.faculty_code']}" value="#{facultyFormController.facultyModel.facultyCode}" 
+                                    			 required="true" requiredMessage="#{appmsg['faculty.faculty_name_should_not_be_empty']}" onkeyup="this.value = this.value.toUpperCase();" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
                                 <p:outputLabel for="nameId" value="#{appmsg['faculty.faculty_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
