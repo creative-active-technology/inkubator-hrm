@@ -28,7 +28,7 @@
     
     <bean id="approvalActivityCronService" class="com.inkubator.hrm.service.impl.ApprovalActivityCronServiceImpl"/>
 	
-<!--    <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
+    <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
 	
     <bean id="companyPolicyCronService" class="com.inkubator.hrm.service.impl.CompanyPolicyCronServiceImpl" />
     
@@ -51,6 +51,6 @@
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
-    </bean>  -->
+    </bean>  
 
 </beans>
