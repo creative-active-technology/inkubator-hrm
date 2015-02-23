@@ -1,8 +1,12 @@
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.MessageCreator;
@@ -22,6 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.Lambda;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
@@ -44,7 +51,6 @@ import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.LoanSchema;
-import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LoanService;
@@ -54,15 +60,9 @@ import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.model.LoanModel;
-import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Calendar;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -690,4 +690,15 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 //            loan.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
         }
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) throws Exception {
+		List<Loan> listLoan = loanDao.getAllDataByEmpDataIdAndStatusDisbursed(empDataId);
+		listLoan = Lambda.sort(listLoan, Lambda.on(Loan.class).getLoanDate(), Collections.reverseOrder());
+		for(Loan loan : listLoan){
+			loan.setMonthlyInstallment(loan.getLoanPaymentDetails().iterator().next().getTotalPayment());
+		}
+		return listLoan;
+	}
 }

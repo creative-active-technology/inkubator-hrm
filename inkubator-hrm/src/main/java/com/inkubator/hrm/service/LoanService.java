@@ -4,15 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.model.UploadedFile;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.model.LoanModel;
-import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -45,4 +44,6 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception;
     
     public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
+    
+    public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) throws Exception;
 }

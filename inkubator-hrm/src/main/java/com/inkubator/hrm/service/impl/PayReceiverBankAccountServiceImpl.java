@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
+import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
+import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.service.PayReceiverBankAccountService;
+import com.inkubator.hrm.web.model.PayReceiverAccountModel;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -35,6 +41,8 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
 
     @Autowired
     private PayReceiverBankAccountDao payReceiverBankAccountDao;
+    @Autowired
+    private PayTempKalkulasiDao payTempKalkulasiDao;
 
     @Override
     public PayReceiverBankAccount getEntiyByPK(String id) throws Exception {
@@ -241,6 +249,26 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
 	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception {
 		return this.payReceiverBankAccountDao.getAllDataWithDetail();
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+	public List<PayReceiverAccountModel> getAllDataByEmpDataId(Long empDataId) throws Exception {
+		List<PayReceiverBankAccount> listAccount = payReceiverBankAccountDao.getAllByEmpId(empDataId);
+		PayTempKalkulasi takeHomePay = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+		List<PayReceiverAccountModel> listModel = new ArrayList<>();
+		for(PayReceiverBankAccount account : listAccount){
+			PayReceiverAccountModel model = new PayReceiverAccountModel();
+			model.setBankName(account.getBioBankAccount().getBank().getBankName());
+			model.setAccountNumber(account.getBioBankAccount().getAccountNumber());
+			model.setAccountName(account.getBioBankAccount().getOwnerName());
+			model.setPercent(account.getPersen());
+			BigDecimal transferNominal = takeHomePay.getNominal();
+			transferNominal = transferNominal.multiply(new BigDecimal(account.getPersen())).divide(new BigDecimal(100));
+			model.setNominal(transferNominal.doubleValue());
+			listModel.add(model);
+		}
+		return listModel;
 	}
 
 }

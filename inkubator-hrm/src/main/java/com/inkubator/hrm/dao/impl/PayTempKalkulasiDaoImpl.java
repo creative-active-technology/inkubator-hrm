@@ -201,7 +201,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     }
 
     @Override
-    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) {
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndExcludeCompTHP(Long empDataId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
         criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
