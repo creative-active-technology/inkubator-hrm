@@ -156,7 +156,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputText id="certificateNumber"  value="#{educationHistoryFormController.model.certificateNumber}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:155px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:144px;" />
                             </p:column>
                             <p:column style="width: 17%">
                                 <p:outputLabel for="score" value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/>
@@ -206,7 +206,7 @@
                                                 itemValue="#{city}"
                                                 itemLabel="#{city.cityName}"
                                                 converter="cityConverter"
-                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" size="22"></p:autoComplete>
                             </p:column>
                         
                         </p:row>
