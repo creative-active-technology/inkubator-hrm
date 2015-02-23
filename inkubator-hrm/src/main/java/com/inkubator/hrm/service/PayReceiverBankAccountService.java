@@ -7,9 +7,12 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
+import com.inkubator.hrm.web.model.PayReceiverAccountModel;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -29,5 +32,7 @@ public interface PayReceiverBankAccountService extends IService<PayReceiverBankA
     public void updateList(List<PayReceiverBankAccount> list) throws Exception;
 
 	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception;
+
+	public List<PayReceiverAccountModel> getAllDataByEmpDataId(Long empDataId) throws Exception;
 
 }

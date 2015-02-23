@@ -43,7 +43,7 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi> {
     
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId);
     
-    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId);
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndExcludeCompTHP(Long empDataId);
 
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order);
     

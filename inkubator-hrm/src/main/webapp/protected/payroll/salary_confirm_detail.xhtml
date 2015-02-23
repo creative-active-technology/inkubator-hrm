@@ -121,10 +121,9 @@
                                             </h:outputLabel>
                                         </div>
                                     </p:column>
-
                                 </p:dataTable>
-
                             </p:tab>  
+                            
                             <p:tab id="komponentPajak" title="#{appmsg['taxComponent.taxComponent']}">  
                                 <p:dataTable  id="komponentPajakId" var="taxComponent"  value="#{salaryConfirmationDetailController.listTempKalkulasiPajak}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
@@ -154,20 +153,59 @@
                                             </h:outputLabel>
                                         </div>
                                     </p:column>
-
                                 </p:dataTable>
-
                             </p:tab> 
+                            
                             <p:tab id="transfer" title="#{appmsg['salaryConfirmation.transfer_list']}">  
+                            	<p:dataTable  id="account" var="account"  value="#{salaryConfirmationDetailController.listPayReceiverAccountModel}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['salaryConfirmation.list_of_tax_component']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bank.bank']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{account.bankName}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.account_number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{account.accountNumber}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioBankAccount.bioBankAccount_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{account.accountName}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="Volume"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{account.percent} %" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.nominal']}"/>
+                                        </f:facet>
+                                        <h:outputText value="Rp. "/>
+                                        <h:outputLabel value="#{account.nominal}">
+                                        	<f:convertNumber pattern="###,###" type="currency"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                </p:dataTable>
                             </p:tab>
 
                         </p:tabView>
-                        <!--                        <p:blockUI block="formId" trigger="" >
-                                                    <h:panelGrid columns="2" styleClass="grid_no_border">
-                                                        <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
-                                                        <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
-                                                    </h:panelGrid>
-                                                </p:blockUI>-->
                     </h:form>
                 </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
