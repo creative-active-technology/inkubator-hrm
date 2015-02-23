@@ -72,7 +72,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{pangkatData.level}" />
                             </p:column>-->
-                            <p:column sortBy="pangkatCode"  style="width: 45%">
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="pangkatCode"  style="width: 42%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position_code']}"/>
                                 </f:facet>
