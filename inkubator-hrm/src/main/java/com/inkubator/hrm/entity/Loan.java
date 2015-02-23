@@ -52,6 +52,7 @@ public class Loan implements java.io.Serializable {
     private Date updatedOn;
     private Integer statusPencairan;
     private Date approvalTime;
+    private Double monthlyInstallment;
     private Set<LoanPaymentDetail> loanPaymentDetails = new HashSet<LoanPaymentDetail>(0);
 
     public Loan() {
@@ -224,11 +225,6 @@ public class Loan implements java.io.Serializable {
         this.loanPaymentDetails = loanPaymentDetails;
     }
 
-    @Transient
-    public Date getMaxLoanPaymentDate() {
-        return DateTimeUtil.getDateFrom(loanPaymentDate, termin - 1, CommonUtilConstant.DATE_FORMAT_MONTH);
-    }
-
     @Column(name = "status_pencairan")
     public Integer getStatusPencairan() {
         return this.statusPencairan;
@@ -247,5 +243,18 @@ public class Loan implements java.io.Serializable {
         this.approvalTime = approvalTime;
     }
 
+    @Transient
+    public Date getMaxLoanPaymentDate() {
+        return DateTimeUtil.getDateFrom(loanPaymentDate, termin - 1, CommonUtilConstant.DATE_FORMAT_MONTH);
+    }
+
+    @Transient
+    public Double getMonthlyInstallment() {
+		return monthlyInstallment;
+	}
+
+	public void setMonthlyInstallment(Double monthlyInstallment) {
+		this.monthlyInstallment = monthlyInstallment;
+	}
     
 }

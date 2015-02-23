@@ -48,7 +48,7 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public PayTempKalkulasi getEntityByEmpIdAndModelTakeHomePayId(Long empId) throws Exception;
 
-    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception;
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndExcludeCompTHP(Long empDataId) throws Exception;
 
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order, String locale) throws Exception;
 

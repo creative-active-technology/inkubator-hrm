@@ -117,7 +117,7 @@ public class BankViewController extends BaseController {
 
     public String doAdd() {
 //        showDialog(null);
-        return "/protected/reference/bank_form.htm?faces-redirect=true&execution=e";
+        return "/protected/reference/bank_form.htm?faces-redirect=true";
     }
 
     public void doUpdate() {

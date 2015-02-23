@@ -49,13 +49,13 @@
                                 </p:selectOneMenu>
                             </p:column>
                             
-                            <p:column style="width: 17%">
+                            <p:column style="width: 25%">
                                 <p:outputLabel for="yearOut" value="#{appmsg['educationhistory.year_out']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="yearOut" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 33%">
+                            <p:column  style="width: 25%">
                                 <p:selectOneMenu id="yearOut" value="#{educationHistoryFormController.model.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px"  >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{educationHistoryFormController.listYears}"/>
@@ -156,7 +156,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputText id="certificateNumber"  value="#{educationHistoryFormController.model.certificateNumber}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:155px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:145px;" />
                             </p:column>
                             <p:column style="width: 17%">
                                 <p:outputLabel for="score" value="#{appmsg['educationhistory.score']}" styleClass="label_hrm"/>
@@ -206,7 +206,7 @@
                                                 itemValue="#{city}"
                                                 itemLabel="#{city.cityName}"
                                                 converter="cityConverter"
-                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+                                                required="true" requiredMessage="#{appmsg['bioIdCard.bioIdCard_place_should_not_be_empty']}" styleClass="isitext_hrm" size="21"></p:autoComplete>
                             </p:column>
                         
                         </p:row>

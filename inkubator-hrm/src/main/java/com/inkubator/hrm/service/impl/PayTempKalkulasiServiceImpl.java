@@ -724,8 +724,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<PayTempKalkulasi> getAllDataByEmpDataId(Long empDataId) throws Exception {
-        return payTempKalkulasiDao.getAllDataByEmpDataId(empDataId);
+    public List<PayTempKalkulasi> getAllDataByEmpDataIdAndExcludeCompTHP(Long empDataId) throws Exception {
+        return payTempKalkulasiDao.getAllDataByEmpDataIdAndExcludeCompTHP(empDataId);
     }
 
     private Integer sisaData;
