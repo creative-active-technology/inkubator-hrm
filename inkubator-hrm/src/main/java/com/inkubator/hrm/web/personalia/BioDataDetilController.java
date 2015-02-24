@@ -198,18 +198,6 @@ public class BioDataDetilController extends BaseController {
     private BusinessTravelComponentService businessTravelComponentService;
     //end. Business travel
     
-    //start. leave implementation history
-    private LeaveImplementation selectedLeaveImplementation;
-    private List<LeaveImplementation> leaveImplementations;
-    @ManagedProperty(value = "#{leaveImplementationService}")
-    private LeaveImplementationService leaveImplementationService;
-    @ManagedProperty(value = "#{leaveService}")
-    private LeaveService leaveService;
-    @ManagedProperty(value = "#{leaveSchemeService}")
-    private LeaveSchemeService leaveSchemeService;
-    @ManagedProperty(value = "#{approvalActivityService}")
-    private ApprovalActivityService approvalActivityService;
-    //end. leave implementation history
 
     @PostConstruct
     @Override
@@ -242,13 +230,7 @@ public class BioDataDetilController extends BaseController {
                 countTotalAmoutOfBusinessTravel(businessTravel);
             }
             
-            //Inisialisasi Riwayat Cuti
-            leaveImplementations = leaveImplementationService.getAllDataByEmpDataId(selectedEmpData.getId());
-            for(LeaveImplementation lv : leaveImplementations){
-                if(null != lv.getApprovalActivityNumber()){
-                    setLeaveApprovalOfficer(lv);
-                }
-            }
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -312,10 +294,6 @@ public class BioDataDetilController extends BaseController {
         businessTravel.setTotalAmount(totalAmount);
     }
     
-    public void setLeaveApprovalOfficer(LeaveImplementation leaveImplementation) throws Exception{
-        ApprovalActivity selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(leaveImplementation.getApprovalActivityNumber());
-        leaveImplementation.setApprovedBy(selectedApprovalActivity.getApprovedBy());
-    }
     
     public BioAddress getSelectedBioAddress() {
         return selectedBioAddress;
@@ -373,13 +351,6 @@ public class BioDataDetilController extends BaseController {
         this.selectedBioData = selectedBioData;
     }
 
-    public ApprovalActivityService getApprovalActivityService() {
-        return approvalActivityService;
-    }
-
-    public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
-        this.approvalActivityService = approvalActivityService;
-    }   
 
     public BioDocument getSelectedBioDocument() {
         return selectedBioDocument;
@@ -569,47 +540,6 @@ public class BioDataDetilController extends BaseController {
     public void setSelectedBioIdCard(BioIdCard selectedBioIdCard) {
         this.selectedBioIdCard = selectedBioIdCard;
     }
-
-    public LeaveImplementation getSelectedLeaveImplementation() {
-        return selectedLeaveImplementation;
-    }
-
-    public void setSelectedLeaveImplementation(LeaveImplementation selectedLeaveImplementation) {
-        this.selectedLeaveImplementation = selectedLeaveImplementation;
-    }
-
-    public List<LeaveImplementation> getLeaveImplementations() {
-        return leaveImplementations;
-    }
-
-    public void setLeaveImplementations(List<LeaveImplementation> leaveImplementations) {
-        this.leaveImplementations = leaveImplementations;
-    }
-
-    public LeaveImplementationService getLeaveImplementationService() {
-        return leaveImplementationService;
-    }
-
-    public void setLeaveImplementationService(LeaveImplementationService leaveImplementationService) {
-        this.leaveImplementationService = leaveImplementationService;
-    }
-
-    public LeaveService getLeaveService() {
-        return leaveService;
-    }
-
-    public void setLeaveService(LeaveService leaveService) {
-        this.leaveService = leaveService;
-    }
-
-    public LeaveSchemeService getLeaveSchemeService() {
-        return leaveSchemeService;
-    }
-
-    public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
-        this.leaveSchemeService = leaveSchemeService;
-    }
-    
     
     public EmpDataService getEmpDataService() {
         return empDataService;
