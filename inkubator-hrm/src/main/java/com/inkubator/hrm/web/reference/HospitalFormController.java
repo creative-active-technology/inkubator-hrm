@@ -309,4 +309,31 @@ public class HospitalFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    public void doReset() throws Exception {
+        if (hospitalModel.getId() != null) {
+            Hospital hospital = hospitalService.getEntityByPKWithDetail(hospitalModel.getId());
+            disabledCity = Boolean.FALSE;
+            disabledProvince = Boolean.FALSE;
+            hospitalModel.setId(hospital.getId());
+            hospitalModel.setCode(hospital.getCode());
+            hospitalModel.setName(hospital.getName());
+            hospitalModel.setAddress(hospital.getAddress());
+            hospitalModel.setPhone(hospital.getPhone());
+            hospitalModel.setCountryId(hospital.getCity().getProvince().getCountry().getId());
+            hospitalModel.setProvinceId(hospital.getCity().getProvince().getId());
+            hospitalModel.setCityId(hospital.getCity().getId());
+        }else{
+            disabledCity = Boolean.TRUE;
+            disabledProvince = Boolean.TRUE;
+            hospitalModel.setId(null);
+            hospitalModel.setCode(null);
+            hospitalModel.setName(null);
+            hospitalModel.setAddress(null);
+            hospitalModel.setPhone(null);
+            hospitalModel.setCountryId(null);
+            hospitalModel.setProvinceId(null);
+            hospitalModel.setCityId(null);
+        }
+    }
 }
