@@ -50,13 +50,19 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['salaryJournal.period']}" styleClass="label_hrm" />
+                                    <o:outputLabel value="#{appmsg['salaryJournal.period']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu value="#{reportBankTransferDataViewController.searchParameter.periodeId}" filter="true" style="margin-right: 3px">
+                                	<p:selectOneMenu id="monthId" value="#{reportBankTransferDataViewController.periodeMonth}" filter="true" style="margin-right: 3px">
 				                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-					                	<f:selectItems value="#{reportBankTransferDataViewController.listPeriode}" var="periode" itemValue="#{periode.id}" itemLabel="#{of:formatDate(periode.fromPeriode, 'dd MMMM yyyy')} - #{of:formatDate(periode.untilPeriode, 'dd MMMM yyyy')}"/>
+					                	<f:selectItems value="#{of:getMonths()}" />			
+					                	<p:ajax listener="#{reportBankTransferDataViewController.onChangeMonth()}" update="yearId"/>		                	
 		                    		</p:selectOneMenu>
+                                    <p:selectOneMenu id="yearId" value="#{reportBankTransferDataViewController.periodeYear}" disabled="#{empty reportBankTransferDataViewController.periodeMonth}" required="true" requiredMessage="#{appmsg['error.should_not_empty']}" filter="true" style="margin-right: 3px">
+				                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+					                	<f:selectItems value="#{reportBankTransferDataViewController.listPeriodeYears}"/>					                	
+		                    		</p:selectOneMenu>
+		                    		<p:message for="yearId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -97,7 +103,7 @@
                                     
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportBankTransferDataViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportBankTransferDataViewController.doSearch()}" update="formId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>

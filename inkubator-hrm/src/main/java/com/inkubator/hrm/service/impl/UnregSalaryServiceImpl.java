@@ -262,7 +262,7 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
             throw new BussinessException("unregSalary.error_duplicate_salary_code");
         }
         
-        WtPeriode wtPeriode = wtPeriodeDao.getEntityByMonthAndYear(String.valueOf(model.getMonth()), model.getYear());
+        WtPeriode wtPeriode = wtPeriodeDao.getEntityByMonthAndYear(model.getMonth(), model.getYear());
         UnregSalary entity = new UnregSalary();
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCode(model.getCode());
@@ -287,7 +287,7 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
             throw new BussinessException("unregSalary.error_duplicate_salary_code");
         }
         
-        WtPeriode wtPeriode = wtPeriodeDao.getEntityByMonthAndYear(String.valueOf(model.getMonth()), model.getYear());
+        WtPeriode wtPeriode = wtPeriodeDao.getEntityByMonthAndYear(model.getMonth(), model.getYear());
         UnregSalary update = unregSalaryDao.getEntiyByPK(model.getId());
         update.setCode(model.getCode());
         update.setName(model.getName());
