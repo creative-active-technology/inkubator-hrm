@@ -164,7 +164,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="cityId" value="#{appmsg['hospital.city_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="cityIdA" value="#{appmsg['hospital.city_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="cityIdA" value=":" styleClass="label_hrm"/>
@@ -192,7 +192,7 @@
                                          action="#{hospitalFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formHospitalFormId"
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formHospitalFormId" action="#{hospitalFormController.doReset()}"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formHospitalFormId" />  
                         </p:commandButton>
