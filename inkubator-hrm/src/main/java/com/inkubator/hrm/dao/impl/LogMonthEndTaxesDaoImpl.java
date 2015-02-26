@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogMonthEndTaxesDao;
 import com.inkubator.hrm.entity.LogMonthEndTaxes;
+import com.inkubator.hrm.web.model.PphReportModel;
+import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
+import java.util.List;
+import org.hibernate.criterion.Order;
+import org.hibernate.transform.Transformers;
 
 /**
 *
@@ -27,5 +32,21 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
 				.setLong("periodId", periodId);
         query.executeUpdate();
 	}
+
+    @Override
+    public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        final StringBuilder query = new StringBuilder("select id as id, empName as empName,"
+                + "empNik as empNik,"
+                + "empGolJabatan as empGolJabatan,"
+                + "empNik as empNik,"
+                + "SUM(CASE WHEN taxCompId = 10 THEN nominal END) as biayaJabatan,"
+                + "SUM(CASE WHEN taxCompId = 2 THEN nominal END) as pph,"
+                + "SUM(CASE WHEN taxCompId = 17 THEN nominal END) as ptkp"
+                + " from LogMonthEndTaxes A GROUP BY empNik");
+        return getCurrentSession().createQuery(query.toString())
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(PphReportModel.class))
+                    .list();
+    }
 
 }
