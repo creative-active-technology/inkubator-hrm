@@ -693,7 +693,12 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     public void executeBatchFinalSalaryCalculation(EmpData empData) throws ScriptException {
         PayTempKalkulasiEmpPajak tax_23 = payTempKalkulasiEmpPajakDao.getEntityByEmpDataIdAndTaxComponentId(empData.getId(), 23L);
         PayTempKalkulasi taxKalkulasi = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empData.getId(), HRMConstant.MODEL_COMP_TAX);
-        taxKalkulasi.setNominal(new BigDecimal(tax_23.getNominal()));
+        //jika pajak PPh pasal 21 kurang dari 0(minus), maka di set 0 saja di payTempKalkulasi
+        if(tax_23.getNominal() > 0){
+        	taxKalkulasi.setNominal(new BigDecimal(tax_23.getNominal()));
+        } else {
+        	taxKalkulasi.setNominal(new BigDecimal(0));
+        }
         payTempKalkulasiDao.update(taxKalkulasi);
 
         PayTempKalkulasi ceilKalkulasi = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empData.getId(), HRMConstant.MODEL_COMP_CEIL);
