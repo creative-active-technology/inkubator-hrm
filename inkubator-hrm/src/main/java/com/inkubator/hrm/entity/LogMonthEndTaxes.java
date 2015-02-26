@@ -38,7 +38,8 @@ public class LogMonthEndTaxes implements Serializable {
     private String empGolJabatan;
     private Long departmentId;
     private String departmentName;
-    private String empStatus;
+    private Long empTypeId;
+    private String empTypeName;
     private Long taxCompId;
     private String taxCompName;
     private Double nominal;
@@ -185,13 +186,22 @@ public class LogMonthEndTaxes implements Serializable {
 		this.departmentName = departmentName;
 	}
 	
-	@Column(name = "emp_status", nullable = false)
-	public String getEmpStatus() {
-		return empStatus;
+	@Column(name = "emp_type_id", nullable = false)
+	public Long getEmpTypeId() {
+		return empTypeId;
 	}
 
-	public void setEmpStatus(String empStatus) {
-		this.empStatus = empStatus;
+	public void setEmpTypeId(Long empTypeId) {
+		this.empTypeId = empTypeId;
+	}
+
+	@Column(name = "emp_type_name", nullable = false)
+	public String getEmpTypeName() {
+		return empTypeName;
+	}
+
+	public void setEmpTypeName(String empTypeName) {
+		this.empTypeName = empTypeName;
 	}		
 	
 	@Column(name = "tax_comp_id", nullable = false)

@@ -152,6 +152,33 @@ public class HospitalFormController extends BaseController {
         this.hospitalService = hospitalService;
     }
 
+    public void doReset() throws Exception {
+        if (hospitalModel.getId() != null) {
+            Hospital hospital = hospitalService.getEntityByPKWithDetail(hospitalModel.getId());
+            disabledCity = Boolean.FALSE;
+            disabledProvince = Boolean.FALSE;
+            hospitalModel.setId(hospital.getId());
+            hospitalModel.setCode(hospital.getCode());
+            hospitalModel.setName(hospital.getName());
+            hospitalModel.setAddress(hospital.getAddress());
+            hospitalModel.setPhone(hospital.getPhone());
+            hospitalModel.setCountryId(hospital.getCity().getProvince().getCountry().getId());
+            hospitalModel.setProvinceId(hospital.getCity().getProvince().getId());
+            hospitalModel.setCityId(hospital.getCity().getId());
+        }else{
+            disabledCity = Boolean.TRUE;
+            disabledProvince = Boolean.TRUE;
+            hospitalModel.setId(null);
+            hospitalModel.setCode(null);
+            hospitalModel.setName(null);
+            hospitalModel.setAddress(null);
+            hospitalModel.setPhone(null);
+            hospitalModel.setCountryId(null);
+            hospitalModel.setProvinceId(null);
+            hospitalModel.setCityId(null);
+        }
+    }
+
     public void doSave() {
         Hospital hospital = getEntityFromViewModel(hospitalModel);
         try {
@@ -163,7 +190,7 @@ public class HospitalFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -237,11 +264,7 @@ public class HospitalFormController extends BaseController {
     public Boolean getDisabledCity() {
         return disabledCity;
     }
-    
-    
 
-    
-    
     private Hospital getEntityFromViewModel(HospitalModel hospitalModel) {
         Hospital hospital = new Hospital();
         if (hospitalModel.getId() != null) {
@@ -284,7 +307,6 @@ public class HospitalFormController extends BaseController {
 
     public void provinceChanged(ValueChangeEvent event) {
         try {
-            
 
             Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 

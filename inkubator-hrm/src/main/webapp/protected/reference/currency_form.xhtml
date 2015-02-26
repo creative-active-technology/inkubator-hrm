@@ -76,7 +76,7 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="countryId" value="#{currencyFormController.model.country}" style="width: 150px;margin-right: 3px" filter="true" >
+                                <p:selectOneMenu id="countryId" value="#{currencyFormController.model.country}" style="width: 150px;margin-right: 3px" filter="true" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{currencyFormController.listCountries}"/>
                                     </p:selectOneMenu>
@@ -96,7 +96,7 @@
                             </p:column>
                             <p:column style="width: 60%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{currencyFormController.model.description}" 
-                                                 style="width: 210px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                 style="width: 210px; height: 89px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>

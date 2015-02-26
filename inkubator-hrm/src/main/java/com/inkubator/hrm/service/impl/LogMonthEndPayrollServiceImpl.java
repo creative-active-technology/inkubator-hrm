@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -26,11 +31,15 @@ import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.util.CommonReportUtil;
+import com.inkubator.hrm.util.TerbilangUtil;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
 /**
  *
@@ -378,4 +387,33 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
     public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistorySearchParameter searchParameter) {
        return logMonthEndPayrollDao.getByParamForPayrollHistoryReport(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ReportSalaryNoteModel> getByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter, int firstResult, int maxResults, Order order) {		
+		return logMonthEndPayrollDao.getByParamForReportSalaryNote(searchParameter, firstResult, maxResults, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter) {		
+		return logMonthEndPayrollDao.getTotalByParamForReportSalaryNote(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generateSalarySlip(Long periodId, Long empDataId) throws Exception {
+		
+		LogMonthEndPayroll monthEndPayroll = logMonthEndPayrollDao.getEntityByEmpDataIdAndPeriodIdAndCompSpecific(empDataId, periodId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+		TerbilangUtil util = new TerbilangUtil(monthEndPayroll.getNominal());
+		
+		Map<String, Object> params = new HashMap<>();
+        params.put("EMP_DATA_ID", empDataId);
+        params.put("PERIOD_ID", periodId);
+        params.put("THP_AS_STRING", util.toString());
+        params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/"));
+        StreamedContent file = CommonReportUtil.exportReportToPDFStream("salary_slip.jasper", params, monthEndPayroll.getEmpNik() + ".pdf");
+        return file;
+		
+	}
 }
