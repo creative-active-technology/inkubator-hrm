@@ -29,7 +29,8 @@ public class MonthEndTaxesProcessor implements ItemProcessor<PayTempKalkulasiEmp
 		out.setEmpJabatanCode(item.getEmpData().getJabatanByJabatanId().getCode());
 		out.setEmpJabatanName(item.getEmpData().getJabatanByJabatanId().getName());
 		out.setEmpGolJabatan(item.getEmpData().getGolonganJabatan().getCode());
-		out.setEmpStatus(item.getEmpData().getEmployeeType().getName());
+		out.setEmpTypeId(item.getEmpData().getEmployeeType().getId());
+		out.setEmpTypeName(item.getEmpData().getEmployeeType().getName());
 		out.setDepartmentId(item.getEmpData().getJabatanByJabatanId().getDepartment().getId());
 		out.setDepartmentName(item.getEmpData().getJabatanByJabatanId().getDepartment().getDepartmentName());
 		out.setNominal(item.getNominal());
