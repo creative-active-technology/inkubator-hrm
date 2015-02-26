@@ -55,6 +55,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
@@ -786,5 +787,29 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             listDepartmentId.add(department.getId());
         }
         return empDataDao.getAllDataByDepartementAndEducationWithHql(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, int firstResult, int maxResults, Order order) {
+        return empDataDao.getReportRekapJabatanByParam(listDepartmentId, listEmpTypeId, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId) {
+        return empDataDao.getTotalReportRekapJabatanByParam(listDepartmentId, listEmpTypeId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order) {
+        return empDataDao.getReportPensionPreparementByParam(listDepartmentId, listEmpTypeId, listEmpAges, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges) {
+        return empDataDao.getTotalReportPensionPreparementByParam(listDepartmentId, listEmpTypeId, listEmpAges);
     }
 }

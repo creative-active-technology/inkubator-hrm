@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">          
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="laporan_kelompok_kerja.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['report.employee_position_recapitulation_report']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['report.employee_position_recapitulation_report_based_on_dep_and_status']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                        <p:separator/>
+                         <h:form id="formReportEmpGroupWorkingViewId">
+                    	<p:focus context="formReportEmpGroupWorkingViewId"/>
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.date']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;">
+                                        <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportEmpPosRecapitulationViewController.reportDate}"  readonly="false" >                                    
+                                        </p:calendar>
+                                    </p:column>
+                             </p:row>
+                          
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                         <p:pickList value="#{reportEmpPosRecapitulationViewController.dualListModelDepartment}" var="department" itemValue="#{department}" converter="departmentConverter" id="picklistEmpDepartment"
+                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}" immediate="true"/>
+                            
+                                    </p:column>
+                            </p:row>
+                            <p:row>
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                    <p:pickList value="#{reportEmpPosRecapitulationViewController.dualListModelEmpType}" var="empType" itemValue="#{empType}" converter="employeeTypeConverter" id="picklistEmpStatus"
+                                        style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                        itemLabel="#{empType.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+
+                                    </p:column>
+                                
+                            </p:row>
+                        </p:panelGrid>                        
+                        <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" ajax="true" title="#{appmsg['global.search']}" action="#{reportEmpPosRecapitulationViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                     
+                    <p:separator/>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2" >                                   
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Position_Recap"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmpPosRecapitulationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable  id="tableReportId" var="empData"  value="#{reportEmpPosRecapitulationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['report.employee_position_recapitulation_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="jabatanByJabatanId.name"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.jabatanByJabatanId.code} #{empData.jabatanByJabatanId.name}" />                             
+                            </p:column>
+                            <p:column sortBy="nik"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.nik}  #{empData.bioData.firstName} #{empData.bioData.lastName}" />
+                                
+                            </p:column>
+                            <p:column sortBy="employeeType.name"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['unregSalary.employeeStatus']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{empData.employeeType.name}"/>
+                            </p:column>
+                            <p:column sortBy="golonganJabatan.code"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{empData.golonganJabatan.code}" />                                    
+                            </p:column>  
+                                         
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportEmpPosRecapitulationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formReportEmpGroupWorkingViewId" trigger="tableReportId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
