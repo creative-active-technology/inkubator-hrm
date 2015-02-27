@@ -47,6 +47,9 @@ public class FamilyRelationFormController extends BaseController {
                 if (religion != null) {
                     familyRelationModel.setId(religion.getId());
                     familyRelationModel.setRelationName(religion.getRelasiName());
+                    familyRelationModel.setDescription(religion.getDescription());
+                    familyRelationModel.setIsActive(religion.getIsActive());
+                    familyRelationModel.setCode(religion.getCode());
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
