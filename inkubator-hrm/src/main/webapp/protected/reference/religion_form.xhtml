@@ -42,8 +42,13 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="code">
                                     <p:inputText id="code" title="#{appmsg['religion.code']}" value="#{religionFormController.religionModel.code}" 
-                                    			 required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
+                                    			 required="true" requiredMessage="#{appmsg['religion.religion_code_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
                                 </p:focus>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="code"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -58,6 +63,11 @@
                                     <p:inputText id="nameId" title="#{appmsg['religion.religion_name']}" value="#{religionFormController.religionModel.name}" 
                                     			 required="true" requiredMessage="#{appmsg['religion.religion_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:250px;" />
                                 <!--</p:focus>-->
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -91,11 +101,7 @@
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="nameId"/>
-                            </p:column>
-                        </p:row>
+                       
                     </p:panelGrid>
                     <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
