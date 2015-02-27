@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 16, 2014 10:20:21 PM by Hibernate Tools 3.6.0
 
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,32 +24,31 @@ import javax.persistence.Version;
 @Entity
 @Table(name="bank"
     ,catalog="hrm"
-    , uniqueConstraints ={ @UniqueConstraint(columnNames="bank_code") 
-    , @UniqueConstraint(columnNames="swift_code") 
-    , @UniqueConstraint(columnNames="bank_identification_no") }
+    , uniqueConstraints = {@UniqueConstraint(columnNames="bank_code"), @UniqueConstraint(columnNames="swift_code"), @UniqueConstraint(columnNames="bank_identification_no"), @UniqueConstraint(columnNames="branch_code")} 
 )
 public class Bank  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Integer version;
-     private String createdBy;
-     private Date createdOn;
-     private String updatedBy;
-     private Date updatedOn;
+     private Bank bank;
+     private BankGroup bankGroup;
      private String bankCode;
      private String bankName;
+     private String createdBy;
+     private Date createdOn;
      private String description;
-     private String swiftCcode; 
-     private String iban;
+     private String updatedBy;
+     private Date updatedOn;
      private String bankIdentificationNo;
-     private Set<CompanyBankAccount> companyBankAccounts = new HashSet<CompanyBankAccount>(0);
+     private String iban;
+     private String swiftCode;
+     private String address;
+     private String bankFax;
+     private String bankPhone;
      private String branchCode;
      private String branchName;
-     private String address;
-     private String bankPhone;
-     private String bankFax;
-     private Long bankGroup;
+     private Set<Bank> banks = new HashSet<Bank>(0);
 
     public Bank() {
     }
@@ -57,35 +57,37 @@ public class Bank  implements java.io.Serializable {
     public Bank(long id) {
         this.id = id;
     }
-    public Bank(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String bankCode, String bankName, String description,String swiftCcode,String iban,String bankIdentificationNo, String branchCode, String branchName, String address, String bankPhone, String bankFax, Long bankGroup) {
+    public Bank(long id, Bank bank, BankGroup bankGroup, String bankCode, String bankName, String createdBy, Date createdOn, String description, String updatedBy, Date updatedOn, String bankIdentificationNo, String iban, String swiftCode, String address, String bankFax, String bankPhone, String branchCode, String branchName, Set<Bank> banks) {
        this.id = id;
-       this.createdBy = createdBy;
-       this.createdOn = createdOn;
-       this.updatedBy = updatedBy;
-       this.updatedOn = updatedOn;
+       this.bank = bank;
+       this.bankGroup = bankGroup;
        this.bankCode = bankCode;
        this.bankName = bankName;
+       this.createdBy = createdBy;
+       this.createdOn = createdOn;
        this.description = description;
-       this.swiftCcode = swiftCcode;
-       this.iban = iban;
+       this.updatedBy = updatedBy;
+       this.updatedOn = updatedOn;
        this.bankIdentificationNo = bankIdentificationNo;
+       this.iban = iban;
+       this.swiftCode = swiftCode;
+       this.address = address;
+       this.bankFax = bankFax;
+       this.bankPhone = bankPhone;
        this.branchCode = branchCode;
        this.branchName = branchName;
-       this.address = address;
-       this.bankPhone = bankPhone;
-       this.bankFax = bankFax;
-       this.bankGroup = bankGroup;
+       this.banks = banks;
     }
    
      @Id 
 
     
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -99,44 +101,24 @@ public class Bank  implements java.io.Serializable {
         this.version = version;
     }
 
-    
-    @Column(name="created_by", length=45)
-    public String getCreatedBy() {
-        return this.createdBy;
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="parent_id")
+    public Bank getBank() {
+        return this.bank;
     }
     
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="created_on", length=19)
-    public Date getCreatedOn() {
-        return this.createdOn;
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="bank_group_id")
+    public BankGroup getBankGroup() {
+        return this.bankGroup;
     }
     
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    
-    @Column(name="updated_by", length=45)
-    public String getUpdatedBy() {
-        return this.updatedBy;
-    }
-    
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="updated_on", length=19)
-    public Date getUpdatedOn() {
-        return this.updatedOn;
-    }
-    
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
+    public void setBankGroup(BankGroup bankGroup) {
+        this.bankGroup = bankGroup;
     }
 
     
@@ -160,7 +142,27 @@ public class Bank  implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=65535, columnDefinition="Text")
+    @Column(name="created_by", length=45)
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+    
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_on", length=19)
+    public Date getCreatedOn() {
+        return this.createdOn;
+    }
+    
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    
+    @Column(name="description", length=65535)
     public String getDescription() {
         return this.description;
     }
@@ -169,95 +171,117 @@ public class Bank  implements java.io.Serializable {
         this.description = description;
     }
 
-    @Column(name="swift_code", unique=true, length=30)
-    public String getSwiftCcode() {
-        return swiftCcode;
+    
+    @Column(name="updated_by", length=45)
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
+    
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
-    public void setSwiftCcode(String swiftCcode) {
-        this.swiftCcode = swiftCcode;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="updated_on", length=19)
+    public Date getUpdatedOn() {
+        return this.updatedOn;
+    }
+    
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
-    @Column(name="iban", length=20)
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
-    }
-
+    
     @Column(name="bank_identification_no", unique=true, length=60)
     public String getBankIdentificationNo() {
-        return bankIdentificationNo;
+        return this.bankIdentificationNo;
     }
-
+    
     public void setBankIdentificationNo(String bankIdentificationNo) {
         this.bankIdentificationNo = bankIdentificationNo;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bank")
-	public Set<CompanyBankAccount> getCompanyBankAccounts() {
-		return companyBankAccounts;
-	}
-
-	public void setCompanyBankAccounts(Set<CompanyBankAccount> companyBankAccounts) {
-		this.companyBankAccounts = companyBankAccounts;
-	}
-
-    @Column(name="branch_code", unique=true, length=8)    
-    public String getBranchCode() {
-        return branchCode;
+    
+    @Column(name="iban", length=20)
+    public String getIban() {
+        return this.iban;
+    }
+    
+    public void setIban(String iban) {
+        this.iban = iban;
     }
 
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
+    
+    @Column(name="swift_code", unique=true, length=30)
+    public String getSwiftCode() {
+        return this.swiftCode;
+    }
+    
+    public void setSwiftCode(String swiftCode) {
+        this.swiftCode = swiftCode;
     }
 
-    @Column(name="branch_name", length=60)
-    public String getBranchName() {
-        return branchName;
-    }
-
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
-    }
-
+    
     @Column(name="address", length=225)
     public String getAddress() {
-        return address;
+        return this.address;
     }
-
+    
     public void setAddress(String address) {
         this.address = address;
     }
 
+    
+    @Column(name="bank_fax", length=20)
+    public String getBankFax() {
+        return this.bankFax;
+    }
+    
+    public void setBankFax(String bankFax) {
+        this.bankFax = bankFax;
+    }
+    
     @Column(name="bank_phone", length=20)
     public String getBankPhone() {
-        return bankPhone;
+        return this.bankPhone;
     }
-
+    
     public void setBankPhone(String bankPhone) {
         this.bankPhone = bankPhone;
     }
 
-    @Column(name="bank_fax", length=20)
-    public String getBankFax() {
-        return bankFax;
+    
+    @Column(name="branch_code", unique=true, length=8)
+    public String getBranchCode() {
+        return this.branchCode;
+    }
+    
+    public void setBranchCode(String branchCode) {
+        this.branchCode = branchCode;
     }
 
-    public void setBankFax(String bankFax) {
-        this.bankFax = bankFax;
+    
+    @Column(name="branch_name", length=60)
+    public String getBranchName() {
+        return this.branchName;
+    }
+    
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
-    @Column(name="bank_group", length=30)
-    public Long getBankGroup() {
-        return bankGroup;
+@OneToMany(fetch=FetchType.LAZY, mappedBy="bank")
+    public Set<Bank> getBanks() {
+        return this.banks;
+    }
+    
+    public void setBanks(Set<Bank> banks) {
+        this.banks = banks;
     }
 
-    public void setBankGroup(Long bankGroup) {
-        this.bankGroup = bankGroup;
-    }
+
+
+
 }
 
 
