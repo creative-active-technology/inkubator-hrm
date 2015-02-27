@@ -72,15 +72,15 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="countryCode"  style="width: 17%">
+                            <p:column sortBy="countryCode"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['country.country_code']}"/>
+                                    <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{countryData.countryCode}"/>
                             </p:column>  
-                            <p:column sortBy="countryName"  style="width: 40%">
+                            <p:column sortBy="countryName"  style="width: 35%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['country.country_name']}"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{countryData.countryName}"/>
                             </p:column>
@@ -96,13 +96,13 @@
                                 </p:graphicImage> 
                                 
                             </p:column>
-                            <p:column sortBy="phoneCode"  style="width: 10%">
+                            <p:column sortBy="phoneCode"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['country.phone_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{countryData.phoneCode}"/>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" 
                                                  action="#{countryViewController.doDetail()}" >                        
