@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['resourceType.resource_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['resourceName.resourceName']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -78,7 +78,7 @@
                                 <h:outputLabel for="resourceType" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" style="width: 156px;margin-right: 3px" >
+                                <p:selectOneMenu id="resourceType" value="#{resourceNameFormController.model.resourceTypeId}" required="true"  style="width: 156px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{resourceNameFormController.dropDownResourceType}"/>
                                     </p:selectOneMenu>
@@ -89,7 +89,6 @@
                                 <p:message for="resourceType"/>
                             </p:column>
                         </p:row>
-                        
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="barCodeId" value="#{appmsg['resourceName.barcode_id']}" styleClass="label_hrm"/>
