@@ -133,7 +133,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <pe:timePicker  id="startTime" locale="in" value="#{implementationOfOverTimeFormController.model.startTime}"
-                                                label="Spinner time picker" styleClass="isitext_hrm" required="true" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
+                                                label="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="isitext_hrm" required="true" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
                                     <f:validator validatorId="timeBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{endTime}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
@@ -157,7 +157,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <pe:timePicker id="endTime" value="#{implementationOfOverTimeFormController.model.endTime}" binding="#{endTime}"
-                                               label="Spinner time picker"  styleClass="isitext_hrm"  required="true" 
+                                               label="#{appmsg['overTimeImplementation.end_overtime']}"  styleClass="isitext_hrm"  required="true" 
                                                disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
                                     <p:ajax event="timeSelect" listener="#{implementationOfOverTimeFormController.pickEndTime}"/>
                                 </pe:timePicker>
