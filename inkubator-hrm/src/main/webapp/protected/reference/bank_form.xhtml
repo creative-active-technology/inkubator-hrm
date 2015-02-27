@@ -76,6 +76,30 @@
                                     <p:message for="branchName"/>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Parent Bank"  for="branchName" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{bankFormController.dropDownBank}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="branchName"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Bank Group"  for="branchName" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="bankGroupId" value="#{bankFormController.bankModel.bankGroup}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{bankFormController.dropDownBankGroup}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="branchName"/>
+                                </p:column>
+                            </p:row>
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -107,18 +131,6 @@
                                     <p:inputText id="bankFax" value="#{bankFormController.bankModel.bankFax}" 
                                              required="false" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="bankFax"/>
-                                </p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['bank.group']}"  for="bankGroup" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:selectOneMenu id="bankGroup" value="" disabled="true" style="width:270px;" >
-                                        <f:selectItem itemLabel="Selection" itemValue=""/>
-                                    </p:selectOneMenu>
-                                    <p:message for="bankGroup"/>
                                 </p:column>
                             </p:row>
                             

@@ -4,6 +4,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BankDao;
+import com.inkubator.hrm.dao.BankGroupDao;
 import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.service.BankService;
 import com.inkubator.hrm.web.search.BankSearchParameter;
@@ -28,6 +29,8 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
 
     @Autowired
     private BankDao bankDao;
+    @Autowired
+    private BankGroupDao bankGroupDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -200,12 +203,12 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         if (totalDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_bank_code");
         }
-        long swiftCodeDuplicates = bankDao.getTotalBySwiftCode(bank.getSwiftCcode());
-        if(swiftCodeDuplicates > 0){
+        long swiftCodeDuplicates = bankDao.getTotalBySwiftCode(bank.getSwiftCode());
+        if (swiftCodeDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_swift_code");
         }
         long identificationNumberDuplicates = bankDao.getTotalBySwiftCode(bank.getBankIdentificationNo());
-        if(identificationNumberDuplicates > 0){
+        if (identificationNumberDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_identification_number");
         }
 
@@ -215,6 +218,8 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
 //        bank.setIban(bank.getIban());
         bank.setCreatedBy(UserInfoUtil.getUserName());
         bank.setCreatedOn(new Date());
+        bank.setBank(bankDao.getEntiyByPK(bank.getBank().getId()));
+        bank.setBankGroup(bankGroupDao.getEntiyByPK(bank.getBankGroup().getId()));
 //        bank.setBranchCode(bank.getBranchCode());
 //        bank.setBranchName(bank.getBranchName());
 //        bank.setAddress(bank.getAddress());
@@ -256,7 +261,7 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         if (totalDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_bank_code");
         }
-        long swiftDuplicates = bankDao.getTotalBySwiftCodeAndNotId(b.getSwiftCcode(), b.getId());
+        long swiftDuplicates = bankDao.getTotalBySwiftCodeAndNotId(b.getSwiftCode(), b.getId());
         if (swiftDuplicates > 0) {
             throw new BussinessException("bank.error_duplicate_swift_code");
         }
@@ -268,7 +273,9 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         Bank bank = bankDao.getEntiyByPK(b.getId());
         bank.setBankCode(b.getBankCode());
         bank.setBankName(b.getBankName());
-        bank.setSwiftCcode(b.getSwiftCcode());
+        bank.setSwiftCode(b.getSwiftCode());
+        bank.setBank(bankDao.getEntiyByPK(b.getBank().getId()));
+        bank.setBankGroup(bankGroupDao.getEntiyByPK(b.getBankGroup().getId()));
         bank.setBankIdentificationNo(b.getBankIdentificationNo());
         bank.setIban(b.getIban());
         bank.setDescription(b.getDescription());
@@ -279,7 +286,6 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         bank.setAddress(b.getAddress());
         bank.setBankPhone(b.getBankPhone());
         bank.setBankFax(b.getBankFax());
-        bank.setBankGroup(b.getBankGroup());
         bankDao.update(bank);
     }
 
@@ -301,7 +307,6 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         return this.bankDao.getTotalBankByParam(parameter);
     }
 
-    
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     @Override
     public Bank getEntityWithDetail(Long id) throws Exception {

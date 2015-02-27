@@ -21,6 +21,7 @@ public class BankModel implements Serializable {
     private String bankPhone;
     private String bankFax;
     private Long bankGroup;
+    private Long bank;
 
     public Long getId() {
         return id;
@@ -126,4 +127,13 @@ public class BankModel implements Serializable {
         this.bankGroup = bankGroup;
     }
 
+    public Long getBank() {
+        return bank;
+    }
+
+    public void setBank(Long bank) {
+        this.bank = bank;
+    }
+
+    
 }
