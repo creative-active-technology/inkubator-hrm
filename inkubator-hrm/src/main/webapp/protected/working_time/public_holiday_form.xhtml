@@ -41,11 +41,16 @@
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:selectOneMenu id="nameId" value="#{publicHolidayFormController.publicHolidayModel.leaveSchemeId}" required="true" 
+                                <p:selectOneMenu id="nameId" value="#{publicHolidayFormController.publicHolidayModel.leaveSchemeId}" required="true"  
                                                      style="width: 250px" filter="true" requiredMessage="#{appmsg['publicHoliday.publicHoliday_leave_should_not_be_empty']}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                         <f:selectItems value="#{publicHolidayFormController.leaveSchemes}"  />
                                     </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
                             </p:column>
                         </p:row>
                         <p:row>
