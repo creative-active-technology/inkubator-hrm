@@ -72,31 +72,31 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="text-align: left;width: 15%">
+                            <p:column sortBy="code" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="golonganJabatan" style="text-align: left;width: 15%">
+                            <p:column sortBy="golonganJabatan" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.golonganJabatan.code}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="travelZone" style="text-align: left;width: 25%">
+                            <p:column sortBy="travelZone" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['travelZone.travelZone']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.travelZone.name}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="travelComponent" style="text-align: left;width: 17%">
+                            <p:column sortBy="travelComponent" style="width: 17%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['travelComponent.travelComponent']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.travelComponent.name}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="defaultRate" style="width: 15%;text-align: left;">
+                            <p:column sortBy="defaultRate" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['travelcomponentcostrate.default_rate']}"/>
                                 </f:facet>
@@ -167,7 +167,7 @@
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['travelcomponentcostrate.default_rate_code']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{travelComponentCostRateViewController.selected.code}"/> </p:column>
                         </p:row>
                         <p:row>
