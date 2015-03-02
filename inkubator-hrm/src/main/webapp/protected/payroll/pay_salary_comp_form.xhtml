@@ -211,8 +211,8 @@
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{paySalaryComponentFormController.doReset()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
-                                             process="@this" icon="ui-icon-refresh" id="cleareId" update="formId"  styleClass="label_button"  style="margin-right: 5px">  
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{paySalaryComponentFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="formId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{paySalaryComponentFormController.doBack()}" immediate="true" ajax="true" partialSubmit="true" process="@this"
