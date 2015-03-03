@@ -32,13 +32,13 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 44%">
                                 <p:outputLabel for="code" value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 55%">
                                 <p:inputText id="code" value="#{travelComponentCostRateFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
                                              required="true" maxlength="6" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>

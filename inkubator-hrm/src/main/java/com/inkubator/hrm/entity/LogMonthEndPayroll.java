@@ -39,7 +39,8 @@ public class LogMonthEndPayroll implements Serializable {
     private String empGolJabatan;
     private Long departmentId;
     private String departmentName;
-    private String empStatus;
+    private Long empTypeId;
+    private String empTypeName;
     private Integer modelCompSpecific;
     private Long paySalaryCompId;
     private String paySalaryCompCode;
@@ -188,14 +189,23 @@ public class LogMonthEndPayroll implements Serializable {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	
-	@Column(name = "emp_status", nullable = false)
-	public String getEmpStatus() {
-		return empStatus;
+		
+	@Column(name = "emp_type_id", nullable = false)
+	public Long getEmpTypeId() {
+		return empTypeId;
 	}
 
-	public void setEmpStatus(String empStatus) {
-		this.empStatus = empStatus;
+	public void setEmpTypeId(Long empTypeId) {
+		this.empTypeId = empTypeId;
+	}
+
+	@Column(name = "emp_type_name", nullable = false)
+	public String getEmpTypeName() {
+		return empTypeName;
+	}
+
+	public void setEmpTypeName(String empTypeName) {
+		this.empTypeName = empTypeName;
 	}	
 
 	@Column(name = "model_comp_specific", nullable = false)

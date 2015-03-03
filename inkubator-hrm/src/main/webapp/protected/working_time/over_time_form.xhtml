@@ -99,7 +99,7 @@
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker  id="minimum" locale="in" value="#{overTimeFormController.overTimeModel.minimumTime}"
-                                                    label="Spinner time picker" styleClass="isitext_hrm" required="true" >
+                                                    label="#{appmsg['overtime.minimum_time']}" styleClass="isitext_hrm" required="true" >
                                         <f:validator validatorId="timeBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{maksimum}"/>
                                         <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
@@ -114,7 +114,7 @@
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker id="maksimum" value="#{overTimeFormController.overTimeModel.maximumTime}" binding="#{maksimum}"
-                                                   label="Spinner time picker"  styleClass="isitext_hrm"  required="true" />  
+                                                   label="#{appmsg['overtime.maximum_time']}"  styleClass="isitext_hrm"  required="true" />  
                                     <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
                                     <p:message for="maksimum"/>
                                 </p:column>
@@ -125,7 +125,7 @@
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.startTimeFactor}" required="true"
-                                                   label="Spinner time picker" styleClass="isitext_hrm" >
+                                                   label="#{appmsg['overtime.start_time']}s" styleClass="isitext_hrm" >
                                         <f:validator validatorId="timeBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{faktorAkhir}"/>
                                         <f:attribute name="validatorMessage" value="#{appmsg['over_time.time_bengin_is_greater']}"/>
@@ -139,7 +139,7 @@
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.finishTimeFactor}" required="true"
-                                                   label="Spinner time picker" styleClass="isitext_hrm" binding="#{faktorAkhir}" />  
+                                                   label="#{appmsg['overtime.end_time']}" styleClass="isitext_hrm" binding="#{faktorAkhir}" />  
                                     <p:message for="faktorAkhir"/>
                                 </p:column>
                             </p:row>

@@ -1,11 +1,11 @@
 package com.inkubator.hrm.dao.impl;
 
-import ch.lambdaj.Lambda;
-import com.inkubator.common.util.DateTimeUtil;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -14,17 +14,18 @@ import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import org.hamcrest.Matchers;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
 /**
  *
@@ -62,7 +63,7 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
     			+ "SUM(CASE WHEN modelCompSpecific = 100 THEN nominal ELSE 0.0 END) AS takeHomePay "
     			+ "FROM LogMonthEndPayroll ");    	
     	selectQuery.append(this.getWhereQueryByParam(parameter));
-    	selectQuery.append("GROUP BY empDataId ");
+    	selectQuery.append("GROUP BY periodeId,empDataId ");
     	selectQuery.append("ORDER BY " + orderable);
         
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
@@ -278,5 +279,103 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                     .list();
         
     }
+
+	@Override
+	public List<ReportSalaryNoteModel> getByParamForReportSalaryNote(ReportSalaryNoteSearchParameter parameter, int firstResult, int maxResults, Order order) {
+		
+		StringBuffer selectQuery = new StringBuffer(
+    			  "SELECT empDataId AS empDataId, "
+    			+ "periodeId AS periodId, "
+    			+ "empNik AS empNik, "
+    			+ "empName AS empName, "
+    			+ "periodeStart AS periodStart, "
+    			+ "periodeEnd AS periodEnd, "
+    			+ "empGolJabatan AS empGolJab, "
+    			+ "SUM(CASE WHEN modelCompSpecific = 0 THEN nominal ELSE 0.0 END) AS basicSalary, "
+    			+ "SUM(CASE WHEN factor = 1 and modelCompSpecific != 0 THEN nominal ELSE 0.0 END) AS income, "
+    			+ "SUM(CASE WHEN factor = -1 THEN nominal ELSE 0.0 END) AS deduction,  "
+    			+ "SUM(CASE WHEN modelCompSpecific = 2 THEN nominal ELSE 0.0 END) AS tax, "
+    			+ "SUM(CASE WHEN modelCompSpecific = 100 THEN nominal ELSE 0.0 END) AS takeHomePay  "
+    			+ "FROM LogMonthEndPayroll ");    	
+    	selectQuery.append(this.getWhereQueryByParamForReportSalaryNote(parameter));
+    	selectQuery.append("GROUP BY periodeId,empDataId ");
+    	selectQuery.append("ORDER BY " + order);
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
+                	.setResultTransformer(Transformers.aliasToBean(ReportSalaryNoteModel.class));
+    	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, parameter);
+    	
+    	return hbm.list();
+	}
+
+	@Override
+	public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter parameter) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT count(distinct empDataId) "
+    			+ "FROM LogMonthEndPayroll ");    	
+    	selectQuery.append(this.getWhereQueryByParamForReportSalaryNote(parameter));
+    	
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
+    	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, parameter);
+    	
+        return Long.valueOf(hbm.uniqueResult().toString());
+	}
+	
+	private String getWhereQueryByParamForReportSalaryNote(ReportSalaryNoteSearchParameter parameter) {
+    	StringBuffer whereQuery = new StringBuffer();
+    	
+    	if (!parameter.getListGolJab().isEmpty()) {
+    		if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+    		whereQuery.append("empGolJabatan IN (:empGolJabatan) ");
+        }    	
+    	if (!parameter.getListDepartment().isEmpty()) {
+    		if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+    		whereQuery.append("departmentId IN (:departmentId) ");
+        }    
+    	if (!parameter.getListEmpType().isEmpty()) {
+    		if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+    		whereQuery.append("empTypeId IN (:empTypeId) ");
+        }
+        if (parameter.getPeriodeId() != null) {
+        	if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+        	whereQuery.append("periodeId = :periodeId ");
+        }       
+        
+        return StringUtils.isNotEmpty(whereQuery) ? "WHERE " + whereQuery.toString() : whereQuery.toString();
+    } 
+	
+	private Query setValueQueryByParamForReportSalaryNote(Query hbm, ReportSalaryNoteSearchParameter parameter){
+    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "empGolJabatan")){
+    			hbm.setParameterList("empGolJabatan", parameter.getListGolJab());
+    		} else if(StringUtils.equals(param, "empTypeId")){
+    			hbm.setParameterList("empTypeId", parameter.getListEmpType());
+    		} else if(StringUtils.equals(param, "departmentId")){
+    			hbm.setParameterList("departmentId", parameter.getListDepartment());
+    		} else if(StringUtils.equals(param, "periodeId")){
+    			hbm.setParameter("periodeId", parameter.getPeriodeId());
+    		}
+    	}
+    	
+    	return hbm;
+    }
+
+	@Override
+	public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empDataId", empDataId));
+		criteria.add(Restrictions.eq("periodeId", periodId));
+		criteria.add(Restrictions.eq("modelCompSpecific", specific));
+		return (LogMonthEndPayroll) criteria.uniqueResult();
+	}
     
 }

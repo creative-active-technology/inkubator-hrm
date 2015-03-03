@@ -14,6 +14,8 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.LogMonthEndTaxesDao;
 import com.inkubator.hrm.entity.LogMonthEndTaxes;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
+import com.inkubator.hrm.web.model.PphReportModel;
+import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
 
 /**
 *
@@ -239,5 +241,11 @@ public class LogMonthEndTaxesServiceImpl extends IServiceImpl implements LogMont
 		logMonthEndTaxesDao.deleteByPeriodId(periodId);
 
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        return logMonthEndTaxesDao.getAllDataByParam(searchParameter, firstResult, maxResults, order);
+    }
 
 }

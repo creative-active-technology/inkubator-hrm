@@ -273,6 +273,7 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
             throw new BussinessException("unregSalary.basePeriode_not_available");
         }
         entity.setSalaryDate(model.getSalaryDate());
+        entity.setIsAlreadyPaid(Boolean.FALSE);
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.unregSalaryDao.save(entity);
@@ -392,6 +393,20 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalComponentByParam(UnregSalarySearchParameter searchParameter) throws Exception {
 		return unregSalaryDao.getTotalByParam(searchParameter);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {
+		return unregSalaryDao.getByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType) throws Exception {
+		return unregSalaryDao.getTotalByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType);
 		
 	}
 

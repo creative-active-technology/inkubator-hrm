@@ -9,9 +9,11 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
 /**
  *
@@ -27,17 +29,24 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
 
 	public void deleteByPeriodId(Long periodId);
         
-        public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order);
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order);
 
-        public Long getTotalByParamForPayrollHistoryReport(String searchParameter);        
+    public Long getTotalByParamForPayrollHistoryReport(String searchParameter);        
                 
-        public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId);
+    public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId);
 
 	public List<LogMonthEndPayroll> getAllDataByPaySalaryCompAndPeriodeId(Long paySalaryCompId, String paySalaryCompCode, String paySalaryCompName, Long periodeId);
         
-        public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport();
+    public List<PayrollHistoryReportModel> getDataForPayrollHistoryReport();
         
-        public PayrollHistoryReportModel getDataPayrollHistoryReportModelByPeriodeId(Long periodeId);
+    public PayrollHistoryReportModel getDataPayrollHistoryReportModelByPeriodeId(Long periodeId);
         
-        public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistorySearchParameter searchParameter);
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistorySearchParameter searchParameter);
+    
+    public List<ReportSalaryNoteModel> getByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter);
+    
+    public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific);
+    
 }

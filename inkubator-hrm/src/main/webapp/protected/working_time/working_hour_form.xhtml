@@ -40,14 +40,15 @@
 	                                    		 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="codeId"/>
 	                            </p:column>
-	                        </p:row>   
+	                        </p:row>
+                                
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel for="nameId" value="#{appmsg['workinghour.working_time_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="nameId" title="#{appmsg['workinghour.working_time_name']}" value="#{workingHourFormController.model.name}" 
-	                                    		 required="true" requiredMessage="#{appmsg['workinghour.error_empty_code']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 required="true" requiredMessage="#{appmsg['workinghour.error_empty_name']}" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="nameId"/>
 	                            </p:column>
 	                        </p:row>  

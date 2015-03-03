@@ -7,6 +7,7 @@ package com.inkubator.hrm.web;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -21,6 +22,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import net.sf.jasperreports.engine.JRException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -35,6 +38,8 @@ public class ReportStreamController extends BaseController {
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{logMonthEndPayrollService}")
+    private LogMonthEndPayrollService logMonthEndPayrollService;
     
     @PostConstruct
     @Override
@@ -47,6 +52,7 @@ public class ReportStreamController extends BaseController {
     private void cleanAndExit() {
         bioDataService = null;
         empDataService = null;
+        logMonthEndPayrollService = null;
     }
 
     public StreamedContent getFileCardName() throws JRException, Exception {
@@ -89,10 +95,24 @@ public class ReportStreamController extends BaseController {
     public StreamedContent getFileCv() {
     	FacesContext context = FacesUtil.getFacesContext();
         String param = context.getExternalContext().getRequestParameterMap().get("id");
-    	StreamedContent file = new DefaultStreamedContent();
+    	StreamedContent file =null;
     	try {
     		if(param != null){
+    			file = new DefaultStreamedContent();
     			file = bioDataService.generateCV(Long.parseLong(param));
+    		}
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			LOGGER.error(ex, ex);
+		}
+    	return file;
+    }
+    
+    public StreamedContent getFileSalarySlip(Long periodId, Long empDataId) {
+    	StreamedContent file = new DefaultStreamedContent();
+    	try {
+    		if(empDataId != null && empDataId != null){
+    			file = logMonthEndPayrollService.generateSalarySlip(periodId,empDataId);
     		}
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
@@ -116,4 +136,14 @@ public class ReportStreamController extends BaseController {
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
+
+	public LogMonthEndPayrollService getLogMonthEndPayrollService() {
+		return logMonthEndPayrollService;
+	}
+
+	public void setLogMonthEndPayrollService(
+			LogMonthEndPayrollService logMonthEndPayrollService) {
+		this.logMonthEndPayrollService = logMonthEndPayrollService;
+	}    
+    
 }

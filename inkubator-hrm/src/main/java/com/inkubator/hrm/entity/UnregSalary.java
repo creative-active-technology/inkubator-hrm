@@ -39,11 +39,14 @@ public class UnregSalary implements java.io.Serializable {
     private Date updatedOn;
     private String updatedBy;
     private Date salaryDate;
+    private Boolean isAlreadyPaid;
     private Set<UnregDepartement> unregDepartements = new HashSet<UnregDepartement>(0);
     private Set<UnregGoljab> unregGoljabs = new HashSet<UnregGoljab>(0);
     private Set<UnregEmpType> unregEmpTypes = new HashSet<UnregEmpType>(0);
     private Set<UnregPayComponents> unregPayComponentses = new HashSet<UnregPayComponents>(0);
     private Set<UnregEmpReligion> unregEmpReligions = new HashSet<UnregEmpReligion>(0);
+    private Set<TempUnregPayrollEmpPajak> tempUnregPayrollEmpPajaks = new HashSet<TempUnregPayrollEmpPajak>(0);
+    private Set<TempUnregPayroll> tempUnregPayrolls = new HashSet<TempUnregPayroll>(0);
     private Integer totalUnregPayComponents;
 
     public UnregSalary() {
@@ -109,8 +112,17 @@ public class UnregSalary implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @Column(name = "is_already_paid", nullable = false)
+    public Boolean getIsAlreadyPaid() {
+		return isAlreadyPaid;
+	}
 
-    @Temporal(TemporalType.DATE)
+	public void setIsAlreadyPaid(Boolean isAlreadyPaid) {
+		this.isAlreadyPaid = isAlreadyPaid;
+	}
+
+	@Temporal(TemporalType.DATE)
     @Column(name = "start_period_date", length = 10)
     public Date getStartPeriodDate() {
         return this.startPeriodDate;
@@ -221,9 +233,27 @@ public class UnregSalary implements java.io.Serializable {
 
     public void setUnregEmpReligions(Set<UnregEmpReligion> unregEmpReligions) {
         this.unregEmpReligions = unregEmpReligions;
-    }
+    }       
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unregSalary")
+    public Set<TempUnregPayrollEmpPajak> getTempUnregPayrollEmpPajaks() {
+		return tempUnregPayrollEmpPajaks;
+	}
+
+	public void setTempUnregPayrollEmpPajaks(Set<TempUnregPayrollEmpPajak> tempUnregPayrollEmpPajaks) {
+		this.tempUnregPayrollEmpPajaks = tempUnregPayrollEmpPajaks;
+	}	
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unregSalary")
+	public Set<TempUnregPayroll> getTempUnregPayrolls() {
+		return tempUnregPayrolls;
+	}
+
+	public void setTempUnregPayrolls(Set<TempUnregPayroll> tempUnregPayrolls) {
+		this.tempUnregPayrolls = tempUnregPayrolls;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "based_period_id")
     public WtPeriode getWtPeriode() {
         return this.wtPeriode;

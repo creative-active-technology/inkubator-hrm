@@ -6,6 +6,7 @@ import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.web.search.BankSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -72,14 +73,14 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
     @Override
     public Long getTotalBySwiftCode(String swiftCode) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("swiftCcode", swiftCode));
+        criteria.add(Restrictions.eq("swiftCode", swiftCode));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalBySwiftCodeAndNotId(String swiftCode, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("swiftCcode", swiftCode));
+        criteria.add(Restrictions.eq("swiftCode", swiftCode));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -102,6 +103,8 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
     @Override
     public Bank getEntityWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("bank", FetchMode.JOIN);
+        criteria.setFetchMode("bankGroup", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
         return (Bank) criteria.uniqueResult();
     }
