@@ -95,10 +95,9 @@ public class ReportStreamController extends BaseController {
     public StreamedContent getFileCv() {
     	FacesContext context = FacesUtil.getFacesContext();
         String param = context.getExternalContext().getRequestParameterMap().get("id");
-    	StreamedContent file =null;
+    	StreamedContent file = new DefaultStreamedContent();
     	try {
     		if(param != null){
-    			file = new DefaultStreamedContent();
     			file = bioDataService.generateCV(Long.parseLong(param));
     		}
 		} catch (Exception ex) {
