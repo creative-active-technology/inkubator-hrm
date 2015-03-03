@@ -39,7 +39,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{jabatanFormController.jabatanModel.kodeJabatan}" maxlength="12"
-                                                 styleClass="isitext_hrm" label="Kode Kelompok Kerja"
+                                                 styleClass="isitext_hrm" label="#{appmsg['jabat.jabatan_code']}"
                                                  style="width: 350px" required="true" id="codeId" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="codeId"/>
                                 </p:column>
@@ -50,7 +50,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{jabatanFormController.jabatanModel.namaJabatan}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="Nama Kelompok Kerja"
+                                                 styleClass="isitext_hrm" label="#{appmsg['jabatan.jabatan_name']}"
                                                  style="width:350px" required="true" id="namaJabatanId" />
                                     <p:message for="namaJabatanId"/>
                                 </p:column>
