@@ -10,14 +10,18 @@ import com.inkubator.hrm.dao.UnregSalaryDao;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -123,4 +127,31 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
             query.append(" AND A.name like '%" + searchParameter.getName() + "%'");
         }
     }
+
+	@Override
+	public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.createAlias("wtPeriode", "wtPeriode", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("isAlreadyPaid", false));
+        criteria.add(Restrictions.lt("wtPeriode.fromPeriode", fromPeriodPayrollType));
+        criteria.setFetchMode("unregPayComponentses", FetchMode.JOIN);
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+		
+	}
+
+	@Override
+	public Long getTotalByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.createAlias("wtPeriode", "wtPeriode", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("isAlreadyPaid", false));
+        criteria.add(Restrictions.lt("wtPeriode.fromPeriode", fromPeriodPayrollType));
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

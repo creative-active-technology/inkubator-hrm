@@ -43,4 +43,8 @@ public interface UnregSalaryService extends IService<UnregSalary> {
     public void save(Long unregSalaryId, Date startDate, Date endDate, List<GolonganJabatan> golonganJabatans, List<Department> departments, List<Religion> religions, List<EmployeeType> employeeTypes) throws Exception;
     
     public Long getTotalByParamViewModel(UnregSalarySearchParameter searchParameter) throws Exception;
+    
+    public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType) throws Exception;
 }
