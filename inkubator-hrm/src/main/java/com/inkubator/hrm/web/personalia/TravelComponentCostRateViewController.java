@@ -111,7 +111,7 @@ public class TravelComponentCostRateViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
+        options.put("contentWidth", 450);
         options.put("contentHeight", 500);
         RequestContext.getCurrentInstance().openDialog("travel_comp_cost_rate_form", options, params);
     }
