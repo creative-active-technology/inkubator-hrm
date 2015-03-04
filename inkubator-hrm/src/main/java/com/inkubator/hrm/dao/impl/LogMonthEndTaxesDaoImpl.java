@@ -35,7 +35,7 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
 
     @Override
     public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        final StringBuilder query = new StringBuilder("select id as id, empName as empName,"
+        final StringBuilder query = new StringBuilder("select id as id, empDataId as empDataId, empName as empName,"
                 + "empNik as empNik,"
                 + "empGolJabatan as empGolJabatan,"
                 + "empNik as empNik,"

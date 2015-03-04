@@ -112,22 +112,9 @@
                                 </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                </p:commandButton>
-                                - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{savingTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                </p:commandButton>
-                                -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{savingTypeViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                <p:commandButton  icon="ui-icon-folder-open" title="Generate Report" label="Generate Report" style="font-size: 10px!important" ajax="true"
+                                                  action="#{reportPphViewController.doGenerateReportPph()}" immediate="true">
+                                    <f:setPropertyActionListener value="#{data}" target="#{reportPphViewController.selectedModel}" />    
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
