@@ -49,7 +49,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="nameId" title="#{appmsg['permitClassification.permitClassification_name']}" value="#{permitClassificationFormController.permitClassificationModel.name}" 
-                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_code']}" maxlength="60" styleClass="isitext_hrm" style="width:290px;" >
+                                                 required="true" requiredMessage="#{appmsg['permitClassification.error_empty_name']}" maxlength="60" styleClass="isitext_hrm" style="width:290px;" >
                                         <p:ajax listener="#{permitClassificationFormController.onChangeName()}" update="tableApprovalDevId" />
                                     </p:inputText>
                                     <p:message for="nameId"/>
@@ -74,6 +74,7 @@
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_day_full']}" itemValue="1" />
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_day_part']}" itemValue="0" />
                                     </p:selectOneRadio>
+                                    <p:message for="calculationId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -86,6 +87,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{permitClassificationFormController.attendanceStatuss}"/>
                                     </p:selectOneMenu>
+                                    <p:message for="attendanceId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -100,6 +102,7 @@
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_begin']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_convert']}" itemValue="2" />
                                     </p:selectOneMenu>
+                                    <p:message for="baseId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -114,6 +117,7 @@
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_avail_date']}" itemValue="2" />
                                         <p:ajax update="dateId, quantityId" event="change" />
                                     </p:selectOneMenu>
+                                    <p:message for="availibilityId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -123,6 +127,7 @@
                                 <p:column  style="width: 80%">
                                     <p:spinner id="dateId" value="#{permitClassificationFormController.permitClassificationModel.dateIncreased}" style="margin-right: 3px" 
                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.hidden}" min="1" max="31"/>
+                                    <p:message for="dateId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
@@ -132,6 +137,7 @@
                                 <p:column  style="width: 80%">
                                     <p:spinner id="quantityId" value="#{permitClassificationFormController.permitClassificationModel.quantity}" style="margin-right: 3px" 
                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_quantity']}" disabled="#{permitClassificationFormController.disabled}" min="#{permitClassificationFormController.minimum}" max="#{permitClassificationFormController.maximum}"/>
+                                    <p:message for="quantityId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -142,6 +148,7 @@
                                     <p:spinner id="limitId" value="#{permitClassificationFormController.permitClassificationModel.limitByDay}" style="margin-right: 3px" 
                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_limit']}" min="1" max="10"/>
                                     <p:outputLabel for="limitId" value="#{appmsg['permitClassification.day']}" />
+                                    <p:message for="limitId"/>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -161,6 +168,7 @@
                                     <p:spinner id="maxMonthId" value="#{permitClassificationFormController.permitClassificationModel.maxPerMonth}" style="margin-right: 3px" 
                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_maxMonth']}" min="1" max="10"/>
                                     <p:outputLabel for="maxMonthId" value="#{appmsg['permitClassification.day']}" />
+                                    <p:message for="maxMonthId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
@@ -171,6 +179,7 @@
                                     <p:spinner id="cutId" value="#{permitClassificationFormController.permitClassificationModel.salaryCut}" style="margin-right: 3px" 
                                                required="true" requiredMessage="#{appmsg['permitClassification.error_empty_cut']}" min="0.1" max="1" stepFactor="0.1"/>
                                     <p:outputLabel for="cutId" value="#{appmsg['permitClassification.salary']}" />
+                                    <p:message for="cutId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
