@@ -20,5 +20,7 @@ public interface UnregPayComponentsExceptionDao extends IDAO<UnregPayComponentsE
     public Long getTotalByParam(UnregPayComponentExceptionSearchParameter searchParameter);
 
 	public UnregPayComponentsException getEntityByPK(UnregPayComponentsExceptionId id);
+	
+	public List<UnregPayComponentsException> getAllDataByUnregSalaryId(Long unregSalaryId);
 
 }

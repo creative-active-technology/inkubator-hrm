@@ -16,7 +16,6 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**

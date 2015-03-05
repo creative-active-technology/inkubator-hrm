@@ -5,6 +5,11 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.model.BioDataModel;
@@ -19,13 +24,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
-
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -130,4 +129,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order);
 
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
+
+	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 }

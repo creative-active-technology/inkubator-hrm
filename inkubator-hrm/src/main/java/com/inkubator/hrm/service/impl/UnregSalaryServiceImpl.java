@@ -118,8 +118,9 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveOrUpdate(UnregSalary enntity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        unregSalaryDao.saveOrUpdate(enntity);
     }
 
     @Override

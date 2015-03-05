@@ -365,4 +365,9 @@ public class HRMConstant {
 
     public static final String APP_NAME = "Web Destop App";
 
+    public static final Integer KLASIFIKASI_STRENGTHS = 0;
+    public static final Integer KLASIFIKASI_WEAKNESSES = 1;
+    public static final Integer KLASIFIKASI_OPPORTUNITIES = 2;
+    public static final Integer KLASIFIKASI_THREATS = 3;
+    
 }
