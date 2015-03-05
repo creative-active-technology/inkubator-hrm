@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.report;
 
+import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
 import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
 import com.inkubator.hrm.web.lazymodel.ReportPphLazyDataModel;
@@ -30,7 +31,8 @@ public class ReportPphViewController extends BaseController {
     private LogMonthEndTaxesService service;
     private LogMonthEndTaxesSearchParameter searchParameter;
     private LazyDataModel<PphReportModel> lazyDataModel;
-    private PayTempKalkulasiEmpPajakService selected;
+    private PayTempKalkulasiEmpPajak selected;
+    private PphReportModel selectedModel;
 
     @PostConstruct
     @Override
@@ -50,6 +52,10 @@ public class ReportPphViewController extends BaseController {
         lazyDataModel = null;
     }
 
+    public String doGenerateReportPph(){
+        return "/protected/report/generated_pph_report.htm?faces-redirect=true&execution=e" + selectedModel.getEmpDataId();
+    }
+    
     public LogMonthEndTaxesService getService() {
         return service;
     }
@@ -77,12 +83,21 @@ public class ReportPphViewController extends BaseController {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public PayTempKalkulasiEmpPajakService getSelected() {
+    public PayTempKalkulasiEmpPajak getSelected() {
         return selected;
     }
 
-    public void setSelected(PayTempKalkulasiEmpPajakService selected) {
+    public void setSelected(PayTempKalkulasiEmpPajak selected) {
         this.selected = selected;
     }
+
+    public PphReportModel getSelectedModel() {
+        return selectedModel;
+    }
+
+    public void setSelectedModel(PphReportModel selectedModel) {
+        this.selectedModel = selectedModel;
+    }
+
 
 }
