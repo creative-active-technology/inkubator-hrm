@@ -3,11 +3,11 @@
  */
 package com.inkubator.hrm.web;
 
-
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.service.LogMonthEndTaxesService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -34,25 +34,29 @@ import org.primefaces.model.StreamedContent;
 @ManagedBean(name = "reportStreamController")
 @ApplicationScoped
 public class ReportStreamController extends BaseController {
+
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{logMonthEndPayrollService}")
     private LogMonthEndPayrollService logMonthEndPayrollService;
-    
+    @ManagedProperty(value = "#{logMonthEndTaxesService}")
+    private LogMonthEndTaxesService logMonthEndTaxesService;
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        
+
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
         bioDataService = null;
         empDataService = null;
         logMonthEndPayrollService = null;
+        logMonthEndTaxesService = null;
     }
 
     public StreamedContent getFileCardName() throws JRException, Exception {
@@ -71,9 +75,9 @@ public class ReportStreamController extends BaseController {
             mapData.put("jabatan", empData.getJabatanByJabatanId().getName());
             mapData.put("department", empData.getJabatanByJabatanId().getDepartment().getDepartmentName());
             mapData.put("tmb", String.valueOf(empData.getJoinDate()));
-            if(empData.getBioData() != null){
+            if (empData.getBioData() != null) {
                 mapData.put("photo", empData.getBioData().getPathFoto());
-            }else{
+            } else {
                 mapData.put("photo", "C:/tmp/FolderUpload/no_image.png");
             }
             mapData.put("barcode", empData.getNik());
@@ -91,14 +95,13 @@ public class ReportStreamController extends BaseController {
             }
         }
     }
-    
+
     public StreamedContent getFileCv() {
-    	FacesContext context = FacesUtil.getFacesContext();
+        FacesContext context = FacesUtil.getFacesContext();
         String param = context.getExternalContext().getRequestParameterMap().get("id");
-    	StreamedContent file =null;
+    	StreamedContent file = new DefaultStreamedContent();
     	try {
     		if(param != null){
-    			file = new DefaultStreamedContent();
     			file = bioDataService.generateCV(Long.parseLong(param));
     		}
 		} catch (Exception ex) {
@@ -107,18 +110,47 @@ public class ReportStreamController extends BaseController {
 		}
     	return file;
     }
-    
+
+    public StreamedContent getFilePph() {
+        System.out.println("masuk cv");
+        FacesContext context = FacesUtil.getFacesContext();
+        String param = context.getExternalContext().getRequestParameterMap().get("id");
+        System.out.println(param + " par param");
+        Map<String, Object> params = new HashMap<>();
+
+        List<String> attachments = new ArrayList<String>();
+        StreamedContent file = null;
+        if (param != null) {
+            params.put("emp_data_id", Integer.valueOf(param));
+            params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\reports\\"));
+            params.put("IMAGE_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\images\\"));
+
+        }
+        if (param == null) {
+            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            try {
+                file = CommonReportUtil.exportReportToPDFStreamWithAttachment("pph_report.jasper", params, "Report_Pph.pdf", attachments);
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+        return file;
+    }
+
     public StreamedContent getFileSalarySlip(Long periodId, Long empDataId) {
-    	StreamedContent file = new DefaultStreamedContent();
-    	try {
-    		if(empDataId != null && empDataId != null){
-    			file = logMonthEndPayrollService.generateSalarySlip(periodId,empDataId);
-    		}
-		} catch (Exception ex) {
-			// TODO Auto-generated catch block
-			LOGGER.error(ex, ex);
-		}
-    	return file;
+        StreamedContent file = new DefaultStreamedContent();
+        try {
+            if (empDataId != null && empDataId != null) {
+                file = logMonthEndPayrollService.generateSalarySlip(periodId, empDataId);
+            }
+        } catch (Exception ex) {
+            // TODO Auto-generated catch block
+            LOGGER.error(ex, ex);
+        }
+        return file;
     }
 
     public BioDataService getBioDataService() {
@@ -137,13 +169,21 @@ public class ReportStreamController extends BaseController {
         this.empDataService = empDataService;
     }
 
-	public LogMonthEndPayrollService getLogMonthEndPayrollService() {
-		return logMonthEndPayrollService;
-	}
+    public LogMonthEndPayrollService getLogMonthEndPayrollService() {
+        return logMonthEndPayrollService;
+    }
 
-	public void setLogMonthEndPayrollService(
-			LogMonthEndPayrollService logMonthEndPayrollService) {
-		this.logMonthEndPayrollService = logMonthEndPayrollService;
-	}    
-    
+    public void setLogMonthEndPayrollService(
+            LogMonthEndPayrollService logMonthEndPayrollService) {
+        this.logMonthEndPayrollService = logMonthEndPayrollService;
+    }
+
+    public LogMonthEndTaxesService getLogMonthEndTaxesService() {
+        return logMonthEndTaxesService;
+    }
+
+    public void setLogMonthEndTaxesService(LogMonthEndTaxesService logMonthEndTaxesService) {
+        this.logMonthEndTaxesService = logMonthEndTaxesService;
+    }
+
 }
