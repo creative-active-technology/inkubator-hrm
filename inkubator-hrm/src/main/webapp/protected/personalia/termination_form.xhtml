@@ -98,7 +98,7 @@
                                 <h:outputLabel for="effectiveDataId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 59%" >
-                                <p:calendar  id="effectiveDataId" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{terminationFormController.model.effectiveDate}"
+                                <p:calendar  id="effectiveDataId" pattern="dd MMMM yyyy" label="#{appmsg['terminate.effective_date']}" value="#{terminationFormController.model.effectiveDate}"
                                              required="true" navigator="true" size="19">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
