@@ -9,6 +9,8 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -29,5 +31,9 @@ public interface UnregSalaryDao extends IDAO<UnregSalary> {
     public void deleteAllDataByUnregSalaryId(Long unregSalaryId);
     
     public Long getTotalByParamViewModel(UnregSalarySearchParameter searchParameter);
+    
+    public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType);
 
 }

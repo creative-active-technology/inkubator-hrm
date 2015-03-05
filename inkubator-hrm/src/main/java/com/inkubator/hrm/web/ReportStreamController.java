@@ -97,6 +97,21 @@ public class ReportStreamController extends BaseController {
     }
 
     public StreamedContent getFileCv() {
+        FacesContext context = FacesUtil.getFacesContext();
+        String param = context.getExternalContext().getRequestParameterMap().get("id");
+    	StreamedContent file = new DefaultStreamedContent();
+    	try {
+    		if(param != null){
+    			file = bioDataService.generateCV(Long.parseLong(param));
+    		}
+		} catch (Exception ex) {
+			// TODO Auto-generated catch block
+			LOGGER.error(ex, ex);
+		}
+    	return file;
+    }
+
+    public StreamedContent getFilePph() {
         System.out.println("masuk cv");
         FacesContext context = FacesUtil.getFacesContext();
         String param = context.getExternalContext().getRequestParameterMap().get("id");
@@ -121,22 +136,6 @@ public class ReportStreamController extends BaseController {
                 LOGGER.error(ex, ex);
                 return new DefaultStreamedContent();
             }
-        }
-        return file;
-    }
-
-    public StreamedContent getFilePph() {
-        FacesContext context = FacesUtil.getFacesContext();
-        String param = context.getExternalContext().getRequestParameterMap().get("id");
-        StreamedContent file = null;
-        try {
-            if (param != null) {
-                file = new DefaultStreamedContent();
-                file = bioDataService.generateCV(Long.parseLong(param));
-            }
-        } catch (Exception ex) {
-            // TODO Auto-generated catch block
-            LOGGER.error(ex, ex);
         }
         return file;
     }

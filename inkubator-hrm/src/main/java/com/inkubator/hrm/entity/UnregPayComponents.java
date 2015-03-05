@@ -39,6 +39,7 @@ public class UnregPayComponents  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Set<UnregPayComponentsException> unregPayComponentsExceptions = new HashSet<>(0);
+     private Set<TempUnregPayroll> tempUnregPayrolls = new HashSet<>(0);
      private Integer totalEmpData;
      private Double totalNominal;
 
@@ -158,6 +159,15 @@ public class UnregPayComponents  implements java.io.Serializable {
 	public void setUnregPayComponentsExceptions(
 			Set<UnregPayComponentsException> unregPayComponentsExceptions) {
 		this.unregPayComponentsExceptions = unregPayComponentsExceptions;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unregPayComponents")
+	public Set<TempUnregPayroll> getTempUnregPayrolls() {
+		return tempUnregPayrolls;
+	}
+
+	public void setTempUnregPayrolls(Set<TempUnregPayroll> tempUnregPayrolls) {
+		this.tempUnregPayrolls = tempUnregPayrolls;
 	}
 
 	@Transient

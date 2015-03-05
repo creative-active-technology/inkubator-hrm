@@ -90,17 +90,23 @@
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="ipAddress" style="width: 20%">
+                            <p:column sortBy="ipAddress" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loginhistory.ip_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.ipAddress}"/>
                             </p:column>
-                            <p:column sortBy="languange" style="text-align: center;width: 15%">
+                            <p:column sortBy="languange" style="text-align: center;width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.language']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.languange}"/>
+                            </p:column>
+                            <p:column sortBy="appName" style="text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.app_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{loginHistoryData.appName}"/>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
