@@ -62,6 +62,8 @@
                                 <p:selectOneRadio id="ptkpStatus" styleClass="isitext_hrm" required="true" value="#{empPtkpFormController.empDataModel.ptkpStatusInt}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                     <f:selectItem itemLabel="#{appmsg['global.maried_no']}" itemValue="0" />
                                     <f:selectItem itemLabel="#{appmsg['global.maried_yes']}" itemValue="1" />
+                                    <p:ajax update="ptkpNumber" process="@this" listener="#{empPtkpFormController.doChangePtkpNumber()}"/>
+	                               	
                                 </p:selectOneRadio> 
                             </p:column>
                         </p:row>
@@ -80,7 +82,7 @@
                                 <h:outputLabel for="ptkpNumber" value=":"  styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%" >
-                                <p:spinner id="ptkpNumber" value="#{empPtkpFormController.empDataModel.ptkpNumber}" size="4" min="0" max="5" styleClass="isitext_hrm" required="true" />                                
+                                <p:spinner id="ptkpNumber" value="#{empPtkpFormController.empDataModel.ptkpNumber}" disabled="#{empPtkpFormController.isDisabledPtkpNumber}" size="4" min="0" max="5" styleClass="isitext_hrm" required="true" />                                
                             </p:column>
                         </p:row>
                         
