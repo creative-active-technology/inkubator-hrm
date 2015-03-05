@@ -404,7 +404,8 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
 	public StreamedContent generateSalarySlip(Long periodId, Long empDataId) throws Exception {
 		
-		LogMonthEndPayroll monthEndPayroll = logMonthEndPayrollDao.getEntityByEmpDataIdAndPeriodIdAndCompSpecific(empDataId, periodId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+		List<LogMonthEndPayroll> list = logMonthEndPayrollDao.getEntityByEmpDataIdAndPeriodIdAndCompSpecific(empDataId, periodId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+		LogMonthEndPayroll monthEndPayroll = list.get(0);
 		TerbilangUtil util = new TerbilangUtil(monthEndPayroll.getNominal());
 		
 		Map<String, Object> params = new HashMap<>();

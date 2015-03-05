@@ -11,149 +11,146 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
-import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
-import com.inkubator.hrm.service.TempUnregPayrollEmpPajakService;
+import com.inkubator.hrm.dao.UnregEmpTypeDao;
+import com.inkubator.hrm.entity.UnregEmpType;
+import com.inkubator.hrm.service.UnregEmpTypeService;
 
 /**
  *
  * @author rizkykojek
  */
-@Service(value = "tempUnregPayrollEmpPajakService")
+@Service(value = "unregEmpTypeService")
 @Lazy
-public class TempUnregPayrollEmpPajakServiceImpl extends IServiceImpl implements TempUnregPayrollEmpPajakService {
+public class UnregEmpTypeServiceImpl extends IServiceImpl implements UnregEmpTypeService {
 
 	@Autowired
-	private TempUnregPayrollEmpPajakDao tempUnregPayrollEmpPajakDao;
+	private UnregEmpTypeDao unregEmpTypeDao;
 	
 	@Override
-	public TempUnregPayrollEmpPajak getEntiyByPK(String id) throws Exception {
+	public UnregEmpType getEntiyByPK(String id) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak getEntiyByPK(Integer id) throws Exception {
+	public UnregEmpType getEntiyByPK(Integer id) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak getEntiyByPK(Long id) throws Exception {
+	public UnregEmpType getEntiyByPK(Long id) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void save(TempUnregPayrollEmpPajak entity) throws Exception {
+	public void save(UnregEmpType entity) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void update(TempUnregPayrollEmpPajak entity) throws Exception {
+	public void update(UnregEmpType entity) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void saveOrUpdate(TempUnregPayrollEmpPajak enntity) throws Exception {
+	public void saveOrUpdate(UnregEmpType enntity) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak saveData(TempUnregPayrollEmpPajak entity)
+	public UnregEmpType saveData(UnregEmpType entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType updateData(UnregEmpType entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType saveOrUpdateData(UnregEmpType entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType getEntityByPkIsActive(String id, Integer isActive)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak updateData(TempUnregPayrollEmpPajak entity)
+	public UnregEmpType getEntityByPkIsActive(String id, Byte isActive)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak saveOrUpdateData(
-			TempUnregPayrollEmpPajak entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(String id,
-			Integer isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(String id,
-			Byte isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(String id,
-			Boolean isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Integer id,
-			Integer isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Integer id,
-			Byte isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Integer id,
-			Boolean isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Long id,
-			Integer isActive) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
-	}
-
-	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Long id, Byte isActive)
+	public UnregEmpType getEntityByPkIsActive(String id, Boolean isActive)
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public TempUnregPayrollEmpPajak getEntityByPkIsActive(Long id,
-			Boolean isActive) throws Exception {
+	public UnregEmpType getEntityByPkIsActive(Integer id, Integer isActive)
+			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void delete(TempUnregPayrollEmpPajak entity) throws Exception {
+	public UnregEmpType getEntityByPkIsActive(Integer id, Byte isActive)
+			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public void softDelete(TempUnregPayrollEmpPajak entity) throws Exception {
+	public UnregEmpType getEntityByPkIsActive(Integer id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType getEntityByPkIsActive(Long id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType getEntityByPkIsActive(Long id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public UnregEmpType getEntityByPkIsActive(Long id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void delete(UnregEmpType entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void softDelete(UnregEmpType entity) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
@@ -183,67 +180,61 @@ public class TempUnregPayrollEmpPajakServiceImpl extends IServiceImpl implements
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllData() throws Exception {
+	public List<UnregEmpType> getAllData() throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllData(Boolean isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllData(Boolean isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllData(Integer isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllData(Integer isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllData(Byte isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllData(Byte isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllDataPageAble(int firstResult,
+	public List<UnregEmpType> getAllDataPageAble(int firstResult,
 			int maxResults, Order order) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllDataPageAbleIsActive(
-			int firstResult, int maxResults, Order order, Boolean isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Boolean isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllDataPageAbleIsActive(
-			int firstResult, int maxResults, Order order, Integer isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Integer isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	public List<TempUnregPayrollEmpPajak> getAllDataPageAbleIsActive(
-			int firstResult, int maxResults, Order order, Byte isActive)
-			throws Exception {
+	public List<UnregEmpType> getAllDataPageAbleIsActive(int firstResult,
+			int maxResults, Order order, Byte isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
 
 	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
-		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregEmpType> getAllDataByUnregSalaryId(Long unregSalaryId) {
+		return unregEmpTypeDao.getAllDataByUnregSalaryId(unregSalaryId);
 		
 	}
 

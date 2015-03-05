@@ -26,7 +26,8 @@ public class TempUnregPayroll implements java.io.Serializable {
     private Integer version;
     private UnregSalary unregSalary;
     private EmpData empData;
-    private UnregPayComponents unregPayComponents;
+    private PaySalaryComponent paySalaryComponent;
+    private Integer factor;
     private BigDecimal nominal;
     private Date createdOn;
     private String createdBy;
@@ -81,13 +82,13 @@ public class TempUnregPayroll implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "unreg_pay_component_id", nullable = false)
-    public UnregPayComponents getUnregPayComponents() {
-		return unregPayComponents;
+    @JoinColumn(name = "pay_salary_component_id", nullable = false)
+    public PaySalaryComponent getPaySalaryComponent() {
+		return paySalaryComponent;
 	}
 
-	public void setUnregPayComponents(UnregPayComponents unregPayComponents) {
-		this.unregPayComponents = unregPayComponents;
+	public void setPaySalaryComponent(PaySalaryComponent paySalaryComponent) {
+		this.paySalaryComponent = paySalaryComponent;
 	}
 
     @Column(name = "nominal", precision = 10, scale = 0, nullable = false)
@@ -98,6 +99,15 @@ public class TempUnregPayroll implements java.io.Serializable {
     public void setNominal(BigDecimal nominal) {
         this.nominal = nominal;
     }     
+        
+    @Column(name = "factor")
+	public Integer getFactor() {
+		return factor;
+	}
+
+	public void setFactor(Integer factor) {
+		this.factor = factor;
+	}
 
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)

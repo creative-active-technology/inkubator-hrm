@@ -1152,4 +1152,28 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
     }
 
+	@Override
+	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);        
+        
+        if(!departmentIds.isEmpty()) {
+        	criteria.add(Restrictions.in("department.id", departmentIds));
+        }
+        if(!religionIds.isEmpty()) {
+        	criteria.add(Restrictions.in("religion.id", religionIds));
+        }
+        if(!golJabIds.isEmpty()) {
+        	criteria.add(Restrictions.in("golonganJabatan.id", golJabIds));
+        }
+        if(!empTypeIds.isEmpty()) {
+        	criteria.add(Restrictions.in("employeeType.id", empTypeIds));
+        }
+		
+		return criteria.list();
+	}
+
 }

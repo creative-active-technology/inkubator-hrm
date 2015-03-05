@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +41,6 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
-import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
@@ -65,11 +65,8 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-
-import java.util.ArrayList;
 
 /**
  *
@@ -823,4 +820,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges) {
         return empDataDao.getTotalReportPensionPreparementByParam(listDepartmentId, listEmpTypeId, listEmpAges);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
+		return empDataDao.getAllDataByDepartmentAndReligionAndGolJabAndEmpType(departmentIds, religionIds, golJabIds, empTypeIds);
+		
+	}
 }
