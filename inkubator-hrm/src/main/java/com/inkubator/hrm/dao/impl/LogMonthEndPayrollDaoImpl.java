@@ -370,11 +370,20 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
     }
 
 	@Override
-	public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific) {
+	public List<LogMonthEndPayroll> getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("empDataId", empDataId));
 		criteria.add(Restrictions.eq("periodeId", periodId));
 		criteria.add(Restrictions.eq("modelCompSpecific", specific));
+		return criteria.list();
+	}
+	
+	@Override
+	public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndPaySalaryCompId(Long empDataId, Long periodId, Long paySalaryCompId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empDataId", empDataId));
+		criteria.add(Restrictions.eq("periodeId", periodId));
+		criteria.add(Restrictions.eq("paySalaryCompId", paySalaryCompId));
 		return (LogMonthEndPayroll) criteria.uniqueResult();
 	}
     

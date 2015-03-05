@@ -9,4 +9,8 @@ import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
  */
 public interface TempUnregPayrollEmpPajakDao extends IDAO<TempUnregPayrollEmpPajak> {
 
+	public TempUnregPayrollEmpPajak getEntityByEmpDataIdAndUnregSalaryIdAndTaxComponentId(Long empDataId, Long unregSalaryId, Long taxCompId);
+
+	public void deleteByUnregSalaryId(Long unregSalaryId);
+
 }
