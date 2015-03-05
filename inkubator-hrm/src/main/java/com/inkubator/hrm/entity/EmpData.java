@@ -3,11 +3,14 @@ package com.inkubator.hrm.entity;
 
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -55,6 +58,7 @@ public class EmpData implements java.io.Serializable {
     private Boolean heatlyPremi;
     private Boolean ptkpStatus;
     private Integer ptkpNumber;
+    private String ptkpNumberLabel;
     private Boolean insentifStatus;
 //    private BigDecimal basicSalary;
     private String basicSalary;
@@ -612,6 +616,24 @@ public class EmpData implements java.io.Serializable {
 
     public void setListBioEducationHistory(List<BioEducationHistory> listBioEducationHistory) {
         this.listBioEducationHistory = listBioEducationHistory;
+    }
+
+    @Transient
+    public String getPtkpNumberLabel() {
+        String message = "";
+        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        if(ptkpNumber == null){
+            message = messages.getString("global.no_dependent");
+        }else if(ptkpNumber == 0){
+            message = messages.getString("global.no_dependent");
+        }else{
+            message = String.valueOf(ptkpNumber) + messages.getString("global.people");
+        }
+        return message;
+    }
+
+    public void setPtkpNumberLabel(String ptkpNumberLabel) {
+        this.ptkpNumberLabel = ptkpNumberLabel;
     }
     
     
