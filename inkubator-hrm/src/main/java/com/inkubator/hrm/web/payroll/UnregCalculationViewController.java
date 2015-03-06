@@ -1,4 +1,4 @@
-package com.inkubator.hrm.web.report;
+package com.inkubator.hrm.web.payroll;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -12,7 +12,7 @@ import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.UnregSalaryService;
 import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.web.lazymodel.UnregSalaryCalculationLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.UnregCalculationLazyDataModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -20,9 +20,9 @@ import com.inkubator.webcore.controller.BaseController;
 *
 * @author rizkykojek
 */
-@ManagedBean(name = "unregSalaryCalculationViewController")
+@ManagedBean(name = "unregCalculationViewController")
 @ViewScoped
-public class UnregSalaryCalculationViewController extends BaseController {
+public class UnregCalculationViewController extends BaseController {
 
 	private UnregSalary selectedModel;
 	private LazyDataModel<UnregSalary> lazyDataModel;
@@ -58,7 +58,7 @@ public class UnregSalaryCalculationViewController extends BaseController {
 
 	public LazyDataModel<UnregSalary> getLazyDataModel() {
 		if(lazyDataModel == null){
-			lazyDataModel = new UnregSalaryCalculationLazyDataModel(unregSalaryService, period.getFromPeriode(), parameter);
+			lazyDataModel = new UnregCalculationLazyDataModel(unregSalaryService, period.getFromPeriode(), parameter);
 		}
 		return lazyDataModel;
 	}
@@ -108,7 +108,7 @@ public class UnregSalaryCalculationViewController extends BaseController {
 	}
 
 	public String doDetail(){
-		return "/protected/payroll/unreg_salary_calc_execute.htm?faces-redirect=true&execution=e" + selectedModel.getId();
+		return "/protected/payroll/unreg_calculation_exec.htm?faces-redirect=true&execution=e" + selectedModel.getId();
 	}
 	
 	public void doSearch(){

@@ -35,7 +35,7 @@
                                     <p:outputLabel  value="#{appmsg['unregSalary.name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{unregSalaryCalculationExecuteController.unregSalary.name}" />
+                                    <p:outputLabel value="#{unregCalculationExecuteController.unregSalary.name}" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -43,7 +43,7 @@
                                     <p:outputLabel  value="#{appmsg['unregSalary.salary_date']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{unregSalaryCalculationExecuteController.unregSalary.salaryDate}" >
+                                    <p:outputLabel value="#{unregCalculationExecuteController.unregSalary.salaryDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
@@ -54,25 +54,25 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{unregSalaryCalculationExecuteController.doInitCalculatePayroll()}">                        
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{unregCalculationExecuteController.doInitCalculatePayroll()}">                        
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Calculation"/>
+                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreg_Salary_Calculation"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{unregSalaryCalculationExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                    <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{unregCalculationExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <!--<p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>-->
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unregSalaryCalculationExecuteController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unregCalculationExecuteController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         
-                        <p:dataTable  var="data"  value="#{unregSalaryCalculationExecuteController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{unregCalculationExecuteController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -109,13 +109,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" 
-                                                 action="#{unregSalaryCalculationExecuteController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryCalculationExecuteController.selectedModel}" />
+                                                 action="#{unregCalculationExecuteController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregCalculationExecuteController.selectedModel}" />
                                 </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{unregSalaryCalculationExecuteController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{unregCalculationExecuteController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -139,14 +139,14 @@
                             <h:panelGrid columns="4"  style="margin-bottom: 10px">
                                 <p:outputLabel value="#{appmsg['payroll.payroll_date']}"  styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm"/>
-                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}" value="#{unregSalaryCalculationExecuteController.payrollCalculationDate}"
+                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}" value="#{unregCalculationExecuteController.payrollCalculationDate}"
                                              required="true" navigator="true">
                                 </p:calendar>
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{unregSalaryCalculationExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{unregCalculationExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
-                            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{unregSalaryCalculationExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{unregSalaryCalculationExecuteController.onCompleteCalculatePayroll}" update=":formId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
+                            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{unregCalculationExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
+                                <p:ajax event="complete" listener="#{unregCalculationExecuteController.onCompleteCalculatePayroll}" update=":formId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
                             </p:progressBar>
                             <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
                         </h:form>

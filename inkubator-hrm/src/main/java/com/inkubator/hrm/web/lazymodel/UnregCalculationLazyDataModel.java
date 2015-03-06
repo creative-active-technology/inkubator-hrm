@@ -20,16 +20,16 @@ import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 *
 * @author rizkykojek
 */
-public class UnregSalaryCalculationLazyDataModel extends LazyDataModel<UnregSalary> implements Serializable {
+public class UnregCalculationLazyDataModel extends LazyDataModel<UnregSalary> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(UnregSalaryCalculationLazyDataModel.class);
+	private static final Logger LOGGER = Logger.getLogger(UnregCalculationLazyDataModel.class);
     private final UnregSalaryService unregSalaryService;
     private Date fromPeriodPayrollType;
     private List<UnregSalary> list = new ArrayList<>();
     private Integer total;
     private UnregSalarySearchParameter parameter;
 
-    public UnregSalaryCalculationLazyDataModel(UnregSalaryService unregSalaryService, Date fromPeriodPayrollType, UnregSalarySearchParameter parameter) {
+    public UnregCalculationLazyDataModel(UnregSalaryService unregSalaryService, Date fromPeriodPayrollType, UnregSalarySearchParameter parameter) {
         this.unregSalaryService = unregSalaryService;
         this.parameter = parameter;
         this.fromPeriodPayrollType = fromPeriodPayrollType;
