@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                <!--<h:outputStylesheet library="css" name="progress_bar.css" />-->
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <h:outputStylesheet library="css" name="progress_bar.css" />
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.taxCalculation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.taxCalculation_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{unregCalculationTaxViewController.unregSalary.name}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.salary_date']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{unregCalculationTaxViewController.unregSalary.salaryDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreg_Salary_Calculation_Tax"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unregCalculationTaxViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:dataTable  var="data"  value="#{unregCalculationTaxViewController.list}" lazy="true" 
+                                      id="tableId" rows="23" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_tax_calculation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.taxName']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.taxComponentName}" />
+                            </p:column>
+                            <p:column style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <div style="text-align: right;">
+                                    <h:outputLabel value= "#{data.nominal}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 7%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{unregCalculationTaxViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregCalculationTaxViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

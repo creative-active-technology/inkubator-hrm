@@ -14,6 +14,8 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
 import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
 import com.inkubator.hrm.service.TempUnregPayrollEmpPajakService;
+import com.inkubator.hrm.web.model.UnregPayrollEmpPajakModel;
+import com.inkubator.hrm.web.search.UnregPayrollEmpPajakSearchParameter;
 
 /**
  *
@@ -243,7 +245,27 @@ public class TempUnregPayrollEmpPajakServiceImpl extends IServiceImpl implements
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
-		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);
+		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregPayrollEmpPajakModel> getAllDataGroupingTaxCompByUnregSalaryId(Long unregSalaryId) {
+		return tempUnregPayrollEmpPajakDao.getAllDataGroupingTaxCompByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TempUnregPayrollEmpPajak> getByParam(UnregPayrollEmpPajakSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+		return tempUnregPayrollEmpPajakDao.getByParam(parameter, first, pageSize, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(UnregPayrollEmpPajakSearchParameter parameter) throws Exception {
+		return tempUnregPayrollEmpPajakDao.getTotalByParam(parameter);
 		
 	}
 

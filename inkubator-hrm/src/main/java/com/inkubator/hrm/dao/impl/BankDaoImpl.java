@@ -30,6 +30,8 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
     @Override
     public List<Bank> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("bank", FetchMode.JOIN);
+        criteria.setFetchMode("bankGroup", FetchMode.JOIN);
         doSearchBankByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);

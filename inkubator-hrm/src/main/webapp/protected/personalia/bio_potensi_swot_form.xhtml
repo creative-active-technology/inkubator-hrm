@@ -82,8 +82,9 @@
                                 <h:outputLabel for="potensiPointId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:spinner id="potensiPointId" value="#{bioPotensiSwotFormController.model.potensiPoint}" size="4" min="0" styleClass="isitext_hrm" required="true">
+                                <p:spinner id="potensiPointId" max="100" value="#{bioPotensiSwotFormController.model.potensiPoint}" size="4" min="0" styleClass="isitext_hrm" required="true">
                                 </p:spinner>
+                                <h:outputLabel value=" %" styleClass="label_hrm"/>
                             </p:column>
                         </p:row>
 

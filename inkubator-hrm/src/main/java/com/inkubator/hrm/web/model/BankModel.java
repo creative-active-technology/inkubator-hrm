@@ -16,6 +16,7 @@ public class BankModel implements Serializable {
     private String bankIdentificationNumber;
     private String description;
     private String branchCode;
+    private String branchCodeInput;
     private String branchName;
     private String address;
     private String bankPhone;
@@ -133,6 +134,14 @@ public class BankModel implements Serializable {
 
     public void setBank(Long bank) {
         this.bank = bank;
+    }
+
+    public String getBranchCodeInput() {
+        return branchCodeInput;
+    }
+
+    public void setBranchCodeInput(String branchCodeInput) {
+        this.branchCodeInput = branchCodeInput;
     }
 
     
