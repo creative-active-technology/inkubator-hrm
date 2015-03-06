@@ -18,15 +18,15 @@ import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 *
 * @author rizkykojek
 */
-public class UnregSalaryCalculationExecuteLazyDataModel extends LazyDataModel<UnregSalaryCalculationExecuteModel> implements Serializable {
+public class UnregCalculationExecuteLazyDataModel extends LazyDataModel<UnregSalaryCalculationExecuteModel> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(UnregSalaryCalculationExecuteLazyDataModel.class);
+	private static final Logger LOGGER = Logger.getLogger(UnregCalculationExecuteLazyDataModel.class);
     private final TempUnregPayrollService tempUnregPayrollService;
     private List<UnregSalaryCalculationExecuteModel> list = new ArrayList<>();
     private Integer total;
     private Long unregSalaryId;
 
-    public UnregSalaryCalculationExecuteLazyDataModel(Long unregSalaryId, TempUnregPayrollService tempUnregPayrollService) {
+    public UnregCalculationExecuteLazyDataModel(Long unregSalaryId, TempUnregPayrollService tempUnregPayrollService) {
         this.tempUnregPayrollService = tempUnregPayrollService;
         this.unregSalaryId = unregSalaryId;
     }

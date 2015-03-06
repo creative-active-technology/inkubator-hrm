@@ -28,7 +28,7 @@ import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempUnregPayrollService;
 import com.inkubator.hrm.service.UnregSalaryService;
-import com.inkubator.hrm.web.lazymodel.UnregSalaryCalculationExecuteLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.UnregCalculationExecuteLazyDataModel;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -39,9 +39,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "unregSalaryCalculationExecuteController")
+@ManagedBean(name = "unregCalculationExecuteController")
 @ViewScoped
-public class UnregSalaryCalculationExecuteController extends BaseController {
+public class UnregCalculationExecuteController extends BaseController {
 
     
     private LazyDataModel<UnregSalaryCalculationExecuteModel> lazyDataModel;
@@ -71,8 +71,7 @@ public class UnregSalaryCalculationExecuteController extends BaseController {
 	        progress = null; 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
-        }
-        
+        }        
     }
 
     @PreDestroy
@@ -171,7 +170,7 @@ public class UnregSalaryCalculationExecuteController extends BaseController {
 
     public LazyDataModel<UnregSalaryCalculationExecuteModel> getLazyDataModel() {
         if (lazyDataModel == null) {
-            lazyDataModel = new UnregSalaryCalculationExecuteLazyDataModel(unregSalary.getId(), tempUnregPayrollService);
+            lazyDataModel = new UnregCalculationExecuteLazyDataModel(unregSalary.getId(), tempUnregPayrollService);
         }
         return lazyDataModel;
     }
