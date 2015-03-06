@@ -37,6 +37,8 @@ public class BankFormController extends BaseController {
     private BankGroupService bankGroupService;
     private Map<String, Long> dropDownBank = new HashMap<String, Long>();
     private Map<String, Long> dropDownBankGroup = new HashMap<String, Long>();
+    private Boolean isReadOnlyBankNameAndCode;
+    private Boolean isReadOnlyBankNameAndCodeBranch;
 
     @PostConstruct
     @Override
@@ -45,28 +47,38 @@ public class BankFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("execution");
         bankModel = new BankModel();
         isUpdate = Boolean.FALSE;
-
+        isReadOnlyBankNameAndCode = Boolean.FALSE;
+        isReadOnlyBankNameAndCodeBranch = Boolean.TRUE;
         try {
             if (StringUtils.isNotEmpty(param)) {
-                Bank bank = bankService.getEntiyByPK(Long.parseLong(param.substring(1)));
+                Bank bank = bankService.getEntityWithDetail(Long.parseLong(param.substring(1)));
                 if (bank != null) {
                     bankModel.setId(bank.getId());
-                    bankModel.setBankCode(bank.getBankCode());
-                    bankModel.setBankName(bank.getBankName());
                     bankModel.setSwiftCode(bank.getSwiftCode());
                     bankModel.setIban(bank.getIban());
                     bankModel.setBankIdentificationNumber(bank.getBankIdentificationNo());
                     bankModel.setDescription(bank.getDescription());
-                    bankModel.setBranchCode(bank.getBranchCode());
-                    bankModel.setBranchName(bank.getBranchName());
+                    bankModel.setBranchCodeInput(bank.getBranchCode());
                     bankModel.setAddress(bank.getAddress());
                     bankModel.setBankPhone(bank.getBankPhone());
                     bankModel.setBankFax(bank.getBankFax());
+                    bankModel.setBranchName(bank.getBranchName());
                     if (bank.getBankGroup().getId() != null) {
                         bankModel.setBankGroup(bank.getBankGroup().getId());
                     }
-                    if (bank.getBank().getId() != null) {
+                    if (bank.getBank() != null) {
+                        isReadOnlyBankNameAndCode = Boolean.TRUE;
+                        isReadOnlyBankNameAndCodeBranch = Boolean.FALSE;
                         bankModel.setBank(bank.getBank().getId());
+                        bankModel.setBankCode(bank.getBank().getBankCode());
+                        bankModel.setBankName(bank.getBank().getBankName());
+                        bankModel.setBranchCode(bank.getBank().getBankCode());
+                    } else {
+                        isReadOnlyBankNameAndCodeBranch = Boolean.TRUE;
+                        isReadOnlyBankNameAndCode = Boolean.FALSE;
+                        bankModel.setBranchName(bank.getBranchName());
+                        bankModel.setBankCode(bank.getBankCode());
+                        bankModel.setBankName(bank.getBankName());
                     }
                     isUpdate = Boolean.TRUE;
                 }
@@ -96,6 +108,7 @@ public class BankFormController extends BaseController {
         dropDownBank = null;
         dropDownBankGroup = null;
         bankGroupService = null;
+        isReadOnlyBankNameAndCode = null;
     }
 
     public BankModel getBankModel() {
@@ -116,6 +129,14 @@ public class BankFormController extends BaseController {
 
     public void setBankService(BankService bankService) {
         this.bankService = bankService;
+    }
+
+    public Boolean getIsReadOnlyBankNameAndCode() {
+        return isReadOnlyBankNameAndCode;
+    }
+
+    public void setIsReadOnlyBankNameAndCode(Boolean isReadOnlyBankNameAndCode) {
+        this.isReadOnlyBankNameAndCode = isReadOnlyBankNameAndCode;
     }
 
     public String doSave() {
@@ -147,13 +168,15 @@ public class BankFormController extends BaseController {
         if (bankModel.getId() != null) {
             bank.setId(bankModel.getId());
         }
-        bank.setBankCode(bankModel.getBankCode());
-        bank.setBankName(bankModel.getBankName());
+        if (bankModel.getBank() == null || bankModel.getBank() == 0) {
+            bank.setBankCode(bankModel.getBankCode());
+            bank.setBankName(bankModel.getBankName());
+        }
         bank.setSwiftCode(bankModel.getSwiftCode());
         bank.setIban(bankModel.getIban());
         bank.setBankIdentificationNo(bankModel.getBankIdentificationNumber());
         bank.setDescription(bankModel.getDescription());
-        bank.setBranchCode(bankModel.getBranchCode());
+        bank.setBranchCode(bankModel.getBranchCodeInput());
         bank.setBranchName(bankModel.getBranchName());
         bank.setAddress(bankModel.getAddress());
         bank.setBankPhone(bankModel.getBankPhone());
@@ -175,6 +198,23 @@ public class BankFormController extends BaseController {
         bankModel.setIban(null);
         bankModel.setSwiftCode(null);
         bankModel.setDescription(null);
+    }
+
+    public void doChangeReadOnlyBankNameAndCode() throws Exception {
+        if (bankModel.getBank() == 0) {
+            isReadOnlyBankNameAndCode = Boolean.FALSE;
+            isReadOnlyBankNameAndCodeBranch = Boolean.TRUE;
+            bankModel.setBankCode(null);
+            bankModel.setBankName(null);
+            bankModel.setBranchCode(null);
+        } else if (bankModel.getBank() != null) {
+            isReadOnlyBankNameAndCode = Boolean.TRUE;
+            isReadOnlyBankNameAndCodeBranch = Boolean.FALSE;
+            Bank bank = bankService.getEntiyByPK(bankModel.getBank());
+            bankModel.setBankCode(bank.getBankCode());
+            bankModel.setBankName(bank.getBankName());
+            bankModel.setBranchCode(bank.getBankCode());
+        }
     }
 
     public String doBack() {
@@ -203,6 +243,14 @@ public class BankFormController extends BaseController {
 
     public void setDropDownBankGroup(Map<String, Long> dropDownBankGroup) {
         this.dropDownBankGroup = dropDownBankGroup;
+    }
+
+    public Boolean getIsReadOnlyBankNameAndCodeBranch() {
+        return isReadOnlyBankNameAndCodeBranch;
+    }
+
+    public void setIsReadOnlyBankNameAndCodeBranch(Boolean isReadOnlyBankNameAndCodeBranch) {
+        this.isReadOnlyBankNameAndCodeBranch = isReadOnlyBankNameAndCodeBranch;
     }
 
 }
