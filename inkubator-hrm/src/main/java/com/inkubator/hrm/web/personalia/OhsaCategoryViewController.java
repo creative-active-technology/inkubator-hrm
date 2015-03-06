@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.reference;
+package com.inkubator.hrm.web.personalia;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.BankGroup;
-import com.inkubator.hrm.service.BankGroupService;
-import com.inkubator.hrm.web.lazymodel.BankGroupLazyDataModel;
-import com.inkubator.hrm.web.search.BankGroupSearchParameter;
+import com.inkubator.hrm.entity.OhsaCategory;
+import com.inkubator.hrm.service.OhsaCategoryService;
+import com.inkubator.hrm.web.lazymodel.OhsaCategoryLazyDataModel;
+import com.inkubator.hrm.web.search.OhsaCategorySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -33,24 +33,24 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author EKA
  */
-@ManagedBean(name = "bankGroupViewController")
+@ManagedBean(name = "ohsaCategoryViewController")
 @ViewScoped
-public class BankGroupViewController extends BaseController{
-    @ManagedProperty(value = "#{bankGroupService}")
-    private BankGroupService service;
-    private BankGroupSearchParameter searchParameter;
-    private LazyDataModel<BankGroup> lazy;
-    private BankGroup selected;
+public class OhsaCategoryViewController extends BaseController{
+    @ManagedProperty(value = "#{ohsaCategoryService}")
+    private OhsaCategoryService service;
+    private OhsaCategorySearchParameter searchParameter;
+    private LazyDataModel<OhsaCategory> lazy;
+    private OhsaCategory selected;
     
     @PostConstruct
     @Override
     public void initialization(){
         super.initialization();
-        searchParameter = new BankGroupSearchParameter();
+        searchParameter = new OhsaCategorySearchParameter();
     }
     
     @PreDestroy
-    private void cleanAndExit(){
+    private void cleandAndExit(){
         searchParameter = null;
         lazy = null;
         service = null;
@@ -64,7 +64,7 @@ public class BankGroupViewController extends BaseController{
     public void doSelectEntity(){
         try{
             selected = this.service.getEntiyByPK(selected.getId());
-        }catch (Exception ex){
+        } catch(Exception ex){
             LOGGER.error("Error", ex);
         }
     }
@@ -74,12 +74,12 @@ public class BankGroupViewController extends BaseController{
             this.service.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex){
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+        }catch (ConstraintViolationException | DataIntegrityViolationException ex){
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "global.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error", ex);
         } catch (Exception ex){
-            LOGGER.error("Error", ex);
+            LOGGER.error("error", ex);
         }
     }
     
@@ -90,7 +90,7 @@ public class BankGroupViewController extends BaseController{
         options.put("resizable", true);
         options.put("contentWidth", 400);
         options.put("contentHeight", 360);
-        RequestContext.getCurrentInstance().openDialog("bank_group_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("ohsa_cat_form", options, params);
     }
     
     public void doAdd(){
@@ -101,7 +101,7 @@ public class BankGroupViewController extends BaseController{
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
-        dataToSend.put("bankGroupId", dataIsi);
+        dataToSend.put("ohsaCategoryId", dataIsi);
         showDialog(dataToSend);
     }
     
@@ -119,40 +119,39 @@ public class BankGroupViewController extends BaseController{
         }
     }
 
-    public BankGroupService getService() {
+    public OhsaCategoryService getService() {
         return service;
     }
 
-    public void setService(BankGroupService service) {
+    public void setService(OhsaCategoryService service) {
         this.service = service;
     }
 
-    public BankGroupSearchParameter getSearchParameter() {
+    public OhsaCategorySearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(BankGroupSearchParameter searchParameter) {
+    public void setSearchParameter(OhsaCategorySearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<BankGroup> getLazy() {
+    public LazyDataModel<OhsaCategory> getLazy() {
         if(lazy == null){
-            lazy = new BankGroupLazyDataModel(searchParameter, service);
+            lazy = new OhsaCategoryLazyDataModel(searchParameter, service);
         }
         return lazy;
     }
 
-    public void setLazy(LazyDataModel<BankGroup> lazy) {
+    public void setLazy(LazyDataModel<OhsaCategory> lazy) {
         this.lazy = lazy;
     }
 
-    public BankGroup getSelected() {
+    public OhsaCategory getSelected() {
         return selected;
     }
 
-    public void setSelected(BankGroup selected) {
+    public void setSelected(OhsaCategory selected) {
         this.selected = selected;
     }
-    
     
 }

@@ -672,8 +672,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 //            status = HRMConstant.TF_STATUS_TIDAK_KAWIN;
 //        }else{
         status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK";
-        ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
-//      }
+        if (empData.getPtkpStatus() == Boolean.TRUE) {
+            ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
+        }else{
+            ptkpNumber = 0;
+        }
 
         taxFree = taxFreeDao.getEntityByTfStatusAndIncPerson(status, ptkpNumber);
         update.setTaxFree(taxFree);
@@ -763,7 +766,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
             listDepartmentId.add(department.getId());
         }
         return empDataDao.getAllDataByDepartementAndEducation(listDepartmentId, listEducationLevelId, firstResult, maxResults, order);
-        
+
     }
 
     @Override
@@ -821,10 +824,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getTotalReportPensionPreparementByParam(listDepartmentId, listEmpTypeId, listEmpAges);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
-		return empDataDao.getAllDataByDepartmentAndReligionAndGolJabAndEmpType(departmentIds, religionIds, golJabIds, empTypeIds);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
+        return empDataDao.getAllDataByDepartmentAndReligionAndGolJabAndEmpType(departmentIds, religionIds, golJabIds, empTypeIds);
+
+    }
 }
