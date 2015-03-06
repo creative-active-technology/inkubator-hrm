@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
  */
 public interface TempUnregPayrollEmpPajakService extends IService<TempUnregPayrollEmpPajak> {
 
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception;
+
 }

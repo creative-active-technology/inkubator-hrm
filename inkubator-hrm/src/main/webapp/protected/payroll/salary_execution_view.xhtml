@@ -218,9 +218,9 @@
                         <h:form id="detailPanel">
                             <p:messages/>
                             <h:panelGrid columns="4"  style="margin-bottom: 10px">
-                                <p:outputLabel value="Tanggal Payroll"  styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['payroll.payroll_date']}"  styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm"/>
-                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="Tanggal Kalkulasi" value="#{paySalaryExecuteController.payrollCalculationDate}"
+                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}" value="#{paySalaryExecuteController.payrollCalculationDate}"
                                              required="true" navigator="true">
                                 </p:calendar>
                                 <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>

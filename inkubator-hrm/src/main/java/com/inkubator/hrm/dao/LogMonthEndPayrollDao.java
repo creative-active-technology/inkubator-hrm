@@ -47,6 +47,8 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
     
     public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter);
     
-    public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific);
+    public List<LogMonthEndPayroll> getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific);
+
+    public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndPaySalaryCompId(Long empDataId, Long periodId, Long paySalaryCompId);
     
 }

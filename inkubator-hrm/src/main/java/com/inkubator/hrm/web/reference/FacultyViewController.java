@@ -125,7 +125,7 @@ public class FacultyViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 365);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("faculty_form", options, params);
     }
 

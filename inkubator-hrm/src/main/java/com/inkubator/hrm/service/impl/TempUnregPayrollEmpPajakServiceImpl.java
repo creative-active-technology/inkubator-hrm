@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
 import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
 import com.inkubator.hrm.service.TempUnregPayrollEmpPajakService;
 
@@ -18,6 +23,9 @@ import com.inkubator.hrm.service.TempUnregPayrollEmpPajakService;
 @Lazy
 public class TempUnregPayrollEmpPajakServiceImpl extends IServiceImpl implements TempUnregPayrollEmpPajakService {
 
+	@Autowired
+	private TempUnregPayrollEmpPajakDao tempUnregPayrollEmpPajakDao;
+	
 	@Override
 	public TempUnregPayrollEmpPajak getEntiyByPK(String id) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -230,6 +238,13 @@ public class TempUnregPayrollEmpPajakServiceImpl extends IServiceImpl implements
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
+		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);
+		
 	}
 
 }
