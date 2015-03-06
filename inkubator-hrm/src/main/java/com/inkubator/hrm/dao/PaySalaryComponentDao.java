@@ -48,5 +48,7 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
 
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter);
     
+    public List<PaySalaryComponent> getAllDataByComponentCategoryZeroOrOne();
+    
     public List<Integer> getAllModelReferensiId();
 }

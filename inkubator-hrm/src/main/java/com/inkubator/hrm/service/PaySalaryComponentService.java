@@ -37,5 +37,6 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
     public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) throws Exception;
-    
+
+    public List<PaySalaryComponent> getAllDataByComponentCategoryZeroOrOne() throws Exception;
 }
