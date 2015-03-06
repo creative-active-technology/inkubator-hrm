@@ -36,8 +36,8 @@ public class TempUnregPayrollEmpPajakDaoImpl extends IDAOImpl<TempUnregPayrollEm
 
 	@Override
 	public void deleteByUnregSalaryId(Long unregSalaryId) {
-		Query query = getCurrentSession().createQuery("delete from TempUnregPayrollEmpPajak where unregSalary.id = :unregSalaryId");
-		query.setParameter("unregSalaryId", unregSalaryId);
+		Query query = getCurrentSession().createQuery("delete from TempUnregPayrollEmpPajak where unregSalary.id = :unregSalaryId")
+				.setLong("unregSalaryId", unregSalaryId);		
         query.executeUpdate();
 	}
 	

@@ -29,7 +29,7 @@ public class UnregSalaryCalculationLazyDataModel extends LazyDataModel<UnregSala
     private Integer total;
     private UnregSalarySearchParameter parameter;
 
-    public UnregSalaryCalculationLazyDataModel(UnregSalaryService unregSalaryService, Date fromPeriodPayrollType, UnregSalarySearchParameter parameter) throws Exception {
+    public UnregSalaryCalculationLazyDataModel(UnregSalaryService unregSalaryService, Date fromPeriodPayrollType, UnregSalarySearchParameter parameter) {
         this.unregSalaryService = unregSalaryService;
         this.parameter = parameter;
         this.fromPeriodPayrollType = fromPeriodPayrollType;

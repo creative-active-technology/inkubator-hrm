@@ -58,11 +58,7 @@ public class UnregSalaryCalculationViewController extends BaseController {
 
 	public LazyDataModel<UnregSalary> getLazyDataModel() {
 		if(lazyDataModel == null){
-			try {
-				lazyDataModel = new UnregSalaryCalculationLazyDataModel(unregSalaryService, period.getFromPeriode(), parameter);
-			} catch (Exception ex) {
-				LOGGER.error("Error ", ex);
-			}
+			lazyDataModel = new UnregSalaryCalculationLazyDataModel(unregSalaryService, period.getFromPeriode(), parameter);
 		}
 		return lazyDataModel;
 	}
@@ -112,7 +108,7 @@ public class UnregSalaryCalculationViewController extends BaseController {
 	}
 
 	public String doDetail(){
-		return "/protected/payroll/unreg_salary_calc_detail.htm?faces-redirect=true&execution=e" + selectedModel.getId();
+		return "/protected/payroll/unreg_salary_calc_execute.htm?faces-redirect=true&execution=e" + selectedModel.getId();
 	}
 	
 	public void doSearch(){
