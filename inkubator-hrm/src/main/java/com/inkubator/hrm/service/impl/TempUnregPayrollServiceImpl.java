@@ -49,6 +49,7 @@ import com.inkubator.hrm.entity.UnregPayComponents;
 import com.inkubator.hrm.entity.UnregPayComponentsException;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.TempUnregPayrollService;
+import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 
 /**
  *
@@ -462,6 +463,20 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
 		tempUnregPayrollDao.deleteByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable) {
+		return tempUnregPayrollDao.getByParamUnregSalaryId(unregSalaryId, first, pageSize, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) {
+		return tempUnregPayrollDao.getTotalByParamUnregSalaryId(unregSalaryId);
 		
 	}
 }

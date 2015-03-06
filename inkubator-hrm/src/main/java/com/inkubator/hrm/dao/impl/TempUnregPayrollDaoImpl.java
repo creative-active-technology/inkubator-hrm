@@ -7,12 +7,14 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.entity.TempUnregPayroll;
+import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 
 /**
  *
@@ -52,8 +54,39 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
 
 	@Override
 	public void deleteByUnregSalaryId(Long unregSalaryId) {
-		Query query = getCurrentSession().createQuery("delete from TempUnregPayroll where unregSalary.id = :unregSalaryId");
-		query.setParameter("unregSalaryId", unregSalaryId);
+		Query query = getCurrentSession().createQuery("delete from TempUnregPayroll where unregSalary.id = :unregSalaryId")
+				.setLong("unregSalaryId", unregSalaryId);
         query.executeUpdate();
+	}
+
+	@Override
+	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT unregSalary.id AS unregSalaryId, " +
+    			"paySalaryComponent.id AS paySalaryCompId, " +
+    			"paySalaryComponent.name AS paySalaryCompName, " +
+    			"SUM(CASE WHEN nominal != 0 THEN 1 ELSE 0 END) AS totalEmployee, " +
+    			"SUM(nominal) AS totalNominal " +
+    			"FROM TempUnregPayroll " +
+    			"WHERE unregSalary.id = :unregSalaryId " +
+    			"GROUP BY paySalaryComponent " +
+    			"ORDER BY " + orderable);
+		Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setMaxResults(pageSize).setFirstResult(first)
+            	.setResultTransformer(Transformers.aliasToBean(UnregSalaryCalculationExecuteModel.class)).setParameter("unregSalaryId", unregSalaryId);
+    	
+		return hbm.list();
+		
+	}
+
+	@Override
+	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT COUNT(distinct paySalaryComponent) " +
+    			"FROM TempUnregPayroll " +
+    			"WHERE unregSalary.id = :unregSalaryId ");
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setParameter("unregSalaryId", unregSalaryId);
+    	
+		return Long.valueOf(hbm.uniqueResult().toString());
+		
 	}
 }
