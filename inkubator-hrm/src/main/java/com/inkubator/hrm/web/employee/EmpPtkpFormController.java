@@ -29,48 +29,64 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "empPtkpFormController")
 @ViewScoped
 public class EmpPtkpFormController extends BaseController {
+
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private EmpData selectedEmpData;
     private EmpDataModel empDataModel;
-    
+    private Boolean isDisabledPtkpNumber;
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        try{
+        try {
+            isDisabledPtkpNumber = Boolean.FALSE;
             String empDataId = FacesUtil.getRequestParameter("empDataId");
             empDataModel = new EmpDataModel();
             if (StringUtils.isNotEmpty(empDataId)) {
                 EmpData empData = empDataService.getEmpDataWithBiodata(Long.parseLong(empDataId));
-                if(empDataId != null){
+                if (empDataId != null) {
                     empDataModel = getModelFromEntity(empData);
                 }
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         empDataModel = null;
         empDataService = null;
         selectedEmpData = null;
+        isDisabledPtkpNumber = null;
     }
-    
+
     private EmpDataModel getModelFromEntity(EmpData entity) {
         EmpDataModel model = new EmpDataModel();
         model.setId(entity.getId());
         model.setPtkpNumber(entity.getPtkpNumber());
-        if(entity.getPtkpStatus().equals(Boolean.FALSE)){
-            model.setPtkpStatusInt(0);
-        }else if(entity.getPtkpStatus().equals(Boolean.TRUE)){
-            model.setPtkpStatusInt(1);
+        if (entity.getPtkpStatus() != null) {
+            if (entity.getPtkpStatus().equals(Boolean.FALSE)) {
+                model.setPtkpStatusInt(0);
+                isDisabledPtkpNumber = Boolean.TRUE;
+            } else if (entity.getPtkpStatus().equals(Boolean.TRUE)) {
+                model.setPtkpStatusInt(1);
+                isDisabledPtkpNumber = Boolean.FALSE;
+            }
         }
         model.setNikAndName(entity.getNik() + " - " + entity.getBioData().getFirstName() + " " + entity.getBioData().getLastName());
         return model;
+    }
+
+    public void doChangePtkpNumber(){
+        if(empDataModel.getPtkpStatusInt() == 0){
+            isDisabledPtkpNumber = Boolean.TRUE;
+        }else{
+            isDisabledPtkpNumber = Boolean.FALSE;
+        }
     }
     
     private EmpData getEntityFromViewModel(EmpDataModel model) {
@@ -79,22 +95,22 @@ public class EmpPtkpFormController extends BaseController {
             empData.setId(model.getId());
         }
         empData.setPtkpNumber(model.getPtkpNumber());
-        if(model.getPtkpStatusInt().equals(0)){
+        if (model.getPtkpStatusInt().equals(0)) {
             empData.setPtkpStatus(Boolean.FALSE);
-        }else if(model.getPtkpStatusInt().equals(1)){
+        } else if (model.getPtkpStatusInt().equals(1)) {
             empData.setPtkpStatus(Boolean.TRUE);
         }
         return empData;
     }
-    
+
     public void doSave() {
-        
+
         EmpData empData = getEntityFromViewModel(empDataModel);
         try {
-                empDataService.saveForPtkp(empData);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+            empDataService.saveForPtkp(empData);
+            RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -124,6 +140,13 @@ public class EmpPtkpFormController extends BaseController {
     public void setEmpDataModel(EmpDataModel empDataModel) {
         this.empDataModel = empDataModel;
     }
-    
-    
+
+    public Boolean getIsDisabledPtkpNumber() {
+        return isDisabledPtkpNumber;
+    }
+
+    public void setIsDisabledPtkpNumber(Boolean isDisabledPtkpNumber) {
+        this.isDisabledPtkpNumber = isDisabledPtkpNumber;
+    }
+
 }

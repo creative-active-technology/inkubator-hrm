@@ -19,6 +19,7 @@ import com.inkubator.hrm.entity.BioInsurance;
 import com.inkubator.hrm.entity.BioKeahlian;
 import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
+import com.inkubator.hrm.entity.BioPotensiSwot;
 import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
@@ -41,6 +42,7 @@ import com.inkubator.hrm.service.BioInsuranceService;
 import com.inkubator.hrm.service.BioKeahlianService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
+import com.inkubator.hrm.service.BioPotensiSwotService;
 import com.inkubator.hrm.service.BioProjectService;
 import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
@@ -191,6 +193,13 @@ public class BioDataDetilController extends BaseController {
     private BioProjectService bioProjectService;
 //end. bio project
     
+    //start. bio potensi
+    private BioPotensiSwot selectedBioPotensiSwot;
+    private List<BioPotensiSwot> ListBioPotensiSwot;
+    @ManagedProperty(value = "#{bioPotensiSwotService}")
+    private BioPotensiSwotService bioPotensiSwotService;
+    //end. bio project
+    
     //start. Business travel
     private  BusinessTravel selectedBusinessTravel;
     private List<BusinessTravel> businessTravelList;
@@ -242,6 +251,8 @@ public class BioDataDetilController extends BaseController {
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
             spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
+            bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
             bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());          
             listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());            
             
@@ -278,6 +289,9 @@ public class BioDataDetilController extends BaseController {
         bioKeahlians = null; 
         selectedBioData = null;
         selectedBioAddress = null;
+        selectedBioPotensiSwot = null;
+        ListBioPotensiSwot = null;
+        bioPotensiSwotService = null;
         bioAddresses = null;
         listPeopleInterest = null;
         selectedEduHistory = null;
@@ -429,6 +443,30 @@ public class BioDataDetilController extends BaseController {
 
     public void setSelectedEmpData(EmpData selectedEmpData) {
         this.selectedEmpData = selectedEmpData;
+    }
+
+    public BioPotensiSwot getSelectedBioPotensiSwot() {
+        return selectedBioPotensiSwot;
+    }
+
+    public void setSelectedBioPotensiSwot(BioPotensiSwot selectedBioPotensiSwot) {
+        this.selectedBioPotensiSwot = selectedBioPotensiSwot;
+    }
+
+    public List<BioPotensiSwot> getListBioPotensiSwot() {
+        return ListBioPotensiSwot;
+    }
+
+    public void setListBioPotensiSwot(List<BioPotensiSwot> ListBioPotensiSwot) {
+        this.ListBioPotensiSwot = ListBioPotensiSwot;
+    }
+
+    public BioPotensiSwotService getBioPotensiSwotService() {
+        return bioPotensiSwotService;
+    }
+
+    public void setBioPotensiSwotService(BioPotensiSwotService bioPotensiSwotService) {
+        this.bioPotensiSwotService = bioPotensiSwotService;
     }
     
     
@@ -1573,6 +1611,71 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio BankAccount method
      */
+    
+    public void doSelectBioPotensiSwot() {
+        try {
+            selectedBioPotensiSwot = bioPotensiSwotService.getEntiyByPK(selectedBioPotensiSwot.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioPotensiSwot() {
+
+        List<String> bioBankPotensiSwotId = new ArrayList<>();
+        bioBankPotensiSwotId.add(String.valueOf(selectedBioPotensiSwot.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioPotensiSwotId", bioBankPotensiSwotId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioPotensiSwot(dataToSend);
+
+    }
+    
+    public void doDeleteBioPotensi() {
+        try {
+            bioPotensiSwotService.delete(selectedBioPotensiSwot);
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioPotensiSwot.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioBankAccount", ex);
+        }
+    }
+    
+    public void doAddBioPotensiSwot() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioPotensiSwot(dataToSend);
+    }
+    
+    private void showDialogBioPotensiSwot(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("bio_potensi_swot_form", options, params);
+    }
+    
+    public void onDialogReturnBioPotensiSwot(SelectEvent event) {
+        try {
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
     /**
      * START Bio IdCard method
      */

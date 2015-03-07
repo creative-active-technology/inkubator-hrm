@@ -16,7 +16,6 @@ import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.TaxComponent;
 import com.inkubator.hrm.entity.TaxRate;
-import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TaxRateService;
 
 /**
@@ -28,7 +27,6 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 	private List<TaxRate> taxRates;
 	private Date createdOn; 
 	private String createdBy;
-	private EmpDataService empDataService;
 	private transient Logger LOGGER = Logger.getLogger(getClass());
 	
 	public TaxEmployeeCalculationProcessor(TaxRateService taxRateService){
@@ -164,14 +162,6 @@ public class TaxEmployeeCalculationProcessor implements ItemProcessor<List<PayTe
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	public EmpDataService getEmpDataService() {
-		return empDataService;
-	}
-
-	public void setEmpDataService(EmpDataService empDataService) {
-		this.empDataService = empDataService;
 	}
 	
 }

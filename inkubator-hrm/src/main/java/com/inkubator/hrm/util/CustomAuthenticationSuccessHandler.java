@@ -46,6 +46,7 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             loginHistory.setIpAddress(ipHere);
             loginHistory.setLoginDate(new Date());
             loginHistory.setHrmUser(new HrmUser(authentication.getName()));
+            loginHistory.setAppName(HRMConstant.APP_NAME);
             try {
                 this.loginHistoryService.saveAndPushMessage(loginHistory);
             } catch (Exception ex) {

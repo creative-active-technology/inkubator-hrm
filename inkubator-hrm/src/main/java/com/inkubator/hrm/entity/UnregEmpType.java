@@ -150,9 +150,6 @@ public class UnregEmpType  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-
-
-
 }
 
 

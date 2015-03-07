@@ -6,6 +6,7 @@ import com.inkubator.hrm.web.model.PphReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.StreamedContent;
 
 /**
 *
@@ -17,4 +18,5 @@ public interface LogMonthEndTaxesService extends IService<LogMonthEndTaxes> {
 	
         public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order);
     
+        public StreamedContent generatedPph(long id) throws Exception;
 }

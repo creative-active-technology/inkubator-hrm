@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -49,6 +50,8 @@ public class Bank  implements java.io.Serializable {
      private String branchCode;
      private String branchName;
      private Set<Bank> banks = new HashSet<Bank>(0);
+     private Boolean renderedParent;
+     private Boolean renderedChild;
 
     public Bank() {
     }
@@ -279,7 +282,44 @@ public class Bank  implements java.io.Serializable {
         this.banks = banks;
     }
 
+    @Transient
+    public Boolean getRenderedParent() {
+        if(bank != null){
+            renderedParent = Boolean.FALSE;
+        }else{    
+            renderedParent = Boolean.TRUE;
+        }
+        return renderedParent;
+    }
 
+    public void setRenderedParent(Boolean renderedParent) {
+        this.renderedParent = renderedParent;
+    }
+
+    @Transient
+    public Boolean getRenderedChild() {
+        if(bank != null){
+            renderedChild = Boolean.TRUE;
+        }else{    
+            renderedChild = Boolean.FALSE;
+        }
+        return renderedChild;
+    }
+
+    public void setRenderedChild(Boolean renderedChild) {
+        this.renderedChild = renderedChild;
+    }
+
+    @Transient
+    public void getParentOrChild(){
+        if(bank != null){
+            renderedChild = Boolean.TRUE;
+            renderedParent = Boolean.FALSE;
+        }else{    
+            renderedChild = Boolean.FALSE;
+            renderedParent = Boolean.TRUE;
+        }
+    }
 
 
 }

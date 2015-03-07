@@ -74,5 +74,15 @@ public class UnregPayComponentsExceptionDaoImpl extends IDAOImpl<UnregPayCompone
 		return (UnregPayComponentsException) criteria.uniqueResult();
 	}
 
+	@Override
+	public List<UnregPayComponentsException> getAllDataByUnregSalaryId(Long unregSalaryId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("unregPayComponents", "unregPayComponents");
+		criteria.createAlias("unregPayComponents.unregSalary", "unregSalary");
+		criteria.add(Restrictions.eq("unregSalary.id", unregSalaryId));
+		return criteria.list();
+		
+	}
+
 	
 }

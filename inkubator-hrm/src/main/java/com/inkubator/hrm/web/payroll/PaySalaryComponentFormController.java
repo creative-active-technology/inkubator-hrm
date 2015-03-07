@@ -83,6 +83,7 @@ public class PaySalaryComponentFormController extends BaseController {
     private DualListModel<EmployeeType> dualListModel = new DualListModel<>();
     private Map<String, Long> dropDownModelRef = new HashMap<>();
     Map<String, Long> dropDownKomponenPajak = new HashMap<String, Long>();
+    private String loanId;
 
     @PostConstruct
     @Override
@@ -92,7 +93,7 @@ public class PaySalaryComponentFormController extends BaseController {
             disableTax = Boolean.TRUE;
             model = new PaySalaryComponentModel();
             isUpdate = Boolean.FALSE;
-            String loanId = FacesUtil.getRequestParameter("execution");
+            loanId = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(loanId)) {
                 PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntityByPkWithDetail(Long.parseLong(loanId.substring(1)));
                 if (loanId.substring(1) != null) {
@@ -137,6 +138,7 @@ public class PaySalaryComponentFormController extends BaseController {
         modelComponentService = null;
         employeeTypeService = null;
         taxComponentService = null;
+        loanId = null;
         employeeTypeService = null;
         dualListModel = null;
         dropDownKomponenPajak = null;
@@ -165,7 +167,7 @@ public class PaySalaryComponentFormController extends BaseController {
         //tax component
         listTaxComponent = taxComponentService.getAllDataByUseComponent();
         for (TaxComponent taxComponent : listTaxComponent) {
-            dropDownTaxComponent.put(taxComponent.getId() + " - " +taxComponent.getName(), taxComponent.getId());
+            dropDownTaxComponent.put(taxComponent.getId() + " - " + taxComponent.getName(), taxComponent.getId());
         }
 //        dropDownModelRef = new HashMap<>();
 //        sortByValues(dropDownTaxComponent);
@@ -184,7 +186,7 @@ public class PaySalaryComponentFormController extends BaseController {
             }
         });
 
-       // Here I am copying the sorted list in HashMap
+        // Here I am copying the sorted list in HashMap
         // using LinkedHashMap to preserve the insertion order
         HashMap sortedHashMap = new LinkedHashMap();
         for (Iterator it = list.iterator(); it.hasNext();) {
@@ -194,8 +196,7 @@ public class PaySalaryComponentFormController extends BaseController {
         return sortedHashMap;
     }
 
-
-private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
+    private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         PaySalaryComponentModel paySalaryComponentModel = new PaySalaryComponentModel();
         paySalaryComponentModel.setId(entity.getId());
         paySalaryComponentModel.setCode(entity.getCode());
@@ -229,7 +230,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         paySalaryComponent.setCode(model.getCode());
         paySalaryComponent.setName(model.getName());
         paySalaryComponent.setPaySalaryJurnal(new PaySalaryJurnal(model.getPaySalaryJurnalId()));
-        if(model.getTaxComponentId() != null){
+        if (model.getTaxComponentId() != null) {
             paySalaryComponent.setTaxComponent(new TaxComponent(model.getTaxComponentId()));
         }
         paySalaryComponent.setModelComponent(new ModelComponent(model.getModelComponentId()));
@@ -286,7 +287,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/payroll/pay_salary_comp_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
-        }catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -307,7 +308,7 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
     }
 
     @Override
-        public void onDialogReturn(SelectEvent event) {
+    public void onDialogReturn(SelectEvent event) {
         super.onDialogReturn(event);
         String dataFormula = (String) event.getObject();
         model.setFormula(dataFormula);
@@ -332,9 +333,9 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/payroll/pay_salary_comp_detail.htm?faces-redirect=true&execution=e" + paySalaryComponent.getId();
 
-        }  catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
         return null;
@@ -509,7 +510,55 @@ private PaySalaryComponentModel getModelFromEntity(PaySalaryComponent entity) {
         this.dropDownKomponenPajak = dropDownKomponenPajak;
     }
 
-    
+    public void doReset() throws Exception {
+        if (isUpdate == Boolean.TRUE) {
+            PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntityByPkWithDetail(Long.valueOf(loanId.substring(1)));
+            model.setCode(paySalaryComponent.getCode());
+            model.setName(paySalaryComponent.getName());
+            model.setModelComponentId(paySalaryComponent.getModelComponent().getId());
+            model.setModelReffernsiId(paySalaryComponent.getModelReffernsil());
+            model.setFormula(paySalaryComponent.getFormula());
+            model.setComponentCategory(paySalaryComponent.getComponentCategory());
+            model.setActiveFromTmb(paySalaryComponent.getActiveFromTmb());
+            model.setPaySalaryJurnalId(paySalaryComponent.getPaySalaryJurnal().getId());
+            model.setResetData(paySalaryComponent.getResetData());
+            model.setRenumeration(paySalaryComponent.getRenumeration());
 
-    
+            model.setTaxableCheck(Boolean.FALSE);
+            
+            if (paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_LOAN || paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_REIMBURSEMENT || paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_BENEFIT_TABLE) {
+                model.setModelComponentId(paySalaryComponent.getModelComponent().getId());
+                isDisableComponetModel = Boolean.FALSE;
+            }else{
+                model.setModelComponentId(paySalaryComponent.getModelComponent().getId());
+                isDisableComponetModel = Boolean.TRUE;
+            }
+            if (paySalaryComponent.getTaxComponent() != null) {
+                model.setTaxComponentId(paySalaryComponent.getTaxComponent().getId());
+                model.setTaxableCheck(Boolean.TRUE);
+                disableTax = Boolean.FALSE;
+            }
+        } else {
+            model.setCode(null);
+            model.setName(null);
+            model.setModelComponentId(null);
+            model.setModelReffernsiId(null);
+            model.setFormula(null);
+            model.setComponentCategory(null);
+            model.setActiveFromTmb(null);
+            model.setPaySalaryJurnalId(null);
+            model.setResetData(null);
+            model.setRenumeration(null);
+            model.setTaxableCheck(null);
+        }
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
+    }
+
 }

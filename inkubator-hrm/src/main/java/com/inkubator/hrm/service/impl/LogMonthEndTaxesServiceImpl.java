@@ -14,8 +14,13 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.LogMonthEndTaxesDao;
 import com.inkubator.hrm.entity.LogMonthEndTaxes;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
+import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.model.PphReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
+import java.util.HashMap;
+import java.util.Map;
+import javax.faces.context.FacesContext;
+import org.primefaces.model.StreamedContent;
 
 /**
 *
@@ -246,6 +251,17 @@ public class LogMonthEndTaxesServiceImpl extends IServiceImpl implements LogMont
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         return logMonthEndTaxesDao.getAllDataByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public StreamedContent generatedPph(long id) throws Exception {
+//        List<String> attachments = new ArrayList<String>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("emp_data_id", id);
+        params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\reports\\"));
+        StreamedContent file = CommonReportUtil.exportReportToPDFStreamWithAttachment("pph_report.jasper", params, "Report_Pph.pdf", null);
+        return file;
     }
 
 }

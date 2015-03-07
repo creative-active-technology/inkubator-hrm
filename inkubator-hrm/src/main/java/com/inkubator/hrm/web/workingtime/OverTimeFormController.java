@@ -248,7 +248,7 @@ public class OverTimeFormController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 1100);
         options.put("contentHeight", 400);
-        RequestContext.getCurrentInstance().openDialog("approval_definition_popup_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("appr_def_popup_form", options, params);
     }
     
     public void onDialogReturnAddAppDef(SelectEvent event) {
