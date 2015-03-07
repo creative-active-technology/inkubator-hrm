@@ -111,8 +111,8 @@ public class PersonalDisciplineViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 430);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 450);
         RequestContext.getCurrentInstance().openDialog("personal_discipline_form", options, params);
     }
     
