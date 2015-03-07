@@ -252,8 +252,7 @@ public class BioDataDetilController extends BaseController {
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
             spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
             bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());
-            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
-            bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());          
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());                    
             listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());            
             
             //Inisialisasi Riwayat Dinas
