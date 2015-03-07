@@ -1173,6 +1173,85 @@
                                     </p:column>                                                                        
                                 </p:dataTable>                               
                             </p:tab> 
+                            <p:tab id="bioSertfikasiId" title="#{appmsg['employeeCertification.certification']}">
+                                <p:dataTable  id="tableBioSertifikasiId" var="bioSertifikasiData"  value="#{bioDataDetilController.listBioSertifikasi}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['employeeCertification.list_of_employee_certification']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="namaSertifikasi"  style="width: 22%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.namaSertifikasi}">
+                                           
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="nomorDokumen"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_doc_number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{bioSertifikasiData.nomorDokumen}">
+                                            
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="educationNonFormal.name"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_issuer']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.educationNonFormal.name}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="occupationType.occupationTypeName"  style="width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.major']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.occupationType.occupationTypeName}" />                                            
+                                    </p:column>
+                                    <p:column  style="width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.attachments']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.uploadFileExtension}" />                                            
+                                    </p:column>             
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{bioSertifikasiData.uploadPath == null}" icon="ui-icon-arrowthick-1-s">
+                                            <p:fileDownload value="#{imageBioDataStreamerController.sertifikasiFile}" />
+                                            <f:param name="id" value="#{bioSertifikasiData.id}"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioSertifikasiDetailId" 
+                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioSertifikasi.show()">                        
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{bioDataDetilController.selectedBioSertifikasi}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioSertifikasiConfirmId" 
+                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioSertifikasi.show()">
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{bioDataDetilController.selectedBioSertifikasi}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioSertifikasi()}" >
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{bioDataDetilController.selectedBioSertifikasi}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSertifikasi}"  update="tableBioSertifikasiId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable> 
+                                 <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" label="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioSertifikasi()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSertifikasi}"  update="tableBioSertifikasiId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
                         </p:tabView>
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
@@ -2084,6 +2163,76 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Project DIALOG -->
+                
+                <!-- START Bio Sertifikasi DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioSertifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioSertifikasiConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['employeeCertification.certification']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioSertifikasi()}" update="formBioDetailFormId:tabView:tableBioSertifikasiId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioSertifikasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioDocument.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioSertifikasi" header="#{appmsg['employeeCertification.certification']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioSertifikasiDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_doc_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.nomorDokumen}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_issuer']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.educationNonFormal.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.major']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.occupationType.occupationTypeName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <h:form>
+                                    <p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.uploadPath == null ? '-' : bioDataDetilController.selectedBioSertifikasi.uploadFileExtension}" styleClass="label_hrm"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton ajax="false" value="Download" disabled="#{bioDataDetilController.selectedBioSertifikasi.uploadPath == null}" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.sertifikasiFile}" />
+                                        <f:param name="id" value="#{bioDataDetilController.selectedBioSertifikasi.id}"/>
+                                    </p:commandButton>
+                                </h:form>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/></p:column>
+                        </p:row>                      
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['employeeCertification.certification']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Sertifikasi DIALOG -->
             </ui:define>
 
         </ui:composition>
