@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['global.code']}"  for="code" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loanSchema.code']}"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="code" value="#{loanSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
@@ -46,7 +46,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loanSchema.name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="name" value="#{loanSchemaFormController.model.name}" 
@@ -57,7 +57,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['loanSchema.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="costCenterId" value="#{loanSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
@@ -74,7 +74,7 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.type_of_interest']}"  for="typeOfInterest" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="typeOfInterest" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.typeOfInterest}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="typeOfInterest" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.typeOfInterest}" label="#{appmsg['loanschema.type_of_interest']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['loanschema.type_of_interest_annuity']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['loanschema.type_of_interest_flat']}" itemValue="1" />
@@ -103,7 +103,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{loanSchemaFormController.model.basicValue}" label="#{appmsg['reimbursment.basic_value']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
@@ -177,7 +177,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Payroll Component"  for="payrollComponent" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent']}"  for="payrollComponent" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneRadio id="payrollComponent" styleClass="isitext_hrm" required="true"  value="#{loanSchemaFormController.model.payrollComponent}">
