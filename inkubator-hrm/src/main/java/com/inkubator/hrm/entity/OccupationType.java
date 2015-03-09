@@ -4,11 +4,15 @@ package com.inkubator.hrm.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,6 +39,7 @@ public class OccupationType  implements java.io.Serializable {
      private Date updatedOn;
      private String occupationTypeName;
      private String description;
+     private Set<BioSertifikasi> bioSertifikasis = new HashSet<BioSertifikasi>(0);
      private List<OccupationType> listOccupationTypes = new ArrayList<>(0);
 
     public OccupationType() {
@@ -143,6 +148,15 @@ public class OccupationType  implements java.io.Serializable {
 
     public void setListOccupationTypes(List<OccupationType> listOccupationTypes) {
         this.listOccupationTypes = listOccupationTypes;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="occupationType")
+    public Set<BioSertifikasi> getBioSertifikasis() {
+        return this.bioSertifikasis;
+    }
+    
+    public void setBioSertifikasis(Set<BioSertifikasi> bioSertifikasis) {
+        this.bioSertifikasis = bioSertifikasis;
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +35,7 @@ public class EducationNonFormal implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Set<BioSertifikasi> bioSertifikasis = new HashSet<BioSertifikasi>(0);
 
     public EducationNonFormal() {
 
@@ -138,6 +142,15 @@ public class EducationNonFormal implements Serializable {
 	public void setOfficialEmail(String officialEmail) {
 		this.officialEmail = officialEmail;
 	}
+        
+        @OneToMany(fetch=FetchType.LAZY, mappedBy="educationNonFormal")
+    public Set<BioSertifikasi> getBioSertifikasis() {
+        return this.bioSertifikasis;
+    }
+    
+    public void setBioSertifikasis(Set<BioSertifikasi> bioSertifikasis) {
+        this.bioSertifikasis = bioSertifikasis;
+    }
 
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {

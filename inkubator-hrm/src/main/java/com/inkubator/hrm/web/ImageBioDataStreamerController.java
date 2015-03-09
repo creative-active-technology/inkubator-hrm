@@ -6,12 +6,14 @@
 package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.MedicalCareService;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.ReimbursmentService;
@@ -51,6 +53,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private PermitImplementationService permitImplementationService;
     @ManagedProperty(value = "#{medicalCareService}")
     private MedicalCareService medicalCareService;
+    @ManagedProperty(value = "#{bioSertifikasiService}")
+    private BioSertifikasiService bioSertifikasiService;
     private StreamedContent ijazahFile;
 
     public void setBioDataService(BioDataService bioDataService) {
@@ -83,6 +87,14 @@ public class ImageBioDataStreamerController extends BaseController {
 
     public void setMedicalCareService(MedicalCareService medicalCareService) {
         this.medicalCareService = medicalCareService;
+    }
+
+    public BioSertifikasiService getBioSertifikasiService() {
+        return bioSertifikasiService;
+    }
+
+    public void setBioSertifikasiService(BioSertifikasiService bioSertifikasiService) {
+        this.bioSertifikasiService = bioSertifikasiService;
     }
 
     
@@ -280,6 +292,30 @@ public class ImageBioDataStreamerController extends BaseController {
             try {
                 MedicalCare medicalCare = medicalCareService.getEntiyByPK(Long.parseLong(id));
                 String path = medicalCare.getUploadPath();
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+    }
+    
+    public StreamedContent getSertifikasiFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                BioSertifikasi bioSertifikasi = bioSertifikasiService.getEntiyByPK(Long.parseLong(id));
+                String path = bioSertifikasi.getUploadPath();
                 if (StringUtils.isEmpty(path)) {
                     path = facesIO.getPathUpload() + "no_image.png";
                 }
