@@ -33,13 +33,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{unregSalaryCalculationViewController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{unregCalculationViewController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{unregSalaryCalculationViewController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregSalaryCalculationViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{unregCalculationViewController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregCalculationViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -52,7 +52,7 @@
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{unregSalaryCalculationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{unregCalculationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -102,13 +102,13 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 25%;text-align: center" exportable="false">                                
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" action="#{unregSalaryCalculationViewController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{unregSalaryCalculationViewController.selectedModel}" />
+                                				 style="font-size: 10px!important" action="#{unregCalculationViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregCalculationViewController.selectedModel}" />
                                 </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{unregSalaryCalculationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{unregCalculationViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

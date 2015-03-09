@@ -35,23 +35,25 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Parent Bank"  for="bankId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="width: 150px;margin-right: 3px" required="false">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
+                                        <f:selectItems value="#{bankFormController.dropDownBank}"/>
+                                        <p:ajax update="code,name,branchCodeParent,branchCode,branchName" process="@this" listener="#{bankFormController.doChangeReadOnlyBankNameAndCode()}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="bankId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['bank.bank_code']}"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="code" value="#{bankFormController.bankModel.bankCode}" onkeyup="this.value = this.value.toUpperCase();"
+                                    <p:inputText id="code" readonly="#{bankFormController.isReadOnlyBankNameAndCode}" value="#{bankFormController.bankModel.bankCode}" onkeyup="this.value = this.value.toUpperCase();"
                                              required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="code"/>
-                                </p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['bank.branch_code']}"  for="branchCode" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:inputText id="branchCode" value="#{bankFormController.bankModel.branchCode}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
-                                    <p:message for="branchCode"/>
                                 </p:column>
                             </p:row>
                             
@@ -60,7 +62,7 @@
                                     <p:outputLabel  value="#{appmsg['bank.bank_name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="name" value="#{bankFormController.bankModel.bankName}" 
+                                    <p:inputText id="name" readonly="#{bankFormController.isReadOnlyBankNameAndCode}" value="#{bankFormController.bankModel.bankName}" 
                                              required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="name"/>
                                 </p:column>
@@ -68,36 +70,41 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.branch_code']}"  for="branchCodeParent" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="branchCodeParent" readonly="true" value="#{bankFormController.bankModel.branchCode}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" styleClass="isitext_hrm" style="width:35px;" />
+                                    <p:outputLabel  value=" - " styleClass="label_hrm" />
+                                    <p:inputText id="branchCode" value="#{bankFormController.bankModel.branchCodeInput}" onkeyup="this.value = this.value.toUpperCase();" readonly="#{bankFormController.isReadOnlyBankNameAndCodeBranch}"
+                                             required="true" styleClass="isitext_hrm" style="width:215px;" />
+                                    <p:message for="branchCode"/>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['bank.branch_name']}"  for="branchName" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="branchName" value="#{bankFormController.bankModel.branchName}" 
+                                    <p:inputText id="branchName" value="#{bankFormController.bankModel.branchName}" readonly="#{bankFormController.isReadOnlyBankNameAndCodeBranch}"
                                              required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="branchName"/>
                                 </p:column>
                             </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Parent Bank"  for="branchName" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="width: 150px;margin-right: 3px" required="true">
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{bankFormController.dropDownBank}"/>
-                                    </p:selectOneMenu>
-                                    <p:message for="branchName"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Bank Group"  for="branchName" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Bank Group"  for="bankGroupId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="bankGroupId" value="#{bankFormController.bankModel.bankGroup}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bankFormController.dropDownBankGroup}"/>
                                     </p:selectOneMenu>
-                                    <p:message for="branchName"/>
+                                    <p:message for="bankGroupId"/>
                                 </p:column>
                             </p:row>
                             
@@ -107,7 +114,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{bankFormController.bankModel.address}" 
-                                                 required="false" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
+                                                 required="true" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="addressId"/>
                                 </p:column>
                             </p:row>
@@ -118,7 +125,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="bankPhone" value="#{bankFormController.bankModel.bankPhone}" 
-                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="bankPhone"/>
                                 </p:column>
                             </p:row>
@@ -129,7 +136,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="bankFax" value="#{bankFormController.bankModel.bankFax}" 
-                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="bankFax"/>
                                 </p:column>
                             </p:row>
@@ -140,7 +147,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="ibanSwift" value="#{bankFormController.bankModel.iban}" 
-                                             required="false" styleClass="isitext_hrm" style="width:270px;" />
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
                                     <p:message for="ibanSwift"/>
                                 </p:column>
                             </p:row>

@@ -21,6 +21,7 @@ import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.entity.BioPotensiSwot;
 import com.inkubator.hrm.entity.BioProject;
+import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
 import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import com.inkubator.hrm.entity.BusinessTravel;
@@ -43,6 +44,7 @@ import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
 import com.inkubator.hrm.service.BioPotensiSwotService;
 import com.inkubator.hrm.service.BioProjectService;
+import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
@@ -219,15 +221,23 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
     //end. leave implementation history
-
+    
+    //start. Bio Sertifikasi
+     @ManagedProperty(value = "#{bioSertifikasiService}")
+     private BioSertifikasiService  bioSertifikasiService;
+     private List<BioSertifikasi> listBioSertifikasi;
+     private BioSertifikasi selectedBioSertifikasi;
+    //end. Bio Sertifikasi
+    
+    
     @PostConstruct
     @Override
     public void initialization() {
         try {
-            super.initialization();
+            super.initialization();           
             userId = FacesUtil.getRequestParameter("execution");
-            selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
-            selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());
+            selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));            
+            selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());            
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
@@ -242,7 +252,9 @@ public class BioDataDetilController extends BaseController {
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
             spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
             bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());
-            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());                    
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());            
+            
             //Inisialisasi Riwayat Dinas
             businessTravelList = businessTravelService.getAllDataByEmpDataId(selectedEmpData.getId());
             
@@ -258,6 +270,9 @@ public class BioDataDetilController extends BaseController {
                     setLeaveApprovalOfficer(lv);
                 }
             }
+            
+           
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -775,7 +790,40 @@ public class BioDataDetilController extends BaseController {
         this.businessTravelComponentService = businessTravelComponentService;
     }
 
+    public String getBioId() {
+        return bioId;
+    }
+
+    public void setBioId(String bioId) {
+        this.bioId = bioId;
+    }
+
+    public BioSertifikasiService getBioSertifikasiService() {
+        return bioSertifikasiService;
+    }
+
+    public void setBioSertifikasiService(BioSertifikasiService bioSertifikasiService) {
+        this.bioSertifikasiService = bioSertifikasiService;
+    }
+
+    public List<BioSertifikasi> getListBioSertifikasi() {
+        return listBioSertifikasi;
+    }
+
+    public void setListBioSertifikasi(List<BioSertifikasi> listBioSertifikasi) {
+        this.listBioSertifikasi = listBioSertifikasi;
+    }
+
+    public BioSertifikasi getSelectedBioSertifikasi() {
+        return selectedBioSertifikasi;
+    }
+
+    public void setSelectedBioSertifikasi(BioSertifikasi selectedBioSertifikasi) {
+        this.selectedBioSertifikasi = selectedBioSertifikasi;
+    }
     
+    
+
     
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
@@ -1908,5 +1956,75 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Project method
      */
+        
+     /**
+     * START Bio Sertifikasi method
+     */
+    
+    public void doSelectBioSertifikasi() {
+        try {
+            selectedBioSertifikasi = bioSertifikasiService.getEntityByPKWithDetail(selectedBioSertifikasi.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+     public void doDeleteBioSertifikasi() {
+        try {
+            bioSertifikasiService.delete(selectedBioSertifikasi);
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioSertifikasi.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioProject", ex);
+        }
+    }
+    
+     public void doAddBioSertifikasi() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSertifikasi(dataToSend);
+    }
+    
+    public void doUpdateBioSertifikasi() {
+        List<String> bioSertifikasiId = new ArrayList<>();
+        bioSertifikasiId.add(String.valueOf(selectedBioSertifikasi.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioSertifikasiId", bioSertifikasiId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSertifikasi(dataToSend);
+    }
+    
+     private void showDialogBioSertifikasi(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 520);
+        RequestContext.getCurrentInstance().openDialog("bio_sertifikasi_form", options, params);
+    }
+
+    public void onDialogReturnBioSertifikasi(SelectEvent event) {
+        try {
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+     
+    /**
+     * END Bio Sertifikasi Swot method
+     */
+    
 }

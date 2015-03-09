@@ -364,4 +364,10 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
         return paySalaryComponentDao.getTotalByParamDataException(searchParameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PaySalaryComponent> getAllDataByComponentCategoryZeroOrOne() throws Exception {
+        return paySalaryComponentDao.getAllDataByComponentCategoryZeroOrOne();
+    }
+
 }

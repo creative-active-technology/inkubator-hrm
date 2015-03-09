@@ -71,7 +71,7 @@ public class UnregPayComponentFormController extends BaseController {
                     model = getModelFromEntity(unregSalary, wtPeriode);
                 }
             }
-            listPaySalaryComponent = paySalaryComponentService.getAllData();
+            listPaySalaryComponent = paySalaryComponentService.getAllDataByComponentCategoryZeroOrOne();
             for (PaySalaryComponent paySalaryComponent : listPaySalaryComponent) {
                 dropDownPayComponentSalary.put(paySalaryComponent.getName(), paySalaryComponent.getId());
             }

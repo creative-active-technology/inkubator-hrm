@@ -126,7 +126,7 @@ public class BioDocumentFormController extends BaseController {
 		Map<String, String> results = uploadFilesUtil.checkUploadFileSizeLimit(fileUploadEvent.getFile());
 		if(StringUtils.equals(results.get("result"),"true")){
 			documentFile = fileUploadEvent.getFile();
-			model.setUploadFileName(documentFile.getFileName());
+			model.setUploadFileName(documentFile.getFileName());                        
 		} else {
 			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");

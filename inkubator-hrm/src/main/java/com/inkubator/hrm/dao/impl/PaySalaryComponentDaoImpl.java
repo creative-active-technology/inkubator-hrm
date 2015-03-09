@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
@@ -211,7 +212,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         } else {
             query.append(" order by B." + order);
         }
-        
+
         query.append(" LIMIT " + firstResult + ", " + maxResults);
 
         return getCurrentSession().createSQLQuery(query.toString())
@@ -231,7 +232,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
             query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
         }
         query.append(" GROUP BY B.name) as totalData");
-        
+
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
 
@@ -241,6 +242,16 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     public List<Integer> getAllModelReferensiId() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setProjection(Projections.property("modelReffernsil"));
+        return criteria.list();
+    }
+
+    @Override
+    public List<PaySalaryComponent> getAllDataByComponentCategoryZeroOrOne() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("componentCategory", 0));
+        disjunction.add(Restrictions.eq("componentCategory", 1));
+        criteria.add(disjunction);
         return criteria.list();
     }
 }

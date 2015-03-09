@@ -31,11 +31,30 @@
                     <h:form id="formId">
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Parent Bank" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{bankDetailController.selectedBank.bank.bankName}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['bank.bank_code']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{bankDetailController.selectedBank.bankCode}" />
+                                    <h:outputLabel value= "#{bankDetailController.selectedBank.bankCode}" rendered="#{bankDetailController.selectedBank.renderedParent}"/>
+                                    <h:outputLabel value= "#{bankDetailController.selectedBank.bank.bankCode}" rendered="#{bankDetailController.selectedBank.renderedChild}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.bank_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <h:outputLabel value= "#{bankDetailController.selectedBank.bankName}" rendered="#{bankDetailController.selectedBank.renderedParent}"/>
+                                    <h:outputLabel value= "#{bankDetailController.selectedBank.bank.bankName}" rendered="#{bankDetailController.selectedBank.renderedChild}"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -48,15 +67,6 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['bank.bank_name']}" style="font-weight: bold"/>
-                                </p:column>
-                                <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{bankDetailController.selectedBank.bankName}" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['bank.branch_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
@@ -64,7 +74,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['global.address']}" style="font-weight: bold"/>
@@ -74,7 +84,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['bank.phone']}" style="font-weight: bold"/>
@@ -84,7 +94,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['bank.fax']}" style="font-weight: bold"/>
@@ -94,17 +104,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Parent Bank" style="font-weight: bold"/>
-                                </p:column>
-                                <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{bankDetailController.selectedBank.bank.bankName}" >
-                                    </p:outputLabel>
-                                </p:column>
-                            </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['bank.group']}" style="font-weight: bold"/>
@@ -114,8 +114,8 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
-                            
+
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="IBAN/SWIFT" style="font-weight: bold"/>
@@ -125,7 +125,7 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['global.description']}" style="font-weight: bold"/>
@@ -137,7 +137,7 @@
                             </p:row>
 
                         </p:panelGrid>
-                        
+
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bankDetailController.doUpdates()}" styleClass="label_button"/>

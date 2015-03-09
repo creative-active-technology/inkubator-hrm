@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">                
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.salaryCalculation']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.calculation_description_message']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{unregCalculationExecuteController.unregSalary.name}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.salary_date']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{unregCalculationExecuteController.unregSalary.salaryDate}" >
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{unregCalculationExecuteController.doInitCalculatePayroll()}">                        
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreg_Salary_Calculation"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['salaryCalculation.tax']}" action="#{unregCalculationExecuteController.doTax()}" title="#{appmsg['salaryCalculation.tax']}" label="#{appmsg['salaryCalculation.tax']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!--<p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>-->
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unregCalculationExecuteController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
+                        <p:dataTable  var="data"  value="#{unregCalculationExecuteController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_salary_calculation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="paySalaryCompName" style="width: 40%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.component_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.paySalaryCompName}" />
+                            </p:column>
+                            <p:column sortBy="totalEmployee" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.totalEmployee}" />
+                            </p:column>
+                            <p:column sortBy="totalNominal" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <h:outputText value="Rp. "/>
+                                <h:outputLabel value= "#{data.totalNominal}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{unregCalculationExecuteController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregCalculationExecuteController.selectedModel}" />
+                                </p:commandButton>
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{unregCalculationExecuteController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                
+                <h:outputStylesheet library="css" name="progress_bar.css" />
+                <p:dialog widgetVar="detail" header="#{appmsg['salaryCalculation.calculation']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="detailPanel">
+
+                    <div align="center">
+                        <h:form id="detailPanel">
+                            <p:messages/>
+                            <h:panelGrid columns="4"  style="margin-bottom: 10px">
+                                <p:outputLabel value="#{appmsg['payroll.payroll_date']}"  styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm"/>
+                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}" value="#{unregCalculationExecuteController.payrollCalculationDate}"
+                                             required="true" navigator="true">
+                                </p:calendar>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{unregCalculationExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                            </h:panelGrid>
+
+                            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{unregCalculationExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
+                                <p:ajax event="complete" listener="#{unregCalculationExecuteController.onCompleteCalculatePayroll}" update=":formId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
+                            </p:progressBar>
+                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
+                        </h:form>
+                    </div>
+                </p:dialog>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
