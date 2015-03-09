@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "ohsaCategoryDao")
 @Lazy
-public class OhsaDaoImpl extends IDAOImpl<OhsaCategory> implements OhsaCategoryDao{
+public class OhsaCategoryDaoImpl extends IDAOImpl<OhsaCategory> implements OhsaCategoryDao{
 
     @Override
     public Class<OhsaCategory> getEntityClass() {
