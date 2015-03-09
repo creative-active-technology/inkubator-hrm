@@ -158,7 +158,7 @@ public class PublicHolidayExceptionFormController extends BaseController {
     
     public List<EmpData> completeEmpData(String query) {
         try {
-            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(query);
+            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query));
             
             return allEmpData;
         } catch (Exception ex) {
