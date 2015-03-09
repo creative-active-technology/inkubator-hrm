@@ -192,7 +192,11 @@ public class Religion implements java.io.Serializable {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+        if (getClass() instanceof Object) {
+        } else {
             return false;
         }
         final Religion other = (Religion) obj;
@@ -217,10 +221,10 @@ public class Religion implements java.io.Serializable {
         if (!Objects.equals(this.updatedOn, other.updatedOn)) {
             return false;
         }
-        if (!Objects.equals(this.updatedOn, other.code)) {
+        if (!Objects.equals(this.code, other.code)) {
             return false;
         }
-        if (!Objects.equals(this.updatedOn, other.description)) {
+        if (!Objects.equals(this.description, other.description)) {
             return false;
         }
         return true;

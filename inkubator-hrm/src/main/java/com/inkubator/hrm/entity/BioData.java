@@ -73,6 +73,7 @@ public class BioData implements java.io.Serializable {
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<BioKeahlian> bioKeahlians = new HashSet<BioKeahlian>(0);
     private Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys = new HashSet<BioSpesifikasiAbility>(0);
+    private Set<BioSertifikasi> bioSertifikasis = new HashSet<BioSertifikasi>(0);
     private List<EmpData> listEmpData = new ArrayList<>();
 
     public BioData() {
@@ -402,7 +403,7 @@ public class BioData implements java.io.Serializable {
     public void setEducationHistories(Set<BioEducationHistory> educationHistories) {
         this.educationHistories = educationHistories;
     }
-
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "biodata")
     public Set<BioPeopleInterest> getPeopleInterests() {
         return peopleInterests;
@@ -509,6 +510,15 @@ public class BioData implements java.io.Serializable {
 
     public void setBioSpesifikasiAbilitys(Set<BioSpesifikasiAbility> bioSpesifikasiAbilitys) {
         this.bioSpesifikasiAbilitys = bioSpesifikasiAbilitys;
+    }
+    
+     @OneToMany(fetch=FetchType.LAZY, mappedBy="bioData")
+    public Set<BioSertifikasi> getBioSertifikasis() {
+        return this.bioSertifikasis;
+    }
+    
+    public void setBioSertifikasis(Set<BioSertifikasi> bioSertifikasis) {
+        this.bioSertifikasis = bioSertifikasis;
     }
     
     @Transient
