@@ -50,6 +50,7 @@ import com.inkubator.hrm.entity.UnregPayComponentsException;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.TempUnregPayrollService;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
+import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 
 /**
  *
@@ -468,15 +469,43 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable) {
+	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable) throws Exception {
 		return tempUnregPayrollDao.getByParamUnregSalaryId(unregSalaryId, first, pageSize, orderable);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) {
+	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) throws Exception {
 		return tempUnregPayrollDao.getTotalByParamUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+		return tempUnregPayrollDao.getByParam(parameter, first, pageSize, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(UnregPayrollSearchParameter parameter) throws Exception {
+		return tempUnregPayrollDao.getTotalByParam(parameter);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception {
+		return tempUnregPayrollDao.getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(unregSalaryId, paySalaryComponentId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception {
+		return tempUnregPayrollDao.getTotalNominalByUnregSalaryIdAndPaySalaryCompId(unregSalaryId, paySalaryComponentId);
 		
 	}
 }

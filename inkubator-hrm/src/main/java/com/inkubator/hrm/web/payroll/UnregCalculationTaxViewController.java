@@ -6,8 +6,6 @@
 package com.inkubator.hrm.web.payroll;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -48,7 +46,7 @@ public class UnregCalculationTaxViewController extends BaseController {
             list = tempUnregPayrollEmpPajakService.getAllDataGroupingTaxCompByUnregSalaryId(unregSalary.getId());
             
         } catch (Exception ex) {
-            Logger.getLogger(UnregCalculationTaxViewController.class.getName()).log(Level.SEVERE, null, ex);
+        	LOGGER.error("Error", ex);
         }
     }
 
@@ -64,6 +62,10 @@ public class UnregCalculationTaxViewController extends BaseController {
     public String doDetail() {
         return "/protected/payroll/unreg_calculation_tax_detail.htm?faces-redirect=true&execution=e" + selected.getUnregSalaryId() + "&comp=e" + selected.getTaxComponentId();
     }
+    
+    public String doBack(){
+    	return "/protected/payroll/unreg_calculation_exec.htm?faces-redirect=true&execution=e" + unregSalary.getId();
+	}
 
 	public UnregPayrollEmpPajakModel getSelected() {
 		return selected;
