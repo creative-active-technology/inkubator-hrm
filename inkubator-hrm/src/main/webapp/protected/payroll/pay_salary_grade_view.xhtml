@@ -76,9 +76,12 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{no+1}." />
+                                <p:selectOneMenu style="width: 60px" value="#{data.gradeSalary}" id="selectId">
+                                    <f:selectItems value="#{paySalaryGradeController.dataToShow}"/>
+                                    <p:ajax update="tableId"  process="@this" listener="#{paySalaryGradeController.doChangeLevel(data)}"/>
+                                </p:selectOneMenu>
                             </p:column>
-                            <p:column sortBy="gradeSalary" style="text-align: center; width: 10%">
+<!--                            <p:column sortBy="gradeSalary" style="text-align: center; width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
                                 </f:facet>
@@ -87,7 +90,7 @@
                                         <f:converter converterId="romanovConverter" />
                                     </h:outputLabel>
                                 </div>
-                            </p:column>
+                            </p:column>-->
                             <p:column sortBy="minSalary" style="width: 20%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
@@ -123,7 +126,7 @@
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
                                 <div style="text-align: left;">
-                                <h:outputLabel value= "#{data.currency.name}" />
+                                    <h:outputLabel value= "#{data.currency.name}" />
                                 </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">

@@ -14,10 +14,13 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni
  */
-public interface PaySalaryGradeDao extends IDAO<PaySalaryGrade>{
+public interface PaySalaryGradeDao extends IDAO<PaySalaryGrade> {
+
     public List<PaySalaryGrade> getByParam(PaySalaryGradeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter);
-    
+
     public PaySalaryGrade getByPaySalaryGradeId(Long id);
+
+    public PaySalaryGrade getByGradeNumber(int number);
 }

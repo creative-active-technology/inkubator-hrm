@@ -151,7 +151,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.join_data']}"  for="joinDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true" readonly="true"/>
+                                    <p:calendar  id="joinDate" pattern="dd MMMM yyyy" value="#{empDataFormController.empDataModel.joinDate}" required="true" readonly="false"/>
                                     <p:message for="joinDate"/>
                                 </p:column>
 

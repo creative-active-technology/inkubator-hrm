@@ -20,4 +20,8 @@ public interface PaySalaryGradeService extends IService<PaySalaryGrade>{
     public Long getTotalPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter) throws Exception;
     
     public PaySalaryGrade getByPaySalaryGradeId(Long id) throws Exception;
+    
+    public void doChangerGradeSalary(int newGradeLevel, long oldId) throws Exception;
+    
+   
 }
