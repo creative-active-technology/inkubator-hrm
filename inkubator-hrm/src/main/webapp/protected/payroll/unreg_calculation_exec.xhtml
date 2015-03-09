@@ -126,6 +126,12 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
+                        
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{unregCalculationExecuteController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
                     </h:form>
                 </div>
                 

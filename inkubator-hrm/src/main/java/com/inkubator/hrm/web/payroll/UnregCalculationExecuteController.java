@@ -164,6 +164,10 @@ public class UnregCalculationExecuteController extends BaseController {
         return "/protected/payroll/unreg_calculation_tax_view.htm?faces-redirect=true&execution=e" + unregSalary.getId();
     }
     
+    public String doBack(){
+    	return "/protected/payroll/unreg_calculation_view.htm?faces-redirect=true";
+	}
+    
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
