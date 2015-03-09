@@ -238,7 +238,7 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doChangerGradeSalary(int newGradeLevel, long oldId) throws Exception {
         PaySalaryGrade targetChage = this.paySalaryGradeDao.getByGradeNumber(newGradeLevel);
         targetChage.setGradeSalary(0);
