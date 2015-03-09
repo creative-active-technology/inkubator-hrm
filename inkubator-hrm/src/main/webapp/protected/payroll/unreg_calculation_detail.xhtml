@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['salaryCalculation.taxCalculation_detail']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['unregSalary.taxCalculation_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['salaryCalculation.salaryCalculation_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.calculation_description_message']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -32,7 +32,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableIdToExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreg_Salary_Calculation_Tax_Employee"/>
+                                        <pe:exporter target="tableIdToExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreguler_Salary_Calculation_Employee"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -45,7 +45,7 @@
                                     <p:outputLabel  value="#{appmsg['unregSalary.name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{unregCalculationTaxDetailController.unregSalary.name}" />
+                                    <p:outputLabel value="#{unregCalculationDetailController.unregSalary.name}" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -53,17 +53,36 @@
                                     <p:outputLabel  value="#{appmsg['unregSalary.salary_date']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{unregCalculationTaxDetailController.unregSalary.salaryDate}" >
+                                    <p:outputLabel value="#{unregCalculationDetailController.unregSalary.salaryDate}" >
                                         <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['taxComponent.taxComponent']}" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['paySalaryComponent.name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel value="#{unregCalculationTaxDetailController.taxComponent.name}" />
+                                    <p:outputLabel value="#{unregCalculationDetailController.paySalaryComponent.name}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['paysalaryupload.total_employee']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{unregCalculationDetailController.totalEmployee}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.totalPaid']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<h:outputText value="Rp. "/>
+                                    <p:outputLabel value="#{unregCalculationDetailController.totalNominal}">
+                                    	<f:convertNumber rendered="###,###" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -71,20 +90,20 @@
                                     <p:outputLabel  value="#{appmsg['global.nik_or_name']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText id="searchId" value="#{unregCalculationTaxDetailController.parameter.parameter}" style="width: 180px" styleClass="label_button"/>
+                                    <p:inputText id="searchId" value="#{unregCalculationDetailController.parameter.parameter}" style="width: 180px" styleClass="label_button"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregCalculationTaxDetailController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregCalculationDetailController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </p:column>
                             </p:row>
 
                         </p:panelGrid>
                         <p:defaultCommand target="btnSearchId" />
-                        <p:dataTable  var="data"  value="#{unregCalculationTaxDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{unregCalculationDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -122,7 +141,7 @@
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{unregCalculationTaxDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{unregCalculationDetailController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>    
@@ -136,7 +155,7 @@
                         
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{unregCalculationTaxDetailController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{unregCalculationDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </h:form>

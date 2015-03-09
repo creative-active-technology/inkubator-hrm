@@ -1,10 +1,15 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
@@ -15,6 +20,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
+import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 
 /**
  *
@@ -88,5 +94,73 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
     	
 		return Long.valueOf(hbm.uniqueResult().toString());
 		
+	}
+
+	@Override
+	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(parameter, criteria);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(first);
+        criteria.setMaxResults(pageSize);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchByParam(parameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+	}
+	
+	private void doSearchByParam(UnregPayrollSearchParameter parameter, Criteria criteria) {
+        
+    	if (parameter.getNikOrName() != null) {
+        	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        	Disjunction disjunction = Restrictions.disjunction();
+        	disjunction.add(Restrictions.like("bioData.firstName", parameter.getNikOrName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", parameter.getNikOrName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getNikOrName(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
+        
+        if (parameter.getUnregSalaryId() != null){
+            criteria.add(Restrictions.eq("unregSalary.id", parameter.getUnregSalaryId()));
+        }
+        
+        if (parameter.getPaySalaryComponentId() != null){
+            criteria.add(Restrictions.eq("paySalaryComponent.id", parameter.getPaySalaryComponentId()));
+        }
+        
+        criteria.add(Restrictions.ne("nominal", new BigDecimal(0)));
+        criteria.add(Restrictions.isNotNull("id"));
+    }
+
+	@Override
+	public Long getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("unregSalary.id", unregSalaryId));
+		criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+		criteria.add(Restrictions.ne("nominal", new BigDecimal(0)));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT SUM(nominal) " +
+    			"FROM TempUnregPayroll " +
+    			"WHERE unregSalary.id = :unregSalaryId " +
+    			"AND paySalaryComponent.id = :paySalaryComponentId");
+		
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+    			.setParameter("unregSalaryId", unregSalaryId)
+    			.setParameter("paySalaryComponentId", paySalaryComponentId);
+    	
+		return new BigDecimal(hbm.uniqueResult().toString());
 	}
 }

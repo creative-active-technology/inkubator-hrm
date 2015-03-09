@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
+import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 
 /**
  *
@@ -26,8 +28,16 @@ public interface TempUnregPayrollService extends IService<TempUnregPayroll> {
 
 	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception;
 
-	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable);
+	public List<UnregSalaryCalculationExecuteModel> getByParamUnregSalaryId(Long unregSalaryId, int first, int pageSize, Order orderable) throws Exception;
 
-	public Long getTotalByParamUnregSalaryId(Long unregSalaryId);
+	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) throws Exception;
+	
+	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
+
+	public Long getTotalByParam(UnregPayrollSearchParameter parameter) throws Exception;
+	
+	public Long getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception;
+	
+	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception;
 	
 }
