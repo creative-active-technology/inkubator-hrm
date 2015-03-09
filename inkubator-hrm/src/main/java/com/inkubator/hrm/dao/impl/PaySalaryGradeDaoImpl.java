@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "paySalaryGradeDao")
 @Lazy
-public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements PaySalaryGradeDao{
+public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements PaySalaryGradeDao {
 
     @Override
     public Class<PaySalaryGrade> getEntityClass() {
@@ -51,35 +51,35 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
         criteria.setFetchMode("currency", FetchMode.JOIN);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter, Criteria criteria) {
         BigDecimal bg = new BigDecimal("0");
         int resMinSalary = 0;
         int resMedSalary = 0;
         int resMaxSalary = 0;
-        if(searchParameter.getMinSalary()!= null && !String.valueOf(searchParameter.getMinSalary()).equals("")){
+        if (searchParameter.getMinSalary() != null && !String.valueOf(searchParameter.getMinSalary()).equals("")) {
             resMinSalary = searchParameter.getMinSalary().compareTo(bg);
         }
-        if(searchParameter.getMedSalary()!= null && !String.valueOf(searchParameter.getMedSalary()).equals("")){
+        if (searchParameter.getMedSalary() != null && !String.valueOf(searchParameter.getMedSalary()).equals("")) {
             resMedSalary = searchParameter.getMedSalary().compareTo(bg);
         }
-        if(searchParameter.getMaxSalary()!= null&&!String.valueOf(searchParameter.getMaxSalary()).equals("")){
+        if (searchParameter.getMaxSalary() != null && !String.valueOf(searchParameter.getMaxSalary()).equals("")) {
             resMaxSalary = searchParameter.getMaxSalary().compareTo(bg);
         }
-        
-        if (searchParameter.getGradeSalary()!= null && searchParameter.getGradeSalary()!= 0) {
+
+        if (searchParameter.getGradeSalary() != null && searchParameter.getGradeSalary() != 0) {
             criteria.add(Restrictions.eq("gradeSalary", searchParameter.getGradeSalary()));
         }
-        if (searchParameter.getMinSalary()!= null && resMinSalary != 0) {
+        if (searchParameter.getMinSalary() != null && resMinSalary != 0) {
             criteria.add(Restrictions.eq("minSalary", searchParameter.getMinSalary()));
         }
-        if (searchParameter.getMedSalary()!= null && resMedSalary != 0) {
+        if (searchParameter.getMedSalary() != null && resMedSalary != 0) {
             criteria.add(Restrictions.eq("mediumSalary", searchParameter.getMedSalary()));
         }
-        if (searchParameter.getMaxSalary()!= null && resMaxSalary != 0) {
+        if (searchParameter.getMaxSalary() != null && resMaxSalary != 0) {
             criteria.add(Restrictions.eq("maxSalary", searchParameter.getMaxSalary()));
         }
-        if (searchParameter.getCurrency()!= null) {
+        if (searchParameter.getCurrency() != null) {
             criteria.createAlias("currency", "c", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("c.name", searchParameter.getCurrency(), MatchMode.START));
         }
@@ -91,6 +91,13 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.ne("id", id));
         criteria.setFetchMode("currency", FetchMode.JOIN);
+        return (PaySalaryGrade) criteria.uniqueResult();
+    }
+
+    @Override
+    public PaySalaryGrade getByGradeNumber(int number) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("gradeSalary", number));
         return (PaySalaryGrade) criteria.uniqueResult();
     }
 

@@ -41,7 +41,7 @@ public class PaySalaryGradeLazyDataModel extends LazyDataModel<PaySalaryGrade> i
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("gradeSalary");
+                    order = Order.asc("gradeSalary");
                 }
                 paySalaryGradeList = service.getByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalPaySalaryGradeByParam(searchParameter)));

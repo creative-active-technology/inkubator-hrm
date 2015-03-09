@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.PaySalaryGradeService;
@@ -34,7 +35,8 @@ import org.springframework.dao.DataIntegrityViolationException;
  */
 @ManagedBean(name = "paySalaryGradeController")
 @ViewScoped
-public class PaySalaryGradeViewController extends BaseController{
+public class PaySalaryGradeViewController extends BaseController {
+
     @ManagedProperty(value = "#{paySalaryGradeService}")
     private PaySalaryGradeService service;
     private PaySalaryGradeSearchParameter searchParameter;
@@ -43,59 +45,68 @@ public class PaySalaryGradeViewController extends BaseController{
     private Boolean isRendered;
     private Boolean isRenderedTextField;
     private Boolean isRenderedNumberField;
+    private List<Integer> dataToShow;
 
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
-        searchParameter = new PaySalaryGradeSearchParameter();
-        isRendered = Boolean.FALSE;
-        isRenderedTextField = Boolean.TRUE;
-        isRenderedNumberField = Boolean.FALSE;
+        try {
+            super.initialization();
+            searchParameter = new PaySalaryGradeSearchParameter();
+            isRendered = Boolean.FALSE;
+            isRenderedTextField = Boolean.TRUE;
+            isRenderedNumberField = Boolean.FALSE;
+
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
-        searchParameter=null;
-        lazy=null;
-        service=null;
-        selected=null;
-        isRendered=null;
+        searchParameter = null;
+        lazy = null;
+        service = null;
+        selected = null;
+        isRendered = null;
         isRenderedNumberField = null;
         isRenderedTextField = null;
     }
-    
+
     public void doSearch() {
         lazy = null;
     }
-    
-    public void doChangeInputNumberOrText(){
+
+    public void doChangeInputNumberOrText() {
         searchParameter.setParameter(null);
-        if(searchParameter.getKeyParam().equals("minSalary") || searchParameter.getKeyParam().equals("mediumSalary") || searchParameter.getKeyParam().equals("maxSalary")){
+        if (searchParameter.getKeyParam().equals("minSalary") || searchParameter.getKeyParam().equals("mediumSalary") || searchParameter.getKeyParam().equals("maxSalary")) {
             isRenderedNumberField = Boolean.TRUE;
             isRenderedTextField = Boolean.FALSE;
-            
-        }else{
+
+        } else {
             isRenderedNumberField = Boolean.FALSE;
             isRenderedTextField = Boolean.TRUE;
-            
+
         }
     }
-    
+
     public void doDelete() {
         try {
             this.service.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error", ex);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doAdd() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -108,7 +119,7 @@ public class PaySalaryGradeViewController extends BaseController{
         //options.put("contentHeight", 340);
         RequestContext.getCurrentInstance().openDialog("pay_salary_grade_form", options, null);
     }
-    
+
     public void doEdit() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -122,21 +133,21 @@ public class PaySalaryGradeViewController extends BaseController{
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("pay_salary_grade_form", options, dataToSend);
     }
-    
+
     @Override
     public void onDialogReturn(SelectEvent event) {
         lazy = null;
         super.onDialogReturn(event);
     }
-    
+
     public void doSelectEntity() {
         try {
-            selected = this.service.getByPaySalaryGradeId(selected.getId());
+            selected = this.service.getEntiyByPK(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public PaySalaryGradeService getService() {
         return service;
     }
@@ -154,10 +165,20 @@ public class PaySalaryGradeViewController extends BaseController{
     }
 
     public LazyDataModel<PaySalaryGrade> getLazy() {
-        if(lazy == null){
+        try {
+            dataToShow = new ArrayList<>();
+            Long totalData = service.getTotalData();
+            for (int i = 1; i < totalData + 1; i++) {
+                dataToShow.add(i);
+            }
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+        if (lazy == null) {
             lazy = new PaySalaryGradeLazyDataModel(searchParameter, service);
         }
         return lazy;
+
     }
 
     public void setLazy(LazyDataModel<PaySalaryGrade> lazy) {
@@ -195,6 +216,25 @@ public class PaySalaryGradeViewController extends BaseController{
     public void setIsRenderedNumberField(Boolean isRenderedNumberField) {
         this.isRenderedNumberField = isRenderedNumberField;
     }
-    
-    
+
+    public void doChangeLevel(PaySalaryGrade grade) {
+
+        try {
+            int newGrade = grade.getGradeSalary();
+            Long idOldData = grade.getId();
+            service.doChangerGradeSalary(newGrade, idOldData);
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+
+    }
+
+    public List<Integer> getDataToShow() {
+        return dataToShow;
+    }
+
+    public void setDataToShow(List<Integer> dataToShow) {
+        this.dataToShow = dataToShow;
+    }
+
 }
