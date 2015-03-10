@@ -58,6 +58,7 @@ public class CityFormController extends BaseController {
     private Boolean disabled;
     private String locale;
     private ResourceBundle messages;
+    private Long parameterUrl;
 
     @PostConstruct
     @Override
@@ -84,11 +85,16 @@ public class CityFormController extends BaseController {
 
             if (param != null) {
                 try {
+
+                    parameterUrl = Long.valueOf(param.substring(1));
                     City city = cityService.getCityByIdWithDetail(Long.parseLong(param.substring(1)));
                     cityModel.setId(city.getId());
                     cityModel.setCityCode(city.getCityCode());
                     cityModel.setCityName(city.getCityName());
-                    cityModel.setProvinceId(city.getProvince().getId());
+                    if (city.getProvince().getCountry() != null) {
+                        disabled = Boolean.FALSE;
+                        cityModel.setProvinceId(city.getProvince().getId());
+                    }
                     cityModel.setCountryId(city.getProvince().getCountry().getId());
                     cityModel.setLatitude(city.getLatitude());
                     cityModel.setLongitude(city.getLongitude());
@@ -104,6 +110,7 @@ public class CityFormController extends BaseController {
                     defaultLat = Double.parseDouble(city.getLatitude());
                     defaultLng = Double.parseDouble(city.getLongitude());
 
+                    countryChanged();
                 } catch (Exception e) {
                     LOGGER.error("Error", e);
                 }
@@ -229,7 +236,7 @@ public class CityFormController extends BaseController {
 
         try {
             City city = getEntityFromViewModel(cityModel);
-          
+
             if (isUpdate) {
                 cityService.update(city);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
@@ -240,7 +247,7 @@ public class CityFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/reference/city_detail.htm?faces-redirect=true&execution=e" + city.getId();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -251,15 +258,13 @@ public class CityFormController extends BaseController {
     private City getEntityFromViewModel(CityModel cityModel) throws BussinessException {
         City city = new City();
 
-
         if (cityModel.getId() != null) {
             city.setId(cityModel.getId());
         }
-        
-        if (cityModel.getProvinceId() == null) {
-            throw new BussinessException("city.province_should_not_be_empty");
-        }
 
+//        if (cityModel.getProvinceId() == null) {
+//            throw new BussinessException("city.province_should_not_be_empty");
+//        }
         if (String.valueOf(lat).equals("0.0")) {
             throw new BussinessException("city.latitude_should_not_be_empty");
         }
@@ -267,11 +272,12 @@ public class CityFormController extends BaseController {
         if (String.valueOf(lng).equals("0.0")) {
             throw new BussinessException("city.longitude_should_not_be_empty");
         }
-        
+
         city.setCityCode(cityModel.getCityCode());
         city.setCityName(cityModel.getCityName());
-        city.setProvince(new Province(cityModel.getProvinceId()));
-    
+        if (cityModel.getProvinceId() != null) {
+            city.setProvince(new Province(cityModel.getProvinceId()));
+        }
         city.setLatitude(String.valueOf(lat));
         city.setLongitude(String.valueOf(lng));
         return city;
@@ -289,20 +295,22 @@ public class CityFormController extends BaseController {
         emptyModel.addOverlay(new Marker(location, cityModel.getCityName()));
     }
 
-    public void countryChanged(ValueChangeEvent event) {
+    public void countryChanged() {
         try {
-           
 
-            Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
+            Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(cityModel.getCountryId())));
+            if (country.getLatitude() != null) {
+                defaultLat = Double.parseDouble(country.getLatitude());
+            }
+            if (country.getLongitude() != null) {
+                defaultLng = Double.parseDouble(country.getLongitude());
+            }
 
-            defaultLat = Double.parseDouble(country.getLatitude());
-            defaultLng = Double.parseDouble(country.getLongitude());
+            List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(cityModel.getCountryId())));
 
-            List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-            
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabled = Boolean.TRUE;
-                
+                cityModel.setProvinceId(null);
                 FacesContext.getCurrentInstance().addMessage("formCityFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
@@ -317,6 +325,50 @@ public class CityFormController extends BaseController {
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
+        }
+    }
+
+    public void doReset() throws Exception {
+        if (parameterUrl != null) {
+            City city = cityService.getCityByIdWithDetail(parameterUrl);
+            cityModel.setId(city.getId());
+            cityModel.setCityCode(city.getCityCode());
+            cityModel.setCityName(city.getCityName());
+            cityModel.setProvinceId(city.getProvince().getId());
+            cityModel.setCountryId(city.getProvince().getCountry().getId());
+            cityModel.setLatitude(city.getLatitude());
+            cityModel.setLongitude(city.getLongitude());
+            isUpdate = Boolean.TRUE;
+            if (city.getProvince() != null) {
+                disabled = Boolean.FALSE;
+            }
+            lat = Double.parseDouble(city.getLatitude());
+            lng = Double.parseDouble(city.getLongitude());
+            LatLng coord = new LatLng(lat, lng);
+
+            //Basic marker
+            emptyModel.addOverlay(new Marker(coord, city.getCityName()));
+
+            defaultLat = Double.parseDouble(city.getLatitude());
+            defaultLng = Double.parseDouble(city.getLongitude());
+        } else {
+            cityModel.setId(null);
+            cityModel.setCityCode(null);
+            cityModel.setCityName(null);
+            cityModel.setProvinceId(null);
+            cityModel.setCountryId(null);
+//            cityModel.setLatitude(null);
+//            cityModel.setLongitude(null);
+//
+//            lat = Double.parseDouble("0.0");
+//            lng = Double.parseDouble("0.0");
+//            LatLng coord = new LatLng(lat, lng);
+////
+////            //Basic marker
+//            emptyModel.addOverlay(new Marker(null));
+//
+            defaultLat = -6.211551441520004D;
+            defaultLng = 106.84444427490234D;
         }
     }
 }

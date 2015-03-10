@@ -3,10 +3,17 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.LogUnregPayrollDao;
+import com.inkubator.hrm.dao.TempUnregPayrollDao;
+import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
 import com.inkubator.hrm.service.LogUnregPayrollService;
 
 /**
@@ -17,6 +24,13 @@ import com.inkubator.hrm.service.LogUnregPayrollService;
 @Lazy
 public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnregPayrollService {
 
+	@Autowired
+	private LogUnregPayrollDao logUnregPayrollDao;
+	@Autowired
+	private TempUnregPayrollDao tempUnregPayrollDao;
+	@Autowired
+	private TempUnregPayrollEmpPajakDao tempUnregPayrollEmpPajakDao;
+	
 	@Override
 	public com.inkubator.hrm.entity.LogUnregPayroll getEntiyByPK(String id)
 			throws Exception {
@@ -238,6 +252,22 @@ public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnreg
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
+		logUnregPayrollDao.deleteByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void afterPayrollProcess(Long unregSalaryId) throws Exception {
+		
+		/** delete all the record in the temporary table **/
+		tempUnregPayrollDao.deleteByUnregSalaryId(unregSalaryId);
+		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);		
 	}
 
 }

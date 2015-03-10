@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,13 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
 	public Class<LogUnregPayroll> getEntityClass() {
 		return LogUnregPayroll.class;
 		
+	}
+
+	@Override
+	public void deleteByUnregSalaryId(Long unregSalaryId) {
+		Query query = getCurrentSession().createQuery("delete from LogUnregPayroll where unregSalaryId = :unregSalaryId")
+				.setLong("unregSalaryId", unregSalaryId);
+        query.executeUpdate();
 	}
 
 	

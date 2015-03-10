@@ -84,7 +84,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>-->
-                            <p:column sortBy="bioData" style="width: 20%">
+                            <p:column sortBy="bioData" style="width: 24%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -102,13 +102,13 @@
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
-                            <p:column sortBy="golonganJabatan" style="width: 12%">
+                            <p:column sortBy="golonganJabatan" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.golonganJabatan.code}"/>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <p:column style="width: 15">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>
@@ -117,7 +117,7 @@
                                 </p:outputLabel>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{empDataViewController.doDetailRenumeration()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
