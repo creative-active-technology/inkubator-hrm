@@ -22,7 +22,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "travel_component_cost_rate", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames="code") )
+@Table(name = "travel_component_cost_rate", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames="code") )
 public class TravelComponentCostRate implements java.io.Serializable {
 
 	private Long id;

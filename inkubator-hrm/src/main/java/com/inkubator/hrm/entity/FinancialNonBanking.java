@@ -23,7 +23,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "financial_non_banking", catalog = "hrm", uniqueConstraints =
+@Table(name = "financial_non_banking", catalog="hrm_payroll", uniqueConstraints =
         @UniqueConstraint(columnNames = "code"))
 public class FinancialNonBanking implements Serializable {
 

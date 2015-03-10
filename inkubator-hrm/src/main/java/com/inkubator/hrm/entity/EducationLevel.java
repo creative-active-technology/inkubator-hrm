@@ -21,7 +21,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "education_level", catalog = "hrm", 
+@Table(name = "education_level", catalog="hrm_payroll", 
         uniqueConstraints = @UniqueConstraint(columnNames="code") )
 public class EducationLevel implements Serializable {
 
