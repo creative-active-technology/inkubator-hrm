@@ -9,4 +9,8 @@ import com.inkubator.hrm.entity.LogUnregPayroll;
  */
 public interface LogUnregPayrollService extends IService<LogUnregPayroll> {
 
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception;
+
+	public void afterPayrollProcess(Long unregSalaryId) throws Exception;
+
 }
