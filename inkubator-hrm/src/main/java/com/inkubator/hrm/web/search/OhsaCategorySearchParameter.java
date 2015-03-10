@@ -31,7 +31,7 @@ public class OhsaCategorySearchParameter extends SearchParameter{
 
     public String getName() {
         if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
-            name = getKeyParam();
+            name = getParameter();
         } else{
             name = null;
         }

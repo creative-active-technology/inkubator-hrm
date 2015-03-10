@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -75,6 +76,8 @@ public class TempUnregPayrollEmpPajakDaoImpl extends IDAOImpl<TempUnregPayrollEm
 	public List<TempUnregPayrollEmpPajak> getByParam(UnregPayrollEmpPajakSearchParameter parameter, int first, int pageSize, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(first);
         criteria.setMaxResults(pageSize);
@@ -97,7 +100,7 @@ public class TempUnregPayrollEmpPajakDaoImpl extends IDAOImpl<TempUnregPayrollEm
         	Disjunction disjunction = Restrictions.disjunction();
         	disjunction.add(Restrictions.like("bioData.firstName", parameter.getNikOrName(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.lastName", parameter.getNikOrName(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("nik", parameter.getNikOrName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getNikOrName(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         

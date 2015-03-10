@@ -157,12 +157,16 @@ public class UnregCalculationExecuteController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/payroll/unreg_salary_calc_detail.htm?faces-redirect=true&execution=e" + selectedModel.getUnregSalaryId() + "&comp=e" + selectedModel.getPaySalaryCompId();    	
+        return "/protected/payroll/unreg_calculation_detail.htm?faces-redirect=true&execution=e" + selectedModel.getUnregSalaryId() + "&comp=e" + selectedModel.getPaySalaryCompId();    	
     }
 
     public String doTax(){
         return "/protected/payroll/unreg_calculation_tax_view.htm?faces-redirect=true&execution=e" + unregSalary.getId();
     }
+    
+    public String doBack(){
+    	return "/protected/payroll/unreg_calculation_view.htm?faces-redirect=true";
+	}
     
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;

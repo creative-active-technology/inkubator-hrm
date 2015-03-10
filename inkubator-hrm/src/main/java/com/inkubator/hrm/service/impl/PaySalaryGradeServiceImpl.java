@@ -6,6 +6,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CurrencyDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.entity.PaySalaryGrade;
@@ -28,13 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "paySalaryGradeService")
 @Lazy
-public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalaryGradeService{
+public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalaryGradeService {
 
     @Autowired
     private PaySalaryGradeDao paySalaryGradeDao;
     @Autowired
     private CurrencyDao currencyDao;
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PaySalaryGrade> getByParam(PaySalaryGradeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -152,9 +153,15 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PaySalaryGrade entity) throws Exception {
-        this.paySalaryGradeDao.delete(entity);
+        long totalData = this.paySalaryGradeDao.getTotalData();
+        if (entity.getGradeSalary() < totalData) {
+            throw new BussinessException("paysalarygrade.error_delete");
+        } else {
+            this.paySalaryGradeDao.delete(entity);
+        }
+
     }
 
     @Override
@@ -163,8 +170,9 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.paySalaryGradeDao.getTotalData();
     }
 
     @Override
@@ -183,7 +191,7 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<PaySalaryGrade> getAllData() throws Exception {
         return paySalaryGradeDao.getAllData();
     }
@@ -228,5 +236,29 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     public PaySalaryGrade getByPaySalaryGradeId(Long id) throws Exception {
         return paySalaryGradeDao.getByPaySalaryGradeId(id);
     }
-    
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void doChangerGradeSalary(int newGradeLevel, long oldId) throws Exception {
+        PaySalaryGrade targetChage = this.paySalaryGradeDao.getByGradeNumber(newGradeLevel);
+        targetChage.setGradeSalary(0);
+        targetChage.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChage.setUpdatedOn(new Date());
+        this.paySalaryGradeDao.update(targetChage);
+
+        PaySalaryGrade newChange = this.paySalaryGradeDao.getEntiyByPK(oldId);
+        int gradeNumberOld = newChange.getGradeSalary();
+        newChange.setGradeSalary(newGradeLevel);
+        newChange.setUpdatedBy(UserInfoUtil.getUserName());
+        newChange.setUpdatedOn(new Date());
+        this.paySalaryGradeDao.update(newChange);
+
+        PaySalaryGrade targetChageLast = this.paySalaryGradeDao.getByGradeNumber(0);
+        targetChageLast.setGradeSalary(gradeNumberOld);
+        targetChageLast.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChageLast.setUpdatedOn(new Date());
+        this.paySalaryGradeDao.update(targetChageLast);
+
+    }
+
 }

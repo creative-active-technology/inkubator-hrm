@@ -205,7 +205,9 @@ public class CityServiceImpl extends IServiceImpl implements CityService {
         }
 
         city.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        city.setProvince(this.provinceDao.getEntiyByPK(city.getProvince().getId()));
+        if(city.getProvince() != null){
+            city.setProvince(this.provinceDao.getEntiyByPK(city.getProvince().getId()));
+        }
         city.setCreatedBy(UserInfoUtil.getUserName());
         city.setCreatedOn(new Date());
         cityDao.save(city);
@@ -247,7 +249,9 @@ public class CityServiceImpl extends IServiceImpl implements CityService {
         City city = cityDao.getEntiyByPK(b.getId());
         city.setCityCode(b.getCityCode());
         city.setCityName(b.getCityName());
-        city.setProvince(this.provinceDao.getEntiyByPK(city.getProvince().getId()));
+        if(b.getProvince() != null){
+            city.setProvince(this.provinceDao.getEntiyByPK(b.getProvince().getId()));
+        }
         city.setLatitude(b.getLatitude());
         city.setLongitude(b.getLongitude());
         city.setUpdatedBy(UserInfoUtil.getUserName());
