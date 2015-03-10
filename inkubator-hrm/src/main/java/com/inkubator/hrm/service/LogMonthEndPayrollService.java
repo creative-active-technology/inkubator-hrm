@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
@@ -46,8 +47,12 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
 	
 	public List<ReportSalaryNoteModel> getByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter, int firstResult, int maxResults, Order order);
     
-    public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter);
+        public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter);
 
 	public StreamedContent generateSalarySlip(Long periodId, Long empDataId) throws Exception;
+        
+        public List<LogMonthEndPayroll> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+        public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter);
 
 }

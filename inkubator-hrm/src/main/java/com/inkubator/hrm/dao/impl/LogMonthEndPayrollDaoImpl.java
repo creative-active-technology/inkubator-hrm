@@ -24,8 +24,11 @@ import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
+import org.hibernate.criterion.Projections;
+import org.hibernate.sql.JoinType;
 
 /**
  *
@@ -386,5 +389,48 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 		criteria.add(Restrictions.eq("paySalaryCompId", paySalaryCompId));
 		return (LogMonthEndPayroll) criteria.uniqueResult();
 	}
+
+    @Override
+    public List<LogMonthEndPayroll> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doFilterBySearchParameter(searchParameter, criteria);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        criteria.addOrder(order);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         doFilterBySearchParameter(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
     
+    public void doFilterBySearchParameter(ReportDataComponentSearchParameter searchParameter, Criteria criteria) {
+        
+        if(null != searchParameter.getStartDate()){
+            criteria.add(Restrictions.ge("periodeStart", searchParameter.getStartDate()));
+        }
+        
+        if(null != searchParameter.getEndDate()){
+            criteria.add(Restrictions.le("periodeEnd", searchParameter.getEndDate()));
+        }
+        
+        if (null != searchParameter.getListDepartmentId() && !searchParameter.getListDepartmentId().isEmpty()) {
+            criteria.add(Restrictions.in("departmentId", searchParameter.getListDepartmentId()));
+        }
+        
+        if (null != searchParameter.getListPaySalaryCompId() && !searchParameter.getListPaySalaryCompId().isEmpty()) {
+            criteria.add(Restrictions.in("paySalaryCompId", searchParameter.getListPaySalaryCompId()));
+        }
+        
+        if (null != searchParameter.getListGolJabatanId() && !searchParameter.getListGolJabatanId().isEmpty()) {
+            criteria.add(Restrictions.in("empGolJabatan", searchParameter.getListGolJabatanId()));
+        }
+        
+        if (null != searchParameter.getListEmployeeTypeId() && !searchParameter.getListEmployeeTypeId().isEmpty()) {
+            criteria.add(Restrictions.in("empTypeId", searchParameter.getListEmployeeTypeId()));
+        }
+    }
 }
