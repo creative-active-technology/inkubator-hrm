@@ -101,7 +101,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{cityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCity.show()">
+                                                 action="#{cityViewController.doDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCity.show()">
                                     <f:setPropertyActionListener value="#{cityData}" target="#{cityViewController.selectedCity}" />
                                 </p:commandButton>
                                 -
