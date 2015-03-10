@@ -27,7 +27,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "business_type", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "code")
+@Table(name = "business_type", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames = "code")
 )
 public class BusinessType implements java.io.Serializable {
     private long id;
