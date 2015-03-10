@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="pay_temp_overtime"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class PayTempOvertime  implements java.io.Serializable {
 

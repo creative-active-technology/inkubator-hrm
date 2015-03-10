@@ -21,7 +21,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="unreg_emp_religion"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class UnregEmpReligion  implements java.io.Serializable {
 

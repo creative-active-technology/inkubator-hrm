@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_insurance"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="no_policy") 
 )
 public class BioInsurance  implements java.io.Serializable {

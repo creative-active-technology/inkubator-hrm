@@ -20,7 +20,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name="log_list_of_transfer", catalog="hrm"
+@Table(name="log_list_of_transfer", catalog="hrm_payroll"
 )
 public class LogListOfTransfer implements Serializable {
 

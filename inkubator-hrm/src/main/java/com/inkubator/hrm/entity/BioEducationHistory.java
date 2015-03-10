@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_education_history"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class BioEducationHistory implements java.io.Serializable{
      private long id;

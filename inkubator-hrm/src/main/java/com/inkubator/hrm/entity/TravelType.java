@@ -24,7 +24,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="travel_type"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class TravelType  implements java.io.Serializable {

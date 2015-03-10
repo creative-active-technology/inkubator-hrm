@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="wt_finger_exception"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class WtFingerException  implements java.io.Serializable {
 

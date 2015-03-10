@@ -21,7 +21,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="unreg_pay_components_exception"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class UnregPayComponentsException  implements java.io.Serializable {
 
