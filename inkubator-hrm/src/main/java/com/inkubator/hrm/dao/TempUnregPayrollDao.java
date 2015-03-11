@@ -6,9 +6,10 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 
 /**
  *
@@ -26,12 +27,16 @@ public interface TempUnregPayrollDao extends IDAO<TempUnregPayroll> {
 
 	public Long getTotalByParamUnregSalaryId(Long unregSalaryId);
 	
-	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable);
+	public List<TempUnregPayroll> getByParam(UnregCalculationSearchParameter parameter, int first, int pageSize, Order orderable);
 
-	public Long getTotalByParam(UnregPayrollSearchParameter parameter);
+	public Long getTotalByParam(UnregCalculationSearchParameter parameter);
 	
 	public Long getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId);
 	
 	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId);
+	
+	public Long getTotalByUnregSalaryId(Long unregSalaryId);
+	
+	public List<EmpData> getAllDataEmployeeByUnregSalaryId(Long unregSalaryId);
 
 }
