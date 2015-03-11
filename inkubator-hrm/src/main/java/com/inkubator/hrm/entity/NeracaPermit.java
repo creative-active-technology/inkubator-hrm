@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="neraca_permit"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class NeracaPermit  implements java.io.Serializable {
 

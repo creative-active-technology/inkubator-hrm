@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="jabatan_spesifikasi"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class JabatanSpesifikasi  implements java.io.Serializable {
 

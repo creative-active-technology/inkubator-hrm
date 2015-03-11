@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="neraca_cuti"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class NeracaCuti  implements java.io.Serializable {
 

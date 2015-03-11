@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "specification_ability", catalog = "hrm")
+@Table(name = "specification_ability", catalog="hrm_payroll")
 public class SpecificationAbility implements Serializable {
 
     private Long id;
