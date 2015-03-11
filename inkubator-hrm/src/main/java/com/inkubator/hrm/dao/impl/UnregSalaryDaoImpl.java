@@ -154,4 +154,29 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+	
+	@Override
+	public List<UnregSalary> getByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.createAlias("wtPeriode", "wtPeriode", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.lt("wtPeriode.fromPeriode", fromPeriodPayrollType));
+        criteria.setFetchMode("unregPayComponentses", FetchMode.JOIN);
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+		
+	}
+
+	@Override
+	public Long getTotalByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.createAlias("wtPeriode", "wtPeriode", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.lt("wtPeriode.fromPeriode", fromPeriodPayrollType));
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

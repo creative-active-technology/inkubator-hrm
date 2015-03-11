@@ -36,4 +36,8 @@ public interface UnregSalaryDao extends IDAO<UnregSalary> {
     
     public Long getTotalByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType);
 
+	public List<UnregSalary> getByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order);
+
+	public Long getTotalByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType);
+
 }

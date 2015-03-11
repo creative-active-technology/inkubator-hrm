@@ -410,5 +410,19 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 		return unregSalaryDao.getTotalByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType);
 		
 	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregSalary> getByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {
+		return unregSalaryDao.getByParamBySalaryPayroll(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType) throws Exception {
+		return unregSalaryDao.getTotalByParamBySalaryPayroll(searchParameter, fromPeriodPayrollType);
+		
+	}
 
 }

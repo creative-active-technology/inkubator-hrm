@@ -9,21 +9,34 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class UnregPayrollSearchParameter extends SearchParameter {
 
-    private String nikOrName;
+    private String name;
+    private String nik;
     private Long unregSalaryId;
-    private Long paySalaryComponentId;    
 
-    public String getNikOrName() {
-    	if (StringUtils.equalsIgnoreCase(getKeyParam(), "nikOrName")) {
-    		nikOrName = getParameter();
+    public String getName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "name")) {
+            name = getParameter();
         } else {
-        	nikOrName = null;
+            name = null;
         }
-		return nikOrName;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+	public String getNik() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "nik")) {
+            nik = getParameter();
+        } else {
+            nik = null;
+        }
+        return nik;
 	}
 
-	public void setNikOrName(String nikOrName) {
-		this.nikOrName = nikOrName;
+	public void setNik(String nik) {
+		this.nik = nik;
 	}
 
 	public Long getUnregSalaryId() {
@@ -32,14 +45,6 @@ public class UnregPayrollSearchParameter extends SearchParameter {
 
 	public void setUnregSalaryId(Long unregSalaryId) {
 		this.unregSalaryId = unregSalaryId;
-	}
+	}	
 
-	public Long getPaySalaryComponentId() {
-		return paySalaryComponentId;
-	}
-
-	public void setPaySalaryComponentId(Long paySalaryComponentId) {
-		this.paySalaryComponentId = paySalaryComponentId;
-	}
-	
 }
