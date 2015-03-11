@@ -50,7 +50,7 @@ import com.inkubator.hrm.entity.UnregPayComponentsException;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.TempUnregPayrollService;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 
 /**
  *
@@ -483,14 +483,14 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+	public List<TempUnregPayroll> getByParam(UnregCalculationSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
 		return tempUnregPayrollDao.getByParam(parameter, first, pageSize, orderable);
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(UnregPayrollSearchParameter parameter) throws Exception {
+	public Long getTotalByParam(UnregCalculationSearchParameter parameter) throws Exception {
 		return tempUnregPayrollDao.getTotalByParam(parameter);
 		
 	}
@@ -506,6 +506,13 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception {
 		return tempUnregPayrollDao.getTotalNominalByUnregSalaryIdAndPaySalaryCompId(unregSalaryId, paySalaryComponentId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByUnregSalaryId(Long unregSalaryId) throws Exception {
+		return tempUnregPayrollDao.getTotalByUnregSalaryId(unregSalaryId);
 		
 	}
 }
