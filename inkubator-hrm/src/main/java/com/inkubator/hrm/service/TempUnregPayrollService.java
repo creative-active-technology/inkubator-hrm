@@ -10,6 +10,7 @@ import javax.script.ScriptException;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
@@ -41,5 +42,7 @@ public interface TempUnregPayrollService extends IService<TempUnregPayroll> {
 	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception;
 	
 	public Long getTotalByUnregSalaryId(Long unregSalaryId) throws Exception;
+	
+	public List<EmpData> getAllDataEmployeeByUnregSalaryId(Long unregSalaryId) throws Exception;
 	
 }

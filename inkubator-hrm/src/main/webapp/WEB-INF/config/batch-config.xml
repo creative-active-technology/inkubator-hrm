@@ -517,13 +517,8 @@
         </property>
     </bean>
     <bean id="customUnregCalculationTaxItemReader" class="com.inkubator.hrm.batch.UnregCalculationTaxReader" scope="step" lazy-init="true">
-        <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="unregDepartementService" ref="unregDepartementService"/>
-        <constructor-arg name="unregEmpReligionService" ref="unregEmpReligionService"/>
-        <constructor-arg name="unregGoljabService" ref="unregGoljabService"/>
-        <constructor-arg name="unregEmpTypeService" ref="unregEmpTypeService"/>
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
-        <property name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
+        <constructor-arg name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
     </bean>    
     <bean id="customUnregCalculationTaxItemProcessor" class="com.inkubator.hrm.batch.UnregCalculationTaxProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="taxRateService" ref="taxRateService"/>
@@ -545,13 +540,9 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
-    <bean id="customUnregCalculationFinalItemReader" class="com.inkubator.hrm.batch.UnregCalculationFinalReader" scope="step" lazy-init="true">
-        <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="unregDepartementService" ref="unregDepartementService"/>
-        <constructor-arg name="unregEmpReligionService" ref="unregEmpReligionService"/>
-        <constructor-arg name="unregGoljabService" ref="unregGoljabService"/>
-        <constructor-arg name="unregEmpTypeService" ref="unregEmpTypeService"/>
+    <bean id="customUnregCalculationFinalItemReader" class="com.inkubator.hrm.batch.UnregCalculationFinalReader" scope="step" lazy-init="true">        
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
+        <constructor-arg name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
     </bean>
     <bean id="customUnregCalculationFinalItemProcessor" class="com.inkubator.hrm.batch.UnregCalculationFinalProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
