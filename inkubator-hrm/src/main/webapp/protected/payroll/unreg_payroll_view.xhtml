@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['unregSalary.payment_salary']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['unregSalary.payment_description_message']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{unregPayrollViewController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{unregPayrollViewController.parameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unregPayrollViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreguler_Payroll"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+                        <p:dataTable  var="data"  value="#{unregPayrollViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['unregSalary.unregSalary_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
+                            <p:column sortBy="name" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}" />
+                            </p:column>
+                            <p:column style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unregSalary.basePeriode']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.wtPeriode.bulan}" >
+                                    <f:converter converterId="monthNumberAsStringConverter" />
+                                </h:outputLabel>
+                                <h:outputLabel value= " #{data.wtPeriode.tahun}" />
+                            </p:column>
+                            <p:column sortBy="salaryDate" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unregSalary.salaryData']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.salaryDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="unregPayComponentses" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unregSalary.total_component']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.unregPayComponentses.size()}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 25%;text-align: center" exportable="false">                                
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" action="#{unregPayrollViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregPayrollViewController.selectedModel}" />
+                                </p:commandButton>
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{unregPayrollViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

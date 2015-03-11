@@ -20,7 +20,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 
 /**
  *
@@ -97,7 +97,7 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
 	}
 
 	@Override
-	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) {
+	public List<TempUnregPayroll> getByParam(UnregCalculationSearchParameter parameter, int first, int pageSize, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         criteria.setFetchMode("empData", FetchMode.JOIN);
@@ -109,14 +109,14 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
 	}
 
 	@Override
-	public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
+	public Long getTotalByParam(UnregCalculationSearchParameter parameter) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 		
 	}
 	
-	private void doSearchByParam(UnregPayrollSearchParameter parameter, Criteria criteria) {
+	private void doSearchByParam(UnregCalculationSearchParameter parameter, Criteria criteria) {
         
     	if (parameter.getNikOrName() != null) {
         	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
@@ -162,5 +162,13 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
     			.setParameter("paySalaryComponentId", paySalaryComponentId);
     	
 		return new BigDecimal(hbm.uniqueResult().toString());
+	}
+
+	@Override
+	public Long getTotalByUnregSalaryId(Long unregSalaryId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("unregSalary.id", unregSalaryId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
 	}
 }
