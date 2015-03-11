@@ -12,7 +12,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 
 /**
  *
@@ -32,12 +32,14 @@ public interface TempUnregPayrollService extends IService<TempUnregPayroll> {
 
 	public Long getTotalByParamUnregSalaryId(Long unregSalaryId) throws Exception;
 	
-	public List<TempUnregPayroll> getByParam(UnregPayrollSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
+	public List<TempUnregPayroll> getByParam(UnregCalculationSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 
-	public Long getTotalByParam(UnregPayrollSearchParameter parameter) throws Exception;
+	public Long getTotalByParam(UnregCalculationSearchParameter parameter) throws Exception;
 	
 	public Long getTotalEmployeeByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception;
 	
 	public BigDecimal getTotalNominalByUnregSalaryIdAndPaySalaryCompId(Long unregSalaryId, Long paySalaryComponentId) throws Exception;
+	
+	public Long getTotalByUnregSalaryId(Long unregSalaryId) throws Exception;
 	
 }
