@@ -1,13 +1,27 @@
 package com.inkubator.hrm.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LogUnregPayrollDao;
+import com.inkubator.hrm.dao.TempUnregPayrollDao;
+import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
+import com.inkubator.hrm.dao.UnregSalaryDao;
+import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.LogUnregPayrollService;
+import com.inkubator.hrm.web.model.UnregPayrollViewModel;
+import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 
 /**
  *
@@ -17,6 +31,15 @@ import com.inkubator.hrm.service.LogUnregPayrollService;
 @Lazy
 public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnregPayrollService {
 
+	@Autowired
+	private LogUnregPayrollDao logUnregPayrollDao;
+	@Autowired
+	private TempUnregPayrollDao tempUnregPayrollDao;
+	@Autowired
+	private TempUnregPayrollEmpPajakDao tempUnregPayrollEmpPajakDao;
+	@Autowired
+	private UnregSalaryDao unregSalaryDao;
+	
 	@Override
 	public com.inkubator.hrm.entity.LogUnregPayroll getEntiyByPK(String id)
 			throws Exception {
@@ -238,6 +261,57 @@ public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnreg
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
+		logUnregPayrollDao.deleteByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void afterPayrollProcess(Long unregSalaryId) throws Exception {
+		
+		/** update status unreg salary isAlreadyPaid process */
+		UnregSalary unregSalary = unregSalaryDao.getEntiyByPK(unregSalaryId);
+		unregSalary.setIsAlreadyPaid(true);
+		unregSalary.setUpdatedOn(new Date());
+		unregSalary.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
+		unregSalaryDao.save(unregSalary);
+		
+		/** delete all the record in the temporary table **/
+		tempUnregPayrollDao.deleteByUnregSalaryId(unregSalaryId);
+		tempUnregPayrollEmpPajakDao.deleteByUnregSalaryId(unregSalaryId);		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalEmployeeByUnregSalaryId(Long unregSalaryId) {
+		return logUnregPayrollDao.getTotalEmployeeByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public BigDecimal getTotalTakeHomePayByUnregSalaryId(Long unregSalaryId) {
+		return logUnregPayrollDao.getTotalTakeHomePayByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<UnregPayrollViewModel> getByParam(UnregPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+		return logUnregPayrollDao.getByParam(parameter, firstResult, maxResults, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
+		return logUnregPayrollDao.getTotalByParam(parameter);
+		
 	}
 
 }

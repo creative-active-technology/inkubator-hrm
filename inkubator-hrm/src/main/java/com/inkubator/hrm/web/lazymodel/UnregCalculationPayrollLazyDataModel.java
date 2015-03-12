@@ -12,7 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.service.TempUnregPayrollService;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 
 
 /**
@@ -25,9 +25,9 @@ public class UnregCalculationPayrollLazyDataModel extends LazyDataModel<TempUnre
     private final TempUnregPayrollService tempUnregPayrollService;
     private List<TempUnregPayroll> list = new ArrayList<>();
     private Integer total;
-    private UnregPayrollSearchParameter parameter;
+    private UnregCalculationSearchParameter parameter;
 
-    public UnregCalculationPayrollLazyDataModel(UnregPayrollSearchParameter parameter, TempUnregPayrollService tempUnregPayrollService) {
+    public UnregCalculationPayrollLazyDataModel(UnregCalculationSearchParameter parameter, TempUnregPayrollService tempUnregPayrollService) {
         this.tempUnregPayrollService = tempUnregPayrollService;
         this.parameter = parameter;
     }

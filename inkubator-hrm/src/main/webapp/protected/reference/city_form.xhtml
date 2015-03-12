@@ -50,11 +50,12 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:focus for ="countryId">
-                                        <p:selectOneMenu id="countryId" value="#{cityFormController.cityModel.countryId}" required="true" valueChangeListener="#{cityFormController.countryChanged}" 
+                                        <p:selectOneMenu id="countryId" value="#{cityFormController.cityModel.countryId}" required="true" 
                                                          style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                             <f:selectItems value="#{cityFormController.countrys}"  />
-                                            <p:ajax update="gmap, provinceIdA, provinceId" event="change" />
+                                            <!--<p:ajax update="gmap, provinceIdA, provinceId" event="change" />-->
+                                            <p:ajax update="gmap,provinceIdA,provinceId" process="@this" listener="#{cityFormController.countryChanged()}"/>
                                         </p:selectOneMenu>
                                         <p:messages for="countryId" />
                                     </p:focus>
@@ -72,7 +73,7 @@
                                     <p:outputLabel for="provinceIdA" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu id="provinceIdA" value="#{cityFormController.cityModel.provinceId}" required="true" 
+                                    <p:selectOneMenu id="provinceIdA" value="#{cityFormController.cityModel.provinceId}" required="false" 
                                                      style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{cityFormController.disabled}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                         <f:selectItems value="#{cityFormController.provinces}"  />
@@ -133,8 +134,12 @@
                                              action="#{cityFormController.doSave()}" styleClass="isitext_hrm"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCityFormId"
+<!--                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCityFormId"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="formCityFormId" />  
+                            </p:commandButton>-->
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formCityFormId" action="#{cityFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="formCityFormId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{cityFormController.doBack()}" immediate="true"
