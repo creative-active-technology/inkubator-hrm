@@ -34,15 +34,15 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 44%">
                                 <p:outputLabel for="code" value="#{appmsg['businessType.businessTypeCode']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 46%">
                                 <p:inputText id="code"  value="#{businessTypeFormController.model.code}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -60,7 +60,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="name"  value="#{businessTypeFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -79,7 +79,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{businessTypeFormController.model.description}" 
-                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 200px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>

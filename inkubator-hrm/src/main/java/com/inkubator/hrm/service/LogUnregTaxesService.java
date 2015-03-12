@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.LogUnregTaxes;
  */
 public interface LogUnregTaxesService extends IService<LogUnregTaxes> {
 
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception;
+
 }

@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBankFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBankFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['loantype.loantype_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loantype.loantype_data']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['loantype.loantype_dialog1']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="loanTypeCode" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="loanTypeCode" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="loanTypeCode">
+                                    <p:inputText id="loanTypeCode" title="#{appmsg['global.code']}" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeCode}" 
+                                                 required="true" requiredMessage="#{appmsg['loantype.loan_code_should_not_be_empty']}" maxlength="45" styleClass="isitext_hrm" style="width:270px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="loanTypeCode"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="loanTypeName" value="#{appmsg['loantype.loantype_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="loanTypeName" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="loanTypeName">
+                                    <p:inputText id="loanTypeName" title="loanTypeName" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeName}" 
+                                                 required="true" requiredMessage="#{appmsg['loantype.loan_name_should_not_be_empty']}" maxlength="45" styleClass="isitext_hrm" style="width:270px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="loanTypeName"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="currencyCode" value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="currencyCode" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 59%">
+                                <p:focus for ="currencyCode">
+                                     <p:selectOneMenu id="currencyCode" value="#{loanNewTypeFormController.currencyId}" filter="true" 
+                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{loanNewTypeFormController.mapCurrency}"  />                                                                                
+                                    </p:selectOneMenu>
+                                </p:focus>                               
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="currencyCode"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="interestMethod" value="#{appmsg['loantype.interest_method']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="interestMethod" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="interestMethod">
+                                    <p:selectOneMenu id="interestMethod" value="#{loanNewTypeFormController.loanNewTypeModel.interestMethod}"
+                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.interest_method_should_not_be_empty']}"> 
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.flat']}" itemValue="1"/>
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.annuity']}" itemValue="0"/>
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.floating']}" itemValue="2"/>                                                                                                                      
+                                    </p:selectOneMenu>
+                                    
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="interestMethod"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="interest" value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="interest" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">                                
+                                <p:spinner id="interest" required="true" value="#{loanNewTypeFormController.loanNewTypeModel.interest}" size="2" min="0.25" stepFactor="0.25" max="100" styleClass="isitext_hrm" />                                
+                                 <h:outputLabel  value="  %" styleClass="label_hrm"/>
+                            </p:column>
+                          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="interest"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="roundingStatus" value="#{appmsg['loantype.rounding']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="roundingStatus" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">                                           
+                                <p:selectBooleanButton value="#{loanNewTypeFormController.rounding}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="roundingStatus" styleClass="label_button" >                                        
+                                 </p:selectBooleanButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="roundingStatus"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="description" title="#{appmsg['global.description']}" value="#{loanNewTypeFormController.loanNewTypeModel.description}" 
+                                                 required="true" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
+                            
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBankFormId,:growlBankFormlId"
+                                         action="#{loanNewTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBankFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" disabled="#{loanTypeFormController.isUpdate}"  >  
+                            <p:resetInput target="formBankFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

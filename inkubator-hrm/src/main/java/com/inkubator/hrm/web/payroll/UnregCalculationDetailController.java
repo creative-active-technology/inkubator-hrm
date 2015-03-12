@@ -23,7 +23,7 @@ import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.service.TempUnregPayrollService;
 import com.inkubator.hrm.service.UnregSalaryService;
 import com.inkubator.hrm.web.lazymodel.UnregCalculationPayrollLazyDataModel;
-import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 
@@ -37,7 +37,7 @@ public class UnregCalculationDetailController extends BaseController {
 
 	private UnregSalary unregSalary;
 	private PaySalaryComponent paySalaryComponent;
-	private UnregPayrollSearchParameter parameter;
+	private UnregCalculationSearchParameter parameter;
     private LazyDataModel<TempUnregPayroll> lazyDataModel;
     private Long totalEmployee;
     private BigDecimal totalNominal;
@@ -55,7 +55,7 @@ public class UnregCalculationDetailController extends BaseController {
         super.initialization();
         String unregSalaryId = FacesUtil.getRequestParameter("execution").substring(1);
         String taxComponentId = FacesUtil.getRequestParameter("comp").substring(1);
-        parameter = new UnregPayrollSearchParameter();
+        parameter = new UnregCalculationSearchParameter();
         if (StringUtils.isNumeric(unregSalaryId) && StringUtils.isNumeric(taxComponentId)) {
             try {
             	paySalaryComponent = paySalaryComponentService.getEntiyByPK(Long.parseLong(taxComponentId));
@@ -136,11 +136,11 @@ public class UnregCalculationDetailController extends BaseController {
 		this.paySalaryComponentService = paySalaryComponentService;
 	}
 
-	public UnregPayrollSearchParameter getParameter() {
+	public UnregCalculationSearchParameter getParameter() {
 		return parameter;
 	}
 
-	public void setParameter(UnregPayrollSearchParameter parameter) {
+	public void setParameter(UnregCalculationSearchParameter parameter) {
 		this.parameter = parameter;
 	}
 

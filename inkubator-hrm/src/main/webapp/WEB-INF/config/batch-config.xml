@@ -181,6 +181,34 @@
         </batch:listeners>
     </batch:job>
     
+    <batch:job id="jobUnregPayroll">
+        <batch:step id="stepUnregPayroll_1" next="stepUnregPayroll_2">
+            <batch:tasklet>
+                <batch:chunk reader="customUnregPayrollItemReader" processor="customUnregPayrollItemProcessor" writer="customUnregPayrollItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="stepUnregPayroll_2" next="stepUnregPayroll_3">
+            <batch:tasklet>
+                <batch:chunk reader="customUnregTransferLogItemReader" writer="customUnregTransferLogItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="stepUnregPayroll_3">
+            <batch:tasklet>
+                <batch:chunk reader="customUnregTaxesItemReader" processor="customUnregTaxesItemProcessor" writer="customUnregTaxesItemWriter"
+                             commit-interval="20">
+                </batch:chunk>
+            </batch:tasklet>
+        </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="unregPayrollJobListener"/>
+        </batch:listeners>
+    </batch:job>
+    
     
             
     <!-- ALL batch listeners -->
@@ -200,6 +228,11 @@
 		<property name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
 		<property name="tempUnregPayrollEmpPajakService" ref="tempUnregPayrollEmpPajakService"/>
 		<property name="unregSalaryService" ref="unregSalaryService"/>				
+	</bean>
+	<bean id="unregPayrollJobListener" class="com.inkubator.hrm.batch.UnregPayrollJobListener" lazy-init="true">
+		<property name="logUnregPayrollService" ref="logUnregPayrollService"/>
+		<property name="logUnregTaxesService" ref="logUnregTaxesService"/>
+		<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
 	</bean>
 	
 	
@@ -484,13 +517,8 @@
         </property>
     </bean>
     <bean id="customUnregCalculationTaxItemReader" class="com.inkubator.hrm.batch.UnregCalculationTaxReader" scope="step" lazy-init="true">
-        <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="unregDepartementService" ref="unregDepartementService"/>
-        <constructor-arg name="unregEmpReligionService" ref="unregEmpReligionService"/>
-        <constructor-arg name="unregGoljabService" ref="unregGoljabService"/>
-        <constructor-arg name="unregEmpTypeService" ref="unregEmpTypeService"/>
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
-        <property name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
+        <constructor-arg name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
     </bean>    
     <bean id="customUnregCalculationTaxItemProcessor" class="com.inkubator.hrm.batch.UnregCalculationTaxProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="taxRateService" ref="taxRateService"/>
@@ -512,13 +540,9 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>
-    <bean id="customUnregCalculationFinalItemReader" class="com.inkubator.hrm.batch.UnregCalculationFinalReader" scope="step" lazy-init="true">
-        <constructor-arg name="empDataService" ref="empDataService"/>
-        <constructor-arg name="unregDepartementService" ref="unregDepartementService"/>
-        <constructor-arg name="unregEmpReligionService" ref="unregEmpReligionService"/>
-        <constructor-arg name="unregGoljabService" ref="unregGoljabService"/>
-        <constructor-arg name="unregEmpTypeService" ref="unregEmpTypeService"/>
+    <bean id="customUnregCalculationFinalItemReader" class="com.inkubator.hrm.batch.UnregCalculationFinalReader" scope="step" lazy-init="true">        
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
+        <constructor-arg name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
     </bean>
     <bean id="customUnregCalculationFinalItemProcessor" class="com.inkubator.hrm.batch.UnregCalculationFinalProcessor" scope="step" lazy-init="true">		
         <constructor-arg name="unregSalaryId" value="#{jobParameters['unregSalaryId']}"/>
@@ -528,5 +552,116 @@
         <property name="targetMethod" value="executeBatchUnregCalculationFinal" />
     </bean>
        
+    
+    
+    <!-- reader, processor and writer for unreg_payroll -->
+    <bean id="customUnregPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
+	    									inner join fetch tempUnregPayroll.empData as empData
+	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
+	    									inner join fetch jabatanByJabatanId.department as department
+	    									inner join fetch empData.golonganJabatan as golonganJabatan
+	    									inner join fetch empData.employeeType as employeeType
+	    									inner join fetch tempUnregPayroll.paySalaryComponent as paySalaryComponent
+	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
+	    									inner join fetch tempUnregPayroll.unregSalary as unregSalary
+	    									inner join fetch unregSalary.wtPeriode as wtPeriode
+	    									where unregSalary.id = :unregSalaryId"/>
+	   	<property name="parameterValues">
+	   		<map>
+	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+	   		</map>
+	   	</property>
+	    <property name="pageSize" value="100"/>
+	</bean>
+	<bean id="customUnregPayrollItemProcessor" class="com.inkubator.hrm.batch.UnregPayrollProcessor" scope="step" lazy-init="true">
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customUnregPayrollItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
+        <property name="dataSource" ref="c3p0DataSource-1" />
+        <property name="sql">
+            <value>
+            <![CDATA[        
+            	insert into log_unreg_payroll(unreg_salary_id,unreg_salary_name,unreg_salary_start_period,unreg_salary_end_period,unreg_salary_payment_date,emp_data_id,emp_name,emp_nik,emp_jabatan_id,emp_jabatan_code,emp_jabatan_name,emp_gol_jabatan,department_id,department_name,emp_type_id,emp_type_name,factor,nominal,model_comp_specific,pay_salary_comp_id,pay_salary_comp_code,pay_salary_desc,periode_id,periode_start,periode_end,created_by,created_on,version) 
+            	values (:unregSalaryId,:unregSalaryName,:unregSalaryStartPeriod,:unregSalaryEndPeriod,:unregSalaryPaymentDate,:empDataId,:empName,:empNik,:empJabatanId,:empJabatanCode,:empJabatanName,:empGolJabatan,:departmentId,:departmentName,:empTypeId,:empTypeName,:factor,:nominal,:modelCompSpecific,:paySalaryCompId,:paySalaryCompCode,:paySalaryDesc,:periodeId,:periodeStart,:periodeEnd,:createdBy,:createdOn,0)
+            ]]>
+            </value>
+        </property>
+        <!-- It will take care matching between object property and sql name parameter -->
+        <property name="itemSqlParameterSourceProvider">
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+        </property>
+    </bean>    
+	<bean id="customUnregTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
+	    									inner join fetch tempUnregPayroll.empData as empData
+	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
+	    									inner join fetch jabatanByJabatanId.department as department
+	    									inner join fetch empData.golonganJabatan as golonganJabatan
+	    									inner join fetch tempUnregPayroll.paySalaryComponent as paySalaryComponent
+	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
+	    									inner join fetch tempUnregPayroll.unregSalary as unregSalary
+	    									inner join fetch unregSalary.wtPeriode as wtPeriode
+	    									where modelComponent.spesific = :spesific
+	    									and unregSalary.id = :unregSalaryId"/>
+	   	<property name="parameterValues">
+	   		<map>
+	   			<entry key="spesific" value="100" value-type="java.lang.Integer"/>
+	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+	   		</map>
+	   	</property>
+	    <property name="pageSize" value="100"/>
+	</bean>
+	<bean id="customUnregTransferLogItemWriter" class="com.inkubator.hrm.batch.UnregPayrollTransferLogWriter" scope="step" lazy-init="true">    	
+    	<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    
+    <bean id="customUnregTaxesItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	    <property name="queryString" value="from TempUnregPayrollEmpPajak as tempUnregPayrollEmpPajak 
+	    									inner join fetch tempUnregPayrollEmpPajak.empData as empData
+	    									inner join fetch empData.bioData as bioData
+	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
+	    									inner join fetch jabatanByJabatanId.department as department
+	    									inner join fetch empData.golonganJabatan as golonganJabatan
+	    									inner join fetch empData.employeeType as employeeType
+	    									inner join fetch tempUnregPayrollEmpPajak.taxComponent as taxComponent
+	    									inner join fetch tempUnregPayrollEmpPajak.unregSalary as unregSalary
+	    									inner join fetch unregSalary.wtPeriode as wtPeriode
+	    									where unregSalary.id = :unregSalaryId"/>
+	    <property name="parameterValues">
+	   		<map>
+	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+	   		</map>
+	   	</property>
+	   	<property name="pageSize" value="100"/>
+	</bean>
+	
+    <bean id="customUnregTaxesItemProcessor" class="com.inkubator.hrm.batch.UnregPayrollTaxesProcessor" scope="step" lazy-init="true">
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customUnregTaxesItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
+        <property name="dataSource" ref="c3p0DataSource-1" />
+        <property name="sql">
+            <value>
+            <![CDATA[        
+            	insert into log_unreg_taxes(unreg_salary_id,unreg_salary_name,unreg_salary_start_period,unreg_salary_end_period,unreg_salary_payment_date,emp_data_id,emp_name,emp_nik,emp_jabatan_id,emp_jabatan_code,emp_jabatan_name,emp_gol_jabatan,department_id,department_name,emp_type_id,emp_type_name,nominal,tax_comp_id,tax_comp_name,periode_id,periode_start,periode_end,created_by,created_on,version) 
+            	values (:unregSalaryId,:unregSalaryName,:unregSalaryStartPeriod,:unregSalaryEndPeriod,:unregSalaryPaymentDate,:empDataId,:empName,:empNik,:empJabatanId,:empJabatanCode,:empJabatanName,:empGolJabatan,:departmentId,:departmentName,:empTypeId,:empTypeName,:nominal,:taxCompId,:taxCompName,:periodeId,:periodeStart,:periodeEnd,:createdBy,:createdOn,0)
+            ]]>
+            </value>
+        </property>
+        <!-- It will take care matching between object property and sql name parameter -->
+        <property name="itemSqlParameterSourceProvider">
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+        </property>
+    </bean>
     
 </beans>

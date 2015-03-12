@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.LogUnregTaxes;
  */
 public interface LogUnregTaxesDao extends IDAO<LogUnregTaxes> {
 
+	public void deleteByUnregSalaryId(Long unregSalaryId);
+
 }

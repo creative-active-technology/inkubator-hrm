@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.LogUnregTaxesDao;
 import com.inkubator.hrm.entity.LogUnregTaxes;
 import com.inkubator.hrm.service.LogUnregTaxesService;
 
@@ -16,8 +21,10 @@ import com.inkubator.hrm.service.LogUnregTaxesService;
  */
 @Service(value = "logUnregTaxesService")
 @Lazy
-public class LogUnregTaxesServiceImpl extends IServiceImpl implements
-		LogUnregTaxesService {
+public class LogUnregTaxesServiceImpl extends IServiceImpl implements LogUnregTaxesService {
+	
+	@Autowired
+	private LogUnregTaxesDao logUnregTaxesDao;
 
 	@Override
 	public LogUnregTaxes getEntiyByPK(String id) throws Exception {
@@ -223,6 +230,13 @@ public class LogUnregTaxesServiceImpl extends IServiceImpl implements
 			int maxResults, Order order, Byte isActive) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByUnregSalaryId(Long unregSalaryId) throws Exception {
+		logUnregTaxesDao.deleteByUnregSalaryId(unregSalaryId);
+		
 	}
 
 }
