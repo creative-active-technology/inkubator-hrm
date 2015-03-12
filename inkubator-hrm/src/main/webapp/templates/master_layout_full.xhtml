@@ -396,11 +396,6 @@
                                                 <p:menuitem value="#{appmsg['paySalaryComponent.paySalaryComponent']}" icon="img-pay_salary_component" style="font-size: 12px !important;color: #003366" title="#{appmsg['paySalaryComponent.paySalaryComponent']}" url="/protected/payroll/pay_salary_comp_view.htm" /> 
                                                 <!--<p:menuitem value="#{appmsg['salaryCalculation.salaryCalculation']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['salaryCalculation.salaryCalculation']}" url="/protected/payroll/salary_execution_view.htm" />--> 
                                             </p:submenu>
-                                            <p:submenu label="Pengaturan Pinjaman" styleClass="menu_child">
-                                                <p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="" /> 
-                                                <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="" /> 
-                                                <p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="" /> 
-                                            </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['employee.employee']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="#{appmsg['menu.employee_personal']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_personal']}" url="#" />    
@@ -463,7 +458,38 @@
                                             <p:menuitem value="#{appmsg['menu.on_boarding_process']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.on_boarding_process']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['menu.custom_field_upload']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.custom_field_upload']}" url="#" /> 
                                         </p:submenu>
-                                        <p:submenu label="#{appmsg['menu.reimbursement']}" styleClass="menu" icon="img-loan"/>
+                                        <p:submenu label="#{appmsg['menu.reimbursement']}" styleClass="menu" icon="img-loan">
+                                            <p:menuitem value="#{appmsg['reimbursement.personal_reimbursement_histoty']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                            <p:submenu label="#{appmsg['reimbursement.reimbursement_setting']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_type_setting']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="" />  
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_schema']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.employee_reimbursement_schema']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['reimbursement.reimbursement_request']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="" />  
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_inbox']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                            </p:submenu>
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_upload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_verification_approval']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_status']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" />
+                                            <p:menuitem value="#{appmsg['reimbursement.disbursement']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" />
+                                            <p:submenu label="#{appmsg['reimbursement.reimbursement_report']}"  styleClass="menu_child" >
+                                                <p:menuitem value="#{appmsg['reimbursement.report_details']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="" />  
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_installment_history']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.employee_reimbursement_list']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.master_reimbursement_report']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.monthly_report']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.periodic_reimbursement_installment']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.employee_reimbursement_balances']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_in_payroll']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_schedule']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.last_reimbursement_status']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.employee_reimbursement_report']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.user_defined_reimbursement_report']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                            </p:submenu>
+                                        </p:submenu>
                                         <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
                                             <p:menuitem value="#{appmsg['menu.my_personal_loan_history']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.my_personal_loan_history']}" url="#" /> 
                                             <p:submenu label="#{appmsg['menu.loan_setting']}"  styleClass="menu_child" >
