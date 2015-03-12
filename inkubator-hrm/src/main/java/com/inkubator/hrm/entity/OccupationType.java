@@ -25,7 +25,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="occupation_type"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="occupation_type_name") 
 )
 public class OccupationType  implements java.io.Serializable {

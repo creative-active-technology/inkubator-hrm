@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bank_group"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="bank_group_code") 
 )
 public class BankGroup  implements java.io.Serializable {

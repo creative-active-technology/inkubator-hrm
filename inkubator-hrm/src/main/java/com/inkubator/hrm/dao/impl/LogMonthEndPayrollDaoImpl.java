@@ -21,11 +21,17 @@ import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
+import java.text.SimpleDateFormat;
+import org.hibernate.type.BigDecimalType;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 /**
  *
@@ -386,5 +392,620 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 		criteria.add(Restrictions.eq("paySalaryCompId", paySalaryCompId));
 		return (LogMonthEndPayroll) criteria.uniqueResult();
 	}
+        
+        @Override
+    public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        /*
+        Mekanismenya, select data komponen baik yang reguler maupun non reguler, lalu di gabung dengan union.
+        Data komponen Reguler dari table log_month_end_payroll, dan Unreguler dari table log_unreg_payroll
+        Sebelum di gabung di lakukan filter terlebih dahulu berdasarkan searchParameter.
+        */
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        //Flag Untuk penanda apakah ada filter atau tidak
+        boolean isFiltered = !searchParameter.getListDepartmentId().isEmpty() || !searchParameter.getListPaySalaryCompId().isEmpty() || 
+                !searchParameter.getListGolJabatanId().isEmpty() || !searchParameter.getListEmployeeTypeId().isEmpty() || 
+                null != searchParameter.getStartDate() || null != searchParameter.getEndDate();
+        
+        //Flag untuk penanda jika filter lebih dari satu
+        boolean multipleFilterUnregSalary = Boolean.FALSE;
+        boolean multipleFilterRegSalary = Boolean.FALSE;
+        
+        // Query for UnRequler Payroll
+        final StringBuilder query = new StringBuilder("SELECT lup.id AS id, "
+                + " CONCAT(lup.unreg_salary_name,'  ', MONTHNAME(wp.payroll_date) , ' - ', wp.tahun) "
+                + " AS namaProsesGaji, "
+                + " lup.department_name AS department, " 
+                + " CONCAT(lup.emp_jabatan_code,'  ', lup.emp_jabatan_name) AS jabatan, " 
+                + " lup.emp_gol_jabatan AS golonganJabatan, " 
+                + " CONCAT(lup.emp_nik,'  ', lup.emp_name) AS karyawan, " 
+                + " CONCAT(lup.pay_salary_comp_code,'  ', lup.pay_salary_desc) AS namaKomponen, " 
+                + " lup.nominal AS nominal " 
+                + " FROM log_unreg_payroll lup INNER JOIN "
+                + " unreg_salary us ON lup.unreg_salary_id = us.id " 
+                + " INNER JOIN wt_periode wp ON us.based_period_id = wp.id ");
+        
+        /* Begin Filtering for UnReguler Payroll */
+        
+        if(isFiltered){
+            query.append(" WHERE ");
+        }
+        
+        
+        if(!searchParameter.getListDepartmentId().isEmpty()){            
+            query.append(" lup.department_id IN( ");            
+            
+            int size = searchParameter.getListDepartmentId().size();
+            //karena pakai native query, isi List harus di parsing satu per satu
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                }
+            }
+            
+            query.append(") ");
+            multipleFilterUnregSalary = Boolean.TRUE;
+        }
+        
+        if(!searchParameter.getListPaySalaryCompId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.pay_salary_comp_id IN( ");                      
+            }else{               
+                query.append(" lup.pay_salary_comp_id IN( ");     
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListPaySalaryCompId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListGolJabatanId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.emp_gol_jabatan IN( ");                      
+            }else{               
+                query.append(" lup.emp_gol_jabatan IN( ");     
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListGolJabatanId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                     query.append("'");
+                    query.append(" , ");
+                }else{
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                    query.append("'");
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListEmployeeTypeId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.emp_type_id IN( ");                    
+            }else{               
+                 query.append(" lup.emp_type_id IN( ");   
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListEmployeeTypeId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(null != searchParameter.getStartDate()){
+            if(multipleFilterUnregSalary){ 
+                query.append(" AND lup.periode_start >= '");
+                query.append(dateFormat.format(searchParameter.getStartDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lup.periode_start >= '");
+               query.append(dateFormat.format(searchParameter.getStartDate()));
+               query.append("' ");
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+        }
+        
+        if(null != searchParameter.getEndDate()){
+           if(multipleFilterUnregSalary){ 
+                query.append(" AND lup.periode_start <= '");
+                query.append(dateFormat.format(searchParameter.getEndDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lup.periode_start <= '");
+               query.append(dateFormat.format(searchParameter.getEndDate()));
+               query.append("' ");
+               multipleFilterUnregSalary = Boolean.TRUE;
+            }      
+                             
+        }
+        
+        /* End Filtering for UnReguler Payroll */
+        
+        // Union table
+        query.append(" UNION ");
+        
+        
+        // Query for Requler Payroll
+        query.append(" SELECT lmep.id as ID, "
+                + " CONCAT(lmep.pay_salary_desc,' Reguler ', MONTHNAME(wp.payroll_date),' - ', wp.tahun) "
+                + " AS namaProsesGaji , " 
+                + " lmep.department_name AS department, " 
+                + " CONCAT(lmep.emp_jabatan_code,'  ', lmep.emp_jabatan_name) AS jabatan, "
+                + " lmep.emp_gol_jabatan AS golonganJabatan,  " 
+                + " CONCAT(lmep.emp_nik,'  ', lmep.emp_name) AS karyawan, " 
+                + " CONCAT(lmep.pay_salary_comp_code,'  ', lmep.pay_salary_desc) AS namaKomponen, " 
+                + " lmep.nominal AS nominal " 
+                + " FROM hrm.log_month_end_payroll lmep INNER JOIN " 
+                + " hrm.wt_periode wp ON lmep.periode_id = wp.id ");
+        
+       /* Begin Filtering for Reguler Payroll */
+        
+        if(isFiltered){
+            query.append(" WHERE ");
+        }
+        
+        
+        if(!searchParameter.getListDepartmentId().isEmpty()){            
+            query.append(" lmep.department_id IN( ");            
+            
+            int size = searchParameter.getListDepartmentId().size();
+            //karena pakai native query, isi List harus di parsing satu per satu
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                }
+            }
+            
+            query.append(") ");
+            multipleFilterRegSalary = Boolean.TRUE;
+        }
+        
+        if(!searchParameter.getListPaySalaryCompId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.pay_salary_comp_id IN( ");                      
+            }else{               
+                query.append(" lmep.pay_salary_comp_id IN( ");     
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListPaySalaryCompId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListGolJabatanId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.emp_gol_jabatan IN( ");                      
+            }else{               
+                query.append(" lmep.emp_gol_jabatan IN( ");     
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListGolJabatanId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                     query.append("'");
+                    query.append(" , ");
+                }else{
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                    query.append("'");
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListEmployeeTypeId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.emp_type_id IN( ");                    
+            }else{               
+                 query.append(" lmep.emp_type_id IN( ");   
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListEmployeeTypeId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(null != searchParameter.getStartDate()){
+            if(multipleFilterRegSalary){ 
+                query.append(" AND lmep.periode_start >= '");
+                query.append(dateFormat.format(searchParameter.getStartDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lmep.periode_start >= '");
+               query.append(dateFormat.format(searchParameter.getStartDate()));
+               query.append("' ");
+               multipleFilterRegSalary = Boolean.TRUE;
+            }
+        }
+        
+        if(null != searchParameter.getEndDate()){
+           if(multipleFilterRegSalary){ 
+                query.append(" AND lmep.periode_start <= '");
+                query.append(dateFormat.format(searchParameter.getEndDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lmep.periode_start <= '");
+               query.append(dateFormat.format(searchParameter.getEndDate()));
+               query.append("' ");
+               multipleFilterRegSalary = Boolean.TRUE;
+            }      
+                             
+        }
+        
+        /* End Filtering for Reguler Payroll */      
+        
+        return getCurrentSession().createSQLQuery(query.toString())
+                .addScalar("id", LongType.INSTANCE)
+                .addScalar("namaProsesGaji", StringType.INSTANCE)
+                .addScalar("department", StringType.INSTANCE)
+                .addScalar("jabatan", StringType.INSTANCE)
+                .addScalar("golonganJabatan", StringType.INSTANCE)
+                .addScalar("karyawan", StringType.INSTANCE)
+                .addScalar("namaKomponen", StringType.INSTANCE)
+                .addScalar("nominal", BigDecimalType.INSTANCE)
+                .setResultTransformer(Transformers.aliasToBean(ReportDataKomponenModel.class))
+                .list();
+    }
+
+    @Override
+    public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter) {
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        //Flag Untuk penanda apakah ada filter atau tidak
+        boolean isFiltered = !searchParameter.getListDepartmentId().isEmpty() || !searchParameter.getListPaySalaryCompId().isEmpty() || 
+                !searchParameter.getListGolJabatanId().isEmpty() || !searchParameter.getListEmployeeTypeId().isEmpty() || 
+                null != searchParameter.getStartDate() || null != searchParameter.getEndDate();
+        
+        //Flag untuk penanda jika filter lebih dari satu
+        boolean multipleFilterUnregSalary = Boolean.FALSE;
+        boolean multipleFilterRegSalary = Boolean.FALSE;
+        
+        
+        // Query for UnRequler Payroll
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM (SELECT "
+                + " CONCAT(lup.unreg_salary_name,'  ', MONTHNAME(wp.payroll_date) , ' - ', wp.tahun) "
+                + " AS namaProsesGaji, "
+                + " lup.department_name AS department, " 
+                + " CONCAT(lup.emp_jabatan_code,'  ', lup.emp_jabatan_name) AS jabatan, " 
+                + " lup.emp_gol_jabatan AS golonganJabatan, " 
+                + " CONCAT(lup.emp_nik,'  ', lup.emp_name) AS karyawan, " 
+                + " CONCAT(lup.pay_salary_comp_code,'  ', lup.pay_salary_desc) AS namaKomponen, " 
+                + " lup.nominal AS nominal " 
+                + " FROM log_unreg_payroll lup INNER JOIN "
+                + " unreg_salary us ON lup.unreg_salary_id = us.id " 
+                + " INNER JOIN wt_periode wp ON us.based_period_id = wp.id ");
+        
+        /* Begin Filtering for UnReguler Payroll */
+        
+        if(isFiltered){
+            query.append(" WHERE ");
+        }
+        
+        
+        if(!searchParameter.getListDepartmentId().isEmpty()){            
+            query.append(" lup.department_id IN( ");            
+            
+            int size = searchParameter.getListDepartmentId().size();
+            //karena pakai native query, isi List harus di parsing satu per satu
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                }
+            }
+            
+            query.append(") ");
+            multipleFilterUnregSalary = Boolean.TRUE;
+        }
+        
+        if(!searchParameter.getListPaySalaryCompId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.pay_salary_comp_id IN( ");                      
+            }else{               
+                query.append(" lup.pay_salary_comp_id IN( ");     
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListPaySalaryCompId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListGolJabatanId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.emp_gol_jabatan IN( ");                      
+            }else{               
+                query.append(" lup.emp_gol_jabatan IN( ");     
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListGolJabatanId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                     query.append("'");
+                    query.append(" , ");
+                }else{
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                    query.append("'");
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListEmployeeTypeId().isEmpty()){
+            if(multipleFilterUnregSalary){  
+                query.append(" AND lup.emp_type_id IN( ");                    
+            }else{               
+                 query.append(" lup.emp_type_id IN( ");   
+                multipleFilterUnregSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListEmployeeTypeId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(null != searchParameter.getStartDate()){
+            if(multipleFilterUnregSalary){ 
+                query.append(" AND lup.periode_start >= '");
+                query.append(dateFormat.format(searchParameter.getStartDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lup.periode_start >= '");
+               query.append(dateFormat.format(searchParameter.getStartDate()));
+               query.append("' ");
+               multipleFilterUnregSalary = Boolean.TRUE;
+            }
+        }
+        
+        if(null != searchParameter.getEndDate()){
+           if(multipleFilterUnregSalary){ 
+                query.append(" AND lup.periode_start <= '");
+                query.append(dateFormat.format(searchParameter.getEndDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lup.periode_start <= '");
+               query.append(dateFormat.format(searchParameter.getEndDate()));
+               query.append("' ");
+               multipleFilterUnregSalary = Boolean.TRUE;
+            }      
+                             
+        }
+        
+        /* End Filtering for UnReguler Payroll */
+        
+        // Union table
+        query.append(" UNION ");
+        
+        
+        // Query for Requler Payroll
+        query.append(" SELECT CONCAT(lmep.pay_salary_desc,' Reguler ', MONTHNAME(wp.payroll_date),' - ', wp.tahun) "
+                + " AS namaProsesGaji , " 
+                + " lmep.department_name AS department, " 
+                + " CONCAT(lmep.emp_jabatan_code,'  ', lmep.emp_jabatan_name) AS jabatan, "
+                + " lmep.emp_gol_jabatan AS golonganJabatan,  " 
+                + " CONCAT(lmep.emp_nik,'  ', lmep.emp_name) AS karyawan, " 
+                + " CONCAT(lmep.pay_salary_comp_code,'  ', lmep.pay_salary_desc) AS namaKomponen, " 
+                + " lmep.nominal AS nominal " 
+                + " FROM hrm.log_month_end_payroll lmep INNER JOIN " 
+                + " hrm.wt_periode wp ON lmep.periode_id = wp.id ");
+        
+       /* Begin Filtering for Reguler Payroll */
+        
+        if(isFiltered){
+            query.append(" WHERE ");
+        }
+        
+        
+        if(!searchParameter.getListDepartmentId().isEmpty()){            
+            query.append(" lmep.department_id IN( ");            
+            
+            int size = searchParameter.getListDepartmentId().size();
+            //karena pakai native query, isi List harus di parsing satu per satu
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListDepartmentId().get(i)));
+                }
+            }
+            
+            query.append(") ");
+            multipleFilterRegSalary = Boolean.TRUE;
+        }
+        
+        if(!searchParameter.getListPaySalaryCompId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.pay_salary_comp_id IN( ");                      
+            }else{               
+                query.append(" lmep.pay_salary_comp_id IN( ");     
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListPaySalaryCompId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListPaySalaryCompId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListGolJabatanId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.emp_gol_jabatan IN( ");                      
+            }else{               
+                query.append(" lmep.emp_gol_jabatan IN( ");     
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListGolJabatanId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                     query.append("'");
+                    query.append(" , ");
+                }else{
+                    query.append("'");
+                    query.append(String.valueOf(searchParameter.getListGolJabatanId().get(i)));
+                    query.append("'");
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(!searchParameter.getListEmployeeTypeId().isEmpty()){
+            if(multipleFilterRegSalary){  
+                query.append(" AND lmep.emp_type_id IN( ");                    
+            }else{               
+                 query.append(" lmep.emp_type_id IN( ");   
+                multipleFilterRegSalary = Boolean.TRUE;
+            }
+            
+            //karena pakai native query, isi List harus di parsing satu per satu
+            int size = searchParameter.getListEmployeeTypeId().size();
+            for(int i = 0; i<size ; i++){
+                if (i<(size -1)){
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                    query.append(" , ");
+                }else{
+                    query.append(String.valueOf(searchParameter.getListEmployeeTypeId().get(i)));
+                }
+            }
+            
+            query.append(") ");               
+        }
+        
+        if(null != searchParameter.getStartDate()){
+            if(multipleFilterRegSalary){ 
+                query.append(" AND lmep.periode_start >= '");
+                query.append(dateFormat.format(searchParameter.getStartDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lmep.periode_start >= '");
+               query.append(dateFormat.format(searchParameter.getStartDate()));
+               query.append("' ");
+               multipleFilterRegSalary = Boolean.TRUE;
+            }
+        }
+        
+        if(null != searchParameter.getEndDate()){
+           if(multipleFilterRegSalary){ 
+                query.append(" AND lmep.periode_start <= '");
+                query.append(dateFormat.format(searchParameter.getEndDate()));
+                query.append("' ");
+                
+            }else{
+               query.append(" lmep.periode_start <= '");
+               query.append(dateFormat.format(searchParameter.getEndDate()));
+               query.append("' ");
+               multipleFilterRegSalary = Boolean.TRUE;
+            }      
+                             
+        }
+        
+        /* End Filtering for Reguler Payroll */
+       
+        
+        query.append(" ) AS jumlahRow ");          
+        return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
+    }
     
 }

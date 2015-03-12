@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="permit_distribution"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
 )
 public class PermitDistribution  implements java.io.Serializable {
 

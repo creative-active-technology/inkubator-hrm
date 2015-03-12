@@ -19,7 +19,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "religion", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = "name")
+@Table(name = "religion", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames = "name")
 )
 public class Religion implements java.io.Serializable {
 

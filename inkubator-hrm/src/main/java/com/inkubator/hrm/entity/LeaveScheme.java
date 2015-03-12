@@ -19,7 +19,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "leave_scheme", catalog = "hrm")
+@Table(name = "leave_scheme", catalog="hrm_payroll")
 public class LeaveScheme implements Serializable {
 
 	private Long id;

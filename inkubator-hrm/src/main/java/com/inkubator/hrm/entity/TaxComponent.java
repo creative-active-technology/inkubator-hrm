@@ -17,7 +17,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="tax_component"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class TaxComponent  implements java.io.Serializable {

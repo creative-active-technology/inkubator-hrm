@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "finger_match_emp", catalog = "hrm")
+@Table(name = "finger_match_emp", catalog="hrm_payroll")
 public class FingerMatchEmp implements Serializable {
 
     private Long id;
