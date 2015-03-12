@@ -151,8 +151,9 @@ public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSch
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(LoanNewSchema entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.loanNewSchemaDao.delete(entity);
     }
 
     @Override
