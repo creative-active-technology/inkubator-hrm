@@ -35,9 +35,11 @@ import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.util.TerbilangUtil;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
@@ -417,4 +419,16 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
         return file;
 		
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        return this.logMonthEndPayrollDao.getReportDataKomponenByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter) {
+        return this.logMonthEndPayrollDao.getTotalReportDataKomponenByParam(searchParameter);
+    }
 }

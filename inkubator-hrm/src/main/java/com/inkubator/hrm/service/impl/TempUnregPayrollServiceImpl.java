@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -39,6 +40,7 @@ import com.inkubator.hrm.dao.UnregSalaryDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.entity.TempUnregPayrollEmpPajak;
 import com.inkubator.hrm.entity.UnregDepartement;
@@ -315,7 +317,9 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 		List<Long> golJabIds = Lambda.extract(listGoljabs, Lambda.on(UnregGoljab.class).getId().getGolonganJabatanId());
 		List<Long> empTypeIds = Lambda.extract(listEmpTypes, Lambda.on(UnregEmpType.class).getId().getUnregEmpTypeId());
 		List<EmpData> empDatas = empDataDao.getAllDataByDepartmentAndReligionAndGolJabAndEmpType(departmentIds, religionIds, golJabIds, empTypeIds);		
-				
+		
+		
+		/** 1. Lakukan proses default, looping berdasarkan filter employee */
 		for(EmpData empData : empDatas){
 			LOGGER.info(" ============= EMPLOYEE : " + empData.getBioData().getFirstName() + " =====================");
 
@@ -357,45 +361,91 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
                 totalIncome = this.calculateTotalIncome(totalIncome, tempUnregPayroll); //calculate totalIncome temporary            	
             }
             
-            //create totalIncome Kalkulasi, hasil penjumlahan nominal dari semua component di atas            
-            TempUnregPayroll totalIncomeKalkulasi = new TempUnregPayroll();
-            totalIncomeKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            totalIncomeKalkulasi.setEmpData(empData);
-            totalIncomeKalkulasi.setPaySalaryComponent(totalIncomeComponent);
-            totalIncomeKalkulasi.setUnregSalary(unregSalary);
-            totalIncomeKalkulasi.setFactor(this.getFactorBasedCategory(totalIncomeComponent.getComponentCategory()));
-            totalIncomeKalkulasi.setNominal(totalIncome);
-            totalIncomeKalkulasi.setCreatedBy(createdBy);
-            totalIncomeKalkulasi.setCreatedOn(createdOn);
-            datas.add(totalIncomeKalkulasi);
-
-            //create initial tax Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya            
-            TempUnregPayroll taxKalkulasi = new TempUnregPayroll();
-            taxKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            taxKalkulasi.setEmpData(empData);
-            taxKalkulasi.setPaySalaryComponent(taxComponent);
-            taxKalkulasi.setUnregSalary(unregSalary);
-            taxKalkulasi.setFactor(this.getFactorBasedCategory(taxComponent.getComponentCategory()));
-            taxKalkulasi.setNominal(new BigDecimal(0));
-            taxKalkulasi.setCreatedBy(createdBy);
-            taxKalkulasi.setCreatedOn(createdOn);
-            datas.add(taxKalkulasi);
-
-            //create initial ceil Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya             
-            TempUnregPayroll ceilKalkulasi = new TempUnregPayroll();
-            ceilKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            ceilKalkulasi.setEmpData(empData);
-            ceilKalkulasi.setPaySalaryComponent(ceilComponent);
-            ceilKalkulasi.setUnregSalary(unregSalary);
-            ceilKalkulasi.setFactor(this.getFactorBasedCategory(ceilComponent.getComponentCategory()));
-            ceilKalkulasi.setNominal(new BigDecimal(0));
-            ceilKalkulasi.setCreatedBy(createdBy);
-            ceilKalkulasi.setCreatedOn(createdOn);
-            datas.add(ceilKalkulasi);
+            //added default paySalaryComponent that should be exist(mandatory)
+			datas = this.defaultUnregPayrollComp(datas, unregSalary, empData, ceilComponent, taxComponent, totalIncomeComponent, totalIncome, createdBy, createdOn);
 		}
-            	
+		
+		
+		/** 2. Lakukan proses diluar default, looping untuk exception employee */
+		Group<UnregPayComponentsException> groupByEmpData = Lambda.group(listException, Lambda.by(Lambda.on(UnregPayComponentsException.class).getEmpData().getId()));
+		for (String key : groupByEmpData.keySet()) {						
+			
+			/**
+             * Saat ini totalIncome masih temporary, karena belum dikurangi
+             * pajak dan pembulatan CSR Sedangkan untuk final totalIncome (take
+             * home pay) ada di proses(step) selanjutnya di batch proses,
+             * silahkan lihat batch-config.xml
+             */
+			BigDecimal totalIncome = new BigDecimal(0);
+			
+			List<UnregPayComponentsException> list = groupByEmpData.find(key);
+			EmpData empData = list.get(0).getEmpData();
+			LOGGER.info(" ============= EMPLOYEE EXCEPTION : " + empData.getBioData().getFirstName() + " =====================");
+			for(UnregPayComponentsException unregPayComponentsException : list){
+				UnregPayComponents unregComp = unregPayComponentsException.getUnregPayComponents();
+				
+				TempUnregPayroll tempUnregPayroll = new TempUnregPayroll();
+                tempUnregPayroll.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                tempUnregPayroll.setEmpData(empData);
+                tempUnregPayroll.setPaySalaryComponent(unregComp.getPaySalaryComponent());
+                tempUnregPayroll.setUnregSalary(unregSalary);
+                tempUnregPayroll.setFactor(this.getFactorBasedCategory(unregComp.getPaySalaryComponent().getComponentCategory()));
+                tempUnregPayroll.setNominal(new BigDecimal(unregPayComponentsException.getNominal()));
+                tempUnregPayroll.setCreatedBy(createdBy);
+                tempUnregPayroll.setCreatedOn(createdOn);
+                datas.add(tempUnregPayroll);
+                
+                totalIncome = this.calculateTotalIncome(totalIncome, tempUnregPayroll); //calculate totalIncome temporary
+			}
+			
+			//added default paySalaryComponent that should be exist(mandatory)
+			datas = this.defaultUnregPayrollComp(datas, unregSalary, empData, ceilComponent, taxComponent, totalIncomeComponent, totalIncome, createdBy, createdOn);
+		}		
+		
 		System.out.println("=============================================End " + new Date());
 		return datas;
+	}
+	
+	private List<TempUnregPayroll> defaultUnregPayrollComp(List<TempUnregPayroll> datas, UnregSalary unregSalary, EmpData empData, PaySalaryComponent ceilComponent, PaySalaryComponent taxComponent, 
+			PaySalaryComponent totalIncomeComponent, BigDecimal totalIncome, String createdBy, Date createdOn){
+		
+		//create totalIncome Kalkulasi, hasil penjumlahan nominal dari semua component di atas            
+        TempUnregPayroll totalIncomeKalkulasi = new TempUnregPayroll();
+        totalIncomeKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        totalIncomeKalkulasi.setEmpData(empData);
+        totalIncomeKalkulasi.setPaySalaryComponent(totalIncomeComponent);
+        totalIncomeKalkulasi.setUnregSalary(unregSalary);
+        totalIncomeKalkulasi.setFactor(this.getFactorBasedCategory(totalIncomeComponent.getComponentCategory()));
+        totalIncomeKalkulasi.setNominal(totalIncome);
+        totalIncomeKalkulasi.setCreatedBy(createdBy);
+        totalIncomeKalkulasi.setCreatedOn(createdOn);
+        datas.add(totalIncomeKalkulasi);
+
+        //create initial tax Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya            
+        TempUnregPayroll taxKalkulasi = new TempUnregPayroll();
+        taxKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        taxKalkulasi.setEmpData(empData);
+        taxKalkulasi.setPaySalaryComponent(taxComponent);
+        taxKalkulasi.setUnregSalary(unregSalary);
+        taxKalkulasi.setFactor(this.getFactorBasedCategory(taxComponent.getComponentCategory()));
+        taxKalkulasi.setNominal(new BigDecimal(0));
+        taxKalkulasi.setCreatedBy(createdBy);
+        taxKalkulasi.setCreatedOn(createdOn);
+        datas.add(taxKalkulasi);
+
+        //create initial ceil Kalkulasi, set nominal 0. Akan dibutuhkan di batch proses step selanjutnya             
+        TempUnregPayroll ceilKalkulasi = new TempUnregPayroll();
+        ceilKalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        ceilKalkulasi.setEmpData(empData);
+        ceilKalkulasi.setPaySalaryComponent(ceilComponent);
+        ceilKalkulasi.setUnregSalary(unregSalary);
+        ceilKalkulasi.setFactor(this.getFactorBasedCategory(ceilComponent.getComponentCategory()));
+        ceilKalkulasi.setNominal(new BigDecimal(0));
+        ceilKalkulasi.setCreatedBy(createdBy);
+        ceilKalkulasi.setCreatedOn(createdOn);
+        datas.add(ceilKalkulasi);
+        
+        return datas;
 	}
 
 	private Integer getFactorBasedCategory(Integer componentStrategy) {
@@ -513,6 +563,13 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByUnregSalaryId(Long unregSalaryId) throws Exception {
 		return tempUnregPayrollDao.getTotalByUnregSalaryId(unregSalaryId);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataEmployeeByUnregSalaryId(Long unregSalaryId) throws Exception {
+		return tempUnregPayrollDao.getAllDataEmployeeByUnregSalaryId(unregSalaryId);
 		
 	}
 }

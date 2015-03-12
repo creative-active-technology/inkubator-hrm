@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.ServiceWebUtil;
@@ -22,10 +23,10 @@ import org.apache.log4j.Logger;
  *
  * @author Deni
  */
-@FacesConverter(value = "paySalaryComponentConverter")
-public class PaySalaryComponentConverter implements Converter{
+@FacesConverter(value = "paySalaryComponentPickListConverter")
+public class PaySalaryComponentPickListConverter implements Converter{
     
-    private static final Logger LOGGER = Logger.getLogger(PaySalaryComponentConverter.class);
+    private static final Logger LOGGER = Logger.getLogger(PaySalaryComponentPickListConverter.class);
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -41,18 +42,10 @@ public class PaySalaryComponentConverter implements Converter{
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        
-        String messages = StringUtils.EMPTY;
-        Integer data= (Integer) value;
-        if(data == HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN){
-        	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_tunjangan");
-        } else if(data == HRMConstant.PAY_SALARY_COMPONENT_POTONGAN){
-        	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_potongan");
-        } else if(data == HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI){
-        	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_subsidi");
-        } 
-        return messages;
+       if (value == null || value.equals("")) {
+            return null;
+        }
+        return String.valueOf(((PaySalaryComponent) value).getId());
     }
     
 }
