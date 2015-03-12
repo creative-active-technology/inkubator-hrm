@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempUnregPayroll;
 import com.inkubator.hrm.web.model.UnregSalaryCalculationExecuteModel;
 import com.inkubator.hrm.web.search.UnregCalculationSearchParameter;
@@ -170,5 +171,16 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
 		criteria.add(Restrictions.eq("unregSalary.id", unregSalaryId));
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 		
+	}
+
+	@Override
+	public List<EmpData> getAllDataEmployeeByUnregSalaryId(Long unregSalaryId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT distinct empData.id as id " +
+    			"FROM TempUnregPayroll " +
+    			"WHERE unregSalary.id = :unregSalaryId");
+		Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(EmpData.class)).setParameter("unregSalaryId", unregSalaryId);
+    	
+		return hbm.list();
 	}
 }

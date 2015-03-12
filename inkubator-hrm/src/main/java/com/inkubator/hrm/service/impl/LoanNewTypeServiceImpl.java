@@ -1,5 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.inkubator.hrm.service.impl;
@@ -8,10 +9,12 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CurrencyDao;
-import com.inkubator.hrm.dao.PaySalaryGradeDao;
-import com.inkubator.hrm.entity.PaySalaryGrade;
-import com.inkubator.hrm.service.PaySalaryGradeService;
-import com.inkubator.hrm.web.search.PaySalaryGradeSearchParameter;
+import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.entity.Currency;
+import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.LoanType;
+import com.inkubator.hrm.service.LoanNewTypeService;
+import com.inkubator.hrm.web.search.LoanNewTypeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -27,152 +30,174 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "paySalaryGradeService")
+@Service(value = "loanNewTypeService")
 @Lazy
-public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalaryGradeService {
+public class LoanNewTypeServiceImpl extends IServiceImpl implements LoanNewTypeService {
 
     @Autowired
-    private PaySalaryGradeDao paySalaryGradeDao;
+    private LoanNewTypeDao loanNewTypeDao;
+
     @Autowired
     private CurrencyDao currencyDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PaySalaryGrade> getByParam(PaySalaryGradeSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryGradeDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<LoanNewType> getByParam(LoanNewTypeSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        return loanNewTypeDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter) throws Exception {
-        return paySalaryGradeDao.getTotalPaySalaryGradeByParam(searchParameter);
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalLoanTypeByParam(LoanNewTypeSearchParameter parameter) {
+        return loanNewTypeDao.getTotalLoanTypeByParam(parameter);
     }
 
     @Override
-    public PaySalaryGrade getEntiyByPK(String id) throws Exception {
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanNewType getEntityWithRelationByPk(Long id) {
+        return loanNewTypeDao.getEntityByPkWithDetail(id);
+    }
+
+    @Override
+    public LoanNewType getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PaySalaryGrade getEntiyByPK(Integer id) throws Exception {
+    public LoanNewType getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public PaySalaryGrade getEntiyByPK(Long id) throws Exception {
-        return paySalaryGradeDao.getEntiyByPK(id);
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanNewType getEntiyByPK(Long id) throws Exception {
+        return loanNewTypeDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(PaySalaryGrade entity) throws Exception {
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        entity.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
-        entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setCreatedOn(new Date());
-        this.paySalaryGradeDao.save(entity);
-    }
-
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(PaySalaryGrade entity) throws Exception {
-        PaySalaryGrade update = paySalaryGradeDao.getEntiyByPK(entity.getId());
-        update.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
-        update.setMinSalary(entity.getMinSalary());
-        update.setMediumSalary(entity.getMediumSalary());
-        update.setMaxSalary(entity.getMaxSalary());
-        update.setUpdatedBy(UserInfoUtil.getUserName());
-        update.setUpdatedOn(new Date());
-        this.paySalaryGradeDao.update(update);
-    }
-
-    @Override
-    public void saveOrUpdate(PaySalaryGrade enntity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade saveData(PaySalaryGrade entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade updateData(PaySalaryGrade entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade saveOrUpdateData(PaySalaryGrade entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(String id, Integer isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(String id, Byte isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public PaySalaryGrade getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(PaySalaryGrade entity) throws Exception {
-        long totalData = this.paySalaryGradeDao.getTotalData();
-        if (entity.getGradeSalary() < totalData) {
-            throw new BussinessException("paysalarygrade.error_delete");
-        } else {
-            this.paySalaryGradeDao.delete(entity);
+    public void save(LoanNewType entity) throws Exception {
+        long totalLoanCodeDuplicates = loanNewTypeDao.getTotalByLoanNewTypeCode(entity.getLoanTypeCode());
+        if (totalLoanCodeDuplicates > 0) {
+            throw new BussinessException("loantype.error_duplicate_loan_type_code");
+        }
+        long totalLoanNameDuplicates = loanNewTypeDao.getTotalByLoanNewTypeName(entity.getLoanTypeName());
+        if (totalLoanNameDuplicates > 0) {
+            throw new BussinessException("loantype.error_duplicate_loan_type_name");
         }
 
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        loanNewTypeDao.save(entity);
     }
 
     @Override
-    public void softDelete(PaySalaryGrade entity) throws Exception {
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(LoanNewType entity) throws Exception {
+        long totalLoanCodeDuplicates = loanNewTypeDao.getTotalByLoanNewTypeCodeAndNotId(entity.getLoanTypeCode(), entity.getId());
+        if (totalLoanCodeDuplicates > 0) {
+            throw new BussinessException("loantype.error_duplicate_loan_type_code");
+        }
+        long totalLoanNameDuplicates = loanNewTypeDao.getTotalByLoanNewTypeNameAndNotId(entity.getLoanTypeName(), entity.getId());
+        if (totalLoanNameDuplicates > 0) {
+            throw new BussinessException("loantype.error_duplicate_loan_type_name");
+        }
+        LoanNewType update = loanNewTypeDao.getEntiyByPK(entity.getId());
+        update.setLoanTypeCode(entity.getLoanTypeCode());
+        update.setLoanTypeName(entity.getLoanTypeName());
+        update.setRoundingStatus(entity.getRoundingStatus());
+        update.setInterest(entity.getInterest());
+        update.setInterestMethod(entity.getInterestMethod());
+        if(null != entity.getCurrency()){
+            Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
+            update.setCurrency(currency);
+        }
+        update.setDescription(entity.getDescription());
+        update.setUpdatedBy(UserInfoUtil.getUserName());
+        update.setUpdatedOn(new Date());
+        loanNewTypeDao.update(update);
+    }
+
+    @Override
+    public void saveOrUpdate(LoanNewType enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanNewType saveData(LoanNewType entity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType updateData(LoanNewType entity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType saveOrUpdateData(LoanNewType entity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewType getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(LoanNewType entity) throws Exception {
+        loanNewTypeDao.delete(entity);
+    }
+
+    @Override
+    public void softDelete(LoanNewType entity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     public Long getTotalData() throws Exception {
-        return this.paySalaryGradeDao.getTotalData();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -191,74 +216,43 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<PaySalaryGrade> getAllData() throws Exception {
-        return paySalaryGradeDao.getAllData();
-    }
-
-    @Override
-    public List<PaySalaryGrade> getAllData(Boolean isActive) throws Exception {
+    public List<LoanNewType> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllData(Integer isActive) throws Exception {
+    public List<LoanNewType> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllData(Byte isActive) throws Exception {
+    public List<LoanNewType> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<LoanNewType> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<LoanNewType> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<LoanNewType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<PaySalaryGrade> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<LoanNewType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public PaySalaryGrade getByPaySalaryGradeId(Long id) throws Exception {
-        return paySalaryGradeDao.getByPaySalaryGradeId(id);
-    }
-
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void doChangerGradeSalary(int newGradeLevel, long oldId) throws Exception {
-        PaySalaryGrade targetChage = this.paySalaryGradeDao.getByGradeNumber(newGradeLevel);
-        targetChage.setGradeSalary(0);
-        targetChage.setUpdatedBy(UserInfoUtil.getUserName());
-        targetChage.setUpdatedOn(new Date());
-        this.paySalaryGradeDao.update(targetChage);
-
-        PaySalaryGrade newChange = this.paySalaryGradeDao.getEntiyByPK(oldId);
-        int gradeNumberOld = newChange.getGradeSalary();
-        newChange.setGradeSalary(newGradeLevel);
-        newChange.setUpdatedBy(UserInfoUtil.getUserName());
-        newChange.setUpdatedOn(new Date());
-        this.paySalaryGradeDao.update(newChange);
-
-        PaySalaryGrade targetChageLast = this.paySalaryGradeDao.getByGradeNumber(0);
-        targetChageLast.setGradeSalary(gradeNumberOld);
-        targetChageLast.setUpdatedBy(UserInfoUtil.getUserName());
-        targetChageLast.setUpdatedOn(new Date());
-        this.paySalaryGradeDao.update(targetChageLast);
-
+    public List<LoanNewType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
