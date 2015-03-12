@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Dec 8, 2014 1:55:08 PM by Hibernate Tools 4.3.1
+// Generated Mar 12, 2015 2:18:50 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
