@@ -18,7 +18,7 @@ public class ReportDataComponentSearchParameter extends SearchParameter {
 
     private List<Long> listDepartmentId;
     private List<Long> listPaySalaryCompId;
-    private List<Long> listGolJabatanId;
+    private List<String> listGolJabatanId;
     private List<Long> listEmployeeTypeId;
     private Date startDate;
     private Date endDate;
@@ -47,11 +47,11 @@ public class ReportDataComponentSearchParameter extends SearchParameter {
         this.listPaySalaryCompId = listPaySalaryCompId;
     }
 
-    public List<Long> getListGolJabatanId() {
+    public List<String> getListGolJabatanId() {
         return listGolJabatanId;
     }
 
-    public void setListGolJabatanId(List<Long> listGolJabatanId) {
+    public void setListGolJabatanId(List<String> listGolJabatanId) {
         this.listGolJabatanId = listGolJabatanId;
     }
 

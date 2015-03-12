@@ -9,6 +9,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
@@ -25,12 +26,12 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class ReportDataKomponenLazyDataModel extends LazyDataModel<LogMonthEndPayroll> implements Serializable {
+public class ReportDataKomponenLazyDataModel extends LazyDataModel<ReportDataKomponenModel> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(ReportDataKomponenLazyDataModel.class);
     private final ReportDataComponentSearchParameter searchParameter;
     private final LogMonthEndPayrollService logMonthEndPayrollService;
-    private List<LogMonthEndPayroll> listLogMonthEndPayroll = new ArrayList<>();
+    private List<ReportDataKomponenModel> listReportDataKomponenModel = new ArrayList<>();
     private Integer jumlah;
 
     public ReportDataKomponenLazyDataModel(ReportDataComponentSearchParameter searchParameter, LogMonthEndPayrollService logMonthEndPayrollService) {       
@@ -39,20 +40,20 @@ public class ReportDataKomponenLazyDataModel extends LazyDataModel<LogMonthEndPa
     }
 
     @Override
-    public List<LogMonthEndPayroll> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ReportDataKomponenModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
       
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    listLogMonthEndPayroll = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc(sortField));
+                    listReportDataKomponenModel = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc(sortField));
                     jumlah = Integer.parseInt(String.valueOf(logMonthEndPayrollService.getTotalReportDataKomponenByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    listLogMonthEndPayroll = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.desc(sortField));
+                    listReportDataKomponenModel = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.desc(sortField));
                     jumlah = Integer.parseInt(String.valueOf(logMonthEndPayrollService.getTotalReportDataKomponenByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
@@ -60,7 +61,7 @@ public class ReportDataKomponenLazyDataModel extends LazyDataModel<LogMonthEndPa
             }
         } else {
             try {
-                listLogMonthEndPayroll = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc("departmentName"));
+                listReportDataKomponenModel = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc("departmentName"));
                 jumlah = Integer.parseInt(String.valueOf(logMonthEndPayrollService.getTotalReportDataKomponenByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -68,17 +69,17 @@ public class ReportDataKomponenLazyDataModel extends LazyDataModel<LogMonthEndPa
         }
         setPageSize(pageSize);
         setRowCount(jumlah);
-        return listLogMonthEndPayroll;
+        return listReportDataKomponenModel;
     }
 
     @Override
-    public Object getRowKey(LogMonthEndPayroll logMonthEndPayroll) {
-        return logMonthEndPayroll.getId();
+    public Object getRowKey(ReportDataKomponenModel reportDataKomponenModel) {
+        return reportDataKomponenModel.getId();
     }
 
     @Override
-    public LogMonthEndPayroll getRowData(String id) {
-        for (LogMonthEndPayroll logMonthEndPayroll : listLogMonthEndPayroll) {
+    public ReportDataKomponenModel getRowData(String id) {
+        for (ReportDataKomponenModel logMonthEndPayroll : listReportDataKomponenModel) {
             if (id.equals(String.valueOf(logMonthEndPayroll.getId()))) {
                 return logMonthEndPayroll;
             }

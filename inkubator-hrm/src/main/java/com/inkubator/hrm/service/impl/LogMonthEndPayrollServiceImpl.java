@@ -35,6 +35,7 @@ import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.util.TerbilangUtil;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
@@ -421,7 +422,7 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<LogMonthEndPayroll> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         return this.logMonthEndPayrollDao.getReportDataKomponenByParam(searchParameter, firstResult, maxResults, order);
     }
 

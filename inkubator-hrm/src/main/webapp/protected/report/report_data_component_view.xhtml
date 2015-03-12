@@ -32,10 +32,13 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
                                      <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['global.date']}" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['menu.period']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: left;">
-                                        <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.reportDate}"  readonly="false" >                                    
+                                        <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.startDate}"  readonly="false" >                                    
+                                        </p:calendar>
+                                        <p:outputLabel  value=" #{appmsg['global.to']} " style="font-weight: bold"/>
+                                        <p:calendar  id="endDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.endDate}"  readonly="false" >                                    
                                         </p:calendar>
                                     </p:column>
                              </p:row>
@@ -95,21 +98,24 @@
                     <p:separator/>
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="2" >                                   
+                                <h:panelGrid columns="3" >     
+                                    <p:commandButton value="#{appmsg['global.print']}" type="button" icon="ui-icon-print" style="margin-right: 5px">
+    						<p:printer target="tableReportId"  />
+				    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Position_Recap"/>
+                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Component"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportDataComponentViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
 
-                        <p:dataTable  id="tableReportId" var="logMonthEndPayroll"  value="#{reportDataComponentViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  id="tableReportId" var="dataKomponen"  value="#{reportDataComponentViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['report.employee_position_recapitulation_list']}"/>
+                                <h:outputText value="#{appmsg['report.data_component_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -117,53 +123,55 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="paySalaryDesc"  style="width: 30%">
+                            <p:column sortBy="namaProsesGaji"  style="width: 22%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['report.salary_process_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{logMonthEndPayroll.paySalaryDesc}" />                             
+                                <h:outputLabel value= "#{dataKomponen.namaProsesGaji}" />                             
                             </p:column>
-                              <p:column sortBy="departmentName"  style="width: 20%">
+                              <p:column sortBy="department"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.department']}"/>
                                 </f:facet>
-                                  <h:outputLabel value= "#{logMonthEndPayroll.departmentName}" />                             
+                                  <h:outputLabel value= "#{dataKomponen.department}" />                             
                             </p:column>
-                            <p:column sortBy="empJabatanName"  style="width: 30%">
+                            <p:column sortBy="jabatan"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{logMonthEndPayroll.empJabatanCode} #{logMonthEndPayroll.empJabatanName}" />                             
+                                <h:outputLabel value= "#{dataKomponen.jabatan}" />                             
                             </p:column>
-                             <p:column sortBy="empGolJabatan"  style="width: 30%">
+                             <p:column sortBy="golonganJabatan"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{logMonthEndPayroll.empGolJabatan}" />                             
+                                 <h:outputLabel value= "#{dataKomponen.golonganJabatan}" />                             
                             </p:column>
-                            <p:column sortBy="nik"  style="width: 20%">
+                            <p:column sortBy="karyawan"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{logMonthEndPayroll.empNik}  #{logMonthEndPayroll.empName}" />
+                                <h:outputLabel value= "#{dataKomponen.karyawan}" />
                                 
                             </p:column>
-                            <p:column sortBy="employeeType.name"  style="width: 20%">
+                            <p:column sortBy="namaKomponen"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paySalaryComponent.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{logMonthEndPayroll.paySalaryCompCode}"/>
+                                <h:outputLabel value="#{dataKomponen.namaKomponen}"/>
                             </p:column>
-                            <p:column sortBy="golonganJabatan.code"  style="width: 15%">
+                            <p:column sortBy="nominal"  style="width: 12%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
+                                    <h:outputText value="#{appmsg['componentException.nominal']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{empData.golonganJabatan.code}" />                                    
+                                <h:outputLabel value="#{dataKomponen.nominal}" >   
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
                             </p:column>  
                                          
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{reportEmpPosRecapitulationViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{reportDataComponentViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

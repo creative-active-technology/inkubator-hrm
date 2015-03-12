@@ -45,7 +45,7 @@ public class PaySalaryComponentPickListConverter implements Converter{
        if (value == null || value.equals("")) {
             return null;
         }
-        return String.valueOf(((PaySalaryComponent) value).getCode());
+        return String.valueOf(((PaySalaryComponent) value).getId());
     }
     
 }

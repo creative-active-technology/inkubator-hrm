@@ -25,6 +25,7 @@ import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.web.lazymodel.ReportDataKomponenLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.ReportRekapJabatanEmpLazyDataModel;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -48,10 +49,10 @@ public class ReportDataComponentViewController extends BaseController {
     private DualListModel<EmployeeType> dualListModelEmpType = new DualListModel<>();
     
     private ReportDataComponentSearchParameter searchParameter;
-    private LazyDataModel<LogMonthEndPayroll> lazyDataModel;    
+    private LazyDataModel<ReportDataKomponenModel> lazyDataModel;    
     private List<Long> listDepartmentId;
     private List<Long> listPaySalaryCompId;
-    private List<Long> listGolJabatanId;
+    private List<String> listGolJabatanId;
     private List<Long> listEmployeeTypeId;
     
     private Date reportDate;
@@ -63,7 +64,7 @@ public class ReportDataComponentViewController extends BaseController {
     private EmployeeTypeService employeeTypeService;   
     @ManagedProperty(value = "#{paySalaryComponentService}")
     private PaySalaryComponentService paySalaryComponentService;   
-    @ManagedProperty(value = "#{employeeTypeService}")
+    @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;   
     
    
@@ -141,6 +142,7 @@ public class ReportDataComponentViewController extends BaseController {
         if(!dualListSalaryComponent.getTarget().isEmpty()){
             List<PaySalaryComponent> listPaySalaryComponents = dualListSalaryComponent.getTarget();
            for(PaySalaryComponent component : listPaySalaryComponents){
+               System.out.println("dalam fillId, masuk looping listPaySalaryCompId, component  : " + component.getName());
                listPaySalaryCompId.add(component.getId());
            }
         }
@@ -149,7 +151,7 @@ public class ReportDataComponentViewController extends BaseController {
         if(!dualListGolJabatan.getTarget().isEmpty()){
             List<GolonganJabatan> listGolonganJabatans = dualListGolJabatan.getTarget();
            for(GolonganJabatan golJabatan : listGolonganJabatans){
-               listGolJabatanId.add(golJabatan.getId());
+               listGolJabatanId.add(golJabatan.getCode());
            }
         }
         
@@ -162,6 +164,7 @@ public class ReportDataComponentViewController extends BaseController {
         }
         
         //set to searchParameter
+        System.out.println("dalam fillId, listPaySalaryCompId.size : " + listPaySalaryCompId.size());
         searchParameter.setListDepartmentId(listDepartmentId);
         searchParameter.setListPaySalaryCompId(listPaySalaryCompId);
         searchParameter.setListGolJabatanId(listGolJabatanId);
@@ -237,14 +240,14 @@ public class ReportDataComponentViewController extends BaseController {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<LogMonthEndPayroll> getLazyDataModel() {
+    public LazyDataModel<ReportDataKomponenModel> getLazyDataModel() {
         if (lazyDataModel == null) {          
             lazyDataModel = new ReportDataKomponenLazyDataModel(searchParameter, logMonthEndPayrollService);
         }
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<LogMonthEndPayroll> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<ReportDataKomponenModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
@@ -266,11 +269,11 @@ public class ReportDataComponentViewController extends BaseController {
         this.listPaySalaryCompId = listPaySalaryCompId;
     }
 
-    public List<Long> getListGolJabatanId() {
+    public List<String> getListGolJabatanId() {
         return listGolJabatanId;
     }
 
-    public void setListGolJabatanId(List<Long> listGolJabatanId) {
+    public void setListGolJabatanId(List<String> listGolJabatanId) {
         this.listGolJabatanId = listGolJabatanId;
     }
 
