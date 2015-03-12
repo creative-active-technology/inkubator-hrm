@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="riwayat_cuti.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_implementation']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_history']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['leaveimplementation.leave_history_from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -86,7 +86,7 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="empData.bioData.firstName"  style="width: 20%">
+                            <p:column sortBy="bioData.firstName"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>

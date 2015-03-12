@@ -41,9 +41,6 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     public List<LeaveImplementation> getByParam(LeaveImplementationSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("leave", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -58,16 +55,19 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     }
 
     private void doSearchByParam(LeaveImplementationSearchParameter parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter.getLeave())) {
-            criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
+    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
+        
+        if (StringUtils.isNotEmpty(parameter.getLeave())) {            
             criteria.add(Restrictions.like("leave.name", parameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-            criteria.createAlias("empData.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(parameter.getNumberFilling())) {
             criteria.add(Restrictions.like("numberFilling", parameter.getNumberFilling(), MatchMode.ANYWHERE));
