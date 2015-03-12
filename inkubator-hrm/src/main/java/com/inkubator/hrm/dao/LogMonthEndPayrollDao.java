@@ -9,9 +9,11 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.model.ReportDataKomponenModel;
 import com.inkubator.hrm.web.model.ReportSalaryNoteModel;
 import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
+import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
@@ -50,5 +52,9 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
     public List<LogMonthEndPayroll> getEntityByEmpDataIdAndPeriodIdAndCompSpecific(Long empDataId, Long periodId, Integer specific);
 
     public LogMonthEndPayroll getEntityByEmpDataIdAndPeriodIdAndPaySalaryCompId(Long empDataId, Long periodId, Long paySalaryCompId);
+    
+    public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter);
     
 }
