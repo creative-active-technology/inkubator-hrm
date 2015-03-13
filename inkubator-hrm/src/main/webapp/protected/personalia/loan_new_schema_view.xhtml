@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{loanNewSchemaViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.loan_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.loan_name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{loanNewSchemaViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanNewSchemaViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -71,27 +71,26 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['loanschema.loan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanSchemaCode}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['loanschema.loan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanSchemaName}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="No. Sk"/>
+                                    <h:outputText value="#{appmsg['loanschema.no_sk']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nomorSk}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{savingTypeViewController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{loanNewSchemaViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanNewSchemaViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -108,7 +107,7 @@
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{loanNewSchemaViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -147,22 +146,33 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['savingType.savingType_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="Detail Loan Schema" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.code}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.loanSchemaCode}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.name}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.loanSchemaName}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="No. Sk" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.nomorSk}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{savingTypeViewController.selected.description}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.description}"/> </p:column>
                         </p:row>
-
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Total Pinjaman" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.totalMaximumLoan}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Total Cicilan" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{loanNewSchemaViewController.selected.totalMaximumInstallment}"/> </p:column>
+                        </p:row>
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
