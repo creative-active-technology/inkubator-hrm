@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="code"  value="#{loanNewSchemaFormController.model.loanSchemaCode}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true" onkeyup="this.value = this.value.toUpperCase();" maxlength="8" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -60,7 +60,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="name"  value="#{loanNewSchemaFormController.model.loanSchemaName}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="60" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -78,7 +78,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="noSk"  value="#{loanNewSchemaFormController.model.nomorSk}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                             required="true"  maxlength="60" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -127,8 +127,8 @@
                                 <h:outputLabel for="maxPinjaman" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="maxPinjaman"  value="#{loanNewSchemaFormController.model.totalMaximumLoan}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                <pe:inputNumber id="maxPinjaman"  value="#{loanNewSchemaFormController.model.totalMaximumLoan}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -145,8 +145,8 @@
                                 <h:outputLabel for="maxCicilan" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="maxCicilan"  value="#{loanNewSchemaFormController.model.totalMaximumInstallment}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                <pe:inputNumber id="maxCicilan"  value="#{loanNewSchemaFormController.model.totalMaximumInstallment}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
