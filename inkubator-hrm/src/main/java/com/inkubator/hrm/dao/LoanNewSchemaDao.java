@@ -16,8 +16,16 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface LoanNewSchemaDao extends IDAO<LoanNewSchema> {
+
     public List<LoanNewSchema> getAllDataByParam(LoanNewSchemaSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalDataByParam(LoanNewSchemaSearchParameter searchParameter);
 
+    public Long getTotalByLoanNewCode(String code);
+
+    public Long getTotalByLoanNewCodeAndNotId(String code, Long id);
+
+    public Long getTotalByLoanNewName(String name);
+
+    public Long getTotalByLoanNewNameAndNotId(String name, Long id);
 }

@@ -58,4 +58,34 @@ public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements Loa
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+    @Override
+    public Long getTotalByLoanNewCode(String code) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanSchemaCode", code));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByLoanNewCodeAndNotId(String code, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanSchemaCode", code));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByLoanNewName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanSchemaName", name));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByLoanNewNameAndNotId(String name, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanSchemaName", name));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }
