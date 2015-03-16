@@ -15,6 +15,7 @@ import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmployeeTypeService;
@@ -56,6 +57,8 @@ public class EmpDataFormController extends BaseController {
 //    private HrmUserSearchParameter hrmUserSearchParameter;
 //    private LazyDataModel<HrmUser> lazyDataHrmUser;
 //    private HrmUser selectedHrmUser;
+    @ManagedProperty(value = "#{bioDataService}")
+    private BioDataService bioDataService;
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
     @ManagedProperty(value = "#{jabatanService}")
@@ -82,7 +85,8 @@ public class EmpDataFormController extends BaseController {
         try {
             super.initialization();
             empDataModel = new EmpDataModel();
-            String empId = FacesUtil.getRequestParameter("execution");
+            String bioOrEmpId = FacesUtil.getRequestParameter("execution");
+
             List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
             formData = FacesUtil.getRequestParameter("from");
             for (GolonganJabatan golonganJabatan : golJabatans) {
@@ -107,9 +111,9 @@ public class EmpDataFormController extends BaseController {
             for (PaySalaryGrade paySalaryGrade : paysSalarys) {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
             }
-            if (empId != null) {
+            if (bioOrEmpId != null && bioOrEmpId.contains("e")) {
                 isEdit = Boolean.TRUE;
-                EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
+                EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(bioOrEmpId.substring(1)));
                 String basicSalaryDecript = empData.getBasicSalaryDecrypted();
                 empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
                 empDataModel.setBioDataId(empData.getBioData().getId());
@@ -138,6 +142,11 @@ public class EmpDataFormController extends BaseController {
                 if (empData.getRotasiDate() != null) {
                     empDataModel.setRotasiDate(empData.getRotasiDate());
                 }
+            } else if (bioOrEmpId != null && bioOrEmpId.contains("c")) {
+                BioData bioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioOrEmpId.substring(1)));
+                empDataModel.setBioDataName(bioData.getFirstName() + " " + bioData.getLastName());
+                empDataModel.setBirthDate(bioData.getDateOfBirth());
+                isEdit = Boolean.FALSE;
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -373,6 +382,12 @@ public class EmpDataFormController extends BaseController {
         paySalaryGradeService = null;
         empDataService = null;
         golonganJabatanService = null;
+        bioDataService = null;
 
     }
+
+    public void setBioDataService(BioDataService bioDataService) {
+        this.bioDataService = bioDataService;
+    }
+
 }
