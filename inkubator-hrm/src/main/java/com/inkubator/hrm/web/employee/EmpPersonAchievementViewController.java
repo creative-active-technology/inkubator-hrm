@@ -117,8 +117,8 @@ public class EmpPersonAchievementViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 430);
+        options.put("contentWidth", 430);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("emp_achievement_form", options, params);
     }
 

@@ -33,13 +33,13 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
 
                         <p:row>
-                            <p:column style="width: 39%">
+                            <p:column style="width: 30%">
                                 <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
+                            <p:column  style="width: 69%">
                                 <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{empPersonAchievementFormController.model.empData}"
@@ -51,7 +51,7 @@
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" transient="true" size="44">
+                                                styleClass="isitext_hrm" transient="true" size="35">
                                 </p:autoComplete>
 
                             </p:column>
@@ -72,7 +72,7 @@
                                 <p:autoComplete id="achievementId" title="#{appmsg['personachievement.achievement']}" 
                                                 value="#{empPersonAchievementFormController.model.achievementName}"
                                                 completeMethod="#{empPersonAchievementFormController.completeAchievement}" scrollHeight="100"
-                                                required="true" requiredMessage="#{appmsg['personachievement.achievement_should_not_be_empty']}" size="44" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
+                                                required="true" requiredMessage="#{appmsg['personachievement.achievement_should_not_be_empty']}" size="35" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
 
                             </p:column>
                         </p:row>
@@ -89,7 +89,7 @@
                                 <h:outputLabel for="tanggalLahirid" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 67%" >
-                                <p:calendar  id="tanggalLahirid" size="44" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{empPersonAchievementFormController.model.dateAchievement}"
+                                <p:calendar  id="tanggalLahirid" size="35" pattern="dd MMMM yyyy" label="#{appmsg['personachievement.achievement_date']}" value="#{empPersonAchievementFormController.model.dateAchievement}"
                                              required="true" navigator="true">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
@@ -106,7 +106,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{empPersonAchievementFormController.model.description}" 
-                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 91%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
