@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPoupId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formPopupId">
+                	<p:focus context="formPopupId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Tipe Penggantian" styleClass="header_big" />
+                                <p:outputLabel value="Tipe Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="code" value="Kode Tipe Penggantian" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:inputText id="code" title="Kode Tipe Penggantian" value="#{rmbsTypeFormController.model.code}" 
+                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:250px;" />                                
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="code"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="Nama Tipe Penggantian" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                    <p:inputText id="nameId" title="Nama Tipe Penggantian" value="#{rmbsTypeFormController.model.name}" 
+                                    			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsTypeFormController.model.description}" 
+                                                 	 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="costCenterId" value="COA" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="costCenterId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="costCenterId" styleClass="isitext_hrm" required="true"  value="#{rmbsTypeFormController.model.costCenterId}" style="width:290px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                               	<f:selectItems value="#{rmbsTypeFormController.listCostCenter}" var="costCenter" itemValue="#{costCenter.id}" itemLabel="#{costCenter.name}"/>
+	                          	</p:selectOneMenu>                              
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="costCenterId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="roundDigitId" value="Metode Pembulatan" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="roundDigitId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:spinner id="roundDigitId" value="#{rmbsTypeFormController.model.roundDigit}" styleClass="isitext_hrm" 
+                            			   stepFactor="1" min="0" max="3" size="3" required="true"/>                               
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="roundDigitId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="daysOfAvailableId" value="Tersedia sejak" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="daysOfAvailableId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:spinner id="daysOfAvailableId" value="#{rmbsTypeFormController.model.daysOfAvailable}" styleClass="isitext_hrm" 
+                            			   stepFactor="1" min="0" max="365" size="3" required="true"/>
+                            	<p:outputLabel value=" hari" styleClass="label_hrm"/>                               
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="daysOfAvailableId"/>
+                            </p:column>
+                        </p:row>                        
+                        <p:row rendered="#{rmbsTypeFormController.isUpdate}">
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active_status']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="isActiveId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+	                          	<p:selectBooleanButton id="isActiveId" value="#{rmbsTypeFormController.model.isActive}" onLabel="#{appmsg['global.active']}" offLabel="#{appmsg['global.inactive']}" onIcon="ui-icon-check" 
+	                                               	   offIcon="ui-icon-close" styleClass="label_button"/>                             
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{rmbsTypeFormController.isUpdate}">
+                            <p:column colspan="3">
+                                <p:message for="isActiveId"/>
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPopupId,:growlPoupId"
+                                         action="#{rmbsTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPopupId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formPopupId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
