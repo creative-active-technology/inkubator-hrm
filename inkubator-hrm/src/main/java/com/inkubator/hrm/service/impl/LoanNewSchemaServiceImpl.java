@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.service.LoanNewSchemaService;
@@ -64,6 +65,14 @@ public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSch
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(LoanNewSchema entity) throws Exception {
+        long totalLoanCodeDuplicates = loanNewSchemaDao.getTotalByLoanNewCode(entity.getLoanSchemaCode());
+        if (totalLoanCodeDuplicates > 0) {
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_code");
+        }
+        long totalLoanNameDuplicates = loanNewSchemaDao.getTotalByLoanNewName(entity.getLoanSchemaName());
+        if (totalLoanNameDuplicates > 0) {
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_name");
+        }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -73,6 +82,14 @@ public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSch
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LoanNewSchema entity) throws Exception {
+        long totalLoanCodeDuplicates = loanNewSchemaDao.getTotalByLoanNewCodeAndNotId(entity.getLoanSchemaCode(), entity.getId());
+        if (totalLoanCodeDuplicates > 0) {
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_code");
+        }
+        long totalLoanNameDuplicates = loanNewSchemaDao.getTotalByLoanNewNameAndNotId(entity.getLoanSchemaName(), entity.getId());
+        if (totalLoanNameDuplicates > 0) {
+            throw new BussinessException("loanschema.error_duplicate_loan_schema_name");
+        }
         LoanNewSchema update = loanNewSchemaDao.getEntiyByPK(entity.getId());
         update.setLoanSchemaCode(entity.getLoanSchemaCode());
         update.setLoanSchemaName(entity.getLoanSchemaName());
