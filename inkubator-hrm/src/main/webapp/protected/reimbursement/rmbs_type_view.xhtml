@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Tipe Penggantian" styleClass="header_big" />
+                                <p:outputLabel value="Tipe Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{rmbsTypeViewController.parameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Kode Tipe Penggantian" itemValue="code"/>
+                                        <f:selectItem itemLabel="Nama Tipe Penggantian" itemValue="name"/>
+                                        <f:selectItem itemLabel="COA" itemValue="coa"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{rmbsTypeViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{rmbsTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment_Type"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{rmbsTypeViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{rmbsTypeViewController.onDialogReturn}"  update="tableId,:growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{rmbsTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableId" var="data"  value="#{rmbsTypeViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Tipe Penggantian"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Kode Tipe Penggantian"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}"/>
+                            </p:column>  
+                            <p:column sortBy="name"  style="width: 27%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Tipe Penggantian"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}"/>
+                            </p:column>
+                            <p:column sortBy="costCenter.name"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="COA"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.costCenter.name}"/>
+                            </p:column>
+                            <p:column sortBy="daysOfAvailable"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tersedia"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.daysOfAvailable} hari"/>
+                            </p:column>    
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogDetail.show()">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{rmbsTypeViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogDeleteId" 
+                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{rmbsTypeViewController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{rmbsTypeViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{rmbsTypeViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{rmbsTypeViewController.onDialogReturn}"  update="tableId,:growlId"/>
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{rmbsTypeViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+
+                <p:dialog widgetVar="dialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogDeleteId"  columns="3">
+                            <p:outputLabel value="Nama Tipe Penggantian" styleClass="label_hrm" style="font-weight: bold"/>
+                            <p:outputLabel value=":" styleClass="label_hrm" style="font-weight: bold"/>
+                            <p:outputLabel value="#{rmbsTypeViewController.selected.name}" />
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{rmbsTypeViewController.doDelete()}" update="formId,:growlId"
+                                         oncomplete="dialogDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogDelete.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                
+                <p:dialog widgetVar="dialogDetail" header="Detil Tipe Penggantian" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Kode Tipe Penggantian" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.code}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Nama Tipe Penggantian" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="COA" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.costCenter.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Metode Pembulatan" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.roundDigit}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Tersedia sejak" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                            	<p:outputLabel value="#{rmbsTypeViewController.selected.daysOfAvailable}" styleClass="label_hrm"/>
+                            	<p:outputLabel value=" hari" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.active_status']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                            	<p:outputLabel value="#{rmbsTypeViewController.selected.isActive}" styleClass="label_hrm">
+	                            	<f:converter converterId="activeStatusMessageConverter"/>
+	                            </p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="Setelan - Tipe Penggantian" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
