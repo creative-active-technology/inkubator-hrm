@@ -40,8 +40,10 @@ public class ApprovalDefinitionLoanServiceImpl extends IServiceImpl implements A
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteLoanNewSchemaAppDef(Long appDefId, Long loanNewSchemaId) throws Exception {
-        ApprovalDefinitionLoan approvalDefinitionLoan = approvalDefinitionLoanDao.getEntityByPk(new ApprovalDefinitionLoanId(appDefId, loanNewSchemaId));
-        this.approvalDefinitionLoanDao.delete(approvalDefinitionLoan);
+//        ApprovalDefinitionLoan approvalDefinitionLoan = approvalDefinitionLoanDao.getEntityByPk(new ApprovalDefinitionLoanId(appDefId, loanNewSchemaId));
+//        this.approvalDefinitionLoanDao.delete(approvalDefinitionLoan);
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
 
     @Override

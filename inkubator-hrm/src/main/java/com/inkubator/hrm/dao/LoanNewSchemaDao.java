@@ -28,4 +28,6 @@ public interface LoanNewSchemaDao extends IDAO<LoanNewSchema> {
     public Long getTotalByLoanNewName(String name);
 
     public Long getTotalByLoanNewNameAndNotId(String name, Long id);
+    
+    public LoanNewSchema getEntityByPkFetchApprovalDefinition(Long id);
 }

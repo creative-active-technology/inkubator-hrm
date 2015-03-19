@@ -17,5 +17,5 @@ import java.util.List;
 public interface ApprovalDefinitionLoanDao extends IDAO<ApprovalDefinitionLoan> {
     public List<ApprovalDefinitionLoan> getByLoanId(Long id);
     
-    public ApprovalDefinitionLoan getEntityByPk(ApprovalDefinitionLoanId entity);
+    public ApprovalDefinitionLoan getEntityByPk(Long appDefId, Long loanNewschemaId);
 }

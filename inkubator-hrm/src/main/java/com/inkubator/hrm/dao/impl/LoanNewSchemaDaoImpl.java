@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.web.search.LoanNewSchemaSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "loanNewSchemaDao")
 @Lazy
-public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements LoanNewSchemaDao{
+public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements LoanNewSchemaDao {
 
     @Override
     public Class<LoanNewSchema> getEntityClass() {
@@ -48,8 +49,8 @@ public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements Loa
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
-    public void doSearchByParam(LoanNewSchemaSearchParameter searchParameter, Criteria criteria){
+
+    public void doSearchByParam(LoanNewSchemaSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
             criteria.add(Restrictions.like("loanSchemaName", searchParameter.getName(), MatchMode.START));
         }
@@ -88,4 +89,15 @@ public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements Loa
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public LoanNewSchema getEntityByPkFetchApprovalDefinition(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("approvalDefinitionLoans", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinitionLoans.approvalDefinition", FetchMode.JOIN);
+        return (LoanNewSchema) criteria.uniqueResult();
+
+    }
+
 }

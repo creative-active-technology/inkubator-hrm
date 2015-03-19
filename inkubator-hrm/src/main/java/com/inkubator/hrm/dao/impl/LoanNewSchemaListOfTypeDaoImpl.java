@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
@@ -53,6 +54,22 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", loanNewSchemaListOfTypeId));
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByLoanTypeAndSchema(Long typeId, Long schemaId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanNewSchema.id", schemaId));
+        criteria.add(Restrictions.eq("loanNewType.id", typeId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanNewSchema.id", schemaId));
+        criteria.add(Restrictions.ne("loanNewType.id", typeId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
 }
