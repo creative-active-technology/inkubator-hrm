@@ -54,6 +54,7 @@ public class ApprovalDefinition implements java.io.Serializable {
     private Set<ApprovalActivity> approvalActivities = new HashSet<ApprovalActivity>(0);
     private Set<ApprovalDefinitionLeave> approvalDefinitionLeaves = new HashSet<ApprovalDefinitionLeave>(0);
     private Set<ApprovalDefinitionOT> approvalDefinitionOverTimes = new HashSet<ApprovalDefinitionOT>(0);
+    private Set<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas = new HashSet<ApprovalDefinitionRmbsSchema>(0);
 
     public ApprovalDefinition() {
     }
@@ -335,10 +336,44 @@ public class ApprovalDefinition implements java.io.Serializable {
     public void setApprovalDefinitionOverTimes(Set<ApprovalDefinitionOT> approvalDefinitionOverTimes) {
         this.approvalDefinitionOverTimes = approvalDefinitionOverTimes;
     }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "approvalDefinition")
+    public Set<ApprovalDefinitionRmbsSchema> getApprovalDefinitionRmbsSchemas() {
+		return approvalDefinitionRmbsSchemas;
+	}
 
-    @Transient
+	public void setApprovalDefinitionRmbsSchemas(Set<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas) {
+		this.approvalDefinitionRmbsSchemas = approvalDefinitionRmbsSchemas;
+	}
+
+	@Transient
     public Boolean getIsHaveManyToManyRelations(){
     	return StringUtils.isNotEmpty(this.specificName);
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ApprovalDefinition other = (ApprovalDefinition) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
 }

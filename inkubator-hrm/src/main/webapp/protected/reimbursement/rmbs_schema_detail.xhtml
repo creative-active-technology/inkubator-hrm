@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -111,7 +110,92 @@
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.submissionDeadline} hari"/>
 	                            </p:column>
 	                        </p:row>	                               
-	                 	</p:panelGrid>	                    
+	                 	</p:panelGrid>	
+	                 	
+	                 	<p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+                            <p:tab id="rmbsTypeId" title="Tipe Penggantian" >
+                            </p:tab>
+                            <p:tab id="approvalDefinitionId" title="Pola Persetujuan" >
+                            	<p:dataTable  var="approvalDefinitionData"  value="#{rmbsSchemaDetailController.listAppDef}" lazy="false" paginator="false" 
+		                                      id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+		                            <p:column style="text-align: center;width: 25px">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['global.number']}"  />
+		                                </f:facet>
+		                                <h:outputLabel value="#{no+1}." />
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.name}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+		                            </p:column>
+		                            <p:column style="text-align: center">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
+		                            </p:column>
+		                            <p:column style="text-align: center">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
+		                            </p:column>
+		                            <p:column style="text-align: center">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
+		                            </p:column>
+		
+		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
+		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+		                                				 style="font-size: 10px!important" update="tableApprovalDevId,:growlId" 
+		                                				 action="#{rmbsSchemaDetailController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+		                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{rmbsSchemaDetailController.selectedAppDef}" />
+		                                </p:commandButton> 
+		                                -
+		                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+		                                                 action="#{rmbsSchemaDetailController.doEditAppDef()}" >
+		                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{rmbsSchemaDetailController.selectedAppDef}" />
+		                                    <p:ajax event="dialogReturn" listener="#{rmbsSchemaDetailController.onDialogReturnAppDef}"  update="tableApprovalDevId,:growlId"/>
+		                                </p:commandButton>
+		                            </p:column> 
+		                        </p:dataTable>
+		                        
+			                 	<h:panelGrid columns="2">
+		                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" 
+		                    						 actionListener="#{rmbsSchemaDetailController.doAddAppDef()}">
+		                    			<p:ajax event="dialogReturn" listener="#{rmbsSchemaDetailController.onDialogReturnAppDef}"  update="tableApprovalDevId,:growlId"/>
+		                           	</p:commandButton>
+		                           	<p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="false" fileName="List_Reimbursment_Approval"/>
+                                    </p:commandButton>
+		                    	</h:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+	                 	
+	                 	
+                                                
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{rmbsSchemaDetailController.doUpdate()}" immediate="true"

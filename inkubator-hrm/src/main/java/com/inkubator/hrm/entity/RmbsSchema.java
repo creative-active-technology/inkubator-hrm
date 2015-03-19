@@ -41,6 +41,7 @@ public class RmbsSchema implements java.io.Serializable {
 	private Date updatedOn;
 	private Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps = new HashSet<RmbsSchemaListOfEmp>(0);
 	private Set<RmbsSchemaListOfType> rmbsSchemaListOfTypes = new HashSet<RmbsSchemaListOfType>(0);
+	private Set<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas = new HashSet<ApprovalDefinitionRmbsSchema>(0);
 
 	public RmbsSchema() {
 	}
@@ -214,5 +215,16 @@ public class RmbsSchema implements java.io.Serializable {
 	public void setRmbsSchemaListOfTypes(Set<RmbsSchemaListOfType> rmbsSchemaListOfTypes) {
 		this.rmbsSchemaListOfTypes = rmbsSchemaListOfTypes;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsSchema")
+	public Set<ApprovalDefinitionRmbsSchema> getApprovalDefinitionRmbsSchemas() {
+		return approvalDefinitionRmbsSchemas;
+	}
+
+	public void setApprovalDefinitionRmbsSchemas(Set<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas) {
+		this.approvalDefinitionRmbsSchemas = approvalDefinitionRmbsSchemas;
+	}
+	
+	
 
 }

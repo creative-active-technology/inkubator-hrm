@@ -18,6 +18,8 @@ public interface RmbsSchemaDao extends IDAO<RmbsSchema> {
 	
 	public Long getTotalByNomorSk(String nomorSk);
 	
-	public Long getTotalByNomorSkAndNotId(String nomorSk, Long id);	
+	public Long getTotalByNomorSkAndNotId(String nomorSk, Long id);
+
+	public RmbsSchema getEntityByPkFetchApprovalDefinition(Long id);	
 	
 }
