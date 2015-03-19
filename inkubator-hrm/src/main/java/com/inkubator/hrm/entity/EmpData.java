@@ -92,7 +92,7 @@ public class EmpData implements java.io.Serializable {
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
     private Set<PayTempOvertime> payTempOvertimes = new HashSet<PayTempOvertime>(0);
     private Set<OhsaEmpInvolve> ohsaEmpInvolves = new HashSet<OhsaEmpInvolve>(0);
-
+    private Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps = new HashSet<RmbsSchemaListOfEmp>(0);
     public EmpData() {
     }
 
