@@ -251,11 +251,16 @@
 
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.add']}" ajax="true"  update=":growlapprovalFormId,approvalFormId"
-                                             action="#{approvalDefinitionPopupFormController.doSave()}" styleClass="label_button"
-                                             style="margin-right: 5px" label="#{appmsg['global.add']}"
-                                             icon="ui-icon-document"
-                                             id="buttonSave" title="#{appmsg['global.add']}"/>
+                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}"
+                            				 icon="ui-icon-document" styleClass="label_button" style="margin-right: 5px"
+                            				 ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{approvalDefinitionPopupFormController.doSaveWithoutPersistedToDB()}" 
+                                             rendered="#{not approvalDefinitionPopupFormController.isPersistedToDB}"/>
+                            <p:commandButton value="#{appmsg['global.save']}" title="#{appmsg['global.save']}" label="#{appmsg['global.save']}"
+                            				 icon="ui-icon-document" styleClass="label_button" style="margin-right: 5px"
+                            				 ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{approvalDefinitionPopupFormController.doSaveWithPersistedToDB()}" 
+                                             rendered="#{approvalDefinitionPopupFormController.isPersistedToDB}"/>
                         </div>
                     </h:form>
                 </div>
