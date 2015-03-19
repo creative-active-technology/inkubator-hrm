@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center"> 
+            	<p:growl id="growlOhsaIncidentDetailId" globalOnly="true" showDetail="true"/>              
+                <h:form id="formOhsaIncidentDetailId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="company.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_data_from_reference']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 30%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_category']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 70%">
+                                        <p:outputLabel value="#{ohsaIncidentDetailController.selectedIncident.ohsaCategory.name}"/>
+	                            </p:column>
+	                           
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 30%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_date_and_time']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 70%">
+                                        <p:outputLabel value="#{ohsaIncidentDetailController.selectedIncident.incidentTime}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </p:outputLabel>
+	                            </p:column>
+	                           
+	                        </p:row> 
+	                        <p:row>	                            
+	                            <p:column style="width: 30%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_subject_title']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 70%">
+                                        <p:outputLabel value="#{ohsaIncidentDetailController.selectedIncident.subject}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 30%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_location']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 70%">
+                                        <p:outputLabel value="#{ohsaIncidentDetailController.selectedIncident.location}"/>
+	                            </p:column>	                           
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 30%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_severity_level']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 70%">
+	                            	<p:outputLabel value="#{ohsaIncidentDetailController.severityLevel}"/>
+	                            </p:column>	                           
+	                        </p:row>              
+	                                                     
+	                 	</p:panelGrid>
+	                 	
+	                 	<p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+	                 		<p:tab id="tabEmpInvolveId" title="#{appmsg['businesstravel.employee']}" >
+                                            <p:dataTable  id="tableEmpInvolveId" var="empInvolveData"  value="#{ohsaIncidentDetailController.listOhsaEmpInvolve}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['ohsa.list_emp_involved']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.nik']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{empInvolveData.empData.nik}"/>
+                                    </p:column>
+                                    <p:column style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['overTimeImplementation.employeeName']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{empInvolveData.empData.bioData.firstName}  #{empInvolveData.empData.bioData.lastName}"/>
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['placement.jabatan']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{empInvolveData.empData.jabatanByJabatanId.code}  #{empInvolveData.empData.jabatanByJabatanId.name}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogOhsaEmpInvolveConfirmId" 
+                                                         action="#{ohsaIncidentDetailController.doSelectOhsaEmpInvolve()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOhsaEmpInvolve.show()">
+                                            <f:setPropertyActionListener value="#{empInvolveData}" target="#{ohsaIncidentDetailController.selectedOhsaEmpInvolve}" />
+                                        </p:commandButton>
+<!--                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{companyDetailController.doUpdateCompanyBankAccount()}" >
+                                            <f:setPropertyActionListener value="#{bankData}" target="#{companyDetailController.selectedCompanyBankAccount}" />
+                                            <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnCompanyBankAccount}"  update="tableBankId,:growlCompanyDetailId"/>
+                                        </p:commandButton>-->
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']} #{appmsg['businesstravel.employee']}" title="#{appmsg['global.add']} #{appmsg['businesstravel.employee']}" label="#{appmsg['global.add']} #{appmsg['businesstravel.employee']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{ohsaIncidentDetailController.doAddOhsaEmpInvolve()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{ohsaIncidentDetailController.onDialogReturnOhsaEmpInvolve}"  update="tableEmpInvolveId,:growlOhsaIncidentDetailId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+	                 		</p:tab>
+	                 		
+	                 		<p:tab id="tabOhsaIncidentDocumentId" title="#{appmsg['biodocument.attachments']}" >
+                                            <p:dataTable  id="tableOhsaIncidentDocumentId" var="ohsaIncidentDocData"  value="#{ohsaIncidentDetailController.listOhsaIncidentDocument}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['ohsa.list_of_ohsa_attachment']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['ohsa.ohsa_attachment_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{ohsaIncidentDocData.documentName}"/>
+                                    </p:column>
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['ohsa.ohsa_document_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{ohsaIncidentDocData.uploadFileExtension}">
+                                        	
+                                        </h:outputLabel>
+                                    </p:column>
+                                     <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.size']}"/>
+                                        </f:facet>
+                                         <h:outputLabel value="#{ohsaIncidentDocData.uploadFileSize}" >
+                                             <f:convertNumber pattern="###,###" type="number"/>
+                                         </h:outputLabel>
+                                         <h:outputText value="&nbsp;&nbsp;Kb"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                        
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" 
+                                        onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{ohsaIncidentDocData.uploadedPath == null}" 
+                                        icon="ui-icon-arrowthick-1-s" action="#{ohsaIncidentDetailController.doSelectOhsaIncidentDocument()}">
+                                                    <p:fileDownload value="#{imageBioDataStreamerController.ohsaIncidentDocumentFile}" />
+                                                    <f:param name="id" value="#{ohsaIncidentDocData.id}"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogOhsaIncidentDocConfirmId" 
+                                                         action="#{ohsaIncidentDetailController.doSelectOhsaIncidentDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOhsaIncidentDoc.show()">
+                                            <f:setPropertyActionListener value="#{ohsaIncidentDocData}" target="#{ohsaIncidentDetailController.selectedOhsaIncidentDocument}" />
+                                        </p:commandButton>
+<!--                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{companyDetailController.doUpdateFinancialPartner()}" >
+                                            <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
+                                            <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnFinancialPartner}"  update="tableFinancialPartnerId,:growlCompanyDetailId"/>
+                                        </p:commandButton>-->
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']} #{appmsg['biodocument.attachments']}" title="#{appmsg['global.add']} #{appmsg['biodocument.attachments']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{ohsaIncidentDetailController.doAddOhsaIncidentDocument()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{ohsaIncidentDetailController.onDialogReturnOhsaIncidentDocument}"  update="tableOhsaIncidentDocumentId,:growlOhsaIncidentDetailId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+	                 		</p:tab>
+	                 	</p:tabView>	  
+                                                        
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+<!--	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{companyDetailController.doUpdate()}" immediate="true"
+                                			 style="margin-right: 5px" styleClass="label_button"/>-->
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{ohsaIncidentDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+                
+                <!-- START DIALOG --> 
+<!--                dialogConfirmCompanyBankAccount-->
+                <p:dialog widgetVar="dialogConfirmOhsaEmpInvolve" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogOhsaEmpInvolveConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['businesstravel.employee']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{ohsaIncidentDetailController.selectedOhsaEmpInvolve.empData.nik} - 
+                                           #{ohsaIncidentDetailController.selectedOhsaEmpInvolve.empData.bioData.firstName}  #{ohsaIncidentDetailController.selectedOhsaEmpInvolve.empData.bioData.lastName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentDetailController.doDeleteOhsaEmpInvolve()}" 
+                                         update="formOhsaIncidentDetailId:tabView:tableEmpInvolveId,:growlOhsaIncidentDetailId"
+                                         oncomplete="dialogConfirmOhsaEmpInvolve.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOhsaEmpInvolve.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                
+                <p:dialog widgetVar="dialogConfirmOhsaIncidentDoc" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogOhsaIncidentDocConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['ohsa.ohsa_attachment_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{ohsaIncidentDetailController.selectedOhsaIncidentDocument.documentLabel}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentDetailController.doDeleteOhsaIncidentDocument()}" 
+                                         update="formOhsaIncidentDetailId:tabView:tableOhsaIncidentDocumentId,:growlOhsaIncidentDetailId"
+                                         oncomplete="dialogConfirmOhsaIncidentDoc.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOhsaIncidentDoc.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <!-- END DIALOG -->
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
