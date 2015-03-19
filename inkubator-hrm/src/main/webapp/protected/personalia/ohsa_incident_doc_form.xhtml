@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioSertifikasiFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioSertifikasiFormId">
+                	<p:focus context="formBioSertifikasiFormId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['ohsa.ohsa_attachment_doc']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['ohsa.ohsa_attachment_doc_from_ohsa_incident']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel for="docNameId" value="#{appmsg['biodocument.document_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="docNameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 79%">     
+                                <p:inputText id="docNameId" title="#{appmsg['biodocument.document_name']}" value="#{ohsaIncidentDocumentFormController.ohsaIncidentDocument.documentName}" 
+                                             required="true" maxlength="60" styleClass="isitext_hrm" style="width:238px;" />
+                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="docNameId"/>
+                            </p:column>
+                        </p:row>  
+                        <p:row>
+                         <p:column style="width: 20%">
+                                <p:outputLabel for="uploadFoto" value="#{appmsg['ohsa.ohsa_attachment_doc']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="uploadFoto" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                        
+                            <p:column width="79%">
+                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{ohsaIncidentDocumentFormController.handingFileUpload}"
+	                                          mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlBioSertifikasiFormlId"
+	                                          allowTypes="/(\.|\/)(jpe?g|png|pdf)$/"/> 
+	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                    <p:outputLabel value="#{ohsaIncidentDocumentFormController.ohsaIncidentDocument.documentLabel}" id="fileNameId"/>  
+                            </p:column>
+                            <p:column  style="width: 12%">
+                            </p:column>
+                    	</p:row>     
+                        
+                         <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 79%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['ohsa.ohsa_incident_detail']}" value="#{ohsaIncidentDocumentFormController.ohsaIncidentDocument.description}" 
+                                                 required="true" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 65%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioSertifikasiFormId,:growlBioSertifikasiFormlId"
+                                         action="#{ohsaIncidentDocumentFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioSertifikasiFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioSertifikasiFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

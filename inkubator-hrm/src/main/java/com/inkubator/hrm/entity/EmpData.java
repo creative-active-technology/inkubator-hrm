@@ -91,8 +91,8 @@ public class EmpData implements java.io.Serializable {
     private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
     private Set<PayTempOvertime> payTempOvertimes = new HashSet<PayTempOvertime>(0);
+    private Set<OhsaEmpInvolve> ohsaEmpInvolves = new HashSet<OhsaEmpInvolve>(0);
     private Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps = new HashSet<RmbsSchemaListOfEmp>(0);
-
     public EmpData() {
     }
 
@@ -613,6 +613,17 @@ public class EmpData implements java.io.Serializable {
     public Set<RmbsSchemaListOfEmp> getRmbsSchemaListOfEmps() {
 		return rmbsSchemaListOfEmps;
 	}
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<OhsaEmpInvolve> getOhsaEmpInvolves() {
+        return ohsaEmpInvolves;
+    }
+
+    public void setOhsaEmpInvolves(Set<OhsaEmpInvolve> ohsaEmpInvolves) {
+        this.ohsaEmpInvolves = ohsaEmpInvolves;
+    }
+    
+    
 
 	public void setRmbsSchemaListOfEmps(
 			Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps) {

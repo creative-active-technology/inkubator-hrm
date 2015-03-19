@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlEducationLevelFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formEducationLevelFormId">
+                	<p:focus context="formEducationLevelFormId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="graduated.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['ohsa.ohsa_incident_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['educationlevel.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 34%">
+                                <p:outputLabel for="ohsaCatSelectId" value="#{appmsg['ohsa.ohsa_category']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="ohsaCatSelectId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 65%">                                
+                                <p:selectOneMenu id="ohsaCatSelectId" value="#{ohsaIncidentFormController.ohsaCategoryId}" filter="true" required="false"
+                                                    
+                                                     style="width: 100%;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{ohsaIncidentFormController.mapOhsaCategory}"  />                                                                                
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>                       
+                        <p:row>
+                            <p:column style="width: 49%">
+                                <p:outputLabel for="incidentDate" value="#{appmsg['ohsa.ohsa_incident_date_and_time']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="incidentDate" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:calendar  id="incidentDate" pattern="dd MMMM yyyy" 
+                                    value="#{ohsaIncidentFormController.ohsaIncidentModel.incidentTime}"  
+                                    readonly="false" required="true" >                                    
+                                </p:calendar>
+                                
+                            </p:column>
+                        </p:row>
+                        
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="incidentDate"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="incidentSubject" value="#{appmsg['ohsa.ohsa_incident_subject_title']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="incidentSubject" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="incidentSubject" title="#{appmsg['ohsa.ohsa_incident_subject_title']}" value="#{ohsaIncidentFormController.ohsaIncidentModel.subject}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                            	
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="incidentSubject"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['ohsa.ohsa_incident_detail']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['ohsa.ohsa_incident_detail']}" value="#{ohsaIncidentFormController.ohsaIncidentModel.description}" 
+                                                 required="true" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 34%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 65%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                        
+                         <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="incidentLocation" value="#{appmsg['ohsa.ohsa_incident_location']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="incidentLocation" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="incidentLocation" title="#{appmsg['ohsa.ohsa_incident_location']}" value="#{ohsaIncidentFormController.ohsaIncidentModel.location}" 
+                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                            	
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="incidentLocation"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 34%">
+                                <p:outputLabel for="ohsaSeverityLevel" value="#{appmsg['ohsa.ohsa_incident_severity_level']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="ohsaSeverityLevel" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 65%">                                
+                                <p:selectOneMenu id="ohsaSeverityLevel" label="#{appmsg['ohsa.ohsa_incident_severity_level']}" value="#{ohsaIncidentFormController.severityLevel}" filter="true" required="false"
+                                                    
+                                                     style="width: 100%;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{ohsaIncidentFormController.mapSeverityLevel}"  />                                                                                
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        
+                       
+
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formEducationLevelFormId,:growlEducationLevelFormlId"
+                                         action="#{ohsaIncidentFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formEducationLevelFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formEducationLevelFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

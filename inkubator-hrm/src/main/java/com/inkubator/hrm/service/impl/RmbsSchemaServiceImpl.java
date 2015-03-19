@@ -11,10 +11,16 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionRmbsSchemaDao;
 import com.inkubator.hrm.dao.RmbsSchemaDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
+import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchemaId;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.service.RmbsSchemaService;
 import com.inkubator.hrm.web.search.RmbsSchemaSearchParameter;
@@ -22,10 +28,14 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 
 @Service(value = "rmbsSchemaService")
 @Lazy
-public class RmbsSchemaServiceImpl extends IServiceImpl implements RmbsSchemaService {
+public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<RmbsSchema> implements RmbsSchemaService {
 
 	@Autowired
 	private RmbsSchemaDao rmbsSchemaDao;
+	@Autowired
+	private ApprovalDefinitionRmbsSchemaDao approvalDefinitionRmbsSchemaDao;
+	@Autowired
+	private ApprovalDefinitionDao approvalDefinitionDao;
 	
 	@Override
 	public RmbsSchema getEntiyByPK(String id) throws Exception {
@@ -105,6 +115,13 @@ public class RmbsSchemaServiceImpl extends IServiceImpl implements RmbsSchemaSer
 		rmbsSchema.setUpdatedBy(UserInfoUtil.getUserName());
 		rmbsSchema.setUpdatedOn(new Date());
 		rmbsSchemaDao.update(rmbsSchema);
+		
+		/** update specific name in approval definition related */
+		List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+		for(ApprovalDefinition appDef :appDefs){
+			appDef.setSpecificName(rmbsSchema.getName());
+			approvalDefinitionDao.update(appDef);			
+		}
 	}
 
 	@Override
@@ -301,6 +318,68 @@ public class RmbsSchemaServiceImpl extends IServiceImpl implements RmbsSchemaSer
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RmbsSchema> getAllDataByStatusActive() throws Exception {
 		return rmbsSchemaDao.getAllDataByStatusActive();
+		
+	}
+
+	@Override
+	protected void saveManyToMany(ApprovalDefinition appDef, RmbsSchema entity) {
+		ApprovalDefinitionRmbsSchema approvalDefinitionRmbsSchema =  new ApprovalDefinitionRmbsSchema();
+		approvalDefinitionRmbsSchema.setId(new ApprovalDefinitionRmbsSchemaId(appDef.getId(), entity.getId()));
+		approvalDefinitionRmbsSchema.setApprovalDefinition(appDef);
+		approvalDefinitionRmbsSchema.setRmbsSchema(entity);
+		approvalDefinitionRmbsSchemaDao.save(approvalDefinitionRmbsSchema);
+		
+	}
+
+	@Override
+	protected void deleteManyToMany(Object entity) {
+		approvalDefinitionRmbsSchemaDao.delete((ApprovalDefinitionRmbsSchema) entity);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void saveApprovalConf(ApprovalDefinition appDef, Long rmbsSchemaId) throws Exception {
+		RmbsSchema entity = rmbsSchemaDao.getEntiyByPK(rmbsSchemaId);
+		List<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas = approvalDefinitionRmbsSchemaDao.getAllDataByRmbsSchemaId(rmbsSchemaId);
+		List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionRmbsSchemas, Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+		listAppDef.add(appDef);
+		
+		/** validasi approval definition conf */
+		super.validateApprovalConf(listAppDef);
+		
+		/** saving process */
+		super.saveApprovalConf(appDef, entity);		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateApprovalConf(ApprovalDefinition appDef, Long rmbsSchemaId) throws Exception {
+		List<ApprovalDefinitionRmbsSchema> approvalDefinitionRmbsSchemas = approvalDefinitionRmbsSchemaDao.getAllDataByRmbsSchemaId(rmbsSchemaId);
+		List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionRmbsSchemas, Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+		listAppDef.remove(appDef);
+		listAppDef.add(appDef);
+		
+		/** validasi approval definition conf */
+		super.validateApprovalConf(listAppDef);
+		
+		/** updating process */
+		super.updateApprovalDefinition(appDef);		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteApprovalconf(Long appDefId, Long rmbsSchemaId) throws Exception {
+		ApprovalDefinitionRmbsSchema approvalDefinitionRmbsSchema = approvalDefinitionRmbsSchemaDao.getEntityByPk(appDefId, rmbsSchemaId);
+		
+		/** deleting process */
+		super.deleteApprovalConf(approvalDefinitionRmbsSchema, appDefId);		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public RmbsSchema getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
+		return rmbsSchemaDao.getEntityByPkFetchApprovalDefinition(id);
 		
 	}
 
