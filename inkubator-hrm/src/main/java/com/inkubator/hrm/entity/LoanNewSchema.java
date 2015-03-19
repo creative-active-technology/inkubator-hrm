@@ -43,8 +43,13 @@ public class LoanNewSchema  implements java.io.Serializable {
      private Date updatedOn;
      private Set<LoanNewSchemaListOfType> loanNewSchemaListOfTypes = new HashSet<LoanNewSchemaListOfType>(0);
      private Set<LoanNewSchemaListOfEmp> loanNewSchemaListOfEmps = new HashSet<LoanNewSchemaListOfEmp>(0);
+     private Set<ApprovalDefinitionLoan> approvalDefinitionLoans = new HashSet<ApprovalDefinitionLoan>(0);
 
     public LoanNewSchema() {
+    }
+
+    public LoanNewSchema(long id) {
+        this.id = id;
     }
 
 	
@@ -206,7 +211,14 @@ public class LoanNewSchema  implements java.io.Serializable {
         this.loanNewSchemaListOfEmps = loanNewSchemaListOfEmps;
     }
 
-
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="loanNewSchema")
+    public Set<ApprovalDefinitionLoan> getApprovalDefinitionLoans() {
+        return this.approvalDefinitionLoans;
+    }
+    
+    public void setApprovalDefinitionLoans(Set<ApprovalDefinitionLoan> approvalDefinitionLoans) {
+        this.approvalDefinitionLoans = approvalDefinitionLoans;
+    }
 
 
 }

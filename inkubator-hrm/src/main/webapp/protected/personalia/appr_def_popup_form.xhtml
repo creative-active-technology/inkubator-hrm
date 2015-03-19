@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlapprovalFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="approvalFormId" >
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.name}" style="width: 75%" required="true" disabled="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.change_process_biodata']}" itemValue="BIO_DATA_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['bapprovaldefinition.change_process_medical_history']}" itemValue="BIO_HEATLY_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.change_process_work_history']}" itemValue="BIO_OCCUPATIONAL_EDIT" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessReimbursement']}" itemValue="REIMBURSEMENT" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessBussinessTravel']}" itemValue="BUSINESS_TRAVEL" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessLoan']}" itemValue="LOAN" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessLeave']}" itemValue="LEAVE" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessOvertime']}" itemValue="OVERTIME" />
+                                        <f:selectItem itemLabel="Proses Pinjaman" itemValue="LOAN_NEW" />
+                                    </p:selectOneMenu>
+                                    <p:message for="approvalName"/>
+
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="procesName" value="#{appmsg['approvaldefinition.process_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectOneMenu id="procesName" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.processType}" style="width: 75%" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.current_process_approval']}" itemValue="APPROVAL_PROCESS" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.when_request_is_approved']}" itemValue="ON_APPROVE_INFO" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.when_request_is_rejected']}" itemValue="ON_REJECT_INFO" />
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.onProcessChange()}" update="minApproverId,minRejectId"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="procesName"/>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sequence_approval']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:spinner id="sequenceId" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.sequence}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1"  >
+
+                                    </p:spinner>
+                                    <p:message for="sequenceId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="approverType"  value="#{appmsg['approvaldefinition.approver_type']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectOneMenu id="approverType" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.approverType}" style="width: 75%" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approved_by_position']}" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_individual']}" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_department_hierarchy']}" itemValue="APPROVAL_TYPE_DEPARTMENT" />
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.onAppoverChange()}" update="approverIndividualId,approverPositionId"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="approverType"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_approve']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:spinner id="minApproverId" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.minApprover}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1"  disabled="#{approvalDefinitionPopupFormController.onProcess}">
+                                    </p:spinner>
+                                    <p:message for="minApproverId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="approverIndividualId"  value="#{appmsg['approvaldefinition.approval_individual']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                	<p:autoComplete id="approverIndividualId" title="#{appmsg['approvaldefinition.approval_individual']}" 
+                                                value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.hrmUserByApproverIndividual}"
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
+                                                disabled="#{approvalDefinitionPopupFormController.approverTypeIndividual}"
+                                                var="hrmUser" itemValue="#{hrmUser}"
+                                                itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
+                                                converter="hrmUserConverter"
+                                                required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="approverIndividualId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.min_reject']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:spinner id="minRejectId" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.minRejector}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" disabled="#{approvalDefinitionPopupFormController.onProcess}">
+                                    </p:spinner>
+                                    <p:message for="minRejectId"/>
+                                </p:column>
+
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="approverPositionId"  value="#{appmsg['approvaldefinition.approver_position']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                	<p:autoComplete id="approverPositionId" title="#{appmsg['approvaldefinition.approver_position']}" 
+                                                value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.jabatanByApproverPosition}"
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"                                                
+                                                disabled="#{approvalDefinitionPopupFormController.approverTypePosition}"
+                                                var="jabatan" itemValue="#{jabatan}"
+                                                itemLabel="#{jabatan.code} #{jabatan.name}"
+                                                converter="jabatanConverter"
+                                                required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="approverPositionId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.on_behalf']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.allowOnBehalf}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isExpired" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.onAllowOnBehalfChange()}" immediate="true" update="onBehalfIndividualId,onBehalfId,onBehalfPositionId"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="onBehalfId"  value="#{appmsg['approvaldefinition.on_behalf_type']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.onBehalfType}" style="width: 75%" required="true" disabled="#{approvalDefinitionPopupFormController.onBehalf}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approved_by_position']}" itemValue="APPROVAL_TYPE_POSITION" />
+                                        <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_by_individual']}" itemValue="APPROVAL_TYPE_INDIVIDUAL" />
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.onBehalfAppoverChange()}" update="onBehalfIndividualId,onBehalfPositionId"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="onBehalfId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="onBehalfIndividualId"  value="#{appmsg['approvaldefinition.on_behalf_individual']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                	<p:autoComplete id="onBehalfIndividualId" title="#{appmsg['approvaldefinition.on_behalf_individual']}" 
+                                                value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividual}"
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
+                                                disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypeIndividual}"
+                                                var="hrmUser" itemValue="#{hrmUser}"
+                                                itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
+                                                converter="hrmUserConverter"
+                                                required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="onBehalfIndividualId"/>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="onBehalfPositionId"  value="#{appmsg['approvaldefinition.on_behalf_position']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                	<p:autoComplete id="onBehalfPositionId" title="#{appmsg['approvaldefinition.on_behalf_position']}" 
+                                                value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.jabatanByOnBehalfPosition}"
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"                                                
+                                                disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypePosition}"
+                                                var="jabatan" itemValue="#{jabatan}"
+                                                itemLabel="#{jabatan.code} #{jabatan.name}"
+                                                converter="jabatanConverter"
+                                                required="true" styleClass="isitext_hrm" size="45">
+                                    </p:autoComplete>
+                                    <p:message for="onBehalfPositionId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.auto_approved_on_delay']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.autoApproveOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="approveOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.autoApproveOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.escalate_on_delay']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+
+                                    <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.escalateOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="escalateOnDelay" styleClass="label_button" >
+                                        <p:ajax listener="#{approvalDefinitionPopupFormController.escalateOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
+                                    </p:selectBooleanButton>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.delay_time']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:spinner min="1" max="100" size="2" stepFactor="1" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.delayTime}"/>
+                                </p:column> 
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sms_notification']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%" >
+                                    <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.smsNotification}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  styleClass="label_button"/>
+                                </p:column>                               
+                            </p:row>
+                            <p:row>
+                            	<p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="specificNameId" value="#{appmsg['approvaldefinition.specific_approval']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:inputText id="specificNameId" title="#{appmsg['approvaldefinition.specific_approval']}" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.specificName}" 
+                                    			 required="true" maxlength="30" readonly="true" styleClass="isitext_hrm" style="width:75%;" />
+                                    <p:message for="specificNameId"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:separator/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.add']}" ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{approvalDefinitionPopupFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.add']}"
+                                             icon="ui-icon-document"
+                                             id="buttonSave" title="#{appmsg['global.add']}"/>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

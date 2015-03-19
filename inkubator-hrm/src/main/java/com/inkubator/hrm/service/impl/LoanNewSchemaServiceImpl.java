@@ -6,9 +6,12 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionLoanDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoanId;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.service.LoanNewSchemaService;
 import com.inkubator.hrm.web.search.LoanNewSchemaSearchParameter;
@@ -29,19 +32,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "loanNewSchemaService")
 @Lazy
-public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSchemaService{
+public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<LoanNewSchema> implements LoanNewSchemaService {
 
     @Autowired
     private LoanNewSchemaDao loanNewSchemaDao;
-    
+    @Autowired
+    private ApprovalDefinitionLoanDao approvalDefinitionLoanDao;
+
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchema> getAllDataByParam(LoanNewSchemaSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return loanNewSchemaDao.getAllDataByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalDataByParam(LoanNewSchemaSearchParameter searchParameter) throws Exception {
         return loanNewSchemaDao.getTotalDataByParam(searchParameter);
     }
@@ -57,7 +62,7 @@ public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSch
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public LoanNewSchema getEntiyByPK(Long id) throws Exception {
         return loanNewSchemaDao.getEntiyByPK(id);
     }
@@ -237,5 +242,46 @@ public class LoanNewSchemaServiceImpl extends IServiceImpl implements LoanNewSch
     public List<LoanNewSchema> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    protected void saveManyToMany(ApprovalDefinition appDef, LoanNewSchema entity) {
+        ApprovalDefinitionLoan approvalDefinitionLoan = new ApprovalDefinitionLoan();
+        approvalDefinitionLoan.setId(new ApprovalDefinitionLoanId(appDef.getId(), entity.getId()));
+        approvalDefinitionLoan.setApprovalDefinition(appDef);
+        approvalDefinitionLoan.setLoanNewSchema(entity);
+        approvalDefinitionLoanDao.save(approvalDefinitionLoan);
+    }
+
+    @Override
+    protected void deleteManyToMany(Object entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception {
+        
+        /**
+         * validasi approval definition conf
+         */
+        super.validateApprovalConf(appDefs);
+        
+        List<ApprovalDefinitionLoan> approvalDefinitionLoan = approvalDefinitionLoanDao.getByLoanId(entity.getId());
+        if(approvalDefinitionLoan.isEmpty() == Boolean.FALSE){
+            for (ApprovalDefinitionLoan appDefLoan : approvalDefinitionLoan) {
+                approvalDefinitionLoanDao.delete(appDefLoan);
+            }
+        }
+        
+        /**
+         * saving approval definition conf manyToMany
+         */
+        super.saveApprovalConf(appDefs, entity);
+    }
+
+    @Override
+    public void update(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
