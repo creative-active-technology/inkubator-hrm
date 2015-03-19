@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="skema_pinjaman.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Loan New Schema Type Form" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loanschema.loan_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="schemaType" value="#{appmsg['loanschema.loan_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="schemaType" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 59%">
+                                <p:focus for ="schemaType">
+                                    <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" 
+                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{loanNewSchemaListOfTypeFormController.dropDownSchemeType}"  />                                                                                
+                                    </p:selectOneMenu>
+                                </p:focus>                               
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="schemaType"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="maxDayAvailable" value="#{appmsg['loanschema.available_days']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="maxDayAvailable" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="maxDayAvailable"  value="#{loanNewSchemaListOfTypeFormController.model.maksimumHariTersedia}"
+                                             required="true" onkeyup="this.value = this.value.toUpperCase();" maxlength="3" styleClass="isitext_hrm" style="width:30px;" />
+                                <p:outputLabel value=" Hari" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="maxDayAvailable"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="maxApproval" value="#{appmsg['loanschema.max_approve']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="maxApproval" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="maxApproval"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="maxAllocation" value="#{appmsg['loanschema.max_allocation']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="maxAllocation" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="maxAllocation"/>
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="minApproval" value="#{appmsg['loanschema.min_approve']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="minApproval" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="minApproval"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="minAllocation" value="#{appmsg['loanschema.min_allocation']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="minAllocation" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="minAllocation"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="minInstallment" value="#{appmsg['loanschema.min_monthly_installment']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="minInstallment" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="minInstallment"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="maxPeriod" value="#{appmsg['loanschema.max_period']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="maxPeriod" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}"
+                                                required="true"  maxlength="3" styleClass="isitext_hrm" style="width:210px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="maxPeriod"/>
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    <p:focus context="formId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                         action="#{loanNewSchemaListOfTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

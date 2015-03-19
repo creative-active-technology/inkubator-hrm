@@ -1,14 +1,17 @@
 package com.inkubator.hrm.entity;
-// Generated Dec 8, 2014 1:55:08 PM by Hibernate Tools 4.3.1
+// Generated Mar 12, 2015 2:18:50 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +37,7 @@ public class BatchJobExecution  implements java.io.Serializable {
      private String exitCode;
      private String exitMessage;
      private Date lastUpdated;
+     private Set<BatchStepExecution> batchStepExecutions = new HashSet<BatchStepExecution>(0);
 
     public BatchJobExecution() {
     }
@@ -44,7 +48,7 @@ public class BatchJobExecution  implements java.io.Serializable {
         this.batchJobInstance = batchJobInstance;
         this.createTime = createTime;
     }
-    public BatchJobExecution(long jobExecutionId, BatchJobInstance batchJobInstance, Date createTime, Date startTime, Date endTime, String status, String exitCode, String exitMessage, Date lastUpdated) {
+    public BatchJobExecution(long jobExecutionId, BatchJobInstance batchJobInstance, Date createTime, Date startTime, Date endTime, String status, String exitCode, String exitMessage, Date lastUpdated, Set<BatchStepExecution> batchStepExecutions) {
        this.jobExecutionId = jobExecutionId;
        this.batchJobInstance = batchJobInstance;
        this.createTime = createTime;
@@ -54,6 +58,7 @@ public class BatchJobExecution  implements java.io.Serializable {
        this.exitCode = exitCode;
        this.exitMessage = exitMessage;
        this.lastUpdated = lastUpdated;
+       this.batchStepExecutions = batchStepExecutions;
     }
    
      @Id 
@@ -156,6 +161,15 @@ public class BatchJobExecution  implements java.io.Serializable {
     
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="batchJobExecution")
+    public Set<BatchStepExecution> getBatchStepExecutions() {
+        return this.batchStepExecutions;
+    }
+    
+    public void setBatchStepExecutions(Set<BatchStepExecution> batchStepExecutions) {
+        this.batchStepExecutions = batchStepExecutions;
     }
 
 

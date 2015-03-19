@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['loanschema.loan_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['loanschema.loan_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <o:form id="formId">
+                        <p:panelGrid id="panelList" style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanschema.loan_code']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.loanSchemaCode}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['loanschema.loan_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.loanSchemaName}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanschema.no_sk']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.nomorSk}" />
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['role_view.role_description']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.description}" />
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanNewSchema.loanTotalMaximum']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalPinjaman}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanNewSchema.loanTotalAllocation']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalAllocation}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['loanschema.max_installment']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalInstallment}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
+
+
+                        </p:panelGrid>
+                        <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
+                            <p:tab id="tabTipePinjamanId" title="#{appmsg['loanschema.loan_type']}">  
+                                <p:dataTable value="#{loanNewSchemaDetailController.listOfLoanNewType}" var="data" rowIndexVar="no" id="loanNewSchemaTypeTableId" lazy="false" paginator="false">
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value=" #{data.loanNewType.loanTypeName}" />
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.available_days']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.maksimumHariTersedia}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.max_approve']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.maximumApproval}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.max_allocation']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.maximumAllocation}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.min_approve']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.minimumApproval}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.min_allocation']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.minimumAllocation}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.min_monthly_installment']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.minimumMonthlyInstallment}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['loanschema.max_period']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value=" #{data.maxPeriode}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogConfirmId"
+                                                         action="#{loanNewSchemaDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                            <f:setPropertyActionListener value="#{data}" target="#{loanNewSchemaDetailController.loanNewSchemaListOfType}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                          action="#{loanNewSchemaDetailController.doEdit()}" update=":formId:panelList">
+                                            <f:setPropertyActionListener value="#{data}" target="#{loanNewSchemaDetailController.loanNewSchemaListOfType}" />
+                                            <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturn}" update=":formId, :growlId" />
+                                        </p:commandButton>
+                                    </p:column> 
+                                </p:dataTable>  
+                                <br />
+                                <p:toolbarGroup align="left">
+                                    <h:panelGrid columns="3" >
+                                        <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                            <pe:exporter target="loanNewSchemaTypeTableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Type"/>
+                                        </p:commandButton>
+                                        <p:commandButton value="#{appmsg['global.add']}" actionListener="#{loanNewSchemaDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                            <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturn}"  update=":formId, :growlId"/>
+                                        </p:commandButton>
+
+                                    </h:panelGrid>
+                                </p:toolbarGroup>
+                            </p:tab>
+
+                            <p:tab id="tabPolaPersetujuan" title="#{appmsg['loanNewSchema.pattern_approval']}">  
+                                <p:dataTable  var="approvalDefinitionData"  value="#{loanNewSchemaDetailController.appDefs}" lazy="true" paginator="false" 
+                                              id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                                    <p:column style="text-align: center;width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"  />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.name}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.specific_approval']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":formId:tabView1:tableApprovalDevId, :growlId" 
+                                                         action="#{loanNewSchemaDetailController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+                                            <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{loanNewSchemaDetailController.selectedAppDef}" />
+                                        </p:commandButton> 
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{leaveFormController.doEditAppDef()}" >
+                                            <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{leaveFormController.selectedAppDef}" />
+                                            <p:ajax event="dialogReturn" listener="#{leaveFormController.onDialogReturnEditAppDef}"  update=":formId:tabView1:tableApprovalDevId"/>
+                                        </p:commandButton>
+                                    </p:column> 
+                                </p:dataTable> 
+                                <br />
+                                <p:toolbarGroup align="left">
+                                    <h:panelGrid columns="3" >
+                                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update=":formId:tabView1:tableApprovalDevId,:growlId"
+	                                         action="#{loanNewSchemaDetailController.doSaveApprovalDefinition()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                                    </h:panelGrid>
+                                </p:toolbarGroup>
+                            </p:tab>
+                        </p:tabView>
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanNewSchemaDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+
+
+                    </o:form>
+
+                    <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                        <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                    </p:dialog>
+                    <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                              appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                                <p:outputLabel value="#{appmsg['global.name']}-"  style="font-weight: bold"/>
+                                <p:outputLabel value=":"  style="font-weight: bold"/>
+                                <p:outputLabel value="#{loanNewSchemaDetailController.loanNewSchemaListOfType.loanNewType.loanTypeName}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{loanNewSchemaDetailController.doDelete()}" update="formId:tabView1:loanNewSchemaTypeTableId, formId:panelList, :growlId"
+                                             oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                        </div>
+                    </p:dialog>
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

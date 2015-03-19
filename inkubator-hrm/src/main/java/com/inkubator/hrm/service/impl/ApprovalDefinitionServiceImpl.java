@@ -11,12 +11,15 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionLoanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
 import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -43,6 +46,8 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     private JabatanDao jabatanDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private ApprovalDefinitionLoanDao approvalDefinionLoanDao;
     
     @Override
     public ApprovalDefinition getEntiyByPK(String id) {
@@ -342,6 +347,17 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     
     public Long getTotalByName(String arg0) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalDefinition> getAllDataByLoanNewSchemaId(Long id) throws Exception {
+        List<ApprovalDefinitionLoan> listAppDefLoan = approvalDefinionLoanDao.getByLoanId(id);
+        List<ApprovalDefinition> listAppDef = new ArrayList<ApprovalDefinition>();
+        for (ApprovalDefinitionLoan appDefLoan : listAppDefLoan) {
+            listAppDef.add(appDefLoan.getApprovalDefinition());
+        }
+        return listAppDef;
     }
     
 }

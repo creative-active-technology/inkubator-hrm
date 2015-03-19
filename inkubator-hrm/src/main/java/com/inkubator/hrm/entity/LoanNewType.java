@@ -48,6 +48,10 @@ public class LoanNewType  implements java.io.Serializable {
     public LoanNewType() {
     }
 
+    public LoanNewType(long id) {
+        this.id = id;
+    }
+
 	
     public LoanNewType(long id, Currency currency, String loanTypeName, String loanTypeCode, Integer roundingStatus, Integer interestMethod, BigDecimal interest) {
         this.id = id;
@@ -126,7 +130,7 @@ public class LoanNewType  implements java.io.Serializable {
     }
 
     
-    @Column(name="description")
+    @Column(name="description", length=65535, columnDefinition="Text")
     public String getDescription() {
         return this.description;
     }

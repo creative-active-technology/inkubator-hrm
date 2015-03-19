@@ -7,7 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:o="http://omnifaces.org/ui"
-	  xmlns:of="http://omnifaces.org/functions">
+      xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -17,7 +17,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-            	<o:importConstants type="javax.faces.event.PhaseId" />
+                <o:importConstants type="javax.faces.event.PhaseId" />
                 <p:growl id="growlEmpDataFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>                
                 <h:form id="empDataFormId" >
                     <div id="box_bg" style="margin: 10px">
@@ -36,17 +36,7 @@
 
 
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['placement.nik']}"  for="nik" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
-                                                 styleClass="isitext_hrm" label="NIK"
-                                                 style="width: 350px" required="true" id="nik" onkeyup="this.value = this.value.toUpperCase();" />
-                                    <p:message for="nik"/>
-                                </p:column>
-                            </p:row>
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
@@ -55,11 +45,11 @@
                                     <p:inputText value="#{empDataFormController.empDataModel.bioDataName}" maxlength="45"
                                                  styleClass="isitext_hrm" label="Name" readonly="#{PhaseId.RENDER_RESPONSE eq facesContext.currentPhaseId}" disabled="#{empDataFormController.isEdit}"
                                                  style="width: 350px" required="true" id="name"  />
-                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{empDataFormController.isEdit}"
+<!--                                    <p:commandButton  style="margin-left: 5px" icon="ui-icon-search" title="Cari" action="#{empDataFormController.doSearch()}" widgetVar="cariId" disabled="#{empDataFormController.isEdit}"
                                                       ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn" listener="#{empDataFormController.onDialogReturn}"  update="name,birthDate"/>
 
-                                    </p:commandButton>
+                                    </p:commandButton>-->
                                     <p:message for="name"/>
                                 </p:column>
 
@@ -75,6 +65,17 @@
                                     <p:message for="birthDate"/>
                                 </p:column>
 
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['placement.nik']}"  for="nik" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText value="#{empDataFormController.empDataModel.nik}" maxlength="45"
+                                                 styleClass="isitext_hrm" label="NIK"
+                                                 style="width: 350px" required="true" id="nik" onkeyup="this.value = this.value.toUpperCase();" />
+                                    <p:message for="nik"/>
+                                </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -156,7 +157,7 @@
                                 </p:column>
 
                             </p:row>
-                              <p:row>
+                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['placement.rotation_date']}"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
