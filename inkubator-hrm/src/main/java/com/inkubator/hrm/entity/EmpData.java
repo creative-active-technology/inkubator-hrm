@@ -92,6 +92,7 @@ public class EmpData implements java.io.Serializable {
     private Set<PayComponentDataException> payComponentDataExceptions = new HashSet<PayComponentDataException>(0);
     private Set<PayTempKalkulasi> payTempKalkulasis = new HashSet<PayTempKalkulasi>(0);
     private Set<PayTempOvertime> payTempOvertimes = new HashSet<PayTempOvertime>(0);
+    private Set<OhsaEmpInvolve> ohsaEmpInvolves = new HashSet<OhsaEmpInvolve>(0);
 
     public EmpData() {
     }
@@ -607,6 +608,15 @@ public class EmpData implements java.io.Serializable {
 
     public void setPayTempOvertimes(Set<PayTempOvertime> payTempOvertimes) {
         this.payTempOvertimes = payTempOvertimes;
+    }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "empData")
+    public Set<OhsaEmpInvolve> getOhsaEmpInvolves() {
+        return ohsaEmpInvolves;
+    }
+
+    public void setOhsaEmpInvolves(Set<OhsaEmpInvolve> ohsaEmpInvolves) {
+        this.ohsaEmpInvolves = ohsaEmpInvolves;
     }
 
     @Transient
