@@ -15,6 +15,7 @@ import ch.lambdaj.Lambda;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionRmbsSchemaDao;
 import com.inkubator.hrm.dao.RmbsSchemaDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -33,6 +34,8 @@ public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<
 	private RmbsSchemaDao rmbsSchemaDao;
 	@Autowired
 	private ApprovalDefinitionRmbsSchemaDao approvalDefinitionRmbsSchemaDao;
+	@Autowired
+	private ApprovalDefinitionDao approvalDefinitionDao;
 	
 	@Override
 	public RmbsSchema getEntiyByPK(String id) throws Exception {
@@ -112,6 +115,13 @@ public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<
 		rmbsSchema.setUpdatedBy(UserInfoUtil.getUserName());
 		rmbsSchema.setUpdatedOn(new Date());
 		rmbsSchemaDao.update(rmbsSchema);
+		
+		/** update specific name in approval definition related */
+		List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+		for(ApprovalDefinition appDef :appDefs){
+			appDef.setSpecificName(rmbsSchema.getName());
+			approvalDefinitionDao.update(appDef);			
+		}
 	}
 
 	@Override

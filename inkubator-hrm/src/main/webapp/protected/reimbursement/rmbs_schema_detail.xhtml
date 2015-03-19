@@ -188,7 +188,7 @@
 		                    			<p:ajax event="dialogReturn" listener="#{rmbsSchemaDetailController.onDialogReturnAppDef}"  update="tableApprovalDevId,:growlId"/>
 		                           	</p:commandButton>
 		                           	<p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="true" fileName="List_Reimbursment_Approval"/>
+                                        <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="false" fileName="List_Reimbursment_Approval"/>
                                     </p:commandButton>
 		                    	</h:panelGrid>
                             </p:tab>
