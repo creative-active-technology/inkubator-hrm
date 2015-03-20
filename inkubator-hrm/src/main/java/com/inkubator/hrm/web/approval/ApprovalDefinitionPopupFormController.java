@@ -27,6 +27,7 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.service.LoanNewSchemaService;
 import com.inkubator.hrm.service.RmbsSchemaService;
 import com.inkubator.hrm.web.model.ApprovalDefinitionModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -58,13 +59,19 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     private HrmUserService hrmUserService;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
-    
-    /** Optional Service, only when it's needed (usually for many to many approval definition)*/
+
+    /**
+     * Optional Service, only when it's needed (usually for many to many
+     * approval definition)
+     */
     @ManagedProperty(value = "#{rmbsSchemaService}")
     private RmbsSchemaService rmbsSchemaService;
-    /** END Optional Service*/
-    
+    @ManagedProperty(value = "#{loanNewSchemaService}")
+    private LoanNewSchemaService loanNewSchemaService;
 
+    /**
+     * END Optional Service
+     */
     @PostConstruct
     @Override
     public void initialization() {
@@ -72,7 +79,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         approvalDefinitionModel = new ApprovalDefinitionModel();
         isPersistedToDB = StringUtils.equals(FacesUtil.getRequestParameter("isPersistedToDB"), "true");
         entityId = FacesUtil.getRequestParameter("entityId");
-        
+
         String jsonAppDef = FacesUtil.getRequestParameter("jsonAppDef");
         if (StringUtils.isNotEmpty(jsonAppDef)) {
             try {
@@ -95,14 +102,14 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
                 onBehalf = !ad.getAllowOnBehalf();
                 onBehalfApproverTypeIndividual = onBehalf;
                 onBehalfApproverTypePosition = onBehalf;
-                
+
                 if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
-                	HrmUser user = hrmUserService.getEntiyByPkWithDetail(ad.getHrmUserByApproverIndividual().getId());
+                    HrmUser user = hrmUserService.getEntiyByPkWithDetail(ad.getHrmUserByApproverIndividual().getId());
                     approvalDefinitionModel.setHrmUserByApproverIndividual(user);
                     approverTypeIndividual = Boolean.FALSE;
                     approverTypePosition = Boolean.TRUE;
                 } else if (ad.getApproverType().equalsIgnoreCase(HRMConstant.APPROVAL_TYPE_POSITION)) {
-                	Jabatan jabatan = jabatanService.getEntiyByPK(ad.getJabatanByApproverPosition().getId());
+                    Jabatan jabatan = jabatanService.getEntiyByPK(ad.getJabatanByApproverPosition().getId());
                     approvalDefinitionModel.setJabatanByApproverPosition(jabatan);
                     approverTypeIndividual = Boolean.TRUE;
                     approverTypePosition = Boolean.FALSE;
@@ -110,22 +117,22 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
                     approverTypeIndividual = Boolean.TRUE;
                     approverTypePosition = Boolean.TRUE;
                 }
-                
+
                 if (ad.getOnBehalfType() != null) {
                     approvalDefinitionModel.setOnBehalfType(ad.getOnBehalfType());
                     if (ad.getHrmUserByOnBehalfIndividual() != null) {
-                    	HrmUser user = hrmUserService.getEntiyByPkWithDetail(ad.getHrmUserByOnBehalfIndividual().getId());
+                        HrmUser user = hrmUserService.getEntiyByPkWithDetail(ad.getHrmUserByOnBehalfIndividual().getId());
                         approvalDefinitionModel.setHrmUserByOnBehalfIndividual(user);
                         onBehalfApproverTypeIndividual = Boolean.FALSE;
                         onBehalfApproverTypePosition = Boolean.TRUE;
                     } else if (ad.getJabatanByOnBehalfPosition() != null) {
-                    	Jabatan jabatan = jabatanService.getEntiyByPK(ad.getJabatanByOnBehalfPosition().getId());
+                        Jabatan jabatan = jabatanService.getEntiyByPK(ad.getJabatanByOnBehalfPosition().getId());
                         approvalDefinitionModel.setJabatanByOnBehalfPosition(jabatan);
                         onBehalfApproverTypeIndividual = Boolean.TRUE;
                         onBehalfApproverTypePosition = Boolean.FALSE;
                     }
                 }
-                
+
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -133,7 +140,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         } else {
             String appDefName = FacesUtil.getRequestParameter("appDefName");
             String specificName = FacesUtil.getRequestParameter("specificName");
-            
+
             isEdit = Boolean.FALSE;
             onBehalf = Boolean.TRUE;
             onProcess = Boolean.TRUE;
@@ -148,32 +155,32 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
             approvalDefinitionModel.setMinRejector(1);
             approvalDefinitionModel.setName(appDefName);
             approvalDefinitionModel.setSmsNotification(Boolean.FALSE);
-            if(StringUtils.isNotEmpty(specificName)){
-            	approvalDefinitionModel.setSpecificName(specificName);
+            if (StringUtils.isNotEmpty(specificName)) {
+                approvalDefinitionModel.setSpecificName(specificName);
             }
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         approvalDefinitionService = null;
         approvalDefinitionModel = null;
-        onBehalf=null;
-        onProcess=null;
-        approverTypeIndividual=null;
-        approverTypePosition=null;
-        onBehalfApproverTypeIndividual=null;
-        onBehalfApproverTypePosition=null;
-        onAutoApprove=null;
-        approvalDefinitionService=null;
-        hrmUserService=null;
-        jabatanService=null;
-        isEdit=null;    
-        isPersistedToDB=null;
-        entityId=null;
-        rmbsSchemaService = null;        
+        onBehalf = null;
+        onProcess = null;
+        approverTypeIndividual = null;
+        approverTypePosition = null;
+        onBehalfApproverTypeIndividual = null;
+        onBehalfApproverTypePosition = null;
+        onAutoApprove = null;
+        approvalDefinitionService = null;
+        hrmUserService = null;
+        jabatanService = null;
+        isEdit = null;
+        isPersistedToDB = null;
+        entityId = null;
+        rmbsSchemaService = null;
     }
-    
+
     public void onProcessChange() {
         String approvalProcess = approvalDefinitionModel.getProcessType();
         if (StringUtils.equalsIgnoreCase(approvalProcess, HRMConstant.ON_APPROVE_INFO)
@@ -217,11 +224,11 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         approvalDefinitionModel.setJabatanByOnBehalfPosition(null);
 
     }
-    
+
     public void onAllowOnBehalfChange() {
         onBehalf = approvalDefinitionModel.getAllowOnBehalf();
     }
-    
+
     public void autoApproveOnDelay() {
         approvalDefinitionModel.setEscalateOnDelay(approvalDefinitionModel.getAutoApproveOnDelay());
     }
@@ -230,56 +237,63 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         approvalDefinitionModel.setAutoApproveOnDelay(approvalDefinitionModel.getEscalateOnDelay());
     }
 
-    public List<HrmUser> doAutoCompleteUser(String param){
-		List<HrmUser> users = new ArrayList<HrmUser>();
-		try {
-			users = hrmUserService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-		return users;
-	}
-    
-    public List<Jabatan> doAutoCompleteJabatan(String param){
-		List<Jabatan> jabatans = new ArrayList<Jabatan>();
-		try {
-			jabatans = jabatanService.getAllDataByCodeOrName(StringUtils.stripToEmpty(param));
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-		return jabatans;
-	}
-    
-    public void doSaveWithPersistedToDB(){
-    	ApprovalDefinition approvalDefinition = this.getEntityFromViewModel(approvalDefinitionModel);
-    	try {   		
-	    	switch (approvalDefinition.getName()) {
-				case HRMConstant.REIMBURSEMENT:
-					if(isEdit){
-						rmbsSchemaService.updateApprovalConf(approvalDefinition, Long.parseLong(entityId));
-					} else {
-						rmbsSchemaService.saveApprovalConf(approvalDefinition, Long.parseLong(entityId));
-					}
-					break;
-				default:
-					break;
-			}
-	    	
-	    	RequestContext.getCurrentInstance().closeDialog(isEdit ? HRMConstant.UPDATE_CONDITION : HRMConstant.SAVE_CONDITION);
-	        cleanAndExit();
-    	} catch (BussinessException ex) { 
-    		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    public List<HrmUser> doAutoCompleteUser(String param) {
+        List<HrmUser> users = new ArrayList<HrmUser>();
+        try {
+            users = hrmUserService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+        return users;
+    }
+
+    public List<Jabatan> doAutoCompleteJabatan(String param) {
+        List<Jabatan> jabatans = new ArrayList<Jabatan>();
+        try {
+            jabatans = jabatanService.getAllDataByCodeOrName(StringUtils.stripToEmpty(param));
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+        return jabatans;
+    }
+
+    public void doSaveWithPersistedToDB() {
+        ApprovalDefinition approvalDefinition = this.getEntityFromViewModel(approvalDefinitionModel);
+        try {
+            switch (approvalDefinition.getName()) {
+                case HRMConstant.REIMBURSEMENT:
+                    if (isEdit) {
+                        rmbsSchemaService.updateApprovalConf(approvalDefinition, Long.parseLong(entityId));
+                    } else {
+                        rmbsSchemaService.saveApprovalConf(approvalDefinition, Long.parseLong(entityId));
+                    }
+                    break;
+                case HRMConstant.LOAN:
+                    if (isEdit) {
+                        loanNewSchemaService.updateApprovalConf(approvalDefinition, Long.parseLong(entityId));
+                    } else {
+                        loanNewSchemaService.saveApprovalConf(approvalDefinition, Long.parseLong(entityId));
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            RequestContext.getCurrentInstance().closeDialog(isEdit ? HRMConstant.UPDATE_CONDITION : HRMConstant.SAVE_CONDITION);
+            cleanAndExit();
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
-        	LOGGER.error("Error", ex);
+            LOGGER.error("Error", ex);
         }
     }
-    
-    public void doSaveWithoutPersistedToDB(){
-    	ApprovalDefinition approvalDefinition = this.getEntityFromViewModel(approvalDefinitionModel);
-    	RequestContext.getCurrentInstance().closeDialog(approvalDefinition);
+
+    public void doSaveWithoutPersistedToDB() {
+        ApprovalDefinition approvalDefinition = this.getEntityFromViewModel(approvalDefinitionModel);
+        RequestContext.getCurrentInstance().closeDialog(approvalDefinition);
         cleanAndExit();
     }
-    
+
     private ApprovalDefinition getEntityFromViewModel(ApprovalDefinitionModel approvalDefinitionModel) {
 
         ApprovalDefinition approvalDefinition = new ApprovalDefinition();
@@ -321,7 +335,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     public void setOnBehalf(Boolean onBehalf) {
         this.onBehalf = onBehalf;
     }
-    
+
     public Boolean getOnProcess() {
         return onProcess;
     }
@@ -345,7 +359,7 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     public void setApproverTypePosition(Boolean approverTypePosition) {
         this.approverTypePosition = approverTypePosition;
     }
-    
+
     public Boolean getOnBehalfApproverTypeIndividual() {
         return onBehalfApproverTypeIndividual;
     }
@@ -361,19 +375,19 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     public void setOnBehalfApproverTypePosition(Boolean onBehalfApproverTypePosition) {
         this.onBehalfApproverTypePosition = onBehalfApproverTypePosition;
     }
-    
+
     public void setApprovalDefinitionService(ApprovalDefinitionService approvalDefinitionService) {
         this.approvalDefinitionService = approvalDefinitionService;
     }
 
-	public Boolean getIsEdit() {
+    public Boolean getIsEdit() {
         return isEdit;
     }
 
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
+
     public Boolean getOnAutoApprove() {
         return onAutoApprove;
     }
@@ -382,48 +396,57 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         this.onAutoApprove = onAutoApprove;
     }
 
-	public Boolean getIsPersistedToDB() {
-		return isPersistedToDB;
-	}
+    public Boolean getIsPersistedToDB() {
+        return isPersistedToDB;
+    }
 
-	public void setIsPersistedToDB(Boolean isPersistedToDB) {
-		this.isPersistedToDB = isPersistedToDB;
-	}
+    public void setIsPersistedToDB(Boolean isPersistedToDB) {
+        this.isPersistedToDB = isPersistedToDB;
+    }
 
-	public String getEntityId() {
-		return entityId;
-	}
+    public String getEntityId() {
+        return entityId;
+    }
 
-	public void setEntityId(String entityId) {
-		this.entityId = entityId;
-	}
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
+    }
 
-	public void setHrmUserService(HrmUserService hrmUserService) {
-		this.hrmUserService = hrmUserService;
-	}
+    public void setHrmUserService(HrmUserService hrmUserService) {
+        this.hrmUserService = hrmUserService;
+    }
 
-	public void setJabatanService(JabatanService jabatanService) {
-		this.jabatanService = jabatanService;
-	}
+    public void setJabatanService(JabatanService jabatanService) {
+        this.jabatanService = jabatanService;
+    }
 
-	public RmbsSchemaService getRmbsSchemaService() {
-		return rmbsSchemaService;
-	}
+    public RmbsSchemaService getRmbsSchemaService() {
+        return rmbsSchemaService;
+    }
 
-	public void setRmbsSchemaService(RmbsSchemaService rmbsSchemaService) {
-		this.rmbsSchemaService = rmbsSchemaService;
-	}
+    public void setRmbsSchemaService(RmbsSchemaService rmbsSchemaService) {
+        this.rmbsSchemaService = rmbsSchemaService;
+    }
 
-	public ApprovalDefinitionService getApprovalDefinitionService() {
-		return approvalDefinitionService;
-	}
+    public ApprovalDefinitionService getApprovalDefinitionService() {
+        return approvalDefinitionService;
+    }
 
-	public HrmUserService getHrmUserService() {
-		return hrmUserService;
-	}
+    public HrmUserService getHrmUserService() {
+        return hrmUserService;
+    }
 
-	public JabatanService getJabatanService() {
-		return jabatanService;
-	}
-	
+    public JabatanService getJabatanService() {
+        return jabatanService;
+    }
+
+    public LoanNewSchemaService getLoanNewSchemaService() {
+        return loanNewSchemaService;
+    }
+
+    public void setLoanNewSchemaService(LoanNewSchemaService loanNewSchemaService) {
+        this.loanNewSchemaService = loanNewSchemaService;
+    }
+
+    
 }

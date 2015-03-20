@@ -45,6 +45,7 @@
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessLoan']}" itemValue="LOAN" />
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessLeave']}" itemValue="LEAVE" />
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.changeProcessOvertime']}" itemValue="OVERTIME" />
+                                        <f:selectItem itemLabel="Proses Pinjaman" itemValue="LOAN_NEW" />
                                     </p:selectOneMenu>
                                     <p:message for="approvalName"/>
 
@@ -251,16 +252,11 @@
 
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}"
-                            				 icon="ui-icon-document" styleClass="label_button" style="margin-right: 5px"
-                            				 ajax="true"  update=":growlapprovalFormId,approvalFormId"
-                                             action="#{approvalDefinitionPopupFormController.doSaveWithoutPersistedToDB()}" 
-                                             rendered="#{not approvalDefinitionPopupFormController.isPersistedToDB}"/>
-                            <p:commandButton value="#{appmsg['global.save']}" title="#{appmsg['global.save']}" label="#{appmsg['global.save']}"
-                            				 icon="ui-icon-document" styleClass="label_button" style="margin-right: 5px"
-                            				 ajax="true"  update=":growlapprovalFormId,approvalFormId"
-                                             action="#{approvalDefinitionPopupFormController.doSaveWithPersistedToDB()}" 
-                                             rendered="#{approvalDefinitionPopupFormController.isPersistedToDB}"/>
+                            <p:commandButton value="#{appmsg['global.add']}" ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{approvalDefinitionPopupFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.add']}"
+                                             icon="ui-icon-document"
+                                             id="buttonSave" title="#{appmsg['global.add']}"/>
                         </div>
                     </h:form>
                 </div>

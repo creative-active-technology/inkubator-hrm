@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ApprovalDefinitionLoanDao;
@@ -254,25 +255,25 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
 
     @Override
     protected void deleteManyToMany(Object entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        approvalDefinitionLoanDao.delete((ApprovalDefinitionLoan) entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception {
-        
+
         /**
          * validasi approval definition conf
          */
         super.validateApprovalConf(appDefs);
-        
+
         List<ApprovalDefinitionLoan> approvalDefinitionLoan = approvalDefinitionLoanDao.getByLoanId(entity.getId());
-        if(approvalDefinitionLoan.isEmpty() == Boolean.FALSE){
+        if (approvalDefinitionLoan.isEmpty() == Boolean.FALSE) {
             for (ApprovalDefinitionLoan appDefLoan : approvalDefinitionLoan) {
                 approvalDefinitionLoanDao.delete(appDefLoan);
             }
         }
-        
+
         /**
          * saving approval definition conf manyToMany
          */
@@ -282,6 +283,61 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
     @Override
     public void update(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchema getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
+        return loanNewSchemaDao.getEntityByPkFetchApprovalDefinition(id);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteApprovalconf(Long appDefId, Long rmbsSchemaId) throws Exception {
+        ApprovalDefinitionLoan approvalDefinitionLoan = approvalDefinitionLoanDao.getEntityByPk(appDefId, rmbsSchemaId);
+
+        /**
+         * deleting process
+         */
+        super.deleteApprovalConf(approvalDefinitionLoan, appDefId);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception {
+        LoanNewSchema entity = loanNewSchemaDao.getEntiyByPK(loanNewSchema);
+        List<ApprovalDefinitionLoan> approvalDefinitionRmbsSchemas = approvalDefinitionLoanDao.getByLoanId(loanNewSchema);
+        List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionRmbsSchemas, Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+        listAppDef.add(appDef);
+
+        /**
+         * validasi approval definition conf
+         */
+        super.validateApprovalConf(listAppDef);
+
+        /**
+         * saving process
+         */
+        super.saveApprovalConf(appDef, entity);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception {
+        List<ApprovalDefinitionLoan> approvalDefinitionLoans = approvalDefinitionLoanDao.getByLoanId(loanNewSchema);
+        List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoans, Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+        listAppDef.remove(appDef);
+        listAppDef.add(appDef);
+
+        /**
+         * validasi approval definition conf
+         */
+        super.validateApprovalConf(listAppDef);
+
+        /**
+         * updating process
+         */
+        super.updateApprovalDefinition(appDef);
     }
 
 }

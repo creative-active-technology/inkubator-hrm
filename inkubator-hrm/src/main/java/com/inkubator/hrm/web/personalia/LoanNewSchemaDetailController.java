@@ -5,10 +5,13 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
@@ -64,6 +67,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     private int indexOfAppDefs;
     private String name;
     private String loanNewSchemaId;
+    private List<ApprovalDefinition> listAppDef;
 
     @PostConstruct
     @Override
@@ -71,11 +75,12 @@ public class LoanNewSchemaDetailController extends BaseController {
         try {
             super.initialization();
             loanNewSchemaId = FacesUtil.getRequestParameter("execution");
-            selectedLoanSchema = loanNewSchemaService.getEntiyByPK(Long.parseLong(loanNewSchemaId.substring(1)));
+            selectedLoanSchema = loanNewSchemaService.getEntityByPkFetchApprovalDefinition(Long.parseLong(loanNewSchemaId.substring(1)));
             listOfLoanNewType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(selectedLoanSchema.getId());
             totalPinjaman = 0.0;
             totalAllocation = 0.0;
             totalInstallment = 0.0;
+            listAppDef = Lambda.extract(selectedLoanSchema.getApprovalDefinitionLoans(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
 //            appDefs = approvalDefinitionLoanService.getByLoanId(Long.parseLong(loanNewSchemaId.substring(1)));
 //            List<ApprovalDefinitionLoan> approvalDefinitionLoan = approvalDefinitionLoanService.getByLoanId(Long.valueOf(loanNewSchemaId.substring(1)));
             appDefs = approvalDefinitionService.getAllDataByLoanNewSchemaId(Long.valueOf(loanNewSchemaId.substring(1)));
@@ -102,6 +107,7 @@ public class LoanNewSchemaDetailController extends BaseController {
         totalInstallment = null;
         appDefs = null;
         loanNewSchemaId = null;
+        listAppDef = null;
     }
 
     public String doBack() {
@@ -190,46 +196,62 @@ public class LoanNewSchemaDetailController extends BaseController {
 
     }
 
-    /**
-     * Start Approval Definition form
-     */
-    public void doDeleteAppDef() throws Exception {
-        try {
-            this.approvalDefinitionLoanService.deleteLoanNewSchemaAppDef(selectedAppDef.getId(), Long.valueOf(loanNewSchemaId.substring(1)));
-            appDefs = approvalDefinitionService.getAllDataByLoanNewSchemaId(Long.valueOf(loanNewSchemaId.substring(1)));
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    /** Start Approval Definition form */
+    public void doDeleteAppDef() {
+    	try {
+    		loanNewSchemaService.deleteApprovalconf(selectedAppDef.getId(), selectedLoanSchema.getId());
+    		listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error", ex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error ", ex);
         } catch (Exception ex) {
-            LOGGER.error("Error", ex);
+            LOGGER.error("Error ", ex);
         }
     }
-
+    
     public void doAddAppDef() {
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> appDefName = new ArrayList<>();
-        appDefName.add(HRMConstant.LOAN_NEW);
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        
+    	List<String> isPersistedToDB = new ArrayList<>();
+    	isPersistedToDB.add("true");
+        dataToSend.put("isPersistedToDB", isPersistedToDB);
+        
+        List<String> entityId = new ArrayList<>();
+        entityId.add(String.valueOf(selectedLoanSchema.getId()));
+        dataToSend.put("entityId", entityId);
+        
+    	List<String> appDefName = new ArrayList<>();
+        appDefName.add(HRMConstant.LOAN);
         dataToSend.put("appDefName", appDefName);
+        
         List<String> specificName = new ArrayList<>();
         specificName.add(selectedLoanSchema.getLoanSchemaName());
         dataToSend.put("specificName", specificName);
+    	
         this.showDialogAppDef(dataToSend);
     }
-
-    public void doEditAppDef() {
-        indexOfAppDefs = appDefs.indexOf(selectedAppDef);
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        Map<String, List<String>> dataToSend = new HashMap<>();
+    
+    public void doEditAppDef() {    	
+    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+    	
+    	List<String> isPersistedToDB = new ArrayList<>();
+    	isPersistedToDB.add("true");
+        dataToSend.put("isPersistedToDB", isPersistedToDB);
+        
+        List<String> entityId = new ArrayList<>();
+        entityId.add(String.valueOf(selectedLoanSchema.getId()));
+        dataToSend.put("entityId", entityId);
+    	
         List<String> values = new ArrayList<>();
         values.add(gson.toJson(selectedAppDef));
         dataToSend.put("jsonAppDef", values);
+        
         this.showDialogAppDef(dataToSend);
     }
-
+    
     private void showDialogAppDef(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -238,7 +260,19 @@ public class LoanNewSchemaDetailController extends BaseController {
         options.put("contentWidth", 1100);
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("appr_def_popup_form", options, params);
+    }   
+    
+    public void onDialogReturnAppDef(SelectEvent event) {
+        //re-calculate searching
+    	try {
+    		listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+    		super.onDialogReturn(event);
+                System.out.println(listAppDef.size() + " hohohohohohoho");
+    	} catch (Exception ex) {
+            LOGGER.error("Error ", ex);
+        }
     }
+    /** End Approval Definition form */
 
     public void onDialogReturnAddAppDef(SelectEvent event) {
         ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
@@ -393,4 +427,13 @@ public class LoanNewSchemaDetailController extends BaseController {
         this.loanNewSchemaId = loanNewSchemaId;
     }
 
+    public List<ApprovalDefinition> getListAppDef() {
+        return listAppDef;
+    }
+
+    public void setListAppDef(List<ApprovalDefinition> listAppDef) {
+        this.listAppDef = listAppDef;
+    }
+
+    
 }
