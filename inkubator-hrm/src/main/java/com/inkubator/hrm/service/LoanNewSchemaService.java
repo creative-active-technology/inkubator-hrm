@@ -25,4 +25,12 @@ public interface LoanNewSchemaService extends IService<LoanNewSchema> {
     public void save(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception;
 
     public void update(LoanNewSchema entity, List<ApprovalDefinition> appDefs) throws Exception;
+
+    public LoanNewSchema getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
+
+    public void deleteApprovalconf(Long appDefId, Long rmbsSchemaId) throws Exception;
+
+    public void saveApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception;
+
+    public void updateApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception;
 }

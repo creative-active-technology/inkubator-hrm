@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
@@ -63,6 +64,10 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(LoanNewSchemaListOfType entity) throws Exception {
+        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("loanNewSchema.error_duplicate_type");
+        }
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
         entity.setLoanNewType(loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
@@ -222,6 +227,10 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LoanNewSchemaListOfType entity, Long oldId) throws Exception {
+//        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByNotLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId());
+//        if (totalDuplicates > 0) {
+//            throw new BussinessException("loanNewSchema.error_duplicate_type");
+//        }
         LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeId(new LoanNewSchemaListOfTypeId(oldId, entity.getLoanNewSchema().getId()));
         this.loanNewSchemaListOfTypeDao.delete(loanNewSchemaListOfType);
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));

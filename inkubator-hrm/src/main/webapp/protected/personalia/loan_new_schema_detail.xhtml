@@ -205,7 +205,7 @@
                             </p:tab>
 
                             <p:tab id="tabPolaPersetujuan" title="#{appmsg['loanNewSchema.pattern_approval']}">  
-                                <p:dataTable  var="approvalDefinitionData"  value="#{loanNewSchemaDetailController.appDefs}" lazy="true" paginator="false" 
+                                <p:dataTable  var="approvalDefinitionData"  value="#{loanNewSchemaDetailController.listAppDef}" lazy="true" paginator="false" 
                                               id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
                                     <p:column style="text-align: center;width: 25px">
                                         <f:facet name="header">  
@@ -264,19 +264,19 @@
                                         </p:commandButton> 
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{leaveFormController.doEditAppDef()}" >
-                                            <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{leaveFormController.selectedAppDef}" />
-                                            <p:ajax event="dialogReturn" listener="#{leaveFormController.onDialogReturnEditAppDef}"  update=":formId:tabView1:tableApprovalDevId"/>
+                                                         action="#{loanNewSchemaDetailController.doEditAppDef()}" >
+                                            <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{loanNewSchemaDetailController.selectedAppDef}" />
+                                            <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturnAppDef}"  update=":formId:tabView1:tableApprovalDevId, :growlId"/>
                                         </p:commandButton>
                                     </p:column> 
                                 </p:dataTable> 
                                 <br />
                                 <p:toolbarGroup align="left">
                                     <h:panelGrid columns="3" >
-                                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update=":formId:tabView1:tableApprovalDevId,:growlId"
-	                                         action="#{loanNewSchemaDetailController.doSaveApprovalDefinition()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                                        <p:commandButton value="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" 
+                                                         actionListener="#{loanNewSchemaDetailController.doAddAppDef()}">
+                                            <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturnAppDef}"  update=":formId:tabView1:tableApprovalDevId,:growlId"/>
+                                        </p:commandButton>
                                     </h:panelGrid>
                                 </p:toolbarGroup>
                             </p:tab>

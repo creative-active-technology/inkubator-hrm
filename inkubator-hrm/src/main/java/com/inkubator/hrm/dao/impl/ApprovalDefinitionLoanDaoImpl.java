@@ -40,9 +40,10 @@ public class ApprovalDefinitionLoanDaoImpl extends IDAOImpl<ApprovalDefinitionLo
     }
 
     @Override
-    public ApprovalDefinitionLoan getEntityByPk(ApprovalDefinitionLoanId entity) {
+    public ApprovalDefinitionLoan getEntityByPk(Long appDefId, Long loanNewSchema) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", entity));
+        criteria.add(Restrictions.eq("loanNewSchema.id", loanNewSchema));
+        criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
         return (ApprovalDefinitionLoan) criteria.uniqueResult();
     }
 
