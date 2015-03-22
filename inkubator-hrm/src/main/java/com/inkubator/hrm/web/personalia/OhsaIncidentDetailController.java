@@ -324,8 +324,8 @@ public class OhsaIncidentDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 500);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 450);
         RequestContext.getCurrentInstance().openDialog("ohsa_incident_doc_form", options, params);
     }
 
