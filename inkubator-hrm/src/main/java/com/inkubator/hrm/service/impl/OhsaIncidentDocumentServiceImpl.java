@@ -15,6 +15,7 @@ import com.inkubator.hrm.service.OhsaIncidentDocumentService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -135,8 +136,15 @@ public class OhsaIncidentDocumentServiceImpl extends IServiceImpl implements Ohs
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, noRollbackFor = IOException.class)
     public void delete(OhsaIncidentDocument t) throws Exception {
+        //remove physical file
+    	try {
+	        File oldFile = new File(t.getUploadedPath());
+	        oldFile.delete();
+    	} catch (Exception e){
+    		//if any error when removing file, system will continue deleting the record
+    	}
         this.ohsaIncidentDocumentDao.delete(t);
     }
 
