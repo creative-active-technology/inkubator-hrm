@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -71,6 +72,16 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         criteria.add(Restrictions.eq("loanNewType.id", typeId));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loanNewSchema", "lns");
+        criteria.add(Restrictions.eq("lns.id", loanSchemaId));
+        criteria.addOrder(Order.desc("loanNewType"));
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        return criteria.list();
     }
     
 }

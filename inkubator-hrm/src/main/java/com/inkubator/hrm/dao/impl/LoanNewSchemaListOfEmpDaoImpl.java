@@ -42,8 +42,16 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         query.append(" LEFT JOIN hrm.bio_data bio ON bio.id = emp.bio_data_id");
         query.append(" LEFT JOIN hrm.golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
         query.append(" LEFT JOIN hrm.loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
+        if(parameter.getName() != null){
+            query.append(" WHERE bio.first_name like '%" + parameter.getName() + "%'");
+            query.append(" OR bio.last_name like '%" + parameter.getName() + "%'");
+        }else if(parameter.getCode()!= null){
+            query.append(" WHERE goljab.code like '%" + parameter.getCode()+ "%'");
+        }else if(parameter.getNoSk()!= null){
+            query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
+        }
         query.append(" LIMIT " + firstResult + ", " + maxResults);
-
+        System.out.println(parameter.getCode());
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(LoanNewSchemaListOfEmpViewModel.class))
                 .list();
@@ -68,8 +76,16 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         query.append(" LEFT JOIN hrm.loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
         query.append(" LEFT JOIN hrm.bio_data bio ON bio.id = emp.bio_data_id");
         query.append(" LEFT JOIN hrm.golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-        query.append(" LEFT JOIN hrm.loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id) AS jumlahData");
-
+        query.append(" LEFT JOIN hrm.loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
+        if(parameter.getName() != null){
+            query.append(" WHERE bio.first_name like '%" + parameter.getName() + "%'");
+            query.append(" OR bio.last_name like '%" + parameter.getName() + "%'");
+        }else if(parameter.getCode()!= null){
+            query.append(" WHERE goljab.code like '%" + parameter.getCode()+ "%'");
+        }else if(parameter.getNoSk()!= null){
+            query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
+        }
+        query.append(" ) as jumlahData");
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
     }
@@ -79,6 +95,9 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", id));
         criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
         return (LoanNewSchemaListOfEmp) criteria.uniqueResult();
     }
 

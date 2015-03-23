@@ -74,6 +74,10 @@ public class LoanNewSchemaListOfEmpViewController extends BaseController {
 //        }
     }
 
+    public String doDetail() {
+        return "/protected/personalia/loan_emp_detail.htm?faces-redirect=true&execution=e" + selectedListOfEmp.getIdEmp();
+    }
+
     public void doDelete() {
         try {
             this.service.delete(selected);
@@ -173,6 +177,4 @@ public class LoanNewSchemaListOfEmpViewController extends BaseController {
         this.selectedListOfEmp = selectedListOfEmp;
     }
 
-    
-    
 }

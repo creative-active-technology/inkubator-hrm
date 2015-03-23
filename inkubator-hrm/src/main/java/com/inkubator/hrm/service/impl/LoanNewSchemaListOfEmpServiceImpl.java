@@ -9,11 +9,15 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
+import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmpId;
+import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.service.LoanNewSchemaListOfEmpService;
 import com.inkubator.hrm.web.model.LoanNewSchemaListOfEmpViewModel;
 import com.inkubator.hrm.web.search.LoanNewSchemaListOfEmpSearchParameter;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,8 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     private EmpDataDao empDataDao;
     @Autowired
     private LoanNewSchemaDao loanNewSchemaDao;
+    @Autowired
+    private LoanNewSchemaListOfTypeDao loanNewSchemaListOfTypeDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -222,7 +228,14 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public LoanNewSchemaListOfEmp getEntityByEmpDataId(Long id) throws Exception {
-        return loanNewSchemaListOfEmpDao.getEntityByEmpDataId(id);
+        LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(id);
+        List<LoanNewSchemaListOfType> listLoanNewType = new ArrayList<LoanNewSchemaListOfType>();
+        for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanNewSchemaListOfEmp.getLoanNewSchema().getId())) {
+            listLoanNewType.add(loanNewSchemaListOfType);
+        }
+        loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
+        System.out.println(listLoanNewType.size() + " sizenya gitu lohhh");
+        return loanNewSchemaListOfEmp;
     }
 
     @Override
@@ -234,6 +247,19 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
         loanNewSchemaListOfEmpDao.save(entity);
+    }
+
+    @Override
+    public LoanNewSchemaListOfEmp getEntityByEmpDataIdAndLoanSchemaId(Long empDataId, Long loanSchemaId) throws Exception {
+        LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(empDataId);
+        List<LoanNewType> listLoanNewType = new ArrayList<LoanNewType>();
+        for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanSchemaId)) {
+            listLoanNewType.add(loanNewSchemaListOfType.getLoanNewType());
+        }
+//        loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
+        System.out.println(listLoanNewType.size() + " sizenya gitu lohhh");
+        return loanNewSchemaListOfEmp;
+
     }
 
 }
