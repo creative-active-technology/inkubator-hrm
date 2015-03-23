@@ -132,17 +132,17 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_approve']}"/>
                                         </f:facet>
-                                        <p:outputLabel value=" #{data.maximumApproval}" >
+                                        <h:outputLabel value=" #{data.maximumApproval}" >
                                             <f:convertNumber pattern="###,###" type="currency"/>
-                                        </p:outputLabel>
+                                        </h:outputLabel>
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_allocation']}"/>
                                         </f:facet>
-                                        <p:outputLabel value=" #{data.maximumAllocation}" >
+                                        <h:outputLabel value=" #{data.maximumAllocation}" >
                                             <f:convertNumber pattern="###,###" type="currency"/>
-                                        </p:outputLabel>
+                                        </h:outputLabel>
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  

@@ -65,10 +65,11 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
     }
 
     @Override
-    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId) {
+    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId, LoanNewSchemaListOfTypeId id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("loanNewSchema.id", schemaId));
-        criteria.add(Restrictions.ne("loanNewType.id", typeId));
+        criteria.add(Restrictions.eq("loanNewType.id", typeId));
+        criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     

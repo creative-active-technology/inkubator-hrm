@@ -205,8 +205,9 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchema> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return loanNewSchemaDao.getAllData();
     }
 
     @Override
