@@ -113,7 +113,70 @@
 	                 	</p:panelGrid>	
 	                 	
 	                 	<p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
-                            <p:tab id="rmbsTypeId" title="Tipe Penggantian" >
+                            <p:tab id="rmbsSchemaOfTypeId" title="Tipe Penggantian" >
+                            	<p:dataTable  var="rmbsSchemaOfTypeData"  value="#{rmbsSchemaDetailController.listRmbsSchemaListOfTypes}" lazy="false" paginator="false" 
+		                                      id="tableRmbsSchemaOfTypeId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+		                            <p:column style="text-align: center;width: 25px">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['global.number']}"  />
+		                                </f:facet>
+		                                <h:outputLabel value="#{no+1}." />
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="Kode Tipe Penggantian"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.rmbsType.code}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="Nama Tipe Penggantian"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.rmbsType.name}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="Limit per Klaim"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.limitPerClaim}"/>
+		                            </p:column>
+		                            <p:column>
+		                                <f:facet name="header">  
+		                                    <h:outputText value="Maks per Bulan"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.maxPerMonth}"/>
+		                            </p:column>
+		                            <p:column style="text-align: center">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="Periode"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.periodMethod}"/>
+		                            </p:column>		                            
+		
+		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
+		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+		                                				 style="font-size: 10px!important" update="tableRmbsSchemaOfTypeId,:growlId" 
+		                                				 action="#{rmbsSchemaDetailController.doDeleteReimbursementType()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+		                                    <f:setPropertyActionListener value="#{rmbsSchemaOfTypeData}" target="#{rmbsSchemaDetailController.selectedRmbsSchemaListOfType}" />
+		                                </p:commandButton> 
+		                                -
+		                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="true" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+		                                                 action="#{rmbsSchemaDetailController.doEditReimbursementType()}" >
+		                                    <f:setPropertyActionListener value="#{rmbsSchemaOfTypeData}" target="#{rmbsSchemaDetailController.selectedRmbsSchemaListOfType}" />
+		                                    <p:ajax event="dialogReturn" listener="#{rmbsSchemaDetailController.onDialogReturnReimbursementType}"  update="tableRmbsSchemaOfTypeId,:growlId"/>
+		                                </p:commandButton>
+		                            </p:column> 
+		                        </p:dataTable>
+		                        
+			                 	<h:panelGrid columns="2">
+		                    		<p:commandButton value="#{appmsg['global.add_data']}" title="#{appmsg['global.add_data']}" label="#{appmsg['global.add_data']}" styleClass="label_button" icon="ui-icon-document" 
+		                    						 actionListener="#{rmbsSchemaDetailController.doAddReimbursementType()}">
+		                    			<p:ajax event="dialogReturn" listener="#{rmbsSchemaDetailController.onDialogReturnReimbursementType}"  update="tableRmbsSchemaOfTypeId,:growlId"/>
+		                           	</p:commandButton>
+		                           	<p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableRmbsSchemaOfTypeId" type="xlsx" pageOnly="false" fileName="List_Reimbursment_Type"/>
+                                    </p:commandButton>
+		                    	</h:panelGrid>
                             </p:tab>
                             <p:tab id="approvalDefinitionId" title="Pola Persetujuan" >
                             	<p:dataTable  var="approvalDefinitionData"  value="#{rmbsSchemaDetailController.listAppDef}" lazy="false" paginator="false" 

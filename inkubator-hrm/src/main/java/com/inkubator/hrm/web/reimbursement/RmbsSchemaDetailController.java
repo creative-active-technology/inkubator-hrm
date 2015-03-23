@@ -29,8 +29,10 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchema;
+import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalDefinitionRmbsSchemaService;
+import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
 import com.inkubator.hrm.service.RmbsSchemaService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -45,12 +47,16 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 public class RmbsSchemaDetailController extends BaseController {
 	
     private ApprovalDefinition selectedAppDef;
+    private RmbsSchemaListOfType selectedRmbsSchemaListOfType;
     private RmbsSchema rmbsSchema;
     private List<ApprovalDefinition> listAppDef;
+    private List<RmbsSchemaListOfType> listRmbsSchemaListOfTypes;
     @ManagedProperty(value = "#{rmbsSchemaService}")
     private RmbsSchemaService rmbsSchemaService;
     @ManagedProperty(value = "#{approvalDefinitionRmbsSchemaService}")
     private ApprovalDefinitionRmbsSchemaService approvalDefinitionRmbsSchemaService;
+    @ManagedProperty(value = "#{rmbsSchemaListOfTypeService}")
+    private RmbsSchemaListOfTypeService rmbsSchemaListOfTypeService;
 
     @PostConstruct
     @Override
@@ -58,8 +64,9 @@ public class RmbsSchemaDetailController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            rmbsSchema = rmbsSchemaService.getEntityByPkFetchApprovalDefinition(Long.parseLong(id.substring(1)));
-            listAppDef = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+            rmbsSchema = rmbsSchemaService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            listAppDef = Lambda.extract(approvalDefinitionRmbsSchemaService.getAllDataByRmbsSchemaId(rmbsSchema.getId()), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+            listRmbsSchemaListOfTypes = rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -71,8 +78,11 @@ public class RmbsSchemaDetailController extends BaseController {
     	rmbsSchema = null;
     	rmbsSchemaService = null;
     	selectedAppDef = null;
+    	selectedRmbsSchemaListOfType = null;
     	listAppDef = null;
     	approvalDefinitionRmbsSchemaService = null;
+    	rmbsSchemaListOfTypeService = null;
+    	listRmbsSchemaListOfTypes = null; 
     }   
 
     public String doBack() {
@@ -83,7 +93,67 @@ public class RmbsSchemaDetailController extends BaseController {
         return "/protected/reimbursement/rmbs_schema_form.htm?faces-redirect=true&execution=e" + rmbsSchema.getId();
     }
     
-    /** Start Approval Definition form */
+    /** Start Reimbursement Type tab view process */
+    public void doDeleteReimbursementType() {
+    	try {
+    		rmbsSchemaListOfTypeService.delete(selectedRmbsSchemaListOfType);
+    		listRmbsSchemaListOfTypes = rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error ", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error ", ex);
+        }
+    }
+    
+    public void doAddReimbursementType() {
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+    	
+    	List<String> rmbsSchemaId = new ArrayList<>();
+        rmbsSchemaId.add(String.valueOf(rmbsSchema.getId()));
+        dataToSend.put("rmbsSchemaId", rmbsSchemaId);
+        
+    	showDialogReimbursementType(dataToSend);
+    }
+
+    public void doEditReimbursementType() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        
+        List<String> rmbsSchemaId = new ArrayList<>();
+        rmbsSchemaId.add(String.valueOf(rmbsSchema.getId()));
+        dataToSend.put("rmbsSchemaId", rmbsSchemaId);
+        
+        List<String> rmbsTypeId = new ArrayList<>();
+        rmbsTypeId.add(String.valueOf(selectedRmbsSchemaListOfType.getRmbsType().getId()));
+        dataToSend.put("rmbsTypeId", rmbsTypeId);
+        
+        showDialogReimbursementType(dataToSend);
+    }
+
+    private void showDialogReimbursementType(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 350);
+        RequestContext.getCurrentInstance().openDialog("rmbs_schema_of_type_form", options, params);
+    }
+   
+    public void onDialogReturnReimbursementType(SelectEvent event) {
+        //re-calculate searching
+    	try {
+    		listRmbsSchemaListOfTypes = rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId());
+    		super.onDialogReturn(event);
+    	} catch (Exception ex) {
+            LOGGER.error("Error ", ex);
+        }
+    }
+    /** End Reimbursement Type tab view process */
+    
+    /** Start Approval Definition tab view process */
     public void doDeleteAppDef() {
     	try {
     		rmbsSchemaService.deleteApprovalconf(selectedAppDef.getId(), rmbsSchema.getId());
@@ -158,7 +228,7 @@ public class RmbsSchemaDetailController extends BaseController {
             LOGGER.error("Error ", ex);
         }
     }
-    /** End Approval Definition form */
+    /** End Approval Definition tab view process */
     
 
 	public RmbsSchema getRmbsSchema() {
@@ -202,4 +272,31 @@ public class RmbsSchemaDetailController extends BaseController {
 		this.approvalDefinitionRmbsSchemaService = approvalDefinitionRmbsSchemaService;
 	}
 
+	public RmbsSchemaListOfTypeService getRmbsSchemaListOfTypeService() {
+		return rmbsSchemaListOfTypeService;
+	}
+
+	public void setRmbsSchemaListOfTypeService(
+			RmbsSchemaListOfTypeService rmbsSchemaListOfTypeService) {
+		this.rmbsSchemaListOfTypeService = rmbsSchemaListOfTypeService;
+	}
+
+	public RmbsSchemaListOfType getSelectedRmbsSchemaListOfType() {
+		return selectedRmbsSchemaListOfType;
+	}
+
+	public void setSelectedRmbsSchemaListOfType(
+			RmbsSchemaListOfType selectedRmbsSchemaListOfType) {
+		this.selectedRmbsSchemaListOfType = selectedRmbsSchemaListOfType;
+	}
+
+	public List<RmbsSchemaListOfType> getListRmbsSchemaListOfTypes() {
+		return listRmbsSchemaListOfTypes;
+	}
+
+	public void setListRmbsSchemaListOfTypes(
+			List<RmbsSchemaListOfType> listRmbsSchemaListOfTypes) {
+		this.listRmbsSchemaListOfTypes = listRmbsSchemaListOfTypes;
+	}
+	
 }
