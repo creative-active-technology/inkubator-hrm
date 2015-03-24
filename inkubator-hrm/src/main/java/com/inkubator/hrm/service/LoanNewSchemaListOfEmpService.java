@@ -18,6 +18,14 @@ import org.hibernate.criterion.Order;
  */
 public interface LoanNewSchemaListOfEmpService extends IService<LoanNewSchemaListOfEmp>{
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    
+    public List<LoanNewSchemaListOfEmpViewModel> getByParamHQL(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) throws Exception;
+    
+    public LoanNewSchemaListOfEmp getEntityByEmpDataId(Long id) throws Exception;
+    
+    public LoanNewSchemaListOfEmp getEntityByEmpDataIdAndLoanSchemaId(Long empDataId, Long loanSchemaId) throws Exception;
+    
+    public void update(LoanNewSchemaListOfEmp entity, Long oldId) throws Exception;
 }
