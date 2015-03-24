@@ -371,4 +371,12 @@ public class HRMConstant {
     public static final Integer KLASIFIKASI_OPPORTUNITIES = 2;
     public static final Integer KLASIFIKASI_THREATS = 3;
     
+    /* 
+     * Constant for Reimbursement Module */
+    public static final Integer RMBS_TYPE_ROUND_DIGIT_0 = 0;
+    public static final Integer RMBS_TYPE_ROUND_DIGIT_1 = 1;
+    public static final Integer RMBS_TYPE_ROUND_DIGIT_2 = 2;
+    public static final Integer RMBS_TYPE_ROUND_DIGIT_3 = 3;
+    /* END */
+    
 }
