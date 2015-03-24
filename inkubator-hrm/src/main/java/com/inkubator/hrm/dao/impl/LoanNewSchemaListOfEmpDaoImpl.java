@@ -36,7 +36,7 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
 
     @Override
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-        final StringBuilder query = new StringBuilder("SELECT emp.id as idEmp, bio.first_name as firstName, bio.last_name as lastName, emp.nik as nik, goljab.code as code, newSchema.nomor_sk as noSk, newSchema.loan_schema_code as schemaCode FROM hrm.emp_data emp");
+        final StringBuilder query = new StringBuilder("SELECT emp.id as idEmp, bio.first_name as firstName, bio.last_name as lastName, emp.nik as nik, goljab.code as code, listEmp.nomor_sk as noSk, newSchema.loan_schema_code as schemaCode FROM hrm.emp_data emp");
 //        query.append(" FROM hrm.unreg_salary A");
         query.append(" LEFT JOIN hrm.loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
         query.append(" LEFT JOIN hrm.bio_data bio ON bio.id = emp.bio_data_id");
