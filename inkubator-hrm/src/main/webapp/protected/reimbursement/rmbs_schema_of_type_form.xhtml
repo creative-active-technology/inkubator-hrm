@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPoupId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formPopupId">
+                	<p:focus context="formPopupId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Tipe Penggantian" styleClass="header_big" />
+                                <p:outputLabel value="Tipe Penggantian dari Skema Penggantian" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="rmbsTypeId" value="Tipe Penggantian" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="rmbsTypeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneMenu id="rmbsTypeId" styleClass="isitext_hrm" required="true"  value="#{rmbsSchemaOfTypeFormController.model.rmbsTypeId}" style="width:250px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                               	<f:selectItems value="#{rmbsSchemaOfTypeFormController.listRmbsType}" var="rmbsType" itemValue="#{rmbsType.id}" itemLabel="#{rmbsType.name}"/>
+	                          	</p:selectOneMenu>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="rmbsTypeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="limitPerClaimId" value="Limit per Klaim" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="limitPerClaimId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<pe:inputNumber id="limitPerClaimId" title="Limit per Klaim" value="#{rmbsSchemaOfTypeFormController.model.limitPerClaim}" 
+	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:250px;">
+	                            </pe:inputNumber>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="limitPerClaimId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="maxPerMonthId" value="Maks per Bulan" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="maxPerMonthId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<pe:inputNumber id="maxPerMonthId" title="Maks per Bulan" value="#{rmbsSchemaOfTypeFormController.model.maxPerMonth}" 
+	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:250px;">
+	                            </pe:inputNumber>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="maxPerMonthId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="periodMethodId" value="Periode" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="periodMethodId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                            	<p:selectOneRadio id="periodMethodId" required="true" value="#{rmbsSchemaOfTypeFormController.model.periodMethod}" layout="pageDirection">
+						            <f:selectItem itemLabel="Tanggal Bukti Pembayaran" itemValue="0" />
+						            <f:selectItem itemLabel="Tanggal Pengajuan Penggantian" itemValue="1" />
+						        </p:selectOneRadio>                                
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="periodMethodId"/>
+                            </p:column>
+                        </p:row>     
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPopupId,:growlPoupId"
+                                         action="#{rmbsSchemaOfTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPopupId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formPopupId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -39,6 +39,7 @@ import com.inkubator.hrm.service.OhsaIncidentService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.Date;
 
 /**
  *
@@ -309,6 +310,7 @@ public class OhsaIncidentDetailController extends BaseController {
     public void doDeleteOhsaIncidentDocument() {
         try {
         	ohsaIncidentDocumentService.delete(selectedOhsaIncidentDocument);
+                
         	listOhsaIncidentDocument = ohsaIncidentDocumentService.getListByOhsaIncidentId(selectedIncident.getId());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -324,8 +326,8 @@ public class OhsaIncidentDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
-        options.put("contentHeight", 500);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 450);
         RequestContext.getCurrentInstance().openDialog("ohsa_incident_doc_form", options, params);
     }
 
