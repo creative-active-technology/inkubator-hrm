@@ -19,4 +19,8 @@ public interface RmbsSchemaListOfEmpService extends IService<RmbsSchemaListOfEmp
 	
 	public Long getTotalByParamEmployeeSchema(RmbsSchemaEmpSearchParameter parameter) throws Exception;
 	
+	public RmbsSchemaListOfEmp getEntityByEmpDataId(Long empDataId) throws Exception;
+
+	public RmbsSchemaListOfEmp getEntityByPkWithDetail(Long empDataId, Long rmbsSchemaId);
+	
 }

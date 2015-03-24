@@ -55,7 +55,7 @@ public class RmbsSchemaEmpViewController extends BaseController {
     }
     
     public String doDetail(){
-    	return "/protected/reimbursement/rmbs_schema_emp_detail.htm?faces-redirect=true&empDataId=e" + selected.getEmpDataId() + "&rmbsSchemaId=e" + selected.getRmbsSchemaId();
+    	return "/protected/reimbursement/rmbs_schema_emp_detail.htm?faces-redirect=true&execution=e" + selected.getEmpDataId() + "&schema=e" + selected.getRmbsSchemaId();
     }
 
     public void doUpdate() {
@@ -63,11 +63,7 @@ public class RmbsSchemaEmpViewController extends BaseController {
         
         List<String> empDataId = new ArrayList<>();
         empDataId.add(String.valueOf(selected.getEmpDataId()));
-        dataToSend.put("empDataId", empDataId);
-        
-        List<String> rmbsSchemaId = new ArrayList<>();
-        rmbsSchemaId.add(String.valueOf(selected.getRmbsSchemaId()));
-        dataToSend.put("rmbsSchemaId", rmbsSchemaId);
+        dataToSend.put("param", empDataId);
         
         showDialog(dataToSend);
     }

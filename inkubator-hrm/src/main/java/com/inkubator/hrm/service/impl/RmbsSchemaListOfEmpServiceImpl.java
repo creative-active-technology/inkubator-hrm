@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -11,11 +12,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
+import com.inkubator.hrm.service.RmbsSchemaService;
 import com.inkubator.hrm.web.model.RmbsSchemaEmpViewModel;
 import com.inkubator.hrm.web.search.RmbsSchemaEmpSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -27,6 +34,10 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 
 	@Autowired
 	private RmbsSchemaListOfEmpDao rmbsSchemaListOfEmpDao;
+	@Autowired
+	private EmpDataService empDataService;
+	@Autowired
+	private RmbsSchemaService rmbsSchemaService;
 	
 	@Override
 	public RmbsSchemaListOfEmp getEntiyByPK(String id) throws Exception {
@@ -47,15 +58,43 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(RmbsSchemaListOfEmp entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		// check duplicate nomor SK
+		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSk(entity.getNomorSk());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_code");
+		}		
+		
+		EmpData empData = empDataService.getEntiyByPK(entity.getId().getEmpDataId());
+		RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(entity.getId().getRmbsSchemaId());
+		
+		entity.setId(entity.getId());
+		entity.setEmpData(empData);
+		entity.setRmbsSchema(rmbsSchema);
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		rmbsSchemaListOfEmpDao.save(entity);
 
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(RmbsSchemaListOfEmp entity) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+		// check duplicate nomor SK
+		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSkAndNotId(entity.getNomorSk(), entity.getId().getEmpDataId(), entity.getId().getRmbsSchemaId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("leave.error_duplicate_code");
+		}
+		
+		RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getId().getEmpDataId()).get(0);
+		RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(entity.getId().getRmbsSchemaId());
+		rmbsSchemaListOfEmp.setRmbsSchema(rmbsSchema);
+		rmbsSchemaListOfEmp.setDescription(entity.getDescription());
+		rmbsSchemaListOfEmp.setNomorSk(entity.getNomorSk());
+		rmbsSchemaListOfEmp.setUpdatedBy(UserInfoUtil.getUserName());
+		rmbsSchemaListOfEmp.setUpdatedOn(new Date());
+		rmbsSchemaListOfEmpDao.update(rmbsSchemaListOfEmp);
 	}
 
 	@Override
@@ -79,8 +118,7 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 	}
 
 	@Override
-	public RmbsSchemaListOfEmp saveOrUpdateData(RmbsSchemaListOfEmp entity)
-			throws Exception {
+	public RmbsSchemaListOfEmp saveOrUpdateData(RmbsSchemaListOfEmp entity) throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
 	}
@@ -252,6 +290,22 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Long getTotalByParamEmployeeSchema(RmbsSchemaEmpSearchParameter parameter) throws Exception {
 		return rmbsSchemaListOfEmpDao.getTotalByParamEmployeeSchema(parameter);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RmbsSchemaListOfEmp getEntityByEmpDataId(Long empDataId) throws Exception {	
+		
+		List<RmbsSchemaListOfEmp> listEntity = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empDataId);		
+		return listEntity.isEmpty() ? null : listEntity.get(0);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RmbsSchemaListOfEmp getEntityByPkWithDetail(Long empDataId, Long rmbsSchemaId) {
+		return rmbsSchemaListOfEmpDao.getEntityByPkWithDetail(empDataId, rmbsSchemaId);
 		
 	}
 

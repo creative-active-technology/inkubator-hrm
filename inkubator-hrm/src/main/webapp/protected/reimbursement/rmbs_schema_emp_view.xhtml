@@ -103,11 +103,11 @@
                                 <h:outputLabel value= "#{data.nomorSK}"/>
                             </p:column>     
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                <p:commandButton rendered="#{not empty data.rmbsSchemaCode}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{rmbsSchemaEmpViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsSchemaEmpViewController.selected}" />
                                 </p:commandButton>
-                                - 
+                                <p:outputLabel rendered="#{not empty data.rmbsSchemaCode}" value= "-"/>
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                  action="#{rmbsSchemaEmpViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsSchemaEmpViewController.selected}" />
