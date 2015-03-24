@@ -167,6 +167,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.departement", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("employeeType", FetchMode.JOIN);
         criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);

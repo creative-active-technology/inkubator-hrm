@@ -5,7 +5,9 @@
  */
 package com.inkubator.hrm.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -17,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -38,6 +41,7 @@ public class LoanNewSchemaListOfEmp  implements java.io.Serializable {
      private String description;
      private Date createdOn;
      private String createdBy;
+     List<LoanNewSchemaListOfType> listLoanNewType = new ArrayList<LoanNewSchemaListOfType>();
 
     public LoanNewSchemaListOfEmp() {
     }
@@ -141,6 +145,16 @@ public class LoanNewSchemaListOfEmp  implements java.io.Serializable {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
+
+    @Transient
+    public List<LoanNewSchemaListOfType> getListLoanNewType() {
+        return listLoanNewType;
+    }
+
+    public void setListLoanNewType(List<LoanNewSchemaListOfType> listLoanNewType) {
+        this.listLoanNewType = listLoanNewType;
+    }
+    
 
 
 
