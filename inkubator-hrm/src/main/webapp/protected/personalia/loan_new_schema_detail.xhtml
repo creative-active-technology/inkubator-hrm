@@ -125,31 +125,31 @@
                                             <h:outputText value="#{appmsg['loanschema.available_days']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maksimumHariTersedia}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                            <!--<f:converter converterId="salaryConverter" />-->
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column > 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_approve']}"/>
                                         </f:facet>
-                                        <h:outputLabel value=" #{data.maximumApproval}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
-                                        </h:outputLabel>
+                                        <p:outputLabel value=" #{data.maximumApproval}" >
+                                             <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_allocation']}"/>
                                         </f:facet>
-                                        <h:outputLabel value=" #{data.maximumAllocation}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
-                                        </h:outputLabel>
+                                        <p:outputLabel value=" #{data.maximumAllocation}" >
+                                           <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
                                     </p:column> 
                                     <p:column > 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_approve']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.minimumApproval}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                           <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column > 
@@ -157,7 +157,7 @@
                                             <h:outputText value="#{appmsg['loanschema.min_allocation']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.minimumAllocation}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                            <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
                                     <p:column > 
@@ -165,7 +165,7 @@
                                             <h:outputText value="#{appmsg['loanschema.min_monthly_installment']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.minimumMonthlyInstallment}" >
-                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                            <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
                                     <p:column > 
