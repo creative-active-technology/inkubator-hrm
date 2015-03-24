@@ -2,6 +2,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
@@ -38,10 +39,10 @@ public class OrgTypeOfSpecServiceImpl extends IServiceImpl implements OrgTypeOfS
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(OrgTypeOfSpec orgTypeOfSpec) throws Exception {
 //Uncomment below if u have unik code
-//long totalDuplicates = orgTypeOfSpecDao.getTotalByCode(orgTypeOfSpec.getCode());
-//if (totalDuplicates > 0) {
-//throw new BussinessException("orgTypeOfSpec.error_duplicate_code")
-//}
+        long totalDuplicates = orgTypeOfSpecDao.getTotalByCode(orgTypeOfSpec.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("orgTypeOfSpec.error_duplicate_code");
+        }
         orgTypeOfSpec.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         orgTypeOfSpec.setCreatedBy(UserInfoUtil.getUserName());
         orgTypeOfSpec.setCreatedOn(new Date());
@@ -52,21 +53,17 @@ public class OrgTypeOfSpecServiceImpl extends IServiceImpl implements OrgTypeOfS
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OrgTypeOfSpec orgTypeOfSpec) throws Exception {
 //Uncomment below if u have unik code
-//long totalDuplicates = orgTypeOfSpecDao.getTotalByCodeAndNotId(orgTypeOfSpec.getCode(),orgTypeOfSpec.getId())
-//if (totalDuplicates > 0) {
-//throw new BussinessException("orgTypeOfSpec.error_duplicate_code")
-//}
+        long totalDuplicates = orgTypeOfSpecDao.getTotalByCodeAndNotId(orgTypeOfSpec.getCode(), orgTypeOfSpec.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("orgTypeOfSpec.error_duplicate_code");
+        }
         OrgTypeOfSpec orgTypeOfSpec1 = orgTypeOfSpecDao.getEntiyByPK(orgTypeOfSpec.getId());
         orgTypeOfSpec1.setUpdatedBy(UserInfoUtil.getUserName());
         orgTypeOfSpec1.setUpdatedOn(new Date());
-//        orgTypeOfSpec1.setCreatedOn(orgTypeOfSpec.getCreatedOn());
         orgTypeOfSpec1.setId(orgTypeOfSpec.getId());
-//        orgTypeOfSpec1.setCreatedBy(orgTypeOfSpec.getCreatedBy());
         orgTypeOfSpec1.setDescription(orgTypeOfSpec.getDescription());
         orgTypeOfSpec1.setName(orgTypeOfSpec.getName());
         orgTypeOfSpec1.setCode(orgTypeOfSpec.getCode());
-        orgTypeOfSpec1.setUpdatedOn(orgTypeOfSpec.getUpdatedOn());
-        orgTypeOfSpec1.setUpdatedBy(orgTypeOfSpec.getUpdatedBy());
         orgTypeOfSpec1.setVersion(orgTypeOfSpec.getVersion());
         orgTypeOfSpecDao.update(orgTypeOfSpec1);
     }
