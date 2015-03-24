@@ -228,14 +228,8 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public LoanNewSchemaListOfEmp getEntityByEmpDataId(Long id) throws Exception {
-        LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(id);
-        List<LoanNewSchemaListOfType> listLoanNewType = new ArrayList<LoanNewSchemaListOfType>();
-        for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanNewSchemaListOfEmp.getLoanNewSchema().getId())) {
-            listLoanNewType.add(loanNewSchemaListOfType);
-        }
-        loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
-        System.out.println(listLoanNewType.size() + " sizenya gitu lohhh");
-        return loanNewSchemaListOfEmp;
+        return loanNewSchemaListOfEmpDao.getEntityByEmpDataId(id);
+        
     }
 
     @Override
@@ -250,16 +244,17 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public LoanNewSchemaListOfEmp getEntityByEmpDataIdAndLoanSchemaId(Long empDataId, Long loanSchemaId) throws Exception {
         LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(empDataId);
-        List<LoanNewType> listLoanNewType = new ArrayList<LoanNewType>();
-        for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanSchemaId)) {
-            listLoanNewType.add(loanNewSchemaListOfType.getLoanNewType());
+        List<LoanNewSchemaListOfType> listLoanNewType = new ArrayList<LoanNewSchemaListOfType>();
+        if (loanNewSchemaListOfEmp.getLoanNewSchema() != null) {
+            for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanNewSchemaListOfEmp.getLoanNewSchema().getId())) {
+                listLoanNewType.add(loanNewSchemaListOfType);
+            }
+            loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
         }
-//        loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
-        System.out.println(listLoanNewType.size() + " sizenya gitu lohhh");
         return loanNewSchemaListOfEmp;
-
     }
 
 }

@@ -42,7 +42,7 @@ public class LoanNewSchemaListOfEmpDetailController extends BaseController {
         super.initialization();
         try {
             String empDataId = FacesUtil.getRequestParameter("execution");
-            selected = service.getEntityByEmpDataId(Long.valueOf(empDataId.substring(1)));
+            selected = service.getEntityByEmpDataIdAndLoanSchemaId(Long.valueOf(empDataId.substring(1)), Long.valueOf(empDataId.substring(1)));
 //            listLoanNewSchemaType = new ArrayList<>(selected.getListLoanNewType());
             listLoanNewSchemaType = selected.getListLoanNewType();
         } catch (Exception ex) {
