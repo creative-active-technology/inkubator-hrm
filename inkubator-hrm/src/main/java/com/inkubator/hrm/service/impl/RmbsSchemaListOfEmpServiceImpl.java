@@ -1,0 +1,258 @@
+package com.inkubator.hrm.service.impl;
+
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
+import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
+import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
+import com.inkubator.hrm.web.model.RmbsSchemaEmpViewModel;
+import com.inkubator.hrm.web.search.RmbsSchemaEmpSearchParameter;
+
+/**
+ *
+ * @author rizkykojek
+ */
+@Service(value = "rmbsSchemaListOfEmpService")
+@Lazy
+public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements RmbsSchemaListOfEmpService {
+
+	@Autowired
+	private RmbsSchemaListOfEmpDao rmbsSchemaListOfEmpDao;
+	
+	@Override
+	public RmbsSchemaListOfEmp getEntiyByPK(String id) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntiyByPK(Integer id) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntiyByPK(Long id) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void save(RmbsSchemaListOfEmp entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void update(RmbsSchemaListOfEmp entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void saveOrUpdate(RmbsSchemaListOfEmp enntity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp saveData(RmbsSchemaListOfEmp entity)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp updateData(RmbsSchemaListOfEmp entity)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp saveOrUpdateData(RmbsSchemaListOfEmp entity)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(String id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(String id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(String id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Integer id,
+			Integer isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Integer id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Integer id,
+			Boolean isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Long id, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Long id, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkIsActive(Long id, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void delete(RmbsSchemaListOfEmp entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public void softDelete(RmbsSchemaListOfEmp entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalData() throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Boolean isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Integer isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public Long getTotalDataIsActive(Byte isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllData() throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllData(Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllData(Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllData(Byte isActive) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllDataPageAble(int firstResult,
+			int maxResults, Order order) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllDataPageAbleIsActive(
+			int firstResult, int maxResults, Order order, Boolean isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllDataPageAbleIsActive(
+			int firstResult, int maxResults, Order order, Integer isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllDataPageAbleIsActive(
+			int firstResult, int maxResults, Order order, Byte isActive)
+			throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RmbsSchemaEmpViewModel> getByParamEmployeeSchema(RmbsSchemaEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return rmbsSchemaListOfEmpDao.getByParamEmployeeSchema(parameter, firstResult, maxResults, orderable);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalByParamEmployeeSchema(RmbsSchemaEmpSearchParameter parameter) throws Exception {
+		return rmbsSchemaListOfEmpDao.getTotalByParamEmployeeSchema(parameter);
+		
+	}
+
+}
