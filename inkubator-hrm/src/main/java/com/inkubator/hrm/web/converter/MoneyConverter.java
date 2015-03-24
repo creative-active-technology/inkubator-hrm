@@ -27,10 +27,7 @@ public class MoneyConverter implements Converter {
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 
         String dataInput = (String) obj;
-        System.out.println("nilai dataInput "+dataInput);
-//        String dataDecripted = AESUtil.getAESDescription(dataEncripted, HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
         NumberFormat nb = NumberFormatter.getNumberFormatStatic(CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        System.out.println(" heheehhe");
         return nb.format(Double.parseDouble(dataInput));
 
     }
