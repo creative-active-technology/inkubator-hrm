@@ -34,6 +34,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class RmbsSchemaEmpFormController extends BaseController {
 
+	private RmbsSchemaListOfEmpId id;
     private RmbsSchemaListOfEmpModel model;
     private EmpData empData;
     private Boolean isUpdate;
@@ -60,6 +61,7 @@ public class RmbsSchemaEmpFormController extends BaseController {
 				empData = empDataService.getByIdWithDetail(Long.parseLong(param));
 				RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(Long.parseLong(param));
 				if (rmbsSchemaListOfEmp != null) {
+					id =  rmbsSchemaListOfEmp.getId();
 					this.getModelFromEntity(rmbsSchemaListOfEmp);
 					isUpdate = Boolean.TRUE;
 				}
@@ -78,13 +80,14 @@ public class RmbsSchemaEmpFormController extends BaseController {
 		listRmbsSchema = null;
 		empData = null;
 		empDataService = null;
+		id = null;
 	}
 
     public void doSave() {
     	RmbsSchemaListOfEmp rmbsSchemaListOfEmp = getEntityFromModel(model);
         try {
             if (isUpdate) {
-            	rmbsSchemaListOfEmpService.update(rmbsSchemaListOfEmp);
+            	rmbsSchemaListOfEmpService.update(id, rmbsSchemaListOfEmp);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
             	rmbsSchemaListOfEmpService.save(rmbsSchemaListOfEmp);

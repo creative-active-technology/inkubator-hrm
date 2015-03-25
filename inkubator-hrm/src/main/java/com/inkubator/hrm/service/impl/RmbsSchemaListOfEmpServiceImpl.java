@@ -17,6 +17,7 @@ import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
+import com.inkubator.hrm.entity.RmbsSchemaListOfEmpId;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaService;
@@ -79,22 +80,43 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 	}
 
 	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(RmbsSchemaListOfEmp entity) throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(RmbsSchemaListOfEmpId id, RmbsSchemaListOfEmp entity) throws Exception {
+		
 		// check duplicate nomor SK
-		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSkAndNotId(entity.getNomorSk(), entity.getId().getEmpDataId(), entity.getId().getRmbsSchemaId());
+		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSkAndNotId(entity.getNomorSk(), id.getEmpDataId(), id.getRmbsSchemaId());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("rmbs_schema.error_duplicate_no_sk");
 		}
 		
-		RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getId().getEmpDataId()).get(0);
-		RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(entity.getId().getRmbsSchemaId());
-		rmbsSchemaListOfEmp.setRmbsSchema(rmbsSchema);
-		rmbsSchemaListOfEmp.setDescription(entity.getDescription());
-		rmbsSchemaListOfEmp.setNomorSk(entity.getNomorSk());
-		rmbsSchemaListOfEmp.setUpdatedBy(UserInfoUtil.getUserName());
-		rmbsSchemaListOfEmp.setUpdatedOn(new Date());
-		rmbsSchemaListOfEmpDao.update(rmbsSchemaListOfEmp);
+		RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpDao.getEntityByPk(id.getEmpDataId(), id.getRmbsSchemaId());
+		if(id.getRmbsSchemaId() != entity.getId().getRmbsSchemaId()){
+			rmbsSchemaListOfEmpDao.delete(rmbsSchemaListOfEmp);
+			
+			EmpData empData = empDataService.getEntiyByPK(entity.getId().getEmpDataId());
+			RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(entity.getId().getRmbsSchemaId());
+			rmbsSchemaListOfEmp = new RmbsSchemaListOfEmp();
+			rmbsSchemaListOfEmp.setId(entity.getId());
+			rmbsSchemaListOfEmp.setEmpData(empData);
+			rmbsSchemaListOfEmp.setRmbsSchema(rmbsSchema);
+			rmbsSchemaListOfEmp.setDescription(entity.getDescription());
+			rmbsSchemaListOfEmp.setNomorSk(entity.getNomorSk());
+			rmbsSchemaListOfEmp.setCreatedBy(UserInfoUtil.getUserName());
+			rmbsSchemaListOfEmp.setCreatedOn(new Date());
+			rmbsSchemaListOfEmpDao.save(entity);
+			
+		} else {
+			rmbsSchemaListOfEmp.setDescription(entity.getDescription());
+			rmbsSchemaListOfEmp.setNomorSk(entity.getNomorSk());
+			rmbsSchemaListOfEmp.setUpdatedBy(UserInfoUtil.getUserName());
+			rmbsSchemaListOfEmp.setUpdatedOn(new Date());
+			rmbsSchemaListOfEmpDao.updateData(rmbsSchemaListOfEmp);	
+		}			
 	}
 
 	@Override
