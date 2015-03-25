@@ -22,8 +22,8 @@
 	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="Detil Skema Penggantian Karyawan" styleClass="header_big" />
-	                                <p:outputLabel value="Skema Penggantian Karyawan dari Setelan Penggantian" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.reimbursement_schema_emp_detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.desc_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -31,7 +31,7 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Karyawan" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.empData.nikWithFullName}"/>
@@ -39,7 +39,7 @@
 	                        </p:row>   	   
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Jabatan" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.empData.jabatanByJabatanId.name}"/>
@@ -47,7 +47,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Skema Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.rmbsSchema.name}"/>
@@ -55,7 +55,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="No. SK Implementasi" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.nomorSk}"/>
@@ -73,19 +73,19 @@
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Kode Tipe Penggantian" />
+								<h:outputText value="#{appmsg['rmbs_type.code']}" />
 							</f:facet>
 							<h:outputLabel value="#{data.rmbsType.code}" />
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Nama Tipe Penggantian" />
+								<h:outputText value="#{appmsg['rmbs_type.name']}" />
 							</f:facet>							
 							<h:outputLabel value="#{data.rmbsType.name}"/>								
 						</p:column>
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Limit per Klaim" />
+								<h:outputText value="#{appmsg['rmbs_schema.limit_per_claim']}" />
 							</f:facet>
 							<p:outputLabel value="Rp. "/>
 							<h:outputLabel value="#{data.limitPerClaim}">
@@ -94,7 +94,7 @@
 						</p:column>	
 						<p:column>
 							<f:facet name="header">
-								<h:outputText value="Maks per Bulan" />
+								<h:outputText value="#{appmsg['rmbs_schema.max_per_month']}" />
 							</f:facet>
 							<p:outputLabel value="Rp. "/>
 							<h:outputLabel value="#{data.maxPerMonth}">

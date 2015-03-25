@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Skema Penggantian Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Skema Penggantian Karyawan dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.reimbursement_schema_emp_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.desc_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -45,7 +45,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel value="Nama Karyawan" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
@@ -56,7 +56,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel value="Jabatan" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
@@ -67,7 +67,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="rmbsSchemaId" value="Skema Penggantian" styleClass="label_hrm"/>
+                                <p:outputLabel for="rmbsSchemaId" value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="rmbsSchemaId" value=":" styleClass="label_hrm"/>
@@ -86,7 +86,7 @@
                         </p:row>  
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="nomorSkId" value="Nomor SK" styleClass="label_hrm"/>
+                                <p:outputLabel for="nomorSkId" value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nomorSkId" value=":" styleClass="label_hrm"/>
