@@ -24,8 +24,8 @@
 	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="Form Skema Penggantian" styleClass="header_big" />
-	                                <p:outputLabel value="Skema Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.reimbursement_schema_form']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.desc_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -33,31 +33,31 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="codeId" value="Kode Skema Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel for="codeId" value="#{appmsg['rmbs_schema.code']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="codeId" title="Kode Skema Penggantian" value="#{rmbsSchemaFormController.model.code}" 
-	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                            	<p:inputText id="codeId" title="#{appmsg['rmbs_schema.code']}" value="#{rmbsSchemaFormController.model.code}" 
+	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="codeId"/>
 	                            </p:column>
 	                        </p:row>                                
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nameId" value="Nama Skema Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel for="nameId" value="#{appmsg['rmbs_schema.name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="nameId" title="Nama Skema Penggantian" value="#{rmbsSchemaFormController.model.name}" 
-	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                            	<p:inputText id="nameId" title="#{appmsg['rmbs_schema.name']}" value="#{rmbsSchemaFormController.model.name}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="nameId"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nomorSkId" value="Nomor SK" styleClass="label_hrm"/>
+	                                <p:outputLabel for="nomorSkId" value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="nomorSkId" title="Nomor SK" value="#{rmbsSchemaFormController.model.nomorSk}" 
-	                                    		 required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                            	<p:inputText id="nomorSkId" title="#{appmsg['rmbs_schema.no_sk']}" value="#{rmbsSchemaFormController.model.nomorSk}" 
+	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="nomorSkId"/>
 	                            </p:column>
 	                        </p:row>  
@@ -66,17 +66,19 @@
 	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="descId" title="#{appmsg['global.description']}" value="#{rmbsSchemaFormController.model.description}" 
-	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+	                            	<p:inputTextarea id="descId" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsSchemaFormController.model.description}" 
+                                                 	 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />	                                
 	                                <p:message for="descId"/>
+	                                <h:outputText id="counter" />
 	                            </p:column>
 	                        </p:row> 	
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxTotalReimburstId" value="Maksimal Total Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel for="maxTotalReimburstId" value="#{appmsg['rmbs_schema.max_total_reimbursement']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxTotalReimburstId" title="Maksimal Total Penggantian" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
+	                            	<pe:inputNumber id="maxTotalReimburstId" title="#{appmsg['rmbs_schema.max_total_reimbursement']}" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                                </pe:inputNumber>
 	                                <p:message for="maxTotalReimburstId"/>
@@ -84,10 +86,10 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxWithReceiptPerTypeId" value="Plafon menggunakan Bukti Pembayaran" styleClass="label_hrm"/>
+	                                <p:outputLabel for="maxWithReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_with_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithReceiptPerTypeId" title="Plafon menggunakan Bukti Pembayaran" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
+	                            	<pe:inputNumber id="maxWithReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_with_receipt']}" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                                </pe:inputNumber>
 	                                <p:message for="maxWithReceiptPerTypeId"/>
@@ -95,10 +97,10 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxWithoutReceiptPerTypeId" value="Plafon tanpa Bukti Pembayaran" styleClass="label_hrm"/>
+	                                <p:outputLabel for="maxWithoutReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_without_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithoutReceiptPerTypeId" title="Plafon tanpa Bukti Pembayaran" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
+	                            	<pe:inputNumber id="maxWithoutReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_without_receipt']}" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                                </pe:inputNumber>
 	                                <p:message for="maxWithoutReceiptPerTypeId"/>
@@ -106,7 +108,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="noticeForLimitId" value="Batas Peringatan" styleClass="label_hrm"/>
+	                                <p:outputLabel for="noticeForLimitId" value="#{appmsg['rmbs_schema.limit_warning']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:spinner id="noticeForLimitId" value="#{rmbsSchemaFormController.model.noticeForLimit}" styleClass="isitext_hrm" 
@@ -117,7 +119,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="submissionDeadlineId" value="Batas Waktu Pengajuan" styleClass="label_hrm"/>
+	                                <p:outputLabel for="submissionDeadlineId" value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:spinner id="submissionDeadlineId" value="#{rmbsSchemaFormController.model.submissionDeadline}" styleClass="isitext_hrm" 

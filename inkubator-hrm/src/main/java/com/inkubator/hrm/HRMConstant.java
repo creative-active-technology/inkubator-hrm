@@ -377,6 +377,8 @@ public class HRMConstant {
     public static final Integer RMBS_TYPE_ROUND_DIGIT_1 = 1;
     public static final Integer RMBS_TYPE_ROUND_DIGIT_2 = 2;
     public static final Integer RMBS_TYPE_ROUND_DIGIT_3 = 3;
+    public static final Integer RMBS_TYPE_PERIOD_RECEIPT_DATE = 0;
+    public static final Integer RMBS_TYPE_PERIOD_FILLING_DATE = 1;
     /* END */
     
 }

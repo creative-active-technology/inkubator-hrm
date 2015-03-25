@@ -22,8 +22,8 @@
 	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="Detil Skema Penggantian" styleClass="header_big" />
-	                                <p:outputLabel value="Skema Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.reimbursement_schema_detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.desc_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -31,7 +31,7 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Kode Skema Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.code']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.code}"/>
@@ -39,7 +39,7 @@
 	                        </p:row>   	   
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Nama Skema Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.name}"/>
@@ -47,7 +47,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Nomor SK" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.nomorSk}"/>
@@ -63,7 +63,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Maksimal Total Penggantian" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.max_total_reimbursement']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
@@ -74,7 +74,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Plafon menggunakan Bukti Pembayaran" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.max_with_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
@@ -85,7 +85,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Plafon tanpa Bukti Pembayaran" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.max_without_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="Rp. "/>
@@ -96,7 +96,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Batas Peringatan" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.limit_warning']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.noticeForLimit} %"/>
@@ -104,7 +104,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Batas Waktu Pengajuan" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                                <p:outputLabel value="#{rmbsSchemaDetailController.rmbsSchema.submissionDeadline} hari"/>
@@ -113,7 +113,7 @@
 	                 	</p:panelGrid>	
 	                 	
 	                 	<p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
-                            <p:tab id="rmbsSchemaOfTypeId" title="Tipe Penggantian" >
+                            <p:tab id="rmbsSchemaOfTypeId" title="#{appmsg['rmbs_type.reimbursement_type']}" >
                             	<p:dataTable  var="rmbsSchemaOfTypeData"  value="#{rmbsSchemaDetailController.listRmbsSchemaListOfTypes}" lazy="false" paginator="false" 
 		                                      id="tableRmbsSchemaOfTypeId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 		                            <p:column style="text-align: center;width: 25px">
@@ -124,33 +124,41 @@
 		                            </p:column>
 		                            <p:column>
 		                                <f:facet name="header">  
-		                                    <h:outputText value="Kode Tipe Penggantian"/>
+		                                    <h:outputText value="#{appmsg['rmbs_type.code']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.rmbsType.code}"/>
 		                            </p:column>
 		                            <p:column>
 		                                <f:facet name="header">  
-		                                    <h:outputText value="Nama Tipe Penggantian"/>
+		                                    <h:outputText value="#{appmsg['rmbs_type.name']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.rmbsType.name}"/>
 		                            </p:column>
 		                            <p:column>
 		                                <f:facet name="header">  
-		                                    <h:outputText value="Limit per Klaim"/>
+		                                    <h:outputText value="#{appmsg['rmbs_schema.limit_per_claim']}"/>
 		                                </f:facet>
-		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.limitPerClaim}"/>
+		                                <p:outputLabel value="Rp. "/>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.limitPerClaim}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </h:outputLabel>
 		                            </p:column>
 		                            <p:column>
 		                                <f:facet name="header">  
-		                                    <h:outputText value="Maks per Bulan"/>
+		                                    <h:outputText value="#{appmsg['rmbs_schema.max_per_month']}"/>
 		                                </f:facet>
-		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.maxPerMonth}"/>
+		                                <p:outputLabel value="Rp. "/>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.maxPerMonth}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </h:outputLabel>
 		                            </p:column>
 		                            <p:column style="text-align: center">
 		                                <f:facet name="header">  
-		                                    <h:outputText value="Periode"/>
+		                                    <h:outputText value="#{appmsg['salaryCalculation.period']}"/>		                                    	
 		                                </f:facet>
-		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.periodMethod}"/>
+		                                <h:outputLabel value= "#{rmbsSchemaOfTypeData.periodMethod}">
+		                                	<f:converter converterId="rmbsTypePeriodConverter" />
+		                                </h:outputLabel>
 		                            </p:column>		                            
 		
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
@@ -178,7 +186,7 @@
                                     </p:commandButton>
 		                    	</h:panelGrid>
                             </p:tab>
-                            <p:tab id="approvalDefinitionId" title="Pola Persetujuan" >
+                            <p:tab id="approvalDefinitionId" title="#{appmsg['loanNewSchema.pattern_approval']}" >
                             	<p:dataTable  var="approvalDefinitionData"  value="#{rmbsSchemaDetailController.listAppDef}" lazy="false" paginator="false" 
 		                                      id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 		                            <p:column style="text-align: center;width: 25px">

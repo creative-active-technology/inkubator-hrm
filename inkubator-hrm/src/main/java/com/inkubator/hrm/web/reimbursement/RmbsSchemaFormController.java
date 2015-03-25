@@ -39,9 +39,9 @@ public class RmbsSchemaFormController extends BaseController {
 	        model = new RmbsSchemaModel();
 	        isUpdate = Boolean.FALSE;
 	        
-	        String param = FacesUtil.getRequestParameter("execution").substring(1);
-			if (StringUtils.isNumeric(param)) {
-				RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(Long.parseLong(param));
+	        String param = FacesUtil.getRequestParameter("execution");
+			if (StringUtils.isNotEmpty(param) && StringUtils.isNumeric(param.substring(1))) {
+				RmbsSchema rmbsSchema = rmbsSchemaService.getEntiyByPK(Long.parseLong(param.substring(1)));
 				if (rmbsSchema != null) {
 					this.getModelFromEntity(rmbsSchema);
 					isUpdate = Boolean.TRUE;

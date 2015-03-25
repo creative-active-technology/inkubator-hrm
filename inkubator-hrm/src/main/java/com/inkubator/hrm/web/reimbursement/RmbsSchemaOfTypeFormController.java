@@ -31,7 +31,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ManagedBean(name = "rmbsSchemaOfTypeFormController")
 @ViewScoped
 public class RmbsSchemaOfTypeFormController extends BaseController {
-
+	
     private RmbsSchemaListOfTypeModel model;
     private Boolean isUpdate;
     private List<RmbsType> listRmbsType;
@@ -47,6 +47,7 @@ public class RmbsSchemaOfTypeFormController extends BaseController {
         try {
         	String rmbsSchemaId = FacesUtil.getRequestParameter("rmbsSchemaId");
 	        String rmbsTypeId = FacesUtil.getRequestParameter("rmbsTypeId");
+	        
         	listRmbsType = rmbsTypeService.getAllDataByStatusActive();
 	        model = new RmbsSchemaListOfTypeModel();
 	        model.setRmbsSchemaId(Long.parseLong(rmbsSchemaId));
@@ -103,6 +104,7 @@ public class RmbsSchemaOfTypeFormController extends BaseController {
     private void getModelFromEntity(RmbsSchemaListOfType entity){
     	model.setRmbsSchemaId(entity.getId().getRmbsSchemaId());
     	model.setRmbsTypeId(entity.getId().getRmbsTypeId());
+    	model.setRmbsTypeName(entity.getRmbsType().getName());
     	model.setLimitPerClaim(entity.getLimitPerClaim());
     	model.setMaxPerMonth(entity.getMaxPerMonth());
     	model.setPeriodMethod(entity.getPeriodMethod());

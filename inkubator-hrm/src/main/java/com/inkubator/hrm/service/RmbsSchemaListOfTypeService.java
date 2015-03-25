@@ -14,6 +14,6 @@ public interface RmbsSchemaListOfTypeService extends IService<RmbsSchemaListOfTy
 
 	public List<RmbsSchemaListOfType> getAllDataByRmbsSchemaId(Long rmbsSchemaId) throws Exception;
 	
-	public RmbsSchemaListOfType getEntityByPk(RmbsSchemaListOfTypeId id);
+	public RmbsSchemaListOfType getEntityByPk(RmbsSchemaListOfTypeId id) throws Exception;
 	
 }

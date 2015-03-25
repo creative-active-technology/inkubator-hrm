@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Tipe Penggantian" styleClass="header_big" />
-                                <p:outputLabel value="Tipe Penggantian dari Skema Penggantian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.reimbursement_type_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.desc_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -34,16 +34,18 @@
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="rmbsTypeId" value="Tipe Penggantian" styleClass="label_hrm"/>
+                                <p:outputLabel for="rmbsTypeId" value="#{appmsg['rmbs_type.reimbursement_type']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="rmbsTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<p:selectOneMenu id="rmbsTypeId" styleClass="isitext_hrm" required="true"  value="#{rmbsSchemaOfTypeFormController.model.rmbsTypeId}" style="width:250px;">
+                            	<p:selectOneMenu id="rmbsTypeId" rendered="#{not rmbsSchemaOfTypeFormController.isUpdate}" styleClass="isitext_hrm" required="true"  value="#{rmbsSchemaOfTypeFormController.model.rmbsTypeId}" style="width:250px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                               	<f:selectItems value="#{rmbsSchemaOfTypeFormController.listRmbsType}" var="rmbsType" itemValue="#{rmbsType.id}" itemLabel="#{rmbsType.name}"/>
-	                          	</p:selectOneMenu>                                
+	                          	</p:selectOneMenu> 
+	                          	<p:inputText rendered="#{rmbsSchemaOfTypeFormController.isUpdate}" readonly="true" 
+	                          				 value="#{rmbsSchemaOfTypeFormController.model.rmbsTypeName}" styleClass="isitext_hrm" style="width:250px;" />                               
                             </p:column>
                         </p:row>
                         <p:row>
@@ -53,7 +55,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="limitPerClaimId" value="Limit per Klaim" styleClass="label_hrm"/>
+                                <p:outputLabel for="limitPerClaimId" value="#{appmsg['rmbs_schema.limit_per_claim']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="limitPerClaimId" value=":" styleClass="label_hrm"/>
@@ -71,7 +73,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="maxPerMonthId" value="Maks per Bulan" styleClass="label_hrm"/>
+                                <p:outputLabel for="maxPerMonthId" value="#{appmsg['rmbs_schema.max_per_month']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="maxPerMonthId" value=":" styleClass="label_hrm"/>
@@ -89,15 +91,15 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="periodMethodId" value="Periode" styleClass="label_hrm"/>
+                                <p:outputLabel for="periodMethodId" value="#{appmsg['salaryCalculation.period']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="periodMethodId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                             	<p:selectOneRadio id="periodMethodId" required="true" value="#{rmbsSchemaOfTypeFormController.model.periodMethod}" layout="pageDirection">
-						            <f:selectItem itemLabel="Tanggal Bukti Pembayaran" itemValue="0" />
-						            <f:selectItem itemLabel="Tanggal Pengajuan Penggantian" itemValue="1" />
+						            <f:selectItem itemLabel="#{appmsg['rmbs_schema.payment_receipt_date']}" itemValue="0" />
+						            <f:selectItem itemLabel="#{appmsg['rmbs_schema.filling_date_reimbursement']}" itemValue="1" />
 						        </p:selectOneRadio>                                
                             </p:column>
                         </p:row> 
