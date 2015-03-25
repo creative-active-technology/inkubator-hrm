@@ -63,7 +63,7 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 		// check duplicate nomor SK
 		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSk(entity.getNomorSk());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_no_sk");
 		}		
 		
 		EmpData empData = empDataService.getEntiyByPK(entity.getId().getEmpDataId());
@@ -84,7 +84,7 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 		// check duplicate nomor SK
 		Long totalDuplicates = rmbsSchemaListOfEmpDao.getTotalByNomorSkAndNotId(entity.getNomorSk(), entity.getId().getEmpDataId(), entity.getId().getRmbsSchemaId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_no_sk");
 		}
 		
 		RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getId().getEmpDataId()).get(0);
