@@ -9,6 +9,7 @@ public class RmbsSchemaListOfTypeModel {
 
 	private Long rmbsSchemaId;
 	private Long rmbsTypeId;
+	private String rmbsTypeName;
 	private Double limitPerClaim;
 	private Double maxPerMonth;
 	private Integer periodMethod;
@@ -24,6 +25,12 @@ public class RmbsSchemaListOfTypeModel {
 	}
 	public void setRmbsTypeId(Long rmbsTypeId) {
 		this.rmbsTypeId = rmbsTypeId;
+	}
+	public String getRmbsTypeName() {
+		return rmbsTypeName;
+	}
+	public void setRmbsTypeName(String rmbsTypeName) {
+		this.rmbsTypeName = rmbsTypeName;
 	}
 	public Double getLimitPerClaim() {
 		return limitPerClaim;
