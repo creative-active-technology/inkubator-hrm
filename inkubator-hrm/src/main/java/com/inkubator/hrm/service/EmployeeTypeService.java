@@ -18,4 +18,6 @@ public interface EmployeeTypeService extends IService<EmployeeType> {
     public Long getTotalByParam(String parameter) throws Exception;
 
     public EmployeeType getEntityByUnregSalaryIdWithDetail(Long unregSalaryId) throws Exception;
+    
+    public List<String> getEmployeeTypeNameByPk() throws Exception;
 }

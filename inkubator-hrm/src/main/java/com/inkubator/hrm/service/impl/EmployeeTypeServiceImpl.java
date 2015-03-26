@@ -282,5 +282,10 @@ public class EmployeeTypeServiceImpl extends IServiceImpl implements EmployeeTyp
         employeeType.setListEmployeeTypes(employeeTypes);
         return employeeType;
     }
-
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<String> getEmployeeTypeNameByPk() throws Exception{
+        return employeeTypeDao.getEmployeeTypeNameByPk();
+    }
 }

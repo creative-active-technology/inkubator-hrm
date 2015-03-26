@@ -1,16 +1,140 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Pencarian Karyawan" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="jobTitleViewId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <div align="left">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{searchEmployeeModel.dualListModelDepartment}" var="role" itemValue="#{role}" converter="departmentConverter" id="educationLevelId"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Department" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="educationLevelId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{searchEmployeeModel.dualListModelGoljab}" var="goljab" itemValue="#{goljab}" converter="golonganJabatanPicklistConverter" id="golonganJabatanId"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Golongan Jabatan" styleClass="isitext_hrm"
+                                                    itemLabel="#{goljab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="golonganJabatanId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Type Karyawan" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:selectCheckboxMenu id="menu" value="#{searchEmployeeModel.employeeTypeName}" label="#{appmsg['global.please_choose']}"
+                                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                            <f:selectItems value="#{searchEmployeeModel.listEmployeeType}" />
+                                        </p:selectCheckboxMenu>
+                                    </p:column>
+                                </div>
+                            </p:row>
+                            
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Usia Hidup" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        </p:spinner>
+                                        -
+                                        <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                    </p:spinner>
+                                    </p:column>
+                                </div>
+                            </p:row>
+                            
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Usia Kerja" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        </p:spinner>
+                                        -
+                                        <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                    </p:spinner>
+                                    </p:column>
+                                </div>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:commandButton value="Lanjut" ajax="true" 
+                                         action="next" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="Lanjut"
+                                         icon="ui-icon-arrow-1-e" title="Lanjut"/>
+
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+
+
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.add']}" actionListener="#{jabatanSpesifikasiDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update=":userViewGrowlId"/>
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSpesifikasiDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
 </html>
+
