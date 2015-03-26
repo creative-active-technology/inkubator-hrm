@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Tipe Penggantian" styleClass="header_big" />
-                                <p:outputLabel value="Tipe Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.reimbursement_type']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.desc_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -38,8 +38,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{rmbsTypeViewController.parameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Tipe Penggantian" itemValue="code"/>
-                                        <f:selectItem itemLabel="Nama Tipe Penggantian" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_type.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_type.name']}" itemValue="name"/>
                                         <f:selectItem itemLabel="COA" itemValue="coa"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{rmbsTypeViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
@@ -65,7 +65,7 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Tipe Penggantian"/>
+                                <h:outputText value="#{appmsg['rmbs_type.list_of_reimbursement_type']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -75,13 +75,13 @@
                             </p:column>
                             <p:column sortBy="code"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Tipe Penggantian"/>
+                                    <h:outputText value="#{appmsg['rmbs_type.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}"/>
                             </p:column>  
                             <p:column sortBy="name"  style="width: 27%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Tipe Penggantian"/>
+                                    <h:outputText value="#{appmsg['rmbs_type.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}"/>
                             </p:column>
@@ -93,9 +93,9 @@
                             </p:column>
                             <p:column sortBy="daysOfAvailable"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Tersedia"/>
+                                    <h:outputText value="#{appmsg['rmbs_type.available']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.daysOfAvailable} hari"/>
+                                <h:outputLabel value= "#{data.daysOfAvailable} #{appmsg['global.day']}"/>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -145,7 +145,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogDeleteId"  columns="3">
-                            <p:outputLabel value="Nama Tipe Penggantian" styleClass="label_hrm" style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['rmbs_type.name']}" styleClass="label_hrm" style="font-weight: bold"/>
                             <p:outputLabel value=":" styleClass="label_hrm" style="font-weight: bold"/>
                             <p:outputLabel value="#{rmbsTypeViewController.selected.name}" />
                         </h:panelGrid>
@@ -156,15 +156,15 @@
                     </div>
                 </p:dialog>
                 
-                <p:dialog widgetVar="dialogDetail" header="Detil Tipe Penggantian" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetail" header="#{appmsg['rmbs_type.reimbursement_type_detail']}" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Kode Tipe Penggantian" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.code']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Nama Tipe Penggantian" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
@@ -176,14 +176,18 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.costCenter.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Metode Pembulatan" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.roundDigit}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.rounding_method']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                            <p:outputLabel value="#{rmbsTypeViewController.selected.roundDigit}" styleClass="label_hrm">
+                            	<f:converter converterId="rmbsTypeRoundDigitConverter"/>
+                            </p:outputLabel>
+                            </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Tersedia sejak" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.available_since']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
                             	<p:outputLabel value="#{rmbsTypeViewController.selected.daysOfAvailable}" styleClass="label_hrm"/>
-                            	<p:outputLabel value=" hari" styleClass="label_hrm"/>
+                            	<p:outputLabel value=" #{appmsg['global.day']}" styleClass="label_hrm"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -196,7 +200,7 @@
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="Setelan - Tipe Penggantian" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['global.setting']} - #{appmsg['rmbs_type.reimbursement_type']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

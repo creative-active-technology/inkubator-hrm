@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Form Tipe Penggantian" styleClass="header_big" />
-                                <p:outputLabel value="Tipe Penggantian dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.reimbursement_type_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_type.desc_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,14 +33,14 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="code" value="Kode Tipe Penggantian" styleClass="label_hrm"/>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="code" value="#{appmsg['rmbs_type.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:inputText id="code" title="Kode Tipe Penggantian" value="#{rmbsTypeFormController.model.code}" 
+                            <p:column  style="width: 60%">
+                            	<p:inputText id="code" title="#{appmsg['rmbs_type.code']}" value="#{rmbsTypeFormController.model.code}" 
                                     		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
@@ -50,14 +50,14 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="nameId" value="Nama Tipe Penggantian" styleClass="label_hrm"/>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="nameId" value="#{appmsg['rmbs_type.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                                    <p:inputText id="nameId" title="Nama Tipe Penggantian" value="#{rmbsTypeFormController.model.name}" 
+                            <p:column  style="width: 60%">
+                                    <p:inputText id="nameId" title="#{appmsg['rmbs_type.name']}" value="#{rmbsTypeFormController.model.name}" 
                                     			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
@@ -67,13 +67,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                                     <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsTypeFormController.model.description}" 
                                                  	 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
@@ -85,24 +85,24 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel  value="" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel  value=""  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 70%" >
+                            <p:column style="width: 60%" >
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="costCenterId" value="COA" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="costCenterId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:selectOneMenu id="costCenterId" styleClass="isitext_hrm" required="true"  value="#{rmbsTypeFormController.model.costCenterId}" style="width:290px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                               	<f:selectItems value="#{rmbsTypeFormController.listCostCenter}" var="costCenter" itemValue="#{costCenter.id}" itemLabel="#{costCenter.name}"/>
@@ -115,15 +115,20 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="roundDigitId" value="Metode Pembulatan" styleClass="label_hrm"/>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="roundDigitId" value="#{appmsg['rmbs_type.rounding_method']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="roundDigitId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:spinner id="roundDigitId" value="#{rmbsTypeFormController.model.roundDigit}" styleClass="isitext_hrm" 
-                            			   stepFactor="1" min="0" max="3" size="3" required="true"/>                               
+                            <p:column  style="width: 60%">  
+                            	<p:selectOneMenu id="roundDigitId" styleClass="isitext_hrm" required="true"  value="#{rmbsTypeFormController.model.roundDigit}">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                               	<f:selectItem itemLabel="#{appmsg['rmbs_type.rounding_0']}" itemValue="0"/>
+	                               	<f:selectItem itemLabel="#{appmsg['rmbs_type.rounding_1']}" itemValue="1"/>
+	                               	<f:selectItem itemLabel="#{appmsg['rmbs_type.rounding_2']}" itemValue="2"/>
+	                               	<f:selectItem itemLabel="#{appmsg['rmbs_type.rounding_3']}" itemValue="3"/>
+	                          	</p:selectOneMenu>                             
                             </p:column>
                         </p:row>
                         <p:row>
@@ -132,13 +137,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="daysOfAvailableId" value="Tersedia sejak" styleClass="label_hrm"/>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="daysOfAvailableId" value="#{appmsg['rmbs_type.available_since']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="daysOfAvailableId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                             	<p:spinner id="daysOfAvailableId" value="#{rmbsTypeFormController.model.daysOfAvailable}" styleClass="isitext_hrm" 
                             			   stepFactor="1" min="0" max="365" size="3" required="true"/>
                             	<p:outputLabel value=" hari" styleClass="label_hrm"/>                               
@@ -150,13 +155,13 @@
                             </p:column>
                         </p:row>                        
                         <p:row rendered="#{rmbsTypeFormController.isUpdate}">
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="isActiveId" value="#{appmsg['global.active_status']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="isActiveId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
 	                          	<p:selectBooleanButton id="isActiveId" value="#{rmbsTypeFormController.model.isActive}" onLabel="#{appmsg['global.active']}" offLabel="#{appmsg['global.inactive']}" onIcon="ui-icon-check" 
 	                                               	   offIcon="ui-icon-close" styleClass="label_button"/>                             
                             </p:column>

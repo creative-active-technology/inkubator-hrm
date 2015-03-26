@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Skema Penggantian Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Skema Penggantian Karyawan dari Setelan Penggantian" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.reimbursement_schema_emp']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.desc_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -39,10 +39,10 @@
                                     <p:selectOneMenu value="#{rmbsSchemaEmpViewController.parameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="NIK" itemValue="nik"/>
-                                        <f:selectItem itemLabel="Nama Karyawan" itemValue="empName"/>
-                                        <f:selectItem itemLabel="Gol Jabatan" itemValue="golJabatan"/>
-                                        <f:selectItem itemLabel="Kode Skema" itemValue="schemaCode"/>
-                                        <f:selectItem itemLabel="Nomor SK" itemValue="nomorSK"/>
+                                        <f:selectItem itemLabel="#{appmsg['employee.employee_name']}" itemValue="empName"/>
+                                        <f:selectItem itemLabel="#{appmsg['functiongroup.function_group']}" itemValue="golJabatan"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_schema.code']}" itemValue="schemaCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_schema.no_sk']}" itemValue="nomorSK"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{rmbsSchemaEmpViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{rmbsSchemaEmpViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -64,7 +64,7 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Karyawan"/>
+                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -80,34 +80,34 @@
                             </p:column>  
                             <p:column sortBy="empName"  style="width: 20%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empName}"/>
                             </p:column>
                             <p:column sortBy="empGolJabatan"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Gol. Jabatan"/>
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empGolJabatan}"/>
                             </p:column>
                             <p:column sortBy="rmbsSchemaCode"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Skema"/>
+                                    <h:outputText value="#{appmsg['rmbs_schema.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.rmbsSchemaCode}"/>
                             </p:column>
                             <p:column sortBy="nomorSK"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nomor SK"/>
+                                    <h:outputText value="#{appmsg['rmbs_schema.no_sk']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nomorSK}"/>
                             </p:column>     
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                <p:commandButton rendered="#{not empty data.rmbsSchemaCode}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{rmbsSchemaEmpViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsSchemaEmpViewController.selected}" />
                                 </p:commandButton>
-                                - 
+                                <p:outputLabel rendered="#{not empty data.rmbsSchemaCode}" value= "-"/>
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                  action="#{rmbsSchemaEmpViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsSchemaEmpViewController.selected}" />

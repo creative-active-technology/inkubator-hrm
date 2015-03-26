@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.RmbsSchemaDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.RmbsTypeDao;
@@ -58,6 +59,11 @@ public class RmbsSchemaListOfTypeServiceImpl extends IServiceImpl implements Rmb
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(RmbsSchemaListOfType entity) throws Exception {		
+		// check duplicate reimbursement type
+		if (rmbsSchemaListOfTypeDao.getEntityByPk(entity.getId()) != null) {
+			throw new BussinessException("rmbs_schema.error_duplicate_reimbursment_type");
+		}
+		
 		RmbsSchema rmbsSchema = rmbsSchemaDao.getEntiyByPK(entity.getId().getRmbsSchemaId());
 		RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(entity.getId().getRmbsTypeId());
 		
@@ -72,11 +78,6 @@ public class RmbsSchemaListOfTypeServiceImpl extends IServiceImpl implements Rmb
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(RmbsSchemaListOfType entity) throws Exception {
 		RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(entity.getId());
-		RmbsSchema rmbsSchema = rmbsSchemaDao.getEntiyByPK(entity.getId().getRmbsSchemaId());
-		RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(entity.getId().getRmbsTypeId());
-		
-		rmbsSchemaListOfType.setRmbsSchema(rmbsSchema);
-		rmbsSchemaListOfType.setRmbsType(rmbsType);
 		rmbsSchemaListOfType.setLimitPerClaim(entity.getLimitPerClaim());
 		rmbsSchemaListOfType.setMaxPerMonth(entity.getMaxPerMonth());
 		rmbsSchemaListOfType.setPeriodMethod(entity.getPeriodMethod());
@@ -279,7 +280,7 @@ public class RmbsSchemaListOfTypeServiceImpl extends IServiceImpl implements Rmb
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public RmbsSchemaListOfType getEntityByPk(RmbsSchemaListOfTypeId id) {
+	public RmbsSchemaListOfType getEntityByPk(RmbsSchemaListOfTypeId id) throws Exception {
 		return rmbsSchemaListOfTypeDao.getEntityByPk(id);
 		
 	}

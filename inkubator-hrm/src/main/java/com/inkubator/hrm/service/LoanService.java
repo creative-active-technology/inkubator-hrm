@@ -46,4 +46,6 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
     
     public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) throws Exception;
+    
+    public Long getCurrentMaxId();
 }
