@@ -40,6 +40,7 @@ public class RmbsSchemaListOfTypeDaoImpl extends IDAOImpl<RmbsSchemaListOfType> 
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id.rmbsSchemaId", id.getRmbsSchemaId()));
 		criteria.add(Restrictions.eq("id.rmbsTypeId", id.getRmbsTypeId()));
+		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
 		
 		return (RmbsSchemaListOfType) criteria.uniqueResult();
 		

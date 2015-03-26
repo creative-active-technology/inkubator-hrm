@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.reimbursement_schema_emp_detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['rmbs_schema_emp.desc_header']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.empData.nikWithFullName}"/>
+	                            </p:column>
+	                        </p:row>   	   
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.empData.jabatanByJabatanId.name}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.rmbsSchema.name}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:outputLabel value="#{rmbsSchemaEmpDetailController.rmbsSchemaListOfEmp.nomorSk}"/>
+	                            </p:column>
+	                        </p:row>	                                                 
+	                 	</p:panelGrid>	
+
+					<p:dataTable var="data" value="#{rmbsSchemaEmpDetailController.listOfTypes}" lazy="false" paginator="false" id="tableApprovalDevId"
+								 style="margin-top: 20px;" rowIndexVar="no">
+						<p:column style="text-align: center;width: 25px">
+							<f:facet name="header">
+								<h:outputText value="#{appmsg['global.number']}" />
+							</f:facet>
+							<h:outputLabel value="#{no+1}." />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{appmsg['rmbs_type.code']}" />
+							</f:facet>
+							<h:outputLabel value="#{data.rmbsType.code}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{appmsg['rmbs_type.name']}" />
+							</f:facet>							
+							<h:outputLabel value="#{data.rmbsType.name}"/>								
+						</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{appmsg['rmbs_schema.limit_per_claim']}" />
+							</f:facet>
+							<p:outputLabel value="Rp. "/>
+							<h:outputLabel value="#{data.limitPerClaim}">
+								<f:convertNumber pattern="###,###" type="currency"/>
+							</h:outputLabel>
+						</p:column>	
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="#{appmsg['rmbs_schema.max_per_month']}" />
+							</f:facet>
+							<p:outputLabel value="Rp. "/>
+							<h:outputLabel value="#{data.maxPerMonth}">
+								<f:convertNumber pattern="###,###" type="currency"/>
+							</h:outputLabel>
+						</p:column>					
+					</p:dataTable>
+
+					<p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsSchemaEmpDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

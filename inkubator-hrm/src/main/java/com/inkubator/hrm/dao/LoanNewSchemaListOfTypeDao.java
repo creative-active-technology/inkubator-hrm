@@ -26,4 +26,7 @@ public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType
     public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId);
     
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
+    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId, LoanNewSchemaListOfTypeId id);
+    
+    public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId);
 }

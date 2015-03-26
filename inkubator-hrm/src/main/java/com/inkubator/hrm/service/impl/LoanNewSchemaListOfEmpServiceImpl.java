@@ -6,11 +6,18 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
+import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
+import com.inkubator.hrm.entity.LoanNewSchemaListOfEmpId;
+import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.service.LoanNewSchemaListOfEmpService;
 import com.inkubator.hrm.web.model.LoanNewSchemaListOfEmpViewModel;
 import com.inkubator.hrm.web.search.LoanNewSchemaListOfEmpSearchParameter;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +33,25 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "loanNewSchemaListOfEmpService")
 @Lazy
-public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements LoanNewSchemaListOfEmpService{
+public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements LoanNewSchemaListOfEmpService {
 
     @Autowired
     private LoanNewSchemaListOfEmpDao loanNewSchemaListOfEmpDao;
-    
+    @Autowired
+    private EmpDataDao empDataDao;
+    @Autowired
+    private LoanNewSchemaDao loanNewSchemaDao;
+    @Autowired
+    private LoanNewSchemaListOfTypeDao loanNewSchemaListOfTypeDao;
+
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         return loanNewSchemaListOfEmpDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) throws Exception {
         return loanNewSchemaListOfEmpDao.getTotalByParam(parameter);
     }
@@ -59,8 +72,11 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(LoanNewSchemaListOfEmp entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
+        loanNewSchemaListOfEmpDao.save(entity);
     }
 
     @Override
@@ -209,4 +225,41 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
         return loanNewSchemaListOfEmpDao.getEntityWithDetailByEmpDataId(empId);
     }
     
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewSchemaListOfEmpViewModel> getByParamHQL(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        return loanNewSchemaListOfEmpDao.getByParamHQL(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchemaListOfEmp getEntityByEmpDataId(Long id) throws Exception {
+        return loanNewSchemaListOfEmpDao.getEntityByEmpDataId(id);
+        
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(LoanNewSchemaListOfEmp entity, Long oldId) throws Exception {
+        //get existing data
+        LoanNewSchemaListOfEmp delete = loanNewSchemaListOfEmpDao.getEntityByPk(new LoanNewSchemaListOfEmpId(entity.getEmpData().getId(), oldId));
+        this.loanNewSchemaListOfEmpDao.delete(delete);
+        entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
+        loanNewSchemaListOfEmpDao.save(entity);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchemaListOfEmp getEntityByEmpDataIdAndLoanSchemaId(Long empDataId, Long loanSchemaId) throws Exception {
+        LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(empDataId);
+        List<LoanNewSchemaListOfType> listLoanNewType = new ArrayList<LoanNewSchemaListOfType>();
+        if (loanNewSchemaListOfEmp.getLoanNewSchema() != null) {
+            for (LoanNewSchemaListOfType loanNewSchemaListOfType : this.loanNewSchemaListOfTypeDao.getAllDataByLoanSchemaId(loanNewSchemaListOfEmp.getLoanNewSchema().getId())) {
+                listLoanNewType.add(loanNewSchemaListOfType);
+            }
+            loanNewSchemaListOfEmp.setListLoanNewType(listLoanNewType);
+        }
+        return loanNewSchemaListOfEmp;
+    }
+
 }

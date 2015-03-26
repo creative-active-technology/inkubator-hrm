@@ -43,10 +43,10 @@ public class LoanNewSchemaListOfEmpLazyDataModel extends LazyDataModel<LoanNewSc
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("loanTypeCode");
+                    order = Order.desc("firstName");
                 }
                 loanNewSchemaEmpList = service.getByParam(searchParameter, first, pageSize, order);
-//                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

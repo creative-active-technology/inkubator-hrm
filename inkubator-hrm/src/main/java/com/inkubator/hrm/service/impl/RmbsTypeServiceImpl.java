@@ -54,12 +54,12 @@ public class RmbsTypeServiceImpl extends IServiceImpl implements RmbsTypeService
 		// check duplicate name
 		long totalDuplicates = rmbsTypeDao.getTotalByName(entity.getName());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_name");
+			throw new BussinessException("rmbs_type.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = rmbsTypeDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_type.error_duplicate_code");
 		}		
 
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -76,12 +76,12 @@ public class RmbsTypeServiceImpl extends IServiceImpl implements RmbsTypeService
 		// check duplicate name
 		long totalDuplicates = rmbsTypeDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_name");
+			throw new BussinessException("rmbs_type.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = rmbsTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_type.error_duplicate_code");
 		}		
 		
 		RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(entity.getId());

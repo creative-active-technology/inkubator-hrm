@@ -227,10 +227,10 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LoanNewSchemaListOfType entity, Long oldId) throws Exception {
-//        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByNotLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId());
-//        if (totalDuplicates > 0) {
-//            throw new BussinessException("loanNewSchema.error_duplicate_type");
-//        }
+        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByNotLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), new LoanNewSchemaListOfTypeId(entity.getLoanNewType().getId(), oldId));
+        if (totalDuplicates > 0) {
+            throw new BussinessException("loanNewSchema.error_duplicate_type");
+        }
         LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeId(new LoanNewSchemaListOfTypeId(oldId, entity.getLoanNewSchema().getId()));
         this.loanNewSchemaListOfTypeDao.delete(loanNewSchemaListOfType);
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));

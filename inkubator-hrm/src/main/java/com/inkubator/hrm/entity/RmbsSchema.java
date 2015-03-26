@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -207,7 +208,7 @@ public class RmbsSchema implements java.io.Serializable {
 		this.rmbsSchemaListOfEmps = rmbsSchemaListOfEmps;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsSchema")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsSchema", cascade=CascadeType.REMOVE)
 	public Set<RmbsSchemaListOfType> getRmbsSchemaListOfTypes() {
 		return this.rmbsSchemaListOfTypes;
 	}
@@ -216,7 +217,7 @@ public class RmbsSchema implements java.io.Serializable {
 		this.rmbsSchemaListOfTypes = rmbsSchemaListOfTypes;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsSchema")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsSchema", cascade=CascadeType.REMOVE)
 	public Set<ApprovalDefinitionRmbsSchema> getApprovalDefinitionRmbsSchemas() {
 		return approvalDefinitionRmbsSchemas;
 	}
