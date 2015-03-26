@@ -70,6 +70,14 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
     }
 
     @Override
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         criteria.setFetchMode("empData", FetchMode.JOIN);
+          criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+         criteria.add(Restrictions.eq("empData.id", empId));        
+        return (LoanNewSchemaListOfEmp) criteria.uniqueResult();
+    }
+    
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT bio.first_name FROM hrm.emp_data emp");
 //        query.append(" FROM hrm.unreg_salary A");

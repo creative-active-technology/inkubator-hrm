@@ -23,6 +23,7 @@ public interface LoanNewSchemaListOfEmpService extends IService<LoanNewSchemaLis
 
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) throws Exception;
     
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception;
     public LoanNewSchemaListOfEmp getEntityByEmpDataId(Long id) throws Exception;
     
     public LoanNewSchemaListOfEmp getEntityByEmpDataIdAndLoanSchemaId(Long empDataId, Long loanSchemaId) throws Exception;

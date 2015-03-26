@@ -21,5 +21,7 @@ public interface LoanNewSchemaListOfTypeService extends IService<LoanNewSchemaLi
     
     public void update(LoanNewSchemaListOfType entity, Long oldId) throws Exception;
     
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
+    
 
 }

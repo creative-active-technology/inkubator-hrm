@@ -75,6 +75,17 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
     }
 
     @Override
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        
+        criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("loanNewSchema.id", loanNewSchemaId));
+        criteria.add(Restrictions.eq("loanNewType.id", loanNewTypeId));
+        return (LoanNewSchemaListOfType) criteria.uniqueResult();
+    }
+
+   
     public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loanNewSchema", "lns");
