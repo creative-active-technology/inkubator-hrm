@@ -11,7 +11,10 @@ import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.web.model.LoanNewSchemaListOfEmpViewModel;
 import com.inkubator.hrm.web.search.LoanNewSchemaListOfEmpSearchParameter;
 import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -47,6 +50,15 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
     @Override
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         criteria.setFetchMode("empData", FetchMode.JOIN);
+          criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+         criteria.add(Restrictions.eq("empData.id", empId));        
+        return (LoanNewSchemaListOfEmp) criteria.uniqueResult();
     }
     
 }

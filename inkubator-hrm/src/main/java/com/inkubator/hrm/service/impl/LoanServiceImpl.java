@@ -351,7 +351,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
         Long currentMaxLoanId = loanDao.getCurrentMaxId();
         entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-            
+           
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);        
 
@@ -701,4 +701,10 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 		}
 		return listLoan;
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getCurrentMaxId() {
+        return this.loanDao.getCurrentMaxId();
+    }
 }

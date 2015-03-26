@@ -15,7 +15,7 @@ import java.util.List;
  * @author Deni
  */
 public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType>{
-    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema);
+    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema);    
     
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId);
 
@@ -24,4 +24,6 @@ public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType
     public Long getTotalByLoanTypeAndSchema(Long typeId, Long schemaId);
     
     public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId);
+    
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
 }

@@ -20,4 +20,6 @@ public interface LoanNewSchemaListOfEmpService extends IService<LoanNewSchemaLis
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) throws Exception;
+    
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception;
 }

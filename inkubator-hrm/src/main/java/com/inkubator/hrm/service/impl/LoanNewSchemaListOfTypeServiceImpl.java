@@ -239,5 +239,11 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
         entity.setCreatedOn(new Date());
         this.loanNewSchemaListOfTypeDao.save(entity);
     }
+
+    @Override
+     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId) {
+        return this.loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(loanNewSchemaId, loanNewTypeId);
+    }
     
 }

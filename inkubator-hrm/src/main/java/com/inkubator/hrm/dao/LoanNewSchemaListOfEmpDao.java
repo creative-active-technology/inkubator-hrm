@@ -21,4 +21,6 @@ public interface LoanNewSchemaListOfEmpDao extends IDAO<LoanNewSchemaListOfEmp> 
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter);
+    
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception;
 }
