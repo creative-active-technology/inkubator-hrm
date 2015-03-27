@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import scala.annotation.meta.getter;
+
 
 import ch.lambdaj.Lambda;
 
