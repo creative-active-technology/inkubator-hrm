@@ -59,7 +59,7 @@ public class BenefitGroupDaoImpl extends IDAOImpl<BenefitGroup> implements Benef
     }
 
     @Override
-    public String getBenefitGroupNameByPk(Long id) throws Exception {
+    public String getBenefitGroupNameByPk(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         return (String) criteria.setProjection(Projections.property("name")).uniqueResult();

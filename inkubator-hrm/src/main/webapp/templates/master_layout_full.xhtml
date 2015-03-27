@@ -413,7 +413,7 @@
                                             <p:submenu label="#{appmsg['menu.account_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.user_account_management']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_account_management']}" url="" />  
                                             </p:submenu>
-                                            <p:menuitem value="#{appmsg['menu.search_employee']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.search_employee']}" url="#" />
+                                            <p:menuitem value="#{appmsg['menu.search_employee']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.search_employee']}" url="/flow-protected/search_employee" />
                                             <p:submenu label="#{appmsg['menu.employee_data_change']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.employee_data_change_request']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_data_change_request']}" url="" />  
                                                 <p:menuitem value="#{appmsg['menu.employee_data_change_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_data_change_inbox']}" url="" />
@@ -458,22 +458,22 @@
                                             <p:menuitem value="#{appmsg['menu.on_boarding_process']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.on_boarding_process']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['menu.custom_field_upload']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.custom_field_upload']}" url="#" /> 
                                         </p:submenu>
-                                        <p:submenu label="#{appmsg['menu.reimbursement']}" styleClass="menu" icon="img-loan">
-                                            <p:menuitem value="#{appmsg['reimbursement.personal_reimbursement_histoty']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                        <p:submenu label="#{appmsg['menu.reimbursement']}" styleClass="menu" icon="img-reimbursement">
+                                            <p:menuitem value="#{appmsg['reimbursement.personal_reimbursement_histoty']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_setting']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_type_setting']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_type_view.htm" />  
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_type_setting']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_type_view.htm" />  
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_schema']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_schema_view.htm" />
                                                 <p:menuitem value="#{appmsg['reimbursement.employee_reimbursement_schema']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_schema_emp_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_request']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="" />  
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_application_form.htm" />  
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="" />
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="" url="" />
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="" url="" />
                                             </p:submenu>
-                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_upload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
-                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_verification_approval']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
-                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_status']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="" url="#" />
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_upload']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_verification_approval']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
+                                            <p:menuitem value="#{appmsg['reimbursement.reimbursement_status']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" />
                                             <p:menuitem value="#{appmsg['reimbursement.disbursement']}" icon="img-disbursement" style="font-size: 12px !important;color: #003366" title="" url="#" />
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_report']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['reimbursement.report_details']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="" />  

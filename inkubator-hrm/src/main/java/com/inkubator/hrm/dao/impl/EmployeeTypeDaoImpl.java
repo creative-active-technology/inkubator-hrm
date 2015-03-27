@@ -65,4 +65,11 @@ public class EmployeeTypeDaoImpl extends IDAOImpl<EmployeeType> implements Emplo
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public List<String> getEmployeeTypeNameByPk() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setProjection(Projections.property("name"));
+        return criteria.list();
+    }
+
 }

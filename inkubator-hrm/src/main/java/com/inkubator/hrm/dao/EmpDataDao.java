@@ -11,7 +11,9 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
@@ -131,4 +133,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
 
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
+        
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate);
 }

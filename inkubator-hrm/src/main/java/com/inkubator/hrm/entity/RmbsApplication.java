@@ -31,11 +31,12 @@ public class RmbsApplication implements java.io.Serializable {
 	private String code;
 	private EmpData empData;
 	private RmbsType rmbsType;
+	private Currency currency;
 	private String purpose;
 	private Date applicationDate;
 	private Integer applicationStatus;
 	private String description;
-	private String receiptPath;
+	private byte[] receiptAttachment;
 	private BigDecimal nominal;
 	private String createdBy;
 	private Date createdOn;
@@ -100,6 +101,16 @@ public class RmbsApplication implements java.io.Serializable {
 		this.rmbsType = rmbsType;
 	}
 		
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", nullable = false)	
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "application_date", length = 19, nullable = false)	
 	public Date getApplicationDate() {
@@ -137,15 +148,15 @@ public class RmbsApplication implements java.io.Serializable {
 		this.description = description;
 	}	
 	
-	@Column(name = "receipt_path", length = 65535, columnDefinition = "Text")
-	public String getReceiptPath() {
-		return receiptPath;
+	@Column(name = "receipt_attachment", columnDefinition = "MEDIUMBLOB")
+	public byte[] getReceiptAttachment() {
+		return receiptAttachment;
 	}
 
-	public void setReceiptPath(String receiptPath) {
-		this.receiptPath = receiptPath;
-	}
-
+	public void setReceiptAttachment(byte[] receiptAttachment) {
+		this.receiptAttachment = receiptAttachment;
+	}	
+	
 	@Column(name = "nominal", precision = 10, scale = 0, nullable = false)
 	public BigDecimal getNominal() {
 		return nominal;

@@ -20,5 +20,7 @@ public interface EmployeeTypeDao extends IDAO<EmployeeType> {
 	public Long getTotalByName(String name);
 	
 	public Long getTotalByNameAndNotId(String name, Long id);
+        
+        public List<String> getEmployeeTypeNameByPk();
 
 }
