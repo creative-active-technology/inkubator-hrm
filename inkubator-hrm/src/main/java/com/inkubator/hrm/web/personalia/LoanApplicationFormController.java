@@ -10,6 +10,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
@@ -20,6 +21,7 @@ import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanNewSchemaListOfEmpService;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
 import com.inkubator.hrm.service.LoanNewSchemaService;
@@ -64,6 +66,8 @@ public class LoanApplicationFormController extends BaseController {
 
     @ManagedProperty(value = "#{loanService}")
     private LoanService loanService;
+    @ManagedProperty(value = "#{loanNewApplicationService}")
+    private LoanNewApplicationService loanNewApplicationService;
     @ManagedProperty(value = "#{loanNewSchemaService}")
     private LoanNewSchemaService loanNewSchemaService;
     @ManagedProperty(value = "#{loanNewSchemaListOfEmpService}")
@@ -79,8 +83,12 @@ public class LoanApplicationFormController extends BaseController {
     @ManagedProperty(value = "#{transactionCodeficationService}")
     private TransactionCodeficationService transactionCodeficationService;
     private Boolean isAdmin;
+//    private Boolean isSubsidiByCicilan;
+//    private Boolean isSubsidiByBunga;
     private EmpData selectedEmployee;
     private Map<String, Long> mapLoanNewType = new HashMap<>();
+    private Map<String, Long> mapSubsidiType = new HashMap<>();
+    private Long subsidiType;
     private Long loanNewTypeId;
     private LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId;
 
@@ -91,16 +99,23 @@ public class LoanApplicationFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+
         String param = FacesUtil.getRequestParameter("param");
         model = new LoanApplicationFormModel();
         model.setRangeFirstInstallmentToDisbursement(1);
-        model.setLoanPaymentDetails(new ArrayList<LoanPaymentDetail>());
+        model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
         try {
-                
+
             TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode((HRMConstant.LOAN_KODE));
             Long currentMaxLoanId = loanService.getCurrentMaxId();
             model.setNomor(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+
+            mapSubsidiType.put("Cicilan", 1l);
+            mapSubsidiType.put("Bunga", 2l);
             
+//            isSubsidiByCicilan = Boolean.FALSE;
+//            isSubsidiByBunga = Boolean.FALSE;
+
             if (Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE))) {
                 isAdmin = Boolean.TRUE;
             } else {
@@ -126,6 +141,46 @@ public class LoanApplicationFormController extends BaseController {
 
     }
 
+//    public Boolean getIsSubsidiByCicilan() {
+//        return isSubsidiByCicilan;
+//    }
+//
+//    public void setIsSubsidiByCicilan(Boolean isSubsidiByCicilan) {
+//        this.isSubsidiByCicilan = isSubsidiByCicilan;
+//    }
+//
+//    public Boolean getIsSubsidiByBunga() {
+//        return isSubsidiByBunga;
+//    }
+//
+//    public void setIsSubsidiByBunga(Boolean isSubsidiByBunga) {
+//        this.isSubsidiByBunga = isSubsidiByBunga;
+//    }
+
+    public Long getSubsidiType() {
+        return subsidiType;
+    }
+
+    public void setSubsidiType(Long subsidiType) {
+        this.subsidiType = subsidiType;
+    }
+    
+    public Map<String, Long> getMapSubsidiType() {
+        return mapSubsidiType;
+    }
+
+    public void setMapSubsidiType(Map<String, Long> mapSubsidiType) {
+        this.mapSubsidiType = mapSubsidiType;
+    }
+
+    public LoanNewApplicationService getLoanNewApplicationService() {
+        return loanNewApplicationService;
+    }
+
+    public void setLoanNewApplicationService(LoanNewApplicationService loanNewApplicationService) {
+        this.loanNewApplicationService = loanNewApplicationService;
+    }
+
     public TransactionCodeficationService getTransactionCodeficationService() {
         return transactionCodeficationService;
     }
@@ -133,8 +188,7 @@ public class LoanApplicationFormController extends BaseController {
     public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
         this.transactionCodeficationService = transactionCodeficationService;
     }
-    
-    
+
     public Long getLoanNewTypeId() {
         return loanNewTypeId;
     }
@@ -280,10 +334,31 @@ public class LoanApplicationFormController extends BaseController {
     public String doBack() {
         return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
-    
-    public void onChangeSubsidi() {
+
+    public void onChangeSubsidiIsRequired() {
+        System.out.println("Ada subsidi ? " + model.getIsSubsidi());
+        if(!model.getIsSubsidi()){
+            subsidiType = 0l;
+            model.setSubsidiBunga(null);
+            model.setSubsidiCicilan(null);
+        }            
         
     }
+    
+   
+
+    public void onChangeSubsidi() {
+        System.out.println("Subsidi Type : " + subsidiType);
+        
+//        if(subsidiType == 1){
+//            isSubsidiByCicilan = Boolean.TRUE;
+//            isSubsidiByBunga = Boolean.FALSE;
+//        }else if(subsidiType == 2){
+//            isSubsidiByBunga = Boolean.TRUE;
+//            isSubsidiByCicilan = Boolean.FALSE;
+//        }
+    }
+
     public void updateDataPeriod() {
 
         try {
@@ -292,7 +367,7 @@ public class LoanApplicationFormController extends BaseController {
             System.out.println("loanNewSchemaListOfType == null ? " + (loanNewSchemaListOfType == null));
             model.setSelectedLoanNewSchemaListOfType(loanNewSchemaListOfType);
             model.setMinimumInstallment(loanNewSchemaListOfType.getMinimumMonthlyInstallment());
-           
+
             if (null != model.getRangeFirstInstallmentToDisbursement()) {
                 model.setLoanPeriod(loanNewSchemaListOfType.getMaxPeriode() - model.getRangeFirstInstallmentToDisbursement());
             } else {
@@ -328,6 +403,8 @@ public class LoanApplicationFormController extends BaseController {
             } else {
                 model.setAvailableLoanAmount(maxLoan);
             }
+            
+            
 
         } catch (Exception e) {
             Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);

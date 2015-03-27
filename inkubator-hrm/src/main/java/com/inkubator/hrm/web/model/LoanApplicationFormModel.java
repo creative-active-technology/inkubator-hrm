@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
@@ -28,11 +29,12 @@ public class LoanApplicationFormModel implements Serializable {
     private LoanNewSchemaListOfEmp loanNewSchemaListOfEmp;
     private LoanNewSchemaListOfType selectedLoanNewSchemaListOfType;
     private List<LoanNewSchemaListOfType> listLoanNewSchemaListOfType;
-    private List<LoanPaymentDetail> loanPaymentDetails;
+    private List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments;
     private LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId;
     private String purpose;
     private String description;
     private Integer rangeFirstInstallmentToDisbursement;
+    private Integer termin; 
     private String namakaryawan;
     private Double nominalLoan;
     private Double maxLoanAmount;
@@ -43,6 +45,36 @@ public class LoanApplicationFormModel implements Serializable {
     private Integer loanPeriod;
     private Boolean isSubsidi;
     private String subsidiType;
+    private Double subsidiCicilan;
+    private Integer subsidiBunga;
+
+    public Integer getTermin() {
+        return termin;
+    }
+
+    public void setTermin(Integer termin) {
+        this.termin = termin;
+    }
+    
+    
+    
+    public Double getSubsidiCicilan() {
+        return subsidiCicilan;
+    }
+
+    public void setSubsidiCicilan(Double subsidiCicilan) {
+        this.subsidiCicilan = subsidiCicilan;
+    }
+
+    public Integer getSubsidiBunga() {
+        return subsidiBunga;
+    }
+
+    public void setSubsidiBunga(Integer subsidiBunga) {
+        this.subsidiBunga = subsidiBunga;
+    }
+    
+    
 
     public String getSubsidiType() {
         return subsidiType;
@@ -80,16 +112,16 @@ public class LoanApplicationFormModel implements Serializable {
     public void setMinimumInstallment(Double minimumInstallment) {
         this.minimumInstallment = minimumInstallment;
     }
-    
-    
-    public List<LoanPaymentDetail> getLoanPaymentDetails() {
-        return loanPaymentDetails;
+
+    public List<LoanNewApplicationInstallment> getListLoanNewApplicationInstallments() {
+        return listLoanNewApplicationInstallments;
     }
 
-    public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
-        this.loanPaymentDetails = loanPaymentDetails;
+    public void setListLoanNewApplicationInstallments(List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments) {
+        this.listLoanNewApplicationInstallments = listLoanNewApplicationInstallments;
     }
-
+    
+    
     public LoanNewSchemaListOfTypeId getLoanNewSchemaListOfTypeId() {
         return loanNewSchemaListOfTypeId;
     }
@@ -243,7 +275,7 @@ public class LoanApplicationFormModel implements Serializable {
     }
 
     public Boolean getIsPaginator() {
-        return loanPaymentDetails.size() > 11;
+        return listLoanNewApplicationInstallments.size() > 11;
     }
 
 }
