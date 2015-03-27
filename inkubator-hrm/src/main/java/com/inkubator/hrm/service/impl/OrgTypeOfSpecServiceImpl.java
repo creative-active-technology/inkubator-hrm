@@ -55,7 +55,7 @@ public class OrgTypeOfSpecServiceImpl extends IServiceImpl implements OrgTypeOfS
 //Uncomment below if u have unik code
         long totalDuplicates = orgTypeOfSpecDao.getTotalByCodeAndNotId(orgTypeOfSpec.getCode(), orgTypeOfSpec.getId());
         if (totalDuplicates > 0) {
-            throw new BussinessException("orgTypeOfSpec.error_duplicate_code");
+            throw new BussinessException("marital.error_duplicate_marital_code");
         }
         OrgTypeOfSpec orgTypeOfSpec1 = orgTypeOfSpecDao.getEntiyByPK(orgTypeOfSpec.getId());
         orgTypeOfSpec1.setUpdatedBy(UserInfoUtil.getUserName());

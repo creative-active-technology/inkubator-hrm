@@ -8,12 +8,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-
 
 import ch.lambdaj.Lambda;
 
@@ -41,17 +35,14 @@ import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
 import com.inkubator.hrm.dao.RmbsTypeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsType;
 import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
