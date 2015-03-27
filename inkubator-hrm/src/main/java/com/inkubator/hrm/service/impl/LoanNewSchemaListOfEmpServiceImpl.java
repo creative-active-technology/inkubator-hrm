@@ -220,6 +220,11 @@ public class LoanNewSchemaListOfEmpServiceImpl extends IServiceImpl implements L
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LoanNewSchemaListOfEmp getEntityWithDetailByEmpDataId(Long empId) throws Exception {
+        return loanNewSchemaListOfEmpDao.getEntityWithDetailByEmpDataId(empId);
+    }
+    
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchemaListOfEmpViewModel> getByParamHQL(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         return loanNewSchemaListOfEmpDao.getByParamHQL(parameter, firstResult, maxResults, orderable);

@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
@@ -22,7 +23,6 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import java.util.Date;
 import java.util.List;
@@ -130,4 +130,6 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
 
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
+        
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate) throws Exception;
 }

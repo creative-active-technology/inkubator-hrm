@@ -28,7 +28,9 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -37,16 +39,13 @@ import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
-import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
+import com.inkubator.hrm.web.model.SearchEmployeeModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 
 /**
@@ -885,11 +884,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         query.append(" INNER JOIN eduHistory.institutionEducation institutionEducation");
         query.append(" INNER JOIN emp.jabatanByJabatanId jabatanByJabatanId");
         query.append(" INNER JOIN jabatanByJabatanId.department department");
-        if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE ) {
+        if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE) {
             query.append(" WHERE department.id IN :idDept AND educationLevel.id IN :idEdu");
-        }else if(departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE){
+        } else if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE) {
             query.append(" WHERE department.id IN :idDept");
-        }else if(departementId.isEmpty() == Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE){
+        } else if (departementId.isEmpty() == Boolean.TRUE && educationId.isEmpty() != Boolean.TRUE) {
             query.append(" WHERE educationLevel.id IN :idEdu");
         }
         if (order.toString().contains("firstName") || order.toString().contains("department") || order.toString().contains("jabatan") || order.toString().contains("graduated") || order.toString().contains("graduatedYear")) {
@@ -904,7 +903,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                     .setMaxResults(maxResults).setFirstResult(firstResult)
                     .setResultTransformer(Transformers.aliasToBean(ReportEmployeeEducationViewModel.class))
                     .list();
-        }else if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE) {
+        } else if (departementId.isEmpty() != Boolean.TRUE && educationId.isEmpty() == Boolean.TRUE) {
             return getCurrentSession().createQuery(query.toString())
                     .setParameterList("idDept", departementId)
                     .setMaxResults(maxResults).setFirstResult(firstResult)
@@ -940,9 +939,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         doCreateAliasByDepartmentAndEmployeeType(listDepartmentId, listEmpTypeId, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
-     public void doCreateAliasByDepartmentAndEmployeeType(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, Criteria criteria) {
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);    
+
+    public void doCreateAliasByDepartmentAndEmployeeType(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
@@ -957,188 +956,186 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order) {
-        
+
         final StringBuilder query = new StringBuilder("SELECT e.NIK AS nik, b.first_name AS firstName, b.last_name AS lastName, "
-                        + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
-                        + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, " 
-                        + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
-                        + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e " 
-                        + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  " 
-                        + " INNER JOIN bio_data b ON e.bio_data_id = b.id  " 
-                        + " INNER JOIN jabatan j ON e.jabatan_id = j.id "
-                        + " INNER JOIN department d ON j.departement_id = d.id "
-                        + " INNER JOIN employee_type s ON e.emp_type_id = s.id ");
-                      
-        
+                + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
+                + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, "
+                + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
+                + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e "
+                + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  "
+                + " INNER JOIN bio_data b ON e.bio_data_id = b.id  "
+                + " INNER JOIN jabatan j ON e.jabatan_id = j.id "
+                + " INNER JOIN department d ON j.departement_id = d.id "
+                + " INNER JOIN employee_type s ON e.emp_type_id = s.id ");
+
         //Flag Untuk penanda apakah ada filter atau tidak
         boolean isFiltered = !listDepartmentId.isEmpty() || !listEmpTypeId.isEmpty() || !listEmpAges.isEmpty();
-        
+
         //Flag untuk penanda jika filter lebih dari satu
         boolean multipleFilter = Boolean.FALSE;
-        
-        if(isFiltered){
+
+        if (isFiltered) {
             query.append(" WHERE ");
         }
-        
-        if(!listDepartmentId.isEmpty()){            
-            query.append(" j.departement_id IN( ");  
-            
-            
+
+        if (!listDepartmentId.isEmpty()) {
+            query.append(" j.departement_id IN( ");
+
             int size = listDepartmentId.size();
             //karena pakai native query, isi List harus di parsing satu per satu
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listDepartmentId.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listDepartmentId.get(i)));
                 }
             }
-            
+
             query.append(") ");
             multipleFilter = Boolean.TRUE;
         }
-        
-        if(!listEmpTypeId.isEmpty()){
-            if(multipleFilter){  
-                query.append("AND e.emp_type_id IN( ");                      
-            }else{               
-                query.append(" e.emp_type_id IN( ");     
+
+        if (!listEmpTypeId.isEmpty()) {
+            if (multipleFilter) {
+                query.append("AND e.emp_type_id IN( ");
+            } else {
+                query.append(" e.emp_type_id IN( ");
                 multipleFilter = Boolean.TRUE;
             }
-            
+
             //karena pakai native query, isi List harus di parsing satu per satu
             int size = listEmpTypeId.size();
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listEmpTypeId.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listEmpTypeId.get(i)));
                 }
             }
-            
-            query.append(") ");               
+
+            query.append(") ");
         }
-        
-        if(!listEmpAges.isEmpty()){
-            if(multipleFilter){ 
+
+        if (!listEmpAges.isEmpty()) {
+            if (multipleFilter) {
                 query.append(" AND umur(b.date_of_birth , NOW()) IN( ");
-            }else{
+            } else {
                 query.append("umur(b.date_of_birth , NOW()) IN( ");
             }
-            
+
             //karena pakai native query, isi List harus di parsing satu per satu
-            int size = listEmpAges.size();            
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            int size = listEmpAges.size();
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listEmpAges.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listEmpAges.get(i)));
                 }
             }
-            
-            query.append(") ");                   
+
+            query.append(") ");
         }
-      
+
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(ReportEmpPensionPreparationModel.class))
                 .list();
-        
+
     }
 
     @Override
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges) {
-        
+
         final StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM (SELECT e.NIK AS nik, b.first_name AS firstName, b.last_name AS lastName, "
-                        + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
-                        + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, " 
-                        + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
-                        + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e " 
-                        + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  " 
-                        + " INNER JOIN bio_data b ON e.bio_data_id = b.id  " 
-                        + " INNER JOIN jabatan j ON e.jabatan_id = j.id "
-                        + " INNER JOIN department d ON j.departement_id = d.id "
-                        + " INNER JOIN employee_type s ON e.emp_type_id = s.id ");
-        
-         //Flag Untuk penanda apakah ada filter atau tidak
+                + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
+                + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, "
+                + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
+                + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e "
+                + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  "
+                + " INNER JOIN bio_data b ON e.bio_data_id = b.id  "
+                + " INNER JOIN jabatan j ON e.jabatan_id = j.id "
+                + " INNER JOIN department d ON j.departement_id = d.id "
+                + " INNER JOIN employee_type s ON e.emp_type_id = s.id ");
+
+        //Flag Untuk penanda apakah ada filter atau tidak
         boolean isFiltered = !listDepartmentId.isEmpty() || !listEmpTypeId.isEmpty() || !listEmpAges.isEmpty();
-        
+
         //Flag untuk penanda jika filter lebih dari satu
         boolean multipleFilter = Boolean.FALSE;
-        
-        if(isFiltered){
+
+        if (isFiltered) {
             query.append(" WHERE ");
         }
-        
-        if(!listDepartmentId.isEmpty()){    
-            query.append(" j.departement_id IN( ");  
-            
+
+        if (!listDepartmentId.isEmpty()) {
+            query.append(" j.departement_id IN( ");
+
             //karena pakai native query, isi List harus di parsing satu per satu
             int size = listDepartmentId.size();
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listDepartmentId.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listDepartmentId.get(i)));
                 }
             }
-            
+
             query.append(") ");
             multipleFilter = Boolean.TRUE;
         }
-        
-        if(!listEmpTypeId.isEmpty()){
-            if(multipleFilter){                     
-                query.append("AND e.emp_type_id IN( ");                
-            }else{
-                query.append(" e.emp_type_id IN( ");     
+
+        if (!listEmpTypeId.isEmpty()) {
+            if (multipleFilter) {
+                query.append("AND e.emp_type_id IN( ");
+            } else {
+                query.append(" e.emp_type_id IN( ");
                 multipleFilter = Boolean.TRUE;
             }
-            
+
             //karena pakai native query, isi List harus di parsing satu per satu
             int size = listEmpTypeId.size();
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listEmpTypeId.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listEmpTypeId.get(i)));
                 }
             }
-            
-            query.append(") ");                
+
+            query.append(") ");
         }
-        
-        if(!listEmpAges.isEmpty()){
-            if(multipleFilter){  
+
+        if (!listEmpAges.isEmpty()) {
+            if (multipleFilter) {
                 query.append(" AND umur(b.date_of_birth , NOW()) IN( ");
-            }else{
+            } else {
                 query.append("umur(b.date_of_birth , NOW()) IN( ");
             }
-            
+
             //karena pakai native query, isi List harus di parsing satu per satu
             int size = listEmpAges.size();
-            for(int i = 0; i<size ; i++){
-                if (i<(size -1)){
+            for (int i = 0; i < size; i++) {
+                if (i < (size - 1)) {
                     query.append(String.valueOf(listEmpAges.get(i)));
                     query.append(" , ");
-                }else{
+                } else {
                     query.append(String.valueOf(listEmpAges.get(i)));
                 }
             }
-            
-            query.append(") ");                   
+
+            query.append(") ");
         }
-        
-        query.append(" ) AS jumlahRow ");          
+
+        query.append(" ) AS jumlahRow ");
         return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
-    
+
     public void doCreateAliasByDepartmentAndEmployeeTypeAndAges(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, List<Integer> listEmpAges, Criteria criteria) {
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);    
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
@@ -1149,34 +1146,54 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (!listEmployeeTypeId.isEmpty()) {
             criteria.add(Restrictions.in("employeeType.id", listEmployeeTypeId));
         }
-        
+
         if (!listEmpAges.isEmpty()) {
             criteria.add(Restrictions.in("employeeType.id", listEmployeeTypeId));
         }
     }
 
-	@Override
-	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+    @Override
+    public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);        
-        
-        if(!departmentIds.isEmpty()) {
-        	criteria.add(Restrictions.in("department.id", departmentIds));
+        criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);
+
+        if (!departmentIds.isEmpty()) {
+            criteria.add(Restrictions.in("department.id", departmentIds));
         }
-        if(!religionIds.isEmpty()) {
-        	criteria.add(Restrictions.in("religion.id", religionIds));
+        if (!religionIds.isEmpty()) {
+            criteria.add(Restrictions.in("religion.id", religionIds));
         }
-        if(!golJabIds.isEmpty()) {
-        	criteria.add(Restrictions.in("golonganJabatan.id", golJabIds));
+        if (!golJabIds.isEmpty()) {
+            criteria.add(Restrictions.in("golonganJabatan.id", golJabIds));
         }
-        if(!empTypeIds.isEmpty()) {
-        	criteria.add(Restrictions.in("employeeType.id", empTypeIds));
+        if (!empTypeIds.isEmpty()) {
+            criteria.add(Restrictions.in("employeeType.id", empTypeIds));
         }
-		
-		return criteria.list();
-	}
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate) {
+        final StringBuilder query = new StringBuilder("SELECT dept.department_name as name, bio.first_name as firstName, bio.last_name as lastName, golJab.code as codeJabatan, empType.name as empTypeName, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(bio.date_of_birth)), '%Y')+0 as age, emp.join_date as joinDate FROM emp_data emp");
+        query.append(" LEFT join jabatan jabatan ON emp.jabatan_id = jabatan.id");
+        query.append(" LEFT join department dept ON jabatan.departement_id = dept.id");
+        query.append(" LEFT join bio_data bio ON emp.bio_data_id = bio.id");
+        query.append(" LEFT join golongan_jabatan golJab ON jabatan.gol_jabatan_id = golJab.id");
+        query.append(" LEFT join employee_type empType ON emp.emp_type_id = empType.id");
+        query.append(" WHERE dept.id in :departmentId AND golJab.id in :golJabId AND empType.name in :empTypeName");
+        query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(bio.date_of_birth)), '%Y')+0 in :listAge");
+        query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(emp.join_date)), '%Y')+0 in :listJoinDate");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setParameterList("departmentId", deptId)
+                .setParameterList("golJabId", golJabId)
+                .setParameterList("empTypeName", empTypeName)
+                .setParameterList("listAge", listAge)
+                .setParameterList("listJoinDate", listJoinDate)
+                .setResultTransformer(Transformers.aliasToBean(SearchEmployeeModel.class)).list();
+    }
 
 }
