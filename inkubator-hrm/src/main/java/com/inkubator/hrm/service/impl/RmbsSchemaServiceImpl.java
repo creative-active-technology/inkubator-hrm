@@ -61,17 +61,17 @@ public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<
 		// check duplicate name
 		long totalDuplicates = rmbsSchemaDao.getTotalByName(entity.getName());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_name");
+			throw new BussinessException("rmbs_schema.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = rmbsSchemaDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_code");
 		}
 		// check duplicate nomor SK
 		totalDuplicates = rmbsSchemaDao.getTotalByNomorSk(entity.getNomorSk());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_no_sk");
 		}
 		
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -88,17 +88,17 @@ public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<
 		// check duplicate name
 		long totalDuplicates = rmbsSchemaDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_name");
+			throw new BussinessException("rmbs_schema.error_duplicate_name");
 		}
 		// check duplicate code
 		totalDuplicates = rmbsSchemaDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_code");
 		}
 		// check duplicate nomor SK
 		totalDuplicates = rmbsSchemaDao.getTotalByNomorSkAndNotId(entity.getNomorSk(), entity.getId());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("leave.error_duplicate_code");
+			throw new BussinessException("rmbs_schema.error_duplicate_no_sk");
 		}	
 		
 		RmbsSchema rmbsSchema =  rmbsSchemaDao.getEntiyByPK(entity.getId());

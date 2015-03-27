@@ -1,0 +1,119 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.inkubator.hrm.web.flow;
+
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.web.model.SearchEmployeeModel;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import org.primefaces.model.DualListModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import org.springframework.webflow.execution.RequestContext;
+
+/**
+ *
+ * @author Deni
+ */
+@Component(value = "searchEmployeeViewController")
+@Lazy
+public class SearchEmployeeViewController implements Serializable {
+
+    org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(getClass());
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private GolonganJabatanService golonganJabatanService;
+    @Autowired
+    private EmployeeTypeService employeeTypeService;
+    @Autowired
+    private EmpDataService empDataService;
+
+    public SearchEmployeeModel initSearchEmployeeFormFlow(RequestContext context) throws Exception {
+        System.out.println("hohohohohoohohohohohohohohohoho");
+        //deklarasi variable
+        SearchEmployeeModel searchEmployeeModel = new SearchEmployeeModel();
+        DualListModel<Department> dualListModelDepartment = new DualListModel<>();
+        DualListModel<GolonganJabatan> dualListModelGolJab = new DualListModel<>();
+        
+        //get data
+        List<Department> listDepartment = departmentService.getAllData();
+        List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
+        List<String> listEmployeeType = employeeTypeService.getEmployeeTypeNameByPk();
+        //assign value
+        dualListModelGolJab.setSource(listGolonganJabatan);
+        dualListModelDepartment.setSource(listDepartment);
+        searchEmployeeModel.setDualListModelDepartment(dualListModelDepartment);
+        searchEmployeeModel.setDualListModelGoljab(dualListModelGolJab);
+        searchEmployeeModel.setListEmployeeType(listEmployeeType);
+        return searchEmployeeModel;
+    }
+    
+    public void doGetParamSearchEmployee(RequestContext context) throws Exception{
+        String departments = "";
+        String golonganJabatan = "";
+        String tipeKaryawan = "";
+        SearchEmployeeModel searchEmployeeModel = (SearchEmployeeModel) context.getFlowScope().get("searchEmployeeModel");
+        List<Department> listDepartment = searchEmployeeModel.getDualListModelDepartment().getTarget();
+        List<GolonganJabatan> listGolonganJabatan = searchEmployeeModel.getDualListModelGoljab().getTarget();
+        String[] listEmployeeType = searchEmployeeModel.getEmployeeTypeName();
+        int sizeDepartment = searchEmployeeModel.getDualListModelDepartment().getTarget().size();
+        int sizeGolonganJabatan = searchEmployeeModel.getDualListModelGoljab().getTarget().size();
+        int sizeTipeKaryawan = searchEmployeeModel.getEmployeeTypeName().length;
+        int fromBirth = searchEmployeeModel.getFrom();
+        int untilBirth = searchEmployeeModel.getUntil();
+        int joinDate = searchEmployeeModel.getFromJoin();
+        int untilDate = searchEmployeeModel.getUntilJoin();
+        for(int j = 0; j < sizeDepartment; j++){
+            if(j == (sizeDepartment - 1)){
+                departments += listDepartment.get(j).getDepartmentName();
+            }else{
+                departments += listDepartment.get(j).getDepartmentName()+", ";
+            }
+        }
+        
+        for(int j = 0; j < sizeGolonganJabatan; j++){
+            if(j == (sizeGolonganJabatan - 1)){
+                golonganJabatan += listGolonganJabatan.get(j).getCode();
+            }else{
+                golonganJabatan += listGolonganJabatan.get(j).getCode()+", ";
+            }
+        }
+        
+        for(int j = 0; j < sizeTipeKaryawan; j++){
+            if(j == (sizeTipeKaryawan - 1)){
+                tipeKaryawan += listEmployeeType[j];
+            }else{
+                tipeKaryawan += listEmployeeType[j]+", ";
+            }
+        }
+        searchEmployeeModel.setDepartments(departments);
+        searchEmployeeModel.setGolonganJabatans(golonganJabatan);
+        searchEmployeeModel.setTipeKaryawan(tipeKaryawan);
+        List<Integer> listAge = getNumberBetweenFromAndUntil(fromBirth, untilBirth);
+        List<Integer> listJoinDate = getNumberBetweenFromAndUntil(joinDate, untilDate);
+        List<EmpData> listEmpData = empDataService.getAllDataByParamWithDetail(listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate);
+        searchEmployeeModel.setListEmpData(listEmpData);
+    }
+    
+    public List<Integer> getNumberBetweenFromAndUntil(int from, int until){
+        List<Integer> listNumber = new ArrayList<Integer>();
+        for(int i = from; i <= until; i++){
+            listNumber.add(i);
+        }
+        return listNumber;
+    }
+    
+    
+}

@@ -59,7 +59,24 @@
                                         <p:message for="picklistOccupation" />
                                     </p:column>
                                 </div>
-                            </p:row>                          
+                            </p:row>
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Usia Hidup" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:spinner id="from" value="#{searchEmployeeViewController.from}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        
+                                        <p:spinner id="until" value="#{searchEmployeeViewController.until}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                    </p:spinner>
+                                    </p:column>
+                                </div>
+                            </p:row>
                             
                         </p:panelGrid>
                         <p:commandButton value="#{appmsg['global.save']}" actionListener="#{jabatanSpesifikasiDetailController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":userViewGrowlId">

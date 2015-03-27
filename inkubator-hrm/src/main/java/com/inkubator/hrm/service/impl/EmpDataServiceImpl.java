@@ -45,6 +45,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
@@ -829,5 +830,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
         return empDataDao.getAllDataByDepartmentAndReligionAndGolJabAndEmpType(departmentIds, religionIds, golJabIds, empTypeIds);
 
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate) throws Exception {
+        Long[] deptId = new Long[department.size()];
+        int i = 0;
+        for (Department dept : department) {
+            deptId[i] = dept.getId();
+        }
+        
+        return empDataDao.getAllDataByParamWithDetail(department, golJab, empTypeName, listAge, listJoinDate);
     }
 }

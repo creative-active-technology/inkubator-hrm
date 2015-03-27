@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author Deni
  */
-public class EmpDataMatrixModel {
+public class EmpDataMatrixModel implements Serializable {
     private String male;
     private String female;
     private List<String> listGender = new ArrayList<String>();

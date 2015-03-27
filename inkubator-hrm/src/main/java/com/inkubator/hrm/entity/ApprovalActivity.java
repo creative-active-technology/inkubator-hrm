@@ -34,6 +34,7 @@ public class ApprovalActivity implements java.io.Serializable {
     private Integer approvalCount;
     private Integer rejectCount;
     private String pendingData;
+    private Long typeSpecific;
     private String activityNumber;
     private String previousActivityNumber;
     private Integer sequence;
@@ -178,8 +179,17 @@ public class ApprovalActivity implements java.io.Serializable {
     public void setPendingData(String pendingData) {
         this.pendingData = pendingData;
     }
+    
+    @Column(name = "type_specific")
+    public Long getTypeSpecific() {
+		return typeSpecific;
+	}
 
-    @Column(name = "activity_number", length = 45)
+	public void setTypeSpecific(Long typeSpecific) {
+		this.typeSpecific = typeSpecific;
+	}
+
+	@Column(name = "activity_number", length = 45)
     public String getActivityNumber() {
         return this.activityNumber;
     }

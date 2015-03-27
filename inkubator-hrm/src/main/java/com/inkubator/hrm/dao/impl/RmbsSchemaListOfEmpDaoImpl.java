@@ -3,8 +3,13 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -138,6 +143,58 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
     	
     	return hbm;
     }
+
+	@Override
+	public List<RmbsSchemaListOfEmp> getAllDataByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id.empDataId", empDataId));
+		criteria.setFetchMode("rmbsSchema", FetchMode.JOIN);
+		return criteria.list();
+	}
+	
+	@Override
+	public Long getTotalByNomorSk(String nomorSk) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nomorSk", nomorSk));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+	}
+
+	@Override
+	public Long getTotalByNomorSkAndNotId(String nomorSk, Long empDataId, Long rmbsSchemaId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("nomorSk", nomorSk));
+        
+        Conjunction conjunction = new Conjunction();
+        conjunction.add(Restrictions.eq("id.empDataId", empDataId));
+        conjunction.add(Restrictions.eq("id.rmbsSchemaId", rmbsSchemaId));
+        criteria.add(Restrictions.ne("id.empDataId", empDataId));
+        criteria.add(Restrictions.not(conjunction));
+        
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPk(Long empDataId, Long rmbsSchemaId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id.empDataId", empDataId));
+		criteria.add(Restrictions.eq("id.rmbsSchemaId", rmbsSchemaId));
+		return (RmbsSchemaListOfEmp) criteria.uniqueResult();
+	}
+
+	@Override
+	public RmbsSchemaListOfEmp getEntityByPkWithDetail(Long empDataId, Long rmbsSchemaId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id.empDataId", empDataId));
+		criteria.add(Restrictions.eq("id.rmbsSchemaId", rmbsSchemaId));
+		criteria.setFetchMode("rmbsSchema", FetchMode.JOIN);
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+		return (RmbsSchemaListOfEmp) criteria.uniqueResult();
+		
+	}
 
 	
 }

@@ -98,7 +98,7 @@ public class RmbsTypeViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 550);
+        options.put("contentWidth", 560);
         options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("rmbs_type_form", options, params);
     }
