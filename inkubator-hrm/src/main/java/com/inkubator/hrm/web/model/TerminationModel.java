@@ -5,13 +5,14 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.EmpData;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Deni
  */
-public class TerminationModel {
+public class TerminationModel implements Serializable{
     private Long id;
     private String empDataWithNik;
     private Long terminationTypeId;

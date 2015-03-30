@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
  *
  * @author Deni
  */
-public class LoanNewSchemaListOfEmpViewModel {
+public class LoanNewSchemaListOfEmpViewModel implements Serializable{
     private Long id;
     private String firstName;
     private String lastName;

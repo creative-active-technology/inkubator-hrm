@@ -1,12 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author rizkykojek
  */
-public class LeaveModel {
+public class LeaveModel implements Serializable{
 
 	private Long id;
     private String name;

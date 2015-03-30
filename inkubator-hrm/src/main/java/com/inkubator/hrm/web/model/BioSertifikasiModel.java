@@ -1,9 +1,12 @@
 package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class BioSertifikasiModel {
+public class BioSertifikasiModel implements Serializable{
 
     private Long id;
     private Long bioDataId;

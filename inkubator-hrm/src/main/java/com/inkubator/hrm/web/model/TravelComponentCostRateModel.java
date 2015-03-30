@@ -4,11 +4,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni
  */
-public class TravelComponentCostRateModel {
+public class TravelComponentCostRateModel implements Serializable{
     private Long id;
     private String code;
     private long costCenterId;
