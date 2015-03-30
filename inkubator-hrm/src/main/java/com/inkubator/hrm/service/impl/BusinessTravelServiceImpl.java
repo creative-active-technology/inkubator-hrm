@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.jms.JMSException;
@@ -479,7 +480,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
 		//initialization
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy",new Locale(appActivity.getLocale()));
 		double totalAmount = 0;
 		
 		//get all sendCC email address on status approve OR reject

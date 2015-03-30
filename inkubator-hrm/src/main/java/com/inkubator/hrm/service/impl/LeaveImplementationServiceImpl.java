@@ -1,31 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hamcrest.Matchers;
-import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -59,6 +34,28 @@ import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
+import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -463,7 +460,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
 
         //get all sendCC email address on status approve OR reject
         List<String> ccEmailAddresses = new ArrayList<String>();
@@ -595,18 +592,22 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             throw new BussinessException("leaveimplementation.error_submitted_limit");
         }
 
-        /** check actualLeave yg diambil, tidak boleh lebih besar dari balanceCuti yg tersedia 
-         *  di cek juga kondisi di leaveDefinition apakah boleh minus atau tidak, kalo boleh maka balance tidak boleh lebih besar dari maxAllowedMinus  */
+        /**
+         * check actualLeave yg diambil, tidak boleh lebih besar dari
+         * balanceCuti yg tersedia di cek juga kondisi di leaveDefinition apakah
+         * boleh minus atau tidak, kalo boleh maka balance tidak boleh lebih
+         * besar dari maxAllowedMinus
+         */
         List<Date> actualLeaves = this.getAllActualLeave(empData.getId(), leave.getId(), entity.getStartDate(), entity.getEndDate());
         int totalActualLeaves = actualLeaves.size();
         if (totalActualLeaves > leaveDistribution.getBalance()) {
-        	if(leave.getIsAllowedMinus()){
-        		if((totalActualLeaves - leaveDistribution.getBalance()) > leave.getMaxAllowedMinus()){
-        			throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
-        		}
-        	} else {
-        		throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
-        	}
+            if (leave.getIsAllowedMinus()) {
+                if ((totalActualLeaves - leaveDistribution.getBalance()) > leave.getMaxAllowedMinus()) {
+                    throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
+                }
+            } else {
+                throw new BussinessException("leaveimplementation.error_leave_balance_is_insufficient");
+            }
         }
 
         entity.setEmpData(empData);
@@ -765,7 +766,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         double total = 0.0;
 
         for (LeaveImplementationDate entity : actualLeaves) {
-        	//ini artinya ada perubahan, dari yang awalnya cuti sudah dicancel, dikembalikan ke actual(ambil cuti), sehingga harus ada pengurangan neraca cuti
+            //ini artinya ada perubahan, dari yang awalnya cuti sudah dicancel, dikembalikan ke actual(ambil cuti), sehingga harus ada pengurangan neraca cuti
             if (entity.getIsCancelled()) {
                 total = total - 1;
                 entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());
@@ -777,8 +778,8 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             }
         }
         for (LeaveImplementationDate entity : cancellationLeaves) {
-        	//ini artinya ada pembatalan cuti, sehingga harus ada penambahan neraca cuti
-        	if (!entity.getIsCancelled()) {
+            //ini artinya ada pembatalan cuti, sehingga harus ada penambahan neraca cuti
+            if (!entity.getIsCancelled()) {
                 total = total + 1;
                 entity = leaveImplementationDateDao.getEntiyByPK(entity.getId());
                 entity.setIsCancelled(Boolean.TRUE);
@@ -802,19 +803,19 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers , Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception {
         return leaveImplementationDao.getReportByParam(parameter, activityNumbers, empDataId, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId ) throws Exception {
+    public Long getReportTotalByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception {
         return leaveImplementationDao.getReportTotalByParam(parameter, activityNumbers, empDataId);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers , Long empDataId) throws Exception {
+    public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception {
         return leaveImplementationDao.getReportHistoryByParam(parameter, activityNumbers, empDataId);
     }
 
