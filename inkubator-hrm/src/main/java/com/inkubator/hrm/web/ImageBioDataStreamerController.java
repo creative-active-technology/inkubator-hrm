@@ -8,6 +8,7 @@ package com.inkubator.hrm.web;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.entity.OhsaIncidentDocument;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.service.BioDataService;
@@ -15,6 +16,7 @@ import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.MedicalCareService;
+import com.inkubator.hrm.service.OhsaIncidentDocumentService;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.webcore.controller.BaseController;
@@ -55,8 +57,19 @@ public class ImageBioDataStreamerController extends BaseController {
     private MedicalCareService medicalCareService;
     @ManagedProperty(value = "#{bioSertifikasiService}")
     private BioSertifikasiService bioSertifikasiService;
+    @ManagedProperty(value = "#{ohsaIncidentDocumentService}")
+    private OhsaIncidentDocumentService ohsaIncidentDocumentService;
     private StreamedContent ijazahFile;
 
+    public OhsaIncidentDocumentService getOhsaIncidentDocumentService() {
+        return ohsaIncidentDocumentService;
+    }
+
+    public void setOhsaIncidentDocumentService(OhsaIncidentDocumentService ohsaIncidentDocumentService) {
+        this.ohsaIncidentDocumentService = ohsaIncidentDocumentService;
+    }
+    
+    
     public void setBioDataService(BioDataService bioDataService) {
         this.bioDataService = bioDataService;
     }
@@ -321,6 +334,32 @@ public class ImageBioDataStreamerController extends BaseController {
                 }
                 is = facesIO.getInputStreamFromURL(path);
 
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+    }
+    
+     public StreamedContent getOhsaIncidentDocumentFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                OhsaIncidentDocument ohsaIncidentDocument = ohsaIncidentDocumentService.getEntiyByPK(Integer.parseInt(id));
+                String path = ohsaIncidentDocument.getUploadedPath();
+              
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+                
                 return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
 
             } catch (Exception ex) {

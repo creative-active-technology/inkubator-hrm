@@ -7,11 +7,12 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.OhsaCategoryDao;
+import com.inkubator.hrm.dao.OhsaIncidentDao;
 import com.inkubator.hrm.entity.OhsaCategory;
-import com.inkubator.hrm.service.OhsaCategoryService;
-import com.inkubator.hrm.web.search.OhsaCategorySearchParameter;
+import com.inkubator.hrm.entity.OhsaIncident;
+import com.inkubator.hrm.service.OhsaIncidentService;
+import com.inkubator.hrm.web.search.OhsaIncidentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -25,142 +26,133 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author EKA
+ * @author Ahmad Mudzakkir Amal
  */
-@Service(value = "ohsaCategoryService")
+@Service(value = "ohsaIncidentService")
 @Lazy
-public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategoryService{
+public class OhsaIncidentServiceImpl extends IServiceImpl implements OhsaIncidentService {
     
     @Autowired
+    private OhsaIncidentDao ohsaIncidentDao;
+     @Autowired
     private OhsaCategoryDao ohsaCategoryDao;
-
+    
     @Override
-    public List<OhsaCategory> getByParam(OhsaCategorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return ohsaCategoryDao.getByParam(searchParameter, firstResult, maxResults, order);
-    }
-
-    @Override
-    public Long getTotalOhsaCategoryByParam(OhsaCategorySearchParameter searchParameter) throws Exception {
-        return ohsaCategoryDao.getTotalOhsaCategoryByParam(searchParameter);
-    }
-
-    @Override
-    public OhsaCategory getEntiyByPK(String string) throws Exception {
+    public OhsaIncident getEntiyByPK(String string) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntiyByPK(Integer intgr) throws Exception {
+    public OhsaIncident getEntiyByPK(Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public OhsaCategory getEntiyByPK(Long id) throws Exception {
-        return ohsaCategoryDao.getEntiyByPK(id);
+    public OhsaIncident getEntiyByPK(Long l) throws Exception {
+        return ohsaIncidentDao.getEntiyByPK(l);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(OhsaCategory entity) throws Exception {
-        long totalDuplicates = ohsaCategoryDao.getTotalByCode(entity.getCode());
-        if(totalDuplicates > 0){
-            throw new BussinessException("marital.error_duplicate_marital_code");
-        }
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(5)));
-        entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setCreatedOn(new Date());
-        this.ohsaCategoryDao.save(entity);
+    public void save(OhsaIncident t) throws Exception {
+        t.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(5)));
+        t.setCreatedBy(UserInfoUtil.getUserName());
+        t.setCreatedOn(new Date());
+        this.ohsaIncidentDao.save(t);
     }
 
     @Override
-    public void update(OhsaCategory entity) throws Exception {
-        long totalDuplicates = ohsaCategoryDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
-        if(totalDuplicates > 0){
-            throw new BussinessException("marital.error_duplicate_marital_code");
-        }
-        OhsaCategory update = ohsaCategoryDao.getEntiyByPK(entity.getId());
-        update.setCode(entity.getCode());
-        update.setName(entity.getName());
-        update.setDescription(entity.getDescription());
-        update.setUpdatedBy(UserInfoUtil.getUserName());
-        update.setUpdatedOn(new Date());
-        this.ohsaCategoryDao.update(update);
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(OhsaIncident t) throws Exception {
+        OhsaIncident ohsaIncident = ohsaIncidentDao.getEntiyByPK(t.getId());        
+        OhsaCategory category = ohsaCategoryDao.getEntiyByPK(t.getOhsaCategory().getId());
+        ohsaIncident.setOhsaCategory(category);
+        
+        ohsaIncident.setIncidentTime(t.getIncidentTime());
+        ohsaIncident.setSubject(t.getSubject());
+        ohsaIncident.setDescription(t.getDescription());
+        ohsaIncident.setLocation(t.getLocation());
+        ohsaIncident.setSeverityLevel(t.getSeverityLevel());
+        ohsaIncident.setUpdatedBy(UserInfoUtil.getUserName());
+        ohsaIncident.setUpdatedOn(new Date());
+        
+        this.ohsaIncidentDao.update(ohsaIncident);
     }
 
     @Override
-    public void saveOrUpdate(OhsaCategory t) throws Exception {
+    public void saveOrUpdate(OhsaIncident t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory saveData(OhsaCategory t) throws Exception {
+    public OhsaIncident saveData(OhsaIncident t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory updateData(OhsaCategory t) throws Exception {
+    public OhsaIncident updateData(OhsaIncident t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory saveOrUpdateData(OhsaCategory t) throws Exception {
+    public OhsaIncident saveOrUpdateData(OhsaIncident t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(String string, Integer intgr) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(String string, Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(String string, Byte b) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(String string, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(String string, Boolean bln) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(String string, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Integer intgr, Integer intgr1) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Integer intgr, Integer intgr1) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Integer intgr, Byte b) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Integer intgr, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Integer intgr, Boolean bln) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Integer intgr, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Long l, Integer intgr) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Long l, Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Long l, Byte b) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Long l, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public OhsaCategory getEntityByPkIsActive(Long l, Boolean bln) throws Exception {
+    public OhsaIncident getEntityByPkIsActive(Long l, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(OhsaCategory entity) throws Exception {
-        this.ohsaCategoryDao.delete(entity);
+    public void delete(OhsaIncident t) throws Exception {
+        ohsaIncidentDao.delete(t);
     }
 
     @Override
-    public void softDelete(OhsaCategory t) throws Exception {
+    public void softDelete(OhsaIncident t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -185,44 +177,61 @@ public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategor
     }
 
     @Override
+    public List<OhsaIncident> getAllData() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllData(Boolean bln) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllData(Integer intgr) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllData(Byte b) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllDataPageAble(int i, int i1, Order order) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllDataPageAbleIsActive(int i, int i1, Order order, Boolean bln) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllDataPageAbleIsActive(int i, int i1, Order order, Integer intgr) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<OhsaIncident> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<OhsaCategory> getAllData() throws Exception {
-        return ohsaCategoryDao.getAllData();
+    public List<OhsaIncident> getByParam(OhsaIncidentSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        return this.ohsaIncidentDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
-    public List<OhsaCategory> getAllData(Boolean bln) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(OhsaIncidentSearchParameter parameter) {
+        return this.ohsaIncidentDao.getTotalByParam(parameter);
     }
 
     @Override
-    public List<OhsaCategory> getAllData(Integer intgr) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<OhsaCategory> getAllData(Byte b) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<OhsaCategory> getAllDataPageAble(int i, int i1, Order order) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<OhsaCategory> getAllDataPageAbleIsActive(int i, int i1, Order order, Boolean bln) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<OhsaCategory> getAllDataPageAbleIsActive(int i, int i1, Order order, Integer intgr) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<OhsaCategory> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public OhsaIncident getEntityByPKWithDetail(Long id) {
+        return this.ohsaIncidentDao.getEntityByPKWithDetail(id);
     }
     
 }

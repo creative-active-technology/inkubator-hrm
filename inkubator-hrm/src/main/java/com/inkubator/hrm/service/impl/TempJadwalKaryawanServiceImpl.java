@@ -6,7 +6,6 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -35,7 +34,6 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,11 +43,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -451,7 +447,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     @Override
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         //initialization
-        SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm",new Locale(appActivity.getLocale()));
         JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
         Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());
 
