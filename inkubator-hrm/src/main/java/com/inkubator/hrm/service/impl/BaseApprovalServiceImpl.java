@@ -116,7 +116,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 					appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 					appActivity.setApprovalDefinition(appDef);			
 					appActivity.setApprovedBy(approverUserId);
-					appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+					appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
 					appActivity.setSequence(1);
 					appActivity.setApprovalCount(0);
 					appActivity.setRejectCount(0);
@@ -229,7 +229,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		//check only approval status which is waiting that can be process
-    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
     		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
@@ -301,7 +301,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		//check only approval status which is waiting that can be process
-    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
     		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
@@ -360,7 +360,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		//check only approval status which is waiting that can be process
-    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
     		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
@@ -429,7 +429,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_DIVERTED)){
         	approvalOrRejectCount = previousAppActivity.getApprovalCount();
         	minApproverOrRejector = previousAppDef.getMinApprover();
-        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)){
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)){
         	throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING_APPROVAL");
         } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_REVISED)){
         	throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING_REVISED");
@@ -498,7 +498,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         newEntity.setApprovalDefinition(appDef);
         newEntity.setApprovedBy(approverUserId);
-        newEntity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+        newEntity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
         newEntity.setNotificationSend(false);
         newEntity.setApprovalCount(approvalCount);
         newEntity.setRejectCount(rejectCount);
@@ -567,7 +567,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
      *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
     private void sendApprovalSmsnotif(ApprovalActivity appActivity){
-    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING && appActivity.getApprovalDefinition().getSmsNotification()){
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){
 	    	
 	    	/** di cek apakah approver memiliki phoneNumber yang valid */
     		HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
@@ -608,7 +608,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId
 	 *  Untuk pengaturan messagenya, silahkan di lihat di ApprovalRemoteCommand.java */
     private void sendApprovalGrowlNotif(ApprovalActivity appActivity){
-    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING ||
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL ||
     			appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED){
     		
         	final ApprovalPushMessageModel model = new ApprovalPushMessageModel();
@@ -636,7 +636,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	public void cancelled(long approvalActivityId, String comment) throws Exception {
     	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
     	//check only approval status which is WAITITNG_APPROVAL or WAITING_REVISED that can be process
-    	if(!((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED))){
+    	if(!((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED))){
     		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
@@ -667,7 +667,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		//check only approval status which is waiting that can be process
-    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING){
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
     		throw new BussinessException("approval.error_status_already_changed");
     	}
     	
@@ -736,7 +736,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	BeanUtils.copyProperties(approvalActivity, lastAppActivity, new String[]{"id","sequence","approvalCommment","approvalTime","createdTime","approvalStatus"});
     	lastAppActivity.setSequence(approvalActivity.getSequence()+1); //increment +1
     	lastAppActivity.setCreatedTime(new Date());
-    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
     	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));        	
     	approvalActivityDao.save(lastAppActivity);
     	

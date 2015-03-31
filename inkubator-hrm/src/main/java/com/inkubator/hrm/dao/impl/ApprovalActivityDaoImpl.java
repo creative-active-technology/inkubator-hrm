@@ -56,7 +56,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));        
         
         criteria.add(Restrictions.eq("requestBy", userName));
-        criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING)));
+        criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)));
         criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED)));
         
         criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
@@ -94,7 +94,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
         
         Disjunction disjStatus = Restrictions.disjunction();
-        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
         disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
         criteria.add(disjStatus);
         
@@ -110,7 +110,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         
         Conjunction conjApprover = Restrictions.conjunction();
         conjApprover.add(Restrictions.eq("approvedBy", userName));
-        conjApprover.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        conjApprover.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
         
         Conjunction conjRequester = Restrictions.conjunction();
         conjRequester.add(Restrictions.eq("requestBy", userName));
@@ -211,7 +211,12 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         boolean isStillHaveWaitingStatus = false;
         if (!ids.isEmpty()) {
             Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-            criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+            
+            Disjunction disjStatus = Restrictions.disjunction();
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+            criteria.add(disjStatus);
+            
             criteria.add(Restrictions.in("approvalDefinition.id", ids));
             isStillHaveWaitingStatus = criteria.list().size() > 0;
         }
@@ -232,8 +237,13 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         boolean isStillHaveWaitingStatus = false;
         if (!ids.isEmpty()) {
             Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+            
+            Disjunction disjStatus = Restrictions.disjunction();
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+            criteria.add(disjStatus);
+            
             criteria.add(Restrictions.eq("requestBy", requestBy));
-            criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
             criteria.add(Restrictions.in("approvalDefinition.id", ids));
             isStillHaveWaitingStatus = criteria.list().size() > 0;
         }
@@ -244,7 +254,12 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     @Override
     public Boolean isStillHaveWaitingStatus(Long appDefId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        
+        Disjunction disjStatus = Restrictions.disjunction();
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        criteria.add(disjStatus);
+        
         criteria.add(Restrictions.eq("approvalDefinition.id", appDefId));
         return criteria.list().size() > 0;
     }
@@ -252,7 +267,12 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     @Override
     public Boolean isStillHaveWaitingStatus(String activityNumber) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        
+        Disjunction disjStatus = Restrictions.disjunction();
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        criteria.add(disjStatus);
+        
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.eq("activityNumber", activityNumber));
         disjunction.add(Restrictions.eq("previousActivityNumber", activityNumber));
@@ -263,7 +283,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     @Override
     public List<ApprovalActivity> getAllDataWaitingStatusApproval() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
         return criteria.list();
     }
 
