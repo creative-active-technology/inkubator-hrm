@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 
@@ -7,7 +8,7 @@ import java.math.BigDecimal;
 *
 * @author rizkykojek
 */
-public class UnregSalaryCalculationExecuteModel {
+public class UnregSalaryCalculationExecuteModel implements Serializable{
 	private Long unregSalaryId;
 	private Long paySalaryCompId;
 	private String paySalaryCompName;

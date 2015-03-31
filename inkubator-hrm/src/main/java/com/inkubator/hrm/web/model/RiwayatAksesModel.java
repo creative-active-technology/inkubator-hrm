@@ -4,13 +4,14 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Deni
  */
-public class RiwayatAksesModel {
+public class RiwayatAksesModel implements Serializable{
     private Date dateAkses;
     private String name;
 

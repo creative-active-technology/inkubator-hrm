@@ -4,11 +4,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni
  */
-public class BioEducationHistoryViewModel {
+public class BioEducationHistoryViewModel implements Serializable{
      private Long id;
      private String biodata;
      private String educationLevel;

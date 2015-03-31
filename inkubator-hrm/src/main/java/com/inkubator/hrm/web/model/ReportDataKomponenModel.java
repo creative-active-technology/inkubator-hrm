@@ -1,12 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
 *
 * @author Ahmad Mudzakkir Amal
 */
-public class ReportDataKomponenModel {
+public class ReportDataKomponenModel implements Serializable{
 	
         private Long id;
 	private String namaProsesGaji;

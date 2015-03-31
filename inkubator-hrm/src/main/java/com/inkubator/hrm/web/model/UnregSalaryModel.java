@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author deni
  */
-public class UnregSalaryModel {
+public class UnregSalaryModel implements Serializable{
     private Long id;
     private String code;
     private String name;
