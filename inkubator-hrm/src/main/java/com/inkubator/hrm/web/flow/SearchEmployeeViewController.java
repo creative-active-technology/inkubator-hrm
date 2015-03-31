@@ -43,7 +43,6 @@ public class SearchEmployeeViewController implements Serializable {
     private EmpDataService empDataService;
 
     public SearchEmployeeModel initSearchEmployeeFormFlow(RequestContext context) throws Exception {
-        System.out.println("hohohohohoohohohohohohohohohoho");
         //deklarasi variable
         SearchEmployeeModel searchEmployeeModel = new SearchEmployeeModel();
         DualListModel<Department> dualListModelDepartment = new DualListModel<>();
@@ -63,7 +62,6 @@ public class SearchEmployeeViewController implements Serializable {
     }
     
     public void doGetParamSearchEmployee(RequestContext context) throws Exception{
-        System.out.println("HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAH");
         String departments = "";
         String golonganJabatan = "";
         String tipeKaryawan = "";
@@ -123,5 +121,21 @@ public class SearchEmployeeViewController implements Serializable {
         return listNumber;
     }
     
-    
+    public void listEmployeeTypeNameView(RequestContext context) {
+        String tipeKaryawan = "";
+        SearchEmployeeModel searchEmployeeModel = (SearchEmployeeModel) context.getFlowScope().get("searchEmployeeModel");
+        String[] listEmployeeType = searchEmployeeModel.getEmployeeTypeName();
+        int sizeTipeKaryawan = searchEmployeeModel.getEmployeeTypeName().length;
+        for(int j = 0; j < sizeTipeKaryawan; j++){
+            if(j == (sizeTipeKaryawan - 1)){
+                tipeKaryawan += listEmployeeType[j];
+            }else{
+                tipeKaryawan += listEmployeeType[j]+", ";
+            }
+        }
+        searchEmployeeModel.setEmployeeTypeView(tipeKaryawan);
+    }
+    public String doBack() {
+        return "/flow-protected/search_employee";
+    }
 }

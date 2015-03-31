@@ -35,7 +35,9 @@ public class SearchEmployeeModel implements Serializable{
     private String departments;
     private String golonganJabatans;
     private String tipeKaryawan;
+    private String employeeTypeView;
     private String[] employeeTypeName;
+    private String[] employeeTypeNameView;
     private Double age;
     private Date joinDate;
     private DualListModel<Department> dualListModelDepartment = new DualListModel<>();
@@ -226,6 +228,22 @@ public class SearchEmployeeModel implements Serializable{
 
     public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
+    }
+
+    public String[] getEmployeeTypeNameView() {
+        return employeeTypeNameView;
+    }
+
+    public void setEmployeeTypeNameView(String[] employeeTypeNameView) {
+        this.employeeTypeNameView = employeeTypeNameView;
+    }
+
+    public String getEmployeeTypeView() {
+        return employeeTypeView;
+    }
+
+    public void setEmployeeTypeView(String employeeTypeView) {
+        this.employeeTypeView = employeeTypeView;
     }
 
     

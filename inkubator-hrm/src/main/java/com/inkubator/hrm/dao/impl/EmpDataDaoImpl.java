@@ -1239,6 +1239,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (!listNik.isEmpty()) {
             criteria.add(Restrictions.in("nik", listNik));
         }
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
         return criteria.list();
     }
 

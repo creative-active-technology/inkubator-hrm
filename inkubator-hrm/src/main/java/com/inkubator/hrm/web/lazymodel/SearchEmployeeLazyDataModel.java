@@ -23,10 +23,11 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni
  */
-public class SearchEmployeeLazyDataModel extends LazyDataModel<EmpData> implements Serializable {
+public class SearchEmployeeLazyDataModel extends LazyDataModel<EmpData> {
 
     private static final Logger LOGGER = Logger.getLogger(SearchEmployeeLazyDataModel.class);
-    private final EmpDataService service;
+    
+    private transient EmpDataService service;
     private final List<Department> listDepartment;
     private final List<GolonganJabatan> listGolonganJabatan;
     private final List<String> listNik;
@@ -55,7 +56,7 @@ public class SearchEmployeeLazyDataModel extends LazyDataModel<EmpData> implemen
             if (sortField != null) {
                 order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
             } else {
-                order = Order.desc("name");
+                order = Order.desc("nik");
             }
             empDataList = service.getAllDataByParamWithDetail(listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate, listNik, first, pageSize, order);
             jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParamWithDetail(listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate, listNik)));
