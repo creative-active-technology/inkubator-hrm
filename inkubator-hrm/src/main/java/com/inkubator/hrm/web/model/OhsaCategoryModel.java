@@ -5,11 +5,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author EKA
  */
-public class OhsaCategoryModel {
+public class OhsaCategoryModel implements Serializable{
     private Long id;
     private String code;
     private String name;

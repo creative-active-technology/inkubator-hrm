@@ -1,9 +1,12 @@
 package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class PayReceiverAccountModel {
+public class PayReceiverAccountModel implements Serializable{
 
 	String nik;
 	String name;

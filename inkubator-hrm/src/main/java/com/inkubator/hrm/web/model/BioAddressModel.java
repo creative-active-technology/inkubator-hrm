@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import javax.validation.constraints.Pattern;
 
 
@@ -7,7 +8,7 @@ import javax.validation.constraints.Pattern;
  *
  * @author rizkykojek
  */
-public class BioAddressModel {
+public class BioAddressModel implements Serializable{
 
 	private Long id;
 	private Long bioDataId;

@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
 *
 * @author rizkykojek
 */
-public class ReportSalaryNoteModel {
+public class ReportSalaryNoteModel implements Serializable{
 	
 	private Long empDataId;
 	private Long periodId;
