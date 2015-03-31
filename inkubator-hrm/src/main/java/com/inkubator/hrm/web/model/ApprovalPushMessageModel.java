@@ -9,6 +9,7 @@ public class ApprovalPushMessageModel {
 	private String requestUserId;
 	private String requestFullName;
 	private String approvalName;
+	private String approvalStatus;
 	
 	public String getApproverUserId() {
 		return approverUserId;
@@ -39,5 +40,12 @@ public class ApprovalPushMessageModel {
 	}
 	public void setRequestFullName(String requestFullName) {
 		this.requestFullName = requestFullName;
-	}	
+	}
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+	
 }
