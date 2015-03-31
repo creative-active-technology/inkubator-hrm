@@ -4,11 +4,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni
  */
-public class SpecificationAbilityModelView {
+public class SpecificationAbilityModelView implements Serializable{
     private Long id;
     private String name;
     private String optionAbility;

@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author deni
  */
-public class UnregSalaryViewModel {
+public class UnregSalaryViewModel implements Serializable{
     private Long id;
     private BigInteger unregSalaryId;
     private String code;

@@ -5,11 +5,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni
  */
-public class LoanNewSchemaListOfEmpModel {
+public class LoanNewSchemaListOfEmpModel implements Serializable{
     private String firstName;
     private String lastName;
     private String nik;

@@ -148,6 +148,7 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
 	public List<RmbsSchemaListOfEmp> getAllDataByEmpDataId(Long empDataId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id.empDataId", empDataId));
+		criteria.setFetchMode("rmbsSchema", FetchMode.JOIN);
 		return criteria.list();
 	}
 	

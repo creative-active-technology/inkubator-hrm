@@ -2,15 +2,15 @@ package com.inkubator.hrm.web.model;
 
 import java.util.Date;
 
-import javax.validation.constraints.Pattern;
 
 import com.inkubator.hrm.entity.EmpData;
+import java.io.Serializable;
 
 /**
  *
  * @author Taufik
  */
-public class PermitImplementationModel {
+public class PermitImplementationModel implements Serializable{
 
 	private Long id;
 	private String numberFilling;

@@ -1,10 +1,12 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class CompanyBankAccountModel {
+public class CompanyBankAccountModel implements Serializable{
 
 	private Long id;
 	private Long companyId;

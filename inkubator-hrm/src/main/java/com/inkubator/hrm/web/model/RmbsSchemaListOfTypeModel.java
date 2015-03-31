@@ -1,11 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 
 /**
  *
  * @author rizkykojek
  */
-public class RmbsSchemaListOfTypeModel {
+public class RmbsSchemaListOfTypeModel implements Serializable{
 
 	private Long rmbsSchemaId;
 	private Long rmbsTypeId;
