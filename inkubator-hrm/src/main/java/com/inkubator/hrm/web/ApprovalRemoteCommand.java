@@ -32,8 +32,13 @@ public class ApprovalRemoteCommand {
         String approverFullName = params.get("approverFullName");
         String requestFullName = params.get("requestFullName");
         String approvalName = params.get("approvalName");
+        Integer approvalStatus = Integer.parseInt(params.get("approvalStatus"));
+        Boolean isWaitingApproval = approvalStatus == HRMConstant.APPROVAL_STATUS_WAITING;
+        Boolean isWaitingRevised = approvalStatus == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
+        
 
-        if (StringUtils.equals(approverUserId, UserInfoUtil.getUserName())) {
+        if ((isWaitingApproval && StringUtils.equals(approverUserId, UserInfoUtil.getUserName())) || 
+        		(isWaitingRevised && StringUtils.equals(requestUserId, UserInfoUtil.getUserName()))) {
             String infoMessages = StringUtils.EMPTY;
             switch (approvalName) {
                 case HRMConstant.BUSINESS_TRAVEL:
@@ -45,7 +50,11 @@ public class ApprovalRemoteCommand {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
                 case HRMConstant.REIMBURSEMENT:
-                    infoMessages = messages.getString("reimbursment.submission_of_reimbursment") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	if(isWaitingApproval){
+                		infoMessages = messages.getString("reimbursment.submission_of_reimbursment") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	} else if(isWaitingRevised){
+                		infoMessages = messages.getString("reimbursment.submission_of_reimbursment") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                	}
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
                 case HRMConstant.SHIFT_SCHEDULE:
