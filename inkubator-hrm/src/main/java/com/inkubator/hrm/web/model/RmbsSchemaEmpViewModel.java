@@ -1,9 +1,12 @@
 package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class RmbsSchemaEmpViewModel {
+public class RmbsSchemaEmpViewModel implements Serializable{
 
 	private Long empDataId;
 	private Long rmbsSchemaId;

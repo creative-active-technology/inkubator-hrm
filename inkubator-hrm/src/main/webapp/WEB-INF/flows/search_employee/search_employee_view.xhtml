@@ -21,8 +21,7 @@
                         <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Pencarian Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['searchEmployee.search_employee']}" styleClass="header_big" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,9 +32,9 @@
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column style="text-align: left;" colspan="2">
                                         <p:pickList value="#{searchEmployeeModel.dualListModelDepartment}" var="role" itemValue="#{role}" converter="departmentConverter" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Department" styleClass="isitext_hrm"
                                                     itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
@@ -48,9 +47,9 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column style="text-align: center;" colspan="2">
                                         <p:pickList value="#{searchEmployeeModel.dualListModelGoljab}" var="goljab" itemValue="#{goljab}" converter="golonganJabatanPicklistConverter" id="golonganJabatanId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Golongan Jabatan" styleClass="isitext_hrm"
                                                     itemLabel="#{goljab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
@@ -61,72 +60,83 @@
                             </p:row>
 
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Type Karyawan" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['reimbursment.employee_type']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column style="text-align: left; width: 50%">
                                         <p:selectCheckboxMenu id="menu" value="#{searchEmployeeModel.employeeTypeName}" label="#{appmsg['global.please_choose']}"
                                                               filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                                             <f:selectItems value="#{searchEmployeeModel.listEmployeeType}" />
+                                            <p:ajax listener="#{searchEmployeeViewController.listEmployeeTypeNameView(flowRequestContext)}" update="outputEmployeeType"/>
                                         </p:selectCheckboxMenu>
                                     </p:column>
+                                    <p:column style="text-align: left;">
+                                        <p:outputLabel id="outputEmployeeType" value="#{searchEmployeeModel.employeeTypeView}" style="font-weight: bold"/>
+                                    </p:column>
                                 </div>
                             </p:row>
                             
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Usia Hidup" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['searchEmployee.lifespan']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="true" size="2" 
+                                    <p:column style="text-align: left;" colspan="2">
+                                        <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        -
-                                        <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="true" size="2" 
+                                        s/d
+                                        <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                     </p:spinner>
                                     </p:column>
                                 </div>
                             </p:row>
                             
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Usia Kerja" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['employeeSearch.work_time_length']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="true" size="2" 
+                                    <p:column style="text-align: left;" colspan="2">
+                                        <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        -
-                                        <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="true" size="2" 
+                                        s/d
+                                        <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                     </p:spinner>
+                                    </p:column>
+                                </div>
+                            </p:row>
+                            
+                            <p:row>
+                                <div align="left">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.nik']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;" colspan="2">
+                                        <p:inputText id="nikFrom"  value="#{searchEmployeeModel.nikFrom}"
+                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                        s/d
+                                        <p:inputText id="nikUntil"  value="#{searchEmployeeModel.nikUntil}"
+                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                   
                                     </p:column>
                                 </div>
                             </p:row>
                         </p:panelGrid>
-                        <p:commandButton value="Lanjut" ajax="true" 
+                        <p:commandButton value="#{appmsg['global.search']}" ajax="true" 
                                          action="next" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="Lanjut"
                                          icon="ui-icon-arrow-1-e" title="Lanjut"/>
-
-
-                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-
-
-                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.add']}" actionListener="#{jabatanSpesifikasiDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update=":userViewGrowlId"/>
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSpesifikasiDetailController.doBack()}" styleClass="label_button"/>
-                        </h:panelGrid>
+                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="close_back" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
                         <div style="clear: both"/>
                     </h:form>
                 </div>

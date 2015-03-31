@@ -22,8 +22,7 @@
                         <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Pencarian Karyawan Result" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['loanschema.loan_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['searchEmployee.search_employee_result']}" styleClass="header_big" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -33,7 +32,7 @@
                         <p:panelGrid id="panelList" style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Departement" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.departments}" />
@@ -42,7 +41,7 @@
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.golonganJabatans}" />
@@ -51,20 +50,59 @@
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tipe Karyawan" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['reimbursment.employee_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.tipeKaryawan}" />
                                 </p:column>
                             </p:row>
 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['searchEmployee.lifespan']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.from} s/d #{searchEmployeeModel.until}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['employeeSearch.work_time_length']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.fromJoin} s/d #{searchEmployeeModel.untilJoin}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.nik']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.nikFrom} s/d #{searchEmployeeModel.nikUntil}" />
+                                </p:column>
+                            </p:row>
 
 
                         </p:panelGrid>
 
-                        <p:separator/>
-                        <p:dataTable value="#{searchEmployeeModel.listEmpData}" var="data" rowIndexVar="no" id="jobDesId"
-                                     >
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Search_Employee"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="back"
+                                             styleClass="label_button"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable  var="data"  value="#{searchEmployeeModel.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
@@ -73,46 +111,61 @@
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Karyawan"/>
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{data.firstName} #{data.lastName}" />
+                                <h:outputLabel value="#{data.nik}" />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Usia"/>
+                                    <h:outputText value="#{appmsg['global.age']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.age}" />
+                                <p:outputLabel value="#{data.bioData.dateOfBirth}" >
+                                    <f:converter converterId="ageByDateConverter" />
+                                </p:outputLabel>
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Department Name"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.name}" />
+                                <h:outputLabel value=" #{data.jabatanByJabatanId.department.departmentName}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Golongan Jabatan"/>
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.codeJabatan}" />
+                                <h:outputLabel value=" #{data.golonganJabatan.code}" />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Status Karyawan"/>
+                                    <h:outputText value="#{appmsg['unregSalary.employeeStatus']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.empTypeName}" />
+                                <h:outputLabel value=" #{data.employeeType.name}" />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
-                                    <h:outputText value="Join Date"/>
+                                    <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.joinDate}" />
+                                <h:outputLabel value="#{data.joinDate}" />
                             </p:column>
-                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{searchEmployeeModel.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet> 
                         </p:dataTable>  
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
                         <p:separator />
-                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanNewSchemaDetailController.doBack()}" styleClass="label_button"/>
-                        </h:panelGrid>
                         <div style="clear: both"/>
 
 
@@ -121,30 +174,7 @@
                     <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                         <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                     </p:dialog>
-                    <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
-                              appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                        <div align="center">
-                            <div align="center">
-                                <h:panelGrid columns="2" style="text-align: justify">
-                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                    <h:panelGroup>
-                                        <h:panelGrid style="text-align: center">
-                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                        </h:panelGrid>
-                                    </h:panelGroup>
-                                </h:panelGrid>
-                            </div>
-                            <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                                <p:outputLabel value="#{appmsg['global.name']}-"  style="font-weight: bold"/>
-                                <p:outputLabel value=":"  style="font-weight: bold"/>
-                                <p:outputLabel value="#{loanNewSchemaDetailController.loanNewSchemaListOfType.loanNewType.loanTypeName}" styleClass="label_hrm"/>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{loanNewSchemaDetailController.doDelete()}" update="formId:tabView1:loanNewSchemaTypeTableId, formId:panelList, :growlId"
-                                             oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
-                        </div>
-                    </p:dialog>
+
                 </div>
 
 

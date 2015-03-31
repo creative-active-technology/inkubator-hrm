@@ -1,9 +1,12 @@
 package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class ApprovalPushMessageModel {
+public class ApprovalPushMessageModel implements Serializable{
 	private String approverUserId;
 	private String approverFullName;	
 	private String requestUserId;

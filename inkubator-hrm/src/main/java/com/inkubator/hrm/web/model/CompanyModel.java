@@ -1,12 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import javax.validation.constraints.Pattern;
 
 /**
  *
  * @author rizkykojek
  */
-public class CompanyModel {
+public class CompanyModel implements Serializable{
 
     private Long id;
     private String code;
