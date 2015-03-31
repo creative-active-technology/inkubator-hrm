@@ -57,14 +57,42 @@
                                     <p:outputLabel  value="#{searchEmployeeModel.tipeKaryawan}" />
                                 </p:column>
                             </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Usia Hidup" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.from} s/d #{searchEmployeeModel.until}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Usia Kerja" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.fromJoin} s/d #{searchEmployeeModel.untilJoin}" />
+                                </p:column>
+                            </p:row>
 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nik" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.nikFrom} s/d #{searchEmployeeModel.nikUntil}" />
+                                </p:column>
+                            </p:row>
 
 
                         </p:panelGrid>
 
                         <p:separator/>
-                        <p:dataTable value="#{searchEmployeeModel.listEmpData}" var="data" rowIndexVar="no" id="jobDesId"
-                                     >
+                            <p:dataTable  var="data"  value="#{searchEmployeeModel.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
@@ -73,39 +101,47 @@
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
+                                    <h:outputText value="Nik"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.nik}" />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
                                     <h:outputText value="Nama Karyawan"/>
                                 </f:facet>
-                                <h:outputLabel value="#{data.firstName} #{data.lastName}" />
+                                <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
                                     <h:outputText value="Usia"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.age}" />
+                                <p:outputLabel value="#{data.bioData.dateOfBirth}" >
+                                    <f:converter converterId="ageByDateConverter" />
+                                </p:outputLabel>
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
                                     <h:outputText value="Department Name"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.name}" />
+                                <h:outputLabel value=" #{data.jabatanByJabatanId.department.departmentName}" />
                             </p:column> 
                             <p:column > 
                                 <f:facet name="header">  
                                     <h:outputText value="Golongan Jabatan"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.codeJabatan}" />
+                                <h:outputLabel value=" #{data.golonganJabatan.code}" />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
                                     <h:outputText value="Status Karyawan"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.empTypeName}" />
+                                <h:outputLabel value=" #{data.employeeType.name}" />
                             </p:column>
                             <p:column > 
                                 <f:facet name="header">  
                                     <h:outputText value="Join Date"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.joinDate}" />
+                                <h:outputLabel value="#{data.joinDate}" />
                             </p:column>
                             
                         </p:dataTable>  

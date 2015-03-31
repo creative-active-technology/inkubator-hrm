@@ -33,9 +33,9 @@
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="Department" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column style="text-align: left;">
                                         <p:pickList value="#{searchEmployeeModel.dualListModelDepartment}" var="role" itemValue="#{role}" converter="departmentConverter" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Department" styleClass="isitext_hrm"
                                                     itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
@@ -48,7 +48,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="Golongan Jabatan" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{searchEmployeeModel.dualListModelGoljab}" var="goljab" itemValue="#{goljab}" converter="golonganJabatanPicklistConverter" id="golonganJabatanId"
@@ -61,11 +61,11 @@
                             </p:row>
 
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Type Karyawan" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column style="text-align: left;">
                                         <p:selectCheckboxMenu id="menu" value="#{searchEmployeeModel.employeeTypeName}" label="#{appmsg['global.please_choose']}"
                                                               filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                                             <f:selectItems value="#{searchEmployeeModel.listEmployeeType}" />
@@ -75,58 +75,65 @@
                             </p:row>
                             
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Usia Hidup" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="true" size="2" 
+                                    <p:column style="text-align: left;">
+                                        <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        -
-                                        <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="true" size="2" 
+                                        s/d
+                                        <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                     </p:spinner>
                                     </p:column>
                                 </div>
                             </p:row>
                             
                             <p:row>
-                                <div align="center">
+                                <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="Usia Kerja" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="true" size="2" 
+                                    <p:column style="text-align: left;">
+                                        <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        -
-                                        <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="true" size="2" 
+                                        s/d
+                                        <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="false" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        <f:validateLongRange minimum="0" maximum="100"/>
                                     </p:spinner>
                                     </p:column>
                                 </div>
                             </p:row>
+                            
+                            <p:row>
+                                <div align="left">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="NIK" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;">
+                                        <p:inputText id="nikFrom"  value="#{searchEmployeeModel.nikFrom}"
+                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                        s/d
+                                        <p:inputText id="nikUntil"  value="#{searchEmployeeModel.nikUntil}"
+                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                   
+                                    </p:column>
+                                </div>
+                            </p:row>
                         </p:panelGrid>
-                        <p:commandButton value="Lanjut" ajax="true" 
+                        <p:commandButton value="#{appmsg['global.search']}" ajax="true" 
                                          action="next" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="Lanjut"
                                          icon="ui-icon-arrow-1-e" title="Lanjut"/>
+                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSpesifikasiDetailController.doBack()}" styleClass="label_button"/>
 
-
-                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-
-
-                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.add']}" actionListener="#{jabatanSpesifikasiDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update=":userViewGrowlId"/>
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSpesifikasiDetailController.doBack()}" styleClass="label_button"/>
-                        </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>
                 </div>

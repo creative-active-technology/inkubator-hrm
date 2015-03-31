@@ -12,11 +12,13 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmployeeTypeService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.web.lazymodel.SearchEmployeeLazyDataModel;
 import com.inkubator.hrm.web.model.SearchEmployeeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -61,6 +63,7 @@ public class SearchEmployeeViewController implements Serializable {
     }
     
     public void doGetParamSearchEmployee(RequestContext context) throws Exception{
+        System.out.println("HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAH");
         String departments = "";
         String golonganJabatan = "";
         String tipeKaryawan = "";
@@ -75,6 +78,8 @@ public class SearchEmployeeViewController implements Serializable {
         int untilBirth = searchEmployeeModel.getUntil();
         int joinDate = searchEmployeeModel.getFromJoin();
         int untilDate = searchEmployeeModel.getUntilJoin();
+        String nikFrom = searchEmployeeModel.getNikFrom();
+        String nikUntil = searchEmployeeModel.getNikUntil();
         for(int j = 0; j < sizeDepartment; j++){
             if(j == (sizeDepartment - 1)){
                 departments += listDepartment.get(j).getDepartmentName();
@@ -101,10 +106,13 @@ public class SearchEmployeeViewController implements Serializable {
         searchEmployeeModel.setDepartments(departments);
         searchEmployeeModel.setGolonganJabatans(golonganJabatan);
         searchEmployeeModel.setTipeKaryawan(tipeKaryawan);
+        List<String> listNik = empDataService.getAllNikBetween(nikFrom, nikUntil);
         List<Integer> listAge = getNumberBetweenFromAndUntil(fromBirth, untilBirth);
         List<Integer> listJoinDate = getNumberBetweenFromAndUntil(joinDate, untilDate);
-        List<EmpData> listEmpData = empDataService.getAllDataByParamWithDetail(listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate);
-        searchEmployeeModel.setListEmpData(listEmpData);
+//        List<EmpData> listEmpData = empDataService.getAllDataByParamWithDetail(listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate, listNik);
+//        searchEmployeeModel.setListEmpData(listEmpData);
+        LazyDataModel<EmpData> lazyDataModel = new SearchEmployeeLazyDataModel(empDataService, listDepartment, listGolonganJabatan, listEmployeeType, listAge, listJoinDate, listNik);
+        searchEmployeeModel.setLazyDataModel(lazyDataModel);
     }
     
     public List<Integer> getNumberBetweenFromAndUntil(int from, int until){
