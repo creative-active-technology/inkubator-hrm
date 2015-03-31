@@ -80,7 +80,7 @@
                                     <p:outputLabel  value="#{appmsg['global.nik']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 85%">
-                                    <p:outputLabel  value="#{searchEmployeeModel.nikFrom} s/d #{searchEmployeeModel.nikUntil}" />
+                                    <p:outputLabel  value="#{searchEmployeeModel.nikFrom} #{appmsg['global.until']} #{searchEmployeeModel.nikUntil}" />
                                 </p:column>
                             </p:row>
 
@@ -93,7 +93,7 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Search_Employee"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="back"
+                                    <p:commandButton value="#{appmsg['global.search']}"  icon="ui-icon-search"  title="#{appmsg['global.search']}"  immediate="true" action="back"
                                              styleClass="label_button"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -109,19 +109,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column > 
+                            <p:column sortBy="nik" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.nik}" />
                             </p:column>
-                            <p:column > 
+                              <p:column sortBy="bioData.firstName" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
                             </p:column> 
-                            <p:column > 
+                             <p:column sortBy="bioData.dateOfBirth" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.age']}"/>
                                 </f:facet>
@@ -133,21 +133,21 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
-                                <h:outputLabel value=" #{data.jabatanByJabatanId.department.departmentName}" />
+                                <h:outputLabel value="#{data.jabatanByJabatanId.department.departmentName}" />
                             </p:column> 
-                            <p:column > 
+                            <p:column sortBy="golonganJabatan.code"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value=" #{data.golonganJabatan.code}" />
                             </p:column>
-                            <p:column > 
+                              <p:column sortBy="employeeType.name"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['unregSalary.employeeStatus']}"/>
                                 </f:facet>
                                 <h:outputLabel value=" #{data.employeeType.name}" />
                             </p:column>
-                            <p:column > 
+                            <p:column sortBy="joinDate"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>
