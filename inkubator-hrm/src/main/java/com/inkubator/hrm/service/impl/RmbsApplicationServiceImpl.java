@@ -1,15 +1,22 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
+import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -279,21 +287,110 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            RmbsApplication rmbsApplication = gson.fromJson(pendingData, RmbsApplication.class);
+            rmbsApplication.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+
+            /** convert to UploadedFile before saving */
+            UploadedFile uploadedFile = this.convertFileToUploadedFile(gson, pendingData);
+            
+            /** saving to DB */
+            this.save(rmbsApplication, uploadedFile, Boolean.TRUE, Boolean.FALSE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
 		
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejected(long approvalActivityId, String comment) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di reject dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            RmbsApplication rmbsApplication = gson.fromJson(pendingData, RmbsApplication.class);
+            rmbsApplication.setApplicationStatus(HRMConstant.RMBS_STATUS_REJECTED);
+            rmbsApplication.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+            
+            /** convert to UploadedFile before saving */
+            UploadedFile uploadedFile = this.convertFileToUploadedFile(gson, pendingData);
+            
+            /** saving to DB */
+            this.save(rmbsApplication, uploadedFile, Boolean.TRUE, Boolean.FALSE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
 		
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void diverted(long approvalActivityId) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */            
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            RmbsApplication rmbsApplication = gson.fromJson(pendingData, RmbsApplication.class);
+            rmbsApplication.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+
+            /** convert to UploadedFile before saving */
+            UploadedFile uploadedFile = this.convertFileToUploadedFile(gson, pendingData);
+            
+            /** saving to DB */
+            this.save(rmbsApplication, uploadedFile, Boolean.TRUE, Boolean.FALSE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
 		
+	}
+	
+	@Override
+	public UploadedFile convertFileToUploadedFile(Gson gson, String pendingData) throws IOException{
+		
+		/** converting process from file physics (which is get the path file from json) to UploadedFile object*/
+		UploadedFile uploadedFile = null;
+        JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursementFileName");
+        if (!elReimbursment.isJsonNull()) {
+            String reimbursmentFilePath = elReimbursment.getAsString();
+            File file = new File(reimbursmentFilePath);
+            DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            int ret = input.read();
+            while (ret != -1) {
+                os.write(ret);
+                ret = input.read();
+            }
+            os.flush();
+
+            uploadedFile = new DefaultUploadedFile(fileItem);
+        }
+        
+        return uploadedFile;
 	}
 
 	@Override
@@ -304,7 +401,19 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public String save(RmbsApplication entity, UploadedFile reimbursmentFile, boolean isBypassApprovalChecking) throws Exception {
+	public String saveWithApproval(RmbsApplication entity, UploadedFile reimbursmentFile) throws Exception {
+		return this.save(entity, reimbursmentFile, Boolean.FALSE, Boolean.FALSE, null);
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String saveWithRevised(RmbsApplication entity, UploadedFile reimbursmentFile, Long approvalActivityId) throws Exception {
+		return this.save(entity, reimbursmentFile, null, Boolean.TRUE, approvalActivityId);
+		
+	}	
+	
+	private String save(RmbsApplication entity, UploadedFile reimbursmentFile, Boolean isBypassApprovalChecking, Boolean isRevised, Long revisedApprActivityId) throws Exception {
 		String message = "error";
 		
 		// check duplicate code
@@ -328,54 +437,75 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
         
-        //start saving data and approval checking
-        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empData.getId()).get(0).getRmbsSchema();
-        List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
-        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
-		if(approvalActivity == null){
-			//save entity to DB
-			if (reimbursmentFile != null) {
-                InputStream inputStream = null;
-                byte[] buffer = null;
-                inputStream = reimbursmentFile.getInputstream();
-                buffer = IOUtils.toByteArray(inputStream);
-                entity.setReceiptAttachment(buffer);
-            }
-            rmbsApplicationDao.save(entity);
-            
-            message = "success_without_approval";
-            
-		} else {
-			String uploadPath = null;
-            if (reimbursmentFile != null) {
-                uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), reimbursmentFile);
-                facesIO.transferFile(reimbursmentFile);
-                File file = new File(facesIO.getPathUpload() + reimbursmentFile.getFileName());
-                file.renameTo(new File(uploadPath));
-            }
-            
-			//parsing object to json and save to approval activity 
-            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            jsonObject.addProperty("reimbursmentFileName", uploadPath);            
-            approvalActivity.setPendingData(gson.toJson(jsonObject));
-            approvalActivity.setTypeSpecific(rmbsType.getId());
-            approvalActivityDao.save(approvalActivity);
-
-            //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
-            
-            message = "success_need_approval";
-		}
+        if(isRevised){
+        	//revising process
+        	String pendingData = this.getJsonPendingData(entity, reimbursmentFile);
+        	this.revised(revisedApprActivityId, pendingData);
+        	
+        	message = "success_need_approval";
+        } else {
+	        //start saving data and approval checking
+	        ApprovalActivity approvalActivity = this.checkApprovalIfAny(empData, isBypassApprovalChecking);
+			if(approvalActivity == null){
+				//save entity to DB
+				if (reimbursmentFile != null) {
+	                InputStream inputStream = reimbursmentFile.getInputstream();
+	                byte[] buffer = IOUtils.toByteArray(inputStream);
+	                entity.setReceiptAttachment(buffer);
+	            }
+	            rmbsApplicationDao.save(entity);
+	            
+	            message = "success_without_approval";
+	            
+			} else {	
+				//save to approval activity
+				String pendingData = this.getJsonPendingData(entity, reimbursmentFile);
+	            approvalActivity.setPendingData(pendingData);
+	            approvalActivity.setTypeSpecific(rmbsType.getId());
+	            approvalActivityDao.save(approvalActivity);
+	
+	            //sending email notification
+	            this.sendingEmailApprovalNotif(approvalActivity);
+	            
+	            message = "success_need_approval";
+			}
+        }
 		
 		return message; 		
 	}
 	
+	private ApprovalActivity checkApprovalIfAny(EmpData empData, Boolean isBypassApprovalChecking) throws Exception{
+		/** check approval process if any,
+		 *  return null if no need approval process */
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empData.getId()).get(0).getRmbsSchema();
+        List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+        
+        return isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
+	}
+	
+	private String getJsonPendingData(RmbsApplication entity, UploadedFile reimbursmentFile) throws IOException{
+		//saving file uploaded temporary
+		String uploadPath = null;
+        if (reimbursmentFile != null) {
+            uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), reimbursmentFile);
+            facesIO.transferFile(reimbursmentFile);
+            File file = new File(facesIO.getPathUpload() + reimbursmentFile.getFileName());
+            file.renameTo(new File(uploadPath));
+        }
+        
+		//parsing object to json 
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+        jsonObject.addProperty("reimbursementFileName", uploadPath);
+        
+        return gson.toJson(jsonObject);
+	}
+	
 	private String getUploadPath(Long id, UploadedFile documentFile) {
         String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
-        String uploadPath = facesIO.getPathUpload() + "reimburstment_" + id + "." + extension;
+        String uploadPath = facesIO.getPathUpload() + "reimbursement_" + id + "." + extension;
         return uploadPath;
     }
 

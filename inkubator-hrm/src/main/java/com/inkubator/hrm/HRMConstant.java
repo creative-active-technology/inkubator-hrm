@@ -183,6 +183,9 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_REJECTED = 2;
     public static final Integer APPROVAL_STATUS_DIVERTED = 3;
     public static final Integer APPROVAL_STATUS_CANCELLED = 4;
+    public static final Integer APPROVAL_STATUS_ASKING_REVISED = 5;
+    public static final Integer APPROVAL_STATUS_WAITING_REVISED = 6;
+    public static final Integer APPROVAL_STATUS_REVISED = 7;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     /* END */
 

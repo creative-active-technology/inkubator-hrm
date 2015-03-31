@@ -39,6 +39,12 @@ public class ApprovalStatusConverter implements Converter {
         	messages = resourceBundle.getString("approvalactivity.diverted");
         } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_CANCELLED)){
         	messages = resourceBundle.getString("approvalactivity.cancelled");
+        } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_ASKING_REVISED)){
+        	messages = resourceBundle.getString("approvalactivity.asking_for_revised");
+        } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_WAITING_REVISED)){
+        	messages = resourceBundle.getString("approvalactivity.waiting_for_revised");
+        } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_REVISED)){
+        	messages = resourceBundle.getString("approvalactivity.revised");
         }
         return messages;
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -43,17 +44,21 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 
     @Override
     public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order) {
-        ProjectionList proList = Projections.projectionList();
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    	
+    	ProjectionList proList = Projections.projectionList();
         proList.add(Property.forName("sequence").max());
         proList.add(Projections.groupProperty("activityNumber"));
         DetachedCriteria maxSequenceAndActivityNumber = DetachedCriteria.forClass(getEntityClass())
                 .add(Restrictions.eq("requestBy", userName))
                 .setProjection(proList);
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        String[] var = {"sequence", "activityNumber"};
+        criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));        
+        
         criteria.add(Restrictions.eq("requestBy", userName));
         criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING)));
-        String[] var = {"sequence", "activityNumber"};
-        criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
+        criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED)));
+        
         criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -77,17 +82,23 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 
     @Override
     public List<ApprovalActivity> getPendingRequest(String userName) {
-        ProjectionList proList = Projections.projectionList();
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    	
+    	ProjectionList proList = Projections.projectionList();
         proList.add(Property.forName("sequence").max());
         proList.add(Projections.groupProperty("activityNumber"));
         DetachedCriteria maxSequenceAndActivityNumber = DetachedCriteria.forClass(getEntityClass())
                 .add(Restrictions.eq("requestBy", userName))
                 .setProjection(proList);
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("requestBy", userName));
-        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
         String[] var = {"sequence", "activityNumber"};
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
+        
+        Disjunction disjStatus = Restrictions.disjunction();
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        criteria.add(disjStatus);
+        
+        criteria.add(Restrictions.eq("requestBy", userName));        
         criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         return criteria.list();
     }
@@ -96,8 +107,20 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     public List<ApprovalActivity> getPendingTask(String userName) {
 
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("approvedBy", userName));
-        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        
+        Conjunction conjApprover = Restrictions.conjunction();
+        conjApprover.add(Restrictions.eq("approvedBy", userName));
+        conjApprover.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING));
+        
+        Conjunction conjRequester = Restrictions.conjunction();
+        conjRequester.add(Restrictions.eq("requestBy", userName));
+        conjRequester.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(conjRequester);
+        disjunction.add(conjApprover);
+        
+        criteria.add(disjunction);        
         criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         return criteria.list();
     }
@@ -272,4 +295,13 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
         return (ApprovalActivity) criteria.uniqueResult();
     }
+
+	@Override
+	public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("activityNumber", activityNumber));
+		criteria.add(Restrictions.eq("sequence", sequence));
+		criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+		return (ApprovalActivity) criteria.uniqueResult();
+	}
 }
