@@ -80,7 +80,8 @@
                                                         converter="empDataConverter" required="#{loanApplicationFormController.isAdmin}" 
                                                         requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                         styleClass="isitext_hrm" size="28"  style="width:250px;" >
-                                            <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId,patternApprovalId"/>
+                                            <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" 
+                                                    update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId,tableApproverId,:growlUserFormId"/>
 
                                         </p:autoComplete>
 
@@ -138,10 +139,11 @@
                                                          required="true" maxlength="255" counter="counter"
                                                          counterTemplate="#{appmsg['global.remaining']}" 
                                                          styleClass="isitext_hrm" style="width:200px;" />
-                                        &nbsp;&nbsp;
+                                        &nbsp;
                                         <p:outputLabel  for="counter" styleClass="label_hrm" />
                                         <p:outputLabel  for="counter" styleClass="label_hrm" />
                                         <h:outputText id="counter" />
+                                        <p:message for="purposeId"/>
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -410,24 +412,24 @@
                                 </p:column>
                             </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loanNewSchema.pattern_approval']}"  for="patternApprovalId" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-
-                                    <p:selectOneMenu id="patternApprovalId" value="#{loanApplicationFormController.approvalDefId}" 
-                                                     label="#{appmsg['loanNewSchema.pattern_approval']}"   
-
-                                                     style="min-width: 200px;margin-right: 3px" required="true" >
-
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanApplicationFormController.mapApprovalLoan}"/>
-                                        <p:ajax   listener="#{loanApplicationFormController.updateDataApprover()}"  update="tableApproverId"/>
-                                    </p:selectOneMenu>
-                                    <p:message for="patternApprovalId"/>
-                                </p:column>
-                            </p:row>
+                            <!--                            <p:row>
+                                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="#{appmsg['loanNewSchema.pattern_approval']}"  for="patternApprovalId" styleClass="label_hrm" />
+                                                            </p:column>
+                                                            <p:column style="width: 80%">
+                            
+                                                                <p:selectOneMenu id="patternApprovalId" value="#{loanApplicationFormController.approvalDefId}" 
+                                                                                 label="#{appmsg['loanNewSchema.pattern_approval']}"   
+                            
+                                                                                 style="min-width: 200px;margin-right: 3px" required="true" >
+                            
+                                                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                                    <f:selectItems value="#{loanApplicationFormController.mapApprovalLoan}"/>
+                                                                    <p:ajax   listener="#{loanApplicationFormController.updateDataApprover()}"  update="tableApproverId"/>
+                                                                </p:selectOneMenu>
+                                                                <p:message for="patternApprovalId"/>
+                                                            </p:column>
+                                                        </p:row>-->
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -445,26 +447,13 @@
                                                 </f:facet>
                                                 <h:outputLabel value="#{no+1}." />
                                             </p:column>  
-                                            <p:column style="text-align: center;width: 20%">
+                                            <p:column style="text-align: center;width: 24%">
                                                 <f:facet name="header">  
                                                     <h:outputText value="#{appmsg['loan.loan_approver']}"/>
                                                 </f:facet>
-                                                <p:autoComplete id="approverAutoCompleteId" title="#{appmsg['publicHolidayException.publicHolidayException_emp']}" 
-                                                                value="#{loanNewApplicationInstallmentData}" 
-                                                                completeMethod="#{loanApplicationFormController.completeEmpData}"
-                                                                var="employee" emptyMessage="#{appmsg['employee.employee_not_found']}"
-                                                                maxResults="8" itemValue="#{employee}"                                            
-                                                                itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.lastName}"
-                                                                converter="empDataConverter" required="true" 
-                                                                requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
-                                                                styleClass="isitext_hrm" size="28"  style="width:250px;" >
-<!--                                                    <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" 
-                                                                update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId,patternApprovalId"/>-->
-
-                                                </p:autoComplete>
-        <!--                                                <h:outputLabel value= "#{loanNewApplicationInstallmentData.installmentDate}">
-                                                            <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                                        </h:outputLabel>-->
+                                                <h:outputLabel value= "#{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName}">
+                                                   
+                                                </h:outputLabel>
                                             </p:column>
                                         </p:dataTable>
                                     </h:panelGrid>
@@ -474,27 +463,27 @@
                         </p:panelGrid>
                     </div>
 
-
-                </h:form>
-                <h:form id="formSubmitId">
                     <div id="box_bg" style="margin: 10px">
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="formSubmitId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
-                                             action="#{loanApplicationFormController.doSave()}" styleClass="label_button" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk"
-                                             id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":scheduleFormId,formSubmitId" action="#{loanApplicationFormController.doReset()}" immediate="true"
+                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="scheduleFormId,:growlUserFormId" 
+                                             action="#{loanApplicationFormController.doApprove()}" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['loan.apply']}"
+                                             icon="ui-icon-disk" 
+                                             id="buttonSave" title="#{appmsg['loan.apply']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="scheduleFormId" action="#{loanApplicationFormController.doReset()}" immediate="true"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target=":scheduleFormId,formSubmitId" />  
+                                <p:resetInput target="scheduleFormId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanApplicationFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
                         </div>
                     </div>
+                </h:form>
+                <h:form id="formSubmitId">
+                    
                 </h:form>
             </ui:define>
 

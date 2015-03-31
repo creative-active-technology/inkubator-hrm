@@ -7,6 +7,10 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.service.LoanNewApplicationService;
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -29,7 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "loanNewApplicationService")
 @Lazy
-public class LoanNewApplicationServiceImpl extends IServiceImpl implements LoanNewApplicationService {
+public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl implements LoanNewApplicationService {
+    
+     @Autowired
+    private LoanNewApplicationDao loanNewApplicationDao;
 
     @Override
     public LoanNewApplication getEntiyByPK(String string) throws Exception {
@@ -229,5 +237,37 @@ public class LoanNewApplicationServiceImpl extends IServiceImpl implements LoanN
         }
 
         return listLoanNewApplicationInstallments;
+    }
+
+    @Override
+    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void rejected(long approvalActivityId, String comment) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void diverted(long approvalActivityId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef) throws Exception {
+        return super.getListApproverByListAppDef(listAppDef);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getCurrentMaxId() {
+        return this.loanNewApplicationDao.getCurrentMaxId();
     }
 }

@@ -5,6 +5,8 @@
 package com.inkubator.hrm.web.personalia;
 
 import ch.lambdaj.Lambda;
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.web.employee.*;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -12,6 +14,7 @@ import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
@@ -36,6 +39,7 @@ import com.inkubator.hrm.service.LoanTypeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
+import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.MapUtil;
@@ -47,8 +51,10 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,8 +75,7 @@ import org.hamcrest.Matchers;
 @ViewScoped
 public class LoanApplicationFormController extends BaseController {
 
-    @ManagedProperty(value = "#{loanService}")
-    private LoanService loanService;
+  
     @ManagedProperty(value = "#{loanNewApplicationService}")
     private LoanNewApplicationService loanNewApplicationService;
     @ManagedProperty(value = "#{loanNewSchemaService}")
@@ -82,27 +87,26 @@ public class LoanApplicationFormController extends BaseController {
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{loanNewTypeService}")
-    private LoanNewTypeService loanNewTypeService;
-    @ManagedProperty(value = "#{bioDataService}")
-    private BioDataService bioDataService;
+    private LoanNewTypeService loanNewTypeService;    
     @ManagedProperty(value = "#{transactionCodeficationService}")
     private TransactionCodeficationService transactionCodeficationService;
     @ManagedProperty(value = "#{approvalDefinitionService}")
     private ApprovalDefinitionService approvalDefinitionService;
     @ManagedProperty(value = "#{approvalDefinitionLoanService}")
     private ApprovalDefinitionLoanService approvalDefinitionLoanService;
+    
     private Boolean isAdmin;
-//    private Boolean isSubsidiByCicilan;
-//    private Boolean isSubsidiByBunga;
     private EmpData selectedEmployee;
+    
     private Map<String, Long> mapLoanNewType = new HashMap<>();
     private Map<String, Long> mapSubsidiType = new HashMap<>();
     private Map<String, Long> mapApprovalLoan = new HashMap<>();
+    
     private Long subsidiType;
     private Long loanNewTypeId;
     private Long approvalDefId;
+    
     private LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId;
-
     private LoanApplicationFormModel model;
     private List<EmpData> source = new ArrayList<>();
 
@@ -119,14 +123,13 @@ public class LoanApplicationFormController extends BaseController {
         try {
 
             TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode((HRMConstant.LOAN_KODE));
-            Long currentMaxLoanId = loanService.getCurrentMaxId();
+            Long currentMaxLoanId = loanNewApplicationService.getCurrentMaxId();
             model.setNomor(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
 
             mapSubsidiType.put("Cicilan", 1l);
             mapSubsidiType.put("Bunga", 2l);
 
-//            isSubsidiByCicilan = Boolean.FALSE;
-//            isSubsidiByBunga = Boolean.FALSE;
+
             if (Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE))) {
                 isAdmin = Boolean.TRUE;
             } else {
@@ -186,7 +189,6 @@ public class LoanApplicationFormController extends BaseController {
         this.approvalDefinitionLoanService = approvalDefinitionLoanService;
     }
     
-
     public Long getSubsidiType() {
         return subsidiType;
     }
@@ -259,22 +261,13 @@ public class LoanApplicationFormController extends BaseController {
         this.loanNewSchemaListOfTypeService = loanNewSchemaListOfTypeService;
     }
 
-    public BioDataService getBioDataService() {
-        return bioDataService;
-    }
-
-    public void setBioDataService(BioDataService bioDataService) {
-        this.bioDataService = bioDataService;
-    }
-
     @PreDestroy
     private void cleanAndExit() {
-        loanService = null;
+        loanNewApplicationService = null;
         loanNewSchemaService = null;
         loanNewTypeService = null;
         empDataService = null;
         model = null;
-
     }
 
     public Map<String, Long> getMapLoanNewType() {
@@ -291,14 +284,6 @@ public class LoanApplicationFormController extends BaseController {
 
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
-    }
-
-    public LoanService getLoanService() {
-        return loanService;
-    }
-
-    public void setLoanService(LoanService loanService) {
-        this.loanService = loanService;
     }
 
     public LoanNewSchemaService getLoanNewSchemaService() {
@@ -341,19 +326,25 @@ public class LoanApplicationFormController extends BaseController {
         this.source = source;
     }
 
-    public String doSave() {
+    public void doApprove() {
 
         try {
-//            List<EmpData> dataToSave = dualListModel.getTarget();
-//            tempJadwalKaryawanService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
-//            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
+            
+            if(model.getListLoanNewApplicationInstallments().isEmpty()){
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.loan_isntallment_table_should_not_be_empty", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return;
+            }
+            
+            LoanNewApplication loanNewApplication = getEntityFromModel(model);
+            
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            //return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-        return null;
+       
     }
 
     public void doReset() {
@@ -395,7 +386,13 @@ public class LoanApplicationFormController extends BaseController {
         try {
 
             model.setNamakaryawan(selectedEmployee.getNikWithFullName());
+            model.setEmpData(selectedEmployee);
             LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpService.getEntityWithDetailByEmpDataId(selectedEmployee.getId());
+            
+            if(null == loanNewSchemaListOfEmp){
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.emp_doesnt_have_any_loan_schema", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return;
+            }
             model.setLoanNewSchemaListOfEmp(loanNewSchemaListOfEmp);
 
             List<LoanNewSchemaListOfType> listOfTypes = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
@@ -421,7 +418,12 @@ public class LoanApplicationFormController extends BaseController {
             for(ApprovalDefinition approvalDefinition : listAppDef){
                 mapApprovalLoan.put(approvalDefinition.getName(), approvalDefinition.getId());
             }
-
+            
+            List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef);
+            model.setListApprover(listApprover);
+            
+            System.out.println("total Approver : " + listApprover.size());
+            
         } catch (Exception e) {
             Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -472,8 +474,8 @@ public class LoanApplicationFormController extends BaseController {
             }
 
             Double interest = model.getSelectedLoanNewSchemaListOfType().getLoanNewType().getInterest().doubleValue();
-            Integer termin = model.getTermin();
-            Date disbursementDate = model.getExpectedDisbursementDate();
+            Integer termin = model.getTermin();           
+            Date disbursementDate = DateTimeUtil.getDateFrom(model.getExpectedDisbursementDate(), model.getRangeFirstInstallmentToDisbursement(), CommonUtilConstant.DATE_FORMAT_MONTH);
             Double loanNominal = model.getNominalLoan();
             Integer interestMethod = model.getSelectedLoanNewSchemaListOfType().getLoanNewType().getInterestMethod();
 
@@ -494,5 +496,22 @@ public class LoanApplicationFormController extends BaseController {
         }catch(Exception e){
             Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
         }        
+    }
+    
+    public LoanNewApplication getEntityFromModel(LoanApplicationFormModel model){
+        
+        LoanNewApplication loanNewApplication = new LoanNewApplication();        
+        loanNewApplication.setApplicationDate(model.getLoanDate());
+        loanNewApplication.setDibursementDate(model.getExpectedDisbursementDate());
+        loanNewApplication.setDescription(model.getDescription());
+        loanNewApplication.setEmpData(model.getEmpData());
+        loanNewApplication.setLoanNewApplicationInstallments(new HashSet<LoanNewApplicationInstallment>(model.getListLoanNewApplicationInstallments()));
+        loanNewApplication.setLoanNewType(model.getSelectedLoanNewSchemaListOfType().getLoanNewType());
+        loanNewApplication.setPurposeNote(model.getPurpose());
+        loanNewApplication.setSubsidizedDiscOfInterest(model.getSubsidiBunga());
+        loanNewApplication.setSubsidizedNominal(model.getSubsidiCicilan());
+        loanNewApplication.setTermin(model.getTermin());
+        
+        return loanNewApplication;
     }
 }
