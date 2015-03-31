@@ -76,7 +76,7 @@
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -84,18 +84,18 @@
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:spinner id="from" value="#{searchEmployeeModel.from}" min="0" max="100" required="false" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        s/d
+                                        #{appmsg['global.until']}
                                         <p:spinner id="until" value="#{searchEmployeeModel.until}" min="0" max="100" required="false" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
-                                    </p:spinner>
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="0" maximum="100"/>
+                                        </p:spinner>
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -103,18 +103,18 @@
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:spinner id="fromJoin" value="#{searchEmployeeModel.fromJoin}" min="0" max="100" required="false" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="0" maximum="100"/>
                                         </p:spinner>
-                                        s/d
+                                        #{appmsg['global.until']}
                                         <p:spinner id="untilJoin" value="#{searchEmployeeModel.untilJoin}" min="0" max="100" required="false" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
-                                    </p:spinner>
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="0" maximum="100"/>
+                                        </p:spinner>
                                     </p:column>
                                 </div>
                             </p:row>
-                            
+
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -122,11 +122,11 @@
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:inputText id="nikFrom"  value="#{searchEmployeeModel.nikFrom}"
-                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                                        s/d
+                                                     required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                        #{appmsg['global.until']} 
                                         <p:inputText id="nikUntil"  value="#{searchEmployeeModel.nikUntil}"
-                                             required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                                   
+                                                     required="false"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+
                                     </p:column>
                                 </div>
                             </p:row>
@@ -134,9 +134,9 @@
                         <p:commandButton value="#{appmsg['global.search']}" ajax="true" 
                                          action="next" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="Lanjut"
-                                         icon="ui-icon-arrow-1-e" title="Lanjut"/>
+                                         icon="ui-icon-search" title="Lanjut"/>
                         <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="close_back" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                         <div style="clear: both"/>
                     </h:form>
                 </div>
