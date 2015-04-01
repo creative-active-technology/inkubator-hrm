@@ -23,7 +23,7 @@ public class ActiveStatusMessageConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
-		
+		          System.out.println(obj.toString()+ " 0-0-0-0-0-0-0-0--0-0");
 		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		return obj == Boolean.TRUE ? messages.getString("global.active"):messages.getString("global.inactive");
 	}

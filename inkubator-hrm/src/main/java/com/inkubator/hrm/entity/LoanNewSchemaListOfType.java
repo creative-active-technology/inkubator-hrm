@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,61 +27,61 @@ import javax.persistence.Version;
 public class LoanNewSchemaListOfType  implements java.io.Serializable {
 
 
-     private LoanNewSchemaListOfTypeId id;
+     private Long id;
      private Integer version;
      private LoanNewSchema loanNewSchema;
      private LoanNewType loanNewType;
-     private Double maximumApproval;
      private Double maximumAllocation;
-     private Double minimumApproval;
+     private Double maximumApproval;
      private Double minimumAllocation;
+     private Double minimumApproval;
      private Double minimumMonthlyInstallment;
-     private int maxPeriode;
-     private int maksimumHariTersedia;
-     private Date createdOn;
      private String createdBy;
-     private Date updatedOn;
+     private Date createdOn;
+     private int maksimumHariTersedia;
+     private int maxPeriode;
      private String updateBy;
+     private Date updatedOn;
+     private Boolean isActive;
 
     public LoanNewSchemaListOfType() {
     }
 
 	
-    public LoanNewSchemaListOfType(LoanNewSchemaListOfTypeId id, LoanNewSchema loanNewSchema, LoanNewType loanNewType, int maxPeriode, int maksimumHariTersedia) {
+    public LoanNewSchemaListOfType(long id, LoanNewSchema loanNewSchema, LoanNewType loanNewType, int maksimumHariTersedia, int maxPeriode) {
         this.id = id;
         this.loanNewSchema = loanNewSchema;
         this.loanNewType = loanNewType;
-        this.maxPeriode = maxPeriode;
         this.maksimumHariTersedia = maksimumHariTersedia;
+        this.maxPeriode = maxPeriode;
     }
-    public LoanNewSchemaListOfType(LoanNewSchemaListOfTypeId id, LoanNewSchema loanNewSchema, LoanNewType loanNewType, Double maximumApproval, Double maximumAllocation, Double minimumApproval, Double minimumAllocation, Double minimumMonthlyInstallment, int maxPeriode, int maksimumHariTersedia, Date createdOn, String createdBy, Date updatedOn, String updateBy) {
+    public LoanNewSchemaListOfType(long id, LoanNewSchema loanNewSchema, LoanNewType loanNewType, Double maximumAllocation, Double maximumApproval, Double minimumAllocation, Double minimumApproval, Double minimumMonthlyInstallment, String createdBy, Date createdOn, int maksimumHariTersedia, int maxPeriode, String updateBy, Date updatedOn, Boolean isActive) {
        this.id = id;
        this.loanNewSchema = loanNewSchema;
        this.loanNewType = loanNewType;
-       this.maximumApproval = maximumApproval;
        this.maximumAllocation = maximumAllocation;
-       this.minimumApproval = minimumApproval;
+       this.maximumApproval = maximumApproval;
        this.minimumAllocation = minimumAllocation;
+       this.minimumApproval = minimumApproval;
        this.minimumMonthlyInstallment = minimumMonthlyInstallment;
-       this.maxPeriode = maxPeriode;
-       this.maksimumHariTersedia = maksimumHariTersedia;
-       this.createdOn = createdOn;
        this.createdBy = createdBy;
-       this.updatedOn = updatedOn;
+       this.createdOn = createdOn;
+       this.maksimumHariTersedia = maksimumHariTersedia;
+       this.maxPeriode = maxPeriode;
        this.updateBy = updateBy;
+       this.updatedOn = updatedOn;
+       this.isActive = isActive;
     }
    
-     @EmbeddedId
+     @Id 
 
     
-    @AttributeOverrides( {
-        @AttributeOverride(name="loanNewTypeId", column=@Column(name="loan_new_type_id", nullable=false) ), 
-        @AttributeOverride(name="loanNewSchemaId", column=@Column(name="loan_new_schema_id", nullable=false) ) } )
-    public LoanNewSchemaListOfTypeId getId() {
+    @Column(name="id", unique=true, nullable=false)
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(LoanNewSchemaListOfTypeId id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -95,7 +96,7 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="loan_new_schema_id", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="loan_new_schema_id", nullable=false)
     public LoanNewSchema getLoanNewSchema() {
         return this.loanNewSchema;
     }
@@ -105,23 +106,13 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="loan_new_type_id", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="loan_new_type_id", nullable=false)
     public LoanNewType getLoanNewType() {
         return this.loanNewType;
     }
     
     public void setLoanNewType(LoanNewType loanNewType) {
         this.loanNewType = loanNewType;
-    }
-
-    
-    @Column(name="maximum_approval", precision=22, scale=0)
-    public Double getMaximumApproval() {
-        return this.maximumApproval;
-    }
-    
-    public void setMaximumApproval(Double maximumApproval) {
-        this.maximumApproval = maximumApproval;
     }
 
     
@@ -135,13 +126,13 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     }
 
     
-    @Column(name="minimum_approval", precision=22, scale=0)
-    public Double getMinimumApproval() {
-        return this.minimumApproval;
+    @Column(name="maximum_approval", precision=22, scale=0)
+    public Double getMaximumApproval() {
+        return this.maximumApproval;
     }
     
-    public void setMinimumApproval(Double minimumApproval) {
-        this.minimumApproval = minimumApproval;
+    public void setMaximumApproval(Double maximumApproval) {
+        this.maximumApproval = maximumApproval;
     }
 
     
@@ -155,6 +146,16 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     }
 
     
+    @Column(name="minimum_approval", precision=22, scale=0)
+    public Double getMinimumApproval() {
+        return this.minimumApproval;
+    }
+    
+    public void setMinimumApproval(Double minimumApproval) {
+        this.minimumApproval = minimumApproval;
+    }
+
+    
     @Column(name="minimum_monthly_installment", precision=22, scale=0)
     public Double getMinimumMonthlyInstallment() {
         return this.minimumMonthlyInstallment;
@@ -162,36 +163,6 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     
     public void setMinimumMonthlyInstallment(Double minimumMonthlyInstallment) {
         this.minimumMonthlyInstallment = minimumMonthlyInstallment;
-    }
-
-    
-    @Column(name="max_periode", nullable=false)
-    public int getMaxPeriode() {
-        return this.maxPeriode;
-    }
-    
-    public void setMaxPeriode(int maxPeriode) {
-        this.maxPeriode = maxPeriode;
-    }
-
-    
-    @Column(name="maksimum_hari_tersedia", nullable=false)
-    public int getMaksimumHariTersedia() {
-        return this.maksimumHariTersedia;
-    }
-    
-    public void setMaksimumHariTersedia(int maksimumHariTersedia) {
-        this.maksimumHariTersedia = maksimumHariTersedia;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="created_on", length=19)
-    public Date getCreatedOn() {
-        return this.createdOn;
-    }
-    
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
     }
 
     
@@ -205,13 +176,33 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="updated_on", length=19)
-    public Date getUpdatedOn() {
-        return this.updatedOn;
+    @Column(name="created_on", length=19)
+    public Date getCreatedOn() {
+        return this.createdOn;
     }
     
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    
+    @Column(name="maksimum_hari_tersedia", nullable=false)
+    public int getMaksimumHariTersedia() {
+        return this.maksimumHariTersedia;
+    }
+    
+    public void setMaksimumHariTersedia(int maksimumHariTersedia) {
+        this.maksimumHariTersedia = maksimumHariTersedia;
+    }
+
+    
+    @Column(name="max_periode", nullable=false)
+    public int getMaxPeriode() {
+        return this.maxPeriode;
+    }
+    
+    public void setMaxPeriode(int maxPeriode) {
+        this.maxPeriode = maxPeriode;
     }
 
     
@@ -224,9 +215,28 @@ public class LoanNewSchemaListOfType  implements java.io.Serializable {
         this.updateBy = updateBy;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="updated_on", length=19)
+    public Date getUpdatedOn() {
+        return this.updatedOn;
+    }
+    
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
 
-
-
+    
+    @Column(name="is_active")
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+    
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 }
+
+
+
 
 

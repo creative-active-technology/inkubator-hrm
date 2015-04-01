@@ -55,8 +55,8 @@
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:calendar  id="loanDate" pattern="dd MMMM yyyy" label="#{appmsg['loan.loan_date']}"
                                                      value="#{loanApplicationFormController.model.loanDate}"  
-                                                     readonly="false" required="true"
-                                                     style="width:200px;" >                                    
+                                                     readonly="false" required="true" size="28"
+                                                     style="width:250px;" >                                    
                                         </p:calendar>
                                         <p:message for="loanDate"/>                                 
 
@@ -79,21 +79,23 @@
                                                         itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.lastName}"
                                                         converter="empDataConverter" required="#{loanApplicationFormController.isAdmin}" 
                                                         requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
-                                                        styleClass="isitext_hrm" size="35" style="width:200px;" >
-                                            <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId"/>
+                                                        styleClass="isitext_hrm" size="28"  style="width:250px;" >
+                                            <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" 
+                                                    update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId,tableApproverId,:growlUserFormId"/>
 
                                         </p:autoComplete>
 
-
+                                        <p:message for="employeeAutoCompleteId"/>   
 
                                         <p:inputText id="employeeId" value="#{loanApplicationFormController.model.namakaryawan}" 
                                                      label="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
                                                      title="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
                                                      rendered="#{!loanApplicationFormController.isAdmin}"
-                                                     style="width:200px;"
+                                                     style="width:250px;"
                                                      required="true" styleClass="isitext_hrm" readonly="true"  />
-                                        <p:message for="employeeAutoCompleteId"/>   
+
                                         <p:message for="employeeId"/>  
+
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -107,7 +109,7 @@
 
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loantype.loantype']}"  for="loanNewTypeId" styleClass="label_hrm" />
@@ -115,10 +117,11 @@
                                 <p:column style="width: 80%">
 
                                     <p:selectOneMenu id="loanNewTypeId" value="#{loanApplicationFormController.loanNewTypeId}" 
-                                                     label="#{appmsg['loantype.loantype']}"                                             
-                                                     style="min-width: 200px;margin-right: 3px"  >
+                                                     label="#{appmsg['loantype.loantype']}"   
 
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
+                                                     style="min-width: 200px;margin-right: 3px" required="true" >
+
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanApplicationFormController.mapLoanNewType}"/>
                                         <p:ajax   listener="#{loanApplicationFormController.updateDataPeriod()}"  update="maxPeriod,loanPeriod,minimumInstallment"/>
                                     </p:selectOneMenu>
@@ -136,10 +139,11 @@
                                                          required="true" maxlength="255" counter="counter"
                                                          counterTemplate="#{appmsg['global.remaining']}" 
                                                          styleClass="isitext_hrm" style="width:200px;" />
-                                        &nbsp;&nbsp;
+                                        &nbsp;
                                         <p:outputLabel  for="counter" styleClass="label_hrm" />
                                         <p:outputLabel  for="counter" styleClass="label_hrm" />
                                         <h:outputText id="counter" />
+                                        <p:message for="purposeId"/>
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -164,12 +168,14 @@
                                     <p:outputLabel  value="#{appmsg['loan.loan_nominal']}"  for="nominalLoanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
-                                                    decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
-                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}" update="usedLoan,availableLoan"/>
-                                    </pe:inputNumber>
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
+                                                        decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
+                                            <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}" update="usedLoan,availableLoan"/>
+                                        </pe:inputNumber>
 
-                                    <p:message for="nominalLoanId"/>
+                                        <p:message for="nominalLoanId"/>
+                                    </h:panelGrid>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -188,7 +194,7 @@
 
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loan.termin']}"  for="terminId" styleClass="label_hrm" />
@@ -206,7 +212,7 @@
                                 </p:column>
                             </p:row>
 
-                            
+
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -259,7 +265,11 @@
 
                         <p:outputLabel value="#{appmsg['loan.loan_detail_installment_table']}" styleClass="header_big" />                     
                         <p:separator/>
-
+                        <p:commandButton value="#{appmsg['loan.generate_installment_schedule']}" ajax="true" update="scheduleFormId,:growlUserFormId,tableLoanNewApplicationInstallmentId" 
+                                         action="#{loanApplicationFormController.doCalculateInstallmentSchedule()}" styleClass="label_button" 
+                                         style="margin-right: 5px" label="#{appmsg['loan.generate_installment_schedule']}"
+                                         icon="ui-icon-folder-open"
+                                         id="btnGenerateInstallmentSchedule" title="#{appmsg['loan.generate_installment_schedule']}"/>
                         <p:dataTable  id="tableLoanNewApplicationInstallmentId" var="loanNewApplicationInstallmentData"  value="#{loanApplicationFormController.model.listLoanNewApplicationInstallments}" lazy="false" paginator="#{loanApplicationFormController.model.isPaginator}" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -366,41 +376,60 @@
                                             <f:selectItems value="#{loanApplicationFormController.mapSubsidiType}"/>
                                             <p:ajax    update="panelNominalSubsidi,panelBungaSubsidi"/>
                                         </p:selectOneMenu>
-                                        </h:panelGrid>
+                                    </h:panelGrid>
 
-                                        <h:panelGrid id="panelNominalSubsidi" columns="4" style="margin-left: -10px;">
-                                            <p:outputLabel value="#{appmsg['loan.subsidized_installment_value']}"
-                                                           rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />                                    
-                                            <p:outputLabel value=" : " rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />
-                                            <pe:inputNumber id="nominalSubsidi" title="#{appmsg['loan.subsidized_installment_value']}" 
-                                                            label="#{appmsg['loan.subsidized_installment_value']}"
-                                                            value="#{loanApplicationFormController.model.subsidiCicilan}" 
-                                                            rendered="#{loanApplicationFormController.subsidiType eq 1}" 
-                                                            decimalPlaces="0" required="#{loanApplicationFormController.subsidiType eq 1}" styleClass="isitext_hrm" style="width:200px;">   
-                                                                                                 
-                                            </pe:inputNumber>
-                                            <p:message for="nominalSubsidi"/>
-                                        </h:panelGrid>
+                                    <h:panelGrid id="panelNominalSubsidi" columns="4" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appmsg['loan.subsidized_installment_value']}"
+                                                       rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />                                    
+                                        <p:outputLabel value=" : " rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />
+                                        <pe:inputNumber id="nominalSubsidi" title="#{appmsg['loan.subsidized_installment_value']}" 
+                                                        label="#{appmsg['loan.subsidized_installment_value']}"
+                                                        value="#{loanApplicationFormController.model.subsidiCicilan}" 
+                                                        rendered="#{loanApplicationFormController.subsidiType eq 1}" 
+                                                        decimalPlaces="0" required="#{loanApplicationFormController.subsidiType eq 1}" styleClass="isitext_hrm" style="width:200px;">   
 
-                                        <h:panelGrid id="panelBungaSubsidi" columns="5" style="margin-left: -10px;">
-                                            <p:outputLabel value="#{appmsg['loan.subsidized_interest_value']}"
-                                                           rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />                                    
-                                            <p:outputLabel value=" : " rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />
-                                            <p:spinner id="discountSubsidi" required="#{loanApplicationFormController.subsidiType eq 2}" 
-                                                       rendered="#{loanApplicationFormController.subsidiType eq 2}"
-                                                       title="#{appmsg['loan.subsidized_interest_value']}"
-                                                       label="#{appmsg['loan.subsidized_interest_value']}"
-                                                       value="#{loanApplicationFormController.model.subsidiBunga}" 
-                                                       size="3" min="1" stepFactor="1" max="100" styleClass="isitext_hrm" >                                        
-                                            </p:spinner>       
-                                           
-                                            <p:outputLabel value=" % " rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />
-                                            <p:message for="discountSubsidi"/>
-                                        </h:panelGrid>
+                                        </pe:inputNumber>
+                                        <p:message for="nominalSubsidi"/>
+                                    </h:panelGrid>
 
-                                    
+                                    <h:panelGrid id="panelBungaSubsidi" columns="5" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appmsg['loan.subsidized_interest_value']}"
+                                                       rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />                                    
+                                        <p:outputLabel value=" : " rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />
+                                        <p:spinner id="discountSubsidi" required="#{loanApplicationFormController.subsidiType eq 2}" 
+                                                   rendered="#{loanApplicationFormController.subsidiType eq 2}"
+                                                   title="#{appmsg['loan.subsidized_interest_value']}"
+                                                   label="#{appmsg['loan.subsidized_interest_value']}"
+                                                   value="#{loanApplicationFormController.model.subsidiBunga}" 
+                                                   size="3" min="1" stepFactor="1" max="100" styleClass="isitext_hrm" >                                        
+                                        </p:spinner>       
+
+                                        <p:outputLabel value=" % " rendered="#{loanApplicationFormController.subsidiType eq 2}"  styleClass="label_hrm" />
+                                        <p:message for="discountSubsidi"/>
+                                    </h:panelGrid>
+
+
                                 </p:column>
                             </p:row>
+
+                            <!--                            <p:row>
+                                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                                <p:outputLabel  value="#{appmsg['loanNewSchema.pattern_approval']}"  for="patternApprovalId" styleClass="label_hrm" />
+                                                            </p:column>
+                                                            <p:column style="width: 80%">
+                            
+                                                                <p:selectOneMenu id="patternApprovalId" value="#{loanApplicationFormController.approvalDefId}" 
+                                                                                 label="#{appmsg['loanNewSchema.pattern_approval']}"   
+                            
+                                                                                 style="min-width: 200px;margin-right: 3px" required="true" >
+                            
+                                                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                                    <f:selectItems value="#{loanApplicationFormController.mapApprovalLoan}"/>
+                                                                    <p:ajax   listener="#{loanApplicationFormController.updateDataApprover()}"  update="tableApproverId"/>
+                                                                </p:selectOneMenu>
+                                                                <p:message for="patternApprovalId"/>
+                                                            </p:column>
+                                                        </p:row>-->
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -408,7 +437,25 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <h:panelGrid columns="1" style="margin-left: -10px;">
-
+                                        <p:dataTable  id="tableApproverId" var="approverData"  value="#{loanApplicationFormController.model.listApprover}" lazy="false" paginator="#{loanApplicationFormController.model.ispaginatorLoanApprover}" pageLinks="7"
+                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                                      rowIndexVar="no"> 
+                                            <p:column style="text-align: center;width: 5%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{no+1}." />
+                                            </p:column>  
+                                            <p:column style="text-align: center;width: 24%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.loan_approver']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName}">
+                                                   
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:dataTable>
                                     </h:panelGrid>
                                 </p:column>
                             </p:row>
@@ -416,27 +463,27 @@
                         </p:panelGrid>
                     </div>
 
-
-                </h:form>
-                <h:form id="formSubmitId">
                     <div id="box_bg" style="margin: 10px">
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="formSubmitId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
-                                             action="#{loanApplicationFormController.doSave()}" styleClass="label_button" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk"
-                                             id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":scheduleFormId,formSubmitId" action="#{loanApplicationFormController.doReset()}" immediate="true"
+                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="scheduleFormId,:growlUserFormId" 
+                                             action="#{loanApplicationFormController.doApprove()}" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['loan.apply']}"
+                                             icon="ui-icon-disk" 
+                                             id="buttonSave" title="#{appmsg['loan.apply']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="scheduleFormId" action="#{loanApplicationFormController.doReset()}" immediate="true"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target=":scheduleFormId,formSubmitId" />  
+                                <p:resetInput target="scheduleFormId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanApplicationFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
                         </div>
                     </div>
+                </h:form>
+                <h:form id="formSubmitId">
+                    
                 </h:form>
             </ui:define>
 

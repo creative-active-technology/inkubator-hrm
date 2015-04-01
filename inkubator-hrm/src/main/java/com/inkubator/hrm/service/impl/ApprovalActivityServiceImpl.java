@@ -334,4 +334,11 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
         return approvalActivityDao.getApprovalTimeByApprovalActivityNumber(activityNumber);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence) throws Exception {
+		return approvalActivityDao.getEntityByActivityNumberAndSequence(activityNumber, sequence);
+		
+	}
+
 }

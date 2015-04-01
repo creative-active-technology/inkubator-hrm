@@ -46,7 +46,10 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.hibernate.transform.Transformers;
+import static org.springframework.data.jpa.repository.support.PersistenceProvider.HIBERNATE;
 
 /**
  *
@@ -1177,23 +1180,142 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate) {
-        final StringBuilder query = new StringBuilder("SELECT dept.department_name as name, bio.first_name as firstName, bio.last_name as lastName, golJab.code as codeJabatan, empType.name as empTypeName, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(bio.date_of_birth)), '%Y')+0 as age, emp.join_date as joinDate FROM emp_data emp");
-        query.append(" LEFT join jabatan jabatan ON emp.jabatan_id = jabatan.id");
-        query.append(" LEFT join department dept ON jabatan.departement_id = dept.id");
-        query.append(" LEFT join bio_data bio ON emp.bio_data_id = bio.id");
-        query.append(" LEFT join golongan_jabatan golJab ON jabatan.gol_jabatan_id = golJab.id");
-        query.append(" LEFT join employee_type empType ON emp.emp_type_id = empType.id");
-        query.append(" WHERE dept.id in :departmentId AND golJab.id in :golJabId AND empType.name in :empTypeName");
-        query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(bio.date_of_birth)), '%Y')+0 in :listAge");
-        query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(emp.join_date)), '%Y')+0 in :listJoinDate");
-        return getCurrentSession().createSQLQuery(query.toString())
-                .setParameterList("departmentId", deptId)
-                .setParameterList("golJabId", golJabId)
-                .setParameterList("empTypeName", empTypeName)
-                .setParameterList("listAge", listAge)
-                .setParameterList("listJoinDate", listJoinDate)
-                .setResultTransformer(Transformers.aliasToBean(SearchEmployeeModel.class)).list();
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik, int firstResult, int maxResults, Order order) {
+        List<Long> listDepartment = new ArrayList<Long>();
+        List<Long> listGolJab = new ArrayList<Long>();
+        for (Department department : deptId) {
+            listDepartment.add(department.getId());
+        }
+        for (GolonganJabatan golonganJabatan : golJabId) {
+            listGolJab.add(golonganJabatan.getId());
+        }
+        final org.hibernate.type.Type[] typeJoinDate = new org.hibernate.type.Type[listJoinDate.size()];
+        Arrays.fill(typeJoinDate, org.hibernate.type.StandardBasicTypes.INTEGER);
+        final org.hibernate.type.Type[] typeAge = new org.hibernate.type.Type[listAge.size()];
+        Arrays.fill(typeAge, org.hibernate.type.StandardBasicTypes.INTEGER);
+
+        final StringBuilder joinDateList = new StringBuilder();
+        final StringBuilder ageList = new StringBuilder();
+
+        for (int i = 0; i < listJoinDate.size(); i++) {
+            if (i > 0) {
+                joinDateList.append(",");
+            }
+            joinDateList.append("?");
+        }
+        for (int i = 0; i < listAge.size(); i++) {
+            if (i > 0) {
+                ageList.append(",");
+            }
+            ageList.append("?");
+        }
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
+        if (!deptId.isEmpty()) {
+            criteria.add(Restrictions.in("department.id", listDepartment));
+        }
+
+        if (!golJabId.isEmpty()) {
+            criteria.add(Restrictions.in("golonganJabatan.id", listGolJab));
+        }
+
+        if (empTypeName.length != 0) {
+            criteria.add(Restrictions.in("employeeType.name", empTypeName));
+        }
+
+        if (listJoinDate.get(0) != 0) {
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.join_date)), '%Y')+0 in (" + joinDateList.toString() + ")", listJoinDate.toArray(), typeJoinDate));
+
+        }
+        if (listAge.get(0) != 0) {
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata1_.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+        }
+
+        if (!listNik.isEmpty()) {
+            criteria.add(Restrictions.in("nik", listNik));
+        }
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public List<String> getAllNikBetween(String from, String until) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.ge("nik", from));
+        criteria.add(Restrictions.le("nik", until));
+        criteria.setProjection(Projections.property("nik"));
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik) {
+        List<Long> listDepartment = new ArrayList<Long>();
+        List<Long> listGolJab = new ArrayList<Long>();
+        for (Department department : deptId) {
+            listDepartment.add(department.getId());
+        }
+        for (GolonganJabatan golonganJabatan : golJabId) {
+            listGolJab.add(golonganJabatan.getId());
+        }
+        final org.hibernate.type.Type[] typeJoinDate = new org.hibernate.type.Type[listJoinDate.size()];
+        Arrays.fill(typeJoinDate, org.hibernate.type.StandardBasicTypes.INTEGER);
+        final org.hibernate.type.Type[] typeAge = new org.hibernate.type.Type[listAge.size()];
+        Arrays.fill(typeAge, org.hibernate.type.StandardBasicTypes.INTEGER);
+
+        final StringBuilder joinDateList = new StringBuilder();
+        final StringBuilder ageList = new StringBuilder();
+
+        for (int i = 0; i < listJoinDate.size(); i++) {
+            if (i > 0) {
+                joinDateList.append(",");
+            }
+            joinDateList.append("?");
+        }
+        for (int i = 0; i < listAge.size(); i++) {
+            if (i > 0) {
+                ageList.append(",");
+            }
+            ageList.append("?");
+        }
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
+        if (!deptId.isEmpty()) {
+            criteria.add(Restrictions.in("department.id", listDepartment));
+        }
+
+        if (!golJabId.isEmpty()) {
+            criteria.add(Restrictions.in("golonganJabatan.id", listGolJab));
+        }
+
+        if (empTypeName.length != 0) {
+            criteria.add(Restrictions.in("employeeType.name", empTypeName));
+        }
+
+        if (listJoinDate.get(0) != 0) {
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.join_date)), '%Y')+0 in (" + joinDateList.toString() + ")", listJoinDate.toArray(), typeJoinDate));
+
+        }
+        if (listAge.get(0) != 0) {
+            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata1_.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+        }
+
+        if (!listNik.isEmpty()) {
+            criteria.add(Restrictions.in("nik", listNik));
+        }
+        
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
 }

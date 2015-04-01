@@ -17,12 +17,12 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
 //	public List<LoanNewApplication> getByParam(CitySearchParameter parameter, int firstResult, int maxResults, Order orderable);
 //
 //	public Long getTotalCityByParam(CitySearchParameter parameter);
-
+        
 	public Long getTotalByCode(String name);
 
 	public Long getTotalByCodeAndNotId(String code, Long id);
 
 	public LoanNewApplication getEntityByIdWithDetail(Long id);	
 	
-
+        public Long getCurrentMaxId();
 }

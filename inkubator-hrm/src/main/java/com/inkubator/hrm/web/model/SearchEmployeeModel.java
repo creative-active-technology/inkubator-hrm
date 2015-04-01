@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -23,6 +24,9 @@ public class SearchEmployeeModel implements Serializable{
     private String name;
     private String lastName;
     private String codeJabatan;
+    private String nikFrom;
+    private String nikUntil;
+    private EmpData selectedEmpData;
     private int from;
     private int until;
     private int fromJoin;
@@ -32,13 +36,16 @@ public class SearchEmployeeModel implements Serializable{
     private String departments;
     private String golonganJabatans;
     private String tipeKaryawan;
+    private String employeeTypeView;
     private String[] employeeTypeName;
+    private String[] employeeTypeNameView;
     private Double age;
     private Date joinDate;
     private DualListModel<Department> dualListModelDepartment = new DualListModel<>();
     private DualListModel<GolonganJabatan> dualListModelGoljab = new DualListModel<>();
     private List<String> listEmployeeType = new ArrayList<String>();
     private List<EmpData> listEmpData = new ArrayList<EmpData>();
+    private LazyDataModel<EmpData> lazyDataModel;
 
     public Long getId() {
         return id;
@@ -198,6 +205,54 @@ public class SearchEmployeeModel implements Serializable{
 
     public void setJoinDate(Date joinDate) {
         this.joinDate = joinDate;
+    }
+
+    public String getNikFrom() {
+        return nikFrom;
+    }
+
+    public void setNikFrom(String nikFrom) {
+        this.nikFrom = nikFrom;
+    }
+
+    public String getNikUntil() {
+        return nikUntil;
+    }
+
+    public void setNikUntil(String nikUntil) {
+        this.nikUntil = nikUntil;
+    }
+
+    public LazyDataModel<EmpData> getLazyDataModel() {
+        return lazyDataModel;
+    }
+
+    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+        this.lazyDataModel = lazyDataModel;
+    }
+
+    public String[] getEmployeeTypeNameView() {
+        return employeeTypeNameView;
+    }
+
+    public void setEmployeeTypeNameView(String[] employeeTypeNameView) {
+        this.employeeTypeNameView = employeeTypeNameView;
+    }
+
+    public String getEmployeeTypeView() {
+        return employeeTypeView;
+    }
+
+    public void setEmployeeTypeView(String employeeTypeView) {
+        this.employeeTypeView = employeeTypeView;
+    }
+
+    public EmpData getSelectedEmpData() {
+        return selectedEmpData;
+    }
+
+    public void setSelectedEmpData(EmpData selectedEmpData) {
+        this.selectedEmpData = selectedEmpData;
     }
 
     

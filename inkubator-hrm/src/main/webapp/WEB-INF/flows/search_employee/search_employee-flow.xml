@@ -12,11 +12,21 @@
     <view-state id="start" view="search_employee_view.xhtml">
         <transition on="next" to="result" >
         </transition>
+        
+        <transition on="close_back" to="end"/>
     </view-state>
     
     <view-state id="result" view="search_employee_result.xhtml">
         <on-render>
-        <evaluate expression="searchEmployeeViewController.doGetParamSearchEmployee(flowRequestContext)" /> 
+            <evaluate expression="searchEmployeeViewController.doGetParamSearchEmployee(flowRequestContext)" /> 
         </on-render>
+        <transition on="back" to="start"/>
+        <transition on="personalInfo" to="personal"/>
+        <transition on="employeeInfo" to="employee"/>
+        <transition on="employeeBackgroundInfo" to="employeeBackground"/>
     </view-state>
+    <end-state id="personal" view="externalRedirect:contextRelative:/protected/personalia/biodata_detail.htm?execution=e#{searchEmployeeModel.selectedEmpData.bioData.id}"/>
+    <end-state id="employee" view="externalRedirect:contextRelative:/protected/employee/emp_placement_detail.htm?execution=e#{searchEmployeeModel.selectedEmpData.id}"/>
+    <end-state id="employeeBackground" view="externalRedirect:contextRelative:/protected/employee/emp_background_detail.htm?execution=e#{searchEmployeeModel.selectedEmpData.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/home.htm" />
 </flow>

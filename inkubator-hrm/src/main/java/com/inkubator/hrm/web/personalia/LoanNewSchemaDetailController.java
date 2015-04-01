@@ -11,15 +11,14 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
-import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalDefinitionLoanService;
 import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
 import com.inkubator.hrm.service.LoanNewSchemaService;
+import com.inkubator.hrm.web.model.LoanNewSchemaModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -49,6 +48,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 public class LoanNewSchemaDetailController extends BaseController {
 
     private LoanNewSchema selectedLoanSchema;
+    private LoanNewSchemaModel totalModel;
     private LoanNewSchemaListOfType selectedLoanNewSchemaListOfType;
     @ManagedProperty(value = "#{loanNewSchemaService}")
     private LoanNewSchemaService loanNewSchemaService;
@@ -59,14 +59,9 @@ public class LoanNewSchemaDetailController extends BaseController {
     @ManagedProperty(value = "#{approvalDefinitionLoanService}")
     private ApprovalDefinitionLoanService approvalDefinitionLoanService;
     private List<LoanNewSchemaListOfType> listOfLoanNewType;
-    private Double totalPinjaman;
-    private Double totalAllocation;
-    private Double totalInstallment;
     private List<ApprovalDefinition> appDefs;
     private ApprovalDefinition selectedAppDef;
     private int indexOfAppDefs;
-    private String name;
-    private String loanNewSchemaId;
     private List<ApprovalDefinition> listAppDef;
 
     @PostConstruct
@@ -74,21 +69,16 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            loanNewSchemaId = FacesUtil.getRequestParameter("execution");
+            String loanNewSchemaId = FacesUtil.getRequestParameter("execution");
             selectedLoanSchema = loanNewSchemaService.getEntityByPkFetchApprovalDefinition(Long.parseLong(loanNewSchemaId.substring(1)));
             listOfLoanNewType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(selectedLoanSchema.getId());
-            totalPinjaman = 0.0;
-            totalAllocation = 0.0;
-            totalInstallment = 0.0;
+            List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = listOfLoanNewSchemaWithStatusActive();
+//            selectedLoanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(selectedLoanSchema.getId());
             listAppDef = Lambda.extract(selectedLoanSchema.getApprovalDefinitionLoans(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
 //            appDefs = approvalDefinitionLoanService.getByLoanId(Long.parseLong(loanNewSchemaId.substring(1)));
 //            List<ApprovalDefinitionLoan> approvalDefinitionLoan = approvalDefinitionLoanService.getByLoanId(Long.valueOf(loanNewSchemaId.substring(1)));
             appDefs = approvalDefinitionService.getAllDataByLoanNewSchemaId(Long.valueOf(loanNewSchemaId.substring(1)));
-            for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewType) {
-                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
-                totalAllocation = totalAllocation + loanNewSchemaType.getMaximumAllocation();
-                totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
-            }
+            doTotalLoanPayment(listOfLoanNewTypeActive);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -102,12 +92,42 @@ public class LoanNewSchemaDetailController extends BaseController {
         selectedLoanNewSchemaListOfType = null;
         listOfLoanNewType = null;
         loanNewSchemaListOfTypeService = null;
-        totalPinjaman = null;
-        totalAllocation = null;
-        totalInstallment = null;
         appDefs = null;
-        loanNewSchemaId = null;
         listAppDef = null;
+        totalModel = null;
+    }
+
+    public void doTotalLoanPayment(List<LoanNewSchemaListOfType> listOfLoanNewTypeActive) {
+        Double totalPinjaman = 0.0;
+        Double totalAllocation = 0.0;
+        Double totalInstallment = 0.0;
+        Integer maksimumHariTersedia = 0;
+        Integer maxPeriode = 0;
+        Double minimumAllocation = 0.0;
+        Double minimumApproval = 0.0;
+        
+        for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewTypeActive) {
+                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
+                totalAllocation = totalAllocation + loanNewSchemaType.getMaximumAllocation();
+                totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
+                maksimumHariTersedia = maksimumHariTersedia + loanNewSchemaType.getMaksimumHariTersedia();
+                maxPeriode = maxPeriode + loanNewSchemaType.getMaxPeriode();
+                minimumAllocation = minimumAllocation + loanNewSchemaType.getMinimumAllocation();
+                minimumApproval = minimumApproval + loanNewSchemaType.getMinimumApproval();
+            }
+            totalModel = new LoanNewSchemaModel();
+
+            totalModel.setTotalPinjaman(totalPinjaman);
+            totalModel.setTotalAllocation(totalAllocation);
+            totalModel.setTotalInstallment(totalInstallment);
+            totalModel.setMaksimumHariTersedia(maksimumHariTersedia);
+            totalModel.setMaxPeriode(maxPeriode);
+            totalModel.setMinimumAllocation(minimumAllocation);
+            totalModel.setMinimumApproval(minimumApproval);
+            List<LoanNewSchemaModel> listTotalModel = new ArrayList<LoanNewSchemaModel>();
+            listTotalModel.add(totalModel);
+            totalModel.setListTotalModel(listTotalModel);
+            
     }
 
     public String doBack() {
@@ -125,25 +145,24 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void doSelectEntity() {
         System.out.println("hoho");
         try {
-            selectedLoanNewSchemaListOfType = this.loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(new LoanNewSchemaListOfTypeId(selectedLoanNewSchemaListOfType.getLoanNewType().getId(), selectedLoanNewSchemaListOfType.getLoanNewSchema().getId()));
+            selectedLoanNewSchemaListOfType = this.loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(selectedLoanNewSchemaListOfType.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
+    public List<LoanNewSchemaListOfType> listOfLoanNewSchemaWithStatusActive() throws Exception{
+        List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaWhereStatusActive(selectedLoanSchema.getId());
+        return listOfLoanNewTypeActive;
+    }
+    
     public void doDelete() {
         System.out.println("masuk delete");
         try {
-            this.loanNewSchemaListOfTypeService.delete(selectedLoanNewSchemaListOfType);
+            this.loanNewSchemaListOfTypeService.softDelete(selectedLoanNewSchemaListOfType);
             listOfLoanNewType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(selectedLoanSchema.getId());
-            totalPinjaman = 0.0;
-            totalAllocation = 0.0;
-            totalInstallment = 0.0;
-            for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewType) {
-                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
-                totalAllocation = totalAllocation + loanNewSchemaType.getMaximumAllocation();
-                totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
-            }
+            List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = listOfLoanNewSchemaWithStatusActive();
+            doTotalLoanPayment(listOfLoanNewTypeActive);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
@@ -158,11 +177,11 @@ public class LoanNewSchemaDetailController extends BaseController {
 
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> loanNewTypeId = new ArrayList<>();
-        loanNewTypeId.add(String.valueOf(selectedLoanNewSchemaListOfType.getLoanNewType().getId()));
+        List<String> id = new ArrayList<>();
+        id.add(String.valueOf(selectedLoanNewSchemaListOfType.getId()));
         List<String> loanNewSchemaId = new ArrayList<>();
-        loanNewSchemaId.add(String.valueOf(selectedLoanSchema.getId()));
-        dataToSend.put("loanNewTypeId", loanNewTypeId);
+        loanNewSchemaId.add(String.valueOf(selectedLoanNewSchemaListOfType.getLoanNewSchema().getId()));
+        dataToSend.put("id", id);
         dataToSend.put("loanNewSchemaId", loanNewSchemaId);
         showDialog(dataToSend);
     }
@@ -181,14 +200,8 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void onDialogReturn(SelectEvent event) {
         try {
             listOfLoanNewType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(selectedLoanSchema.getId());
-            totalPinjaman = 0.0;
-            totalAllocation = 0.0;
-            totalInstallment = 0.0;
-            for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewType) {
-                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
-                totalAllocation = totalAllocation + loanNewSchemaType.getMaximumAllocation();
-                totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
-            }
+            List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = listOfLoanNewSchemaWithStatusActive();
+            doTotalLoanPayment(listOfLoanNewTypeActive);
         } catch (Exception ex) {
             Logger.getLogger(LoanNewSchemaDetailController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -196,11 +209,13 @@ public class LoanNewSchemaDetailController extends BaseController {
 
     }
 
-    /** Start Approval Definition form */
+    /**
+     * Start Approval Definition form
+     */
     public void doDeleteAppDef() {
-    	try {
-    		loanNewSchemaService.deleteApprovalconf(selectedAppDef.getId(), selectedLoanSchema.getId());
-    		listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+        try {
+            loanNewSchemaService.deleteApprovalconf(selectedAppDef.getId(), selectedLoanSchema.getId());
+            listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -210,48 +225,48 @@ public class LoanNewSchemaDetailController extends BaseController {
             LOGGER.error("Error ", ex);
         }
     }
-    
+
     public void doAddAppDef() {
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-        
-    	List<String> isPersistedToDB = new ArrayList<>();
-    	isPersistedToDB.add("true");
+        Map<String, List<String>> dataToSend = new HashMap<>();
+
+        List<String> isPersistedToDB = new ArrayList<>();
+        isPersistedToDB.add("true");
         dataToSend.put("isPersistedToDB", isPersistedToDB);
-        
+
         List<String> entityId = new ArrayList<>();
         entityId.add(String.valueOf(selectedLoanSchema.getId()));
         dataToSend.put("entityId", entityId);
-        
-    	List<String> appDefName = new ArrayList<>();
+
+        List<String> appDefName = new ArrayList<>();
         appDefName.add(HRMConstant.LOAN);
         dataToSend.put("appDefName", appDefName);
-        
+
         List<String> specificName = new ArrayList<>();
         specificName.add(selectedLoanSchema.getLoanSchemaName());
         dataToSend.put("specificName", specificName);
-    	
+
         this.showDialogAppDef(dataToSend);
     }
-    
-    public void doEditAppDef() {    	
-    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    	Map<String, List<String>> dataToSend = new HashMap<>();
-    	
-    	List<String> isPersistedToDB = new ArrayList<>();
-    	isPersistedToDB.add("true");
+
+    public void doEditAppDef() {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        Map<String, List<String>> dataToSend = new HashMap<>();
+
+        List<String> isPersistedToDB = new ArrayList<>();
+        isPersistedToDB.add("true");
         dataToSend.put("isPersistedToDB", isPersistedToDB);
-        
+
         List<String> entityId = new ArrayList<>();
         entityId.add(String.valueOf(selectedLoanSchema.getId()));
         dataToSend.put("entityId", entityId);
-    	
+
         List<String> values = new ArrayList<>();
         values.add(gson.toJson(selectedAppDef));
         dataToSend.put("jsonAppDef", values);
-        
+
         this.showDialogAppDef(dataToSend);
     }
-    
+
     private void showDialogAppDef(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -260,20 +275,22 @@ public class LoanNewSchemaDetailController extends BaseController {
         options.put("contentWidth", 1100);
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("appr_def_popup_form", options, params);
-    }   
-    
+    }
+
     public void onDialogReturnAppDef(SelectEvent event) {
         //re-calculate searching
-    	try {
-    		listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
-    		super.onDialogReturn(event);
-                System.out.println(listAppDef.size() + " hohohohohohoho");
-    	} catch (Exception ex) {
+        try {
+            listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+            super.onDialogReturn(event);
+            System.out.println(listAppDef.size() + " hohohohohohoho");
+        } catch (Exception ex) {
             LOGGER.error("Error ", ex);
         }
     }
-    /** End Approval Definition form */
 
+    /**
+     * End Approval Definition form
+     */
     public void onDialogReturnAddAppDef(SelectEvent event) {
         ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
         appDefs.add(appDef);
@@ -297,14 +314,6 @@ public class LoanNewSchemaDetailController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public LoanNewSchema getSelectedLoanSchema() {
@@ -338,31 +347,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void setListOfLoanNewType(List<LoanNewSchemaListOfType> listOfLoanNewType) {
         this.listOfLoanNewType = listOfLoanNewType;
     }
-
-    public Double getTotalPinjaman() {
-        return totalPinjaman;
-    }
-
-    public void setTotalPinjaman(Double totalPinjaman) {
-        this.totalPinjaman = totalPinjaman;
-    }
-
-    public Double getTotalAllocation() {
-        return totalAllocation;
-    }
-
-    public void setTotalAllocation(Double totalAllocation) {
-        this.totalAllocation = totalAllocation;
-    }
-
-    public Double getTotalInstallment() {
-        return totalInstallment;
-    }
-
-    public void setTotalInstallment(Double totalInstallment) {
-        this.totalInstallment = totalInstallment;
-    }
-
+    
     public LoanNewSchemaListOfType getLoanNewSchemaListOfType() {
         return selectedLoanNewSchemaListOfType;
     }
@@ -419,14 +404,6 @@ public class LoanNewSchemaDetailController extends BaseController {
         this.approvalDefinitionLoanService = approvalDefinitionLoanService;
     }
 
-    public String getLoanNewSchemaId() {
-        return loanNewSchemaId;
-    }
-
-    public void setLoanNewSchemaId(String loanNewSchemaId) {
-        this.loanNewSchemaId = loanNewSchemaId;
-    }
-
     public List<ApprovalDefinition> getListAppDef() {
         return listAppDef;
     }
@@ -435,5 +412,12 @@ public class LoanNewSchemaDetailController extends BaseController {
         this.listAppDef = listAppDef;
     }
 
-    
+    public LoanNewSchemaModel getTotalModel() {
+        return totalModel;
+    }
+
+    public void setTotalModel(LoanNewSchemaModel totalModel) {
+        this.totalModel = totalModel;
+    }
+
 }

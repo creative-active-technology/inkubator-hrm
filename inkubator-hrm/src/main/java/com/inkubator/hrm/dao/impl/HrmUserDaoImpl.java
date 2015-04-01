@@ -97,6 +97,9 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         disjunction.add(Restrictions.eq("userId", param));
         disjunction.add(Restrictions.eq("emailAddress", param));
         criteria.add(disjunction);
+        
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (HrmUser) criteria.uniqueResult();
     }
 
@@ -154,6 +157,15 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         criteria.add(Restrictions.eq("isLock", 0));
         return (HrmUser) criteria.uniqueResult();
         
+    }
+
+    @Override
+    public HrmUser getUserWithDetailByUserId(String userId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("userId", userId));;
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        return (HrmUser) criteria.uniqueResult();        
     }
 
 }

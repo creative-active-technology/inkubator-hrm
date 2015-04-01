@@ -23,6 +23,7 @@ public class LoanNewSchemaListOfTypeModel implements Serializable {
     private Double minimumMonthlyInstallment;
     private Integer maxPeriode;
     private Integer maksimumHariTersedia;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -102,6 +103,14 @@ public class LoanNewSchemaListOfTypeModel implements Serializable {
 
     public void setMaksimumHariTersedia(Integer maksimumHariTersedia) {
         this.maksimumHariTersedia = maksimumHariTersedia;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     

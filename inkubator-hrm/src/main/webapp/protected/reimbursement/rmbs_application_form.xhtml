@@ -48,7 +48,7 @@
 	                                <p:outputLabel for="applicationDateId" value="#{appmsg['rmbs_application.request_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}"/>
+	                                <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}" maxdate="#{now}"/>
 	                                <p:message for="applicationDateId"/>
 	                            </p:column>
 	                        </p:row>
@@ -57,15 +57,12 @@
 	                                <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
-                                                value="#{rmbsApplicationFormController.model.empData}"
+	                            	<p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{rmbsApplicationFormController.model.empData}"
                                                 completeMethod="#{rmbsApplicationFormController.doAutoCompleteEmployee}"                                                
-                                                var="empData"
-                                                itemValue="#{empData}"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="empDataConverter"
-                                                required="true" styleClass="isitext_hrm" size="46">
-                                    	<p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId"/>
+                                                var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                required="true" readonly="#{not (rmbsApplicationFormController.isAdministator and not rmbsApplicationFormController.isRevised)}">
+                                    	<p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,listApproverId"/>
                                     </p:autoComplete>
                               		<p:message for="employeeId"/>
 	                        	</p:column>
@@ -200,18 +197,58 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
-	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:259px;"/> 
+	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/> 
 	                                <p:message for="nominalId"/>
 	                            </p:column>
-	                        </p:row>     
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['loan.loan_approver']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column id="listApproverId" style="width: 80%">
+	                            	<ui:repeat value="#{rmbsApplicationFormController.listApprover}" var="approver" varStatus="no">
+									   #{no.index+1}. #{approver.nikWithFullName} <br />
+									</ui:repeat>
+	                            </p:column>
+	                        </p:row>	                        
+	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalStatus}">
+	                            		<f:converter converterId="approvalStatusConverter" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                      	</p:row>     
 	                                               
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+	                        <p:commandButton value="#{appmsg['global.apply']}" ajax="true" update="formId,:growlId" rendered="#{not rmbsApplicationFormController.isRevised}"
 	                                         action="#{rmbsApplicationFormController.doSave()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                                         style="margin-right: 5px" label="#{appmsg['global.apply']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.apply']}"/>
+	                        <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{rmbsApplicationFormController.isRevised}"
+	                                         action="#{rmbsApplicationFormController.doRevised()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
 	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             	<p:resetInput target="formId" />  
