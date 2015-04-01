@@ -116,7 +116,7 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
 
             //total pinjaman dan cicilan data yang aktif
             for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewTypeActive) {
-                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
+                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumAllocation();
                 totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
             }
 
@@ -127,7 +127,7 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
             if (totalInstallment > loanNewSchema.getTotalMaximumInstallment() || totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
                 throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
             }
-            loanNewSchemaListOfType.setIsActive(Boolean.TRUE);
+            loanNewSchemaListOfType.setIsActive(entity.getIsActive());
         }
 
         this.loanNewSchemaListOfTypeDao.update(loanNewSchemaListOfType);

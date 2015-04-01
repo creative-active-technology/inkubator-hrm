@@ -113,13 +113,19 @@
                                 <h:outputLabel value="Min " styleClass="label_hrm"/>
                                 <pe:inputNumber decimalPlaces="0" id="pointMin" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMin}" 
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberInteger" value="#{pointMed}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
                                 </pe:inputNumber>
                                 <h:outputLabel value="Med " styleClass="label_hrm"/>
-                                <pe:inputNumber decimalPlaces="0" id="pointMed" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
+                                <pe:inputNumber decimalPlaces="0" id="pointMed" binding="#{pointMed}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberInteger" value="#{pointMax}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
                                 </pe:inputNumber>
                                 <h:outputLabel value="Max " styleClass="label_hrm"/>
-                                <pe:inputNumber decimalPlaces="0" id="pointMax" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 
+                                <pe:inputNumber decimalPlaces="0" id="pointMax" binding="#{pointMax}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
                                 </pe:inputNumber>
                             </p:column>
