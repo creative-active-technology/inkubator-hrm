@@ -101,7 +101,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 //not yet implemented
 
             } else {
-                if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
+                if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)) {
                     //configure email parameter based on approval name
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:

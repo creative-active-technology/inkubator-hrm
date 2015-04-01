@@ -94,118 +94,127 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @param requestByEmployee Employee yang me-request/create
      * @return approvalActivity object
      */
-    protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
-
-        List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));
-        return this.checkApprovalProcess(listAppDef, requestByEmployee);
-    }
-
-    protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {
-
-        ApprovalActivity appActivity = null;
-
-        /**
-         * Lakukan proses pengecekan approval process hanya jika user yg input
-         * bukan ADMINISTRATOR_ROLE dan memiliki list approval definition
-         */
-        if (!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()) {
-
-            //sorting by sequence ASC
-            listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
-
-            /**
-             * Looping semua approvalDefinition berdasarkan urutan sequence (if
-             * any) Looping akan berhenti jika sudah ditemukan approvalActivity
-             * yang harus di proses
-             */
-            for (ApprovalDefinition appDef : listAppDef) {
-                String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
-
-                if (StringUtils.isNotEmpty(approverUserId)) {
-                    appActivity = new ApprovalActivity();
-                    appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-                    appActivity.setApprovalDefinition(appDef);
-                    appActivity.setApprovedBy(approverUserId);
-                    appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
-                    appActivity.setSequence(1);
-                    appActivity.setApprovalCount(0);
-                    appActivity.setRejectCount(0);
-                    appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
-                    appActivity.setNotificationSend(false);
-                    appActivity.setRequestBy(requestByEmployee);
-                    appActivity.setRequestTime(new Date());
-                    appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
-                    appActivity.setCreatedTime(new Date());
-
-                    //show growl notification for approver
-                    this.sendApprovalGrowlNotif(appActivity);
-
-                    //send sms notification to approver
-                    this.sendApprovalSmsnotif(appActivity);
-
-                    break; //keluar dari looping
-                }
-            }
-        }
-
-        return appActivity;
-    }
-
-    private String getApproverByAppDefinition(ApprovalDefinition appDef, String requestByEmployee) {
-        String userId = StringUtils.EMPTY;
-
-        if (StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_INDIVIDUAL)) {
-            //approver based on individual
-            HrmUser approver = appDef.getHrmUserByApproverIndividual();
-            userId = approver.getUserId();
-
-        } else if (StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_POSITION)) {
-            //approver based on position			
-            Jabatan jabatan = appDef.getJabatanByApproverPosition();
-            userId = this.getApproverByJabatanId(jabatan.getId());
-
-        } else if (StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_DEPARTMENT)) {
-            //approver based on department, it means approver is his parent/atasan
-            HrmUser user = hrmUserDao.getByUserId(requestByEmployee);
-            if (user.getEmpData().getJabatanByJabatanId().getJabatan() != null) {
-                Jabatan parentJabatan = user.getEmpData().getJabatanByJabatanId().getJabatan();
-                userId = this.getApproverByJabatanId(parentJabatan.getId());
-            }
-
-        }
-
-        return userId;
-    }
-
-    private String getApproverByJabatanId(long jabatanId) {
-        String userId = StringUtils.EMPTY;
-
-        /**
-         * jika dalam satu jabatan yg sama terdapat beberapa employee, maka
-         * pilih employee berdasarkan joinDate/TMB yg terlama itulah kenapa di
-         * order desc "joinDate"
-         */
-        List<EmpData> employees = empDataDao.getAllDataByJabatanId(jabatanId, Order.desc("joinDate"));
-        if (!employees.isEmpty()) { //if not empty
-            EmpData empData = employees.get(0);
-            if (!empData.getHrmUsers().isEmpty()) { //if not empty
-                HrmUser approver = empData.getHrmUsers().iterator().next();
-                userId = approver.getUserId();
-            }
-        }
-
-        return userId;
-    }
-
-    /**
-     * <p>
-     * Method untuk meng-approved suatu activity sekaligus akan mengecek apakah
-     * terdapat nextApproval nya. Return-nya berupa Map<String, Object>, nanti
-     * di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat
-     * nextApproval. Tapi jika "isEndOfApprovalProcess" == "true", maka berarti
-     * sudah tidak terdapat nextApproval, sehingga bisa langsung melakukan
-     * proses parsing dari json ke entity dan melakukan saving objek entity
-     * tersebut
+	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
+		
+		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));		
+		return this.checkApprovalProcess(listAppDef, requestByEmployee);
+	}
+	
+	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {		
+		
+		ApprovalActivity appActivity = null;
+		
+		/** Lakukan proses pengecekan approval process hanya jika user yg input bukan ADMINISTRATOR_ROLE dan memiliki list approval definition */
+		if(!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()){ 
+			
+			//sorting by sequence ASC
+			listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
+			
+			/** Looping semua approvalDefinition berdasarkan urutan sequence (if any)
+			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
+			for(ApprovalDefinition appDef: listAppDef){
+				String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
+				
+				if(StringUtils.isNotEmpty(approverUserId)){				
+					appActivity = new ApprovalActivity();
+					appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+					appActivity.setApprovalDefinition(appDef);			
+					appActivity.setApprovedBy(approverUserId);
+					appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
+					appActivity.setSequence(1);
+					appActivity.setApprovalCount(0);
+					appActivity.setRejectCount(0);
+					appActivity.setActivityNumber(RandomNumberUtil.getRandomNumber(9));
+					appActivity.setNotificationSend(false);
+					appActivity.setRequestBy(requestByEmployee);
+					appActivity.setRequestTime(new Date());					
+					appActivity.setLocale(FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
+					appActivity.setCreatedTime(new Date());
+		        	
+					//show growl notification for approver
+			    	this.sendApprovalGrowlNotif(appActivity);
+			    	
+			    	//send sms notification to approver
+					this.sendApprovalSmsnotif(appActivity);
+					
+					break; //keluar dari looping
+				}
+			}
+		}
+    	
+		return appActivity;
+	}
+	
+	private String getApproverByAppDefinition(ApprovalDefinition appDef, String requestByEmployee){
+		String userId = StringUtils.EMPTY;
+		
+		if(StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_INDIVIDUAL)){  
+			//approver based on individual
+			HrmUser approver = appDef.getHrmUserByApproverIndividual();
+			userId = approver.getUserId();
+			
+		} else if(StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_POSITION)){ 
+			//approver based on position			
+			Jabatan jabatan = appDef.getJabatanByApproverPosition();			
+			userId = this.getApproverByJabatanId(jabatan.getId());
+			
+		} else if(StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_DEPARTMENT)){ 
+			//approver based on department, it means approver is his parent/atasan
+			HrmUser user = hrmUserDao.getByUserId(requestByEmployee);
+			if(user.getEmpData().getJabatanByJabatanId().getJabatan() != null){
+				Jabatan parentJabatan = user.getEmpData().getJabatanByJabatanId().getJabatan();
+				userId = this.getApproverByJabatanId(parentJabatan.getId());
+			}
+			
+		}
+		
+		return userId;
+	}
+	
+	private String getApproverByJabatanId(long jabatanId){
+		String userId = StringUtils.EMPTY;
+		
+		/** jika dalam satu jabatan yg sama terdapat beberapa employee, maka pilih employee berdasarkan joinDate/TMB yg terlama 
+		 *  itulah kenapa di order desc "joinDate" */
+		List<EmpData> employees = empDataDao.getAllDataByJabatanId(jabatanId, Order.desc("joinDate"));		
+		if(!employees.isEmpty()) { //if not empty
+			EmpData empData = employees.get(0);				
+			if(!empData.getHrmUsers().isEmpty()){ //if not empty
+				HrmUser approver = empData.getHrmUsers().iterator().next();
+				userId = approver.getUserId();					
+			}
+		}
+		
+		return userId;
+	}
+	
+	/**
+     * <p>Method untuk meng-approved suatu activity sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval.
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
+     * </p>
+     *
+     * <pre>
+     * Map<String, Object> result = approvedAndCheckNextApproval(approvalActivityId, comment);
+     * if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
+     *    lakukan proses parsing json ke entity dan saving entity objek
+     * }
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
+     */
+	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
+		return this.approvedAndCheckNextApproval(appActivityId, null, comment);
+	}
+	
+	/**
+     * <p>Method untuk meng-approved suatu activity sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval.
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
      * </p>
      *
      * <pre>
@@ -224,19 +233,15 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa
      * objek ApprovalActivity
      */
-    protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
-        return this.approvedAndCheckNextApproval(appActivityId, null, comment);
-    }
-
-    protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
-
-        //check only approval status which is waiting that can be process
-        if (approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING) {
-            throw new BussinessException("approval.error_status_already_changed");
-        }
-
-        /* update APPROVED approval activity */
+	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+        /* update APPROVED approval activity */        
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
         approvalActivity.setApprovalCommment(comment);
         int approvedCount = approvalActivity.getApprovalCount() + 1; //increment +1
@@ -311,24 +316,23 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      */
     protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
-
-        //check only approval status which is waiting that can be process
-        if (approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING) {
-            throw new BussinessException("approval.error_status_already_changed");
-        }
-
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
         /* update REJECTED approval activity */
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_REJECTED);
         approvalActivity.setApprovalCommment(comment);
         int rejectedCount = approvalActivity.getRejectCount() + 1; //increment +1
         approvalActivity.setRejectCount(rejectedCount);
         approvalActivity.setApprovalTime(new Date());
-        approvalActivityDao.save(approvalActivity);
-
-        /**
-         * checking process if there is any nextApproval for ApprovalActivity
-         */
+        approvalActivityDao.update(approvalActivity);
+        
+        
+        /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
         HashMap<String, Object> result = new HashMap<String, Object>();
         if (nextApproval == null) {
@@ -376,15 +380,15 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa
      * objek ApprovalActivity
      */
-    protected Map<String, Object> divertedAndCheckNextApproval(Long appActivityId) throws Exception {
-
-        ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
-
-        //check only approval status which is waiting that can be process
-        if (approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING) {
-            throw new BussinessException("approval.error_status_already_changed");
-        }
-
+	protected Map<String, Object> divertedAndCheckNextApproval(Long appActivityId) throws Exception {
+		
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
         /* update DIVERTED approval activity */
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DIVERTED);
         approvalActivity.setApprovalTime(new Date());
@@ -443,22 +447,21 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         boolean isCheckingNextDefinition = true; // default true(check approval in next ApprovalDefinition)
         int approvalOrRejectCount = 0;
         int minApproverOrRejector = 0;
-        if (Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)) {
-            approvalOrRejectCount = previousAppActivity.getApprovalCount();
-            minApproverOrRejector = previousAppDef.getMinApprover();
-        } else if (Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_REJECTED)) {
-            approvalOrRejectCount = previousAppActivity.getRejectCount();
-            minApproverOrRejector = previousAppDef.getMinRejector();
-            /**
-             * khusus jika approvalStatus = Reject, maka tidak perlu di check
-             * approval di next ApprovalDefinition -nya
-             */
-            isCheckingNextDefinition = false;
-        } else if (Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_DIVERTED)) {
-            approvalOrRejectCount = previousAppActivity.getApprovalCount();
-            minApproverOrRejector = previousAppDef.getMinApprover();
-        } else if (Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
-            throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING");
+        if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_APPROVED)){
+        	approvalOrRejectCount = previousAppActivity.getApprovalCount();
+        	minApproverOrRejector = previousAppDef.getMinApprover();
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_REJECTED)) {
+        	approvalOrRejectCount = previousAppActivity.getRejectCount();
+        	minApproverOrRejector = previousAppDef.getMinRejector();
+        	/** khusus jika approvalStatus = Reject, maka tidak perlu di check approval di next ApprovalDefinition -nya */
+        	isCheckingNextDefinition = false;
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_DIVERTED)){
+        	approvalOrRejectCount = previousAppActivity.getApprovalCount();
+        	minApproverOrRejector = previousAppDef.getMinApprover();
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)){
+        	throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING_APPROVAL");
+        } else if(Objects.equals(previousAppActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_REVISED)){
+        	throw new Exception("Cannot process checkingNextApproval when approval status is still WAITING_REVISED");
         }
 
         /**
@@ -537,7 +540,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         newEntity.setApprovalDefinition(appDef);
         newEntity.setApprovedBy(approverUserId);
-        newEntity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING);
+        newEntity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
         newEntity.setNotificationSend(false);
         newEntity.setApprovalCount(approvalCount);
         newEntity.setRejectCount(rejectCount);
@@ -603,50 +606,64 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
         return emailAdresses;
     }
-
-    /**
-     * jika approvalStatus masih waiting dan di approval definition membutuhkan
-     * sms approval notif, maka kirim notif dalam bentuk sms ke approverUserId
-     */
-    private void sendApprovalSmsnotif(ApprovalActivity appActivity) {
-        if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING && appActivity.getApprovalDefinition().getSmsNotification()) {
-
-            /**
-             * di cek apakah approver memiliki phoneNumber yang valid
-             */
-            HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
-            if (approver != null && StringUtils.isNotEmpty(approver.getPhoneNumber())) {
-                final SMSSend mSSend = new SMSSend();
-                mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
-                mSSend.setDestination(approver.getPhoneNumber());
-                mSSend.setContent("Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you.");
-                //Send notificatin SMS
-                this.jmsTemplateSMS.send(new MessageCreator() {
-                    @Override
-                    public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(jsonConverter.getJson(mSSend));
-                    }
-                });
-            }
-        }
+    
+    /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
+     *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
+    private void sendApprovalSmsnotif(ApprovalActivity appActivity){
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){
+	    	
+	    	/** di cek apakah approver memiliki phoneNumber yang valid */
+    		HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
+	    	if(approver != null && StringUtils.isNotEmpty(approver.getPhoneNumber())) {
+				final SMSSend mSSend = new SMSSend();
+				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+				mSSend.setDestination(approver.getPhoneNumber());
+				mSSend.setContent("Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you.");
+				//Send notificatin SMS
+				this.jmsTemplateSMS.send(new MessageCreator() {
+					@Override
+					public Message createMessage(Session session) throws JMSException {
+						return session.createTextMessage(jsonConverter.getJson(mSSend));
+					}
+				});
+	    	}
+	    	
+    	} else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED && appActivity.getApprovalDefinition().getSmsNotification()){
+    		
+    		/** di cek apakah requester memiliki phoneNumber yang valid */
+    		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+	    	if(requester != null && StringUtils.isNotEmpty(requester.getPhoneNumber())) {
+				final SMSSend mSSend = new SMSSend();
+				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+				mSSend.setDestination(requester.getPhoneNumber());
+				mSSend.setContent("Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you.");
+				//Send notificatin SMS
+				this.jmsTemplateSMS.send(new MessageCreator() {
+					@Override
+					public Message createMessage(Session session) throws JMSException {
+						return session.createTextMessage(jsonConverter.getJson(mSSend));
+					}
+				});
+	    	}
+    	}
     }
-
-    /**
-     * jika approvalStatus masih waiting, maka kirim notif dalam bentuk growl ke
-     * approverUserId Untuk pengaturan messagenya, silahkan di lihat di
-     * ApprovalRemoteCommand.java
-     */
-    private void sendApprovalGrowlNotif(ApprovalActivity appActivity) {
-        if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING) {
-
-            final ApprovalPushMessageModel model = new ApprovalPushMessageModel();
-            model.setApprovalName(appActivity.getApprovalDefinition().getName());
-            model.setApproverUserId(appActivity.getApprovedBy());
-            model.setRequestUserId(appActivity.getRequestBy());
-            model.setApproverFullName(hrmUserDao.getByUserId(appActivity.getApprovedBy()).getEmpData().getBioData().getFullName());
-            model.setRequestFullName(hrmUserDao.getByUserId(appActivity.getRequestBy()).getEmpData().getBioData().getFullName());
-
-            //send messaging, to trigger growl notif
+    
+    /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId
+	 *  Untuk pengaturan messagenya, silahkan di lihat di ApprovalRemoteCommand.java */
+    private void sendApprovalGrowlNotif(ApprovalActivity appActivity){
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL ||
+    			appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED){
+    		
+        	final ApprovalPushMessageModel model = new ApprovalPushMessageModel();
+        	model.setApprovalName(appActivity.getApprovalDefinition().getName());
+        	model.setApprovalStatus(String.valueOf(appActivity.getApprovalStatus()));
+        	model.setApproverUserId(appActivity.getApprovedBy());
+        	model.setRequestUserId(appActivity.getRequestBy());
+        	model.setApproverFullName(hrmUserDao.getByUserId(appActivity.getApprovedBy()).getEmpData().getBioData().getFullName());
+        	model.setRequestFullName(hrmUserDao.getByUserId(appActivity.getRequestBy()).getEmpData().getBioData().getFullName());
+        	
+        	
+        	//send messaging, to trigger growl notif
             jmsTemplateApprovalGrowl.send(new MessageCreator() {
                 @Override
                 public Message createMessage(Session session) throws JMSException {
@@ -655,7 +672,126 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
                     return message;
                 }
             });
-        }
+    	}    	
+    }
+    
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancelled(long approvalActivityId, String comment) throws Exception {
+    	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
+    	//check only approval status which is WAITITNG_APPROVAL or WAITING_REVISED that can be process
+    	if(!((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED))){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+    	appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
+    	appActivity.setApprovalCommment(comment);
+    	approvalActivityDao.update(appActivity);
+    	
+    	//send email cancellation
+    	this.sendingEmailApprovalNotif(appActivity);
+    }
+    
+    /**
+     * <p>Method untuk meng-asking revised(memintan untuk direvisi) suatu activity. Tidak ada pengecekan next approval, 
+     * karena method ini ditujukan untuk requester(requestBy) yang mana sudah terdapat di approvalActivity sebelumnya.
+     * </p>
+     *
+     * <pre>
+     * super.askingRevisedAndCheckNextApproval(approvalActivityId, comment);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String 
+     * @return ApprovalActivity  last approval activity yang berstatus WAITING_REVISED
+     */
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void askingRevised(long appActivityId, String comment) throws Exception {
+
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		//check only approval status which is waiting that can be process
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+        /** update ASKING_REVISED approval activity */
+        approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_ASKING_REVISED);
+        approvalActivity.setApprovalCommment(comment);
+        approvalActivity.setApprovalTime(new Date());
+        approvalActivityDao.save(approvalActivity);
+                
+        /** create NEW approval activity, untuk requester (revised) */
+    	ApprovalActivity lastAppActivity = new ApprovalActivity();
+    	BeanUtils.copyProperties(approvalActivity, lastAppActivity, new String[]{"id","sequence","approvalCommment","approvalTime","createdTime","approvalStatus"});
+    	lastAppActivity.setSequence(approvalActivity.getSequence()+1); //increment +1
+    	lastAppActivity.setCreatedTime(new Date());
+    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_REVISED);
+    	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));        	
+    	approvalActivityDao.save(lastAppActivity);
+    	
+    	//show growl notification for requesterUserId
+    	this.sendApprovalGrowlNotif(lastAppActivity);
+    	
+    	//send sms notification to requester
+		this.sendApprovalSmsnotif(lastAppActivity);
+		
+		//send email askingRevised
+    	this.sendingEmailApprovalNotif(lastAppActivity);
+		
+    }
+	
+	/**
+     * <p>Method untuk meng-revised(merevisi) suatu activity. Tidak ada pengecekan next approval, 
+     * karena method ini ditujukan untuk approver(approveBy) yang mana sudah terdapat di approvalActivity sebelumnya.
+     * </p>
+     *
+     * <pre>
+     * super.revised(approvalActivityId, pendingDataUpdate, comment);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param pendingDataUpdate Json dari entity yg akan disave(setelah direvisi)
+     * @param comment String
+     * @return ApprovalActivity  last approval activity yang berstatus WAITING_APPROVAL
+     */
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void revised(long appActivityId, String pendingDataUpdate) throws Exception {
+
+		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
+		
+		/** check only approval status which is WAITING_REVISED that can be process 
+		 *  chech the changes data also */
+    	if(approvalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING_REVISED){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	} else if (StringUtils.equals(approvalActivity.getPendingData(), pendingDataUpdate) || pendingDataUpdate == null){
+    		throw new BussinessException("approval.error_data_has_not_revised");	
+    	}
+    	
+        /** update REVISED approval activity */
+        approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_REVISED);
+        approvalActivity.setApprovalCommment(StringUtils.EMPTY);
+        approvalActivity.setPendingData(pendingDataUpdate);
+        approvalActivity.setApprovalTime(new Date());
+        approvalActivityDao.save(approvalActivity);
+                
+        /** create NEW approval activity, untuk approver (sebelumnya yg meminta direvisis) */
+    	ApprovalActivity lastAppActivity = new ApprovalActivity();
+    	BeanUtils.copyProperties(approvalActivity, lastAppActivity, new String[]{"id","sequence","approvalCommment","approvalTime","createdTime","approvalStatus"});
+    	lastAppActivity.setSequence(approvalActivity.getSequence()+1); //increment +1
+    	lastAppActivity.setCreatedTime(new Date());
+    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
+    	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));        	
+    	approvalActivityDao.save(lastAppActivity);
+    	
+    	//show growl notification for approverUserId
+    	this.sendApprovalGrowlNotif(lastAppActivity);
+    	
+    	//send sms notification to approver
+		this.sendApprovalSmsnotif(lastAppActivity); 
+		
+		//send email revised
+    	this.sendingEmailApprovalNotif(lastAppActivity);
+		
     }
 
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

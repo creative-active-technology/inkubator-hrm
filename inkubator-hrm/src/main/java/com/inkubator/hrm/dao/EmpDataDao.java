@@ -134,5 +134,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
         
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate);
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik,  int firstResult, int maxResults, Order order);
+
+    public Long getTotalByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik);
+            
+    public List<String> getAllNikBetween(String from, String until);
 }

@@ -834,13 +834,25 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate) throws Exception {
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik,  int firstResult, int maxResults, Order order) throws Exception {
         Long[] deptId = new Long[department.size()];
         int i = 0;
         for (Department dept : department) {
             deptId[i] = dept.getId();
         }
         
-        return empDataDao.getAllDataByParamWithDetail(department, golJab, empTypeName, listAge, listJoinDate);
+        return empDataDao.getAllDataByParamWithDetail(department, golJab, empTypeName, listAge, listJoinDate, listNik, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<String> getAllNikBetween(String from, String until) throws Exception {
+        return empDataDao.getAllNikBetween(from, until);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik) throws Exception {
+        return empDataDao.getTotalByParamWithDetail(deptId, golJabId, empTypeName, listAge, listJoinDate, listNik);
     }
 }
