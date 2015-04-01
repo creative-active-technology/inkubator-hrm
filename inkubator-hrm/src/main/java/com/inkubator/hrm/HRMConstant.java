@@ -178,7 +178,7 @@ public class HRMConstant {
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
-    public static final Integer APPROVAL_STATUS_WAITING = 0;
+    public static final Integer APPROVAL_STATUS_WAITING_APPROVAL = 0;
     public static final Integer APPROVAL_STATUS_APPROVED = 1;
     public static final Integer APPROVAL_STATUS_REJECTED = 2;
     public static final Integer APPROVAL_STATUS_DIVERTED = 3;

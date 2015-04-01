@@ -6,8 +6,12 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +32,13 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     public LoanNewApplication getEntityByIdWithDetail(Long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
     
     
 }

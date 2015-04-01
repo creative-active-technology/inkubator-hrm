@@ -156,4 +156,13 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         
     }
 
+    @Override
+    public HrmUser getUserWithDetailByUserId(String userId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("userId", userId));;
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        return (HrmUser) criteria.uniqueResult();        
+    }
+
 }

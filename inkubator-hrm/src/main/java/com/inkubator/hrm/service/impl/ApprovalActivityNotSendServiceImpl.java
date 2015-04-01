@@ -111,7 +111,7 @@ public class ApprovalActivityNotSendServiceImpl implements ApprovalActivityNotSe
                 //not yet implemented
 
             } else {
-                if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING)) {
+                if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)) {
                     
                     switch (appActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:

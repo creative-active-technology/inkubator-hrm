@@ -33,7 +33,7 @@ public class ApprovalRemoteCommand {
         String requestFullName = params.get("requestFullName");
         String approvalName = params.get("approvalName");
         Integer approvalStatus = Integer.parseInt(params.get("approvalStatus"));
-        Boolean isWaitingApproval = approvalStatus == HRMConstant.APPROVAL_STATUS_WAITING;
+        Boolean isWaitingApproval = approvalStatus == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
         Boolean isWaitingRevised = approvalStatus == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
         
 
