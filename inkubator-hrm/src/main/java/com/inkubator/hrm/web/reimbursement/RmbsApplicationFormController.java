@@ -17,15 +17,18 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import ch.lambdaj.Lambda;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
@@ -34,6 +37,8 @@ import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
 import com.inkubator.hrm.entity.RmbsType;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.CurrencyService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsApplicationService;
@@ -60,6 +65,9 @@ public class RmbsApplicationFormController extends BaseController {
     private RmbsSchema rmbsSchema;
     private RmbsSchemaListOfType rmbsSchemaListOfType;
     private BigDecimal totalRequestThisMoth;
+    private Boolean isRevised;
+    private ApprovalActivity currentActivity;
+    private ApprovalActivity askingRevisedActivity;
     
     @ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
@@ -73,14 +81,26 @@ public class RmbsApplicationFormController extends BaseController {
 	private UploadFilesUtil uploadFilesUtil;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        try {
+        try {        	
         	listCurrency = currencyService.getAllData();
 	        model = new RmbsApplicationModel();
+	        isRevised = Boolean.FALSE;
+	        
+	        String appActivityId = FacesUtil.getRequestParameter("activity");
+        	if (StringUtils.isNotEmpty(appActivityId)) {
+        		isRevised = Boolean.TRUE;
+        		currentActivity = approvalActivityService.getEntityByPkWithDetail(Long.parseLong(appActivityId.substring(1)));
+        		this.getModelFromJson(currentActivity.getPendingData());
+        		askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(), 
+        				currentActivity.getSequence()-1);        	
+        	}
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -101,6 +121,10 @@ public class RmbsApplicationFormController extends BaseController {
     	currencyService = null;
     	empDataService = null;
     	totalRequestThisMoth = null;
+    	isRevised = null;
+    	askingRevisedActivity = null;
+    	approvalActivityService = null;
+    	currentActivity = null;
 	}
     
     public String doSave() {
@@ -109,7 +133,7 @@ public class RmbsApplicationFormController extends BaseController {
 	    	String path = "";
 	    	
 	        try {
-	        	String message = rmbsApplicationService.save(rmbsApplication, reimbursementFile, Boolean.FALSE);
+	        	String message = rmbsApplicationService.saveWithApproval(rmbsApplication, reimbursementFile);
 	        	if(StringUtils.equals(message, "success_need_approval")){
 	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
 	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -125,8 +149,33 @@ public class RmbsApplicationFormController extends BaseController {
 	        } catch (Exception ex) {
 	            LOGGER.error("Error", ex);
 	        }
-    	}
-        
+    	}        
+        return null;
+    }
+    
+    public String doRevised() {
+    	if(this.isValidForm()) { //do validation, before saving process
+	    	RmbsApplication rmbsApplication = getEntityFromModel(model);
+	    	String path = "";
+	    	
+	        try {
+	        	String message = rmbsApplicationService.saveWithRevised(rmbsApplication, reimbursementFile, currentActivity.getId());
+	        	if(StringUtils.equals(message, "success_need_approval")){
+	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	        	
+	        	} else {
+	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
+	        	}
+	            return path;
+	            
+	        } catch (BussinessException ex) { 
+	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	        } catch (Exception ex) {
+	            LOGGER.error("Error", ex);
+	        }
+    	}        
         return null;
     }
     
@@ -167,6 +216,39 @@ public class RmbsApplicationFormController extends BaseController {
         rmbsApplication.setApplicationStatus(m.getApplicationStatus());
         rmbsApplication.setNominal(m.getNominal());
         return rmbsApplication;
+    }
+    
+    private void getModelFromJson(String json){
+    	try {
+	    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	    	JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+            JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
+            String reimbursementFileName = elReimbursementFileName.isJsonNull() ? StringUtils.EMPTY : elReimbursementFileName.getAsString();
+            if(StringUtils.isNotEmpty(reimbursementFileName)){
+            	reimbursementFile = rmbsApplicationService.convertFileToUploadedFile(gson, json);
+            }
+            
+	    	RmbsApplication entity = gson.fromJson(json, RmbsApplication.class);
+	    	model.setApplicationDate(entity.getApplicationDate());
+	    	model.setCode(entity.getCode());
+	    	model.setCurrencyId(entity.getCurrency().getId());
+	    	model.setDescription(entity.getDescription());
+	    	model.setEmpData(empDataService.getByEmpIdWithDetail(entity.getEmpData().getId()));
+	    	model.setNominal(entity.getNominal());
+	    	model.setPurpose(entity.getPurpose());
+	    	model.setReimbursementFileName(reimbursementFileName);
+	    	model.setRmbsTypeId(entity.getRmbsType().getId());
+	    	
+	    	RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(model.getEmpData().getId());
+	    	rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
+			listRmbsType = Lambda.extract(rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId()), Lambda.on(RmbsSchemaListOfType.class).getRmbsType())  ;
+			rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(model.getRmbsTypeId(), rmbsSchema.getId()));
+    		totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(model.getEmpData().getId(), model.getRmbsTypeId());
+    		
+    	} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+    	
     }
     
     public List<EmpData> doAutoCompleteEmployee(String param){
@@ -321,7 +403,38 @@ public class RmbsApplicationFormController extends BaseController {
 	public void setTotalRequestThisMoth(BigDecimal totalRequestThisMoth) {
 		this.totalRequestThisMoth = totalRequestThisMoth;
 	}
-	
-	
+
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+
+	public ApprovalActivity getAskingRevisedActivity() {
+		return askingRevisedActivity;
+	}
+
+	public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+		this.askingRevisedActivity = askingRevisedActivity;
+	}
+
+	public ApprovalActivityService getApprovalActivityService() {
+		return approvalActivityService;
+	}
+
+	public void setApprovalActivityService(
+			ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
+
+	public ApprovalActivity getCurrentActivity() {
+		return currentActivity;
+	}
+
+	public void setCurrentActivity(ApprovalActivity currentActivity) {
+		this.currentActivity = currentActivity;
+	}	
         
 }

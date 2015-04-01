@@ -35,7 +35,7 @@ public class LoanNewSchema implements java.io.Serializable {
     private Date updatedOn;
     private String nomorSk;
     private Set<LoanNewSchemaListOfType> loanNewSchemaListOfTypes = new HashSet<LoanNewSchemaListOfType>(0);
-    private Set<ApprovalDefinitionLoanSchema> approvalDefinitionLoanSchemas = new HashSet<ApprovalDefinitionLoanSchema>(0);
+    private Set<ApprovalDefinitionLoan> approvalDefinitionLoanSchemas = new HashSet<ApprovalDefinitionLoan>(0);
     private Set<LoanNewSchemaListOfEmp> loanNewSchemaListOfEmps = new HashSet<LoanNewSchemaListOfEmp>(0);
     private Set<ApprovalDefinitionLoan> approvalDefinitionLoans = new HashSet<ApprovalDefinitionLoan>(0);
 
@@ -52,7 +52,7 @@ public class LoanNewSchema implements java.io.Serializable {
         this.loanSchemaName = loanSchemaName;
     }
 
-    public LoanNewSchema(long id, String loanSchemaCode, String loanSchemaName, String description, Long totalMaximumLoan, Long totalMaximumInstallment, Date createdOn, String createdBy, String updatedBy, Date updatedOn, String nomorSk, Set<LoanNewSchemaListOfType> loanNewSchemaListOfTypes, Set<ApprovalDefinitionLoanSchema> approvalDefinitionLoanSchemas, Set<LoanNewSchemaListOfEmp> loanNewSchemaListOfEmps) {
+    public LoanNewSchema(long id, String loanSchemaCode, String loanSchemaName, String description, Long totalMaximumLoan, Long totalMaximumInstallment, Date createdOn, String createdBy, String updatedBy, Date updatedOn, String nomorSk, Set<LoanNewSchemaListOfType> loanNewSchemaListOfTypes, Set<ApprovalDefinitionLoan> approvalDefinitionLoanSchemas, Set<LoanNewSchemaListOfEmp> loanNewSchemaListOfEmps) {
         this.id = id;
         this.loanSchemaCode = loanSchemaCode;
         this.loanSchemaName = loanSchemaName;
@@ -192,11 +192,11 @@ public class LoanNewSchema implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "loanNewSchema")
-    public Set<ApprovalDefinitionLoanSchema> getApprovalDefinitionLoanSchemas() {
+    public Set<ApprovalDefinitionLoan> getApprovalDefinitionLoanSchemas() {
         return this.approvalDefinitionLoanSchemas;
     }
 
-    public void setApprovalDefinitionLoanSchemas(Set<ApprovalDefinitionLoanSchema> approvalDefinitionLoanSchemas) {
+    public void setApprovalDefinitionLoanSchemas(Set<ApprovalDefinitionLoan> approvalDefinitionLoanSchemas) {
         this.approvalDefinitionLoanSchemas = approvalDefinitionLoanSchemas;
     }
 

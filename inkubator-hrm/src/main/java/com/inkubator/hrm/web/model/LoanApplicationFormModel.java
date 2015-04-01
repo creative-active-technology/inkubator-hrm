@@ -30,6 +30,8 @@ public class LoanApplicationFormModel implements Serializable {
     private LoanNewSchemaListOfType selectedLoanNewSchemaListOfType;
     private List<LoanNewSchemaListOfType> listLoanNewSchemaListOfType;
     private List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments;
+    private List<EmpData> listApprover;
+//    private LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId;
     private String purpose;
     private String description;
     private Integer rangeFirstInstallmentToDisbursement;
@@ -53,6 +55,14 @@ public class LoanApplicationFormModel implements Serializable {
 
     public void setTermin(Integer termin) {
         this.termin = termin;
+    }
+
+    public List<EmpData> getListApprover() {
+        return listApprover;
+    }
+
+    public void setListApprover(List<EmpData> listApprover) {
+        this.listApprover = listApprover;
     }
     
     
@@ -266,6 +276,10 @@ public class LoanApplicationFormModel implements Serializable {
 
     public Boolean getIsPaginator() {
         return listLoanNewApplicationInstallments.size() > 11;
+    }
+    
+    public Boolean getIspaginatorLoanApprover() {
+        return listApprover.size() > 11;
     }
 
 }
