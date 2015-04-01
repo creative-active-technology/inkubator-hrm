@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 59%">
                                 <p:focus for ="schemaType">
-                                    <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" 
+                                    <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                  style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanNewSchemaListOfTypeFormController.dropDownSchemeType}"  />                                                                                
@@ -63,7 +63,7 @@
                                 <h:outputLabel for="maxDayAvailable" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="maxDayAvailable"  value="#{loanNewSchemaListOfTypeFormController.model.maksimumHariTersedia}"
+                                <p:inputText id="maxDayAvailable"  value="#{loanNewSchemaListOfTypeFormController.model.maksimumHariTersedia}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                              required="true" onkeyup="this.value = this.value.toUpperCase();" maxlength="3" styleClass="isitext_hrm" style="width:30px;" />
                                 <p:outputLabel value=" Hari" />
                             </p:column>
@@ -82,7 +82,7 @@
                                 <h:outputLabel for="maxApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}"
+                                <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                              required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -100,7 +100,7 @@
                                 <h:outputLabel for="maxAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}"
+                                <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                              required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -119,7 +119,7 @@
                                 <h:outputLabel for="minApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}"
+                                <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -137,7 +137,7 @@
                                 <h:outputLabel for="minAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}"
+                                <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -155,7 +155,7 @@
                                 <h:outputLabel for="minInstallment" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}"
+                                <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -173,7 +173,7 @@
                                 <h:outputLabel for="maxPeriod" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}"
+                                <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="3" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -187,10 +187,14 @@
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                        <p:commandButton value="#{appmsg['global.active']}" ajax="true" update="formId,:growlId" rendered="#{!loanNewSchemaListOfTypeFormController.model.isActive}"
                                          action="#{loanNewSchemaListOfTypeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                                         style="margin-right: 5px" label="#{appmsg['global.active']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.active']}"/>
+                        <p:commandButton value="#{appmsg['global.non_active']}" ajax="true" update="formId,:growlId" rendered="#{loanNewSchemaListOfTypeFormController.model.isActive}"
+                                         action="#{loanNewSchemaListOfTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.non_active']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.non_active']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formId" />  

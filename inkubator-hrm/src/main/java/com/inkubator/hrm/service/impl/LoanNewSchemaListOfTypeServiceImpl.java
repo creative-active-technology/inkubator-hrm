@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -38,9 +39,9 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     private LoanNewSchemaDao loanNewSchemaDao;
     @Autowired
     private LoanNewTypeDao loanNewTypeDao;
-    
+
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema) throws Exception {
         return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchema(loanNewSchema);
     }
@@ -56,7 +57,7 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public LoanNewSchemaListOfType getEntiyByPK(Long id) throws Exception {
         return loanNewSchemaListOfTypeDao.getEntiyByPK(id);
     }
@@ -64,21 +65,73 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(LoanNewSchemaListOfType entity) throws Exception {
-        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId());
+        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalBySchemaAndTypeAndStatusActive(entity.getLoanNewSchema().getId(), entity.getLoanNewType().getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("loanNewSchema.error_duplicate_type");
         }
+
+        List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaWhereStatusActive(entity.getLoanNewSchema().getId());
+        LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId());
+        Double totalPinjaman = 0.0;
+        Double totalInstallment = 0.0;
+
+        //total pinjaman dan cicilan data yang aktif
+        for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewTypeActive) {
+            totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
+            totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
+        }
+
+        //tambah total pinjaman dan cicilan dengan data sekarang
+        totalPinjaman = totalPinjaman + entity.getMaximumApproval();
+        totalInstallment = totalInstallment + entity.getMinimumMonthlyInstallment();
+
+        if (totalInstallment > loanNewSchema.getTotalMaximumInstallment() || totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
+            throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
+        }
+        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
         entity.setLoanNewType(loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        entity.setIsActive(Boolean.TRUE);
         this.loanNewSchemaListOfTypeDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LoanNewSchemaListOfType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // update existing loanNewSchemaType isActive to 0
+        LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntiyByPK(entity.getId());
+        if (loanNewSchemaListOfType.getIsActive().equals(Boolean.TRUE)) {
+            loanNewSchemaListOfType.setIsActive(Boolean.FALSE);
+        } else if (loanNewSchemaListOfType.getIsActive().equals(Boolean.FALSE)) {
+            long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalBySchemaAndTypeAndStatusActive(entity.getLoanNewSchema().getId(), entity.getLoanNewType().getId());
+            if (totalDuplicates > 0) {
+                throw new BussinessException("loanNewSchema.error_duplicate_type");
+            }
+            List<LoanNewSchemaListOfType> listOfLoanNewTypeActive = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaWhereStatusActive(entity.getLoanNewSchema().getId());
+            LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId());
+            Double totalPinjaman = 0.0;
+            Double totalInstallment = 0.0;
+
+            //total pinjaman dan cicilan data yang aktif
+            for (LoanNewSchemaListOfType loanNewSchemaType : listOfLoanNewTypeActive) {
+                totalPinjaman = totalPinjaman + loanNewSchemaType.getMaximumApproval();
+                totalInstallment = totalInstallment + loanNewSchemaType.getMinimumMonthlyInstallment();
+            }
+
+            //tambah total pinjaman dan cicilan dengan data sekarang
+            totalPinjaman = totalPinjaman + entity.getMaximumApproval();
+            totalInstallment = totalInstallment + entity.getMinimumMonthlyInstallment();
+
+            if (totalInstallment > loanNewSchema.getTotalMaximumInstallment() || totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
+                throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
+            }
+            loanNewSchemaListOfType.setIsActive(Boolean.TRUE);
+        }
+
+        this.loanNewSchemaListOfTypeDao.update(loanNewSchemaListOfType);
+
     }
 
     @Override
@@ -149,13 +202,15 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(LoanNewSchemaListOfType entity) throws Exception {
-        LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeId(new LoanNewSchemaListOfTypeId(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId()));
-        this.loanNewSchemaListOfTypeDao.delete(loanNewSchemaListOfType);
+        this.loanNewSchemaListOfTypeDao.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void softDelete(LoanNewSchemaListOfType entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntiyByPK(entity.getId());
+        loanNewSchemaListOfType.setIsActive(Boolean.FALSE);
+        this.loanNewSchemaListOfTypeDao.update(loanNewSchemaListOfType);
     }
 
     @Override
@@ -219,31 +274,37 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId) throws Exception {
-        return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeIdWithDetail(loanNewSchemaListOfTypeId);
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id) throws Exception {
+        return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeIdWithDetail(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LoanNewSchemaListOfType entity, Long oldId) throws Exception {
-        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByNotLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), new LoanNewSchemaListOfTypeId(entity.getLoanNewType().getId(), oldId));
-        if (totalDuplicates > 0) {
-            throw new BussinessException("loanNewSchema.error_duplicate_type");
-        }
-        LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeId(new LoanNewSchemaListOfTypeId(oldId, entity.getLoanNewSchema().getId()));
-        this.loanNewSchemaListOfTypeDao.delete(loanNewSchemaListOfType);
-        entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
-        entity.setLoanNewType(loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId()));
-        entity.setCreatedBy(UserInfoUtil.getUserName());
-        entity.setCreatedOn(new Date());
-        this.loanNewSchemaListOfTypeDao.save(entity);
+//        long totalDuplicates = loanNewSchemaListOfTypeDao.getTotalByNotLoanTypeAndSchema(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), new LoanNewSchemaListOfTypeId(entity.getLoanNewType().getId(), oldId));
+//        if (totalDuplicates > 0) {
+//            throw new BussinessException("loanNewSchema.error_duplicate_type");
+//        }
+//        LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeId(new LoanNewSchemaListOfTypeId(oldId, entity.getLoanNewSchema().getId()));
+//        this.loanNewSchemaListOfTypeDao.delete(loanNewSchemaListOfType);
+//        entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
+//        entity.setLoanNewType(loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId()));
+//        entity.setCreatedBy(UserInfoUtil.getUserName());
+//        entity.setCreatedOn(new Date());
+//        this.loanNewSchemaListOfTypeDao.save(entity);
     }
 
     @Override
-     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId) {
         return this.loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(loanNewSchemaId, loanNewTypeId);
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema) throws Exception {
+        return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaWhereStatusActive(loanNewSchema);
+    }
+
 }

@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -20,6 +21,15 @@ public class LoanNewSchemaModel implements Serializable {
     private Long totalMaximumLoan;
     private Long totalMaximumInstallment;
     private String nomorSk;
+    private Double totalPinjaman;
+    private Double totalAllocation;
+    private Double totalInstallment;
+    private Integer maksimumHariTersedia;
+    private Integer maxPeriode;
+    private Double minimumAllocation;
+    private Double minimumApproval;
+    private List<LoanNewSchemaModel> listTotalModel;
+    private LoanNewSchemaModel totalModel;
 
     public Long getId() {
         return id;
@@ -76,6 +86,78 @@ public class LoanNewSchemaModel implements Serializable {
     public void setNomorSk(String nomorSk) {
         this.nomorSk = nomorSk;
     }
-    
+
+    public Double getTotalPinjaman() {
+        return totalPinjaman;
+    }
+
+    public void setTotalPinjaman(Double totalPinjaman) {
+        this.totalPinjaman = totalPinjaman;
+    }
+
+    public Double getTotalAllocation() {
+        return totalAllocation;
+    }
+
+    public void setTotalAllocation(Double totalAllocation) {
+        this.totalAllocation = totalAllocation;
+    }
+
+    public Double getTotalInstallment() {
+        return totalInstallment;
+    }
+
+    public void setTotalInstallment(Double totalInstallment) {
+        this.totalInstallment = totalInstallment;
+    }
+
+    public Integer getMaksimumHariTersedia() {
+        return maksimumHariTersedia;
+    }
+
+    public void setMaksimumHariTersedia(Integer maksimumHariTersedia) {
+        this.maksimumHariTersedia = maksimumHariTersedia;
+    }
+
+    public Integer getMaxPeriode() {
+        return maxPeriode;
+    }
+
+    public void setMaxPeriode(Integer maxPeriode) {
+        this.maxPeriode = maxPeriode;
+    }
+
+    public Double getMinimumAllocation() {
+        return minimumAllocation;
+    }
+
+    public void setMinimumAllocation(Double minimumAllocation) {
+        this.minimumAllocation = minimumAllocation;
+    }
+
+    public Double getMinimumApproval() {
+        return minimumApproval;
+    }
+
+    public void setMinimumApproval(Double minimumApproval) {
+        this.minimumApproval = minimumApproval;
+    }
+
+    public List<LoanNewSchemaModel> getListTotalModel() {
+        return listTotalModel;
+    }
+
+    public void setListTotalModel(List<LoanNewSchemaModel> listTotalModel) {
+        this.listTotalModel = listTotalModel;
+    }
+
+    public LoanNewSchemaModel getTotalModel() {
+        return totalModel;
+    }
+
+    public void setTotalModel(LoanNewSchemaModel totalModel) {
+        this.totalModel = totalModel;
+    }
+
     
 }

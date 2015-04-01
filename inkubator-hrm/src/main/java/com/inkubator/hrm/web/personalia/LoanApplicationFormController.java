@@ -13,7 +13,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
+//import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.TransactionCodefication;
@@ -90,7 +90,7 @@ public class LoanApplicationFormController extends BaseController {
     private Map<String, Long> mapSubsidiType = new HashMap<>();
     private Long subsidiType;
     private Long loanNewTypeId;
-    private LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId;
+//    private LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId;
 
     private LoanApplicationFormModel model;
     private List<EmpData> source = new ArrayList<>();
@@ -129,9 +129,9 @@ public class LoanApplicationFormController extends BaseController {
                 List<LoanNewSchemaListOfType> listOfTypes = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
                 model.setListLoanNewSchemaListOfType(listOfTypes);
 
-                for (LoanNewSchemaListOfType loanNewType : listOfTypes) {
-                    mapLoanNewType.put(loanNewType.getLoanNewType().getLoanTypeName(), loanNewType.getId().getLoanNewTypeId());
-                }
+//                for (LoanNewSchemaListOfType loanNewType : listOfTypes) {
+//                    mapLoanNewType.put(loanNewType.getLoanNewType().getLoanTypeName(), loanNewType.getId().getLoanNewTypeId());
+//                }
 
             }
 
@@ -197,13 +197,13 @@ public class LoanApplicationFormController extends BaseController {
         this.loanNewTypeId = loanNewTypeId;
     }
 
-    public LoanNewSchemaListOfTypeId getSelectedLoanNewSchemaListOfTypeId() {
-        return selectedLoanNewSchemaListOfTypeId;
-    }
-
-    public void setSelectedLoanNewSchemaListOfTypeId(LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId) {
-        this.selectedLoanNewSchemaListOfTypeId = selectedLoanNewSchemaListOfTypeId;
-    }
+//    public LoanNewSchemaListOfTypeId getSelectedLoanNewSchemaListOfTypeId() {
+//        return selectedLoanNewSchemaListOfTypeId;
+//    }
+//
+//    public void setSelectedLoanNewSchemaListOfTypeId(LoanNewSchemaListOfTypeId selectedLoanNewSchemaListOfTypeId) {
+//        this.selectedLoanNewSchemaListOfTypeId = selectedLoanNewSchemaListOfTypeId;
+//    }
 
     public EmpData getSelectedEmployee() {
         return selectedEmployee;
@@ -388,9 +388,9 @@ public class LoanApplicationFormController extends BaseController {
             List<LoanNewSchemaListOfType> listOfTypes = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
             model.setListLoanNewSchemaListOfType(listOfTypes);
 
-            for (LoanNewSchemaListOfType loanNewSchemaListOfType : listOfTypes) {
-                mapLoanNewType.put(loanNewSchemaListOfType.getLoanNewType().getLoanTypeName(), loanNewSchemaListOfType.getId().getLoanNewTypeId());
-            }
+//            for (LoanNewSchemaListOfType loanNewSchemaListOfType : listOfTypes) {
+//                mapLoanNewType.put(loanNewSchemaListOfType.getLoanNewType().getLoanTypeName(), loanNewSchemaListOfType.getId().getLoanNewTypeId());
+//            }
 
             Double maxLoan = Lambda.sum(listOfTypes, Lambda.on(LoanNewSchemaListOfType.class).getMaximumAllocation().doubleValue());
             Double minLoan = Lambda.sum(listOfTypes, Lambda.on(LoanNewSchemaListOfType.class).getMinimumAllocation().doubleValue());

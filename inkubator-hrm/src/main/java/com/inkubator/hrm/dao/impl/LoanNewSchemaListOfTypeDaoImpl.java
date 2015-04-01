@@ -8,7 +8,6 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "loanNewSchemaListOfTypeDao")
 @Lazy
-public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOfType> implements LoanNewSchemaListOfTypeDao{
+public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOfType> implements LoanNewSchemaListOfTypeDao {
 
     @Override
     public Class<LoanNewSchemaListOfType> getEntityClass() {
@@ -42,18 +41,18 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
     }
 
     @Override
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId) {
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", loanNewSchemaListOfTypeId));
+        criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
         criteria.setFetchMode("loanNewType", FetchMode.JOIN);
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
-    
+
     @Override
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeId(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId) {
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeId(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", loanNewSchemaListOfTypeId));
+        criteria.add(Restrictions.eq("id", id));
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
 
@@ -66,18 +65,9 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
     }
 
     @Override
-    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId, LoanNewSchemaListOfTypeId id) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("loanNewSchema.id", schemaId));
-        criteria.add(Restrictions.eq("loanNewType.id", typeId));
-        criteria.add(Restrictions.ne("id", id));
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
-
-    @Override
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId) {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
         criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
         criteria.setFetchMode("loanNewType", FetchMode.JOIN);
         criteria.add(Restrictions.eq("loanNewSchema.id", loanNewSchemaId));
@@ -85,7 +75,7 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
 
-   
+    @Override
     public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("loanNewSchema", "lns");
@@ -94,5 +84,24 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         criteria.setFetchMode("loanNewType", FetchMode.JOIN);
         return criteria.list();
     }
-    
+
+    @Override
+    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("loanNewSchema", "loanNewSchema", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loanNewSchema.id", loanNewSchema));
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalBySchemaAndTypeAndStatusActive(Long schemaId, Long typeId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("loanNewSchema.id", schemaId));
+        criteria.add(Restrictions.eq("loanNewType.id", typeId));
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }
