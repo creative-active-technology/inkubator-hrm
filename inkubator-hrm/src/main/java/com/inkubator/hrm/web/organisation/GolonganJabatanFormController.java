@@ -150,7 +150,9 @@ public class GolonganJabatanFormController extends BaseController {
         model.setId(golonganJabatan.getId());
         model.setCode(golonganJabatan.getCode());
         model.setOvertime(golonganJabatan.getOvertime());
-        model.setPaySalaryGradeId(golonganJabatan.getPaySalaryGrade().getId());
+        if(golonganJabatan.getPaySalaryGrade() != null){
+            model.setPaySalaryGradeId(golonganJabatan.getPaySalaryGrade().getId());
+        }
 //    	model.setPangkatId(golonganJabatan.getPangkat().getId());
         model.setPointMin(golonganJabatan.getPointMin());
         model.setPointMid(golonganJabatan.getPointMid());
