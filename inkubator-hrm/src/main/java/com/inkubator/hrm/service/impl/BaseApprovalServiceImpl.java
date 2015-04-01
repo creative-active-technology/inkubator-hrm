@@ -71,13 +71,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
     /**
      * <p>
-     * Method untuk mengecek apakah di processName/module tersebut terdapat
-     * approval proses. Jika return-nya berupa null, maka module tersebut tidak
-     * memerlukan approval proses, tapi jika !=null maka memerlukan proses
-     * approval. Selanjutnya nanti di objek yang memanggil method ini, harus
-     * menge-set approvalActivity.setPendingData(pendingData) dari entity module
-     * tersebut
-     *
+     * Method untuk mengecek apakah di processName/module tersebut terdapat approval proses. 
+     * Jika return-nya berupa null, maka module tersebut tidak memerlukan approval proses, tapi jika !=null maka memerlukan proses approval. 
+     * Selanjutnya nanti di objek yang memanggil method ini, harus menge-set approvalActivity.setPendingData(pendingData) dari entity module tersebut
      * </p>
      *
      * <pre>
@@ -174,8 +170,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	private String getApproverByJabatanId(long jabatanId){
 		String userId = StringUtils.EMPTY;
 		
-		/** jika dalam satu jabatan yg sama terdapat beberapa employee, maka pilih employee berdasarkan joinDate/TMB yg terlama 
-		 *  itulah kenapa di order desc "joinDate" */
+		/** jika dalam satu jabatan yg sama terdapat beberapa employee, 
+		 *  maka pilih employee berdasarkan joinDate/TMB yg terlama itulah kenapa di order desc "joinDate" */
 		List<EmpData> employees = empDataDao.getAllDataByJabatanId(jabatanId, Order.desc("joinDate"));		
 		if(!employees.isEmpty()) { //if not empty
 			EmpData empData = employees.get(0);				
@@ -225,13 +221,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * </pre>
      *
      * @param appActivityId Approval Activity id
-     * @param pendingDataUpdate Json dari entity yg akan disave(jika terjadi
-     * perubahan), jika tidak ada perubahan cukup set "null", nanti method ini
-     * akan mengcopy dari value approvalActivity sebelumnya
+     * @param pendingDataUpdate Json dari entity yg akan disave(jika terjadi perubahan), jika tidak ada perubahan cukup set "null", nanti method ini akan mengcopy dari value approvalActivity sebelumnya
      * @param comment String
-     * @return Map<String, Object> Key value dari map tersebut
-     * "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa
-     * objek ApprovalActivity
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
      */
 	protected Map<String, Object> approvedAndCheckNextApproval(Long appActivityId, String pendingDataUpdate, String comment) throws Exception {
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
@@ -247,16 +239,11 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         int approvedCount = approvalActivity.getApprovalCount() + 1; //increment +1
         approvalActivity.setApprovalCount(approvedCount);
         approvalActivity.setApprovalTime(new Date());
-        /**
-         * kenapa di flush karena kalau pake Global Transaction (data yg di
-         * update, tapi di-query lagi, datanya jadi masih mengacu ke lama/before
-         * update)
-         */
+        
+        /** kenapa di flush karena kalau pake Global Transaction (data yg di update, tapi di-query lagi, datanya jadi masih mengacu ke lama/before update) */
         approvalActivityDao.updateAndFlush(approvalActivity);
 
-        /**
-         * checking process if there is any nextApproval for ApprovalActivity
-         */
+        /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity, pendingDataUpdate);
         HashMap<String, Object> result = new HashMap<String, Object>();
         if (nextApproval == null) {
@@ -292,13 +279,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
     /**
      * <p>
-     * Method untuk meng-rejected suatu activity sekaligus akan mengecek apakah
-     * terdapat nextApproval nya. Return-nya berupa Map<String, Object>, nanti
-     * di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat
-     * nextApproval. Tapi jika "isEndOfApprovalProcess" == "true", maka berarti
-     * sudah tidak terdapat nextApproval, sehingga bisa langsung melakukan
-     * proses parsing dari json ke entity dan melakukan saving objek entity
-     * tersebut
+     * Method untuk meng-rejected suatu activity sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval. 
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
      * </p>
      *
      * <pre>
@@ -310,9 +294,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      *
      * @param appActivityId Approval Activity id
      * @param comment String
-     * @return Map<String, Object> Key value dari map tersebut
-     * "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa
-     * objek ApprovalActivity
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
      */
     protected Map<String, Object> rejectedAndCheckNextApproval(Long appActivityId, String comment) throws Exception {
 
@@ -358,14 +340,11 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
     /**
      * <p>
-     * Method untuk meng-diverted suatu activity, yand dieksekusi dari
-     * scheduler. Method ini sekaligus sekaligus akan mengecek apakah terdapat
-     * nextApproval nya. Return-nya berupa Map<String, Object>, nanti di cek
-     * jika "isEndOfApprovalProcess" == "false", maka artinya terdapat
-     * nextApproval. Tapi jika "isEndOfApprovalProcess" == "true", maka berarti
-     * sudah tidak terdapat nextApproval, sehingga bisa langsung melakukan
-     * proses parsing dari json ke entity dan melakukan saving objek entity
-     * tersebut
+     * Method untuk meng-diverted suatu activity, yand dieksekusi dari scheduler. 
+     * Method ini sekaligus sekaligus akan mengecek apakah terdapat nextApproval nya. 
+     * Return-nya berupa Map<String, Object>, nanti di cek jika "isEndOfApprovalProcess" == "false", maka artinya terdapat nextApproval. 
+     * Tapi jika "isEndOfApprovalProcess" == "true", maka berarti sudah tidak terdapat nextApproval, 
+     * sehingga bisa langsung melakukan proses parsing dari json ke entity dan melakukan saving objek entity tersebut
      * </p>
      *
      * <pre>
@@ -376,9 +355,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * </pre>
      *
      * @param appActivityId Approval Activity id
-     * @return Map<String, Object> Key value dari map tersebut
-     * "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa
-     * objek ApprovalActivity
+     * @return Map<String, Object> Key value dari map tersebut "isEndOfApprovalProcess" berupa String dan "approvalActivity" berupa objek ApprovalActivity
      */
 	protected Map<String, Object> divertedAndCheckNextApproval(Long appActivityId) throws Exception {
 		
@@ -394,9 +371,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         approvalActivity.setApprovalTime(new Date());
         approvalActivityDao.update(approvalActivity);
 
-        /**
-         * checking process if there is any nextApproval for ApprovalActivity
-         */
+        /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
         HashMap<String, Object> result = new HashMap<String, Object>();
         if (nextApproval == null) {
@@ -433,17 +408,12 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     }
 
     private ApprovalActivity checkingNextApproval(ApprovalActivity previousAppActivity, String pendingDataUpdate) throws Exception {
-        /**
-         * create new approval activity (if any)
-         */
+        /** create new approval activity (if any) */
         ApprovalActivity nextApproval = null;
         ApprovalDefinition previousAppDef = previousAppActivity.getApprovalDefinition();
 
-        /**
-         * dapatkan nilai approvalOrRejectCount dan minApproverOrRejector,
-         * berdasarkan approvalStatus -nya (approved OR reject) dari
-         * previousActivity
-         */
+        /** dapatkan nilai approvalOrRejectCount dan minApproverOrRejector,
+         *  berdasarkan approvalStatus -nya (approved OR reject) dari previousActivity */
         boolean isCheckingNextDefinition = true; // default true(check approval in next ApprovalDefinition)
         int approvalOrRejectCount = 0;
         int minApproverOrRejector = 0;
@@ -465,13 +435,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         }
 
         /**
-         * cek apakah approval/reject count sudah memenuhi dari minimal
-         * approver/rejecter di approval definition 1. jika belum memenuhi, maka
-         * lanjut ke checking atasannya untuk proses approval-nya 2. jika sudah
-         * memenuhi, maka lanjut ke proses checking approval definition
-         * selanjutnya, khusus jika approvalStatus = Reject, maka jika sudah
-         * memenuhi dia tidak perlu di cek next approval definitionnya, langsung
-         * dibypass
+         * cek apakah approval/reject count sudah memenuhi dari minimal approver/rejecter di approval definition 1. 
+         * Jika belum memenuhi, maka lanjut ke checking atasannya untuk proses approval-nya 2. 
+         * Jika sudah memenuhi, maka lanjut ke proses checking approval definition selanjutnya, 
+         * khusus jika approvalStatus = Reject, maka jika sudah memenuhi dia tidak perlu di cek next approval definitionnya, langsung dibypass
          */
         if (approvalOrRejectCount < minApproverOrRejector) {
 
@@ -483,8 +450,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
             Jabatan parentJabatan = jabatan.getJabatan();
             /**
              * jika approver mempunyai atasan maka lanjut approval ke atasannya,
-             * jika tidak punya atasan langsung check ke next approval
-             * definition-nya (proses no.2)
+             * jika tidak punya atasan langsung check ke next approval definition-nya (proses no.2)
              */
             if (parentJabatan != null) {
                 String approverUserId = this.getApproverByJabatanId(parentJabatan.getId());
@@ -508,9 +474,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
             }
 
             /**
-             * Looping semua approvalDefinition berdasarkan urutan sequence (if
-             * any) Looping akan berhenti jika sudah ditemukan approvalActivity
-             * yang harus di proses
+             * Looping semua approvalDefinition berdasarkan urutan sequence (if any) 
+             * Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses
              */
             for (ApprovalDefinition appDef : listAppDef) {
                 String approverUserId = this.getApproverByAppDefinition(appDef, previousAppActivity.getRequestBy());
@@ -610,8 +575,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
      *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
     private void sendApprovalSmsnotif(ApprovalActivity appActivity){
-    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){
-	    	
+    	
+    	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){	    	
 	    	/** di cek apakah approver memiliki phoneNumber yang valid */
     		HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
 	    	if(approver != null && StringUtils.isNotEmpty(approver.getPhoneNumber())) {
@@ -626,10 +591,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 						return session.createTextMessage(jsonConverter.getJson(mSSend));
 					}
 				});
-	    	}
-	    	
-    	} else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED && appActivity.getApprovalDefinition().getSmsNotification()){
-    		
+	    	}	    	
+    	} else if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED && appActivity.getApprovalDefinition().getSmsNotification()){    		
     		/** di cek apakah requester memiliki phoneNumber yang valid */
     		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
 	    	if(requester != null && StringUtils.isNotEmpty(requester.getPhoneNumber())) {
@@ -692,8 +655,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     }
     
     /**
-     * <p>Method untuk meng-asking revised(memintan untuk direvisi) suatu activity. Tidak ada pengecekan next approval, 
-     * karena method ini ditujukan untuk requester(requestBy) yang mana sudah terdapat di approvalActivity sebelumnya.
+     * <p>Method untuk meng-asking revised(memintan untuk direvisi) suatu activity. 
+     * Tidak ada pengecekan next approval, karena method ini ditujukan untuk requester(requestBy) yang mana sudah terdapat di approvalActivity sebelumnya.
      * </p>
      *
      * <pre>
@@ -741,8 +704,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     }
 	
 	/**
-     * <p>Method untuk meng-revised(merevisi) suatu activity. Tidak ada pengecekan next approval, 
-     * karena method ini ditujukan untuk approver(approveBy) yang mana sudah terdapat di approvalActivity sebelumnya.
+     * <p>Method untuk meng-revised(merevisi) suatu activity. 
+     * Tidak ada pengecekan next approval, karena method ini ditujukan untuk approver(approveBy) yang mana sudah terdapat di approvalActivity sebelumnya.
      * </p>
      *
      * <pre>
@@ -811,7 +774,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
             if (minApprover > 1) {
 
                 for (int i = 2; i <= minApprover; i++) {
-                    String userIdAtasan = this.getApproverByJabatanId(user.getEmpData().getJabatanByJabatanId().getId());
+                	Jabatan parentJabatan = user.getEmpData().getJabatanByJabatanId().getJabatan();
+                	String userIdAtasan = this.getApproverByJabatanId(parentJabatan.getId());
                     
                     if (!StringUtils.equals(StringUtils.EMPTY, userIdAtasan)) {
                         HrmUser userAtasan = hrmUserDao.getUserWithDetailByUserId(userIdAtasan);
