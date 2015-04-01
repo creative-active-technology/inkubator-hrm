@@ -40,7 +40,7 @@ public class GolonganJabatanLazyDataModel extends LazyDataModel<GolonganJabatan>
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.asc("pangkat.pangkatName");
+	        	orderable = Order.asc("paySalaryGrade");
 	        }
 	        
 	        golonganJabatans = golJabatanService.getByParam(parameter, first, pageSize, orderable);

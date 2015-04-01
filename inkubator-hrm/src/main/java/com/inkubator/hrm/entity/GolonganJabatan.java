@@ -1,6 +1,7 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 17, 2014 4:36:40 PM by Hibernate Tools 3.6.0
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,14 +32,18 @@ public class GolonganJabatan implements java.io.Serializable {
     private long id;
     private Integer version;
     private Pangkat pangkat;
-    private String code;
-    private Boolean overtime;
+    private PaySalaryGrade paySalaryGrade;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
+    private Date upatedOn;
+    private String code;
+    private Boolean overtime;
+    private Integer pointMin;
+    private Integer pointMid;
+    private Integer pointMax;
+    private BigDecimal ratioCompact;
     private Date updatedOn;
-    private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
-    private Set<TravelComponentCostRate> travelComponentCostRates = new HashSet<TravelComponentCostRate>(0);
     private List<GolonganJabatan> listGolonganJabatans = new ArrayList<>(0);
 
     public GolonganJabatan() {
@@ -47,21 +52,31 @@ public class GolonganJabatan implements java.io.Serializable {
     public GolonganJabatan(long id) {
         this.id = id;
     }
+    
+    public GolonganJabatan(long id, String code) {
+        this.id = id;
+        this.code = code;
+    }
 
-    public GolonganJabatan(long id, Pangkat pangkat, String code, Boolean overtime, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<Jabatan> jabatans, Set<TravelComponentCostRate> travelComponentCostRates) {
+    public GolonganJabatan(long id, Pangkat pangkat, PaySalaryGrade paySalaryGrade, String createdBy, Date createdOn, String updatedBy, Date upatedOn, String code, Boolean overtime, Integer pointMin, Integer pointMid, Integer pointMax, BigDecimal ratioCompact, Date updatedOn) {
         this.id = id;
         this.pangkat = pangkat;
-        this.code = code;
-        this.overtime = overtime;
+        this.paySalaryGrade = paySalaryGrade;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
+        this.upatedOn = upatedOn;
+        this.code = code;
+        this.overtime = overtime;
+        this.pointMin = pointMin;
+        this.pointMid = pointMid;
+        this.pointMax = pointMax;
+        this.ratioCompact = ratioCompact;
         this.updatedOn = updatedOn;
-        this.jabatans = jabatans;
-        this.travelComponentCostRates = travelComponentCostRates;
     }
 
     @Id
+
     @Column(name = "id", unique = true, nullable = false)
     public long getId() {
         return this.id;
@@ -91,22 +106,14 @@ public class GolonganJabatan implements java.io.Serializable {
         this.pangkat = pangkat;
     }
 
-    @Column(name = "code", unique = true, length = 4, nullable = false)
-    public String getCode() {
-        return this.code;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pay_salary_grade_id")
+    public PaySalaryGrade getPaySalaryGrade() {
+        return this.paySalaryGrade;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Column(name = "overtime")
-    public Boolean getOvertime() {
-        return this.overtime;
-    }
-
-    public void setOvertime(Boolean overtime) {
-        this.overtime = overtime;
+    public void setPaySalaryGrade(PaySalaryGrade paySalaryGrade) {
+        this.paySalaryGrade = paySalaryGrade;
     }
 
     @Column(name = "created_by", length = 45)
@@ -138,6 +145,70 @@ public class GolonganJabatan implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "upated_on", length = 19)
+    public Date getUpatedOn() {
+        return this.upatedOn;
+    }
+
+    public void setUpatedOn(Date upatedOn) {
+        this.upatedOn = upatedOn;
+    }
+
+    @Column(name = "code", unique = true, nullable = false, length = 4)
+    public String getCode() {
+        return this.code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(name = "overtime")
+    public Boolean getOvertime() {
+        return this.overtime;
+    }
+
+    public void setOvertime(Boolean overtime) {
+        this.overtime = overtime;
+    }
+
+    @Column(name = "point_min")
+    public Integer getPointMin() {
+        return this.pointMin;
+    }
+
+    public void setPointMin(Integer pointMin) {
+        this.pointMin = pointMin;
+    }
+
+    @Column(name = "point_mid")
+    public Integer getPointMid() {
+        return this.pointMid;
+    }
+
+    public void setPointMid(Integer pointMid) {
+        this.pointMid = pointMid;
+    }
+
+    @Column(name = "point_max")
+    public Integer getPointMax() {
+        return this.pointMax;
+    }
+
+    public void setPointMax(Integer pointMax) {
+        this.pointMax = pointMax;
+    }
+
+    @Column(name = "ratio_compact", precision = 3)
+    public BigDecimal getRatioCompact() {
+        return this.ratioCompact;
+    }
+
+    public void setRatioCompact(BigDecimal ratioCompact) {
+        this.ratioCompact = ratioCompact;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_on", length = 19)
     public Date getUpdatedOn() {
         return this.updatedOn;
@@ -145,24 +216,6 @@ public class GolonganJabatan implements java.io.Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "golonganJabatan")
-    public Set<Jabatan> getJabatans() {
-        return this.jabatans;
-    }
-
-    public void setJabatans(Set<Jabatan> jabatans) {
-        this.jabatans = jabatans;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "golonganJabatan")
-    public Set<TravelComponentCostRate> getTravelComponentCostRates() {
-        return travelComponentCostRates;
-    }
-
-    public void setTravelComponentCostRates(Set<TravelComponentCostRate> travelComponentCostRates) {
-        this.travelComponentCostRates = travelComponentCostRates;
     }
 
     @Transient

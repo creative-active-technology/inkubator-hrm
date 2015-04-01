@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -12,8 +13,14 @@ public class GolonganJabatanModel implements Serializable {
     private Long id;
     private String code;
     private Long pangkatId;
+    private Long paySalaryGradeId;
     private Boolean overtime;
     private Map<Long, String> pangkats;
+    private Integer pointMin;
+    private Integer pointMid;
+    private Integer pointMax;
+    private BigDecimal ratioCompact;
+    private Map<String, Long> dropDownPaySalaryGrade;
 
     public Long getId() {
         return id;
@@ -55,4 +62,53 @@ public class GolonganJabatanModel implements Serializable {
         this.pangkats = pangkats;
     }
 
+    public Integer getPointMin() {
+        return pointMin;
+    }
+
+    public void setPointMin(Integer pointMin) {
+        this.pointMin = pointMin;
+    }
+
+    public Integer getPointMid() {
+        return pointMid;
+    }
+
+    public void setPointMid(Integer pointMid) {
+        this.pointMid = pointMid;
+    }
+
+    public Integer getPointMax() {
+        return pointMax;
+    }
+
+    public void setPointMax(Integer pointMax) {
+        this.pointMax = pointMax;
+    }
+
+    public BigDecimal getRatioCompact() {
+        return ratioCompact;
+    }
+
+    public void setRatioCompact(BigDecimal ratioCompact) {
+        this.ratioCompact = ratioCompact;
+    }
+
+    public Long getPaySalaryGradeId() {
+        return paySalaryGradeId;
+    }
+
+    public void setPaySalaryGradeId(Long paySalaryGradeId) {
+        this.paySalaryGradeId = paySalaryGradeId;
+    }
+
+    public Map<String, Long> getDropDownPaySalaryGrade() {
+        return dropDownPaySalaryGrade;
+    }
+
+    public void setDropDownPaySalaryGrade(Map<String, Long> dropDownPaySalaryGrade) {
+        this.dropDownPaySalaryGrade = dropDownPaySalaryGrade;
+    }
+
+    
 }
