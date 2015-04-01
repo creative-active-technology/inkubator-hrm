@@ -68,8 +68,10 @@ public class GolonganJabatanFormController extends BaseController {
             }
             Map<String, Long> dropDownPaySalaryGrade = new TreeMap<String, Long>();;
             List<PaySalaryGrade> listPaySalaryGrade = paySalaryGradeService.getAllData();
+            String nameSalaryGrade = "";
             for (PaySalaryGrade paySalaryGrade : listPaySalaryGrade) {
-                dropDownPaySalaryGrade.put(String.valueOf(paySalaryGrade.getGradeSalary()), paySalaryGrade.getId());
+                nameSalaryGrade = paySalaryGrade.getGradeSalary() + " - " + paySalaryGrade.getMinSalary() + " - " + paySalaryGrade.getMaxSalary();
+                dropDownPaySalaryGrade.put(nameSalaryGrade, paySalaryGrade.getId());
             }
             model.setDropDownPaySalaryGrade(dropDownPaySalaryGrade);
         } catch (Exception e1) {
