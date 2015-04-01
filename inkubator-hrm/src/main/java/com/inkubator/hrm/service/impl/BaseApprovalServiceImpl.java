@@ -794,22 +794,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		
     }
 
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void cancelled(long approvalActivityId, String comment) throws Exception {
-        ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
-        //check only approval status which is waiting that can be process
-        if (appActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_WAITING) {
-            throw new BussinessException("approval.error_status_already_changed");
-        }
-
-        appActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
-        appActivity.setApprovalCommment(comment);
-        approvalActivityDao.update(appActivity);
-
-        //send email cancellation
-        this.sendingEmailApprovalNotif(appActivity);
-    }
-
+   
     protected List<EmpData> getListApproverByListAppDef(List<ApprovalDefinition> listAppDef) {
         List<EmpData> listApprover = new ArrayList<>();
 
