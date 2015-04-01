@@ -156,6 +156,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.joinDate}" />
                             </p:column>
+                            <p:column style="text-align: center;"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.action']}"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.personal_information']}" label="#{appmsg['global.personal_information']}"
+                                                 style="font-size: 10px!important" action="personalInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-collapsed" title="#{appmsg['global.employee_information']}" label="#{appmsg['global.employee_information']}"
+                                                 style="font-size: 10px!important" action="employeeInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.background_information']}" label="#{appmsg['global.background_information']}"
+                                                 style="font-size: 10px!important" action="employeeBackgroundInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{searchEmployeeModel.lazyDataModel.rowCount}"/>
