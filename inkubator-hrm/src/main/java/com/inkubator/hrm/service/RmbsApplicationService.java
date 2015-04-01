@@ -2,11 +2,13 @@ package com.inkubator.hrm.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.primefaces.model.UploadedFile;
 
 import com.google.gson.Gson;
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
 
 /**
@@ -22,6 +24,8 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
 
 	public UploadedFile convertFileToUploadedFile(Gson gson, String pendingData) throws IOException;
+	
+	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws IOException;
 
 }
 	
