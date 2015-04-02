@@ -46,7 +46,12 @@ public class ApprovalRemoteCommand {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
                 case HRMConstant.LOAN:
-                    infoMessages = messages.getString("loan.submission_of_loan") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                    if(isWaitingApproval){
+                        infoMessages = messages.getString("loan.submission_of_loan") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                    }else{
+                        infoMessages = messages.getString("loan.submission_of_loan") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                    }
+                   
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
                 case HRMConstant.REIMBURSEMENT:

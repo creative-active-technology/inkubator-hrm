@@ -38,6 +38,7 @@ public class LoanNewApplication implements java.io.Serializable {
     private Double subsidizedNominal;
     private Integer subsidizedDiscOfInterest;
     private String loanStatus;
+    private String nomor;
     private Integer termin;
     private Date createdOn;
     private Date updateOn;
@@ -99,7 +100,16 @@ public class LoanNewApplication implements java.io.Serializable {
     public void setEmpData(EmpData empData) {
         this.empData = empData;
     }
+    
+    @Column(name="nomor", unique=true, length = 45)
+    public String getNomor() {
+        return nomor;
+    }
 
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
+    }
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_new_type")
     public LoanNewType getLoanNewType() {

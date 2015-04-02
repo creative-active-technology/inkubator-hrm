@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -39,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -279,7 +281,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy",new Locale(appActivity.getLocale()));
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         //get all sendCC email address on status approve OR reject
@@ -393,11 +395,16 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String saveWithApproval(LoanNewApplication entity) throws Exception {
+        
+        if(!isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData().getCreatedBy())){
+            throw new BussinessException("loan.error_loan_with_same_type_found");
+        }
+        
         return this.save(entity, Boolean.FALSE, Boolean.FALSE, null);
     }
 
     @Override
-    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception {
+    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception {        
         return this.save(entity, Boolean.FALSE, Boolean.TRUE, approvalActivityId);
     }
 
@@ -446,5 +453,11 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
         
         return gson.toJson(jsonObject);
+    }
+    
+    private boolean isLoanAllowed(Long loanNewType, Long loanNewSchema, String requestUserId){
+        Boolean result = Boolean.TRUE;
+        
+        return result;
     }
 }

@@ -28,6 +28,10 @@ public class LoanNewMaxMinLoanAmountValidator implements Validator {
             return; // Let required="true" do its job.
         }      
         
+         if (model.getSelectedLoanNewSchemaListOfType() == null) {
+            return; // Let required="true" do its job.
+        }  
+        
         if (nominalLoan < model.getSelectedLoanNewSchemaListOfType().getMinimumAllocation()) {
             String validatorLowerThanMinMessage = (String) component.getAttributes().get("validatorLowerThanMinMessage");
             throw new ValidatorException(new FacesMessage(validatorLowerThanMinMessage));

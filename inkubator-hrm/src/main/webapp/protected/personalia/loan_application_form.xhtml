@@ -34,18 +34,18 @@
 
 
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
-                            <!--                            <p:row>
+                                                        <p:row>
                                                             <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                                                <p:outputLabel  value="#{appmsg['global.number2']}" for="loanNo" styleClass="label_hrm" />
+                                                                <p:outputLabel  value="#{appmsg['global.number2']}" for="loanNewNo" styleClass="label_hrm" />
                                                             </p:column>
                                                             <p:column style="width: 85%">
                                                                 <h:panelGrid columns="1" style="margin-left: -10px;">
-                                                                    <p:inputText id="loanNo" value="#{loanApplicationFormController.model.nomor}"
+                                                                    <p:inputText id="loanNewNo" value="#{loanApplicationFormController.model.nomor}"
                                                                                  required="false" styleClass="isitext_hrm" readonly="true"
                                                                                  style="width:200px;"/>
                                                                 </h:panelGrid>
                                                             </p:column>
-                                                        </p:row>-->
+                                                        </p:row>
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -55,7 +55,7 @@
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:calendar  id="loanDate" pattern="dd MMMM yyyy" label="#{appmsg['loan.loan_date']}"
                                                      value="#{loanApplicationFormController.model.loanDate}"  
-                                                     readonly="false" required="true" size="28"
+                                                     readonly="false" required="true" size="28" showOn="button"
                                                      style="width:250px;" >                                    
                                         </p:calendar>
                                         <p:message for="loanDate"/>                                 
@@ -81,7 +81,7 @@
                                                         requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                         styleClass="isitext_hrm" size="28"  style="width:250px;" >
                                             <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" 
-                                                    update="labelNewSchema,maxLoan,minLoan,availableLoan,loanNewTypeId,tableLoanNewApplicationInstallmentId,tableApproverId,:growlUserFormId"/>
+                                                    update="labelNewSchema,loanNewTypeId,tableLoanNewApplicationInstallmentId,tableApproverId,:growlUserFormId"/>
 
                                         </p:autoComplete>
 
@@ -117,13 +117,13 @@
                                 <p:column style="width: 80%">
 
                                     <p:selectOneMenu id="loanNewTypeId" value="#{loanApplicationFormController.loanNewTypeId}" 
-                                                     label="#{appmsg['loantype.loantype']}"   
-
+                                                     label="#{appmsg['loantype.loantype']}"  
                                                      style="min-width: 200px;margin-right: 3px" required="true" >
 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanApplicationFormController.mapLoanNewType}"/>
-                                        <p:ajax   listener="#{loanApplicationFormController.updateDataPeriod()}"  update="maxPeriod,loanPeriod,minimumInstallment"/>
+                                        <p:ajax   listener="#{loanApplicationFormController.updateDataPinjamanByLoanNewType()}"  
+                                                  update="maxPeriod,loanPeriod,maxLoan,minLoan,availableLoan,minimumInstallment,tableLoanNewApplicationInstallmentId"/>
                                     </p:selectOneMenu>
                                     <p:message for="loanNewTypeId"/>
                                 </p:column>
@@ -156,8 +156,10 @@
                                     <p:calendar  id="expectedDisbursedDate" pattern="MMMM yyyy"
                                                  label="#{appmsg['loan.expected_salary_period_disbursement']}"
                                                  value="#{loanApplicationFormController.model.expectedDisbursementDate}"  
-                                                 readonly="false" required="true"
-                                                 style="width:200px;">                                    
+                                                 readonly="false" required="true"  showOn="button" 
+                                                 style="width:200px;"> 
+                                     <p:ajax   listener="#{loanApplicationFormController.updateDataPinjamanExpectedDisbursementDate()}"  
+                                                  update="tableLoanNewApplicationInstallmentId"/>
                                     </p:calendar>
                                     <p:message for="expectedDisbursedDate"/>   
 
@@ -171,7 +173,7 @@
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
                                                         decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
-                                            <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}"  update="usedLoan,availableLoan"/>
+                                            <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}" immediate="true" update="usedLoan,availableLoan,tableLoanNewApplicationInstallmentId"/>
                                             <f:validator validatorId="loanNewMaxMinLoanAmountValidator"  />
                                             <f:attribute name="validatorMaxExceedMessage" value="#{appmsg['loan.error_nominal_loan_cannot_greater_than_max_allocation']}"/>
                                             <f:attribute name="validatorLowerThanMinMessage" value="#{appmsg['loan.error_nominal_loan_cannot_lower_than_min_allocation']}"/>
@@ -192,7 +194,7 @@
                                                label="#{appmsg['loan.first_installment_since_disbursement']}"
                                                value="#{loanApplicationFormController.model.rangeFirstInstallmentToDisbursement}" 
                                                size="2" min="1" stepFactor="1" max="3" styleClass="isitext_hrm" >
-                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByRangeCicilan()}" update="loanPeriod"/>
+                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByRangeCicilan()}" update="loanPeriod,tableLoanNewApplicationInstallmentId"/>
                                     </p:spinner>
                                     <p:message for="firstInstallmentSinceDisbursement"/>   
 
@@ -485,7 +487,7 @@
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanApplicationFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
-                            <!--</p:panel>-->
+                    
                         </div>
                     </div>
                 </h:form>
