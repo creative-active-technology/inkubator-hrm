@@ -28,11 +28,13 @@ public class LoanNewApplication implements java.io.Serializable {
     private Integer version;
     private EmpData empData;
     private LoanNewType loanNewType;
+    private LoanNewSchema loanNewSchema;
     private Date applicationDate;
     private String purposeNote;
     private Date dibursementDate;
     private Integer bufferTime;
     private String description;
+    private Double nominalPrincipal;
     private Double subsidizedNominal;
     private Integer subsidizedDiscOfInterest;
     private String loanStatus;
@@ -107,7 +109,18 @@ public class LoanNewApplication implements java.io.Serializable {
     public void setLoanNewType(LoanNewType loanNewType) {
         this.loanNewType = loanNewType;
     }
+    
+     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loan_new_schema")
+    public LoanNewSchema getLoanNewSchema() {
+        return loanNewSchema;
+    }
 
+    public void setLoanNewSchema(LoanNewSchema loanNewSchema) {
+        this.loanNewSchema = loanNewSchema;
+    }
+    
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "application_date", length = 10)
     public Date getApplicationDate() {
@@ -162,6 +175,15 @@ public class LoanNewApplication implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    @Column(name = "nominal_principal", nullable = false)
+    public Double getNominalPrincipal() {
+        return nominalPrincipal;
+    }
+
+    public void setNominalPrincipal(Double nominalPrincipal) {
+        this.nominalPrincipal = nominalPrincipal;
     }
 
     @Column(name = "subsidized_nominal", precision = 22, scale = 0)
