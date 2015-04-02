@@ -56,6 +56,8 @@ import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
 import com.inkubator.hrm.entity.RmbsType;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsApplicationService;
+import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
+import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 
@@ -481,7 +483,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 				//save to approval activity
 				String pendingData = this.getJsonPendingData(entity, reimbursmentFile);
 	            approvalActivity.setPendingData(pendingData);
-	            approvalActivity.setTypeSpecific(rmbsType.getId());
+	            approvalActivity.setTypeSpecific(rmbsType.getId()); //set rmbs type
 	            approvalActivityDao.save(approvalActivity);
 	
 	            //sending email notification
@@ -546,6 +548,32 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
         
 		return super.getListApproverByListAppDef(appDefs);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws IOException {
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		
+		List<RmbsApplicationUndisbursedViewModel> listModel = rmbsApplicationDao.getUndisbursedByParam(parameter, firstResult, maxResults, orderable);
+		for(RmbsApplicationUndisbursedViewModel model : listModel){
+			JsonElement elReimbursment = gson.fromJson(model.getJsonData(), JsonObject.class).get("reimbursementFileName");
+			model.setIsHaveAttachment(!elReimbursment.isJsonNull());
+			
+			RmbsApplication rmbsApplication = gson.fromJson(model.getJsonData(), RmbsApplication.class);
+			model.setRmbsApplicationCode(rmbsApplication.getCode());
+			model.setNominal(rmbsApplication.getNominal());
+		}
+		        
+		return listModel;
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws IOException {
+		return rmbsApplicationDao.getTotalUndisbursedByParam(parameter);
+		
 	}
 	
 
