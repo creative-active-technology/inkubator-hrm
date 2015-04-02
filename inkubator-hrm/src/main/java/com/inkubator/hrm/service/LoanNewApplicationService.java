@@ -17,10 +17,15 @@ import java.util.Date;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public interface LoanNewApplicationService extends IService<LoanNewApplication>,BaseApprovalService {
+public interface LoanNewApplicationService extends IService<LoanNewApplication>, BaseApprovalService {
+
     public List<LoanNewApplicationInstallment> getAllDataLoanNewApplicationInstallment(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception;
-    
+
     public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef) throws Exception;
-    
-     public Long getCurrentMaxId();
+
+    public Long getCurrentMaxId();
+
+    public String saveWithApproval(LoanNewApplication entity) throws Exception;
+
+    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception;
 }

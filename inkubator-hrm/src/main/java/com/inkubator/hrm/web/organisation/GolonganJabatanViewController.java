@@ -129,8 +129,8 @@ public class GolonganJabatanViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 450);
-        options.put("contentHeight", 300);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 335);
         RequestContext.getCurrentInstance().openDialog("function_group_form", options, params);
     }
     

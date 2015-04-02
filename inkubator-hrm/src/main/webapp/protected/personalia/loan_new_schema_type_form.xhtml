@@ -43,7 +43,7 @@
                             <p:column  style="width: 59%">
                                 <p:focus for ="schemaType">
                                     <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
+                                                     style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanNewSchemaListOfTypeFormController.dropDownSchemeType}"  />                                                                                
                                     </p:selectOneMenu>
@@ -83,7 +83,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -101,7 +101,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -146,7 +146,7 @@
                                 <p:message for="minAllocation"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="minInstallment" value="#{appmsg['loanschema.min_monthly_installment']}" styleClass="label_hrm"/>
@@ -182,19 +182,29 @@
                                 <p:message for="maxPeriod"/>
                             </p:column>
                         </p:row>
-                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="activeOrNonActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="activeOrNonActive" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%">
+                                <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true"
+                                                        offIcon="ui-icon-close"  id="activeOrNonActive" styleClass="label_button" value="#{loanNewSchemaListOfTypeFormController.model.isActive}" />
+                                <p:message for="activeOrNonActive"/>
+                            </p:column>
+
+                        </p:row>
+
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.active']}" ajax="true" update="formId,:growlId" rendered="#{!loanNewSchemaListOfTypeFormController.model.isActive}"
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
                                          action="#{loanNewSchemaListOfTypeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.active']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.active']}"/>
-                        <p:commandButton value="#{appmsg['global.non_active']}" ajax="true" update="formId,:growlId" rendered="#{loanNewSchemaListOfTypeFormController.model.isActive}"
-                                         action="#{loanNewSchemaListOfTypeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.non_active']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.non_active']}"/>
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formId" />  

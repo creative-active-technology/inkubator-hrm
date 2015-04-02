@@ -10,6 +10,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.PangkatDao;
+import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.UnregGoljabDao;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Pangkat;
@@ -42,6 +43,8 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
     private PangkatDao pangkatDao;
     @Autowired
     private UnregGoljabDao unregGoljabDao;
+    @Autowired
+    private PaySalaryGradeDao paySalaryGradeDao;
 
     @Override
     public GolonganJabatan getEntiyByPK(String id) throws Exception {
@@ -77,6 +80,7 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
         entity.setPangkat(pangkat);
+        entity.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         golJabatanDao.save(entity);
@@ -93,9 +97,14 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
 
         GolonganJabatan golonganJabatan = golJabatanDao.getEntiyByPK(entity.getId());
         golonganJabatan.setCode(entity.getCode());
+        golonganJabatan.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
         Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
-        golonganJabatan.setPangkat(pangkat);
+        entity.setPangkat(pangkat);
         golonganJabatan.setOvertime(entity.getOvertime());
+        golonganJabatan.setPointMin(entity.getPointMin());
+        golonganJabatan.setPointMid(entity.getPointMid());
+        golonganJabatan.setPointMax(entity.getPointMax());
+        golonganJabatan.setRatioCompact(entity.getRatioCompact());
         golonganJabatan.setUpdatedBy(UserInfoUtil.getUserName());
         golonganJabatan.setUpdatedOn(new Date());
         golJabatanDao.update(golonganJabatan);
@@ -264,7 +273,7 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         for (UnregGoljab unregGoljab : this.unregGoljabDao.getAllDataByUnregSalaryId(unregSalaryId)) {
             golonganJabatans.add(unregGoljab.getGolonganJabatan());
         }
-     
+
         golonganJabatan.setListGolonganJabatans(golonganJabatans);
         return golonganJabatan;
     }
