@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -14,9 +15,9 @@ import org.primefaces.model.UploadedFile;
  */
 public interface MedicalCareService extends IService<MedicalCare> {
 
-    public List<MedicalCare> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<MedicalCare> getByParam(MedicalCareSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalByParam(String parameter) throws Exception;
+    public Long getTotalByParam(MedicalCareSearchParameter parameter) throws Exception;
 
     public MedicalCare getEntityWithDetail(Long id) throws Exception;
 

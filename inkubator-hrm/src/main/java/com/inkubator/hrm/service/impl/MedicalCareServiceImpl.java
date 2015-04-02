@@ -2,13 +2,14 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.DiseaseDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HospitalDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.service.MedicalCareService;
+import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
+import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
@@ -276,13 +277,13 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<MedicalCare> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<MedicalCare> getByParam(MedicalCareSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         return this.medicalCareDao.getByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParam(String parameter) throws Exception {
+    public Long getTotalByParam(MedicalCareSearchParameter parameter) throws Exception {
         return this.medicalCareDao.getTotalMedicalCareByParam(parameter);
     }
 

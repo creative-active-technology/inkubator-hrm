@@ -71,20 +71,26 @@
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
-                            </p:column>                          
-                            <p:column sortBy="code"  style="width: 11%">
+                            </p:column>
+                            <p:column sortBy="pangkat.pangkatName"  style="width: 12%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['position.position_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.pangkat.pangkatName}"/>
+                            </p:column>
+                            <p:column sortBy="code"  style="width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.code}"/>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                            <p:column sortBy="paySalaryGrade"  style="width: 7%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.currency.name}"/>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
@@ -92,7 +98,7 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
@@ -100,7 +106,7 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>
@@ -108,14 +114,14 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                            <p:column sortBy="paySalaryGrade"  style="width: 8%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functionGroup.pointMin']}"/>
+                                    <h:outputText value="Min - Med - Max"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.pointMin}">
+                                <h:outputLabel value= "#{golonganJabatanData.pointMin} - #{golonganJabatanData.pointMid} - #{golonganJabatanData.pointMax}">
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+<!--                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functionGroup.pointMed']}"/>
                                 </f:facet>
@@ -128,7 +134,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.pointMax}">
                                 </h:outputLabel>
-                            </p:column>
+                            </p:column>-->
                             <p:column sortBy="paySalaryGrade"  style="width: 6%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functionGroup.rasio']}"/>
@@ -136,7 +142,7 @@
                                 <h:outputLabel value= "#{golonganJabatanData.ratioCompact}">
                                 </h:outputLabel>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">
 <!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{golonganJabatanViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailFunctionGroup.show()">                        
