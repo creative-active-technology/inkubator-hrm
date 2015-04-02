@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.Pangkat;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.PangkatService;
@@ -138,7 +139,7 @@ public class GolonganJabatanFormController extends BaseController {
         golonganJabatan.setCode(model.getCode());
         golonganJabatan.setOvertime(model.getOvertime());
         golonganJabatan.setPaySalaryGrade(new PaySalaryGrade(model.getPaySalaryGradeId()));
-//        golonganJabatan.setPangkat(new Pangkat(model.getPangkatId()));
+        golonganJabatan.setPangkat(new Pangkat(model.getPangkatId()));
         golonganJabatan.setPointMin(model.getPointMin());
         golonganJabatan.setPointMid(model.getPointMid());
         golonganJabatan.setPointMax(model.getPointMax());
@@ -153,8 +154,10 @@ public class GolonganJabatanFormController extends BaseController {
         if(golonganJabatan.getPaySalaryGrade() != null){
             model.setPaySalaryGradeId(golonganJabatan.getPaySalaryGrade().getId());
         }
-//    	model.setPangkatId(golonganJabatan.getPangkat().getId());
-        model.setPointMin(golonganJabatan.getPointMin());
+        if(golonganJabatan.getPangkat() != null){
+            model.setPangkatId(golonganJabatan.getPangkat().getId());
+        }
+    	model.setPointMin(golonganJabatan.getPointMin());
         model.setPointMid(golonganJabatan.getPointMid());
         model.setPointMax(golonganJabatan.getPointMax());
         model.setRatioCompact(golonganJabatan.getRatioCompact());

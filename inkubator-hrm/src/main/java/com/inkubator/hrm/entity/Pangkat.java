@@ -27,7 +27,7 @@ import javax.persistence.Version;
 public class Pangkat  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Integer version;
      private String pangkatCode;
      private String pangkatName;
@@ -42,10 +42,10 @@ public class Pangkat  implements java.io.Serializable {
     }
 
 	
-    public Pangkat(long id) {
+    public Pangkat(Long id) {
         this.id = id;
     }
-    public Pangkat(long id, String pangkatCode, String pangkatName, Integer level, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<GolonganJabatan> golonganJabatans) {
+    public Pangkat(Long id, String pangkatCode, String pangkatName, Integer level, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Set<GolonganJabatan> golonganJabatans) {
        this.id = id;
        this.pangkatCode = pangkatCode;
        this.pangkatName = pangkatName;
@@ -61,11 +61,11 @@ public class Pangkat  implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
