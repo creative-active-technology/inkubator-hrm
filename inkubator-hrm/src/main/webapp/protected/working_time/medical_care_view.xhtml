@@ -37,7 +37,12 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" value="#{medicalCareViewController.searchParameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:selectOneMenu value="#{medicalCareViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['employee.employee_name']}" itemValue="employeeName"/>
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.jabatan']}" itemValue="jabatan"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{medicalCareViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{medicalCareViewController.doSearch()}" update="tableMedicalCareId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>

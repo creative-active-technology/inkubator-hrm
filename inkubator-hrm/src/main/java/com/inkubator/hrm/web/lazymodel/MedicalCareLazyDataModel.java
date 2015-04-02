@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.service.MedicalCareService;
+import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 
 /**
 *
@@ -20,12 +21,12 @@ import com.inkubator.hrm.service.MedicalCareService;
 public class MedicalCareLazyDataModel extends LazyDataModel<MedicalCare> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(MedicalCareLazyDataModel.class);
-    private final String medicalCareSearchParameter;
+    private final MedicalCareSearchParameter medicalCareSearchParameter;
     private final MedicalCareService medicalCareService;
     private List<MedicalCare> medicalCares = new ArrayList<>();
     private Integer total;
 
-    public MedicalCareLazyDataModel(String medicalCareSearchParameter, MedicalCareService medicalCareService) {
+    public MedicalCareLazyDataModel(MedicalCareSearchParameter medicalCareSearchParameter, MedicalCareService medicalCareService) {
         this.medicalCareSearchParameter = medicalCareSearchParameter;
         this.medicalCareService = medicalCareService;
     }

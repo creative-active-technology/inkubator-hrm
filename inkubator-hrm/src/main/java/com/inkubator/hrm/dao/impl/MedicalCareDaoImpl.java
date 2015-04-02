@@ -3,6 +3,8 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
+import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -30,7 +32,7 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     }
 
     @Override
-    public List<MedicalCare> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+    public List<MedicalCare> getByParam(MedicalCareSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchMedicalCareByParam(parameter, criteria);
         criteria.setFetchMode("empData", FetchMode.JOIN);
@@ -43,21 +45,28 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     }
 
     @Override
-    public Long getTotalMedicalCareByParam(String parameter) {
+    public Long getTotalMedicalCareByParam(MedicalCareSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchMedicalCareByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchMedicalCareByParam(String parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter)) {
+    private void doSearchMedicalCareByParam(MedicalCareSearchParameter parameter, Criteria criteria) {
+        if (parameter.getEmployeeName() != null) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("empData.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", parameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", parameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("ed.nik", parameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.firstName", parameter.getEmployeeName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bio.lastName", parameter.getEmployeeName(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("ed.nik", parameter.getEmployeeName(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
+
+        }
+        
+        if (parameter.getJabatan() != null) {
+            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+            criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("jabatan.name", parameter.getJabatan(), MatchMode.ANYWHERE));
 
         }
         criteria.add(Restrictions.isNotNull("id"));
