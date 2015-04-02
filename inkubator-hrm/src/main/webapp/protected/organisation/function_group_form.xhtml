@@ -61,7 +61,7 @@
                                                         <p:selectBooleanButton value="#{golonganJabatanFormController.model.overtime}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                                                offIcon="ui-icon-close" styleClass="label_button" style="margin-bottom: 5px;"/>
                                                     </p:column>
-                                                </p:row>
+                                                </p:row>-->
                                                 <p:row>
                                                     <p:column style="width: 29%">
                                                         <p:outputLabel for="pangkatId" value="#{appmsg['position.position_group']}" styleClass="label_hrm"/>
@@ -80,7 +80,7 @@
                                                     <p:column colspan="3">
                                                         <p:message for="pangkatId"/>
                                                     </p:column>
-                                                </p:row>                                                                        -->
+                                                </p:row>                                                                       
 
                         <p:row>
                             <p:column style="width: 29%">
@@ -115,14 +115,14 @@
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMed}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
                                 </pe:inputNumber>
                                 <h:outputLabel value="Med " styleClass="label_hrm"/>
                                 <pe:inputNumber decimalPlaces="0" id="pointMed" binding="#{pointMed}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMax}"/>
-                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
                                 </pe:inputNumber>
                                 <h:outputLabel value="Max " styleClass="label_hrm"/>
                                 <pe:inputNumber decimalPlaces="0" id="pointMax" binding="#{pointMax}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 

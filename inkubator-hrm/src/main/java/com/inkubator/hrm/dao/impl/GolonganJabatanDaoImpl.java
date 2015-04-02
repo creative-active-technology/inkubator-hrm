@@ -36,6 +36,7 @@ public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements
     public List<GolonganJabatan> getByParam(GolonganJabatanSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
+        criteria.setFetchMode("pangkat", FetchMode.JOIN);
         criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
         criteria.setFetchMode("paySalaryGrade.currency", FetchMode.JOIN);
         criteria.addOrder(orderable);

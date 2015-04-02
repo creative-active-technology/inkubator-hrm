@@ -15,6 +15,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.service.MedicalCareService;
 import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
+import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -27,7 +28,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class MedicalCareViewController extends BaseController {
 
-    private String searchParameter;
+    private MedicalCareSearchParameter searchParameter;
     private LazyDataModel<MedicalCare> lazyDataMedicalCare;
     private MedicalCare selectedMedicalCare;
     @ManagedProperty(value = "#{medicalCareService}")
@@ -37,52 +38,51 @@ public class MedicalCareViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new MedicalCareSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-    	medicalCareService = null;
+        medicalCareService = null;
         searchParameter = null;
         lazyDataMedicalCare = null;
         selectedMedicalCare = null;
     }
 
-    
     public LazyDataModel<MedicalCare> getLazyDataMedicalCare() {
-    	if(lazyDataMedicalCare == null){
-    		lazyDataMedicalCare = new MedicalCareLazyDataModel(searchParameter, medicalCareService);
-    	}
-		return lazyDataMedicalCare;
-	}
+        if (lazyDataMedicalCare == null) {
+            lazyDataMedicalCare = new MedicalCareLazyDataModel(searchParameter, medicalCareService);
+        }
+        return lazyDataMedicalCare;
+    }
 
-	public void setLazyDataMedicalCare(LazyDataModel<MedicalCare> lazyDataMedicalCare) {
-		this.lazyDataMedicalCare = lazyDataMedicalCare;
-	}
+    public void setLazyDataMedicalCare(LazyDataModel<MedicalCare> lazyDataMedicalCare) {
+        this.lazyDataMedicalCare = lazyDataMedicalCare;
+    }
 
-	public MedicalCare getSelectedMedicalCare() {
-		return selectedMedicalCare;
-	}
+    public MedicalCare getSelectedMedicalCare() {
+        return selectedMedicalCare;
+    }
 
-	public void setSelectedMedicalCare(
-			MedicalCare selectedMedicalCare) {
-		this.selectedMedicalCare = selectedMedicalCare;
-	}
+    public void setSelectedMedicalCare(
+            MedicalCare selectedMedicalCare) {
+        this.selectedMedicalCare = selectedMedicalCare;
+    }
 
-	public void setMedicalCareService(
-			MedicalCareService medicalCareService) {
-		this.medicalCareService = medicalCareService;
-	}
+    public void setMedicalCareService(
+            MedicalCareService medicalCareService) {
+        this.medicalCareService = medicalCareService;
+    }
 
-	public String getSearchParameter() {
-		return searchParameter;
-	}
+    public MedicalCareSearchParameter getSearchParameter() {
+        return searchParameter;
+    }
 
-	public void setSearchParameter(
-			String searchParameter) {
-		this.searchParameter = searchParameter;
-	}
+    public void setSearchParameter(MedicalCareSearchParameter searchParameter) {
+        this.searchParameter = searchParameter;
+    }
 
-	public void doSearch() {
+    public void doSearch() {
         lazyDataMedicalCare = null;
     }
 
@@ -92,7 +92,7 @@ public class MedicalCareViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selectedMedicalCare = this.medicalCareService.getEntiyByPK(selectedMedicalCare.getId());
+            selectedMedicalCare = this.medicalCareService.getEntityWithNameAndNik(selectedMedicalCare.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -110,7 +110,6 @@ public class MedicalCareViewController extends BaseController {
             LOGGER.error("Error when doDelete Leave", ex);
         }
     }
-    
 
     public String doAdd() {
         return "/protected/working_time/medical_care_form.htm?faces-redirect=true";

@@ -82,12 +82,16 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
         }
 
         //tambah total pinjaman dan cicilan dengan data sekarang
-        totalPinjaman = totalPinjaman + entity.getMaximumApproval();
+        totalPinjaman = totalPinjaman + entity.getMaximumAllocation();
         totalInstallment = totalInstallment + entity.getMinimumMonthlyInstallment();
 
-        if (totalInstallment > loanNewSchema.getTotalMaximumInstallment() || totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
-            throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
-        }
+        if (totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
+                throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
+            }
+            
+            if (totalInstallment > loanNewSchema.getTotalMaximumInstallment()) {
+                throw new BussinessException("loanNewSchema.maximum_installment_cannot_bigger_from_loan_new_schema");
+            }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(entity.getLoanNewSchema().getId()));
         entity.setLoanNewType(loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId()));
@@ -121,12 +125,18 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
             }
 
             //tambah total pinjaman dan cicilan dengan data sekarang
-            totalPinjaman = totalPinjaman + entity.getMaximumApproval();
+            totalPinjaman = totalPinjaman + entity.getMaximumAllocation();
             totalInstallment = totalInstallment + entity.getMinimumMonthlyInstallment();
 
-            if (totalInstallment > loanNewSchema.getTotalMaximumInstallment() || totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
+            if (totalPinjaman > loanNewSchema.getTotalMaximumLoan()) {
                 throw new BussinessException("loanNewSchema.maximum_loan_cannot_bigger_from_loan_new_schema");
             }
+            
+            if (totalInstallment > loanNewSchema.getTotalMaximumInstallment()) {
+                throw new BussinessException("loanNewSchema.maximum_installment_cannot_bigger_from_loan_new_schema");
+            }
+
+            
             loanNewSchemaListOfType.setIsActive(entity.getIsActive());
         }
 

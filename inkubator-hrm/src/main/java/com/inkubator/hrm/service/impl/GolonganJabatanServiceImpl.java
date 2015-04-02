@@ -78,8 +78,8 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         }
 
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-//        Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
-//        entity.setPangkat(pangkat);
+        Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
+        entity.setPangkat(pangkat);
         entity.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -98,6 +98,8 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         GolonganJabatan golonganJabatan = golJabatanDao.getEntiyByPK(entity.getId());
         golonganJabatan.setCode(entity.getCode());
         golonganJabatan.setPaySalaryGrade(paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId()));
+        Pangkat pangkat = pangkatDao.getEntiyByPK(entity.getPangkat().getId());
+        entity.setPangkat(pangkat);
         golonganJabatan.setOvertime(entity.getOvertime());
         golonganJabatan.setPointMin(entity.getPointMin());
         golonganJabatan.setPointMid(entity.getPointMid());
@@ -271,7 +273,7 @@ public class GolonganJabatanServiceImpl extends IServiceImpl implements Golongan
         for (UnregGoljab unregGoljab : this.unregGoljabDao.getAllDataByUnregSalaryId(unregSalaryId)) {
             golonganJabatans.add(unregGoljab.getGolonganJabatan());
         }
-     
+
         golonganJabatan.setListGolonganJabatans(golonganJabatans);
         return golonganJabatan;
     }
