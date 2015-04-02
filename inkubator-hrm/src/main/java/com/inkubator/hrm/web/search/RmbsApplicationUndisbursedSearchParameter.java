@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.search;
 
+import java.math.BigInteger;
+
 import com.inkubator.webcore.util.SearchParameter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,37 +9,19 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author rizkykojek
  */
-public class RmbsApplicationSearchParameter extends SearchParameter {
+public class RmbsApplicationUndisbursedSearchParameter extends SearchParameter {
 
-    private String nik;
+	private String userId;
+    private String empNik;
     private String empName;
-    private String code;
     private String rmbsType;
-    
-    public String getCode() {
-        if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
-            code = getParameter();
-        } else {
-            code = null;
-        }
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-	public String getNik() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "nik")) {
-			nik = getParameter();
-        } else {
-        	nik = null;
-        }
-		return nik;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setNik(String nik) {
-		this.nik = nik;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getEmpName() {
@@ -53,6 +37,19 @@ public class RmbsApplicationSearchParameter extends SearchParameter {
 		this.empName = empName;
 	}
 
+	public String getEmpNik() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "empNik")) {
+			empNik = getParameter();
+        } else {
+        	empNik = null;
+        }
+		return empNik;
+	}
+
+	public void setEmpNik(String empNik) {
+		this.empNik = empNik;
+	}
+
 	public String getRmbsType() {
 		if (StringUtils.equalsIgnoreCase(getKeyParam(), "rmbsType")) {
 			rmbsType = getParameter();
@@ -65,5 +62,9 @@ public class RmbsApplicationSearchParameter extends SearchParameter {
 	public void setRmbsType(String rmbsType) {
 		this.rmbsType = rmbsType;
 	}
+
+	
+
+	
     
 }

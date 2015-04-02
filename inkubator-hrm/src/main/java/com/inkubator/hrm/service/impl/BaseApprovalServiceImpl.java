@@ -517,6 +517,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         newEntity.setRequestBy(previousAppActv.getRequestBy());
         newEntity.setRequestTime(previousAppActv.getRequestTime());
         newEntity.setLocale(previousAppActv.getLocale());
+        newEntity.setTypeSpecific(previousAppActv.getTypeSpecific());
         //jika tidak ada update di json pendingDataUpdate maka gunakan pending data yg lama/previous activity
         String pendingData = StringUtils.isEmpty(pendingDataUpdate) ? previousAppActv.getPendingData() : pendingDataUpdate;
         newEntity.setPendingData(pendingData);
