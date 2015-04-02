@@ -63,6 +63,7 @@
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.from} s/d #{searchEmployeeModel.until}" />
+                                    #{appmsg['global.year']}
                                 </p:column>
                             </p:row>
 
@@ -72,6 +73,7 @@
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.fromJoin} s/d #{searchEmployeeModel.untilJoin}" />
+                                    #{appmsg['global.year']}
                                 </p:column>
                             </p:row>
 
@@ -81,6 +83,7 @@
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel  value="#{searchEmployeeModel.nikFrom} #{appmsg['global.until']} #{searchEmployeeModel.nikUntil}" />
+
                                 </p:column>
                             </p:row>
 
@@ -94,7 +97,7 @@
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Search_Employee"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.search']}"  icon="ui-icon-search"  title="#{appmsg['global.search']}"  immediate="true" action="back"
-                                             styleClass="label_button"/>
+                                                     styleClass="label_button"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -115,13 +118,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.nik}" />
                             </p:column>
-                              <p:column sortBy="bioData.firstName" > 
+                            <p:column sortBy="bioData.firstName" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
                             </p:column> 
-                             <p:column sortBy="bioData.dateOfBirth" > 
+                            <p:column sortBy="bioData.dateOfBirth" > 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.age']}"/>
                                 </f:facet>
@@ -141,7 +144,7 @@
                                 </f:facet>
                                 <h:outputLabel value=" #{data.golonganJabatan.code}" />
                             </p:column>
-                              <p:column sortBy="employeeType.name"> 
+                            <p:column sortBy="employeeType.name"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['unregSalary.employeeStatus']}"/>
                                 </f:facet>
@@ -152,6 +155,25 @@
                                     <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.joinDate}" />
+                            </p:column>
+                            <p:column style="text-align: center;"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.action']}"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.personal_information']}" label="#{appmsg['global.personal_information']}"
+                                                 style="font-size: 10px!important" action="personalInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-collapsed" title="#{appmsg['global.employee_information']}" label="#{appmsg['global.employee_information']}"
+                                                 style="font-size: 10px!important" action="employeeInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.background_information']}" label="#{appmsg['global.background_information']}"
+                                                 style="font-size: 10px!important" action="employeeBackgroundInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
+                                </p:commandButton>
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

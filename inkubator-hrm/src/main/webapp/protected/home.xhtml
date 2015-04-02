@@ -161,7 +161,9 @@
                                             <f:facet name="header">  
                                                 <h:outputText value="Approver By" />
                                             </f:facet>
-                                            <p:outputLabel value="#{approval.approvedBy}" />
+                                            <p:outputLabel value="#{approval.approvedBy}" >
+                                                <f:converter converterId="realNameConverter" />
+                                            </p:outputLabel>
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  

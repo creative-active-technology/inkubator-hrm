@@ -72,7 +72,7 @@
                                     <p:outputLabel  value="#{appmsg['loanNewSchema.loanTotalMaximum']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 35%">
-                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalPinjaman}" >
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.totalMaximumLoan}" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
                                 </p:column>
@@ -81,22 +81,10 @@
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loanNewSchema.loanTotalAllocation']}" style="font-weight: bold"/>
+                                    <p:outputLabel  value="#{appmsg['loanschema.min_monthly_installment']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 35%">
-                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalAllocation}" >
-                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                    </p:outputLabel>
-                                </p:column>
-
-                            </p:row>
-
-                            <p:row>
-                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['loanschema.max_installment']}" style="font-weight: bold"/>
-                                </p:column>
-                                <p:column style="width: 35%">
-                                    <p:outputLabel  value="#{loanNewSchemaDetailController.totalInstallment}" >
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.totalMaximumInstallment}" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
                                 </p:column>
@@ -114,45 +102,44 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value=" #{data.loanNewType.loanTypeName}" />
                                     </p:column> 
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.available_days']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maksimumHariTersedia}" >
-                                            <!--<f:converter converterId="salaryConverter" />-->
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_approve']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maximumApproval}" >
-                                             <f:converter converterId="moneyConverter" />
+                                            <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_allocation']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maximumAllocation}" >
-                                           <f:converter converterId="moneyConverter" />
+                                            <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_approve']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.minimumApproval}" >
-                                           <f:converter converterId="moneyConverter" />
+                                            <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_allocation']}"/>
                                         </f:facet>
@@ -160,7 +147,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_monthly_installment']}"/>
                                         </f:facet>
@@ -168,14 +155,22 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column > 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_period']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maxPeriode}" >
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
-                                    </p:column> 
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.active']}"/>
+                                        </f:facet>
+                                        <p:outputLabel value="#{data.isActive}" >
+                                            <f:converter converterId="activeStatusMessageConverter"/>
+                                        </p:outputLabel>
+                                    </p:column>
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmId"
@@ -189,7 +184,74 @@
                                             <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturn}" update=":formId, :growlId" />
                                         </p:commandButton>
                                     </p:column> 
-                                </p:dataTable>  
+                                </p:dataTable>
+                                <p:dataTable var="data" value="#{loanNewSchemaDetailController.totalModel.listTotalModel}" rowIndexVar="no" id="loanNewSchemaTypeTableIdTotal" lazy="false" paginator="false">
+                                    <p:columnGroup type="header">
+                                        <p:row>
+                                            <p:column colspan="11" headerText="" />
+                                        </p:row>
+                                    </p:columnGroup>
+                                    
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        
+                                        <h:outputLabel value="Total Aktif" />
+                                    </p:column>
+                                    
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <h:outputLabel value=" - " />
+                                    </p:column> 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value=" #{data.maksimumHariTersedia}" >
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value=" #{data.totalPinjaman}" >
+                                            <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value=" #{data.totalAllocation}" >
+                                            <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value=" #{data.minimumApproval}" >
+                                            <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value=" #{data.minimumAllocation}" >
+                                            <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
+                                    </p:column> 
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                        <p:outputLabel value=" #{data.totalInstallment}" >
+                                            <f:converter converterId="moneyConverter" />
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value="#{data.maxPeriode}" >
+                                            <!--<f:convertNumber pattern="###,###" type="currency"/>-->
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                        <p:outputLabel value="Aktif" >
+                                        </p:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+<!--                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogConfirmId"
+                                                         action="#{loanNewSchemaDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                            <f:setPropertyActionListener value="#{data}" target="#{loanNewSchemaDetailController.loanNewSchemaListOfType}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                          action="#{loanNewSchemaDetailController.doEdit()}" update=":formId:panelList">
+                                            <f:setPropertyActionListener value="#{data}" target="#{loanNewSchemaDetailController.loanNewSchemaListOfType}" />
+                                            <p:ajax event="dialogReturn" listener="#{loanNewSchemaDetailController.onDialogReturn}" update=":formId, :growlId" />
+                                        </p:commandButton>-->
+                                    </p:column> 
+                                </p:dataTable>
                                 <br />
                                 <p:toolbarGroup align="left">
                                     <h:panelGrid columns="3" >
@@ -312,7 +374,7 @@
                                 <p:outputLabel value="#{loanNewSchemaDetailController.loanNewSchemaListOfType.loanNewType.loanTypeName}" styleClass="label_hrm"/>
                             </h:panelGrid>
                             <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{loanNewSchemaDetailController.doDelete()}" update="formId:tabView1:loanNewSchemaTypeTableId, formId:panelList, :growlId"
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{loanNewSchemaDetailController.doDelete()}" update="formId:tabView1:loanNewSchemaTypeTableId, formId:tabView1:loanNewSchemaTypeTableIdTotal, formId:panelList, :growlId"
                                              oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                             <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                         </div>

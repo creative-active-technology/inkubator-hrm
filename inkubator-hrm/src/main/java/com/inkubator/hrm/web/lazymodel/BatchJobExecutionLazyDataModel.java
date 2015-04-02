@@ -23,13 +23,13 @@ import org.primefaces.model.SortOrder;
  */
 public class BatchJobExecutionLazyDataModel extends LazyDataModel<BatchJobExecution> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(BatchJobExecution.class);
-    private final BatchJobExecutionSearchParameter batchJobExecutionSearchParameter;
     private final BatchJobExecutionService batchJobExecutionService;
+    private final BatchJobExecutionSearchParameter searchParameter;
     private List<BatchJobExecution> batchJobExecutions = new ArrayList<>();
     private Integer total;
     
-    public BatchJobExecutionLazyDataModel(BatchJobExecutionSearchParameter batchJobExecutionSearchParameter, BatchJobExecutionService batchJobExecutionService){
-        this.batchJobExecutionSearchParameter = batchJobExecutionSearchParameter;
+    public BatchJobExecutionLazyDataModel(BatchJobExecutionSearchParameter searchParameter, BatchJobExecutionService batchJobExecutionService){
+        this.searchParameter = searchParameter;
         this.batchJobExecutionService = batchJobExecutionService;
     }
     
@@ -40,23 +40,23 @@ public class BatchJobExecutionLazyDataModel extends LazyDataModel<BatchJobExecut
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                	batchJobExecutions = batchJobExecutionService.getByParam(batchJobExecutionSearchParameter, first, pageSize, Order.asc(sortField));
-                    total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(batchJobExecutionSearchParameter)));
+                	batchJobExecutions = batchJobExecutionService.getByParam(searchParameter, first, pageSize, Order.asc(sortField));
+                    total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                	batchJobExecutions = batchJobExecutionService.getByParam(batchJobExecutionSearchParameter, first, pageSize, Order.desc(sortField));
-                	total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(batchJobExecutionSearchParameter)));
+                	batchJobExecutions = batchJobExecutionService.getByParam(searchParameter, first, pageSize, Order.desc(sortField));
+                	total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(searchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-            	batchJobExecutions = batchJobExecutionService.getByParam(batchJobExecutionSearchParameter, first, pageSize, Order.asc("jobExecutionId"));
-                total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(batchJobExecutionSearchParameter)));
+            	batchJobExecutions = batchJobExecutionService.getByParam(searchParameter, first, pageSize, Order.asc("jobExecutionId"));
+                total = Integer.parseInt(String.valueOf(batchJobExecutionService.getTotalByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

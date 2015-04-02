@@ -42,8 +42,8 @@
                             </p:column>
                             <p:column  style="width: 59%">
                                 <p:focus for ="schemaType">
-                                    <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" 
-                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
+                                    <p:selectOneMenu id="schemaType" value="#{loanNewSchemaListOfTypeFormController.model.loanNewTypeId}" filter="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                     style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanNewSchemaListOfTypeFormController.dropDownSchemeType}"  />                                                                                
                                     </p:selectOneMenu>
@@ -63,7 +63,7 @@
                                 <h:outputLabel for="maxDayAvailable" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="maxDayAvailable"  value="#{loanNewSchemaListOfTypeFormController.model.maksimumHariTersedia}"
+                                <p:inputText id="maxDayAvailable"  value="#{loanNewSchemaListOfTypeFormController.model.maksimumHariTersedia}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                              required="true" onkeyup="this.value = this.value.toUpperCase();" maxlength="3" styleClass="isitext_hrm" style="width:30px;" />
                                 <p:outputLabel value=" Hari" />
                             </p:column>
@@ -82,8 +82,8 @@
                                 <h:outputLabel for="maxApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -100,8 +100,8 @@
                                 <h:outputLabel for="maxAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -119,7 +119,7 @@
                                 <h:outputLabel for="minApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}"
+                                <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -137,7 +137,7 @@
                                 <h:outputLabel for="minAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}"
+                                <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -146,7 +146,7 @@
                                 <p:message for="minAllocation"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="minInstallment" value="#{appmsg['loanschema.min_monthly_installment']}" styleClass="label_hrm"/>
@@ -155,7 +155,7 @@
                                 <h:outputLabel for="minInstallment" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}"
+                                <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -173,7 +173,7 @@
                                 <h:outputLabel for="maxPeriod" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}"
+                                <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
                                                 required="true"  maxlength="3" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -182,7 +182,21 @@
                                 <p:message for="maxPeriod"/>
                             </p:column>
                         </p:row>
-                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="activeOrNonActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="activeOrNonActive" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%">
+                                <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="true"
+                                                        offIcon="ui-icon-close"  id="activeOrNonActive" styleClass="label_button" value="#{loanNewSchemaListOfTypeFormController.model.isActive}" />
+                                <p:message for="activeOrNonActive"/>
+                            </p:column>
+
+                        </p:row>
+
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>

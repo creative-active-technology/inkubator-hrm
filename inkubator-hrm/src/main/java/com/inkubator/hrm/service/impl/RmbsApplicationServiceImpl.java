@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
+import com.inkubator.hrm.dao.RmbsSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.RmbsTypeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -49,6 +51,8 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsSchema;
+import com.inkubator.hrm.entity.RmbsSchemaListOfType;
+import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
 import com.inkubator.hrm.entity.RmbsType;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsApplicationService;
@@ -77,6 +81,8 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	private RmbsSchemaListOfEmpDao rmbsSchemaListOfEmpDao;
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;
+	@Autowired
+	private RmbsSchemaListOfTypeDao rmbsSchemaListOfTypeDao;
 	@Autowired
 	private FacesIO facesIO;
 	
@@ -420,7 +426,21 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		Long totalDuplicates = rmbsApplicationDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0) {
 			throw new BussinessException("rmbs_type.error_duplicate_code");
-		}			
+		} 
+		//check submission date, based on rmbsSchema
+		RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getEmpData().getId()).get(0).getRmbsSchema();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");      
+        Date now = formatter.parse(formatter.format(new Date()));
+        Date deadline = new DateTime(now).minusDays(rmbsSchema.getSubmissionDeadline()).toDate();	        
+    	if(entity.getApplicationDate().before(deadline)){
+    		throw new BussinessException("rmbs_application.error_request_date_exceed");
+    	} 
+    	//check nominal limit should not exceed	
+    	RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(new RmbsSchemaListOfTypeId(entity.getRmbsType().getId(), rmbsSchema.getId()));
+		if(entity.getNominal().doubleValue() > rmbsSchemaListOfType.getLimitPerClaim()){
+    		throw new BussinessException("rmbs_application.error_nominal_exceed");
+    	}		
+		
 		
 		//initial
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
@@ -517,6 +537,15 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		DateTime endDate = new DateTime(now.getYear(), now.getMonthOfYear(), now.dayOfMonth().getMaximumValue(), 23, 59);
 		return rmbsApplicationDao.getTotalNominalByEmpDataIdAndRmbsTypeIdAndDateBetween(empDataId, rmbsTypeId, startDate.toDate() , endDate.toDate());
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getListApproverByEmpDataId(Long empDataId) throws IOException {
+		RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empDataId).get(0).getRmbsSchema();
+        List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
+        
+		return super.getListApproverByListAppDef(appDefs);
 	}
 	
 

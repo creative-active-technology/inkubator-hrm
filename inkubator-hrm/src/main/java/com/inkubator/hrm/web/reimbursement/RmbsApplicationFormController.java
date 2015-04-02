@@ -1,9 +1,7 @@
 package com.inkubator.hrm.web.reimbursement;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -17,7 +15,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
+import org.hamcrest.Matchers;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -44,8 +42,10 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.RmbsApplicationModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -58,16 +58,20 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class RmbsApplicationFormController extends BaseController {
 
+	private Boolean isAdministator;
+	private Boolean isRevised;
+		
     private RmbsApplicationModel model;
     private UploadedFile reimbursementFile;
-    private List<RmbsType> listRmbsType;
-    private List<Currency> listCurrency;
     private RmbsSchema rmbsSchema;
     private RmbsSchemaListOfType rmbsSchemaListOfType;
-    private BigDecimal totalRequestThisMoth;
-    private Boolean isRevised;
+    private BigDecimal totalRequestThisMoth;    
     private ApprovalActivity currentActivity;
     private ApprovalActivity askingRevisedActivity;
+    
+    private List<RmbsType> listRmbsType;
+    private List<Currency> listCurrency;
+    private List<EmpData> listApprover;
     
     @ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
@@ -89,17 +93,25 @@ public class RmbsApplicationFormController extends BaseController {
     public void initialization() {
         super.initialization();
         try {        	
+        	//initial
         	listCurrency = currencyService.getAllData();
 	        model = new RmbsApplicationModel();
-	        isRevised = Boolean.FALSE;
+	        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
 	        
+	        //di cek terlebih dahulu, jika datangnya dari proses approval, artinya melakukan user akan revisi data yg masih dalam bentuk json
+	        isRevised = Boolean.FALSE;
 	        String appActivityId = FacesUtil.getRequestParameter("activity");
-        	if (StringUtils.isNotEmpty(appActivityId)) {
+        	if(StringUtils.isNotEmpty(appActivityId)) {
+        		//parsing data from json to object 
         		isRevised = Boolean.TRUE;
         		currentActivity = approvalActivityService.getEntityByPkWithDetail(Long.parseLong(appActivityId.substring(1)));
         		this.getModelFromJson(currentActivity.getPendingData());
         		askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(), 
         				currentActivity.getSequence()-1);        	
+        	
+        	} else if(!isAdministator){ //jika bukan administrator, langsung di set empData berdasarkan yang login
+        		model.setEmpData(HrmUserInfoUtil.getEmpData());
+        		this.onChangeEmployee();
         	}
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -125,80 +137,54 @@ public class RmbsApplicationFormController extends BaseController {
     	askingRevisedActivity = null;
     	approvalActivityService = null;
     	currentActivity = null;
+    	isAdministator = null;
+    	listApprover = null;
 	}
     
     public String doSave() {
-    	if(this.isValidForm()) { //do validation, before saving process
-	    	RmbsApplication rmbsApplication = getEntityFromModel(model);
-	    	String path = "";
-	    	
-	        try {
-	        	String message = rmbsApplicationService.saveWithApproval(rmbsApplication, reimbursementFile);
-	        	if(StringUtils.equals(message, "success_need_approval")){
-	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
-	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    RmbsApplication rmbsApplication = getEntityFromModel(model);
+	    String path = "";	    	
+	    try {
+	    	String message = rmbsApplicationService.saveWithApproval(rmbsApplication, reimbursementFile);
+	        if(StringUtils.equals(message, "success_need_approval")){
+	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	        	
-	        	} else {
-	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
-	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
-	        	}
-	            return path;
-	            
-	        } catch (BussinessException ex) { 
-	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-	        } catch (Exception ex) {
-	            LOGGER.error("Error", ex);
+	        } else {
+	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
 	        }
-    	}        
-        return null;
+	        return path;
+	            
+	    } catch (BussinessException ex) { 
+	    	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    } catch (Exception ex) {
+	    	LOGGER.error("Error", ex);
+	    }       
+	    return null;
     }
     
     public String doRevised() {
-    	if(this.isValidForm()) { //do validation, before saving process
-	    	RmbsApplication rmbsApplication = getEntityFromModel(model);
-	    	String path = "";
-	    	
-	        try {
-	        	String message = rmbsApplicationService.saveWithRevised(rmbsApplication, reimbursementFile, currentActivity.getId());
-	        	if(StringUtils.equals(message, "success_need_approval")){
-	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
-	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    	RmbsApplication rmbsApplication = getEntityFromModel(model);
+    	String path = "";
+	    try {
+	    	String message = rmbsApplicationService.saveWithRevised(rmbsApplication, reimbursementFile, currentActivity.getId());
+	        if(StringUtils.equals(message, "success_need_approval")){
+	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	        	
-	        	} else {
-	        		path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
-	        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
-	        	}
-	            return path;
-	            
-	        } catch (BussinessException ex) { 
-	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-	        } catch (Exception ex) {
-	            LOGGER.error("Error", ex);
+	        } else {
+	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
 	        }
-    	}        
+	        return path;
+	            
+	    } catch (BussinessException ex) { 
+	    	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    } catch (Exception ex) {
+	    	LOGGER.error("Error", ex);
+	    }       
         return null;
-    }
-    
-    private Boolean isValidForm(){
-    	boolean isValid = false ;
-    	try {
-	    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");      
-	        Date now = formatter.parse(formatter.format(new Date()));
-	        Date deadline = new DateTime(now).minusDays(rmbsSchema.getSubmissionDeadline()).toDate();	        
-	    	if(model.getApplicationDate().before(deadline)){
-	    		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "rmbs_application.error_request_date_exceed", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());    
-	    	
-	    	} else if(model.getNominal().doubleValue() > rmbsSchemaListOfType.getLimitPerClaim()){
-	    		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "rmbs_application.error_nominal_exceed", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-	    	
-	    	} else {
-	    		isValid = true;
-	    	}
-    	} catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    	
-    	return isValid;
     }
 
     private RmbsApplication getEntityFromModel(RmbsApplicationModel m) {
@@ -267,9 +253,11 @@ public class RmbsApplicationFormController extends BaseController {
     		if(rmbsSchemaListOfEmp != null){
     			rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
     			listRmbsType = Lambda.extract(rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId()), Lambda.on(RmbsSchemaListOfType.class).getRmbsType())  ;
+    			listApprover = rmbsApplicationService.getListApproverByEmpDataId(model.getEmpData().getId());
     		} else {
-    			listRmbsType =  new ArrayList<RmbsType>();
     			rmbsSchema = null;
+    			listRmbsType = new ArrayList<RmbsType>();
+    			listApprover = new ArrayList<EmpData>();
     		}
     	} catch (Exception e) {
 	    	LOGGER.error("Error", e);
@@ -435,6 +423,22 @@ public class RmbsApplicationFormController extends BaseController {
 
 	public void setCurrentActivity(ApprovalActivity currentActivity) {
 		this.currentActivity = currentActivity;
+	}
+
+	public Boolean getIsAdministator() {
+		return isAdministator;
+	}
+
+	public void setIsAdministator(Boolean isAdministator) {
+		this.isAdministator = isAdministator;
+	}
+
+	public List<EmpData> getListApprover() {
+		return listApprover;
+	}
+
+	public void setListApprover(List<EmpData> listApprover) {
+		this.listApprover = listApprover;
 	}	
         
 }

@@ -7,7 +7,6 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import java.util.List;
 
 /**
@@ -15,17 +14,19 @@ import java.util.List;
  * @author Deni
  */
 public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType>{
-    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema);    
+    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema);
     
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId);
+    public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema);
+    
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id);
 
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeId(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId);
+    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeId(Long id);
 
-    public Long getTotalByLoanTypeAndSchema(Long typeId, Long schemaId);    
-   
+    public Long getTotalByLoanTypeAndSchema(Long typeId, Long schemaId);
+    
+    public Long getTotalBySchemaAndTypeAndStatusActive(Long schemaId, Long typeId);
     
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
-    public Long getTotalByNotLoanTypeAndSchema(Long typeId, Long schemaId, LoanNewSchemaListOfTypeId id);
     
     public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId);
 }

@@ -8,7 +8,6 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +19,7 @@ import java.util.List;
  */
 public class LoanApplicationFormModel implements Serializable {
 
+    private Long id;
     private String nomor;
     private Long loanId;
     private Long loanNewTypeId;
@@ -31,7 +31,7 @@ public class LoanApplicationFormModel implements Serializable {
     private List<LoanNewSchemaListOfType> listLoanNewSchemaListOfType;
     private List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments;
     private List<EmpData> listApprover;
-    private LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId;
+//    private LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId;
     private String purpose;
     private String description;
     private Integer rangeFirstInstallmentToDisbursement;
@@ -128,15 +128,6 @@ public class LoanApplicationFormModel implements Serializable {
 
     public void setListLoanNewApplicationInstallments(List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments) {
         this.listLoanNewApplicationInstallments = listLoanNewApplicationInstallments;
-    }
-    
-    
-    public LoanNewSchemaListOfTypeId getLoanNewSchemaListOfTypeId() {
-        return loanNewSchemaListOfTypeId;
-    }
-
-    public void setLoanNewSchemaListOfTypeId(LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId) {
-        this.loanNewSchemaListOfTypeId = loanNewSchemaListOfTypeId;
     }
 
     public Integer getLoanPeriod() {

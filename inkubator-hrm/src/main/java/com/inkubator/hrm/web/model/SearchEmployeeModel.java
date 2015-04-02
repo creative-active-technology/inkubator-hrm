@@ -26,6 +26,7 @@ public class SearchEmployeeModel implements Serializable{
     private String codeJabatan;
     private String nikFrom;
     private String nikUntil;
+    private EmpData selectedEmpData;
     private int from;
     private int until;
     private int fromJoin;
@@ -244,6 +245,14 @@ public class SearchEmployeeModel implements Serializable{
 
     public void setEmployeeTypeView(String employeeTypeView) {
         this.employeeTypeView = employeeTypeView;
+    }
+
+    public EmpData getSelectedEmpData() {
+        return selectedEmpData;
+    }
+
+    public void setSelectedEmpData(EmpData selectedEmpData) {
+        this.selectedEmpData = selectedEmpData;
     }
 
     

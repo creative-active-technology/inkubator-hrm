@@ -71,32 +71,78 @@
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
-                            </p:column>
-                            <p:column sortBy="pangkat.pangkatName"  style="width: 44%">
+                            </p:column>                          
+                            <p:column sortBy="code"  style="width: 11%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['position.position_group']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.pangkat.pangkatName}"/>
-                            </p:column>                            
-                            <p:column sortBy="code"  style="width: 43%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functiongroup.function_group_code']}"/>
+                                    <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.code}"/>
-                            </p:column>                            
-<!--                            <p:column sortBy="pangkat.level" style="text-align: center;width: 20%">
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.level']}"/>
+                                    <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{golonganJabatanData.pangkat.level}" />
-                            </p:column>   -->
+                                <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.currency.name}"/>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.minSalary}">
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.mediumSalary}">
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.maxSalary}">
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functionGroup.pointMin']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.pointMin}">
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functionGroup.pointMed']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.pointMid}">
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functionGroup.pointMax']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.pointMax}">
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functionGroup.rasio']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{golonganJabatanData.ratioCompact}">
+                                </h:outputLabel>
+                            </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+<!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
                                 				 action="#{golonganJabatanViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailFunctionGroup.show()">                        
                                     <f:setPropertyActionListener value="#{golonganJabatanData}" target="#{golonganJabatanViewController.selectedGolJabatan}" />
                                 </p:commandButton>
-                                - 
+                                - -->
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                 				 action="#{golonganJabatanViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmFunctionGroup.show()">

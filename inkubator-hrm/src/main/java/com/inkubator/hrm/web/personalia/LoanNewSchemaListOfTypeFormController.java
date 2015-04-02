@@ -10,7 +10,6 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfTypeId;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
 import com.inkubator.hrm.service.LoanNewTypeService;
@@ -47,7 +46,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
     private Map<String, Long> dropDownSchemeType;
     private List<LoanNewType> listLoanNewType;
     private String loanNewSchemaId;
-    private String oldLoanNewTypeId;
+    private String id;
     
     @PostConstruct
     @Override
@@ -56,16 +55,18 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
         try {
             model = new LoanNewSchemaListOfTypeModel();
             loanNewSchemaId = FacesUtil.getRequestParameter("loanNewSchemaId");
-            oldLoanNewTypeId = FacesUtil.getRequestParameter("loanNewTypeId");
+            id = FacesUtil.getRequestParameter("id");
             isUpdate = Boolean.FALSE;
             dropDownSchemeType = new HashMap<String, Long>();
-            if (StringUtils.isNotEmpty(oldLoanNewTypeId)) {
-                LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(new LoanNewSchemaListOfTypeId(Long.valueOf(oldLoanNewTypeId), Long.valueOf(loanNewSchemaId)));
+            if (StringUtils.isNotEmpty(id)) {
+                LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long.valueOf(id));
                 if(loanNewSchemaListOfType != null){
                     isUpdate = Boolean.TRUE;
                     model = getModelFromEntity(loanNewSchemaListOfType);
                 }
-            }
+            }else{
+                    model.setIsActive(Boolean.TRUE);
+                }
             
             listLoanNewType = loanNewTypeService.getAllData();
             for (LoanNewType loanNewType : listLoanNewType) {
@@ -79,7 +80,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         loanNewTypeService = null;
-        oldLoanNewTypeId = null;
+        id = null;
         dropDownSchemeType = null;
         listLoanNewType = null;
         model = null;
@@ -90,7 +91,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
 
     private LoanNewSchemaListOfTypeModel getModelFromEntity(LoanNewSchemaListOfType entity) {
         LoanNewSchemaListOfTypeModel model = new LoanNewSchemaListOfTypeModel();
-        model.setLoanNewSchemaId(entity.getLoanNewSchema().getId());
+        model.setId(entity.getId());
         model.setLoanNewTypeId(entity.getLoanNewType().getId());
         model.setMaksimumHariTersedia(entity.getMaksimumHariTersedia());
         model.setMaxPeriode(entity.getMaxPeriode());
@@ -99,6 +100,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
         model.setMinimumAllocation(entity.getMinimumAllocation());
         model.setMinimumApproval(entity.getMinimumApproval());
         model.setMinimumMonthlyInstallment(entity.getMinimumMonthlyInstallment());
+        model.setIsActive(entity.getIsActive());
         return model;
     }
     
@@ -106,7 +108,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
         LoanNewSchemaListOfType loanNewSchemaListOfType = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
-                loanNewSchemaListOfTypeService.update(loanNewSchemaListOfType, Long.valueOf(oldLoanNewTypeId));
+                loanNewSchemaListOfTypeService.update(loanNewSchemaListOfType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
                 loanNewSchemaListOfTypeService.save(loanNewSchemaListOfType);
@@ -122,7 +124,9 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
     
     private LoanNewSchemaListOfType getEntityFromViewModel(LoanNewSchemaListOfTypeModel model) {
         LoanNewSchemaListOfType loanNewSchemaListOfType = new LoanNewSchemaListOfType();
-        loanNewSchemaListOfType.setId(new LoanNewSchemaListOfTypeId(model.getLoanNewTypeId(), Long.valueOf(loanNewSchemaId)));
+        if (model.getId() != null) {
+            loanNewSchemaListOfType.setId(model.getId());
+        }
         loanNewSchemaListOfType.setLoanNewSchema(new LoanNewSchema(Long.valueOf(loanNewSchemaId)));
         loanNewSchemaListOfType.setLoanNewType(new LoanNewType(model.getLoanNewTypeId()));
         loanNewSchemaListOfType.setMaksimumHariTersedia(model.getMaksimumHariTersedia());
@@ -132,6 +136,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
         loanNewSchemaListOfType.setMinimumAllocation(model.getMinimumAllocation());
         loanNewSchemaListOfType.setMinimumApproval(model.getMinimumApproval());
         loanNewSchemaListOfType.setMinimumMonthlyInstallment(model.getMinimumMonthlyInstallment());
+        loanNewSchemaListOfType.setIsActive(model.getIsActive());
         return loanNewSchemaListOfType;
     }
     
