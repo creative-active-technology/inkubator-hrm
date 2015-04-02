@@ -27,7 +27,7 @@
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
 	                                <p:outputLabel value="#{appmsg['rmbs_application.form_header']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['rmbs_application.desc_header']}" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="#{appmsg['rmbs_application.form_desc_header']}" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -134,10 +134,10 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_application.limit__nominal_per_claim']}" styleClass="label_hrm" style="margin-left:30px;"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_application.limit_nominal_per_claim']}" styleClass="label_hrm" style="margin-left:30px;"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="limitPerClaimId" title="#{appmsg['rmbs_application.limit__nominal_per_claim']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.limitPerClaim}" 
+	                            	<p:inputText id="limitPerClaimId" title="#{appmsg['rmbs_application.limit_nominal_per_claim']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.limitPerClaim}" 
 	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
 	                                	<f:convertNumber pattern="###,###" type="currency"/>
 	                                </p:inputText>

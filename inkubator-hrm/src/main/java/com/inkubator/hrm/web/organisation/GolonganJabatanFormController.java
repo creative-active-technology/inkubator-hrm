@@ -16,12 +16,16 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Pangkat;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.PangkatService;
+import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.web.model.GolonganJabatanModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.List;
+import java.util.TreeMap;
 
 /**
  *
@@ -37,34 +41,44 @@ public class GolonganJabatanFormController extends BaseController {
     private GolonganJabatanService golJabatanService;
     @ManagedProperty(value = "#{pangkatService}")
     private PangkatService pangkatService;
+    @ManagedProperty(value = "#{paySalaryGradeService}")
+    private PaySalaryGradeService paySalaryGradeService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
-	        isUpdate = Boolean.FALSE;
-	        
-	        model = new GolonganJabatanModel();
-	        Map<Long, String> pangkats = pangkatService.getAllDataMaps();
-			model.setPangkats(pangkats);
-	        
-	        String param = FacesUtil.getRequestParameter("param");
-	        if (StringUtils.isNumeric(param)) {
-	            try {
-	                GolonganJabatan golonganJabatan = golJabatanService.getEntiyByPK(Long.parseLong(param));
-	                if (golonganJabatan != null) {
-	                    getViewModelFromEntity(golonganJabatan);
-	                    isUpdate = Boolean.TRUE;
-	                }
-	            } catch (Exception e) {
-	                LOGGER.error("Error", e);
-	            }
-	        }
+            isUpdate = Boolean.FALSE;
+
+            model = new GolonganJabatanModel();
+            Map<Long, String> pangkats = pangkatService.getAllDataMaps();
+            model.setPangkats(pangkats);
+
+            String param = FacesUtil.getRequestParameter("param");
+            if (StringUtils.isNumeric(param)) {
+                try {
+                    GolonganJabatan golonganJabatan = golJabatanService.getEntiyByPK(Long.parseLong(param));
+                    if (golonganJabatan != null) {
+                        getViewModelFromEntity(golonganJabatan);
+                        isUpdate = Boolean.TRUE;
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("Error", e);
+                }
+            }
+            Map<String, Long> dropDownPaySalaryGrade = new TreeMap<String, Long>();;
+            List<PaySalaryGrade> listPaySalaryGrade = paySalaryGradeService.getAllData();
+            String nameSalaryGrade = "";
+            for (PaySalaryGrade paySalaryGrade : listPaySalaryGrade) {
+                nameSalaryGrade = paySalaryGrade.getGradeSalary() + " - " + paySalaryGrade.getMinSalary() + " - " + paySalaryGrade.getMaxSalary();
+                dropDownPaySalaryGrade.put(nameSalaryGrade, paySalaryGrade.getId());
+            }
+            model.setDropDownPaySalaryGrade(dropDownPaySalaryGrade);
         } catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
     }
 
     @PreDestroy
@@ -75,31 +89,31 @@ public class GolonganJabatanFormController extends BaseController {
         isUpdate = null;
     }
 
-	public GolonganJabatanModel getModel() {
-		return model;
-	}
+    public GolonganJabatanModel getModel() {
+        return model;
+    }
 
-	public void setModel(GolonganJabatanModel model) {
-		this.model = model;
-	}
+    public void setModel(GolonganJabatanModel model) {
+        this.model = model;
+    }
 
-	public Boolean getIsUpdate() {
-		return isUpdate;
-	}
+    public Boolean getIsUpdate() {
+        return isUpdate;
+    }
 
-	public void setIsUpdate(Boolean isUpdate) {
-		this.isUpdate = isUpdate;
-	}
+    public void setIsUpdate(Boolean isUpdate) {
+        this.isUpdate = isUpdate;
+    }
 
-	public void setGolJabatanService(GolonganJabatanService golJabatanService) {
-		this.golJabatanService = golJabatanService;
-	}
+    public void setGolJabatanService(GolonganJabatanService golJabatanService) {
+        this.golJabatanService = golJabatanService;
+    }
 
-	public void setPangkatService(PangkatService pangkatService) {
-		this.pangkatService = pangkatService;
-	}
+    public void setPangkatService(PangkatService pangkatService) {
+        this.pangkatService = pangkatService;
+    }
 
-	public void doSave() {
+    public void doSave() {
         GolonganJabatan golonganJabatan = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
@@ -110,7 +124,7 @@ public class GolonganJabatanFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -120,18 +134,42 @@ public class GolonganJabatanFormController extends BaseController {
     private GolonganJabatan getEntityFromViewModel(GolonganJabatanModel model) {
         GolonganJabatan golonganJabatan = new GolonganJabatan();
         if (model.getId() != null) {
-        	golonganJabatan.setId(model.getId());
+            golonganJabatan.setId(model.getId());
         }
-        golonganJabatan.setCode(model.getCode());        
+        golonganJabatan.setCode(model.getCode());
         golonganJabatan.setOvertime(model.getOvertime());
+        golonganJabatan.setPaySalaryGrade(new PaySalaryGrade(model.getPaySalaryGradeId()));
         golonganJabatan.setPangkat(new Pangkat(model.getPangkatId()));
+        golonganJabatan.setPointMin(model.getPointMin());
+        golonganJabatan.setPointMid(model.getPointMid());
+        golonganJabatan.setPointMax(model.getPointMax());
+        golonganJabatan.setRatioCompact(model.getRatioCompact());
         return golonganJabatan;
     }
-    
-    private void getViewModelFromEntity(GolonganJabatan golonganJabatan){
-    	model.setId(golonganJabatan.getId());
-    	model.setCode(golonganJabatan.getCode());    	
-    	model.setOvertime(golonganJabatan.getOvertime());
-    	model.setPangkatId(golonganJabatan.getPangkat().getId());
+
+    private void getViewModelFromEntity(GolonganJabatan golonganJabatan) {
+        model.setId(golonganJabatan.getId());
+        model.setCode(golonganJabatan.getCode());
+        model.setOvertime(golonganJabatan.getOvertime());
+        if(golonganJabatan.getPaySalaryGrade() != null){
+            model.setPaySalaryGradeId(golonganJabatan.getPaySalaryGrade().getId());
+        }
+        if(golonganJabatan.getPangkat() != null){
+            model.setPangkatId(golonganJabatan.getPangkat().getId());
+        }
+    	model.setPointMin(golonganJabatan.getPointMin());
+        model.setPointMid(golonganJabatan.getPointMid());
+        model.setPointMax(golonganJabatan.getPointMax());
+        model.setRatioCompact(golonganJabatan.getRatioCompact());
     }
+
+    public PaySalaryGradeService getPaySalaryGradeService() {
+        return paySalaryGradeService;
+    }
+
+    public void setPaySalaryGradeService(PaySalaryGradeService paySalaryGradeService) {
+        this.paySalaryGradeService = paySalaryGradeService;
+    }
+    
+    
 }

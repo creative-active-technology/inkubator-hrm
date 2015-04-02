@@ -13,13 +13,14 @@ import java.util.List;
  *
  * @author Deni
  */
-public interface LoanNewSchemaListOfTypeService extends IService<LoanNewSchemaListOfType>{
+public interface LoanNewSchemaListOfTypeService extends IService<LoanNewSchemaListOfType> {
+
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchema(Long loanNewSchema) throws Exception;
-    
+
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id) throws Exception;
-    
+
     public void update(LoanNewSchemaListOfType entity, Long oldId) throws Exception;
-    
+
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
     
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema) throws Exception;

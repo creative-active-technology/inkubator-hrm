@@ -64,7 +64,9 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
                     isUpdate = Boolean.TRUE;
                     model = getModelFromEntity(loanNewSchemaListOfType);
                 }
-            }
+            }else{
+                    model.setIsActive(Boolean.TRUE);
+                }
             
             listLoanNewType = loanNewTypeService.getAllData();
             for (LoanNewType loanNewType : listLoanNewType) {
@@ -134,6 +136,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
         loanNewSchemaListOfType.setMinimumAllocation(model.getMinimumAllocation());
         loanNewSchemaListOfType.setMinimumApproval(model.getMinimumApproval());
         loanNewSchemaListOfType.setMinimumMonthlyInstallment(model.getMinimumMonthlyInstallment());
+        loanNewSchemaListOfType.setIsActive(model.getIsActive());
         return loanNewSchemaListOfType;
     }
     

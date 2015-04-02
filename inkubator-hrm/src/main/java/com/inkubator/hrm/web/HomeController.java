@@ -43,7 +43,6 @@ public class HomeController extends BaseController {
         /**
          * saving process of User Access History
          */
-
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
         RiwayatAkses akses = new RiwayatAkses();
         akses.setDateAccess(new Date());
@@ -68,7 +67,7 @@ public class HomeController extends BaseController {
             LOGGER.info("Begin redirecting");
             LOGGER.info("Kondisi" + isValid);
             HrmUser hrmUser = hrmUserService.getByUserId(HrmUserInfoUtil.getUserName());
-            if (hrmUser.getEmpData()!=null&&isValid) {
+            if (hrmUser.getEmpData() != null && isValid) {
                 LOGGER.info("redirec ok");
                 return "/protected/check_in_out.htm?faces-redirect=true";
             } else {
