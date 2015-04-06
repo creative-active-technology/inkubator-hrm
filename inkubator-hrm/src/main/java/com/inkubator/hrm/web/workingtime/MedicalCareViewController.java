@@ -92,7 +92,7 @@ public class MedicalCareViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selectedMedicalCare = this.medicalCareService.getEntiyByPK(selectedMedicalCare.getId());
+            selectedMedicalCare = this.medicalCareService.getEntityWithNameAndNik(selectedMedicalCare.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

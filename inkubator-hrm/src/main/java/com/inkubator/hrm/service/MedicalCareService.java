@@ -26,5 +26,7 @@ public interface MedicalCareService extends IService<MedicalCare> {
     public void save(MedicalCare entity, UploadedFile documentFile) throws Exception;
 
     public void update(MedicalCare entity, UploadedFile documentFile) throws Exception;
+    
+    public MedicalCare getEntityWithNameAndNik(Long id) throws Exception;
 
 }
