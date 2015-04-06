@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
@@ -35,10 +37,20 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 
     @Override
     public Long getCurrentMaxId() {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
-    
-    
+
+    @Override
+    public List<LoanNewApplication> getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(Long empDataId, Long loanNewTypeId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("loanNewType.id", loanNewTypeId));
+        criteria.add(Restrictions.ne("loanStatus", HRMConstant.LOAN_PAID));
+        return criteria.list();
+    }
+
 }
