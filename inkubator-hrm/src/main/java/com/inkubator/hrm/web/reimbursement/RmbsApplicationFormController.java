@@ -24,6 +24,7 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -94,12 +95,13 @@ public class RmbsApplicationFormController extends BaseController {
         super.initialization();
         try {        	
         	//initial
-        	listCurrency = currencyService.getAllData();
-	        model = new RmbsApplicationModel();
+        	listCurrency = currencyService.getAllData();	        
 	        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
-	        
-	        //di cek terlebih dahulu, jika datangnya dari proses approval, artinya melakukan user akan revisi data yg masih dalam bentuk json
 	        isRevised = Boolean.FALSE;
+	        model = new RmbsApplicationModel();
+	        model.setCode("TEMP-" + RandomNumberUtil.getRandomNumber(9));
+	        
+	        //di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
 	        String appActivityId = FacesUtil.getRequestParameter("activity");
         	if(StringUtils.isNotEmpty(appActivityId)) {
         		//parsing data from json to object 
@@ -147,11 +149,11 @@ public class RmbsApplicationFormController extends BaseController {
 	    try {
 	    	String message = rmbsApplicationService.saveWithApproval(rmbsApplication, reimbursementFile);
 	        if(StringUtils.equals(message, "success_need_approval")){
-	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	path = "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
 	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	        	
 	        } else {
-	        	path = "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true";
+	        	path = "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
 	        	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());	        
 	        }
 	        return path;
@@ -211,7 +213,7 @@ public class RmbsApplicationFormController extends BaseController {
             JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
             String reimbursementFileName = elReimbursementFileName.isJsonNull() ? StringUtils.EMPTY : elReimbursementFileName.getAsString();
             if(StringUtils.isNotEmpty(reimbursementFileName)){
-            	reimbursementFile = rmbsApplicationService.convertFileToUploadedFile(gson, json);
+            	reimbursementFile = rmbsApplicationService.convertFileToUploadedFile(json);
             }
             
 	    	RmbsApplication entity = gson.fromJson(json, RmbsApplication.class);

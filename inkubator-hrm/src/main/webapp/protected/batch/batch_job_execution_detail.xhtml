@@ -60,15 +60,19 @@
 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{batchJobExecutionController.lazyDataBatchJobExecution.rowCount}"/>
+                                <p:outputLabel value="#{batchJobExecutionDetailController.lazyDataBatchStepExecution.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-
+                        
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{batchJobExecutionDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-
             </ui:define>
         </ui:composition>
 

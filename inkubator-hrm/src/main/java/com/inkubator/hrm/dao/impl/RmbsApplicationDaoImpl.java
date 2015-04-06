@@ -1,17 +1,23 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
@@ -39,13 +45,19 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"WHERE empData.id = :empDataId " +
     			"AND rmbsType.id = :rmbsTypeId " +
     			"AND applicationDate >= :startDate " +
-    			"AND applicationDate <= :endDate");
+    			"AND applicationDate <= :endDate " +
+    			"AND applicationStatus IN (:applicationStatus)");
+		
+		List<Integer> applicationStatus =  new ArrayList<Integer>();
+		applicationStatus.add(HRMConstant.RMBS_STATUS_DISBURSED);
+		applicationStatus.add(HRMConstant.RMBS_STATUS_UNDISBURSED);
 		
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
     			.setParameter("empDataId", empDataId)
     			.setParameter("rmbsTypeId", rmbsTypeId)
     			.setParameter("startDate", startDate)
-    			.setParameter("endDate", endDate);
+    			.setParameter("endDate", endDate)
+    			.setParameterList("applicationStatus", applicationStatus);
     	
     	Object obj = hbm.uniqueResult();
     	return obj != null ? new BigDecimal(obj.toString()) : new BigDecimal(0);
@@ -56,21 +68,23 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT approvalActivity.id AS approvalActivityId, " +
+    			"rmbsApplication.id AS rmbsApplicationId, " +
     			"empData.nik AS empNik," +
     			"CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
     			"rmbsType.id AS rmbsTypeId, " +
     			"rmbsType.name AS rmbsTypeName, " +
     			"approvalActivity.approval_status AS approvalStatus, " +
-    			"approvalActivity.pending_data AS jsonData " +
+    			"approvalActivity.pending_data AS jsonData, " +
+    			"rmbsApplication.code AS rmbsApplicationCode " +
     			"FROM hrm.approval_activity approvalActivity " +
-    			"LEFT JOIN hrm.hrm_user AS user ON user.user_id = approvalActivity.request_by " +
-    			"LEFT JOIN hrm.emp_data AS empData ON user.emp_data_id = empData.id " +
+    			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    			"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    			"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
     			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     			"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
     			"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
-    			"WHERE approvalActivity.approval_status IN (0,1,5) " +
-    			"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
-    			"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status is null) ");    	
+    			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
+    			"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) ");    	
     	selectQuery.append(this.setWhereQueryUndisburseByParam(parameter));
     	selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY " + orderable);
@@ -87,14 +101,14 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(*) " +
     			"FROM hrm.approval_activity approvalActivity " +
-    	    	"LEFT JOIN hrm.hrm_user AS user ON user.user_id = approvalActivity.request_by " +
-    	    	"LEFT JOIN hrm.emp_data AS empData ON user.emp_data_id = empData.id " +
+    			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    	    	"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    	    	"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
     	    	"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     	    	"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
     	    	"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
-    	    	"WHERE approvalActivity.approval_status IN (0,1,5) " +
-    	    	"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
-    	    	"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status is null) ");    	
+    	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
+    	    	"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) ");    	
     	selectQuery.append(this.setWhereQueryUndisburseByParam(parameter));
     	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
@@ -108,25 +122,26 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     	
         if (StringUtils.isNotEmpty(parameter.getEmpNik())) {
         	whereQuery.append("AND empData.nik LIKE :empNik ");
-        }
-        
+        }        
         if (StringUtils.isNotEmpty(parameter.getEmpName())) {
         	whereQuery.append("AND (bioData.first_name LIKE :empName OR bioData.last_name LIKE :empName) ");
-        }
-        
+        }        
         if (StringUtils.isNotEmpty(parameter.getRmbsType())) {
         	whereQuery.append("AND rmbsType.name LIKE :rmbsType ");
-        }
+        }    
         
         if (StringUtils.isNotEmpty(parameter.getUserId())) {
-        	whereQuery.append("AND user.user_id = :userId ");
+        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6)) " +
+        			"OR (approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
+        } else {
+        	//view for administrator(can view all employee)
+        	whereQuery.append("AND approvalActivity.approval_status IN (0,1,6) ");
         }
         
         return whereQuery.toString();
     }
     
-    private Query setValueQueryUndisburseByParam(Query hbm, RmbsApplicationUndisbursedSearchParameter parameter){
-    	
+    private Query setValueQueryUndisburseByParam(Query hbm, RmbsApplicationUndisbursedSearchParameter parameter){    	
     	for(String param : hbm.getNamedParameters()){
     		if(StringUtils.equals(param, "empName")){
     			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
@@ -137,10 +152,24 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     		} else if(StringUtils.equals(param, "userId")){
     			hbm.setParameter("userId", parameter.getUserId());
     		}
-    	}
-    	
+    	}    	
     	return hbm;
     }
 
-	
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+    }
+
+	@Override
+	public RmbsApplication getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
+		criteria.setFetchMode("currency", FetchMode.JOIN);
+		return (RmbsApplication) criteria.uniqueResult();
+	}
 }

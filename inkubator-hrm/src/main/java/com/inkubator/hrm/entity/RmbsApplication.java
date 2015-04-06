@@ -73,7 +73,7 @@ public class RmbsApplication implements java.io.Serializable {
 		this.version = version;
 	}
 
-	@Column(name = "code", unique = true, nullable = false, length = 12)
+	@Column(name = "code", unique = true, nullable = false, length = 45)
 	public String getCode() {
 		return code;
 	}

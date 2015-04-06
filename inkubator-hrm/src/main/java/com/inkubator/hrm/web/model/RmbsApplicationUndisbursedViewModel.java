@@ -11,6 +11,7 @@ import java.math.BigInteger;
 public class RmbsApplicationUndisbursedViewModel implements Serializable{
 
 	private BigInteger approvalActivityId;
+	private BigInteger rmbsApplicationId;
 	private String empNik;
 	private String empName;
 	private String rmbsApplicationCode;
@@ -87,6 +88,12 @@ public class RmbsApplicationUndisbursedViewModel implements Serializable{
 	}
 	public void setJsonData(String jsonData) {
 		this.jsonData = jsonData;
+	}
+	public BigInteger getRmbsApplicationId() {
+		return rmbsApplicationId;
+	}
+	public void setRmbsApplicationId(BigInteger rmbsApplicationId) {
+		this.rmbsApplicationId = rmbsApplicationId;
 	}
 	
 }

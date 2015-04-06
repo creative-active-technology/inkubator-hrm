@@ -7,7 +7,6 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 
-import com.google.gson.Gson;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
@@ -26,13 +25,15 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 
 	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
 
-	public UploadedFile convertFileToUploadedFile(Gson gson, String pendingData) throws IOException;
+	public UploadedFile convertFileToUploadedFile(String pendingData) throws IOException;
 	
-	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws IOException;
+	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws Exception;
 	
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws IOException;
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws IOException;
+	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception;
+	
+	public RmbsApplication getEntityByPkWithDetail(Long id);
 
 }
 	
