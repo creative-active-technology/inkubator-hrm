@@ -63,7 +63,7 @@ public class BatchJobExecutionDetailController extends BaseController{
     }
     
     public String doBack(){
-        return "/protected/batch/batch_job_execution_view.htm?faces-redirect=true";
+        return "/protected/batch/batch_job_execution.htm?faces-redirect=true";
     }
 
     public BatchJobExecution getSelectedBatchJobExecution() {
