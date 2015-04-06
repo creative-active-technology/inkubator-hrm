@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
@@ -43,13 +45,19 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"WHERE empData.id = :empDataId " +
     			"AND rmbsType.id = :rmbsTypeId " +
     			"AND applicationDate >= :startDate " +
-    			"AND applicationDate <= :endDate");
+    			"AND applicationDate <= :endDate " +
+    			"AND applicationStatus IN (:applicationStatus)");
+		
+		List<Integer> applicationStatus =  new ArrayList<Integer>();
+		applicationStatus.add(HRMConstant.RMBS_STATUS_DISBURSED);
+		applicationStatus.add(HRMConstant.RMBS_STATUS_UNDISBURSED);
 		
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
     			.setParameter("empDataId", empDataId)
     			.setParameter("rmbsTypeId", rmbsTypeId)
     			.setParameter("startDate", startDate)
-    			.setParameter("endDate", endDate);
+    			.setParameter("endDate", endDate)
+    			.setParameterList("applicationStatus", applicationStatus);
     	
     	Object obj = hbm.uniqueResult();
     	return obj != null ? new BigDecimal(obj.toString()) : new BigDecimal(0);
