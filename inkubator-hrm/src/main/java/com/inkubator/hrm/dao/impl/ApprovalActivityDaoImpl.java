@@ -324,4 +324,18 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 		criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
 		return (ApprovalActivity) criteria.uniqueResult();
 	}
+
+	@Override
+	public Boolean isAlreadyHaveApprovedStatus(String activityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_APPROVED));
+        
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("activityNumber", activityNumber));
+        disjunction.add(Restrictions.eq("previousActivityNumber", activityNumber));
+        criteria.add(disjunction);
+        
+        return criteria.list().size() > 0;
+		
+	}
 }

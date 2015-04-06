@@ -23,4 +23,8 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 
 	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter);
 
+	public Long getCurrentMaxId();
+	
+	public RmbsApplication getEntityByPkWithDetail(Long id);
+
 }
