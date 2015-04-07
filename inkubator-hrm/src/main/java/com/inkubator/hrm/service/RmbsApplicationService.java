@@ -1,6 +1,5 @@
 package com.inkubator.hrm.service;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 
 	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
 
-	public UploadedFile convertFileToUploadedFile(String pendingData) throws IOException;
+	public UploadedFile convertFileToUploadedFile(String pendingData);
 	
 	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws Exception;
 	

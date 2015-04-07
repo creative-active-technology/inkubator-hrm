@@ -36,6 +36,7 @@ public class RmbsApplicationDetailController extends BaseController {
     private RmbsSchema rmbsSchema;
     private RmbsSchemaListOfType rmbsSchemaListOfType;
     private BigDecimal totalRequestThisMoth;
+    private Boolean isHaveAttachment;
     
     @ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
@@ -55,6 +56,7 @@ public class RmbsApplicationDetailController extends BaseController {
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsApplication.getRmbsType().getId(), rmbsSchema.getId()));
             totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(rmbsApplication.getEmpData().getId(), rmbsApplication.getRmbsType().getId());
+            isHaveAttachment = rmbsApplication.getReceiptAttachment() != null && rmbsApplication.getReceiptAttachment().length > 0;
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -70,6 +72,7 @@ public class RmbsApplicationDetailController extends BaseController {
     	rmbsApplicationService = null;
     	rmbsSchemaListOfEmpService = null;
     	rmbsSchemaListOfTypeService = null;
+    	isHaveAttachment = null;
     }   
 
     public String doBack() {
@@ -133,6 +136,14 @@ public class RmbsApplicationDetailController extends BaseController {
 	public void setRmbsSchemaListOfTypeService(
 			RmbsSchemaListOfTypeService rmbsSchemaListOfTypeService) {
 		this.rmbsSchemaListOfTypeService = rmbsSchemaListOfTypeService;
+	}
+
+	public Boolean getIsHaveAttachment() {
+		return isHaveAttachment;
+	}
+
+	public void setIsHaveAttachment(Boolean isHaveAttachment) {
+		this.isHaveAttachment = isHaveAttachment;
 	}
 	
 }
