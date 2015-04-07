@@ -8,6 +8,7 @@ import ch.lambdaj.Lambda;
 import com.google.common.collect.ImmutableSet;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -43,6 +44,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.xml.crypto.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
@@ -92,7 +94,7 @@ public class LoanApplicationFormController extends BaseController {
         model.setRangeFirstInstallmentToDisbursement(1);
         model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
         model.setListApprover(new ArrayList<EmpData>());
-        model.setNomor("N/A");
+        model.setNomor("LOAN-" + RandomNumberUtil.getRandomNumber(9));
         try {
 
             mapSubsidiType.put("Cicilan", 1l);
@@ -392,6 +394,8 @@ public class LoanApplicationFormController extends BaseController {
         loanNewApplication.setSubsidizedNominal(model.getSubsidiCicilan());
         loanNewApplication.setTermin(model.getTermin());
         loanNewApplication.setNomor(model.getNomor());
+        loanNewApplication.setCreatedOn(new Date());
+        loanNewApplication.setCreatedBy(HrmUserInfoUtil.getUserName());
 
         return loanNewApplication;
     }
