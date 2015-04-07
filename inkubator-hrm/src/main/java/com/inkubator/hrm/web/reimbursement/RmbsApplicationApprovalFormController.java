@@ -88,7 +88,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
             isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
-            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());            
             
             /** bind data needed from json to object */
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -131,7 +131,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/home.htm?faces-redirect=true";
+        return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
     }
 
     public String doRevised() {
@@ -170,20 +170,6 @@ public class RmbsApplicationApprovalFormController extends BaseController {
         try {
         	rmbsApplicationService.rejected(selectedApprovalActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
-        } catch (BussinessException ex) {            
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception e) {
-            LOGGER.error("Error ", e);
-        }
-        return null;
-    }
-    
-    public String doCancelled() {
-        try {
-        	rmbsApplicationService.cancelled(selectedApprovalActivity.getId(), comment);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.cancelled_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/home.htm?faces-redirect=true";
         } catch (BussinessException ex) {            

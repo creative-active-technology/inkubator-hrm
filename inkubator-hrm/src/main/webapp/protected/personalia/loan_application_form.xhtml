@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" />
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true"  globalOnly="true" />
                 <h:form id="scheduleFormId" >
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
@@ -85,7 +85,7 @@
 
                                         </p:autoComplete>
 
-                                        <p:message for="employeeAutoCompleteId"/>   
+                                        <p:message for="employeeAutoCompleteId" rendered="#{loanApplicationFormController.isAdmin}"/>   
 
                                         <p:inputText id="employeeId" value="#{loanApplicationFormController.model.namakaryawan}" 
                                                      label="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
@@ -94,7 +94,7 @@
                                                      style="width:250px;"
                                                      required="true" styleClass="isitext_hrm" readonly="true"  />
 
-                                        <p:message for="employeeId"/>  
+                                        <p:message for="employeeId" rendered="#{!loanApplicationFormController.isAdmin}"/>  
 
                                     </h:panelGrid>
                                 </p:column>
@@ -173,7 +173,7 @@
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
                                                         decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
-                                            <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}" immediate="true" update="usedLoan,availableLoan,tableLoanNewApplicationInstallmentId"/>
+                                            <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}"  update="usedLoan,availableLoan,tableLoanNewApplicationInstallmentId"/>
                                             <f:validator validatorId="loanNewMaxMinLoanAmountValidator"  />
                                             <f:attribute name="validatorMaxExceedMessage" value="#{appmsg['loan.error_nominal_loan_cannot_greater_than_max_allocation']}"/>
                                             <f:attribute name="validatorLowerThanMinMessage" value="#{appmsg['loan.error_nominal_loan_cannot_lower_than_min_allocation']}"/>
@@ -211,7 +211,7 @@
                                                label="#{appmsg['loan.termin']}"
                                                value="#{loanApplicationFormController.model.termin}" 
                                                size="2" min="1" stepFactor="1"  styleClass="isitext_hrm" >
-<!--                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByRangeCicilan()}" update="loanPeriod"/>-->
+                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByTermin()}" update="tableLoanNewApplicationInstallmentId"/>
                                         <f:validator validatorId="loanNewTerminValidator"  />
                                         <f:attribute name="validatorMessage" value="#{appmsg['loan.error_termin_loan_cannot_greater_than_max_period']}"/>
                                         <f:attribute name="model" value="#{loanApplicationFormController.model}"/>
@@ -480,7 +480,7 @@
                                              action="#{loanApplicationFormController.doApply()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['loan.apply']}"
                                              icon="ui-icon-disk" 
-                                             id="buttonSave" title="#{appmsg['loan.apply']}"/>
+                                             title="#{appmsg['loan.apply']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="scheduleFormId" action="#{loanApplicationFormController.doReset()}" immediate="true"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="scheduleFormId" />  
@@ -491,9 +491,7 @@
                         </div>
                     </div>
                 </h:form>
-                <h:form id="formSubmitId">
-
-                </h:form>
+                
             </ui:define>
 
         </ui:composition>
