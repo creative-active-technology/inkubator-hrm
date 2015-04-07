@@ -145,7 +145,14 @@
 	                                <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value=" "/>
+	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.isHaveAttachment}">
+	                            		<f:converter converterId="booleanMessageConverter"/>
+	                            	</p:outputLabel>
+	                            	<p:outputLabel value="&nbsp;&nbsp;"/>
+	                            	<p:commandLink ajax="false" rendered="#{rmbsApplicationApprovalFormController.isHaveAttachment}" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    	<p:fileDownload value="#{fileStreamerController.rmbsApplicationReceiptPath}" />
+                                        <f:param name="approvalActivityId" value="#{rmbsApplicationApprovalFormController.selectedApprovalActivity.id}"/>
+                                   	</p:commandLink>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
