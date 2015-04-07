@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Order;
@@ -32,7 +33,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
@@ -106,8 +106,9 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public RmbsApplication getEntiyByPK(Long id) throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return rmbsApplicationDao.getEntiyByPK(id);
 
 	}
 
@@ -402,27 +403,31 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	}
 	
 	@Override
-	public UploadedFile convertFileToUploadedFile(String pendingData) throws IOException{
-		
-		/** converting process from file physics (which is get the path file from json) to UploadedFile object*/
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	public UploadedFile convertFileToUploadedFile(String pendingData) {
 		UploadedFile uploadedFile = null;
-        JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursementFileName");
-        if (!elReimbursment.isJsonNull()) {
-            String reimbursmentFilePath = elReimbursment.getAsString();
-            File file = new File(reimbursmentFilePath);
-            DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
-            InputStream input = new FileInputStream(file);
-            OutputStream os = fileItem.getOutputStream();
-            int ret = input.read();
-            while (ret != -1) {
-                os.write(ret);
-                ret = input.read();
-            }
-            os.flush();
-
-            uploadedFile = new DefaultUploadedFile(fileItem);
-        }
+		
+		try {
+			/** converting process from file physics (which is get the path file from json) to UploadedFile object*/
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	        JsonElement elReimbursment = gson.fromJson(pendingData, JsonObject.class).get("reimbursementFileName");
+	        if (!elReimbursment.isJsonNull()) {
+	            String reimbursmentFilePath = elReimbursment.getAsString();
+	            File file = new File(reimbursmentFilePath);
+	            DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+	            InputStream input = new FileInputStream(file);
+	            OutputStream os = fileItem.getOutputStream();
+	            int ret = input.read();
+	            while (ret != -1) {
+	                os.write(ret);
+	                ret = input.read();
+	            }
+	            os.flush();
+	
+	            uploadedFile = new DefaultUploadedFile(fileItem);
+	        }
+		} catch (IOException e) {
+			LOGGER.error("Error", e);
+		}
         
         return uploadedFile;
 	}
@@ -471,16 +476,18 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		if(approvalActivity == null){				
 			/** proceed of saving data(entity) to DB */
 			
+			//generate number of code
+			String nomor = this.generateReimbursementNumber();	        
+            entity.setCode(nomor);
+            
 			//set reimbursement file to blob
 			if (reimbursmentFile != null) {
                 InputStream inputStream = reimbursmentFile.getInputstream();
                 byte[] buffer = IOUtils.toByteArray(inputStream);
                 entity.setReceiptAttachment(buffer);
+                String extension = StringUtils.substringAfterLast(reimbursmentFile.getFileName(), ".");
+                entity.setReceiptAttachmentName(entity.getCode()+"."+extension);
             }
-			
-			//generate number of code
-			String nomor = this.generateReimbursementNumber();	        
-            entity.setCode(nomor);
             
 	        rmbsApplicationDao.save(entity);
             
@@ -563,7 +570,13 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		//saving file uploaded temporary
 		String uploadPath = null;
         if (reimbursmentFile != null) {
-            uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), reimbursmentFile);
+        	uploadPath = getUploadPath(entity.getCode(), reimbursmentFile);
+        	
+        	//remove old file        	
+            File oldFile = new File(uploadPath);            
+            FileUtils.deleteQuietly(oldFile);
+            
+            //added new file
             facesIO.transferFile(reimbursmentFile);
             File file = new File(facesIO.getPathUpload() + reimbursmentFile.getFileName());
             file.renameTo(new File(uploadPath));
@@ -584,9 +597,9 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         return entity;
 	}
 	
-	private String getUploadPath(Long id, UploadedFile documentFile) {
+	private String getUploadPath(String code, UploadedFile documentFile) {
         String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
-        String uploadPath = facesIO.getPathUpload() + "reimbursement_" + id + "." + extension;
+        String uploadPath = facesIO.getPathUpload() + "reimbursement_" + code + "." + extension;
         return uploadPath;
     }
 
