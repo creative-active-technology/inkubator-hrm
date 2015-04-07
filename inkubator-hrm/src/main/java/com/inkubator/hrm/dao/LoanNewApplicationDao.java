@@ -25,4 +25,6 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
 	public LoanNewApplication getEntityByIdWithDetail(Long id);	
 	
         public Long getCurrentMaxId();
+        
+        public List<LoanNewApplication> getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(Long empDataId, Long loanNewTypeId);	
 }

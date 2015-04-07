@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -22,10 +23,12 @@ import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -45,6 +48,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import org.apache.commons.lang.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -281,7 +285,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy",new Locale(appActivity.getLocale()));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         //get all sendCC email address on status approve OR reject
@@ -294,7 +298,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         LoanNewApplication loanNewApplication = gson.fromJson(appActivity.getPendingData(), LoanNewApplication.class);
         List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loanNewApplication.getLoanNewType().getInterest().doubleValue(), loanNewApplication.getTermin(), loanNewApplication.getDibursementDate(),
                 loanNewApplication.getNominalPrincipal(), loanNewApplication.getLoanNewType().getInterestMethod());
-        
+
         double nominalInstallment = 0.0;
         double interestInstallment = 0.0;
         double totalNominalInstallment = 0.0;
@@ -331,7 +335,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             }
         });
     }
-    
+
     private List<LoanPaymentDetail> calculateLoanPaymentDetails(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) {
         //set parameter for calculating jadwalPembayaran
         LoanPayment loanPayment = new LoanPayment();
@@ -364,7 +368,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         return listLoanPaymentDetails;
     }
-    
+
     @Override
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -396,15 +400,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String saveWithApproval(LoanNewApplication entity) throws Exception {
         
-        if(!isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData().getCreatedBy())){
-            throw new BussinessException("loan.error_loan_with_same_type_found");
-        }
+        String result = isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData(),entity.getNominalPrincipal());
         
+        if (!StringUtils.equals("yes", result)) {
+            throw new BussinessException(result);
+        }
+
         return this.save(entity, Boolean.FALSE, Boolean.FALSE, null);
     }
 
     @Override
-    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception {        
+    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception {
         return this.save(entity, Boolean.FALSE, Boolean.TRUE, approvalActivityId);
     }
 
@@ -427,13 +433,14 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
             ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
             if (approvalActivity == null) {
-                
+
                 entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
                 loanNewApplicationDao.save(entity);
                 result = "success_without_approval";
 
-            } else {                
+            } else {
                 approvalActivity.setPendingData(getJsonPendingData(entity));
+                approvalActivity.setTypeSpecific(entity.getLoanNewType().getId());
                 approvalActivityDao.save(approvalActivity);
                 result = "success_need_approval";
 
@@ -445,19 +452,72 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         return result;
     }
 
-    private String getJsonPendingData(LoanNewApplication entity) throws IOException {     
-        
+    private String getJsonPendingData(LoanNewApplication entity) throws IOException {
+
         //parsing object to json 
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-        
+
         return gson.toJson(jsonObject);
     }
     
-    private boolean isLoanAllowed(Long loanNewType, Long loanNewSchema, String requestUserId){
-        Boolean result = Boolean.TRUE;
+    /*
+    Loan validation
+    allow only if : 
+    - no previos loan with same loanType which still in approval process, or still have outstanding.
+    - Total loan amount from existing loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
+    */
+    private String isLoanAllowed(Long loanNewTypeId, Long loanNewSchemaId, EmpData empData, Double loanPrincipal) {
         
-        return result;
+        HrmUser hrmUser = hrmUserDao.getByEmpDataId(empData.getId());       
+        LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntiyByPK(loanNewSchemaId);
+        
+        //Get All pending request of employee
+        List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId());
+        
+        //filter only activity that comes from LOAN 
+        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(),Matchers.equalTo(HRMConstant.LOAN)));
+        
+        //if previous loan with same loanNewType and still in approval process found,  return Exception Message
+        if (Lambda.extract(listPendingRequest, Lambda.on(ApprovalActivity.class).getTypeSpecific()).contains(loanNewTypeId)) {            
+            return "loan.error_loan_with_same_type_found";            
+        }
+        
+        //Check whether employee still have outstanding loan with same loanType
+        List<LoanNewApplication> listPreviosUnpaidLoanWithSameLoanTypeId = loanNewApplicationDao.getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(empData.getId(), loanNewTypeId);
+        
+        //if previous loan with same type and still remain outstanding found,  return Exception Message
+        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {            
+            return "loan.error_loan_with_same_type_found";            
+        }
+        
+        /* Begin Calculate Total loan of exisiting loan application and previous loan of selected employee*/
+        Double totalLoanByUser = loanPrincipal;
+
+        if (!listPendingRequest.isEmpty()) {
+            for (ApprovalActivity pendingRequest : listPendingRequest) {
+                String pendingData = pendingRequest.getPendingData();
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();                
+                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);                
+                totalLoanByUser += loanNewApplication.getNominalPrincipal();
+            }
+        }
+        
+        if(!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()){
+            for(LoanNewApplication prevLoan : listPreviosUnpaidLoanWithSameLoanTypeId){
+                totalLoanByUser += prevLoan.getNominalPrincipal();
+            }
+        }
+        
+        /* End Calculate Total loan of exisiting loan application and previous loan of selected employee*/
+        
+        //if total All Loan exceed maximum loan from employee loan schema, return Exception Message
+        if(totalLoanByUser > loanNewSchema.getTotalMaximumLoan()){
+            return "loan.error_total_loan_exceed_max_loan_on_loan_scheme";
+        }
+        
+        // if no rule violation found, return yes
+        return "yes";
     }
 }
