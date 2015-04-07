@@ -75,6 +75,10 @@ public class AnnouncementViewController extends BaseController {
         }
     }
 
+    public String doAddAnnouncement(){
+        return "/protected/organisation/announcement_form.htm?faces-redirect=true";
+    }
+    
     public void doDelete() {
         try {
             this.announcementService.delete(selected);

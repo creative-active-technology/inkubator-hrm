@@ -58,6 +58,7 @@ public class HRMConstant {
     public static final Integer OT_SEPARATED = 0;
     public static final Double DEFAULT_LATITUDE = -6.211551441520004D;
     public static final Double DEFAULT_LONGITUDE = 106.84444427490234D;
+    public static final String ANNOUNCEMENT_KODE = "ANNO";
 
 
     /* 
@@ -187,6 +188,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_ASKING_REVISED = 5;
     public static final Integer APPROVAL_STATUS_WAITING_REVISED = 6;
     public static final Integer APPROVAL_STATUS_REVISED = 7;
+    public static final Integer APPROVAL_STATUS_DRAFT = 8;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     /* END */
 

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.web.model.AnnouncementModelJson;
 
 /**
  *
@@ -229,5 +230,13 @@ public class AnnouncementServiceImpl extends IServiceImpl implements Announcemen
     @Override
     public List<Announcement> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(AnnouncementModelJson announcementModelJson, boolean isBypassApprovalChecking) throws Exception {
+        String message = "error";
+        
+        return message;
     }
 }

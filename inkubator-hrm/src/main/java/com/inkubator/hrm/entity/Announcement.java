@@ -118,7 +118,7 @@ public class Announcement implements java.io.Serializable {
         this.subject = subject;
     }
 
-    @Column(name = "announcement_content", length = 65535)
+    @Column(name = "announcement_content", length = 65535, columnDefinition="Text")
     public String getAnnouncementContent() {
         return this.announcementContent;
     }

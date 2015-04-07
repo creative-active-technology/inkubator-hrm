@@ -1,7 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.UnitKerja;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
+import org.primefaces.model.DualListModel;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -23,6 +29,14 @@ public class AnnouncementModel implements Serializable {
     private Integer timeModel;
     private boolean internetPublish;
     private Date updatedOn;
+    private Map<String, Long> dropDownCompany;
+    private Long companyId;
+    private DualListModel<EmployeeType> dualListEmployeeType;
+    private DualListModel<GolonganJabatan> dualListGolonganJabatan;
+    private DualListModel<UnitKerja> dualListUnitKerja;
+    private Boolean isUpdate;
+    private String fotoFileName;
+    private UploadedFile attachmentFile;
 
     public String getAnnouncementContent() {
         return announcementContent;
@@ -135,4 +149,71 @@ public class AnnouncementModel implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    public Map<String, Long> getDropDownCompany() {
+        return dropDownCompany;
+    }
+
+    public void setDropDownCompany(Map<String, Long> dropDownCompany) {
+        this.dropDownCompany = dropDownCompany;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public DualListModel<EmployeeType> getDualListEmployeeType() {
+        return dualListEmployeeType;
+    }
+
+    public void setDualListEmployeeType(DualListModel<EmployeeType> dualListEmployeeType) {
+        this.dualListEmployeeType = dualListEmployeeType;
+    }
+
+    public DualListModel<GolonganJabatan> getDualListGolonganJabatan() {
+        return dualListGolonganJabatan;
+    }
+
+    public void setDualListGolonganJabatan(DualListModel<GolonganJabatan> dualListGolonganJabatan) {
+        this.dualListGolonganJabatan = dualListGolonganJabatan;
+    }
+
+    public DualListModel<UnitKerja> getDualListUnitKerja() {
+        return dualListUnitKerja;
+    }
+
+    public void setDualListUnitKerja(DualListModel<UnitKerja> dualListUnitKerja) {
+        this.dualListUnitKerja = dualListUnitKerja;
+    }
+
+    public Boolean getIsUpdate() {
+        return isUpdate;
+    }
+
+    public void setIsUpdate(Boolean isUpdate) {
+        this.isUpdate = isUpdate;
+    }
+
+    public String getFotoFileName() {
+        return fotoFileName;
+    }
+
+    public void setFotoFileName(String fotoFileName) {
+        this.fotoFileName = fotoFileName;
+    }
+
+    public UploadedFile getAttachmentFile() {
+        return attachmentFile;
+    }
+
+    public void setAttachmentFile(UploadedFile attachmentFile) {
+        this.attachmentFile = attachmentFile;
+    }
+
+    
+    
 }
