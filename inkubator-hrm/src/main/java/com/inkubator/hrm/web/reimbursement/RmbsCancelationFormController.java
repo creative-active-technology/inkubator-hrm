@@ -25,6 +25,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsCancelation;
 import com.inkubator.hrm.entity.RmbsSchema;
@@ -36,6 +37,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.CurrencyService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
@@ -80,6 +82,8 @@ public class RmbsCancelationFormController extends BaseController {
     private RmbsTypeService rmbsTypeService;
     @ManagedProperty(value = "#{currencyService}")
     private CurrencyService currencyService;
+    @ManagedProperty(value = "#{hrmUserService}")
+    private HrmUserService hrmUserService;
 
     @PostConstruct
     @Override
@@ -116,6 +120,7 @@ public class RmbsCancelationFormController extends BaseController {
     	listApprover = null;
     	listActivity = null;
     	isAdministator = null;
+    	hrmUserService = null;
     }   
 
     public String doBack() {
@@ -155,7 +160,12 @@ public class RmbsCancelationFormController extends BaseController {
 	}
     
     public void onChangeEmployee(){
-    	listActivity =  new HashMap<Long, String>();
+    	try {
+    		HrmUser user = hrmUserService.getByEmpDataId(model.getEmpData().getId());
+    		listActivity = rmbsApplicationService.getAllDataNotApprovedYet(user.getUserId());
+    	} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
     	this.resetDetailInfo();
     }
     
@@ -330,6 +340,13 @@ public class RmbsCancelationFormController extends BaseController {
 	public void setIsAdministator(Boolean isAdministator) {
 		this.isAdministator = isAdministator;
 	}
-        
+
+	public HrmUserService getHrmUserService() {
+		return hrmUserService;
+	}
+
+	public void setHrmUserService(HrmUserService hrmUserService) {
+		this.hrmUserService = hrmUserService;
+	}
 	
 }
