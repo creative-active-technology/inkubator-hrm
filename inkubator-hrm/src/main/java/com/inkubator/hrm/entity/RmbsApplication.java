@@ -1,7 +1,6 @@
 package com.inkubator.hrm.entity;
 
 // Generated Mar 13, 2015 9:01:09 AM by Hibernate Tools 4.3.1
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -26,158 +25,158 @@ import javax.persistence.Version;
 @Table(name = "rmbs_application", catalog = "hrm")
 public class RmbsApplication implements java.io.Serializable {
 
-	private Long id;
-	private Integer version;
-	private String code;
-	private EmpData empData;
-	private RmbsType rmbsType;
-	private Currency currency;
-	private String purpose;
-	private Date applicationDate;
-	private Integer applicationStatus;
-	private String description;
-	private byte[] receiptAttachment;
-	private String receiptAttachmentName;
-	private BigDecimal nominal;
-	private String approvalActivityNumber;
-	private String createdBy;
-	private Date createdOn;
-	private String updatedBy;
-	private Date updatedOn;
+    private Long id;
+    private Integer version;
+    private String code;
+    private EmpData empData;
+    private RmbsType rmbsType;
+    private Currency currency;
+    private String purpose;
+    private Date applicationDate;
+    private Integer applicationStatus;
+    private String description;
+    private byte[] receiptAttachment;
+    private String receiptAttachmentName;
+    private BigDecimal nominal;
+    private String approvalActivityNumber;
+    private String createdBy;
+    private Date createdOn;
+    private String updatedBy;
+    private Date updatedOn;
 
-	public RmbsApplication() {
-	}
+    public RmbsApplication() {
+    }
 
-	public RmbsApplication(Long id) {
-		this.id = id;
-	}
+    public RmbsApplication(Long id) {
+        this.id = id;
+    }
 
-	@Id
+    @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "rmbs_application_seq_gen")
     @SequenceGenerator(name = "rmbs_application_seq_gen", sequenceName = "RMBS_APPLICATION_SEQ")
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Version
+    @Version
     @Column(name = "version")
-	public Integer getVersion() {
-		return this.version;
-	}
+    public Integer getVersion() {
+        return this.version;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	@Column(name = "code", unique = true, nullable = false, length = 45)
-	public String getCode() {
-		return code;
-	}
+    @Column(name = "code", unique = true, nullable = false, length = 45)
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-		
-	@ManyToOne(fetch = FetchType.LAZY)
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_data_id", nullable = false)
-	public EmpData getEmpData() {
-		return empData;
-	}
+    public EmpData getEmpData() {
+        return empData;
+    }
 
-	public void setEmpData(EmpData empData) {
-		this.empData = empData;
-	}	
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+    public void setEmpData(EmpData empData) {
+        this.empData = empData;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rmbs_type_id", nullable = false)
-	public RmbsType getRmbsType() {
-		return rmbsType;
-	}
+    public RmbsType getRmbsType() {
+        return rmbsType;
+    }
 
-	public void setRmbsType(RmbsType rmbsType) {
-		this.rmbsType = rmbsType;
-	}
-		
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "currency_id", nullable = false)	
-	public Currency getCurrency() {
-		return currency;
-	}
+    public void setRmbsType(RmbsType rmbsType) {
+        this.rmbsType = rmbsType;
+    }
 
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", nullable = false)
+    public Currency getCurrency() {
+        return currency;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "application_date", length = 19, nullable = false)	
-	public Date getApplicationDate() {
-		return applicationDate;
-	}
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
-	public void setApplicationDate(Date applicationDate) {
-		this.applicationDate = applicationDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "application_date", length = 19, nullable = false)
+    public Date getApplicationDate() {
+        return applicationDate;
+    }
 
-	@Column(name = "application_status", nullable = false)
-	public Integer getApplicationStatus() {
-		return applicationStatus;
-	}
+    public void setApplicationDate(Date applicationDate) {
+        this.applicationDate = applicationDate;
+    }
 
-	public void setApplicationStatus(Integer applicationStatus) {
-		this.applicationStatus = applicationStatus;
-	}
+    @Column(name = "application_status", nullable = false)
+    public Integer getApplicationStatus() {
+        return applicationStatus;
+    }
 
-	@Column(name = "purpose", length = 65535, columnDefinition = "Text", nullable = false)
-	public String getPurpose() {
-		return purpose;
-	}
+    public void setApplicationStatus(Integer applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 
-	public void setPurpose(String purpose) {
-		this.purpose = purpose;
-	}
+    @Column(name = "purpose", length = 65535, columnDefinition = "Text", nullable = false)
+    public String getPurpose() {
+        return purpose;
+    }
 
-	@Column(name = "description", length = 65535, columnDefinition = "Text")
-	public String getDescription() {
-		return this.description;
-	}
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}	
-	
-	@Column(name = "receipt_attachment", columnDefinition = "MEDIUMBLOB")
-	public byte[] getReceiptAttachment() {
-		return receiptAttachment;
-	}
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setReceiptAttachment(byte[] receiptAttachment) {
-		this.receiptAttachment = receiptAttachment;
-	}		
-	
-	@Column(name = "receipt_attachment_name")
-	public String getReceiptAttachmentName() {
-		return receiptAttachmentName;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setReceiptAttachmentName(String receiptAttachmentName) {
-		this.receiptAttachmentName = receiptAttachmentName;
-	}
+    @Column(name = "receipt_attachment", columnDefinition = "MEDIUMBLOB")
+    public byte[] getReceiptAttachment() {
+        return receiptAttachment;
+    }
 
-	@Column(name = "nominal", precision = 10, scale = 0, nullable = false)
-	public BigDecimal getNominal() {
-		return nominal;
-	}
+    public void setReceiptAttachment(byte[] receiptAttachment) {
+        this.receiptAttachment = receiptAttachment;
+    }
 
-	public void setNominal(BigDecimal nominal) {
-		this.nominal = nominal;
-	}
-	
-	@Column(name = "approval_activity_number", length = 45, unique = true)
+    @Column(name = "receipt_attachment_name")
+    public String getReceiptAttachmentName() {
+        return receiptAttachmentName;
+    }
+
+    public void setReceiptAttachmentName(String receiptAttachmentName) {
+        this.receiptAttachmentName = receiptAttachmentName;
+    }
+
+    @Column(name = "nominal", precision = 10, scale = 0, nullable = false)
+    public BigDecimal getNominal() {
+        return nominal;
+    }
+
+    public void setNominal(BigDecimal nominal) {
+        this.nominal = nominal;
+    }
+
+    @Column(name = "approval_activity_number", length = 45, unique = true)
     public String getApprovalActivityNumber() {
         return approvalActivityNumber;
     }
@@ -186,42 +185,42 @@ public class RmbsApplication implements java.io.Serializable {
         this.approvalActivityNumber = approvalActivityNumber;
     }
 
-	@Column(name = "created_by", length = 45)
-	public String getCreatedBy() {
-		return this.createdBy;
-	}
+    @Column(name = "created_by", length = 45)
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)
-	public Date getCreatedOn() {
-		return this.createdOn;
-	}
+    public Date getCreatedOn() {
+        return this.createdOn;
+    }
 
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
-	@Column(name = "updated_by", length = 45)
-	public String getUpdatedBy() {
-		return this.updatedBy;
-	}
+    @Column(name = "updated_by", length = 45)
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
 
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_on", length = 19)
-	public Date getUpdatedOn() {
-		return this.updatedOn;
-	}
+    public Date getUpdatedOn() {
+        return this.updatedOn;
+    }
 
-	public void setUpdatedOn(Date updatedOn) {
-		this.updatedOn = updatedOn;
-	}
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
 
 }
