@@ -574,7 +574,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	
 	private String generateReimbursementNumber(){
 		/** generate number form codification, from reimbursement module */
-		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBERS_KODE);
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_KODE);
         Long currentMaxId = rmbsApplicationDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
         String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
