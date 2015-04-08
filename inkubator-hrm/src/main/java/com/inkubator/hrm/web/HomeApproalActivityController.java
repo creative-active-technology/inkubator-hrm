@@ -144,7 +144,8 @@ public class HomeApproalActivityController extends BaseController {
                 	redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LOAN:
-                    redirect = "/protected/personalia/loan_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    //redirect = "/protected/personalia/loan_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    //redirect = "/protected/personalia/loan_new_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();

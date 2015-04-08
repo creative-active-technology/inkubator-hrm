@@ -37,6 +37,7 @@ public class RmbsApplication implements java.io.Serializable {
 	private Integer applicationStatus;
 	private String description;
 	private byte[] receiptAttachment;
+	private String receiptAttachmentName;
 	private BigDecimal nominal;
 	private String approvalActivityNumber;
 	private String createdBy;
@@ -156,8 +157,17 @@ public class RmbsApplication implements java.io.Serializable {
 
 	public void setReceiptAttachment(byte[] receiptAttachment) {
 		this.receiptAttachment = receiptAttachment;
-	}	
+	}		
 	
+	@Column(name = "receipt_attachment_name")
+	public String getReceiptAttachmentName() {
+		return receiptAttachmentName;
+	}
+
+	public void setReceiptAttachmentName(String receiptAttachmentName) {
+		this.receiptAttachmentName = receiptAttachmentName;
+	}
+
 	@Column(name = "nominal", precision = 10, scale = 0, nullable = false)
 	public BigDecimal getNominal() {
 		return nominal;

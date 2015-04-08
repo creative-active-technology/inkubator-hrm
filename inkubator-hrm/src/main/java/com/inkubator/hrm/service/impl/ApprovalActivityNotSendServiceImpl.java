@@ -98,7 +98,7 @@ public class ApprovalActivityNotSendServiceImpl implements ApprovalActivityNotSe
              }
              }*/
             toSend.add("deni.arianto24@yahoo.com");
-            
+            toSentCC.add("amjadicky@gmail.com");
 //            toSend.add("rizal2_dhfr@yahoo.com");
 //            toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
