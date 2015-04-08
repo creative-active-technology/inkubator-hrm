@@ -37,7 +37,7 @@ public class LoanNewApplication implements java.io.Serializable {
     private Double nominalPrincipal;
     private Double subsidizedNominal;
     private Integer subsidizedDiscOfInterest;
-    private String loanStatus;
+    private Integer loanStatus;
     private String nomor;
     private Integer termin;
     private Date createdOn;
@@ -252,12 +252,12 @@ public class LoanNewApplication implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
-    @Column(name = "loan_status", length = 45)
-    public String getLoanStatus() {
+    @Column(name = "loan_status")
+    public Integer getLoanStatus() {
         return loanStatus;
     }
 
-    public void setLoanStatus(String loanStatus) {
+    public void setLoanStatus(Integer loanStatus) {
         this.loanStatus = loanStatus;
     }
     

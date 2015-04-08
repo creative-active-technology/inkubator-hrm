@@ -17,6 +17,8 @@ import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -57,6 +59,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     private Boolean isWaitingRevised;
     private Boolean isApprover;
     private Boolean isRequester;
+    private Boolean isHaveAttachment;
     private ApprovalActivity selectedApprovalActivity;
     private BigDecimal totalRequestThisMoth;
     
@@ -88,7 +91,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
             isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
-            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());            
             
             /** bind data needed from json to object */
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -103,6 +106,9 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsType.getId(), rmbsSchema.getId()));
             totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
+            JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);            
+	    	JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
+	    	isHaveAttachment = !elReimbursementFileName.isJsonNull();
             
             
         } catch (Exception ex) {
@@ -128,10 +134,11 @@ public class RmbsApplicationApprovalFormController extends BaseController {
         rmbsSchemaListOfType = null;
         totalRequestThisMoth = null;
         currencyService = null;
+        isHaveAttachment = null;
     }
 
     public String doBack() {
-        return "/protected/home.htm?faces-redirect=true";
+        return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
     }
 
     public String doRevised() {
@@ -143,7 +150,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
         	rmbsApplicationService.askingRevised(selectedApprovalActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.process_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
+            return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
@@ -157,7 +164,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
         	rmbsApplicationService.approved(selectedApprovalActivity.getId(), null, comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
+            return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
@@ -171,21 +178,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
         	rmbsApplicationService.rejected(selectedApprovalActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
-        } catch (BussinessException ex) {            
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception e) {
-            LOGGER.error("Error ", e);
-        }
-        return null;
-    }
-    
-    public String doCancelled() {
-        try {
-        	rmbsApplicationService.cancelled(selectedApprovalActivity.getId(), comment);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.cancelled_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/home.htm?faces-redirect=true";
+            return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
@@ -333,6 +326,14 @@ public class RmbsApplicationApprovalFormController extends BaseController {
 
 	public void setCurrencyService(CurrencyService currencyService) {
 		this.currencyService = currencyService;
+	}
+
+	public Boolean getIsHaveAttachment() {
+		return isHaveAttachment;
+	}
+
+	public void setIsHaveAttachment(Boolean isHaveAttachment) {
+		this.isHaveAttachment = isHaveAttachment;
 	}
 	
 }

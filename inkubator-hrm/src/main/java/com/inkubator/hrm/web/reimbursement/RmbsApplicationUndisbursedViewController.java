@@ -58,8 +58,12 @@ public class RmbsApplicationUndisbursedViewController extends BaseController {
         lazyData = null;
     }
 
-    public String doDetail() { 
+    public String doDetailApproval() { 
         return "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selected.getApprovalActivityId();
+    }
+    
+    public String doDetailEntity() { 
+        return "/protected/reimbursement/rmbs_application_detail.htm?faces-redirect=true&execution=e" + selected.getRmbsApplicationId();
     }
 
 	public RmbsApplicationUndisbursedSearchParameter getParameter() {

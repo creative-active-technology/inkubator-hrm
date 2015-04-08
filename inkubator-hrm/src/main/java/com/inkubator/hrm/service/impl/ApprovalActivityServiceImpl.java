@@ -341,4 +341,11 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isAlreadyHaveApprovedStatus(String activityNumber) throws Exception {
+		return approvalActivityDao.isAlreadyHaveApprovedStatus(activityNumber);
+		
+	}
+
 }

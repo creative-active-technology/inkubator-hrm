@@ -39,6 +39,8 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
     public Boolean isStillHaveWaitingStatus(String activityNumber);
     
+    public Boolean isAlreadyHaveApprovedStatus(String activityNumber);
+    
 	
     /** get All Data */
 	public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order);

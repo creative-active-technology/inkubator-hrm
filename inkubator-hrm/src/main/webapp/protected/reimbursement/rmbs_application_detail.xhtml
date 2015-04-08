@@ -37,7 +37,7 @@
 	                                <p:outputLabel value="#{appmsg['global.number2']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.code}" />
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.code}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -45,7 +45,7 @@
 	                                <p:outputLabel value="#{appmsg['rmbs_application.request_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.applicationDate}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.applicationDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -55,7 +55,7 @@
 	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.empData.bioData.fullName}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.empData.bioData.fullName}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -63,7 +63,7 @@
 	                                <p:outputLabel value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsSchema.name}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsSchema.name}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -71,7 +71,7 @@
 	                                <p:outputLabel value="#{appmsg['rmbs_application.purpose']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.purpose}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.purpose}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -79,7 +79,7 @@
 	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.description}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.description}"/>
 	                            </p:column>
 	                        </p:row>	
 	                        <p:row>
@@ -87,7 +87,7 @@
 	                                <p:outputLabel value="#{appmsg['rmbs_type.reimbursement_type']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.rmbsType.name}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.rmbsType.name}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -103,7 +103,7 @@
 	                                <p:outputLabel value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm" style="margin-left:30px;"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<c:set var="submissionDeadline" value="#{of:addDays(rmbsApplicationApprovalFormController.rmbsApplication.createdOn, -rmbsApplicationApprovalFormController.rmbsSchema.submissionDeadline)}" scope="request" />
+	                            	<c:set var="submissionDeadline" value="#{of:addDays(rmbsApplicationDetailController.rmbsApplication.createdOn, -rmbsApplicationDetailController.rmbsSchema.submissionDeadline)}" scope="request" />
 	                            	<p:outputLabel value="#{of:formatDate(submissionDeadline, 'dd-MMMM-yyyy')}"/>
 	                            </p:column>
 	                        </p:row>
@@ -113,7 +113,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsSchemaListOfType.limitPerClaim}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsSchemaListOfType.limitPerClaim}">
 	                            		<f:convertNumber pattern="###,###" type="currency"/>
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -124,7 +124,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsSchemaListOfType.maxPerMonth}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsSchemaListOfType.maxPerMonth}">
 	                            		<f:convertNumber pattern="###,###" type="currency"/>
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -135,7 +135,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.totalRequestThisMoth}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.totalRequestThisMoth}">
 	                            		<f:convertNumber pattern="###,###" type="currency"/>
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -145,14 +145,14 @@
 	                                <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.isHaveAttachment}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.isHaveAttachment}">
 	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>
 	                            	<p:outputLabel value="&nbsp;&nbsp;"/>
-	                            	<p:commandLink ajax="false" rendered="#{rmbsApplicationApprovalFormController.isHaveAttachment}" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                    	<p:fileDownload value="#{fileStreamerController.rmbsApplicationReceiptPath}" />
-                                        <f:param name="approvalActivityId" value="#{rmbsApplicationApprovalFormController.selectedApprovalActivity.id}"/>
-                                   	</p:commandLink>
+	                            	<p:commandLink rendered="#{rmbsApplicationDetailController.isHaveAttachment}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{fileStreamerController.rmbsApplicationReceiptBlob}" /> 
+	                                    <f:param name="rmbsApplicationId" value="#{rmbsApplicationDetailController.rmbsApplication.id}" />
+	                                </p:commandLink>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -160,7 +160,7 @@
 	                                <p:outputLabel value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.currency.name}"/>
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.currency.name}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -169,36 +169,15 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="Rp. "/>
-	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.rmbsApplication.nominal}">
+	                            	<p:outputLabel value="#{rmbsApplicationDetailController.rmbsApplication.nominal}">
 	                            		<f:convertNumber pattern="###,###" type="currency"/>
 	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>	                                                
-	                        <p:row rendered="#{rmbsApplicationApprovalFormController.isWaitingApproval}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{rmbsApplicationApprovalFormController.comment}" 
-	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
 	                        </p:row>	                        	                              
 	                 	</p:panelGrid>
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<h:panelGroup rendered="#{rmbsApplicationApprovalFormController.isWaitingApproval}">
-		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{rmbsApplicationApprovalFormController.doApproved()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsApplicationApprovalFormController.isApprover}" update=":growlId"/>
-								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{rmbsApplicationApprovalFormController.doRejected()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsApplicationApprovalFormController.isApprover}" update=":growlId"/>
-	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{rmbsApplicationApprovalFormController.doAskingRevised()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsApplicationApprovalFormController.isApprover}" update=":growlId"/>
-	                        </h:panelGroup>
-	                        <h:panelGroup rendered="#{rmbsApplicationApprovalFormController.isWaitingRevised}">
-		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{rmbsApplicationApprovalFormController.doRevised()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsApplicationApprovalFormController.isRequester}" update=":growlId"/>		                        
-	                        </h:panelGroup>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsApplicationApprovalFormController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsApplicationDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>

@@ -443,7 +443,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             String pendingData = appActivity.getPendingData();
             Loan loan = gson.fromJson(pendingData, Loan.class);
             loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
-
+            
             this.save(loan, true);
         }
 
