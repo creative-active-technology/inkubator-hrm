@@ -178,4 +178,5 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 		criteria.setFetchMode("currency", FetchMode.JOIN);
 		return (RmbsApplication) criteria.uniqueResult();
 	}
+	
 }

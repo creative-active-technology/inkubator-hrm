@@ -99,7 +99,7 @@ public class RmbsApplicationFormController extends BaseController {
 	        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
 	        isRevised = Boolean.FALSE;
 	        model = new RmbsApplicationModel();
-	        model.setCode("TEMP-" + RandomNumberUtil.getRandomNumber(9));
+	        model.setCode(HRMConstant.REIMBERS_KODE +"-"+ RandomNumberUtil.getRandomNumber(9));
 	        
 	        //di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
 	        String appActivityId = FacesUtil.getRequestParameter("activity");
