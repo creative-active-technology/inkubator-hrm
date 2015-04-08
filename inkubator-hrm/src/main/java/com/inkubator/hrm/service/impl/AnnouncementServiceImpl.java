@@ -1,5 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.service.AnnouncementService;
@@ -14,9 +18,20 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.web.model.AnnouncementModelJson;
+import java.text.DecimalFormat;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import org.apache.commons.lang.time.DateUtils;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.springframework.jms.core.MessageCreator;
 
 /**
  *
@@ -24,10 +39,12 @@ import com.inkubator.hrm.web.model.AnnouncementModelJson;
  */
 @Service(value = "announcementService")
 @Lazy
-public class AnnouncementServiceImpl extends IServiceImpl implements AnnouncementService {
+public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements AnnouncementService {
 
     @Autowired
     private AnnouncementDao announcementDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -236,7 +253,72 @@ public class AnnouncementServiceImpl extends IServiceImpl implements Announcemen
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String save(AnnouncementModelJson announcementModelJson, boolean isBypassApprovalChecking) throws Exception {
         String message = "error";
-        
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.ANNOUNCEMENT, UserInfoUtil.getUserName());
+        String createdBy = org.apache.commons.lang.StringUtils.isEmpty(announcementModelJson.getCreatedBy()) ? UserInfoUtil.getUserName() : announcementModelJson.getCreatedBy();
+        Date createdOn = announcementModelJson.getCreatedOn() == null ? new Date() : announcementModelJson.getCreatedOn();
+         
+        if(approvalActivity == null){
+            System.out.println("langsung save");
+        }else{
+            
+            System.out.println("butuh approval");
+            /** proceed of saving approval activity */
+            announcementModelJson.setCreatedBy(createdBy);
+            announcementModelJson.setCreatedOn(createdOn);
+            JsonParser parser = new JsonParser();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(announcementModelJson));
+//            jsonObject.addProperty("reimbursmentFileName", uploadPath);
+            //save to approval activity
+            approvalActivity.setPendingData(JsonConverter.getJson(announcementModelJson, "dd-MM-yyyy"));
+            approvalActivityDao.save(approvalActivity);
+            
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
+            
+            message = "success_need_approval";
+        }
         return message;
+    }
+
+    @Override
+    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+        AnnouncementModelJson announcementModelJson = (AnnouncementModelJson) JsonConverter.getClassFromJson(appActivity.getPendingData(), AnnouncementModelJson.class, "dd-MM-yyyy");
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("subjek", announcementModelJson.getAnnouncementSubject());
+            jsonObj.put("content", announcementModelJson.getAnnouncementContent());
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("listEmployeeType", announcementModelJson.getListEmpTypeName());
+            jsonObj.put("listUnitKerja", announcementModelJson.getListUnitKerjaName());
+            jsonObj.put("listGolonganJabatan", announcementModelJson.getListGolJabName());
+            
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+        
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
+    }
+
+    @Override
+    public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void rejected(long approvalActivityId, String comment) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void diverted(long approvalActivityId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.primefaces.model.UploadedFile;
@@ -14,10 +15,14 @@ import org.primefaces.model.UploadedFile;
  * @author Deni
  */
 public class AnnouncementModelJson {
+
     private Long companyId;
     private List<Long> listEmployeeType;
     private List<Long> listGolonganJabatan;
     private List<Long> listUnitKerja;
+    private List<String> listEmpTypeName;
+    private List<String> listGolJabName;
+    private List<String> listUnitKerjaName;
     private String announcementSubject;
     private String announcementContent;
     private String attachmentFileName;
@@ -27,6 +32,9 @@ public class AnnouncementModelJson {
     private Integer viewModel;
     private Boolean isInternetPublish;
     private UploadedFile attachmentFile;
+    private String nomor;
+    private Date createdOn;
+    private String createdBy;
 
     public Long getCompanyId() {
         return companyId;
@@ -131,6 +139,54 @@ public class AnnouncementModelJson {
     public void setAttachmentFile(UploadedFile attachmentFile) {
         this.attachmentFile = attachmentFile;
     }
-    
+
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public List<String> getListEmpTypeName() {
+        return listEmpTypeName;
+    }
+
+    public void setListEmpTypeName(List<String> listEmpTypeName) {
+        this.listEmpTypeName = listEmpTypeName;
+    }
+
+    public List<String> getListGolJabName() {
+        return listGolJabName;
+    }
+
+    public void setListGolJabName(List<String> listGolJabName) {
+        this.listGolJabName = listGolJabName;
+    }
+
+    public List<String> getListUnitKerjaName() {
+        return listUnitKerjaName;
+    }
+
+    public void setListUnitKerjaName(List<String> listUnitKerjaName) {
+        this.listUnitKerjaName = listUnitKerjaName;
+    }
+
     
 }

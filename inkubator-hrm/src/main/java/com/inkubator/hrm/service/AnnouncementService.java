@@ -11,7 +11,7 @@ import org.hibernate.criterion.Order;
  *
  * @author WebGenX
  */
-public interface AnnouncementService extends IService<Announcement> {
+public interface AnnouncementService extends IService<Announcement>, BaseApprovalService {
 
     public List<Announcement> getByParam(AnnouncementSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 

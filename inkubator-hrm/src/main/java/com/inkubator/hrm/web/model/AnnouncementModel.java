@@ -37,6 +37,7 @@ public class AnnouncementModel implements Serializable {
     private Boolean isUpdate;
     private String fotoFileName;
     private UploadedFile attachmentFile;
+    private String nomor;
 
     public String getAnnouncementContent() {
         return announcementContent;
@@ -212,6 +213,14 @@ public class AnnouncementModel implements Serializable {
 
     public void setAttachmentFile(UploadedFile attachmentFile) {
         this.attachmentFile = attachmentFile;
+    }
+
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
     }
 
     

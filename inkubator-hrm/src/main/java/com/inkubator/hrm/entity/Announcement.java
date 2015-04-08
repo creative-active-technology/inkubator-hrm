@@ -39,6 +39,7 @@ public class Announcement implements java.io.Serializable {
     private Date createdOn;
     private String createdBy;
     private String updatedBy;
+    private String nomor;
     private Date updatedOn;
     private Boolean isAlreadyShow;
     private Set<AnnouncementGoljab> announcementGoljabs = new HashSet<AnnouncementGoljab>(0);
@@ -174,6 +175,15 @@ public class Announcement implements java.io.Serializable {
         this.internetPublish = internetPublish;
     }
 
+    @Column(name="nomor", unique=true, length = 45)
+    public String getNomor() {
+        return nomor;
+    }
+
+    public void setNomor(String nomor) {
+        this.nomor = nomor;
+    }
+    
     @Column(name = "attachment_path", length = 200)
     public String getAttachmentPath() {
         return this.attachmentPath;

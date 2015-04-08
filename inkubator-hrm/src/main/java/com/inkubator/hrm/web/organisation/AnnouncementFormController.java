@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Announcement;
@@ -34,6 +35,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.UploadedFile;
@@ -90,6 +92,7 @@ public class AnnouncementFormController extends BaseController {
             model.setDualListGolonganJabatan(dualListGolonganJabatan);
             model.setDualListUnitKerja(dualListUnitKerja);
             model.setIsUpdate(Boolean.FALSE);
+            model.setNomor("TEMP-" + RandomNumberUtil.getRandomNumber(9));
         } catch (Exception ex) {
             Logger.getLogger(AnnouncementFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,7 +114,7 @@ public class AnnouncementFormController extends BaseController {
         model.setAttachmentFile(attachmentFile);
         System.out.println(model.getFotoFileName() + "wkwkwkwkwkwk");
     }
-    
+
     public String doSaved() throws Exception {
         Announcement announcement = getEntityFromViewModel(model);
         AnnouncementModelJson announcementModelJson = getEntityForModelJson(model);
@@ -122,15 +125,15 @@ public class AnnouncementFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
 //                String message = announcementService.save(reimbursment, fotoFile, false);
-                announcementService.save(announcement);
-//                if (StringUtils.equals(message, "success_need_approval")) {
-//                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
-//                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                } else {
-//
-//                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-//                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                }
+                String message = announcementService.save(announcementModelJson, false);
+                if (StringUtils.equals(message, "success_need_approval")) {
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                } else {
+
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                }
             }
 
             cleanAndExit();
@@ -152,18 +155,27 @@ public class AnnouncementFormController extends BaseController {
         List<Long> listEmpTypeId = new ArrayList<Long>();
         List<Long> listGolJabId = new ArrayList<Long>();
         List<Long> listUnitKerjaId = new ArrayList<Long>();
+        List<String> listEmpTypeName = new ArrayList<String>();
+        List<String> listGolJabName = new ArrayList<String>();
+        List<String> listUnitKerjaName = new ArrayList<String>();
         for (UnitKerja unitKerja : listUnitKerjaTarget) {
             listUnitKerjaId.add(unitKerja.getId());
+            listUnitKerjaName.add(unitKerja.getName());
         }
         for (GolonganJabatan golJab : listGolJabTarget) {
             listGolJabId.add(golJab.getId());
+            listGolJabName.add(golJab.getCode());
         }
         for (EmployeeType employeeType : listEmpTypeTarget) {
             listEmpTypeId.add(employeeType.getId());
+            listEmpTypeName.add(employeeType.getName());
         }
         announcementModelJson.setListEmployeeType(listEmpTypeId);
         announcementModelJson.setListGolonganJabatan(listGolJabId);
         announcementModelJson.setListUnitKerja(listUnitKerjaId);
+        announcementModelJson.setListEmpTypeName(listEmpTypeName);
+        announcementModelJson.setListGolJabName(listGolJabName);
+        announcementModelJson.setListUnitKerjaName(listUnitKerjaName);
         announcementModelJson.setAnnouncementSubject(model.getSubject());
         announcementModelJson.setAnnouncementContent(model.getAnnouncementContent());
         announcementModelJson.setPublishTimeModel(model.getTimeModel());
@@ -172,10 +184,10 @@ public class AnnouncementFormController extends BaseController {
         announcementModelJson.setViewModel(model.getViewModel());
         announcementModelJson.setIsInternetPublish(model.getInternetPublish());
         announcementModelJson.setAttachmentFileName(model.getFotoFileName());
-        announcementModelJson.setAttachmentFile(model.getAttachmentFile());
+        announcementModelJson.setNomor(model.getNomor());
         return announcementModelJson;
     }
-    
+
     private Announcement getEntityFromViewModel(AnnouncementModel model) throws Exception {
         Announcement announcement = new Announcement();
         if (model.getId() != null) {
@@ -190,7 +202,7 @@ public class AnnouncementFormController extends BaseController {
         announcement.setTimeModel(model.getTimeModel());
         return announcement;
     }
-    
+
     public CompanyService getCompanyService() {
         return companyService;
     }

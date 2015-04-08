@@ -58,7 +58,6 @@ public class HRMConstant {
     public static final Integer OT_SEPARATED = 0;
     public static final Double DEFAULT_LATITUDE = -6.211551441520004D;
     public static final Double DEFAULT_LONGITUDE = 106.84444427490234D;
-    public static final String ANNOUNCEMENT_KODE = "ANNO";
 
 
     /* 
