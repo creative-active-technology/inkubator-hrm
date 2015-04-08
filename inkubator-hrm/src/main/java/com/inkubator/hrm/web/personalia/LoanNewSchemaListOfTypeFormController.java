@@ -59,7 +59,7 @@ public class LoanNewSchemaListOfTypeFormController extends BaseController {
             isUpdate = Boolean.FALSE;
             dropDownSchemeType = new HashMap<String, Long>();
             if (StringUtils.isNotEmpty(id)) {
-                LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long.valueOf(id));
+                LoanNewSchemaListOfType loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByIdWithDetail(Long.valueOf(id));
                 if(loanNewSchemaListOfType != null){
                     isUpdate = Boolean.TRUE;
                     model = getModelFromEntity(loanNewSchemaListOfType);

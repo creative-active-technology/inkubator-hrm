@@ -65,7 +65,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             Gson gson = gsonBuilder.create();
             JsonObject jsonObject = (JsonObject) gson.fromJson(json, JsonObject.class);
             String locale = jsonObject.get("locale").getAsString();
+            System.out.println("approvalActivity.getId (Notification) : " + jsonObject.get("approvalActivityId").getAsLong());
             ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(jsonObject.get("approvalActivityId").getAsLong());
+            System.out.println("appActivity : " + (appActivity == null));
             HrmUser approverUser = hrmUserDao.getByUserId(appActivity.getApprovedBy());
             HrmUser requesterUser = hrmUserDao.getByUserId(appActivity.getRequestBy());
             

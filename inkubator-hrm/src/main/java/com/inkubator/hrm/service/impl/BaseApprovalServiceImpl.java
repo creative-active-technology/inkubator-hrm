@@ -720,7 +720,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      */
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void revised(long appActivityId, String pendingDataUpdate) throws Exception {
-
+                
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		/** check only approval status which is WAITING_REVISED that can be process 
@@ -736,8 +736,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         approvalActivity.setApprovalCommment(StringUtils.EMPTY);
         approvalActivity.setPendingData(pendingDataUpdate);
         approvalActivity.setApprovalTime(new Date());
-        approvalActivityDao.save(approvalActivity);
-                
+        approvalActivityDao.update(approvalActivity);
+        
         /** create NEW approval activity, untuk approver (sebelumnya yg meminta direvisis) */
     	ApprovalActivity lastAppActivity = new ApprovalActivity();
     	BeanUtils.copyProperties(approvalActivity, lastAppActivity, new String[]{"id","sequence","approvalCommment","approvalTime","createdTime","approvalStatus"});
@@ -755,7 +755,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		
 		//send email revised
     	this.sendingEmailApprovalNotif(lastAppActivity);
-		
+	
     }
 
    

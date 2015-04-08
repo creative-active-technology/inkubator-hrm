@@ -145,7 +145,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void doSelectEntity() {
         System.out.println("hoho");
         try {
-            selectedLoanNewSchemaListOfType = this.loanNewSchemaListOfTypeService.getEntityByLoanNewSchemaListOfTypeIdWithDetail(selectedLoanNewSchemaListOfType.getId());
+            selectedLoanNewSchemaListOfType = this.loanNewSchemaListOfTypeService.getEntityByIdWithDetail(selectedLoanNewSchemaListOfType.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
