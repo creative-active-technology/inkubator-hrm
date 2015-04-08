@@ -120,7 +120,7 @@ public class EmpDataViewController extends BaseController {
     }
     
     public String doDetailEmpBackground(){
-        return "/protected/employee/emp_background_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/personalia/emp_background_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doDetailRenumeration() {

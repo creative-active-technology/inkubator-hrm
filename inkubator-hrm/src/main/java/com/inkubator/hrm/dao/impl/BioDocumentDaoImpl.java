@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.entity.BioDocument;
+import org.hibernate.criterion.Projections;
 
 /**
  *
@@ -30,5 +31,12 @@ public class BioDocumentDaoImpl extends IDAOImpl<BioDocument> implements BioDocu
 		criteria.add(Restrictions.eq("bioData.id", bioDataId));
 		return criteria.list();
 	}
+
+    @Override
+    public Long getTotalByDocumentNumber(String documentNo) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("documentNo", documentNo));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 		
 }

@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -9,6 +10,7 @@ import org.primefaces.model.UploadedFile;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
+import com.inkubator.hrm.entity.RmbsCancelation;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
@@ -33,6 +35,10 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception;
 	
 	public RmbsApplication getEntityByPkWithDetail(Long id);
+
+	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;
+	
+	public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
 
 }
 	

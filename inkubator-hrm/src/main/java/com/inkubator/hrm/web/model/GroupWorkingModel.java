@@ -164,7 +164,7 @@ public class GroupWorkingModel implements Serializable {
     }
 
     public String getIsPeriodicAsString() {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         if (Objects.equals(isPeriodic, Boolean.TRUE)) {
             isPeriodicAsString = messages.getString("global.yes");
         } else {
@@ -178,7 +178,7 @@ public class GroupWorkingModel implements Serializable {
     }
 
     public String getOvertimeBasedOnAttendanceAsString() {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         if (Objects.equals(overtimeBasedOnAttendance, Boolean.TRUE)) {
             overtimeBasedOnAttendanceAsString = messages.getString("global.yes");
         } else {
@@ -192,7 +192,7 @@ public class GroupWorkingModel implements Serializable {
     }
 
     public String getOvertimeBasedOnRequestAsString() {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         if (Objects.equals(overtimeBasedOnRequest, Boolean.TRUE)) {
             overtimeBasedOnRequestAsString = messages.getString("global.yes");
         } else {

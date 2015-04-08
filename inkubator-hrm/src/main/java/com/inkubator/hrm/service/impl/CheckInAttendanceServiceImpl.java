@@ -74,7 +74,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         entity.setCreatedOn(new Date());
         entity.setCheckInDateTime(new Date());
         this.checkInAttendanceDao.save(entity);
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String waktuCheckIn = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(entity.getCheckInTime());
         String infoMessages = entity.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkin_success_socket") + " : " + waktuCheckIn + "=== Status :" + entity.getNote() + " ===";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Check In/Out", infoMessages);
@@ -91,7 +91,7 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         attendance.setUpdatedOn(new Date());
         attendance.setCheckOutTime(entity.getCheckOutTime());
         checkInAttendanceDao.update(attendance);
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String waktuCheckOut = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(attendance.getCheckOutTime());
         String infoMessages = attendance.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkout_success_socket") + " : " + waktuCheckOut + "=== Status :" + attendance.getNote() + " ===";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Check In/Out", infoMessages);

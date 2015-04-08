@@ -5,6 +5,13 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.BioEmploymentHistory;
+import com.inkubator.hrm.entity.BioMedicalHistory;
+import com.inkubator.hrm.entity.BioPotensiSwot;
+import com.inkubator.hrm.entity.BioProject;
+import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmpPersonAchievement;
@@ -12,6 +19,12 @@ import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.PersonalDiscipline;
+import com.inkubator.hrm.service.BioDocumentService;
+import com.inkubator.hrm.service.BioEmploymentHistoryService;
+import com.inkubator.hrm.service.BioMedicalHistoryService;
+import com.inkubator.hrm.service.BioPotensiSwotService;
+import com.inkubator.hrm.service.BioProjectService;
+import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmpPersonAchievementService;
@@ -19,15 +32,23 @@ import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -63,6 +84,42 @@ public class EmpDataDetilController extends BaseController {
     private LoanService loanService;
     private List<Loan> listLoan;
     
+    //bio medical history
+    private BioMedicalHistory selectedBioMedicalHistory;
+    private List<BioMedicalHistory> bioMedicalHistorys;
+    @ManagedProperty(value = "#{bioMedicalHistoryService}")
+    private BioMedicalHistoryService bioMedicalHistoryService;
+
+    //bio sertifikasi
+     @ManagedProperty(value = "#{bioSertifikasiService}")
+     private BioSertifikasiService  bioSertifikasiService;
+     private List<BioSertifikasi> listBioSertifikasi;
+     private BioSertifikasi selectedBioSertifikasi;
+     
+     //start. bio employment
+    private BioEmploymentHistory selectedBioEmploymentHistory;
+    private List<BioEmploymentHistory> bioEmploymentHistorys;
+    @ManagedProperty(value = "#{bioEmploymentHistoryService}")
+    private BioEmploymentHistoryService bioEmploymentHistoryService;
+    
+    //start. bio project
+    private BioProject selectedBioProject;
+    private List<BioProject> bioProjects;
+    @ManagedProperty(value = "#{bioProjectService}")
+    private BioProjectService bioProjectService;
+    
+    //start. bio potensi
+    private BioPotensiSwot selectedBioPotensiSwot;
+    private List<BioPotensiSwot> ListBioPotensiSwot;
+    @ManagedProperty(value = "#{bioPotensiSwotService}")
+    private BioPotensiSwotService bioPotensiSwotService;
+    
+    //bio document
+    private BioDocument selectedBioDocument;
+    private List<BioDocument> bioDocuments;
+    @ManagedProperty(value = "#{bioDocumentService}")
+    private BioDocumentService bioDocumentService;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -77,6 +134,13 @@ public class EmpDataDetilController extends BaseController {
             listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
             listLoan = loanService.getAllDataByEmpDataIdAndStatusDisbursed(selectedEmpData.getId());
+            /////
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            bioProjects = bioProjectService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -187,16 +251,161 @@ public class EmpDataDetilController extends BaseController {
 
     public List<Loan> getListLoan() {
 		return listLoan;
-	}
+    }
 
-	public void setListLoan(List<Loan> listLoan) {
+    public void setListLoan(List<Loan> listLoan) {
 		this.listLoan = listLoan;
-	}
+    }
 
-	public void setLoanService(LoanService loanService) {
+    public void setLoanService(LoanService loanService) {
 		this.loanService = loanService;
-	}
+    }
 
+    public BioMedicalHistory getSelectedBioMedicalHistory() {
+        return selectedBioMedicalHistory;
+    }
+
+    public void setSelectedBioMedicalHistory(BioMedicalHistory selectedBioMedicalHistory) {
+        this.selectedBioMedicalHistory = selectedBioMedicalHistory;
+    }
+
+    public List<BioMedicalHistory> getBioMedicalHistorys() {
+        return bioMedicalHistorys;
+    }
+
+    public void setBioMedicalHistorys(List<BioMedicalHistory> bioMedicalHistorys) {
+        this.bioMedicalHistorys = bioMedicalHistorys;
+    }
+
+    public BioMedicalHistoryService getBioMedicalHistoryService() {
+        return bioMedicalHistoryService;
+    }
+
+    public void setBioMedicalHistoryService(BioMedicalHistoryService bioMedicalHistoryService) {
+        this.bioMedicalHistoryService = bioMedicalHistoryService;
+    }
+
+    public BioSertifikasiService getBioSertifikasiService() {
+        return bioSertifikasiService;
+    }
+
+    public void setBioSertifikasiService(BioSertifikasiService bioSertifikasiService) {
+        this.bioSertifikasiService = bioSertifikasiService;
+    }
+
+    public List<BioSertifikasi> getListBioSertifikasi() {
+        return listBioSertifikasi;
+    }
+
+    public void setListBioSertifikasi(List<BioSertifikasi> listBioSertifikasi) {
+        this.listBioSertifikasi = listBioSertifikasi;
+    }
+
+    public BioSertifikasi getSelectedBioSertifikasi() {
+        return selectedBioSertifikasi;
+    }
+
+    public void setSelectedBioSertifikasi(BioSertifikasi selectedBioSertifikasi) {
+        this.selectedBioSertifikasi = selectedBioSertifikasi;
+    }
+
+    public BioEmploymentHistory getSelectedBioEmploymentHistory() {
+        return selectedBioEmploymentHistory;
+    }
+
+    public void setSelectedBioEmploymentHistory(BioEmploymentHistory selectedBioEmploymentHistory) {
+        this.selectedBioEmploymentHistory = selectedBioEmploymentHistory;
+    }
+
+    public List<BioEmploymentHistory> getBioEmploymentHistorys() {
+        return bioEmploymentHistorys;
+    }
+
+    public void setBioEmploymentHistorys(List<BioEmploymentHistory> bioEmploymentHistorys) {
+        this.bioEmploymentHistorys = bioEmploymentHistorys;
+    }
+
+    public BioEmploymentHistoryService getBioEmploymentHistoryService() {
+        return bioEmploymentHistoryService;
+    }
+
+    public void setBioEmploymentHistoryService(BioEmploymentHistoryService bioEmploymentHistoryService) {
+        this.bioEmploymentHistoryService = bioEmploymentHistoryService;
+    }
+
+    public BioProject getSelectedBioProject() {
+        return selectedBioProject;
+    }
+
+    public void setSelectedBioProject(BioProject selectedBioProject) {
+        this.selectedBioProject = selectedBioProject;
+    }
+
+    public List<BioProject> getBioProjects() {
+        return bioProjects;
+    }
+
+    public void setBioProjects(List<BioProject> bioProjects) {
+        this.bioProjects = bioProjects;
+    }
+
+    public BioProjectService getBioProjectService() {
+        return bioProjectService;
+    }
+
+    public void setBioProjectService(BioProjectService bioProjectService) {
+        this.bioProjectService = bioProjectService;
+    }
+
+    public BioPotensiSwot getSelectedBioPotensiSwot() {
+        return selectedBioPotensiSwot;
+    }
+
+    public void setSelectedBioPotensiSwot(BioPotensiSwot selectedBioPotensiSwot) {
+        this.selectedBioPotensiSwot = selectedBioPotensiSwot;
+    }
+
+    public List<BioPotensiSwot> getListBioPotensiSwot() {
+        return ListBioPotensiSwot;
+    }
+
+    public void setListBioPotensiSwot(List<BioPotensiSwot> ListBioPotensiSwot) {
+        this.ListBioPotensiSwot = ListBioPotensiSwot;
+    }
+
+    public BioPotensiSwotService getBioPotensiSwotService() {
+        return bioPotensiSwotService;
+    }
+
+    public void setBioPotensiSwotService(BioPotensiSwotService bioPotensiSwotService) {
+        this.bioPotensiSwotService = bioPotensiSwotService;
+    }
+
+    public BioDocument getSelectedBioDocument() {
+        return selectedBioDocument;
+    }
+
+    public void setSelectedBioDocument(BioDocument selectedBioDocument) {
+        this.selectedBioDocument = selectedBioDocument;
+    }
+
+    public List<BioDocument> getBioDocuments() {
+        return bioDocuments;
+    }
+
+    public void setBioDocuments(List<BioDocument> bioDocuments) {
+        this.bioDocuments = bioDocuments;
+    }
+
+    public BioDocumentService getBioDocumentService() {
+        return bioDocumentService;
+    }
+
+    public void setBioDocumentService(BioDocumentService bioDocumentService) {
+        this.bioDocumentService = bioDocumentService;
+    }
+    
+        
 	@PreDestroy
     public void cleanAndExit() {
         empDataService = null;
@@ -212,6 +421,410 @@ public class EmpDataDetilController extends BaseController {
         listPersonAchievement = null;
         loanService = null;
         listLoan = null;
+        bioMedicalHistorys = null;
+        listBioSertifikasi = null;
+        bioEmploymentHistorys = null;
+        bioProjects = null;
+        ListBioPotensiSwot = null;
+        bioDocuments = null;
+    }
+    
+    
+    ////////////////////bio medical history method//////////////////////////////
+    public void doSelectBioMedicalHistory() {
+        try {
+            selectedBioMedicalHistory = bioMedicalHistoryService.getEntiyByPK(selectedBioMedicalHistory.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
     }
 
+    public void doUpdateBioMedicalHistory() {
+
+        List<String> bioMedicalHistoryId = new ArrayList<>();
+        bioMedicalHistoryId.add(String.valueOf(selectedBioMedicalHistory.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioMedicalHistoryId", bioMedicalHistoryId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioMedicalHistory(dataToSend);
+
+    }
+
+    public void doAddBioMedicalHistory() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioMedicalHistory(dataToSend);
+    }
+
+    public void doDeleteBioMedicalHistory() {
+        try {
+            bioMedicalHistoryService.delete(selectedBioMedicalHistory);
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedBioMedicalHistory.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioMedicalHistory", ex);
+        }
+    }
+
+    private void showDialogBioMedicalHistory(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("bio_medic_hist_form", options, params);
+    }
+
+    public void onDialogReturnBioMedicalHistory(SelectEvent event) {
+        try {
+            bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    /////////////////////////Employment History Method//////////////////////////
+    public void doSelectBioEmploymentHistory() {
+        try {
+            selectedBioEmploymentHistory = bioEmploymentHistoryService.getEntityByPKWithDetail(selectedBioEmploymentHistory.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioEmploymentHistory() {
+
+        List<String> bioEmploymentHistoryId = new ArrayList<>();
+        bioEmploymentHistoryId.add(String.valueOf(selectedBioEmploymentHistory.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioEmploymentHistoryId", bioEmploymentHistoryId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioEmploymentHistory(dataToSend);
+
+    }
+
+    public void doAddBioEmploymentHistory() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioEmploymentHistory(dataToSend);
+    }
+
+    public void doDeleteBioEmploymentHistory() {
+        try {
+            bioEmploymentHistoryService.delete(selectedBioEmploymentHistory);
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioEmploymentHistory.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioEmploymentHistory", ex);
+        }
+    }
+
+    private void showDialogBioEmploymentHistory(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 450);
+        RequestContext.getCurrentInstance().openDialog("bio_emp_hist_form", options, params);
+    }
+
+    public void onDialogReturnBioEmploymentHistory(SelectEvent event) {
+        try {
+            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    //////////////////////////////Potensi///////////////////////////////////////
+    public void doSelectBioPotensiSwot() {
+        try {
+            selectedBioPotensiSwot = bioPotensiSwotService.getEntiyByPK(selectedBioPotensiSwot.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioPotensiSwot() {
+
+        List<String> bioBankPotensiSwotId = new ArrayList<>();
+        bioBankPotensiSwotId.add(String.valueOf(selectedBioPotensiSwot.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioPotensiSwotId", bioBankPotensiSwotId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioPotensiSwot(dataToSend);
+
+    }
+    
+    public void doDeleteBioPotensi() {
+        try {
+            bioPotensiSwotService.delete(selectedBioPotensiSwot);
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioPotensiSwot.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioBankAccount", ex);
+        }
+    }
+    
+    public void doAddBioPotensiSwot() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioPotensiSwot(dataToSend);
+    }
+    
+    private void showDialogBioPotensiSwot(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 400);
+        RequestContext.getCurrentInstance().openDialog("bio_potensi_swot_form", options, params);
+    }
+    
+    public void onDialogReturnBioPotensiSwot(SelectEvent event) {
+        try {
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    
+    //////////////////////////////////Project///////////////////////////////////
+    public void doSelectBioProject() {
+        try {
+            selectedBioProject = bioProjectService.getEntityByPKWithDetail(selectedBioProject.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioProject() {
+
+        List<String> bioProjectId = new ArrayList<>();
+        bioProjectId.add(String.valueOf(selectedBioProject.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioProjectId", bioProjectId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioProject(dataToSend);
+
+    }
+
+    public void doAddBioProject() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioProject(dataToSend);
+    }
+
+    public void doDeleteBioProject() {
+        try {
+            bioProjectService.delete(selectedBioProject);
+            bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioProject.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioProject", ex);
+        }
+    }
+
+    private void showDialogBioProject(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 450);
+        RequestContext.getCurrentInstance().openDialog("bio_project_form", options, params);
+    }
+
+    public void onDialogReturnBioProject(SelectEvent event) {
+        try {
+            bioProjects = bioProjectService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    /////////////////////////////Sertifikasi////////////////////////////////////
+    public void doSelectBioSertifikasi() {
+        try {
+            selectedBioSertifikasi = bioSertifikasiService.getEntityByPKWithDetail(selectedBioSertifikasi.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+     public void doDeleteBioSertifikasi() {
+        try {
+            bioSertifikasiService.delete(selectedBioSertifikasi);
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioSertifikasi.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioProject", ex);
+        }
+    }
+    
+     public void doAddBioSertifikasi() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSertifikasi(dataToSend);
+    }
+    
+    public void doUpdateBioSertifikasi() {
+        List<String> bioSertifikasiId = new ArrayList<>();
+        bioSertifikasiId.add(String.valueOf(selectedBioSertifikasi.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioSertifikasiId", bioSertifikasiId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioSertifikasi(dataToSend);
+    }
+    
+     private void showDialogBioSertifikasi(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 520);
+        RequestContext.getCurrentInstance().openDialog("bio_sertifikasi_form", options, params);
+    }
+
+    public void onDialogReturnBioSertifikasi(SelectEvent event) {
+        try {
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////Document/////////////////////////////////////
+    public void doSelectBioDocument() {
+        try {
+            selectedBioDocument = bioDocumentService.getEntiyByPK(selectedBioDocument.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioDocument() {
+        List<String> bioDocumentId = new ArrayList<>();
+        bioDocumentId.add(String.valueOf(selectedBioDocument.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDocumentId", bioDocumentId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+
+    public void doAddBioDocument() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioDocument(dataToSend);
+    }
+
+    public void doDeleteBioDocument() {
+        try {
+            bioDocumentService.delete(selectedBioDocument);
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioDocument.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioDocument", ex);
+        }
+    }
+
+    private void showDialogBioDocument(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 600);
+        options.put("contentHeight", 420);
+        RequestContext.getCurrentInstance().openDialog("bio_doc_form", options, params);
+    }
+
+    public void onDialogReturnBioDocument(SelectEvent event) {
+        try {
+            bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
 }
