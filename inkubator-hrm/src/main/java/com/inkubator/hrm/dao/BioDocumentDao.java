@@ -12,5 +12,7 @@ import com.inkubator.hrm.entity.BioDocument;
 public interface BioDocumentDao extends IDAO<BioDocument> {
 
 	public List<BioDocument> getAllDataByBioDataId(Long bioDataId);
+        
+        public Long getTotalByDocumentNumber(String documentNo);
 	
 }

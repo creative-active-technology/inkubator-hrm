@@ -2,6 +2,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.entity.BioData;
@@ -267,6 +268,10 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         BioData biodata = bioDataDao.getEntiyByPK(entity.getBioData().getId());
         entity.setBioData(biodata);
+        long totalDuplicates = bioDocumentDao.getTotalByDocumentNumber(entity.getDocumentNo());
+        if(totalDuplicates > 0){
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         bioDocumentDao.save(entity);
@@ -285,7 +290,10 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioDocument entity, UploadedFile documentFile) throws Exception {
-
+        long totalDuplicates = bioDocumentDao.getTotalByDocumentNumber(entity.getDocumentNo());
+        if(totalDuplicates > 0){
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
         BioDocument bioDocument = bioDocumentDao.getEntiyByPK(entity.getId());
         String uploadPath = bioDocument.getUploadPath();
 
@@ -316,6 +324,11 @@ public class BioDocumentServiceImpl extends IServiceImpl implements BioDocumentS
         String extension = StringUtils.substringAfterLast(documentFile.getFileName(), ".");
         String uploadPath = facesIO.getPathUpload() + "biodoc_" + id + "." + extension;
         return uploadPath;
+    }
+
+    @Override
+    public Long getTotalByDocumentNumber(String documentNo) throws Exception {
+        return this.bioDocumentDao.getTotalByDocumentNumber(documentNo);
     }
 
 }
