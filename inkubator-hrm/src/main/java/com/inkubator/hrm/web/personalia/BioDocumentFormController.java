@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.personalia;
 
+import com.inkubator.exception.BussinessException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -117,6 +118,8 @@ public class BioDocumentFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
+        } catch (BussinessException ex){
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());    
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
