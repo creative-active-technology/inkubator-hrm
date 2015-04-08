@@ -29,8 +29,8 @@
                     </div>
                     <div style="clear: both"/>
                     <div id="box_bg">
-                        <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
-                        <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
+
+
                         <!-- input hidden disini untuk memaksa view ini memanggil loginController yg bertujuan untuk memaksa nge-set default language/locale -->
                         <h:inputHidden value="#{loginController.selectedLanguage}"/>
                         <div style="margin-top: 10px;margin-bottom: 5px">
@@ -55,6 +55,7 @@
                         </h:panelGrid>
                         <div style="clear: both" />
                         <h:form id="loginForm" prependId="false">
+                            <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
                             <h:panelGrid columns="2" style="margin-top: 10px;margin-left: 10px;" cellspacing="5" >
                                 <p:graphicImage value="./resources/images/logo_optima.png" height="140px"  style="margin-right: 10px" />
                                 <h:panelGrid columns="3" cellpadding="3" style="margin-left: 15px">
@@ -65,6 +66,7 @@
                                                       id="j_username" required="true" label="#{appmsg['loginform.userid']}" validatorMessage="#{appmsg['loginform.username_validator']}"
                                                       style="width: 240px;font-size: 14px!important;font-family: Calibri !important">
                                             <f:validateLength maximum="45" minimum="3"/>
+                                            <!--<p:clientValidator/>-->
                                         </p:inputText>
                                     </p:focus>
                                     <h:outputLabel for="j_password" value="#{appmsg['loginform.password']}" styleClass="label_hrm" escape="false"/>
@@ -76,10 +78,11 @@
                                     </p:password>
                                     <p:outputLabel/>
                                     <p:outputLabel/>
+
                                     <h:panelGroup>
                                         <p:commandButton icon="ui-icon-locked" value="#{appmsg['loginform.login']}" action="#{loginController.doLogin()}"
-                                                         id="loginId" ajax="false" type="submit" styleClass="label_button"
-                                                         update="loginForm" 
+                                                         id="loginId" ajax="false" type="submit" styleClass="label_button"  
+                                                         update="loginForm" validateClient="true"
                                                          style="width: 85px" />
                                         <p:commandLink id="resetPasswordId" value="#{appmsg['loginform.lupa_password']}" styleClass="isitext_hrm"
                                                        style="margin-left: 10px;text-decoration: none" oncomplete="dialogReset.show();"/>
@@ -141,6 +144,7 @@
                   dynamic="true" resizable="false">
 
             <h:form id="resetForm">
+                <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
                 <div align="justify">
                     <h:outputLabel value="#{appmsg['loginform.reset_dialog_info']}"/>
                 </div>
@@ -156,8 +160,8 @@
                 <p:separator/>
                 <div align="right">
                     <p:commandButton id="btnResetId" icon="ui-icon-mail-closed" value="Submit" styleClass="label_button"
-                                     action="#{loginController.doResetPassword()}" 
-                                     update=":growlRest,emailId" ajax="true" oncomplete="handleUpdateRequest(args)"
+                                     action="#{loginController.doResetPassword()}" validateClient="false"
+                                     update="resetForm" ajax="true" oncomplete="handleUpdateRequest(args)"
                                      style="margin-top: 5px;margin-right: 10px;width: 80px" />
                 </div> 
                 <pe:tooltip for="btnResetId" value="#{appmsg['loginform.click_to_reset_password']}" showEffect="slideToggle"  
