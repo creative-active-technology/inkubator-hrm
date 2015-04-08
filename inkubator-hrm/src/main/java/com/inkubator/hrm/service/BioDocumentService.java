@@ -18,5 +18,7 @@ public interface BioDocumentService extends IService<BioDocument> {
 	public void save(BioDocument entity, UploadedFile documentFile) throws Exception;
 	
 	public void update(BioDocument entity, UploadedFile documentFile) throws Exception;
+        
+        public Long getTotalByDocumentNumber(String documentNo) throws Exception;
 	
 }

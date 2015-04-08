@@ -1,0 +1,917 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['employee.employee_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['employee.employee_list_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlBioDetailFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formBioDetailFormId" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 13%;vertical-align: middle!important" >
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}" height="178" width="150" style="border:  2px solid #003366 !important; border-radius: 5px !important;margin-top: 10px" cache="false" >
+                                        <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}"/>
+                                    </p:graphicImage>
+                                </p:column>
+
+                                <p:column style="width: 87%;vertical-align: middle !important" >
+                                    <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.nik']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value=" #{empDataDetilController.selectedEmpData.nik}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.department.departmentName}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.jabatan']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.name}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.bioData.firstName} #{empDataDetilController.selectedEmpData.bioData.lastName}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.join_data']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.joinDate}" >
+                                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                                </p:outputLabel>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.employeeType.name}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['jabatan.unit_kerja']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empDataDetilController.selectedEmpData.jabatanByJabatanId.unitKerja.name}" />
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+                            
+                            <p:tab id="tesPsikologiId" title="Tes Psikologi">  
+                            </p:tab>
+                            
+                            <p:tab id="kesehatanId" title="#{appmsg['biodata.medical_history']}">  
+                                <p:dataTable  id="tableBioMedicalHistoryId" var="bioMedicalHistoryData"  value="#{empDataDetilController.bioMedicalHistorys}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioMedicalHistory.list_of_bioMedicalHistory']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="year"  style="width: 25%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_year']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioMedicalHistoryData.year}"/>
+                                    </p:column>  
+                                    <p:column sortBy="disease"  style="width: 35%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioMedicalHistoryData.disease}"/>
+                                    </p:column>  
+                                    <p:column sortBy="status"  style="width: 25%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_status']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioMedicalHistoryData.status}">
+                                            <f:converter converterId="bioMedicalHistoryStatusConverter"/>
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioMedicalHistoryDetailId" 
+                                                         action="#{empDataDetilController.doSelectBioMedicalHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioMedicalHistory.show()">                        
+                                            <f:setPropertyActionListener value="#{bioMedicalHistoryData}" target="#{empDataDetilController.selectedBioMedicalHistory}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioMedicalHistoryConfirmId" 
+                                                         action="#{empDataDetilController.doSelectBioMedicalHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioMedicalHistory.show()">
+                                            <f:setPropertyActionListener value="#{bioMedicalHistoryData}" target="#{empDataDetilController.selectedBioMedicalHistory}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioMedicalHistory()}" >
+                                            <f:setPropertyActionListener value="#{bioMedicalHistoryData}" target="#{empDataDetilController.selectedBioMedicalHistory}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioMedicalHistory}"  update="tableBioMedicalHistoryId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" label="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioMedicalHistory()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioMedicalHistory}"  update="tableBioMedicalHistoryId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+
+                            </p:tab>
+                            
+                            <p:tab id="riwayatKursusId" title="Riwayat Kursus">  
+                            </p:tab>
+                            
+                            <p:tab id="bioSertfikasiId" title="#{appmsg['employeeCertification.certification']}">
+                                <p:dataTable  id="tableBioSertifikasiId" var="bioSertifikasiData"  value="#{empDataDetilController.listBioSertifikasi}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['employeeCertification.list_of_employee_certification']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="namaSertifikasi"  style="width: 22%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.namaSertifikasi}">
+                                           
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="nomorDokumen"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_doc_number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{bioSertifikasiData.nomorDokumen}">
+                                            
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="educationNonFormal.name"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.certification_issuer']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.educationNonFormal.name}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="occupationType.occupationTypeName"  style="width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.major']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.occupationType.occupationTypeName}" />                                            
+                                    </p:column>
+                                    <p:column  style="width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.attachments']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioSertifikasiData.uploadFileExtension}" />                                            
+                                    </p:column>             
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{bioSertifikasiData.uploadPath == null}" icon="ui-icon-arrowthick-1-s">
+                                            <p:fileDownload value="#{imageBioDataStreamerController.sertifikasiFile}" />
+                                            <f:param name="id" value="#{bioSertifikasiData.id}"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioSertifikasiDetailId" 
+                                                         action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioSertifikasi.show()">                        
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioSertifikasiConfirmId" 
+                                                         action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioSertifikasi.show()">
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioSertifikasi()}" >
+                                            <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioSertifikasi}"  update="tableBioSertifikasiId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable> 
+                                 <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" label="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioSertifikasi()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioSertifikasi}"  update="tableBioSertifikasiId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                                </p:tab>
+                            
+                                <p:tab id="riwayatKerjaId" title="#{appmsg['biodata.employment_history']}">  
+                                <p:dataTable  id="tableBioEmploymentHistoryId" var="bioEmploymentHistoryData"  value="#{empDataDetilController.bioEmploymentHistorys}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioEmploymentHistory.list_of_bioEmploymentHistory']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="yearIn"  style="width: 25%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioEmploymentHistoryData.yearIn}"/> s/d <h:outputLabel value= "#{bioEmploymentHistoryData.yearOut}"/>
+                                    </p:column>  
+                                    <p:column sortBy="companyName"  style="width: 35%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioEmploymentHistoryData.companyName}"/>
+                                    </p:column>  
+                                    <p:column sortBy="city.cityName"  style="width: 25%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioEmploymentHistoryData.city.cityName}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryDetailId" 
+                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioEmploymentHistory.show()">                        
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryConfirmId" 
+                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioEmploymentHistory.show()">
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioEmploymentHistory()}" >
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" label="#{appmsg['global.add']} #{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioEmploymentHistory()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
+                            
+                            <p:tab id="proyekId" title="#{appmsg['bioProject.bioProject']}">  
+                                <p:dataTable  id="tableBioProjectId" var="bioProjectData"  value="#{empDataDetilController.bioProjects}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['bioProject.list_of_bioProject']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="yearIn"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioProject.bioProject_code']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioProjectData.code}"/>
+                                    </p:column>  
+                                    <p:column sortBy="companyName"  style="width: 70%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['bioProject.bioProject_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioProjectData.name}"/>
+                                    </p:column>                                     
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioProjectDetailId" 
+                                                         action="#{empDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioProject.show()">                        
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{empDataDetilController.selectedBioProject}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioProjectConfirmId" 
+                                                         action="#{empDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioProject.show()">
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{empDataDetilController.selectedBioProject}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioProject()}" >
+                                            <f:setPropertyActionListener value="#{bioProjectData}" target="#{empDataDetilController.selectedBioProject}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioProject}"  update="tableBioProjectId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioProject.bioProject']}" label="#{appmsg['global.add']} #{appmsg['bioProject.bioProject']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioProject()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioProject}"  update="tableBioProjectId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
+                            
+                            <p:tab id="pengalamanOrganisasiId" title="Pengalaman Organisasi">  
+                            </p:tab>
+                            
+                            <p:tab id="documentId" title="#{appmsg['biodocument.document']}">  
+
+
+                                <p:dataTable  id="tableBioDocumentId" var="bioDocumentData"  value="#{empDataDetilController.bioDocuments}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['biodocument.list_of_document']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 35%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.document_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.documentTitle}"/>
+                                    </p:column>
+                                    <p:column style="width: 23%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.document_no']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.documentNo}"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;width: 24%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodocument.attachments']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                            <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+                                            <f:param name="id" value="#{bioDocumentData.id}"/>
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogBioDocumentDetailId" 
+                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioDocument.show()">                        
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{empDataDetilController.selectedBioDocument}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
+                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioDocument.show()">
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{empDataDetilController.selectedBioDocument}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioDocument()}" >
+                                            <f:setPropertyActionListener value="#{bioDocumentData}" target="#{empDataDetilController.selectedBioDocument}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['biodocument.document']}" label="#{appmsg['global.add']} #{appmsg['biodocument.document']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioDocument()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioDocument}"  update="tableBioDocumentId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>  
+                            
+                            <p:tab id="potensiId" title="#{appmsg['biodata.potential']}">  
+                                <p:dataTable  id="tablePotensiId" var="potensi"  value="#{empDataDetilController.listBioPotensiSwot}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['biodata.list_of_potential']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodata.potential_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{potensi.labelPotensi}">
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="endDate"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodata.classification']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{potensi.klasifikasi}">
+                                            <f:converter converterId="classificationConverter" />
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="endDate"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['biodata.potential_point']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{potensi.potensiPoint}">
+                                            <f:convertNumber maxFractionDigits="0" />
+                                        </h:outputLabel>
+                                        <h:outputLabel value=" %" />
+                                    </p:column>  
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogPotensi" 
+                                                         action="#{empDataDetilController.doSelectBioPotensiSwot()}" onclick="statusDialog.show()"  oncomplete="dialogPotensi.show()">                        
+                                            <f:setPropertyActionListener value="#{potensi}" target="#{empDataDetilController.selectedBioPotensiSwot}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogPotensiDelete" 
+                                                         action="#{empDataDetilController.doSelectBioPotensiSwot()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPotensi.show()">
+                                            <f:setPropertyActionListener value="#{potensi}" target="#{empDataDetilController.selectedBioPotensiSwot}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{empDataDetilController.doUpdateBioPotensiSwot()}" >
+                                            <f:setPropertyActionListener value="#{potensi}" target="#{empDataDetilController.selectedBioPotensiSwot}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioPotensiSwot}"  update="tablePotensiId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>                                                                        
+                                </p:dataTable>  
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" label="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{empDataDetilController.doAddBioPotensiSwot()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioPotensiSwot}"  update="tablePotensiId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab> 
+                            
+                            <p:tab id="fasilitasKerjaId" title="Fasilitas Kerja">  
+                            </p:tab>
+                            
+                        </p:tabView>
+                        <p:separator/>
+                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{empDataDetilController.doEdit()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
+                                             update=":panelDialogBioAddressDetailId" 
+                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                         <!--<f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />-->
+                            </p:commandButton>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+                <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
+
+                        <p:row>
+                            <!--<p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{empDataDetilController.id}" styleClass="label_hrm"/></p:column>-->
+                            <p:column>
+                                <p:media value="#{reportStreamController.fileCardName}" player="pdf" width="350px" height="325px" cache="false">
+                                    <f:param name="id" value="#{empDataDetilController.selectedEmpData.bioData.id}" />
+                                </p:media>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                        
+                <!-- START Bio MedicalHistory DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioMedicalHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioMedicalHistoryConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioMedicalHistory()}" update="formBioDetailFormId:tabView:tableBioMedicalHistoryId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioMedicalHistory.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioMedicalHistory.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioMedicalHistory" header="#{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioMedicalHistoryDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_year']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.year}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_status']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.status}" styleClass="label_hrm">
+                                    <f:converter converterId="bioMedicalHistoryStatusConverter"/>
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio MedicalHistory DIALOG -->
+                
+                <!-- START Bio EmploymentHistory DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioEmploymentHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioEmploymentHistoryConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.companyName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioEmploymentHistory()}" update="formBioDetailFormId:tabView:tableBioEmploymentHistoryId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioEmploymentHistory.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioEmploymentHistory.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioEmploymentHistory" header="#{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioEmploymentHistoryDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.yearIn} - #{empDataDetilController.selectedBioEmploymentHistory.yearOut}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.companyName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.lastOccupation}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.salary}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.city.cityName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.jobSector}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio EmploymentHistory DIALOG -->
+                
+                <!-- START Bio Project DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioProject" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioProjectConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioProject.bioProject_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioProject.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioProject()}" update="formBioDetailFormId:tabView:tableBioProjectId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioProject.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioProject.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioProject" header="#{appmsg['bioProject.bioProject']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioProjectDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.code}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.companyName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_position']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.position}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_start']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.startDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_end']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.endDate}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioProject.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['bioProject.bioProject']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Project DIALOG -->
+                
+                <!-- START Bio Sertifikasi DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioSertifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioSertifikasiConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['employeeCertification.certification']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioSertifikasi()}" update="formBioDetailFormId:tabView:tableBioSertifikasiId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioSertifikasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioDocument.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioSertifikasi" header="#{appmsg['employeeCertification.certification']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioSertifikasiDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_doc_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.nomorDokumen}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_issuer']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.educationNonFormal.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.major']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.occupationType.occupationTypeName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <h:form>
+                                    <p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.uploadPath == null ? '-' : empDataDetilController.selectedBioSertifikasi.uploadFileExtension}" styleClass="label_hrm"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton ajax="false" value="Download" disabled="#{empDataDetilController.selectedBioSertifikasi.uploadPath == null}" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.sertifikasiFile}" />
+                                        <f:param name="id" value="#{empDataDetilController.selectedBioSertifikasi.id}"/>
+                                    </p:commandButton>
+                                </h:form>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioSertifikasi.namaSertifikasi}" styleClass="label_hrm"/></p:column>
+                        </p:row>                      
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['employeeCertification.certification']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Sertifikasi DIALOG -->
+                
+                <!-- Start Potensi Dialog -->
+                <p:dialog widgetVar="dialogPotensi" header="Biodata Potensi SWOT" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogPotensi" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.potential_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioPotensiSwot.labelPotensi}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.classification']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioPotensiSwot.klasifikasi}" styleClass="label_hrm"><f:converter converterId="classificationConverter" /></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.potential_point']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioPotensiSwot.potensiPoint}" styleClass="label_hrm"><f:convertNumber maxFractionDigits="0" /></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioPotensiSwot.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['biodata.potential_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>♦
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmPotensi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogPotensiDelete"  columns="3">
+                            <p:outputLabel value="#{appmsg['biodata.potential_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioPotensiSwot.labelPotensi}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioPotensi()}" update="formBioDetailFormId:tabView:tablePotensiId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmPotensi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPotensi.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <!-- End Potensi Dialog -->
+                
+                <!-- START Bio Document DIALOG --> 
+                <p:dialog widgetVar="dialogConfirmBioDocument" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioDocumentConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['biodocument.document']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioDocument.documentTitle}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioDocument()}" update="formBioDetailFormId:tabView:tableBioDocumentId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmBioDocument.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioDocument.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogDetailBioDocument" header="#{appmsg['biodocument.detail_document']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogBioDocumentDetailId" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.document_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioDocument.documentTitle}" styleClass="label_hrm"/></p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.document_no']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioDocument.documentNo}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;">
+                                <h:form>
+                                    <p:outputLabel value="#{empDataDetilController.selectedBioDocument.uploadFileExtension}" styleClass="label_hrm"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
+                                        <f:param name="id" value="#{empDataDetilController.selectedBioDocument.id}"/>
+                                    </p:commandButton>
+                                </h:form>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioDocument.description}" styleClass="label_hrm"/></p:column>
+                        </p:row>                      
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['biodocument.document']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- END Bio Document DIALOG -->
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
