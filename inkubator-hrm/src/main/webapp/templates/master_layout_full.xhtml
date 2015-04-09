@@ -396,7 +396,7 @@
                                             <p:menuitem value="#{appmsg['organization.organization_profile']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_profile']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
                                             <p:menuitem value="#{appmsg['organization.organization_level']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_level']}" url="#" icon="img-company"/>
                                             <p:menuitem value="#{appmsg['organization.job_grade_category']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_grade_category']}" url="/protected/organisation/position_view.htm" icon="img-company"/>
-                                            <p:menuitem value="#{appmsg['functiongroup.function_group']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['functiongroup.function_group']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
+                                            <p:menuitem value="#{appmsg['menu.job_grade']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.job_grade']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
                                             <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" /> 
                                             <p:menuitem value="#{appmsg['organization.job_family_level']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_family_level']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['organization.job_specification_type']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_specification_type']}" url="/protected/organisation/org_type_of_spec_view.htm" /> 
@@ -425,7 +425,7 @@
                                             <p:submenu label="#{appmsg['menu.employee_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.personal_information']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.personal_information']}" url="/protected/personalia/biodata_view.htm" />  
                                                 <p:menuitem value="#{appmsg['menu.employment_information']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employment_information']}" url="/protected/employee/emp_placement_view.htm" />
-                                                <p:menuitem value="#{appmsg['employee.emp_background']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employment_information']}" url="/protected/employee/emp_background_view.htm" />
+                                                <p:menuitem value="#{appmsg['employee.emp_background']}" icon="img-termination" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employment_information']}" url="/protected/personalia/emp_background_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.strategic_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.competency_profile']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.competency_profile']}" url="" />  
@@ -491,7 +491,7 @@
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_request']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_application_form.htm" />  
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_application_undisbursed_view.htm" />
-                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_cancelation_form.htm" />
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="" url="" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['reimbursement.reimbursement_upload']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
@@ -731,5 +731,7 @@
         <h:outputScript library="js" name="login_socket.js"/>
         <h:outputScript library="js" name="approval_notification_socket.js"/>
         <h:outputScript library="js" name="indonesia_locale.js" />
+        <h:outputScript library="js" name="validation_in.js" />
+
     </h:body>
 </html>

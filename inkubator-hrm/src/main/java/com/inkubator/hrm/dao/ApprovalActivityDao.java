@@ -63,5 +63,7 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
 
     public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus);
     
+    public List<ApprovalActivity> getAllDataNotApprovedYet(String userId, String approvalDefinitionName);
+    
     
 }

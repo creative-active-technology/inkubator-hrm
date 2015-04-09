@@ -53,14 +53,14 @@ public class PasswordComplexityValidator implements Validator {
 
             if (size < complexity.getMinCharacter()) {
 
-                ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                 FacesMessage msg = new FacesMessage(messages.getString("password_config.min_character") + " " + complexity.getMinCharacter());
                 msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(msg);
             }
             if (size > complexity.getMaxCharacter()) {
 
-                ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                 FacesMessage msg = new FacesMessage(messages.getString("password_config.max_character"));
                 msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(msg);
@@ -69,7 +69,7 @@ public class PasswordComplexityValidator implements Validator {
             if (complexity.getHasUpperCase()) {
                 if (!StringsUtils.isHaveUpperCase(password)) {
 
-                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_upper"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);
@@ -78,7 +78,7 @@ public class PasswordComplexityValidator implements Validator {
             if (complexity.getHasLowerCase()) {
                 if (!StringsUtils.isHaveLowerCase(password)) {
                     
-                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_lower_case"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);
@@ -88,7 +88,7 @@ public class PasswordComplexityValidator implements Validator {
             if (complexity.getHasSpecialCharacter()) {
 
                 if (!StringsUtils.isContainsSpecialChar(password)) {
-                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_special"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);
@@ -97,7 +97,7 @@ public class PasswordComplexityValidator implements Validator {
             if (complexity.getHasNumber()) {
 
                 if (!StringsUtils.isHaveNumber(password)) {
-                    ResourceBundle messages = ResourceBundle.getBundle("messages", loc);
+                    ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_number"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(msg);

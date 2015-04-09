@@ -67,7 +67,7 @@ public class FinancialNonBankingDaoImpl extends IDAOImpl<FinancialNonBanking> im
     }
 
     private void doSearch(FinancialNonBankingSearchParameter searchParameter, Criteria criteria) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         
         if (searchParameter.getName()!=null) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));

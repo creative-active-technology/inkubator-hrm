@@ -99,7 +99,7 @@ public class RmbsApplicationFormController extends BaseController {
 	        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
 	        isRevised = Boolean.FALSE;
 	        model = new RmbsApplicationModel();
-	        model.setCode("TEMP-" + RandomNumberUtil.getRandomNumber(9));
+	        model.setCode(HRMConstant.REIMBURSEMENT_KODE +"-"+ RandomNumberUtil.getRandomNumber(9));
 	        
 	        //di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
 	        String appActivityId = FacesUtil.getRequestParameter("activity");
@@ -284,7 +284,7 @@ public class RmbsApplicationFormController extends BaseController {
 			reimbursementFile = fileUploadEvent.getFile();
 			model.setReimbursementFileName(reimbursementFile.getFileName());                        
 		} else {
-			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+			ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");
 			MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 		}

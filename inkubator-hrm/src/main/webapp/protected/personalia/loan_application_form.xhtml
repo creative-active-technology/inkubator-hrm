@@ -194,7 +194,7 @@
                                                label="#{appmsg['loan.first_installment_since_disbursement']}"
                                                value="#{loanApplicationFormController.model.rangeFirstInstallmentToDisbursement}" 
                                                size="2" min="1" stepFactor="1" max="3" styleClass="isitext_hrm" >
-                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByRangeCicilan()}" update="loanPeriod,tableLoanNewApplicationInstallmentId"/>
+                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByRangeCicilan()}"  update="loanPeriod,tableLoanNewApplicationInstallmentId"/>
                                     </p:spinner>
                                     <p:message for="firstInstallmentSinceDisbursement"/>   
 
@@ -476,11 +476,15 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="scheduleFormId,:growlUserFormId" 
+                            <p:commandButton value="#{appmsg['loan.apply']}" ajax="true" update="scheduleFormId,:growlUserFormId" rendered="#{not loanApplicationFormController.isRevised}"
                                              action="#{loanApplicationFormController.doApply()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['loan.apply']}"
                                              icon="ui-icon-disk" 
                                              title="#{appmsg['loan.apply']}"/>
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="scheduleFormId,:growlUserFormId" rendered="#{loanApplicationFormController.isRevised}"
+	                                         action="#{loanApplicationFormController.doRevised()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="scheduleFormId" action="#{loanApplicationFormController.doReset()}" immediate="true"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="scheduleFormId" />  

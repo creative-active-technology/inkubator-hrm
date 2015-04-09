@@ -798,7 +798,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             salaryJournalModel.setCostCenterCode(listKredit.get(j).getCostCenterCodeKredit());
             salaryJournalModel.setCostCenterName(listKredit.get(j).getCostCenterNameKredit());
             salaryJournalModel.setJurnalCode("000000");
-            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(locale));
+            ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(locale));
             salaryJournalModel.setJurnalName(messages.getString("salaryJournal.paySalaryEmployee"));
             //debet > kredit => hasil ditaro di kredit
             //debet < kredit => hasil ditaro di debet

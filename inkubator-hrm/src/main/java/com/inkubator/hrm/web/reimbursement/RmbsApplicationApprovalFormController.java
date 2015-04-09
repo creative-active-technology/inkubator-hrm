@@ -93,19 +93,25 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
             isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());            
             
-            /** bind data needed from json to object */
+            /** start binding data that needed (from json) to object */
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             rmbsApplication = gson.fromJson(selectedApprovalActivity.getPendingData(), RmbsApplication.class);      
+            
+            //relational object
             EmpData empData = empDataService.getByEmpIdWithDetail(rmbsApplication.getEmpData().getId());
             rmbsApplication.setEmpData(empData);
             RmbsType rmbsType = rmbsTypeService.getEntiyByPK(rmbsApplication.getRmbsType().getId());
             rmbsApplication.setRmbsType(rmbsType);
             Currency currency = currencyService.getEntiyByPK(rmbsApplication.getCurrency().getId());
             rmbsApplication.setCurrency(currency);
+            
+            //additional information
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(empData.getId());
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsType.getId(), rmbsSchema.getId()));
             totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
+            
+	        //attachment file
             JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);            
 	    	JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
 	    	isHaveAttachment = !elReimbursementFileName.isJsonNull();

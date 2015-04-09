@@ -28,7 +28,7 @@ public class BenefitGroupMeasurementConverter implements Converter{
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
        
         Integer data = (Integer) value;
         if (data.equals(HRMConstant.BENEFIT_GROUP_MEASUREMENT_HOUR)) {

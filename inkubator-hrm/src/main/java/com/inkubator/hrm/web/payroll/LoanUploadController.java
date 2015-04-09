@@ -190,7 +190,7 @@ public class LoanUploadController extends BaseController {
             file = fileUploadEvent.getFile();
             fileName = file.getFileName();
         } else {
-            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
             String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");
             MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
