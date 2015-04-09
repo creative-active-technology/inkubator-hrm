@@ -35,11 +35,13 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.LogApproverHistoryDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.LogApproverHistory;
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -58,6 +60,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     private EmpDataDao empDataDao;
     @Autowired
     private HrmUserDao hrmUserDao;
+    @Autowired
+    private LogApproverHistoryDao logApproverHistoryDao;
     @Autowired
     protected JmsTemplate jmsTemplateApproval;
     @Autowired
@@ -639,6 +643,52 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	}    	
     }
     
+    /**
+     * <p>
+     * Method untuk menyimpan riwayat semua approver dari suatu activity. 
+     * </p>
+     *
+     * <pre>
+     * super.savingLogApproverHistory(approvalActivityId, listApprovalDefinition);
+     * </pre>
+     *
+     * @param approvalActivityId  ApprovalActivity.id
+     * @param listApprovalDefinition List
+     */
+	protected void savingLogApproverHistory(long approvalActivityId, List<ApprovalDefinition> listAppDef) throws Exception {
+    	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
+    	
+    	//checks only has a final approval status, that can be processed
+    	if(approvalActivityDao.isStillHaveWaitingStatus(listAppDef)){
+    		throw new BussinessException("approval.error_still_have_waiting_status");
+    	}
+    	
+    	//saving process
+    	List<EmpData> listEmployee = this.getListApproverByListAppDef(listAppDef);
+    	for(EmpData empData : listEmployee){
+    		LogApproverHistory log =  new LogApproverHistory();
+    		HrmUser approver = hrmUserDao.getByEmpDataId(empData.getId());
+    		log.setApprover(approver);
+    		log.setActivityNumber(appActivity.getActivityNumber());
+    		log.setCreatedBy(UserInfoUtil.getUserName());
+    		log.setCreatedOn(new Date());
+    		logApproverHistoryDao.save(log);
+    	}
+    }
+    
+    
+    /**
+     * <p>Method untuk membatalkan suatu activity. 
+     * Tidak ada pengecekan next approval, karena method ini update status activity
+     * </p>
+     *
+     * <pre>
+     * super.cancelled(approvalActivityId, comment);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     */
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void cancelled(long approvalActivityId, String comment) throws Exception {
     	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
@@ -682,7 +732,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_ASKING_REVISED);
         approvalActivity.setApprovalCommment(comment);
         approvalActivity.setApprovalTime(new Date());
-        approvalActivityDao.save(approvalActivity);
+        approvalActivityDao.update(approvalActivity);
                 
         /** create NEW approval activity, untuk requester (revised) */
     	ApprovalActivity lastAppActivity = new ApprovalActivity();
@@ -736,7 +786,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         approvalActivity.setApprovalCommment(StringUtils.EMPTY);
         approvalActivity.setPendingData(pendingDataUpdate);
         approvalActivity.setApprovalTime(new Date());
-        approvalActivityDao.save(approvalActivity);
+        approvalActivityDao.update(approvalActivity);
                 
         /** create NEW approval activity, untuk approver (sebelumnya yg meminta direvisis) */
     	ApprovalActivity lastAppActivity = new ApprovalActivity();
@@ -787,9 +837,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
                     }else{
                         break;
                     }
-
                 }
-
             }
         }
 
