@@ -79,7 +79,7 @@ public class RmbsCancelation implements java.io.Serializable {
 		this.cancelledDate = cancelledDate;
 	}	
 	
-	@Column(name = "description", length = 65535, columnDefinition = "Text", nullable = false)
+	@Column(name = "reason", length = 65535, columnDefinition = "Text", nullable = false)
 	public String getReason() {
 		return reason;
 	}
