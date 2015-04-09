@@ -60,7 +60,7 @@ public class CountryFormController extends BaseController {
     public void initialization() {
         super.initialization();
         locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
-        messages = ResourceBundle.getBundle("messages", new Locale(locale));
+        messages = ResourceBundle.getBundle("Messages", new Locale(locale));
         String id = FacesUtil.getRequestParameter("execution");
         countryModel = new CountryModel();
         isUpdate = Boolean.FALSE;
