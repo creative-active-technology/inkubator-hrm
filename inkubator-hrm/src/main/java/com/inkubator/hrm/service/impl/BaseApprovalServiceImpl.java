@@ -770,7 +770,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      */
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void revised(long appActivityId, String pendingDataUpdate) throws Exception {
-
+                
 		ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(appActivityId);
 		
 		/** check only approval status which is WAITING_REVISED that can be process 
@@ -805,7 +805,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		
 		//send email revised
     	this.sendingEmailApprovalNotif(lastAppActivity);
-		
+	
     }
 
    

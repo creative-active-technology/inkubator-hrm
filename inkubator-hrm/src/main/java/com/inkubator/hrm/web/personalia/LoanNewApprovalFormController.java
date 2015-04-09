@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
@@ -41,9 +42,11 @@ import org.apache.commons.lang3.StringUtils;
 public class LoanNewApprovalFormController extends BaseController {
 
     private LoanNewApplication selectedLoanNewApplication;
-    private List<LoanPaymentDetail> loanPaymentDetails;
+    //private List<LoanPaymentDetail> loanPaymentDetails;
+    private List<LoanNewApplicationInstallment> listLoanInstallment;
     private String comment;
     private Boolean isWaitingApproval;
+    private Boolean isWaitingRevised;
     private Boolean isApprover;
     private Boolean isRequester;
     private ApprovalActivity selectedApprovalActivity;
@@ -62,6 +65,7 @@ public class LoanNewApprovalFormController extends BaseController {
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
+            isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;            
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
             isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
             
@@ -69,7 +73,7 @@ public class LoanNewApprovalFormController extends BaseController {
             selectedLoanNewApplication = gson.fromJson(selectedApprovalActivity.getPendingData(), LoanNewApplication.class);
             EmpData empData = empDataService.getByIdWithDetail(selectedLoanNewApplication.getEmpData().getId());
             selectedLoanNewApplication.setEmpData(empData);
-            //loanPaymentDetails = loanNewApplicationService.getAllDataLoanPaymentDetails(selectedLoanNewApplication.getLoanNewType().getInterestMethod(), selectedLoanNewApplication.getTermin(), selectedLoanNewApplication.getDibursementDate(), selectedLoanNewApplication.getNominalPrincipal(), selectedLoanNewApplication.getLoanNewType().getInterest());
+            listLoanInstallment = loanNewApplicationService.getAllDataLoanNewApplicationInstallment(selectedLoanNewApplication.getLoanNewType().getInterest().doubleValue(), selectedLoanNewApplication.getTermin(), selectedLoanNewApplication.getFirstLoanPaymentDate(), selectedLoanNewApplication.getNominalPrincipal(), selectedLoanNewApplication.getLoanNewType().getInterestMethod());           
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -79,7 +83,7 @@ public class LoanNewApprovalFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         selectedLoanNewApplication = null;
-        loanPaymentDetails = null;
+        listLoanInstallment = null;
         loanNewApplicationService = null;
         selectedApprovalActivity = null;
         approvalActivityService = null;
@@ -91,14 +95,6 @@ public class LoanNewApprovalFormController extends BaseController {
     }
 
     
-
-    public List<LoanPaymentDetail> getLoanPaymentDetails() {
-        return loanPaymentDetails;
-    }
-
-    public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
-        this.loanPaymentDetails = loanPaymentDetails;
-    }
 
     public ApprovalActivity getSelectedApprovalActivity() {
         return selectedApprovalActivity;
@@ -119,6 +115,14 @@ public class LoanNewApprovalFormController extends BaseController {
 
     public void setLoanNewApplicationService(LoanNewApplicationService loanNewApplicationService) {
         this.loanNewApplicationService = loanNewApplicationService;
+    }
+
+    public List<LoanNewApplicationInstallment> getListLoanInstallment() {
+        return listLoanInstallment;
+    }
+
+    public void setListLoanInstallment(List<LoanNewApplicationInstallment> listLoanInstallment) {
+        this.listLoanInstallment = listLoanInstallment;
     }
 
     
@@ -164,12 +168,26 @@ public class LoanNewApprovalFormController extends BaseController {
 		this.isRequester = isRequester;
 	}
 
+    public Boolean getIsWaitingRevised() {
+        return isWaitingRevised;
+    }
+
+    public void setIsWaitingRevised(Boolean isWaitingRevised) {
+        this.isWaitingRevised = isWaitingRevised;
+    }
+        
+        
+
     public String doBack() {
         return "/protected/home.htm?faces-redirect=true";
     }
     
+    public String doRevised() {
+    	return "/protected/personalia/loan_application_form.htm?faces-redirect=true&activity=e" + selectedApprovalActivity.getId();
+    }
+    
     public Boolean getIsPaginator() {
-        return loanPaymentDetails.size() > 11;
+        return listLoanInstallment.size() > 11;
     }
 
     public String doApproved() {
@@ -210,6 +228,20 @@ public class LoanNewApprovalFormController extends BaseController {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {
             LOGGER.error("Error when rejected process ", e);
+        }
+        return null;
+    }
+    
+    public String doAskingRevised() {
+        try {
+            loanNewApplicationService.askingRevised(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.process_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+            LOGGER.error("Error ", e);
         }
         return null;
     }

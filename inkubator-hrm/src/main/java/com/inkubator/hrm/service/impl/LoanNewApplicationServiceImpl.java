@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -309,7 +311,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             totalNominalInstallment = nominalInstallment + interestInstallment;
             break;
         }
-
+       
         final JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
@@ -370,13 +372,56 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            LoanNewApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
+            entity.setLoanStatus(HRMConstant.LOAN_UNDISBURSED); // set default loan application status
+            entity.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
+
+            /**
+             * saving to DB
+             */
+            this.save(entity, Boolean.FALSE, Boolean.FALSE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
+    }
+
+    private LoanNewApplication convertJsonToEntity(String json) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        LoanNewApplication entity = gson.fromJson(json, LoanNewApplication.class);
+        return entity;
     }
 
     @Override
     public void rejected(long approvalActivityId, String comment) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di reject dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            LoanNewApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
+            entity.setLoanStatus(HRMConstant.LOAN_REJECTED); //set rejected application status
+            entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+
+            /**
+             * saving to DB
+             */
+            this.save(entity, Boolean.TRUE, Boolean.FALSE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
@@ -399,9 +444,9 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String saveWithApproval(LoanNewApplication entity) throws Exception {
-        
-        String result = isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData(),entity.getNominalPrincipal());
-        
+
+        String result = isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData(), entity.getNominalPrincipal(), Boolean.FALSE, null);
+
         if (!StringUtils.equals("yes", result)) {
             throw new BussinessException(result);
         }
@@ -410,8 +455,25 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
-    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception {
-        return this.save(entity, Boolean.FALSE, Boolean.TRUE, approvalActivityId);
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId, String activityNumber) throws Exception {
+        String message = "error";
+       
+        String result = isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData(), entity.getNominalPrincipal(), Boolean.TRUE, activityNumber);
+        
+        if (!StringUtils.equals("yes", result)) {
+            throw new BussinessException(result);
+        }
+
+        /**
+         * proceed of revising data
+         */
+        String pendingData = this.getJsonPendingData(entity);
+        System.out.println("pendingData, : " + pendingData);
+        this.revised(approvalActivityId, pendingData);
+
+        message = "success_need_approval";
+        return message;
     }
 
     private String save(LoanNewApplication entity, Boolean isBypassApprovalChecking, Boolean isRevised, Long revisedApprActivityId) throws Exception {
@@ -432,16 +494,19 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         } else {
             HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
             ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
+            
             if (approvalActivity == null) {
-
+                
                 entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
                 loanNewApplicationDao.save(entity);
+               
                 result = "success_without_approval";
 
             } else {
                 approvalActivity.setPendingData(getJsonPendingData(entity));
                 approvalActivity.setTypeSpecific(entity.getLoanNewType().getId());
                 approvalActivityDao.save(approvalActivity);
+                
                 result = "success_need_approval";
 
                 //sending email notification
@@ -461,62 +526,91 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         return gson.toJson(jsonObject);
     }
-    
+
     /*
-    Loan validation
-    allow only if : 
-    - no previos loan with same loanType which still in approval process, or still have outstanding.
-    - Total loan amount from existing loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
-    */
-    private String isLoanAllowed(Long loanNewTypeId, Long loanNewSchemaId, EmpData empData, Double loanPrincipal) {
-        
-        HrmUser hrmUser = hrmUserDao.getByEmpDataId(empData.getId());       
+     Loan validation
+     allow only if : 
+     - no previos loan with same loanType which still in approval process, or still have outstanding.
+     - Total loan amount from existing loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
+     */
+    private String isLoanAllowed(Long loanNewTypeId, Long loanNewSchemaId, EmpData empData, Double loanPrincipal, Boolean isRevised, String activityNumber) {
+
+        HrmUser hrmUser = hrmUserDao.getByEmpDataId(empData.getId());
         LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntiyByPK(loanNewSchemaId);
-        
+
         //Get All pending request of employee
         List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId());
-        
+
         //filter only activity that comes from LOAN 
-        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(),Matchers.equalTo(HRMConstant.LOAN)));
-        
-        //if previous loan with same loanNewType and still in approval process found,  return Exception Message
-        if (Lambda.extract(listPendingRequest, Lambda.on(ApprovalActivity.class).getTypeSpecific()).contains(loanNewTypeId)) {            
-            return "loan.error_loan_with_same_type_found";            
+        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.LOAN)));
+
+        //grouping list by ActivityNumber
+        Group<ApprovalActivity> groupPendingActivity = Lambda.group(listPendingRequest, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
+
+        //iterate each group list element
+        for (String key : groupPendingActivity.keySet()) {
+            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
+
+            // Get activity with highest sequence from each grouped list activities
+            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
+
+            //if previous loan approval activity with same loanNewType and still in approval process found,  return Exception Message
+            if (approvalActivityWithHighestSequence.getTypeSpecific() == loanNewSchemaId) {
+                return "loan.error_loan_with_same_type_found";
+            }
         }
-        
+
+        //if previous loan with same loanNewType and still in approval process found,  return Exception Message
+//        if (Lambda.extract(listPendingRequest, Lambda.on(ApprovalActivity.class).getTypeSpecific()).contains(loanNewTypeId)) {
+//            return "loan.error_loan_with_same_type_found";
+//        }
         //Check whether employee still have outstanding loan with same loanType
         List<LoanNewApplication> listPreviosUnpaidLoanWithSameLoanTypeId = loanNewApplicationDao.getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(empData.getId(), loanNewTypeId);
-        
+
         //if previous loan with same type and still remain outstanding found,  return Exception Message
-        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {            
-            return "loan.error_loan_with_same_type_found";            
+        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {
+            return "loan.error_loan_with_same_type_found";
         }
-        
+
         /* Begin Calculate Total loan of exisiting loan application and previous loan of selected employee*/
         Double totalLoanByUser = loanPrincipal;
 
-        if (!listPendingRequest.isEmpty()) {
-            for (ApprovalActivity pendingRequest : listPendingRequest) {
-                String pendingData = pendingRequest.getPendingData();
-                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();                
-                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);                
+//        if (!listPendingRequest.isEmpty()) {
+//            for (ApprovalActivity pendingRequest : listPendingRequest) {
+//                String pendingData = pendingRequest.getPendingData();
+//                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+//                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
+//                totalLoanByUser += loanNewApplication.getNominalPrincipal();
+//            }
+//        }
+        //iterate each group list element
+        for (String key : groupPendingActivity.keySet()) {
+            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
+
+            // Get activity with highest sequence from each grouped list activities
+            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
+
+            if (!StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
+                String pendingData = approvalActivityWithHighestSequence.getPendingData();
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
                 totalLoanByUser += loanNewApplication.getNominalPrincipal();
             }
+
         }
-        
-        if(!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()){
-            for(LoanNewApplication prevLoan : listPreviosUnpaidLoanWithSameLoanTypeId){
+
+        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {
+            for (LoanNewApplication prevLoan : listPreviosUnpaidLoanWithSameLoanTypeId) {
                 totalLoanByUser += prevLoan.getNominalPrincipal();
             }
         }
-        
+
         /* End Calculate Total loan of exisiting loan application and previous loan of selected employee*/
-        
         //if total All Loan exceed maximum loan from employee loan schema, return Exception Message
-        if(totalLoanByUser > loanNewSchema.getTotalMaximumLoan()){
+        if (totalLoanByUser > loanNewSchema.getTotalMaximumLoan()) {
             return "loan.error_total_loan_exceed_max_loan_on_loan_scheme";
         }
-        
+
         // if no rule violation found, return yes
         return "yes";
     }
