@@ -21,14 +21,16 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.CompanyDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.web.model.AnnouncementModelJson;
-import java.text.DecimalFormat;
+import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.springframework.jms.core.MessageCreator;
@@ -45,6 +47,10 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
     private AnnouncementDao announcementDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private CompanyDao companyDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -256,13 +262,27 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.ANNOUNCEMENT, UserInfoUtil.getUserName());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(announcementModelJson.getCreatedBy()) ? UserInfoUtil.getUserName() : announcementModelJson.getCreatedBy();
         Date createdOn = announcementModelJson.getCreatedOn() == null ? new Date() : announcementModelJson.getCreatedOn();
-         
-        if(approvalActivity == null){
-            System.out.println("langsung save");
-        }else{
+
+        if (approvalActivity == null) {
+            Announcement announcement = new Announcement();
+            announcement.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            announcement.setCompany(companyDao.getEntiyByPK(announcementModelJson.getCompanyId()));
+            announcement.setInternetPublish(announcementModelJson.getIsInternetPublish());
+            announcement.setAnnouncementContent(announcementModelJson.getAnnouncementContent());
+            announcement.setSubject(announcementModelJson.getAnnouncementSubject());
+            announcement.setNomor(announcementModelJson.getNomor());
+            announcement.setViewModel(announcementModelJson.getViewModel());
+            announcement.setCreatedBy(UserInfoUtil.getUserName());
+            announcement.setCreatedOn(new Date());
+            announcementDao.save(announcement);
             
+            //LOG
+        } else {
+
             System.out.println("butuh approval");
-            /** proceed of saving approval activity */
+            /**
+             * proceed of saving approval activity
+             */
             announcementModelJson.setCreatedBy(createdBy);
             announcementModelJson.setCreatedOn(createdOn);
             JsonParser parser = new JsonParser();
@@ -272,10 +292,10 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
             //save to approval activity
             approvalActivity.setPendingData(JsonConverter.getJson(announcementModelJson, "dd-MM-yyyy"));
             approvalActivityDao.save(approvalActivity);
-            
+
             //sending email notification
             this.sendingEmailApprovalNotif(approvalActivity);
-            
+
             message = "success_need_approval";
         }
         return message;
@@ -293,11 +313,11 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
             jsonObj.put("listEmployeeType", announcementModelJson.getListEmpTypeName());
             jsonObj.put("listUnitKerja", announcementModelJson.getListUnitKerjaName());
             jsonObj.put("listGolonganJabatan", announcementModelJson.getListGolJabName());
-            
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
-        
+
         //send messaging, to trigger sending email
         super.jmsTemplateApproval.send(new MessageCreator() {
             @Override
@@ -309,7 +329,27 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 
     @Override
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            AnnouncementModelJson announcementModelJson = (AnnouncementModelJson) JsonConverter.getClassFromJson(appActivity.getPendingData(), AnnouncementModelJson.class, "dd-MM-yyyy");
+            //announcementModelJson.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set default application status
+            //entity.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
+
+            /**
+             * convert to UploadedFile before saving
+             */
+//            UploadedFile uploadedFile = this.convertFileToUploadedFile(appActivity.getPendingData());
+
+            /**
+             * saving to DB
+             */
+            this.save(announcementModelJson, Boolean.TRUE);
+        }
     }
 
     @Override

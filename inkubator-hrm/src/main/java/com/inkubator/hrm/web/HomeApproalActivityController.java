@@ -42,7 +42,7 @@ public class HomeApproalActivityController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-         super.initialization();
+        super.initialization();
         try {
             requestHistory = this.approvalActivityService.getRequestHistory(UserInfoUtil.getUserName());
             pendingRequest = this.approvalActivityService.getPendingRequest(UserInfoUtil.getUserName());
@@ -90,7 +90,7 @@ public class HomeApproalActivityController extends BaseController {
 
     public String doDetailRequestHistory() {
         String redirect = "";
-        
+
         try {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
             switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
@@ -102,20 +102,20 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.REIMBURSEMENT:
                     //redirect = "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
-                	redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LEAVE:
-                	if(ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_REJECTED, selectedApprovalActivity.getApprovalStatus())){
-                		redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                	} else {
-                		redirect = "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
-                	}                    
+                    if (ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_REJECTED, selectedApprovalActivity.getApprovalStatus())) {
+                        redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    } else {
+                        redirect = "/protected/working_time/leave_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    }
                     break;
                 case HRMConstant.LEAVE_CANCELLATION:
-                	redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/ot_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
@@ -126,7 +126,7 @@ public class HomeApproalActivityController extends BaseController {
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
-        
+
         return redirect;
     }
 
@@ -141,7 +141,7 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.REIMBURSEMENT:
                     //redirect = "/protected/personalia/reimbursment_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                	redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LOAN:
                     //redirect = "/protected/personalia/loan_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
@@ -158,6 +158,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.ANNOUNCEMENT:
+                    redirect = "/protected/organisation/announcement_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

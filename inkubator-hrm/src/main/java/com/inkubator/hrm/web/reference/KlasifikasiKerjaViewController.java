@@ -111,8 +111,12 @@ public class KlasifikasiKerjaViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+//    public void doAdd() {
+//        showDialog(null);
+//    }
+    
+    public String doAdd() {
+        return "/protected/reference/job_family_view.htm?faces-redirect=true";
     }
 
     public void doUpdate() {

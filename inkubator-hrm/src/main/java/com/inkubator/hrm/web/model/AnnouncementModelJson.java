@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.primefaces.model.UploadedFile;
  *
  * @author Deni
  */
-public class AnnouncementModelJson {
+public class AnnouncementModelJson implements Serializable{
 
     private Long companyId;
     private List<Long> listEmployeeType;
@@ -31,7 +32,6 @@ public class AnnouncementModelJson {
     private Date periodEndDate;
     private Integer viewModel;
     private Boolean isInternetPublish;
-    private UploadedFile attachmentFile;
     private String nomor;
     private Date createdOn;
     private String createdBy;
@@ -130,14 +130,6 @@ public class AnnouncementModelJson {
 
     public void setIsInternetPublish(Boolean isInternetPublish) {
         this.isInternetPublish = isInternetPublish;
-    }
-
-    public UploadedFile getAttachmentFile() {
-        return attachmentFile;
-    }
-
-    public void setAttachmentFile(UploadedFile attachmentFile) {
-        this.attachmentFile = attachmentFile;
     }
 
     public String getNomor() {

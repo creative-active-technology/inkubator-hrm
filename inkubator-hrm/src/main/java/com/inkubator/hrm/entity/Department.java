@@ -35,6 +35,7 @@ public class Department implements java.io.Serializable {
     private Integer version;
     private String departmentCode;
     private String departmentName;
+    private Company company;
     private CostCenterDept costCenterDept;
     private String createdBy;
     private Date createdOn;
@@ -84,6 +85,16 @@ public class Department implements java.io.Serializable {
         this.version = version;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="company_id")
+    public Company getCompany() {
+        return this.company;
+    }
+    
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    
     @Column(name = "department_code", unique = true, length = 20)
     public String getDepartmentCode() {
         return this.departmentCode;
@@ -185,7 +196,7 @@ public class Department implements java.io.Serializable {
     public void setListDepartments(List<Department> listDepartments) {
         this.listDepartments = listDepartments;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
