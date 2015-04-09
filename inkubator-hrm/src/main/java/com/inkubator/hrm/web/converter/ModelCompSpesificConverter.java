@@ -26,7 +26,7 @@ public class ModelCompSpesificConverter implements Converter {
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
 
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         Integer data = (Integer) obj;
         
         String message = StringUtils.EMPTY;

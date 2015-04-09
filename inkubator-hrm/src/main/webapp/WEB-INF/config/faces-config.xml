@@ -13,7 +13,7 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
         <supported-locale>en</supported-locale>
     </locale-config>
     <resource-bundle>
-        <base-name>messages</base-name>
+        <base-name>Messages</base-name>
         <var>appmsg</var>
     </resource-bundle>
     <message-bundle>

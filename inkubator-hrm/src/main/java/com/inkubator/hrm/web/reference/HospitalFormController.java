@@ -70,7 +70,7 @@ public class HospitalFormController extends BaseController {
             disabledCity = Boolean.TRUE;
             disabledProvince = Boolean.TRUE;
             locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
-            messages = ResourceBundle.getBundle("messages", new Locale(locale));
+            messages = ResourceBundle.getBundle("Messages", new Locale(locale));
             List<Country> listCountrys = countryService.getAllData();
 
             for (Country country : listCountrys) {

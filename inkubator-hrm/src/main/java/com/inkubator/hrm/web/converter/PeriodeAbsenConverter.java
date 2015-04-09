@@ -29,7 +29,7 @@ public class PeriodeAbsenConverter implements Converter{
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object obj) {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         
         String data = (String) obj;
         if (data.equals(HRMConstant.PERIODE_ABSEN_VOID)){

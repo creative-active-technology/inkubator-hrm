@@ -374,7 +374,7 @@ public class Leave implements Serializable {
 	@Transient
     public String getDayTypeAsLabel(){
 		String dayTypeAsLabel = StringUtils.EMPTY;
-		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		if(StringUtils.equals(dayType, HRMConstant.LEAVE_DAY_TYPE_CALENDAR)){
 			dayTypeAsLabel = messages.getString("leave.calendar_days");
 		} else if(StringUtils.equals(dayType, HRMConstant.LEAVE_DAY_TYPE_WORKING)) {
@@ -386,7 +386,7 @@ public class Leave implements Serializable {
     @Transient
 	public String getCalculationAsLabel(){
 		String calculationAsLabel = StringUtils.EMPTY;
-		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		if(StringUtils.equals(calculation, HRMConstant.LEAVE_CALCULATION_FULL_DAY)){
 			calculationAsLabel = messages.getString("leave.full_day");
 		} else if(StringUtils.equals(calculation, HRMConstant.LEAVE_CALCULATION_PART_DAY)) {
@@ -398,7 +398,7 @@ public class Leave implements Serializable {
     @Transient
     public String getPeriodBaseAsLabel(){
     	String periodBaseAsLabel = StringUtils.EMPTY;
-    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
     	if(StringUtils.equals(periodBase, HRMConstant.LEAVE_PERIOD_BASE_TMB)){
     		periodBaseAsLabel = "T.M.B";
     	} else  if(StringUtils.equals(periodBase, HRMConstant.LEAVE_PERIOD_BASE_0101)){
@@ -412,7 +412,7 @@ public class Leave implements Serializable {
     @Transient
     public String getAvailabilityAslabel(){
     	String availabilityAsLabel = StringUtils.EMPTY;
-    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
     	if(StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_FULL)){
     		availabilityAsLabel = messages.getString("leave.full");
 		} else if(StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH)) {
@@ -427,7 +427,7 @@ public class Leave implements Serializable {
     @Transient
     public String getEndOfPeriodAsLabel(){
     	String endOfPeriodAsLabel = StringUtils.EMPTY;
-    	ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    	ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
     	if(StringUtils.equals(endOfPeriod, HRMConstant.LEAVE_END_OF_PERIOD_MONTH)){
     		endOfPeriodAsLabel = messages.getString("leave.monthly")+ ". " + messages.getString("leave.total_month") + " = " + endOfPeriodMonth;
 		} else if(StringUtils.equals(availability, HRMConstant.LEAVE_END_OF_PERIOD_REST_OF_LEAVE)) {
