@@ -47,4 +47,17 @@ public class ApprovalDefinitionLoanDaoImpl extends IDAOImpl<ApprovalDefinitionLo
         return (ApprovalDefinitionLoan) criteria.uniqueResult();
     }
 
+    @Override
+    public List<ApprovalDefinitionLoan> getByLoanIdWithDetail(Long id) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinition.hrmUserByApproverIndividual", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinition.hrmUserByOnBehalfIndividual", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinition.jabatanByApproverPosition", FetchMode.JOIN);
+        criteria.setFetchMode("approvalDefinition.jabatanByOnBehalfPosition", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("loanNewSchema.id", id));
+        return criteria.list();
+    }
+
 }

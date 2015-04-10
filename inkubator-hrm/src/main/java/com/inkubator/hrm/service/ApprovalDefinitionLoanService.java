@@ -18,4 +18,6 @@ public interface ApprovalDefinitionLoanService extends IService<ApprovalDefiniti
     public List<ApprovalDefinitionLoan> getByLoanId(Long id) throws Exception;
     
     public void deleteLoanNewSchemaAppDef(Long appDefId, Long loanNewSchemaId) throws Exception;
+    
+    public List<ApprovalDefinitionLoan> getByLoanIdWithDetail(Long id)throws Exception;
 }

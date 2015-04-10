@@ -95,17 +95,19 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @return approvalActivity object
      */
 	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
-		
+		System.out.println("masuk checkApprovalProcess ");
 		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));		
 		return this.checkApprovalProcess(listAppDef, requestByEmployee);
 	}
 	
-	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {		
-		
+	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {				
 		ApprovalActivity appActivity = null;
 		
 		/** Lakukan proses pengecekan approval process hanya jika user yg input bukan ADMINISTRATOR_ROLE dan memiliki list approval definition */
-		if(!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()){ 
+                /** Direvisi,  untuk sekarang walaupun yang input admin, tetap dia akan input pakai account user yang bersangkutan, jadi filter condition : !UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) di hapus
+                 * tgl revisi : jum'at 9 april 2015 
+                 */
+		if(!listAppDef.isEmpty()){ 
 			
 			//sorting by sequence ASC
 			listAppDef = Lambda.sort(listAppDef, Lambda.on(ApprovalDefinition.class).getSequence());
@@ -659,7 +661,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
     	
     	//checks only has a final approval status, that can be processed
-    	if(approvalActivityDao.isStillHaveWaitingStatus(listAppDef)){
+    	if(approvalActivityDao.isStillHaveWaitingStatus(appActivity.getActivityNumber())){
     		throw new BussinessException("approval.error_still_have_waiting_status");
     	}
     	
@@ -676,6 +678,26 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	}
     }
     
+	/**
+     * <p>
+     * Method untuk membatalkan suatu activity, 
+     * sekaligus mennyimpan riwayat semua approver dari suatu activity.  
+     * </p>
+     *
+     * <pre>
+     * super.cancelled(approvalActivityId, comment);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     */
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancelled(long approvalActivityId, String comment, List<ApprovalDefinition> listAppDef) throws Exception {
+    	
+    	this.cancelled(approvalActivityId, comment);
+    	
+    	this.savingLogApproverHistory(approvalActivityId, listAppDef);
+    }
     
     /**
      * <p>Method untuk membatalkan suatu activity. 
