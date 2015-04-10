@@ -1,6 +1,8 @@
 package com.inkubator.hrm.entity;
 // Generated Mar 26, 2015 1:07:27 PM by Hibernate Tools 4.3.1
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -40,6 +43,7 @@ public class LoanNewApplication implements java.io.Serializable {
     private Integer loanStatus;
     private String nomor;
     private Integer termin;
+    private String approvalActivityNumber;
     private Date createdOn;
     private Date updateOn;
     private String createdBy;
@@ -271,5 +275,23 @@ public class LoanNewApplication implements java.io.Serializable {
     public void setLoanNewApplicationInstallments(Set<LoanNewApplicationInstallment> loanNewApplicationInstallments) {
         this.loanNewApplicationInstallments = loanNewApplicationInstallments;
     }
+    
+    @Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
 
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
+    @Transient
+    public Date getFirstLoanPaymentDate() {        
+        return DateTimeUtil.getDateFrom(dibursementDate, bufferTime, CommonUtilConstant.DATE_FORMAT_MONTH);
+    }
+    
+    @Transient
+    public Date getMaxLoanPaymentDate() {
+        return DateTimeUtil.getDateFrom(getFirstLoanPaymentDate(), termin - 1, CommonUtilConstant.DATE_FORMAT_MONTH);
+    }
 }

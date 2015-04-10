@@ -18,4 +18,6 @@ public interface ApprovalDefinitionLoanDao extends IDAO<ApprovalDefinitionLoan> 
     public List<ApprovalDefinitionLoan> getByLoanId(Long id);
     
     public ApprovalDefinitionLoan getEntityByPk(Long appDefId, Long loanNewschemaId);
+    
+    public List<ApprovalDefinitionLoan> getByLoanIdWithDetail(Long id);
 }

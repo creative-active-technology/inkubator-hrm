@@ -27,5 +27,5 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
 
     public String saveWithApproval(LoanNewApplication entity) throws Exception;
 
-    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId) throws Exception;
+    public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId, String activityNumber) throws Exception;
 }

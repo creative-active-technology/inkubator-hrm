@@ -41,7 +41,7 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
     }
 
     @Override
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id) {
+    public LoanNewSchemaListOfType getEntityByIdWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
@@ -102,6 +102,16 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         criteria.add(Restrictions.eq("loanNewType.id", typeId));
         criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("loanNewType.id", loanNewTypeId));
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+        return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
 
 }

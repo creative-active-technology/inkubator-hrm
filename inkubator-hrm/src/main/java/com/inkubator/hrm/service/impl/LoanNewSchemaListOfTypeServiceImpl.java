@@ -285,8 +285,8 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id) throws Exception {
-        return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaListOfTypeIdWithDetail(id);
+    public LoanNewSchemaListOfType getEntityByIdWithDetail(Long id) throws Exception {
+        return loanNewSchemaListOfTypeDao.getEntityByIdWithDetail(id);
     }
 
     @Override
@@ -315,6 +315,12 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema) throws Exception {
         return loanNewSchemaListOfTypeDao.getEntityByLoanNewSchemaWhereStatusActive(loanNewSchema);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId) throws Exception {
+        return loanNewSchemaListOfTypeDao.getEntityByLoanNewTypeIdWithDetail(loanNewTypeId);
     }
 
 }
