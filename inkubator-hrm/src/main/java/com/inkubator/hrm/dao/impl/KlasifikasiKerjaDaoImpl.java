@@ -69,4 +69,17 @@ public class KlasifikasiKerjaDaoImpl extends IDAOImpl<KlasifikasiKerja> implemen
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public KlasifikasiKerja getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        return (KlasifikasiKerja) criteria.uniqueResult();
+    }
+
+    @Override
+    public void saveAndMerge(KlasifikasiKerja klasifikasiKerja) {
+        getCurrentSession().update(klasifikasiKerja);
+        getCurrentSession().flush();
+    }
+
 }

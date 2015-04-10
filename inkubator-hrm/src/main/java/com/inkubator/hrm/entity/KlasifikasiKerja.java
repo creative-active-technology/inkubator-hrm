@@ -2,10 +2,13 @@ package com.inkubator.hrm.entity;
 // Generated Jul 7, 2014 11:47:53 AM by Hibernate Tools 3.6.0
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -44,6 +48,7 @@ public class KlasifikasiKerja  implements java.io.Serializable {
      private String klasifikasiKerjaCode;
      private String klasifikasiKerjaName;
      private Set<OrgKlasifikasiJobFamily> orgKlasifikasiJobFamilies = new HashSet<OrgKlasifikasiJobFamily>(0);
+     private List<GolonganJabatan> listGolJab = new ArrayList<GolonganJabatan>();
 
     public KlasifikasiKerja() {
     }
@@ -200,7 +205,7 @@ public class KlasifikasiKerja  implements java.io.Serializable {
         this.klasifikasiKerjaName = klasifikasiKerjaName;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="klasifikasiKerja")
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "klasifikasiKerja", orphanRemoval = true)
     public Set<OrgKlasifikasiJobFamily> getOrgKlasifikasiJobFamilies() {
         return this.orgKlasifikasiJobFamilies;
     }
@@ -261,6 +266,15 @@ public class KlasifikasiKerja  implements java.io.Serializable {
             return false;
         }
         return true;
+    }
+
+    @Transient
+    public List<GolonganJabatan> getListGolJab() {
+        return listGolJab;
+    }
+
+    public void setListGolJab(List<GolonganJabatan> listGolJab) {
+        this.listGolJab = listGolJab;
     }
 
 
