@@ -190,6 +190,16 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         }
     }
     
+    public void doResetData() {
+        model.setEmpData(null);
+        model.setImplementationDate(null);
+        model.setImplementationNumber(null);
+        model.setStartTime(null);
+        model.setWtOverTimeId(null);
+        model.setStartTime(null);
+        model.setEndTime(null);
+    }
+    
     public void dateChange() throws Exception{
         TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(empId, model.getImplementationDate());
             
