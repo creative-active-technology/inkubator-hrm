@@ -84,7 +84,7 @@
                             </p:column>
                             <p:column sortBy="location" style="width: 23%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['unitkerja.location']}"/>
+                                    <h:outputText value="#{appmsg['global.address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerjaData.location}" />
                             </p:column>
@@ -176,6 +176,31 @@
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['unitkerja.city']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.city.cityName}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.city.province.provinceName}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.city.province.country.countryName}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.phoneNumber}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.faxNumber}"/> </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{unitKerjaController.selectedUnitKerja.emailAddress}"/> </p:column>
                         </p:row>
                         
                         <f:facet name="footer">

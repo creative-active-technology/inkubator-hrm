@@ -41,7 +41,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="code" value="#{unitKerjaFormController.unitKerjaModel.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="4" styleClass="isitext_hrm" style="width:280px;" />
+                                             required="true" maxlength="4" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -58,7 +58,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="name"  value="#{unitKerjaFormController.unitKerjaModel.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:280px;" />
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -68,19 +68,59 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="location" value="#{appmsg['unitkerja.location']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="location" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="location" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="location"  value="#{unitKerjaFormController.unitKerjaModel.location}"
-                                             required="true"  maxlength="255" styleClass="isitext_hrm" style="width:280px;" />
+                                             required="true"  maxlength="255" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="location"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="country" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="country" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="country" value="#{unitKerjaFormController.unitKerjaModel.countryId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{unitKerjaFormController.listDropDownCountry}"/>
+                                        <p:ajax update="province" process="@this" listener="#{unitKerjaFormController.countryChanged()}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="country"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="province" value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="province" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="province" value="#{unitKerjaFormController.unitKerjaModel.provinceId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{unitKerjaFormController.listDropDownProvince}"/>
+                                        <p:ajax update="city" process="@this" listener="#{unitKerjaFormController.provinceChanged()}"/>
+                                    </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="country"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -100,6 +140,45 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="city"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="phone" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="phone" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="phone" value="#{unitKerjaFormController.unitKerjaModel.phoneNumber}" onkeyup="this.value = this.value.toUpperCase();"
+                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="fax" value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="fax" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="fax" value="#{unitKerjaFormController.unitKerjaModel.faxNumber}" onkeyup="this.value = this.value.toUpperCase();"
+                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="email" value="#{appmsg['global.email_address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="email" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:inputText id="email" value="#{unitKerjaFormController.unitKerjaModel.emailAddress}"
+                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
 
