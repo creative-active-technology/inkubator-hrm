@@ -178,5 +178,25 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 		criteria.setFetchMode("currency", FetchMode.JOIN);
 		return (RmbsApplication) criteria.uniqueResult();
 	}
+
+	@Override
+	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalUndisbursedByParam() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 	
 }

@@ -11,6 +11,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsCancelation;
+import com.inkubator.hrm.entity.RmbsDisbursement;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
@@ -20,25 +21,40 @@ import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
  */
 public interface RmbsApplicationService extends IService<RmbsApplication>, BaseApprovalService {
 	
+	//functions
 	public String saveWithApproval(RmbsApplication entity, UploadedFile reimbursmentFile) throws Exception;
 	
 	public String saveWithRevised(RmbsApplication entity, UploadedFile reimbursmentFile, Long approvalActivityId) throws Exception;
+	
+	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;	
+	
+	public void disbursement(List<RmbsApplication> listRmbsApplication, RmbsDisbursement disbursement) throws Exception;
+	
 
+	//return entity/property
 	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
 
 	public UploadedFile convertFileToUploadedFile(String pendingData);
 	
+	public RmbsApplication getEntityByPkWithDetail(Long id);
+	
+	
+	
+	//return collections
 	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws Exception;
 	
+	public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
+	
+	
+	
+	//pageable
 	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception;
 	
-	public RmbsApplication getEntityByPkWithDetail(Long id);
+	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable);
 
-	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;
-	
-	public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
+	public Long getTotalUndisbursedByParam();
 
 }
 	
