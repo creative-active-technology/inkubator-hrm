@@ -311,7 +311,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             totalNominalInstallment = nominalInstallment + interestInstallment;
             break;
         }
-       
+
         final JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
@@ -388,7 +388,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             /**
              * saving to DB
              */
-            this.save(entity, Boolean.FALSE, Boolean.FALSE, null);
+            this.save(entity, Boolean.FALSE, null);
         }
 
         //if there is no error, then sending the email notification
@@ -417,7 +417,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             /**
              * saving to DB
              */
-            this.save(entity, Boolean.TRUE, Boolean.FALSE, null);
+            this.save(entity, Boolean.TRUE, null);
         }
 
         //if there is no error, then sending the email notification
@@ -451,16 +451,16 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             throw new BussinessException(result);
         }
 
-        return this.save(entity, Boolean.FALSE, Boolean.FALSE, null);
+        return this.save(entity, Boolean.FALSE, null);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId, String activityNumber) throws Exception {
         String message = "error";
-       
+
         String result = isLoanAllowed(entity.getLoanNewType().getId(), entity.getLoanNewSchema().getId(), entity.getEmpData(), entity.getNominalPrincipal(), Boolean.TRUE, activityNumber);
-        
+
         if (!StringUtils.equals("yes", result)) {
             throw new BussinessException(result);
         }
@@ -469,14 +469,14 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
          * proceed of revising data
          */
         String pendingData = this.getJsonPendingData(entity);
-        System.out.println("pendingData, : " + pendingData);
+        
         this.revised(approvalActivityId, pendingData);
 
         message = "success_need_approval";
         return message;
     }
 
-    private String save(LoanNewApplication entity, Boolean isBypassApprovalChecking, Boolean isRevised, Long revisedApprActivityId) throws Exception {
+    private String save(LoanNewApplication entity, Boolean isBypassApprovalChecking, Long revisedApprActivityId) throws Exception {
         String result = "error";
 
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
@@ -489,29 +489,28 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
 
-        if (isRevised) {
+        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        System.out.println("requestUser.getUserId() : " + requestUser.getUserId());
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
+        System.out.println("approvalActivity == null ? " + (approvalActivity == null));
+        
+        if (approvalActivity == null) {
+
+            entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
+            entity.setLoanStatus(HRMConstant.LOAN_UNDISBURSED);
+            loanNewApplicationDao.save(entity);
+
+            result = "success_without_approval";
 
         } else {
-            HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
-            
-            if (approvalActivity == null) {
-                
-                entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
-                loanNewApplicationDao.save(entity);
-               
-                result = "success_without_approval";
+            approvalActivity.setPendingData(getJsonPendingData(entity));
+            approvalActivity.setTypeSpecific(entity.getLoanNewType().getId());
+            approvalActivityDao.save(approvalActivity);
 
-            } else {
-                approvalActivity.setPendingData(getJsonPendingData(entity));
-                approvalActivity.setTypeSpecific(entity.getLoanNewType().getId());
-                approvalActivityDao.save(approvalActivity);
-                
-                result = "success_need_approval";
+            result = "success_need_approval";
 
-                //sending email notification
-                this.sendingEmailApprovalNotif(approvalActivity);
-            }
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
         }
 
         return result;

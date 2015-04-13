@@ -51,7 +51,7 @@ public class AnnouncementLazyDataModel extends LazyDataModel<Announcement> imple
         } else {
             try {
 // Change default type order if u want change from id to other entity variable
-                announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc("id"));
+                announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc("subject"));
                 totalData = Integer.parseInt(String.valueOf(announcementService.getTotalAnnouncementByParam(announcementSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

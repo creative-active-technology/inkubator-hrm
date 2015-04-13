@@ -1,15 +1,19 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
+import com.inkubator.hrm.dao.OrgKlasifikasiJobFamilyDao;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.OrgKlasifikasiJobFamily;
 import com.inkubator.hrm.service.KlasifikasiKerjaService;
 import com.inkubator.hrm.web.search.KlasifikasiKerjaSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -28,6 +32,8 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
 
     @Autowired
     private KlasifikasiKerjaDao klasifikasiKerjaDao;
+    @Autowired
+    private OrgKlasifikasiJobFamilyDao orgKlasifikasiJobFamilyDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -190,6 +196,7 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
     public Long getTotalDataIsActive(Byte arg0) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+        
     }
 
     @Override
@@ -201,7 +208,7 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
             throw new BussinessException("klasifikasiKerja.error_duplicate_klasifikasiKerja_code");
         }
 
-        klasifikasiKerja.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+//        klasifikasiKerja.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         klasifikasiKerja.setCreatedBy(UserInfoUtil.getUserName());
         klasifikasiKerja.setCreatedOn(new Date());
         klasifikasiKerjaDao.save(klasifikasiKerja);
@@ -236,17 +243,24 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
     public void update(KlasifikasiKerja b) throws Exception {
         // check duplicate name
         long totalDuplicates = klasifikasiKerjaDao.getTotalByCodeAndNotId(b.getCode(), b.getId());
+        
         if (totalDuplicates > 0) {
             throw new BussinessException("klasifikasiKerja.error_duplicate_klasifikasiKerja_code");
         }
 
         KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(b.getId());
+        klasifikasiKerja.getOrgKlasifikasiJobFamilies().clear();
         klasifikasiKerja.setCode(b.getCode());
         klasifikasiKerja.setName(b.getName());
         klasifikasiKerja.setDescription(b.getDescription());
         klasifikasiKerja.setUpdatedBy(UserInfoUtil.getUserName());
         klasifikasiKerja.setUpdatedOn(new Date());
-        klasifikasiKerjaDao.update(klasifikasiKerja);
+        klasifikasiKerjaDao.saveAndMerge(klasifikasiKerja);
+        Set<OrgKlasifikasiJobFamily> dataToSave = b.getOrgKlasifikasiJobFamilies();
+        for (OrgKlasifikasiJobFamily jobFamily : dataToSave) {
+            jobFamily.setKlasifikasiKerja(klasifikasiKerja);
+            this.orgKlasifikasiJobFamilyDao.save(jobFamily);
+        }
     }
 
     @Override
@@ -265,6 +279,18 @@ public class KlasifikasiKerjaServiceImpl extends IServiceImpl implements Klasifi
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(KlasifikasiKerjaSearchParameter parameter) throws Exception {
         return this.klasifikasiKerjaDao.getTotalKlasifikasiKerjaByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public KlasifikasiKerja getEntityByPkWithDetail(Long id) throws Exception {
+        KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntityByPkWithDetail(id);
+        List<GolonganJabatan> listJobFamily = new ArrayList<GolonganJabatan>();
+        for (OrgKlasifikasiJobFamily jobFamilu : this.orgKlasifikasiJobFamilyDao.getByKlasifikasiId(id)) {
+            listJobFamily.add(jobFamilu.getGolonganJabatan());
+        }
+        klasifikasiKerja.setListGolJab(listJobFamily);
+        return klasifikasiKerja;
     }
 
 }

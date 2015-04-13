@@ -2,18 +2,24 @@ package com.inkubator.hrm.entity;
 // Generated Jul 7, 2014 11:47:53 AM by Hibernate Tools 3.6.0
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -30,6 +36,8 @@ public class KlasifikasiKerja  implements java.io.Serializable {
 
      private long id;
      private Integer version;
+     private GolonganJabatan golonganJabatanByStrataAtasGoljabId;
+     private GolonganJabatan golonganJabatanByStrataBawahGoljabId;
      private String createdBy;
      private Date createdOn;
      private String code;
@@ -37,7 +45,10 @@ public class KlasifikasiKerja  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private String description;
-     private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<KlasifikasiKerjaJabatan>(0);
+     private String klasifikasiKerjaCode;
+     private String klasifikasiKerjaName;
+     private Set<OrgKlasifikasiJobFamily> orgKlasifikasiJobFamilies = new HashSet<OrgKlasifikasiJobFamily>(0);
+     private List<GolonganJabatan> listGolJab = new ArrayList<GolonganJabatan>();
 
     public KlasifikasiKerja() {
     }
@@ -46,8 +57,10 @@ public class KlasifikasiKerja  implements java.io.Serializable {
     public KlasifikasiKerja(long id) {
         this.id = id;
     }
-    public KlasifikasiKerja(long id, String createdBy, Date createdOn, String code, String name, String updatedBy, Date updatedOn, String description, Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans) {
+    public KlasifikasiKerja(long id, GolonganJabatan golonganJabatanByStrataAtasGoljabId, GolonganJabatan golonganJabatanByStrataBawahGoljabId, String createdBy, Date createdOn, String code, String name, String updatedBy, Date updatedOn, String description, String klasifikasiKerjaCode, String klasifikasiKerjaName, Set<OrgKlasifikasiJobFamily> orgKlasifikasiJobFamilies) {
        this.id = id;
+       this.golonganJabatanByStrataAtasGoljabId = golonganJabatanByStrataAtasGoljabId;
+       this.golonganJabatanByStrataBawahGoljabId = golonganJabatanByStrataBawahGoljabId;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.code = code;
@@ -55,7 +68,9 @@ public class KlasifikasiKerja  implements java.io.Serializable {
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
        this.description = description;
-       this.klasifikasiKerjaJabatans = klasifikasiKerjaJabatans;
+       this.klasifikasiKerjaCode = klasifikasiKerjaCode;
+       this.klasifikasiKerjaName = klasifikasiKerjaName;
+       this.orgKlasifikasiJobFamilies = orgKlasifikasiJobFamilies;
     }
    
      @Id 
@@ -78,6 +93,26 @@ public class KlasifikasiKerja  implements java.io.Serializable {
     
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="strata_atas_goljab_id")
+    public GolonganJabatan getGolonganJabatanByStrataAtasGoljabId() {
+        return this.golonganJabatanByStrataAtasGoljabId;
+    }
+    
+    public void setGolonganJabatanByStrataAtasGoljabId(GolonganJabatan golonganJabatanByStrataAtasGoljabId) {
+        this.golonganJabatanByStrataAtasGoljabId = golonganJabatanByStrataAtasGoljabId;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="strata_bawah_goljab_id")
+    public GolonganJabatan getGolonganJabatanByStrataBawahGoljabId() {
+        return this.golonganJabatanByStrataBawahGoljabId;
+    }
+    
+    public void setGolonganJabatanByStrataBawahGoljabId(GolonganJabatan golonganJabatanByStrataBawahGoljabId) {
+        this.golonganJabatanByStrataBawahGoljabId = golonganJabatanByStrataBawahGoljabId;
     }
 
     
@@ -150,13 +185,33 @@ public class KlasifikasiKerja  implements java.io.Serializable {
         this.description = description;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="klasifikasiKerja")
-    public Set<KlasifikasiKerjaJabatan> getKlasifikasiKerjaJabatans() {
-        return this.klasifikasiKerjaJabatans;
+    
+    @Column(name="klasifikasi_kerja_code", length=8)
+    public String getKlasifikasiKerjaCode() {
+        return this.klasifikasiKerjaCode;
     }
     
-    public void setKlasifikasiKerjaJabatans(Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans) {
-        this.klasifikasiKerjaJabatans = klasifikasiKerjaJabatans;
+    public void setKlasifikasiKerjaCode(String klasifikasiKerjaCode) {
+        this.klasifikasiKerjaCode = klasifikasiKerjaCode;
+    }
+
+    
+    @Column(name="klasifikasi_kerja_name", length=60)
+    public String getKlasifikasiKerjaName() {
+        return this.klasifikasiKerjaName;
+    }
+    
+    public void setKlasifikasiKerjaName(String klasifikasiKerjaName) {
+        this.klasifikasiKerjaName = klasifikasiKerjaName;
+    }
+
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "klasifikasiKerja", orphanRemoval = true)
+    public Set<OrgKlasifikasiJobFamily> getOrgKlasifikasiJobFamilies() {
+        return this.orgKlasifikasiJobFamilies;
+    }
+    
+    public void setOrgKlasifikasiJobFamilies(Set<OrgKlasifikasiJobFamily> orgKlasifikasiJobFamilies) {
+        this.orgKlasifikasiJobFamilies = orgKlasifikasiJobFamilies;
     }
 
     @Override
@@ -211,6 +266,15 @@ public class KlasifikasiKerja  implements java.io.Serializable {
             return false;
         }
         return true;
+    }
+
+    @Transient
+    public List<GolonganJabatan> getListGolJab() {
+        return listGolJab;
+    }
+
+    public void setListGolJab(List<GolonganJabatan> listGolJab) {
+        this.listGolJab = listGolJab;
     }
 
 

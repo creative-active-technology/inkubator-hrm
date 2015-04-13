@@ -110,6 +110,7 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
         criteria.setFetchMode("loanNewType", FetchMode.JOIN);
         criteria.add(Restrictions.eq("loanNewType.id", loanNewTypeId));
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
 

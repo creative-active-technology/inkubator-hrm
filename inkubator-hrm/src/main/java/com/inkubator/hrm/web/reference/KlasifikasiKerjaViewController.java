@@ -65,8 +65,6 @@ public class KlasifikasiKerjaViewController extends BaseController {
         this.searchParameter = searchParameter;
     }
 
-    
-
     public LazyDataModel<KlasifikasiKerja> getLazyDataKlasifikasiKerja() {
         if (lazyDataKlasifikasiKerja == null) {
             lazyDataKlasifikasiKerja = new KlasifikasiKerjaLazyDataModel(searchParameter, klasifikasiKerjaService);
@@ -90,12 +88,8 @@ public class KlasifikasiKerjaViewController extends BaseController {
         lazyDataKlasifikasiKerja = null;
     }
 
-    public void doDetail() {
-        try {
-            selectedKlasifikasiKerja = this.klasifikasiKerjaService.getEntiyByPK(selectedKlasifikasiKerja.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    public String doDetail() {
+        return "/protected/reference/job_family_detail.htm?faces-redirect=true&execution=e" + selectedKlasifikasiKerja.getId();
     }
 
     public void doDelete() {
@@ -111,16 +105,23 @@ public class KlasifikasiKerjaViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+//    public void doAdd() {
+//        showDialog(null);
+//    }
+    public String doAdd() {
+        return "/protected/reference/job_family_form.htm?faces-redirect=true";
     }
 
-    public void doUpdate() {
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedKlasifikasiKerja.getId()));
-        dataToSend.put("param", values);
-        showDialog(dataToSend);
+//    public void doUpdate() {
+//        Map<String, List<String>> dataToSend = new HashMap<>();
+//        List<String> values = new ArrayList<>();
+//        values.add(String.valueOf(selectedKlasifikasiKerja.getId()));
+//        dataToSend.put("param", values);
+//        showDialog(dataToSend);
+//    }
+    public String doUpdate() {
+        return "/protected/reference/job_family_form.htm?faces-redirect=true&execution=e" + selectedKlasifikasiKerja.getId();
+
     }
 
     private void showDialog(Map<String, List<String>> params) {

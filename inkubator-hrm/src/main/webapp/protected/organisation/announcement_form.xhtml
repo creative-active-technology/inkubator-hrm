@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Announcement Form" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursmentschema.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Nama Perusahaan"  for="companyId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="companyId" value="#{announcementFormController.model.companyId}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{announcementFormController.model.dropDownCompany}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="companyId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tipe Karyawan"  for="picklistUserRoleId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:pickList value="#{announcementFormController.model.dualListEmployeeType}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="picklistUserRoleId" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Golongan Jabatan"  for="picklistGolonganJabatan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:pickList value="#{announcementFormController.model.dualListGolonganJabatan}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistGolonganJabatan"
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{role.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="picklistGolonganJabatan" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Unit Kerja"  for="picklistUnitKerja" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:pickList value="#{announcementFormController.model.dualListUnitKerja}" var="role" itemValue="#{role}" converter="unitKerjaConverter" id="picklistUnitKerja"
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="picklistUnitKerja" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Judul"  for="judul" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="judul" value="#{announcementFormController.model.subject}" 
+                                                 required="true" styleClass="isitext_hrm" style="width:210px;"/>
+                                    <p:message for="judul"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Isi Pengumuman"  for="pengumuman" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="pengumuman" rows="5" cols="37" maxlength="500" value="#{announcementFormController.model.announcementContent}" 
+                                                     style="width: 49%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:message for="pengumuman"/>
+                                </p:column>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Lampiran"  for="uploadLampiran" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{announcementFormController.handingAttachmentUpload}" 
+                                                  mode="advanced"  id="uploadLampiran"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                    <p:outputLabel value="#{announcementFormController.model.fotoFileName}" id="fotoNameId"/>
+                                    <p:message for="uploadLampiran"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Tampilkan"  for="tampilkan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="tampilkan" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.timeModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Harian" itemValue="0" />
+                                        <f:selectItem itemLabel="Periode" itemValue="1" />
+                                    </p:selectOneRadio> 
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="startId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeStartDate}" >
+                                    </p:calendar>
+                                    - 
+                                    <p:calendar id="endId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeEndDate}">
+                                    </p:calendar>
+                                    <p:message for="endId"/>
+                                    <p:message for="startId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="View Metode"  for="viewMetode" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneRadio id="viewMetode" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.viewModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItem itemLabel="Mailing" itemValue="0" />
+                                        <f:selectItem itemLabel="Web Broad Cast" itemValue="1" />
+                                    </p:selectOneRadio>
+                                    <p:message for="viewMetode"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Publikasikan"  for="publikasikan" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton value="#{announcementFormController.model.internetPublish}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="publikasikan" styleClass="label_button" >
+                                    </p:selectBooleanButton>
+                                    <p:message for="publikasikan"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:focus context="formId" />
+
+                        <!--</p:panel>-->
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{announcementFormController.doSaved()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{reimbursmentSchemaFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

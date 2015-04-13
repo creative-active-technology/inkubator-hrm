@@ -10,12 +10,17 @@
     <h:head>
         <title>IGNORED</title>
     </h:head>
-    <h:body>
+    <h:body onload="onLoadTest()">
         <ui:composition template="/templates/master_layout_full.xhtml">
+            
             <ui:define name="windowTitle">
                 Home
             </ui:define>
             <ui:define name="center">
+                <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                    <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
+                    <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                </p:notificationBar>
 
                 <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                     <p:row>
@@ -634,6 +639,8 @@
 <!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>-->
+                
+            <h:outputScript library="js" name="announcement.js" />
             </ui:define>
 
         </ui:composition>
