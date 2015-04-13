@@ -372,6 +372,7 @@ public class HRMConstant {
     public static final String TERMINASI_KODE = "TERM";
     public static final String OVERTIME_KODE = "OTIM";
     public static final String ANNOUNCEMENT_KODE = "ANNO";
+    public static final String LOAN_CANCELLATION_KODE = "LCAN";
 
     public static final String APP_NAME = "Web Destop App";
 

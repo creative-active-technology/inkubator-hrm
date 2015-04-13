@@ -124,7 +124,6 @@ public class LoanApplicationFormController extends BaseController {
             } else {
                 if (!isAdmin) { //jika bukan administrator, langsung di set empData berdasarkan yang login
 
-                    isAdmin = Boolean.FALSE;
                     model.setEmpData(HrmUserInfoUtil.getEmpData());
                     model.setNamakaryawan(HrmUserInfoUtil.getRealName());
                     this.updateDataPinjamanByEmployee();
