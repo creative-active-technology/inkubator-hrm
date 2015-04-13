@@ -25,13 +25,13 @@ import javax.persistence.Version;
 @Table(name = "company", catalog = "hrm")
 public class Company implements Serializable {
 
-	private Long id;
+    private Long id;
     private Integer version;
-    
+
     private String code;
     private byte[] companyLogo;
     private String companyLogoName;
-    private String name;    
+    private String name;
     private String officialName;
     private String legalNo;
     private String level;
@@ -45,22 +45,22 @@ public class Company implements Serializable {
     private String fax;
     private String vision;
     private String mision;
-    
+
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
     private Set<CompanyBankAccount> companyBankAccounts = new HashSet<CompanyBankAccount>(0);
     private Set<FinancialPartner> financialPartners = new HashSet<FinancialPartner>(0);
-    
-    public Company(){
-    	
+
+    public Company() {
+
     }
-    
-    public Company(Long id){
-    	this.id = id;
+
+    public Company(Long id) {
+        this.id = id;
     }
-    
+
     @Id
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
@@ -79,165 +79,165 @@ public class Company implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }    
-    
+    }
+
     @Column(name = "code", unique = true, nullable = false, length = 12)
     public String getCode() {
-		return code;
-	}
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-		
-	@Column(name = "company_logo",columnDefinition="blob")
-	public byte[] getCompanyLogo() {
-		return companyLogo;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setCompanyLogo(byte[] companyLogo) {
-		this.companyLogo = companyLogo;
-	}
+    @Column(name = "company_logo", columnDefinition = "blob")
+    public byte[] getCompanyLogo() {
+        return companyLogo;
+    }
 
-	@Column(name = "company_logo_name")
-	public String getCompanyLogoName() {
-		return companyLogoName;
-	}
+    public void setCompanyLogo(byte[] companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
-	public void setCompanyLogoName(String companyLogoName) {
-		this.companyLogoName = companyLogoName;
-	}
+    @Column(name = "company_logo_name")
+    public String getCompanyLogoName() {
+        return companyLogoName;
+    }
 
-	@Column(name = "name", nullable = false, length = 60)
-	public String getName() {
-		return name;
-	}
+    public void setCompanyLogoName(String companyLogoName) {
+        this.companyLogoName = companyLogoName;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "name", nullable = false, length = 60)
+    public String getName() {
+        return name;
+    }
 
-	@Column(name = "official_name", nullable = false, length = 60)
-	public String getOfficialName() {
-		return officialName;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setOfficialName(String officialName) {
-		this.officialName = officialName;
-	}
+    @Column(name = "official_name", nullable = false, length = 60)
+    public String getOfficialName() {
+        return officialName;
+    }
 
-	@Column(name = "legal_no", unique = true, nullable = false, length = 60)
-	public String getLegalNo() {
-		return legalNo;
-	}
+    public void setOfficialName(String officialName) {
+        this.officialName = officialName;
+    }
 
-	public void setLegalNo(String legalNo) {
-		this.legalNo = legalNo;
-	}
+    @Column(name = "legal_no", unique = true, nullable = false, length = 60)
+    public String getLegalNo() {
+        return legalNo;
+    }
 
-	@Column(name = "level", nullable = false, length = 1)
-	public String getLevel() {
-		return level;
-	}
+    public void setLegalNo(String legalNo) {
+        this.legalNo = legalNo;
+    }
 
-	public void setLevel(String level) {
-		this.level = level;
-	}
+    @Column(name = "level", nullable = false, length = 1)
+    public String getLevel() {
+        return level;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tax_country_id", nullable = false)
-	public Country getTaxCountry() {
-		return taxCountry;
-	}
+    public Country getTaxCountry() {
+        return taxCountry;
+    }
 
-	public void setTaxCountry(Country taxCountry) {
-		this.taxCountry = taxCountry;
-	}
+    public void setTaxCountry(Country taxCountry) {
+        this.taxCountry = taxCountry;
+    }
 
-	@Column(name = "tax_account_number", unique = true, nullable = false, length = 60)
-	public String getTaxAccountNumber() {
-		return taxAccountNumber;
-	}
+    @Column(name = "tax_account_number", unique = true, nullable = false, length = 60)
+    public String getTaxAccountNumber() {
+        return taxAccountNumber;
+    }
 
-	public void setTaxAccountNumber(String taxAccountNumber) {
-		this.taxAccountNumber = taxAccountNumber;
-	}
+    public void setTaxAccountNumber(String taxAccountNumber) {
+        this.taxAccountNumber = taxAccountNumber;
+    }
 
-	@Column(name = "address", nullable = false, length = 65535, columnDefinition = "Text")
-	public String getAddress() {
-		return address;
-	}
+    @Column(name = "address", nullable = false, length = 65535, columnDefinition = "Text")
+    public String getAddress() {
+        return address;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false)
-	public City getCity() {
-		return city;
-	}
+    public City getCity() {
+        return city;
+    }
 
-	public void setCity(City city) {
-		this.city = city;
-	}
-		
-	@ManyToOne(fetch = FetchType.LAZY)
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_type_id", nullable = false)
-	public BusinessType getBusinessType() {
-		return businessType;
-	}
+    public BusinessType getBusinessType() {
+        return businessType;
+    }
 
-	public void setBusinessType(BusinessType businessType) {
-		this.businessType = businessType;
-	}
+    public void setBusinessType(BusinessType businessType) {
+        this.businessType = businessType;
+    }
 
-	@Column(name = "postal_code", nullable = false, length = 12)
-	public Integer getPostalCode() {
-		return postalCode;
-	}
+    @Column(name = "postal_code", nullable = false, length = 12)
+    public Integer getPostalCode() {
+        return postalCode;
+    }
 
-	public void setPostalCode(Integer postalCode) {
-		this.postalCode = postalCode;
-	}
+    public void setPostalCode(Integer postalCode) {
+        this.postalCode = postalCode;
+    }
 
-	@Column(name = "phone", unique = true, nullable = false, length = 20)
-	public String getPhone() {
-		return phone;
-	}
+    @Column(name = "phone", unique = true, nullable = false, length = 20)
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	@Column(name = "fax", length = 20)
-	public String getFax() {
-		return fax;
-	}
+    @Column(name = "fax", length = 20)
+    public String getFax() {
+        return fax;
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
-	@Column(name = "vision", nullable = false, length = 65535, columnDefinition = "Text")
-	public String getVision() {
-		return vision;
-	}
+    @Column(name = "vision", nullable = false, length = 65535, columnDefinition = "Text")
+    public String getVision() {
+        return vision;
+    }
 
-	public void setVision(String vision) {
-		this.vision = vision;
-	}
+    public void setVision(String vision) {
+        this.vision = vision;
+    }
 
-	@Column(name = "mision", nullable = false, length = 65535, columnDefinition = "Text")
-	public String getMision() {
-		return mision;
-	}
+    @Column(name = "mision", nullable = false, length = 65535, columnDefinition = "Text")
+    public String getMision() {
+        return mision;
+    }
 
-	public void setMision(String mision) {
-		this.mision = mision;
-	}
+    public void setMision(String mision) {
+        this.mision = mision;
+    }
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -276,21 +276,21 @@ public class Company implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-	public Set<CompanyBankAccount> getCompanyBankAccounts() {
-		return companyBankAccounts;
-	}
+    public Set<CompanyBankAccount> getCompanyBankAccounts() {
+        return companyBankAccounts;
+    }
 
-	public void setCompanyBankAccounts(Set<CompanyBankAccount> companyBankAccounts) {
-		this.companyBankAccounts = companyBankAccounts;
-	}
+    public void setCompanyBankAccounts(Set<CompanyBankAccount> companyBankAccounts) {
+        this.companyBankAccounts = companyBankAccounts;
+    }
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-	public Set<FinancialPartner> getFinancialPartners() {
-		return financialPartners;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    public Set<FinancialPartner> getFinancialPartners() {
+        return financialPartners;
+    }
 
-	public void setFinancialPartners(Set<FinancialPartner> financialPartners) {
-		this.financialPartners = financialPartners;
-	}
-    
+    public void setFinancialPartners(Set<FinancialPartner> financialPartners) {
+        this.financialPartners = financialPartners;
+    }
+
 }
