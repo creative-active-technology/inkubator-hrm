@@ -405,8 +405,10 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         /** saving entity RmbsCancelation to DB */
         this.savingCancelation(cancelation, application);
         
-        /** cancel this approval activity */
-    	super.cancelled(approvalActivityId, cancelation.getReason());
+        /** cancel this approval activity and saving log approver history */
+        RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(application.getEmpData().getId()).get(0).getRmbsSchema();
+        List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());        
+    	super.cancelled(approvalActivityId, cancelation.getReason(), appDefs);
 	}
 	
 	private void savingCancelation(RmbsCancelation cancelation, RmbsApplication application) throws BussinessException{

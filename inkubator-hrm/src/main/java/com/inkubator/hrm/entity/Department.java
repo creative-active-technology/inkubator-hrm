@@ -35,6 +35,7 @@ public class Department implements java.io.Serializable {
     private Integer version;
     private String departmentCode;
     private String departmentName;
+    private Company company;
     private CostCenterDept costCenterDept;
     private String createdBy;
     private Date createdOn;
@@ -44,7 +45,6 @@ public class Department implements java.io.Serializable {
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<>(0);
     private List<Department> listDepartments = new ArrayList<>(0);
-    private Company company;
     private Department department;
     private String orgLevel;
     private Boolean isNeckHierarki;
@@ -91,6 +91,16 @@ public class Department implements java.io.Serializable {
         this.version = version;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="company_id")
+    public Company getCompany() {
+        return this.company;
+    }
+    
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    
     @Column(name = "department_code", unique = true, length = 20)
     public String getDepartmentCode() {
         return this.departmentCode;
@@ -248,16 +258,6 @@ public class Department implements java.io.Serializable {
     @Override
     public String toString() {
         return "Department{" + "id=" + id + ", version=" + version + ", departmentCode=" + departmentCode + ", departmentName=" + departmentName + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + '}';
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    public Company getCompany() {
-        return this.company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

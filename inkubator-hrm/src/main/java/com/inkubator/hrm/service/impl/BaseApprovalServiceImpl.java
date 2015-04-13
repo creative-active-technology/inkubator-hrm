@@ -661,7 +661,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
     	
     	//checks only has a final approval status, that can be processed
-    	if(approvalActivityDao.isStillHaveWaitingStatus(listAppDef)){
+    	if(approvalActivityDao.isStillHaveWaitingStatus(appActivity.getActivityNumber())){
     		throw new BussinessException("approval.error_still_have_waiting_status");
     	}
     	
@@ -678,6 +678,26 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	}
     }
     
+	/**
+     * <p>
+     * Method untuk membatalkan suatu activity, 
+     * sekaligus mennyimpan riwayat semua approver dari suatu activity.  
+     * </p>
+     *
+     * <pre>
+     * super.cancelled(approvalActivityId, comment);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     */
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void cancelled(long approvalActivityId, String comment, List<ApprovalDefinition> listAppDef) throws Exception {
+    	
+    	this.cancelled(approvalActivityId, comment);
+    	
+    	this.savingLogApproverHistory(approvalActivityId, listAppDef);
+    }
     
     /**
      * <p>Method untuk membatalkan suatu activity. 

@@ -30,10 +30,6 @@ public class FamilyRelationFormController extends BaseController {
     @ManagedProperty(value = "#{familyRelationService}")
     private FamilyRelationService familyRelationService;
 
-    public void setFamilyRelationService(FamilyRelationService familyRelationService) {
-        this.familyRelationService = familyRelationService;
-    }
-
     @PostConstruct
     @Override
     public void initialization() {
@@ -41,7 +37,7 @@ public class FamilyRelationFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("param");
         familyRelationModel = new FamilyRelationModel();
         isUpdate = Boolean.FALSE;
-        if (StringUtils.isNumeric(param)) {
+        if (StringUtils.isNotEmpty(param)) {
             try {
                 FamilyRelation religion = familyRelationService.getEntiyByPK(Long.parseLong(param));
                 if (religion != null) {
@@ -65,15 +61,6 @@ public class FamilyRelationFormController extends BaseController {
         isUpdate = null;
     }
 
-    public Boolean getIsUpdate() {
-        return isUpdate;
-    }
-
-    public void setIsUpdate(Boolean isUpdate) {
-        this.isUpdate = isUpdate;
-    }
-
-  
     public void doSave() {
         FamilyRelation familyRelation = getEntityFromViewModel(familyRelationModel);
         try {
@@ -85,7 +72,7 @@ public class FamilyRelationFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -111,6 +98,20 @@ public class FamilyRelationFormController extends BaseController {
     public void setFamilyRelationModel(FamilyRelationModel familyRelationModel) {
         this.familyRelationModel = familyRelationModel;
     }
-    
-    
+
+    public FamilyRelationService getFamilyRelationService() {
+        return familyRelationService;
+    }
+
+    public void setFamilyRelationService(FamilyRelationService familyRelationService) {
+        this.familyRelationService = familyRelationService;
+    }
+
+    public Boolean getIsUpdate() {
+        return isUpdate;
+    }
+
+    public void setIsUpdate(Boolean isUpdate) {
+        this.isUpdate = isUpdate;
+    }
 }

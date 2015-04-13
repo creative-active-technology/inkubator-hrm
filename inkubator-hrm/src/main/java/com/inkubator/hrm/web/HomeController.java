@@ -21,6 +21,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -48,6 +50,9 @@ public class HomeController extends BaseController {
         akses.setDateAccess(new Date());
         akses.setPathUrl(urlPath.toString());
         akses.setUserId(UserInfoUtil.getUserName());
+        if (!FacesContext.getCurrentInstance().isPostback()) {
+            RequestContext.getCurrentInstance().execute("bar.show()");
+        }
         try {
             riwayatAksesService.doSaveAccess(akses);
         } catch (Exception ex) {

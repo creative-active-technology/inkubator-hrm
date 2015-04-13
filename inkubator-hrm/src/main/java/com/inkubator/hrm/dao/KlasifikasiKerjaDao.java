@@ -21,5 +21,9 @@ public interface KlasifikasiKerjaDao extends IDAO<KlasifikasiKerja> {
 	public Long getTotalByCode(String name);
 	
 	public Long getTotalByCodeAndNotId(String code, Long id);
+        
+        public KlasifikasiKerja getEntityByPkWithDetail(Long id);
+        
+        public void saveAndMerge(KlasifikasiKerja klasifikasiKerja);
 
 }

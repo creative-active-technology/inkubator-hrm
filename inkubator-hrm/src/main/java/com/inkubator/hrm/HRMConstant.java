@@ -169,6 +169,7 @@ public class HRMConstant {
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
+    public static final String ANNOUNCEMENT = "ANNOUNCEMENT";
     public static final String PERMIT = "PERMIT";
     public static final String LOAN = "LOAN";
     public static final String LEAVE = "LEAVE";
@@ -186,6 +187,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_ASKING_REVISED = 5;
     public static final Integer APPROVAL_STATUS_WAITING_REVISED = 6;
     public static final Integer APPROVAL_STATUS_REVISED = 7;
+    public static final Integer APPROVAL_STATUS_DRAFT = 8;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     /* END */
 

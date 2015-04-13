@@ -18,4 +18,5 @@ public interface KlasifikasiKerjaService extends IService<KlasifikasiKerja> {
 
 	public Long getTotalByParam(KlasifikasiKerjaSearchParameter parameter) throws Exception;
 
+        public KlasifikasiKerja getEntityByPkWithDetail(Long id) throws Exception;
 }

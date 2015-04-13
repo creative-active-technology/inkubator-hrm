@@ -1314,6 +1314,51 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (!listNik.isEmpty()) {
             criteria.add(Restrictions.in("nik", listNik));
         }
+
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<EmpData> getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.unitKerja", "unitKerja", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.golonganJabatan", "goljab", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("department.company", "company", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        if (!empTypeId.isEmpty()) {
+            criteria.add(Restrictions.in("employeeType.id", empTypeId));
+        }
+        if (!golJabId.isEmpty()) {
+            criteria.add(Restrictions.in("goljab.id", golJabId));
+        }
+        if (!unitKerjaId.isEmpty()) {
+            criteria.add(Restrictions.in("unitKerja.id", unitKerjaId));
+        }
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.unitKerja", "unitKerja", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.golonganJabatan", "goljab", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("department.company", "company", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
+        if (!empTypeId.isEmpty()) {
+            criteria.add(Restrictions.in("employeeType.id", empTypeId));
+        }
+        if (!golJabId.isEmpty()) {
+            criteria.add(Restrictions.in("goljab.id", golJabId));
+        }
+        if (!unitKerjaId.isEmpty()) {
+            criteria.add(Restrictions.in("unitKerja.id", unitKerjaId));
+        }
         
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
