@@ -24,7 +24,7 @@ import com.inkubator.webcore.util.FacesUtil;
 public class ApprovalRemoteCommand {
 
     public void showNotification() {
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String approverUserId = params.get("approverUserId");

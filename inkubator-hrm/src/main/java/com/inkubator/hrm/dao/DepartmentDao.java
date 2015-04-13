@@ -14,16 +14,20 @@ import org.hibernate.criterion.Order;
  *
  * @author deniarianto
  */
-public interface DepartmentDao extends IDAO<Department>{
-	
+public interface DepartmentDao extends IDAO<Department> {
+
     public List<Department> getByParam(DepartmentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalDepartmentByParam(DepartmentSearchParameter searchParameter);
 
     public Long getByDepartmentCode(String code);
-    
+
     public Long getTotalByCodeAndNotId(String code, Long id);
-    
+
     public Department getEntityByPkWithDetail(Long id);
-    
+
+    public Department getByLevelOneAndCompany(String orgLevel, Long companyId);
+
+    public List<Department> listChildGetByParentId(Long parentId);
+
 }

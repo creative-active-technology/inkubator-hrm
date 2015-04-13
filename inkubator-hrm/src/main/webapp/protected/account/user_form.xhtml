@@ -79,7 +79,9 @@
                                 </p:column>
                                 <p:column style="width: 37%" >
                                     <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.phone_number']}"
-                                                  required="true" id="phone"/>
+                                                  required="true" id="phone" validatorMessage="#{appmsg['errorr_phone']}">
+                                        <p:clientValidator/>
+                                    </p:inputText>
                                     <p:message for="phone"/>
                                 </p:column>
                                 
@@ -97,7 +99,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:password id="password" value="#{userFormController.userModel.password}" label="#{appmsg['user_form.password']}"
-                                                feedback="true" maxlength="100"  match="checkpassword" 
+                                                feedback="true" maxlength="100"  match="checkpassword"  
                                                 required="true" disabled="#{userFormController.isEdit}" 
                                                 style="width: 75%" >
                                         <f:validator validatorId="passwordComplexityValidator" />
@@ -195,7 +197,7 @@
                         <!--<p:panel style="margin: 10px">-->
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="userFormId,:growlUserFormId"
-                                             action="#{userFormController.doSave()}" styleClass="label_button"
+                                             action="#{userFormController.doSave()}" styleClass="label_button" validateClient="false"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>

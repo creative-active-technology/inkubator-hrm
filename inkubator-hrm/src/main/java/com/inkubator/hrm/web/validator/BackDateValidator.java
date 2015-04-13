@@ -35,7 +35,7 @@ public class BackDateValidator implements Validator {
         // Check if begin time is bigger/equal with end time
         if (!DateUtils.isSameDay(date, now) && date.before(now)) {
         	String locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
-        	ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale(locale));
+        	ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(locale));
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "", resourceBundle.getString("global.error_cannot_backdate")));
         }
     }

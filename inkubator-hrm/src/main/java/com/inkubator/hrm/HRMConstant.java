@@ -169,6 +169,7 @@ public class HRMConstant {
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
+    public static final String ANNOUNCEMENT = "ANNOUNCEMENT";
     public static final String PERMIT = "PERMIT";
     public static final String LOAN = "LOAN";
     public static final String LEAVE = "LEAVE";
@@ -186,6 +187,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_ASKING_REVISED = 5;
     public static final Integer APPROVAL_STATUS_WAITING_REVISED = 6;
     public static final Integer APPROVAL_STATUS_REVISED = 7;
+    public static final Integer APPROVAL_STATUS_DRAFT = 8;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     /* END */
 
@@ -361,7 +363,8 @@ public class HRMConstant {
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
-    public static final String REIMBERS_KODE = "REIM";
+    public static final String REIMBURSEMENT_KODE = "REIM";
+    public static final String REIMBURSEMENT_CANCEL_KODE = "REIM-CL";
     public static final String ACHIEFMENT_KODE = "ACHI";
     public static final String TATIB_KODE = "DEML";
     public static final String TRAVEL_KODE = "TRAV";
@@ -389,5 +392,13 @@ public class HRMConstant {
     public static final Integer RMBS_STATUS_CANCELED = 2;
     public static final Integer RMBS_STATUS_REJECTED = 3;
     /* END */
+
+    /* 
+     * Constant for ORGANISASI LEVEL */
+    public static final String ORGANISASI = "ORG";
+    public static final String DEPARTMENT = "DEP";
+    public static final String DIVISI = "DIV";
+    public static final String DIREKTORAT = "DIR";
+    public static final String SEKRETARIAT = "SKR";
 
 }

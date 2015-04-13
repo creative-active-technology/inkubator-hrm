@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ import com.inkubator.hrm.dao.CurrencyDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
+import com.inkubator.hrm.dao.RmbsCancelationDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.RmbsTypeDao;
@@ -51,6 +53,7 @@ import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RmbsApplication;
+import com.inkubator.hrm.entity.RmbsCancelation;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
@@ -92,6 +95,8 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	private FacesIO facesIO;
 	@Autowired
 	private TransactionCodeficationDao transactionCodeficationDao;
+	@Autowired
+	private RmbsCancelationDao rmbsCancelationDao;
 	
 	@Override
 	public RmbsApplication getEntiyByPK(String id) throws Exception {
@@ -380,26 +385,47 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void cancelled(long approvalActivityId, String comment) throws Exception {		
+	public void cancelled(long approvalActivityId, RmbsCancelation cancelation) throws Exception {		
 		ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
 		
 		//check if there is already approved by someone(approver), then it shouldn't be cancelled
-    	if(!approvalActivityDao.isAlreadyHaveApprovedStatus(appActivity.getActivityNumber())){
+    	if(approvalActivityDao.isAlreadyHaveApprovedStatus(appActivity.getActivityNumber())){
     		throw new BussinessException("approval.error_cancelled_already_approved");
     	}
     	
-    	RmbsApplication entity = convertJsonToEntity(appActivity.getPendingData());
-    	entity.setApplicationStatus(HRMConstant.RMBS_STATUS_CANCELED); // set cancelled application status
-    	entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose    	
-        
-        /** convert to UploadedFile before saving */
+    	/** convert to UploadedFile before saving */
         UploadedFile uploadedFile = this.convertFileToUploadedFile(appActivity.getPendingData());
         
-        /** saving to DB */
-        this.save(entity, uploadedFile, Boolean.TRUE);
+        /** saving entity RmbsApplication to DB */
+    	RmbsApplication application = this.convertJsonToEntity(appActivity.getPendingData());
+    	application.setApplicationStatus(HRMConstant.RMBS_STATUS_CANCELED); // set cancelled application status
+    	application.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        this.save(application, uploadedFile, Boolean.TRUE);
     	
-        /** cancel this activity */
-    	super.cancelled(approvalActivityId, comment);
+        /** saving entity RmbsCancelation to DB */
+        this.savingCancelation(cancelation, application);
+        
+        /** cancel this approval activity and saving log approver history */
+        RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(application.getEmpData().getId()).get(0).getRmbsSchema();
+        List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());        
+    	super.cancelled(approvalActivityId, cancelation.getReason(), appDefs);
+	}
+	
+	private void savingCancelation(RmbsCancelation cancelation, RmbsApplication application) throws BussinessException{
+		// check duplicate code
+     	Long totalDuplicates = rmbsCancelationDao.getTotalByCode(cancelation.getCode());
+     	if (totalDuplicates > 0) {
+     		throw new BussinessException("rmbs_application.error_duplicate_number");
+     	}
+     	
+     	//generate number of code
+		String nomor = this.generateCancelationReimbursementNumber();	        
+		
+		cancelation.setCode(nomor);
+     	cancelation.setRmbsApplication(application);
+     	cancelation.setCreatedBy(UserInfoUtil.getUserName());
+     	cancelation.setCreatedOn(new Date());
+     	rmbsCancelationDao.save(cancelation);
 	}
 	
 	@Override
@@ -514,7 +540,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		// check duplicate code
 		Long totalDuplicates = rmbsApplicationDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0) {
-			throw new BussinessException("rmbs_type.error_duplicate_code");
+			throw new BussinessException("rmbs_application.error_duplicate_number");
 		} 
 		//check submission date, based on rmbsSchema
 		RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getEmpData().getId()).get(0).getRmbsSchema();
@@ -550,12 +576,22 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	
 	private String generateReimbursementNumber(){
 		/** generate number form codification, from reimbursement module */
-		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBERS_KODE);
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_KODE);
         Long currentMaxId = rmbsApplicationDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
         String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
         return nomor;
 	}
+	
+	private String generateCancelationReimbursementNumber(){
+		/** generate cancelation number form codification, from reimbursement module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_CANCEL_KODE);
+        Long currentMaxId = rmbsCancelationDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
+	
 	private ApprovalActivity checkApprovalIfAny(EmpData empData, Boolean isBypassApprovalChecking) throws Exception{
 		/** check approval process if any,
 		 *  return null if no need approval process */
@@ -654,6 +690,21 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public RmbsApplication getEntityByPkWithDetail(Long id) {
 		return rmbsApplicationDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception {
+		HashMap<Long, String> map =  new HashMap<Long, String>();
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		
+		List<ApprovalActivity> appActivities = approvalActivityDao.getAllDataNotApprovedYet(userId, HRMConstant.REIMBURSEMENT);
+		for(ApprovalActivity app : appActivities){
+			RmbsApplication rmbsApplication = gson.fromJson(app.getPendingData(), RmbsApplication.class);
+			map.put(app.getId(), rmbsApplication.getCode());
+		}	
+		
+		return map;
 	}
 	
 

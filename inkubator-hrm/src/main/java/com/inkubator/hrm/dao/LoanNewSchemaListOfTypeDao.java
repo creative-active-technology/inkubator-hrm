@@ -18,7 +18,7 @@ public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType
     
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema);
     
-    public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeIdWithDetail(Long id);
+    public LoanNewSchemaListOfType getEntityByIdWithDetail(Long id);
 
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaListOfTypeId(Long id);
 
@@ -29,4 +29,6 @@ public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType
     public LoanNewSchemaListOfType getEntityByLoanNewSchemaIdAndLoanNewTypeIdWithDetail(Long loanNewSchemaId, Long loanNewTypeId);
     
     public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId);
+    
+    public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId);
 }

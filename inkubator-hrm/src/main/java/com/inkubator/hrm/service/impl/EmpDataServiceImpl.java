@@ -855,4 +855,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalByParamWithDetail(List<Department> deptId, List<GolonganJabatan> golJabId, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik) throws Exception {
         return empDataDao.getTotalByParamWithDetail(deptId, golJabId, empTypeName, listAge, listJoinDate, listNik);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId, int firstResult, int maxResults, Order order) throws Exception {
+        return empDataDao.getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(empTypeId, golJabId, unitKerjaId, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId) throws Exception {
+        return empDataDao.getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(empTypeId, golJabId, unitKerjaId);
+    }
 }

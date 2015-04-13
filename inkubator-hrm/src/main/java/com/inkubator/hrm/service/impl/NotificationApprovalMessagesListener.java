@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -65,7 +66,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             Gson gson = gsonBuilder.create();
             JsonObject jsonObject = (JsonObject) gson.fromJson(json, JsonObject.class);
             String locale = jsonObject.get("locale").getAsString();
+            System.out.println("approvalActivity.getId (Notification) : " + jsonObject.get("approvalActivityId").getAsLong());
             ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(jsonObject.get("approvalActivityId").getAsLong());
+            System.out.println("appActivity : " + (appActivity == null));
             HrmUser approverUser = hrmUserDao.getByUserId(appActivity.getApprovedBy());
             HrmUser requesterUser = hrmUserDao.getByUserId(appActivity.getRequestBy());
             
@@ -89,10 +92,10 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-            toSend.add("guntur@incubatechnology.com");
-            toSend.add("rizal2_dhfr@yahoo.com");
-            toSentCC.add("rizkykojek@gmail.com");
-            toSentCC.add("amjadicky@gmail.com");
+            toSend.add("deni.arianto24@yahoo.com");
+//            toSend.add("rizal2_dhfr@yahoo.com");
+//            toSentCC.add("rizkykojek@gmail.com");
+//            toSentCC.add("amjadicky@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -201,6 +204,21 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
+                            break;
+                            
+                        case HRMConstant.ANNOUNCEMENT:
+                            TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                            List<String> dataGolonganJabatan = gson.fromJson(jsonObject.get("listGolonganJabatan"), token.getType());
+                            List<String> dataUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja"), token.getType());
+                            List<String> dataEmployeeType = gson.fromJson(jsonObject.get("listEmployeeType"), token.getType());
+                            
+                            vtm.setSubject("Pengajuan Pengumuman");
+                            vtm.setTemplatePath("email_announcement_waiting_approval.vm");
+                            maptoSend.put("subjek", jsonObject.get("subjek").getAsString());
+                            maptoSend.put("content", jsonObject.get("content").getAsString());
+                            maptoSend.put("listEmployeeType", dataEmployeeType);
+                            maptoSend.put("listUnitKerja", dataUnitKerja);
+                            maptoSend.put("listGolonganJabatan", dataGolonganJabatan);
                             break;
                         
                         default:

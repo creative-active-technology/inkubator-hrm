@@ -59,7 +59,7 @@ public class SalaryConfirmationDetailController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
             String empDataId = FacesUtil.getRequestParameter("execution");
             selectedPayTempKalkulasi = payTempKalkulasiService.getEntityByEmpIdAndModelTakeHomePayId(Long.parseLong(empDataId.substring(1)));
             WtPeriode wtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();

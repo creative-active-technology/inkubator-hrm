@@ -240,7 +240,7 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
         //push message
         FacesUtil.setSessionAttribute(HRMConstant.USER_LOGIN_ID, entity.getId());
         PushContext pushContext = PushContextFactory.getDefault().getPushContext();
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String infoMessages = hrmUser.getRealName() + " " + messages.getString("loginhistory.successfully_logged_on") + " : " + dateFormatter.getDateFullAsStringsWithActiveLocale(entity.getLoginDate(), new Locale(entity.getLanguange()));
         
         LoginHistoryPushMessageModel model = new LoginHistoryPushMessageModel();
@@ -270,7 +270,7 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
         HrmUser hrmUser = this.hrmUserDao.getByUserIdOrEmail(loginHistory.getHrmUser().getUserId());
         PushContext pushContext = PushContextFactory.getDefault().getPushContext();
         //set default to en
-        ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale("en"));
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale("en"));
         String infoMessages = hrmUser.getRealName() + " " + messages.getString("loginhistory.successfully_logged_out_in") + " : " + dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(), new Locale(loginHistory.getLanguange()));
         
         LoginHistoryPushMessageModel model = new LoginHistoryPushMessageModel();

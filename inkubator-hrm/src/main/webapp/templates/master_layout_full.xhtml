@@ -24,14 +24,18 @@
                     }
         
                 </style>-->
-        <!--        <script type="text/javascript">
+                <script type="text/javascript">
                     
                     function cancel() {
                         clearInterval(window['progress']);
                         PF('pbClient').setValue(0);
                         PF('startButton1').enable();
                     }
-                </script>-->
+                    
+                    function onLoadTest(){
+                        PF('bar').show();
+                    }
+                </script>
         <!--<ui:insert name="jsInclude"/>-->
     </h:head>
     <h:body>
@@ -39,6 +43,13 @@
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
         <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />     
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
+        <!--<h:outputScript library="js" name="announcement.js" />-->
+<!--        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+            <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
+            <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+        </p:notificationBar>
+        <p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>-->
+        
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
@@ -383,10 +394,10 @@
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.organisation_setting']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="#{appmsg['organization.organization_profile']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_profile']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
-                                            <p:menuitem value="#{appmsg['organization.organization_level']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_level']}" url="#" icon="img-company"/>
+                                            <p:menuitem value="#{appmsg['organization.organization_level']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_level']}"  icon="img-company"  url="/protected/organisation/organiztion_level.htm"/>
                                             <p:menuitem value="#{appmsg['organization.job_grade_category']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_grade_category']}" url="/protected/organisation/position_view.htm" icon="img-company"/>
                                             <p:menuitem value="#{appmsg['menu.job_grade']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.job_grade']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
-                                            <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/klasifikasi_kerja_view.htm" /> 
+                                            <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/job_family_view.htm" /> 
                                             <p:menuitem value="#{appmsg['organization.job_family_level']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_family_level']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['organization.job_specification_type']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_specification_type']}" url="/protected/organisation/org_type_of_spec_view.htm" /> 
                                             <p:menuitem value="#{appmsg['organization.job_specification_detail']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_specification_detail']}" url="#" /> 
@@ -407,7 +418,7 @@
                                                 <p:menuitem value="#{appmsg['organization.emp_per_department_report']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.emp_per_department_report']}" url="#" />  
                                                 <p:menuitem value="#{appmsg['organization.vacant_position_report']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.vacant_position_report']}" url="#" />
                                             </p:submenu>
-                                            
+
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['employee.employee']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="#{appmsg['menu.employee_personal']}" icon="img-employee_data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_personal']}" url="#" />    
@@ -480,8 +491,8 @@
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_request']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_application_form.htm" />  
                                                 <p:menuitem value="#{appmsg['reimbursement.reimbursement_application_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_application_undisbursed_view.htm" />
-                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="" url="" />
-                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="" url="" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_cancelation_form.htm" />
+                                                <p:menuitem value="#{appmsg['reimbursement.reimbursement_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="" url="/protected/reimbursement/rmbs_cancelation_view.htm" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['reimbursement.reimbursement_upload']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
                                             <p:menuitem value="#{appmsg['reimbursement.reimbursement_verification_approval']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
@@ -512,7 +523,7 @@
                                             <p:submenu label="#{appmsg['menu.loan_request']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.loan_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_application_form']}" url="/protected/personalia/loan_application_form.htm" />  
                                                 <p:menuitem value="#{appmsg['menu.loan_application_inbox']}" icon="img-loan_application_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_application_inbox']}" url="" />
-                                                <p:menuitem value="#{appmsg['menu.employee_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_form']}" url="" />
+                                                <p:menuitem value="#{appmsg['menu.employee_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_form']}" url="/protected/personalia/loan_new_cancellation_form.htm" />
                                                 <p:menuitem value="#{appmsg['menu.employee_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_inbox']}" url="" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['menu.loan_upload']}" icon="img-loan_upload" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_upload']}" url="#" /> 
@@ -533,7 +544,7 @@
                                                 <p:menuitem value="#{appmsg['menu.employee_loan_report']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_loan_report']}" url="" />  
                                                 <p:menuitem value="#{appmsg['menu.user_defined_loan_report']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_defined_loan_report']}" url="" />  
                                             </p:submenu>
-                                            
+
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.time_and_attendance']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
                                             <p:menuitem value="#{appmsg['employee.employee_work_schedule']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_schedule']}" url="/protected/employee/emp_schedule_view.htm" />
@@ -607,10 +618,10 @@
 
 <!--<p:menuitem value="#{appmsg['unregSalary.unregSalary']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['unregSalary.unregSalary']}" icon="img-ptkp" url="/protected/payroll/unreg_salary_view.htm"/>--> 
                                         </p:submenu>
-<!--                                        <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
-                                                                                        <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
-                                                                                        <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
-                                        </p:submenu>-->
+                                        <!--                                        <p:submenu label="Pengembangan"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
+                                                                                                                                <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
+                                                                                                                                <p:menuitem value="Price Offer" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
+                                                                                </p:submenu>-->
                                         <!-- 
                                         <p:submenu label="Approval Metrix"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
                                             <p:menuitem value="User Account" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -720,5 +731,7 @@
         <h:outputScript library="js" name="login_socket.js"/>
         <h:outputScript library="js" name="approval_notification_socket.js"/>
         <h:outputScript library="js" name="indonesia_locale.js" />
+        <h:outputScript library="js" name="validation_in.js" />
+
     </h:body>
 </html>

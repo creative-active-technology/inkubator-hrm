@@ -25,7 +25,7 @@ public class RmbsTypeRoundDigitConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         
         String messages = StringUtils.EMPTY;
         Integer data= (Integer) obj;

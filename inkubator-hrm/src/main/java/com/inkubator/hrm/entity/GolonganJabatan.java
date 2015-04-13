@@ -199,7 +199,7 @@ public class GolonganJabatan implements java.io.Serializable {
         this.pointMax = pointMax;
     }
 
-    @Column(name = "ratio_compact", precision = 3)
+    @Column(name = "ratio_compact", precision = 10, scale = 0)
     public BigDecimal getRatioCompact() {
         return this.ratioCompact;
     }

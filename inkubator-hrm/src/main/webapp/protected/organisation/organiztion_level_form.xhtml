@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlCompanyFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formCompanyFormId">
+                    <p:focus context="formCompanyFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Organisasi Level Form" styleClass="header_big" />
+                                    <p:outputLabel value="Data Organisasi Level dari Organisasi" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:treeTable id="tree" value="#{departmentHirarkiFormController.root}" style="width: 100%" var="dep"  >
+                            <p:column  headerText="Organisasi Utama : #{departmentHirarkiFormController.companyName}" style="text-align: left">
+                                <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
+                                <h:outputText value=" - #{dep.departmentCode}" />
+                                <h:outputText value=" - #{dep.departmentName}" />
+                            </p:column>
+                        </p:treeTable>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="Kode Organisasi Level" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="codeId" title="#{appmsg['organization.organization_code']}" value="#{companyFormController.model.code}" 
+                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="name" value="Nama Organisasi Level" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="name" title="#{appmsg['organization.organization_code']}" value="#{companyFormController.model.code}" 
+                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row> 
+
+                        </p:panelGrid>
+
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

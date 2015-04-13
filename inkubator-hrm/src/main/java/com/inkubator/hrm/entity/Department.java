@@ -35,6 +35,7 @@ public class Department implements java.io.Serializable {
     private Integer version;
     private String departmentCode;
     private String departmentName;
+    private Company company;
     private CostCenterDept costCenterDept;
     private String createdBy;
     private Date createdOn;
@@ -44,6 +45,12 @@ public class Department implements java.io.Serializable {
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<DepartementUploadCapture> departementUploadCaptures = new HashSet<>(0);
     private List<Department> listDepartments = new ArrayList<>(0);
+    private Department department;
+    private String orgLevel;
+    private Boolean isNeckHierarki;
+    private Boolean isActive;
+    private Set<Department> departments = new HashSet<>(0);
+    private Set<DepartementUnitLocation> departementUnitLocations = new HashSet<>(0);
 
     public Department() {
     }
@@ -52,7 +59,7 @@ public class Department implements java.io.Serializable {
         this.id = id;
     }
 
-    public Department(long id, String departmentCode, String departmentName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String Description) {
+    public Department(long id, String departmentCode, String departmentName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String description) {
         this.id = id;
         this.departmentCode = departmentCode;
         this.departmentName = departmentName;
@@ -84,6 +91,16 @@ public class Department implements java.io.Serializable {
         this.version = version;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="company_id")
+    public Company getCompany() {
+        return this.company;
+    }
+    
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    
     @Column(name = "department_code", unique = true, length = 20)
     public String getDepartmentCode() {
         return this.departmentCode;
@@ -185,7 +202,7 @@ public class Department implements java.io.Serializable {
     public void setListDepartments(List<Department> listDepartments) {
         this.listDepartments = listDepartments;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -243,4 +260,58 @@ public class Department implements java.io.Serializable {
         return "Department{" + "id=" + id + ", version=" + version + ", departmentCode=" + departmentCode + ", departmentName=" + departmentName + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", updatedBy=" + updatedBy + ", updatedOn=" + updatedOn + '}';
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    public Department getDepartment() {
+        return this.department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    @Column(name = "org_level", length = 45)
+    public String getOrgLevel() {
+        return this.orgLevel;
+    }
+
+    public void setOrgLevel(String orgLevel) {
+        this.orgLevel = orgLevel;
+    }
+
+    @Column(name = "is_neck_hierarki")
+    public Boolean getIsNeckHierarki() {
+        return this.isNeckHierarki;
+    }
+
+    public void setIsNeckHierarki(Boolean isNeckHierarki) {
+        this.isNeckHierarki = isNeckHierarki;
+    }
+
+    @Column(name = "is_active")
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    public Set<Department> getDepartments() {
+        return this.departments;
+    }
+
+    public void setDepartments(Set<Department> departments) {
+        this.departments = departments;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    public Set<DepartementUnitLocation> getDepartementUnitLocations() {
+        return this.departementUnitLocations;
+    }
+
+    public void setDepartementUnitLocations(Set<DepartementUnitLocation> departementUnitLocations) {
+        this.departementUnitLocations = departementUnitLocations;
+    }
 }
