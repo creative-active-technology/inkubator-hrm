@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.inkubator.hrm.web.personalia;
+package com.inkubator.hrm.web.loan;
 
 import ch.lambdaj.Lambda;
 import com.google.common.collect.ImmutableSet;
@@ -32,6 +32,7 @@ import com.inkubator.hrm.service.LoanNewSchemaService;
 import com.inkubator.hrm.service.LoanNewTypeService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.LoanApplicationFormModel;
+import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -56,9 +57,9 @@ import org.hamcrest.Matchers;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "loanApplicationFormController")
+@ManagedBean(name = "loanNewCancellationFormController")
 @ViewScoped
-public class LoanApplicationFormController extends BaseController {
+public class LoanNewCancellationFormController extends BaseController {
 
     @ManagedProperty(value = "#{loanNewApplicationService}")
     private LoanNewApplicationService loanNewApplicationService;
@@ -92,14 +93,14 @@ public class LoanApplicationFormController extends BaseController {
     private ApprovalActivity currentActivity;
     private ApprovalActivity askingRevisedActivity;
 
-    private LoanApplicationFormModel model;
+    private LoanNewCancellationFormModel model;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         isRevised = Boolean.FALSE;
-        model = new LoanApplicationFormModel();
+        model = new LoanNewCancellationFormModel();
         model.setRangeFirstInstallmentToDisbursement(1);
         model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
         model.setListApprover(new ArrayList<EmpData>());
@@ -235,7 +236,7 @@ public class LoanApplicationFormController extends BaseController {
 
     public void doReset() {
         if (isAdmin) {
-            model = new LoanApplicationFormModel();
+            model = new LoanNewCancellationFormModel();
             model.setRangeFirstInstallmentToDisbursement(1);
             model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
             model.setListApprover(new ArrayList<EmpData>());
@@ -244,7 +245,7 @@ public class LoanApplicationFormController extends BaseController {
             mapLoanNewType.clear();
             subsidiType = 0l;
         } else {
-            model = new LoanApplicationFormModel();
+            model = new LoanNewCancellationFormModel();
             model.setEmpData(HrmUserInfoUtil.getEmpData());
             model.setNamakaryawan(HrmUserInfoUtil.getRealName());
             model.setRangeFirstInstallmentToDisbursement(1);
@@ -309,7 +310,7 @@ public class LoanApplicationFormController extends BaseController {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -343,7 +344,7 @@ public class LoanApplicationFormController extends BaseController {
             }
 
         } catch (Exception e) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
 
     }
@@ -361,7 +362,7 @@ public class LoanApplicationFormController extends BaseController {
             }
 
         } catch (Exception e) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -376,7 +377,7 @@ public class LoanApplicationFormController extends BaseController {
                 doCalculateInstallmentSchedule();
             }
         } catch (Exception e) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -388,7 +389,7 @@ public class LoanApplicationFormController extends BaseController {
                 doCalculateInstallmentSchedule();
             }
         } catch (Exception e) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -401,7 +402,7 @@ public class LoanApplicationFormController extends BaseController {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -410,7 +411,7 @@ public class LoanApplicationFormController extends BaseController {
             List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query));
             return allEmpData;
         } catch (Exception ex) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -428,13 +429,13 @@ public class LoanApplicationFormController extends BaseController {
             model.setListLoanNewApplicationInstallments(listLoanInstallments);
 
         } catch (Exception e) {
-            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(LoanNewCancellationFormController.class.getName()).log(Level.SEVERE, null, e);
 
         }
 
     }
 
-    private LoanNewApplication getEntityFromModel(LoanApplicationFormModel model) {
+    private LoanNewApplication getEntityFromModel(LoanNewCancellationFormModel model) {
 
         LoanNewApplication loanNewApplication = new LoanNewApplication();
 
@@ -608,11 +609,11 @@ public class LoanApplicationFormController extends BaseController {
         this.loanNewTypeService = loanNewTypeService;
     }
 
-    public LoanApplicationFormModel getModel() {
+    public LoanNewCancellationFormModel getModel() {
         return model;
     }
 
-    public void setModel(LoanApplicationFormModel model) {
+    public void setModel(LoanNewCancellationFormModel model) {
         this.model = model;
     }
 
