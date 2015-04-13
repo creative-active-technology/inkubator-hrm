@@ -19,15 +19,15 @@ import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 *
 * @author rizkykojek
 */
-public class RmbsApplicationUndisbursedLazyDataModel extends LazyDataModel<RmbsApplicationUndisbursedViewModel> implements Serializable {
+public class RmbsApplicationUndisbursedActivityLazyDataModel extends LazyDataModel<RmbsApplicationUndisbursedViewModel> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(RmbsApplicationUndisbursedLazyDataModel.class);
+	private static final Logger LOGGER = Logger.getLogger(RmbsApplicationUndisbursedActivityLazyDataModel.class);
     private final RmbsApplicationUndisbursedSearchParameter parameter;
     private final RmbsApplicationService rmbsApplicationService;
     private List<RmbsApplicationUndisbursedViewModel> list = new ArrayList<>();
     private Integer total;
 
-    public RmbsApplicationUndisbursedLazyDataModel(RmbsApplicationUndisbursedSearchParameter parameter, RmbsApplicationService rmbsApplicationService) {
+    public RmbsApplicationUndisbursedActivityLazyDataModel(RmbsApplicationUndisbursedSearchParameter parameter, RmbsApplicationService rmbsApplicationService) {
         this.parameter = parameter;
         this.rmbsApplicationService = rmbsApplicationService;
     }
@@ -43,8 +43,8 @@ public class RmbsApplicationUndisbursedLazyDataModel extends LazyDataModel<RmbsA
 	        	orderable = Order.desc("approvalActivityId");
 	        }
 	        
-	        list = rmbsApplicationService.getUndisbursedByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(rmbsApplicationService.getTotalUndisbursedByParam(parameter)));            
+	        list = rmbsApplicationService.getUndisbursedActivityByParam(parameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(rmbsApplicationService.getTotalUndisbursedActivityByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {

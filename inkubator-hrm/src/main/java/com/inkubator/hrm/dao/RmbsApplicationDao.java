@@ -19,9 +19,9 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 
 	public BigDecimal getTotalNominalByEmpDataIdAndRmbsTypeIdAndDateBetween(Long empDataId, Long rmbsTypeId, Date startDate, Date endDate);
 	
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter);
+	public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter);
 
 	public Long getCurrentMaxId();
 	

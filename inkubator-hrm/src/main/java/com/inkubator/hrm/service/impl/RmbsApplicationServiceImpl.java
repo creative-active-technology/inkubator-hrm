@@ -660,10 +660,10 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		
-		List<RmbsApplicationUndisbursedViewModel> listModel = rmbsApplicationDao.getUndisbursedByParam(parameter, firstResult, maxResults, orderable);
+		List<RmbsApplicationUndisbursedViewModel> listModel = rmbsApplicationDao.getUndisbursedActivityByParam(parameter, firstResult, maxResults, orderable);
 		for(RmbsApplicationUndisbursedViewModel model : listModel){
 			JsonElement elReimbursment = gson.fromJson(model.getJsonData(), JsonObject.class).get("reimbursementFileName");
 			model.setIsHaveAttachment(!elReimbursment.isJsonNull());
@@ -681,8 +681,8 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception {
-		return rmbsApplicationDao.getTotalUndisbursedByParam(parameter);
+	public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception {
+		return rmbsApplicationDao.getTotalUndisbursedActivityByParam(parameter);
 		
 	}
 

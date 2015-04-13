@@ -30,9 +30,9 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	
 	public List<EmpData> getListApproverByEmpDataId(Long empDataId)  throws Exception;
 	
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception;
+	public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) throws Exception;
 	
 	public RmbsApplication getEntityByPkWithDetail(Long id);
 
