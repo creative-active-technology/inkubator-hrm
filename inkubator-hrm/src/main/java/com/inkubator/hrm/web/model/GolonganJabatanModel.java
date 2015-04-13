@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
@@ -7,7 +8,7 @@ import java.util.Map;
  *
  * @author rizkykojek
  */
-public class GolonganJabatanModel {
+public class GolonganJabatanModel implements Serializable{
 
 	private Long id;
     private String code;

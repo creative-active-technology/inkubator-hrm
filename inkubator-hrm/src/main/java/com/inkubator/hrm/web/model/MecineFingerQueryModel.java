@@ -4,11 +4,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni Husni FR
  */
-public class MecineFingerQueryModel {
+public class MecineFingerQueryModel implements Serializable{
     private Long id;
     private Integer mecineMethode;
     private String name;

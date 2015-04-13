@@ -1,12 +1,13 @@
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
 *
 * @author rizkykojek
 */
-public class ReportSalaryJounalModel {
+public class ReportSalaryJounalModel implements Serializable{
 	private Long periodId;
 	private Date payrollPeriod;
 	private Date payrollDate;

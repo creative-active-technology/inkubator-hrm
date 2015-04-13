@@ -139,7 +139,7 @@
                                     <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_start']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
-                                    <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="Start Date" value="#{wtFingerExceptionFormController.model.startDate}"
+                                    <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['publicHoliday.publicHoliday_start']}" value="#{wtFingerExceptionFormController.model.startDate}"
                                                  required="true" navigator="true">
                                         <f:validator validatorId="birthDateValidator"  />
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
@@ -152,7 +152,7 @@
                                     <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_end']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
-                                    <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="Start Date" value="#{wtFingerExceptionFormController.model.endDate}"
+                                    <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['publicHoliday.publicHoliday_end']}" value="#{wtFingerExceptionFormController.model.endDate}"
                                                  required="true" navigator="true">
                                         <f:validator validatorId="birthDateValidator"  />
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
@@ -172,7 +172,7 @@
                         </p:panelGrid>
                         <div align="center">
                             <p:pickList value="#{wtFingerExceptionFormController.dualListModel}" var="role" itemValue="#{role}" converter="empDataConverter" id="picklistUserRoleId"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee" styleClass="isitext_hrm"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['basicNumeration.list_employee_header']}" styleClass="isitext_hrm"
                                         itemLabel="#{role.nik} - #{role.bioData.firstName} #{role.bioData.lastName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
                             <p:message for="picklistUserRoleId" />

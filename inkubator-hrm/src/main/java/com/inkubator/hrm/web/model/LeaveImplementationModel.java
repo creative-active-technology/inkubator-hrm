@@ -5,12 +5,13 @@ import java.util.Date;
 import javax.validation.constraints.Pattern;
 
 import com.inkubator.hrm.entity.EmpData;
+import java.io.Serializable;
 
 /**
  *
  * @author rizkykojek
  */
-public class LeaveImplementationModel {
+public class LeaveImplementationModel implements Serializable{
 
 	private Long id;
 	private String numberFilling;

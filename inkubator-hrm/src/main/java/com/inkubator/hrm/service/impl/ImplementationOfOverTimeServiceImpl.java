@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -347,7 +348,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy",new Locale(appActivity.getLocale()));
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
         
         //get all sendCC email address on status approve OR reject

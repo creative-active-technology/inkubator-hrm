@@ -4,11 +4,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Deni
  */
-public class InterestTypeModel {
+public class InterestTypeModel implements Serializable{
     private Long id;
     private String name;
     private String description;

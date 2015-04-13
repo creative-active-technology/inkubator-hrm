@@ -5,11 +5,13 @@
  */
 package com.inkubator.hrm.web.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class PaySalaryUploadModel {
+public class PaySalaryUploadModel implements Serializable{
 
     private Long paySalaryComponentId;
     private String paySalaryComponentName;

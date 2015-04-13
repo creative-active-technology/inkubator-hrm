@@ -1,9 +1,12 @@
 package com.inkubator.hrm.web.model;
+
+import java.io.Serializable;
+
 /**
  *
  * @author rizkykojek
  */
-public class UnregPayrollEmpPajakModel {
+public class UnregPayrollEmpPajakModel implements Serializable{
 	
 	private Long unregSalaryId;
 	private Long taxComponentId;
