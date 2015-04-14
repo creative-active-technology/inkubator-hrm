@@ -490,10 +490,8 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         entity.setCreatedOn(createdOn);
 
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        System.out.println("requestUser.getUserId() : " + requestUser.getUserId());
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
-        System.out.println("approvalActivity == null ? " + (approvalActivity == null));
-        
+       
         if (approvalActivity == null) {
 
             entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
@@ -559,10 +557,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             }
         }
 
-        //if previous loan with same loanNewType and still in approval process found,  return Exception Message
-//        if (Lambda.extract(listPendingRequest, Lambda.on(ApprovalActivity.class).getTypeSpecific()).contains(loanNewTypeId)) {
-//            return "loan.error_loan_with_same_type_found";
-//        }
+        
         //Check whether employee still have outstanding loan with same loanType
         List<LoanNewApplication> listPreviosUnpaidLoanWithSameLoanTypeId = loanNewApplicationDao.getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(empData.getId(), loanNewTypeId);
 
@@ -574,21 +569,14 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         /* Begin Calculate Total loan of exisiting loan application and previous loan of selected employee*/
         Double totalLoanByUser = loanPrincipal;
 
-//        if (!listPendingRequest.isEmpty()) {
-//            for (ApprovalActivity pendingRequest : listPendingRequest) {
-//                String pendingData = pendingRequest.getPendingData();
-//                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
-//                totalLoanByUser += loanNewApplication.getNominalPrincipal();
-//            }
-//        }
         //iterate each group list element
         for (String key : groupPendingActivity.keySet()) {
             List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
 
             // Get activity with highest sequence from each grouped list activities
             ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
-
+            
+            //calculate only from different activity number
             if (!StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
                 String pendingData = approvalActivityWithHighestSequence.getPendingData();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -605,6 +593,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         /* End Calculate Total loan of exisiting loan application and previous loan of selected employee*/
+        
         //if total All Loan exceed maximum loan from employee loan schema, return Exception Message
         if (totalLoanByUser > loanNewSchema.getTotalMaximumLoan()) {
             return "loan.error_total_loan_exceed_max_loan_on_loan_scheme";
