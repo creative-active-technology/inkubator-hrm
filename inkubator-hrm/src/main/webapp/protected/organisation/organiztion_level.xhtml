@@ -26,12 +26,12 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <p:growl id="growlJabatan" showDetail="true" showSummary="true" globalOnly="true"/>
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
                     <h:form >
                         <p:contextMenu for="tree" >
                             <p:menuitem value="Add Organisasi"  icon="ui-icon-document" action="#{departmentHirarkiViewController.doAdd()}" />
                             <p:menuitem value="Edit Organisasi" icon="ui-icon-folder-open" action="#{departmentHirarkiViewController.doEdit()}" />
-                            <p:menuitem value="Detil Organisasi" icon="ui-icon-zoomin" action="#{departmentHirarkiViewController.doDetil()}" />
+                            <!--<p:menuitem value="Detil Organisasi" icon="ui-icon-zoomin" action="#{departmentHirarkiViewController.doDetil()}" />-->
                         </p:contextMenu>
                         <h:panelGrid columns="3" style="margin-bottom: 7px">
                             <p:outputLabel value="Nama Organisasi" styleClass="label_hrm"/>

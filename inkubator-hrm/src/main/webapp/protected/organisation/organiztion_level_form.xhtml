@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlCompanyFormId" globalOnly="true" showDetail="true"/>                
+                <p:growl id="growlOrganisasiLevelFormId" globalOnly="true" showDetail="true"/>                
                 <h:form id="organisasiLevelFormId">
                     <p:focus context="organisasiLevelFormId"/>
                     <div id="box_bg" style="margin: 10px">
@@ -44,9 +44,9 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="parentCode" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.companyCode}" 
-                                                 readonly="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:90px;margin-right: 3px" />
+                                                 readonly="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:50px;margin-right: 3px" />
                                     <p:inputText id="codeId" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.code}" 
-                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:200px;" />
+                                                 required="true" maxlength="20" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:228px;" />
                                     <p:message for="codeId"/>
                                 </p:column>
                             </p:row> 
@@ -56,7 +56,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="name" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.name}" 
-                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                                 required="true" maxlength="45" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row> 
@@ -65,8 +65,8 @@
                                     <p:outputLabel for="organisasiLevel" value="Organisasi Level" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu value=""  id="organisasiLevel" required="true">
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="#{departmentHirarkiFormController.organisasiLevelModel.orgLevel}"/>
+                                    <p:selectOneMenu value="#{departmentHirarkiFormController.organisasiLevelModel.orgLevel}"  id="organisasiLevel" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemValue="ORG" itemLabel="Organisasi" />
                                         <f:selectItem itemValue="DEP" itemLabel="Departement" />
                                         <f:selectItem itemValue="DEV" itemLabel="Divisi" />
@@ -125,7 +125,7 @@
                         <!--<p:panel style="margin: 10px">-->
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{departmentHirarkiFormController.doSave()}" styleClass="label_button" validateClient="false" update="organisasiLevelFormId"
+                                             action="#{departmentHirarkiFormController.doSave()}" styleClass="label_button" validateClient="false" update="organisasiLevelFormId,:growlOrganisasiLevelFormId"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
