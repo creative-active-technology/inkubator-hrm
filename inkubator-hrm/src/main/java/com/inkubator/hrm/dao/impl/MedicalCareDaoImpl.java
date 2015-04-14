@@ -99,4 +99,14 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
         return criteria.list();
     }
 
+    @Override
+    public MedicalCare getEntityWithNameAndNik(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        
+        return (MedicalCare) criteria.uniqueResult();
+    }
+
 }

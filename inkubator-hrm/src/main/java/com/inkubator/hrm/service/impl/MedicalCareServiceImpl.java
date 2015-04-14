@@ -365,4 +365,10 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
         String uploadPath = facesIO.getPathUpload() + "medical_" + id + "." + extension;
         return uploadPath;
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public MedicalCare getEntityWithNameAndNik(Long id) throws Exception {
+        return this.medicalCareDao.getEntityWithNameAndNik(id);
+    }
 }

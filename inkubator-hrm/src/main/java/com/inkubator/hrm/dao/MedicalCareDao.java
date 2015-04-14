@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 
@@ -21,5 +22,7 @@ public interface MedicalCareDao extends IDAO<MedicalCare> {
     public MedicalCare getEntityWithDetail(Long id);
 
     public List<MedicalCare> getAllDataWithDetail();
+    
+    public MedicalCare getEntityWithNameAndNik(Long id);
 
 }
