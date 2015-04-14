@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -91,16 +92,16 @@ public class Department implements java.io.Serializable {
         this.version = version;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="company_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     public Company getCompany() {
         return this.company;
     }
-    
+
     public void setCompany(Company company) {
         this.company = company;
     }
-    
+
     @Column(name = "department_code", unique = true, length = 20)
     public String getDepartmentCode() {
         return this.departmentCode;
@@ -306,7 +307,7 @@ public class Department implements java.io.Serializable {
         this.departments = departments;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "department", orphanRemoval = true)
     public Set<DepartementUnitLocation> getDepartementUnitLocations() {
         return this.departementUnitLocations;
     }

@@ -20,7 +20,6 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -324,7 +323,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception {
         TreeNode root;
         Department endPointDepartment = departmentDao.getEntiyByPK(Long.parseLong(param.substring(1)));
-        System.out.println(" End postny nya adalah "+endPointDepartment);
+        System.out.println(" End postny nya adalah " + endPointDepartment);
         List<Department> data = new ArrayList<>();
         data.add(endPointDepartment);
         gerParent(endPointDepartment, data);
@@ -356,6 +355,14 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         if (data.getDepartment() != null) {
             gerParent(data, list);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveOrganisasiLevel(Department department) throws Exception {
+     department.setCreatedBy(UserInfoUtil.getUserName());
+     department.setCreatedOn(new Date());
+     this.departmentDao.save(department);
     }
 
 }
