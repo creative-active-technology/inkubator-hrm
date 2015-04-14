@@ -23,7 +23,7 @@
                 	<p:focus context="formId"/>
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+	                        <p:graphicImage library="images" name="pencairan_pinjaman_ico.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
 	                                <p:outputLabel value="#{appmsg['rmbs_disbursement.form_header']}" styleClass="header_big" />
@@ -57,7 +57,7 @@
 	                                <p:outputLabel for="payrollPeriodDateId" value="#{appmsg['rmbs_disbursement.salary_disbursement_period']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="payrollPeriodDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementFormController.model.payrollPeriodDate}"/>
+	                                <p:calendar id="payrollPeriodDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementFormController.model.payrollPeriodDate}" mindate="#{of:addDays(rmbsDisbursementFormController.period.untilPeriode, 1)}"/>
 	                                <p:message for="payrollPeriodDateId"/>
 	                            </p:column>
 	                        </p:row>
@@ -79,7 +79,7 @@
 	                 	<p:dataTable  id="tableId" var="data"  value="#{rmbsDisbursementFormController.lazyData}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-                                      rowIndexVar="no" selection="#{rmbsDisbursementFormController.model.listRmbsApplication}">
+                                      rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['rmbs_application.list_of_reimbursement_request']}"/>
                             </f:facet>                             
@@ -133,7 +133,13 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column selectionMode="multiple" style="width:3%;text-align:center"/>                                                 
+                            <p:column style="width: 3%">
+					            <f:facet name="header">
+					                <h:outputText value=" " />
+					            </f:facet>
+					            <p:selectBooleanButton value="#{rmbsDisbursementFormController.model.selectedIds[data.id]}" styleClass="label_button"
+					            					   onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
+					        </p:column>                                                 
                         </p:dataTable>
                         <p:blockUI block="formId" trigger="tableId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
@@ -145,7 +151,7 @@
                                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.disbursed']}" ajax="true" update="formId,:growlId"
+	                        <p:commandButton value="#{appmsg['global.disbursed']}" rendered="#{rmbsDisbursementFormController.isAdministator}" ajax="true" update="formId,:growlId"
 	                                         action="#{rmbsDisbursementFormController.doDisbursement}" styleClass="isitext_hrm"
 	                                         style="margin-right: 5px" label="#{appmsg['global.disbursed']}"
 	                                         icon="ui-icon-disk" title="#{appmsg['global.disbursed']}"/>

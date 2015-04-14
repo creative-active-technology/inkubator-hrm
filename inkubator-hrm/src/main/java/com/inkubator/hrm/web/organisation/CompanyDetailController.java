@@ -25,8 +25,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.CompanyBankAccount;
+import com.inkubator.hrm.entity.CompanyCommisioner;
+import com.inkubator.hrm.entity.CompanyOwnership;
 import com.inkubator.hrm.entity.FinancialPartner;
 import com.inkubator.hrm.service.CompanyBankAccountService;
+import com.inkubator.hrm.service.CompanyCommisionerService;
+import com.inkubator.hrm.service.CompanyOwnershipService;
 import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.hrm.service.FinancialPartnerService;
 import com.inkubator.webcore.controller.BaseController;
@@ -44,14 +48,22 @@ public class CompanyDetailController extends BaseController {
     private Company selectedCompany;
     private CompanyBankAccount selectedCompanyBankAccount;
     private FinancialPartner selectedFinancialPartner;
+    private CompanyCommisioner selectedCompanyCommisioner;
+    private CompanyOwnership selectedCompanyOwnership;
+    private List<CompanyOwnership> listCompanyOwnership;
     private List<CompanyBankAccount> companyBankAccounts;
     private List<FinancialPartner> financialPartners;
+    private List<CompanyCommisioner> listCompanyCommmisioner;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
     @ManagedProperty(value = "#{companyBankAccountService}")
     private CompanyBankAccountService companyBankAccountService;
     @ManagedProperty(value = "#{financialPartnerService}")
     private FinancialPartnerService financialPartnerService;
+    @ManagedProperty(value = "#{companyCommisionerService}")
+    private CompanyCommisionerService companyCommisionerService;
+    @ManagedProperty(value = "#{companyOwnershipService}")
+    private CompanyOwnershipService companyOwnershipService;
 
     @PostConstruct
     @Override
@@ -62,6 +74,8 @@ public class CompanyDetailController extends BaseController {
             selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1))); 
             companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId());
             financialPartners = financialPartnerService.getAllDataByCompanyId(selectedCompany.getId());
+            listCompanyCommmisioner = companyCommisionerService.getEntityByCompanyId(selectedCompany.getId());
+            listCompanyOwnership = companyOwnershipService.getEntityByCompanyId(selectedCompany.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -69,6 +83,7 @@ public class CompanyDetailController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
+        selectedCompanyCommisioner = null;
         selectedCompany = null;
         companyService = null;
         financialPartnerService = null;
@@ -77,6 +92,11 @@ public class CompanyDetailController extends BaseController {
         selectedCompanyBankAccount = null;
         selectedFinancialPartner = null;
         companyBankAccountService = null;
+        listCompanyCommmisioner = null;
+        companyCommisionerService = null;
+        companyOwnershipService = null;
+        listCompanyOwnership = null;
+        selectedCompanyOwnership = null;
     }    
 
 	public Company getSelectedCompany() {
@@ -283,5 +303,196 @@ public class CompanyDetailController extends BaseController {
     /**
      * END FinancialPartner tabView
      */
+    
+    /**
+     * START Commisioner tabView
+     */
+    
+    public void doSelectCompanyCommisioner() {
+        try {
+        	selectedCompanyCommisioner = companyCommisionerService.getEntiyByPK(selectedCompanyCommisioner.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doDeleteCompanyCommisioner() {
+        try {
+        	companyCommisionerService.delete(selectedCompanyCommisioner);
+        	listCompanyCommmisioner = companyCommisionerService.getEntityByCompanyId(selectedCompany.getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete financialPartner", ex);
+        }
+    }
+    
+    public void doAddCommisioner() {
+    	List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyId", companyId);
+        this.showDialogCompanyCommisioner(dataToSend);
+    }
+    
+    public void doUpdateCommisioner() {
+
+        List<String> commisionerId = new ArrayList<>();
+        commisionerId.add(String.valueOf(selectedCompanyCommisioner.getId()));
+
+        List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("commisionerId", commisionerId);
+        dataToSend.put("companyId", companyId);
+        this.showDialogCompanyCommisioner(dataToSend);
+
+    }
+    private void showDialogCompanyCommisioner(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("commisioner_form", options, params);
+    }
+    
+    public void onDialogReturnCommisioner(SelectEvent event) {
+        try {
+        	listCompanyCommmisioner = companyCommisionerService.getEntityByCompanyId(selectedCompany.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    /**
+     * END Commisioner tabView
+     */
+    
+    /**
+     * START Ownership tabView
+     */
+    
+    public void doSelectCompanyOwnership() {
+        try {
+        	selectedCompanyOwnership = companyOwnershipService.getEntiyByPK(selectedCompanyOwnership.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doDeleteCompanyOwnership() {
+        try {
+        	companyOwnershipService.delete(selectedCompanyOwnership);
+        	listCompanyOwnership = companyOwnershipService.getEntityByCompanyId(selectedCompany.getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete financialPartner", ex);
+        }
+    }
+    
+    public void doAddCompanyOwnership() {
+    	List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyId", companyId);
+        this.showDialogCompanyOwnership(dataToSend);
+    }
+    
+    public void doUpdateCompanyOwnership() {
+
+        List<String> ownershipId = new ArrayList<>();
+        ownershipId.add(String.valueOf(selectedCompanyOwnership.getId()));
+
+        List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("ownershipId", ownershipId);
+        dataToSend.put("companyId", companyId);
+        this.showDialogCompanyOwnership(dataToSend);
+
+    }
+    private void showDialogCompanyOwnership(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 300);
+        RequestContext.getCurrentInstance().openDialog("company_ownership_form", options, params);
+    }
+    
+    public void onDialogReturnCompanyOwnership(SelectEvent event) {
+        try {
+        	listCompanyOwnership = companyOwnershipService.getEntityByCompanyId(selectedCompany.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    /**
+     * END OwnerShip tabView
+     */
+    
+    public List<CompanyCommisioner> getListCompanyCommmisioner() {
+        return listCompanyCommmisioner;
+    }
+
+    public void setListCompanyCommmisioner(List<CompanyCommisioner> listCompanyCommmisioner) {
+        this.listCompanyCommmisioner = listCompanyCommmisioner;
+    }
+
+    public CompanyCommisionerService getCompanyCommisionerService() {
+        return companyCommisionerService;
+    }
+
+    public void setCompanyCommisionerService(CompanyCommisionerService companyCommisionerService) {
+        this.companyCommisionerService = companyCommisionerService;
+    }
+
+    public CompanyCommisioner getSelectedCompanyCommisioner() {
+        return selectedCompanyCommisioner;
+    }
+
+    public void setSelectedCompanyCommisioner(CompanyCommisioner selectedCompanyCommisioner) {
+        this.selectedCompanyCommisioner = selectedCompanyCommisioner;
+    }
+
+    public CompanyOwnership getSelectedCompanyOwnership() {
+        return selectedCompanyOwnership;
+    }
+
+    public void setSelectedCompanyOwnership(CompanyOwnership selectedCompanyOwnership) {
+        this.selectedCompanyOwnership = selectedCompanyOwnership;
+    }
+
+    public List<CompanyOwnership> getListCompanyOwnership() {
+        return listCompanyOwnership;
+    }
+
+    public void setListCompanyOwnership(List<CompanyOwnership> listCompanyOwnership) {
+        this.listCompanyOwnership = listCompanyOwnership;
+    }
+
+    public CompanyOwnershipService getCompanyOwnershipService() {
+        return companyOwnershipService;
+    }
+
+    public void setCompanyOwnershipService(CompanyOwnershipService companyOwnershipService) {
+        this.companyOwnershipService = companyOwnershipService;
+    }
+    
+    
 }

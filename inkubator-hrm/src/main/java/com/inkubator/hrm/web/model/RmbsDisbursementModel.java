@@ -1,10 +1,13 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.inkubator.hrm.entity.RmbsApplication;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -17,7 +20,8 @@ public class RmbsDisbursementModel implements Serializable {
     private Date disbursementDate;
     private Date payrollPeriodDate;
     private String description;
-    private List<RmbsApplication> listRmbsApplication;
+    private List<Long> listRmbsApplicationId;
+    private Map<Long, Boolean> selectedIds =  new HashMap<Long, Boolean>();
     
 	public Long getId() {
 		return id;
@@ -49,10 +53,23 @@ public class RmbsDisbursementModel implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<RmbsApplication> getListRmbsApplication() {
-		return listRmbsApplication;
+	public Map<Long, Boolean> getSelectedIds() {
+		return selectedIds;
 	}
-	public void setListRmbsApplication(List<RmbsApplication> listRmbsApplication) {
-		this.listRmbsApplication = listRmbsApplication;
-	}    
+	public void setSelectedIds(Map<Long, Boolean> selectedIds) {
+		this.selectedIds = selectedIds;
+	} 
+	public List<Long> getListRmbsApplicationId() {
+		listRmbsApplicationId = new ArrayList<Long>();
+		for(Map.Entry<Long, Boolean> selected : selectedIds.entrySet()){
+			if(StringUtils.equals(String.valueOf(selected.getValue()), "true")){
+				listRmbsApplicationId.add(selected.getKey());
+			}
+		}
+		return listRmbsApplicationId;
+	}
+	public void setListRmbsApplicationId(List<Long> listRmbsApplicationId) {
+		//do nothing
+	}
+	
 }

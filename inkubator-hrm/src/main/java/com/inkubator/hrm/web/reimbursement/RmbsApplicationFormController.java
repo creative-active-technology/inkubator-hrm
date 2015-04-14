@@ -143,6 +143,10 @@ public class RmbsApplicationFormController extends BaseController {
     	listApprover = null;
 	}
     
+    public String doBack() {
+    	return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
+    }
+    
     public String doSave() {
 	    RmbsApplication rmbsApplication = getEntityFromModel(model);
 	    String path = "";	    	
