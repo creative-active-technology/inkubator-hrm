@@ -28,7 +28,7 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	
 	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;	
 	
-	public void disbursement(List<RmbsApplication> listRmbsApplication, RmbsDisbursement disbursement) throws Exception;
+	public void disbursement(List<Long> listRmbsApplicationId, RmbsDisbursement disbursement) throws Exception;
 	
 
 	//return entity/property
