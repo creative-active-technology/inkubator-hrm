@@ -9,8 +9,10 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.CompanyCommisioner;
-import com.inkubator.hrm.service.CompanyCommisionerService;
+import com.inkubator.hrm.entity.CompanyOwnership;
+import com.inkubator.hrm.service.CompanyOwnershipService;
 import com.inkubator.hrm.web.model.CompanyCommisionerModel;
+import com.inkubator.hrm.web.model.CompanyOwnershipModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -27,14 +29,14 @@ import org.primefaces.context.RequestContext;
  *
  * @author Deni
  */
-@ManagedBean(name = "companyCommisionerFormController")
-@ViewScoped
-public class CompanyCommisionerFormController extends BaseController {
 
-    @ManagedProperty(value = "#{companyCommisionerService}")
-    private CompanyCommisionerService companyCommisionerService;
-    private CompanyCommisioner selected;
-    private CompanyCommisionerModel model;
+@ManagedBean(name = "companyOwnershipFormController")
+@ViewScoped
+public class CompanyOwnershipFormController extends BaseController {
+    @ManagedProperty(value = "#{companyOwnershipService}")
+    private CompanyOwnershipService companyOwnershipService;
+    private CompanyOwnership selected;
+    private CompanyOwnershipModel model;
     private Boolean isUpdate;
 
     @PostConstruct
@@ -43,13 +45,13 @@ public class CompanyCommisionerFormController extends BaseController {
         super.initialization();
         try {
             String companyId = FacesUtil.getRequestParameter("companyId");
-            model = new CompanyCommisionerModel();
+            model = new CompanyOwnershipModel();
             isUpdate = Boolean.FALSE;
-            String commisionerId = FacesUtil.getRequestParameter("commisionerId");
-            if (StringUtils.isNotEmpty(commisionerId)) {
-                CompanyCommisioner commisioner = companyCommisionerService.getEntiyByPK(Long.parseLong(commisionerId));
-                if (commisioner != null) {
-                    model = getModelFromEntity(commisioner);
+            String ownershipId = FacesUtil.getRequestParameter("ownershipId");
+            if (StringUtils.isNotEmpty(ownershipId)) {
+                CompanyOwnership companyOwnership = companyOwnershipService.getEntiyByPK(Long.parseLong(ownershipId));
+                if (companyOwnership != null) {
+                    model = getModelFromEntity(companyOwnership);
                     isUpdate = Boolean.TRUE;
                 }
             }
@@ -64,38 +66,40 @@ public class CompanyCommisionerFormController extends BaseController {
     public void cleanAndExit() {
         isUpdate = null;
         model = null;
-        companyCommisionerService = null;
+        companyOwnershipService = null;
         selected = null;
     }
 
-    private CompanyCommisionerModel getModelFromEntity(CompanyCommisioner entity) {
-        CompanyCommisionerModel modelCommisioner = new CompanyCommisionerModel();
-        modelCommisioner.setId(entity.getId());
-        modelCommisioner.setName(entity.getName());
-        modelCommisioner.setSocialNumber(entity.getSocialNumber());
-        return modelCommisioner;
+    private CompanyOwnershipModel getModelFromEntity(CompanyOwnership entity) {
+        CompanyOwnershipModel companyOwnershipModel = new CompanyOwnershipModel();
+        companyOwnershipModel.setId(entity.getId());
+        companyOwnershipModel.setName(entity.getName());
+        companyOwnershipModel.setNominal(entity.getNominal());
+        companyOwnershipModel.setPercentage(entity.getPercentage());
+        return companyOwnershipModel;
     }
 
-    private CompanyCommisioner getEntityFromViewModel(CompanyCommisionerModel model) {
-        CompanyCommisioner companyCommisioner = new CompanyCommisioner();
+    private CompanyOwnership getEntityFromViewModel(CompanyOwnershipModel model) {
+        CompanyOwnership companyOwnership = new CompanyOwnership();
         if (model.getId() != null) {
-            companyCommisioner.setId(model.getId());
+            companyOwnership.setId(model.getId());
         }
-        companyCommisioner.setName(model.getName());
-        companyCommisioner.setSocialNumber(model.getSocialNumber());
-        companyCommisioner.setCompany(new Company(model.getCompanyId()));
-        return companyCommisioner;
+        companyOwnership.setName(model.getName());
+        companyOwnership.setNominal(model.getNominal());
+        companyOwnership.setPercentage(model.getPercentage());
+        companyOwnership.setCompany(new Company(model.getCompanyId()));
+        return companyOwnership;
     }
 
     public void doSave() {
 
-        CompanyCommisioner companyCommisioner = getEntityFromViewModel(model);
+        CompanyOwnership companyOwnership = getEntityFromViewModel(model);
         try {
             if (isUpdate) {
-                companyCommisionerService.update(companyCommisioner);
+                companyOwnershipService.update(companyOwnership);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                companyCommisionerService.save(companyCommisioner);
+                companyOwnershipService.save(companyOwnership);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -106,27 +110,27 @@ public class CompanyCommisionerFormController extends BaseController {
         }
     }
 
-    public CompanyCommisionerService getCompanyCommisionerService() {
-        return companyCommisionerService;
+    public CompanyOwnershipService getCompanyOwnershipService() {
+        return companyOwnershipService;
     }
 
-    public void setCompanyCommisionerService(CompanyCommisionerService companyCommisionerService) {
-        this.companyCommisionerService = companyCommisionerService;
+    public void setCompanyOwnershipService(CompanyOwnershipService companyOwnershipService) {
+        this.companyOwnershipService = companyOwnershipService;
     }
 
-    public CompanyCommisioner getSelected() {
+    public CompanyOwnership getSelected() {
         return selected;
     }
 
-    public void setSelected(CompanyCommisioner selected) {
+    public void setSelected(CompanyOwnership selected) {
         this.selected = selected;
     }
 
-    public CompanyCommisionerModel getModel() {
+    public CompanyOwnershipModel getModel() {
         return model;
     }
 
-    public void setModel(CompanyCommisionerModel model) {
+    public void setModel(CompanyOwnershipModel model) {
         this.model = model;
     }
 
@@ -137,5 +141,6 @@ public class CompanyCommisionerFormController extends BaseController {
     public void setIsUpdate(Boolean isUpdate) {
         this.isUpdate = isUpdate;
     }
-
+    
+    
 }

@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['commisoner.commisioner']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['commisoner.commisoner_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['ownership.ownership_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['ownership.ownership_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,9 +30,9 @@
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
-                    
+
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        
+
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="nama" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
@@ -41,7 +41,7 @@
                                 <h:outputLabel for="nama" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="nama"  value="#{companyCommisionerFormController.model.name}"
+                                <p:inputText id="nama"  value="#{companyOwnershipFormController.model.name}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -50,22 +50,43 @@
                                 <p:message for="nama"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="noIdentitas" value="#{appmsg['organization.identity_number']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="persentage" value="#{appmsg['global.persentage']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="noIdentitas" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="persentage" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="noIdentitas"  value="#{companyCommisionerFormController.model.socialNumber}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                <p:spinner id="persentage" value="#{companyOwnershipFormController.model.percentage}" size="3" min="0" styleClass="isitext_hrm" required="true">
+                                </p:spinner>
+                                <p:outputLabel value=" %" styleClass="label_hrm"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="noIdentitas"/>
+                                <p:message for="persentage"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="nominal" value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nominal" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <pe:inputNumber id="nominal" value="#{companyOwnershipFormController.model.nominal}"
+                                             required="true" maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
+                                    <!--<f:convertNumber pattern="###,###" type="currency" />-->
+                                </pe:inputNumber>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nominal"/>
                             </p:column>
                         </p:row>
 
@@ -74,7 +95,7 @@
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{companyCommisionerFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{companyOwnershipFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
