@@ -13,7 +13,7 @@ import ch.lambdaj.Lambda;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.RmbsApplicationService;
-import com.inkubator.hrm.web.lazymodel.RmbsApplicationUndisbursedLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.RmbsApplicationUndisbursedActivityLazyDataModel;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -76,7 +76,7 @@ public class RmbsApplicationUndisbursedViewController extends BaseController {
 
 	public LazyDataModel<RmbsApplicationUndisbursedViewModel> getLazyData() {
 		if(lazyData == null){
-			lazyData = new RmbsApplicationUndisbursedLazyDataModel(parameter, rmbsApplicationService);
+			lazyData = new RmbsApplicationUndisbursedActivityLazyDataModel(parameter, rmbsApplicationService);
 		}
 		return lazyData;
 	}

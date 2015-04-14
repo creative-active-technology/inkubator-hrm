@@ -80,6 +80,9 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
         entity.setName(entity.getName());
         entity.setLocation(entity.getLocation());
         entity.setCity(entity.getCity());
+        entity.setPhoneNumber(entity.getPhoneNumber());
+        entity.setFaxNumber(entity.getFaxNumber());
+        entity.setEmailAddress(entity.getEmailAddress());
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.unitKerjaDao.save(entity);
@@ -98,6 +101,9 @@ public class UnitKerjaServiceImpl extends IServiceImpl implements UnitKerjaServi
         unitKerjaUpdate.setLocation(entity.getLocation());
         unitKerjaUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         unitKerjaUpdate.setCity(entity.getCity());
+        unitKerjaUpdate.setPhoneNumber(entity.getPhoneNumber());
+        unitKerjaUpdate.setFaxNumber(entity.getFaxNumber());
+        unitKerjaUpdate.setEmailAddress(entity.getEmailAddress());
         unitKerjaUpdate.setUpdatedOn(new Date());
         this.unitKerjaDao.update(unitKerjaUpdate);
     }

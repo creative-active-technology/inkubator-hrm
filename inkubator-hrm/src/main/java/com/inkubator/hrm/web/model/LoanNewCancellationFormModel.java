@@ -4,14 +4,19 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.google.common.collect.HashBiMap;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,32 +27,55 @@ public class LoanNewCancellationFormModel implements Serializable {
     private Long id;
     private String nomor;
     private Long loanId;
-    private Long loanNewTypeId;
     private Date loanDate;
     private Date expectedDisbursementDate;
+    private Date loanCancellationDate;
     private EmpData empData;
+    private LoanNewSchema loanNewSchema;
+    private LoanNewType loanNewType;
     private LoanNewSchemaListOfEmp loanNewSchemaListOfEmp;
     private LoanNewSchemaListOfType selectedLoanNewSchemaListOfType;
-    private List<LoanNewSchemaListOfType> listLoanNewSchemaListOfType;
-    private List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments;
-    private List<EmpData> listApprover;
-//    private LoanNewSchemaListOfTypeId loanNewSchemaListOfTypeId;
+    private Date firstPaymentDate;
+    private Date lastPaymentDate;
     private String purpose;
     private String description;
-    private Integer rangeFirstInstallmentToDisbursement;
-    private Integer termin; 
+    private Integer termin;
     private String namakaryawan;
     private Double nominalLoan;
+    private Double nominalUsedLoan;
+    private Double totalNominalUsedLoan;
     private Double maxLoanAmount;
     private Double minLoanAmount;
-    private Double usedLoanAmount;
-    private Double availableLoanAmount;
     private Double minimumInstallment;
     private Integer loanPeriod;
     private Boolean isSubsidi;
     private String subsidiType;
     private Double subsidiCicilan;
     private Integer subsidiBunga;
+    private Map<String, Long> mapNomorActivity;
+
+    public LoanNewCancellationFormModel() {
+        this.mapNomorActivity = new HashMap<>();
+
+    }
+
+    public Map<String, Long> getMapNomorActivity() {
+        return mapNomorActivity;
+    }
+
+    public void setMapNomorActivity(Map<String, Long> mapNomorActivity) {
+        this.mapNomorActivity = mapNomorActivity;
+    }
+    
+    
+
+    public Date getLoanCancellationDate() {
+        return loanCancellationDate;
+    }
+
+    public void setLoanCancellationDate(Date loanCancellationDate) {
+        this.loanCancellationDate = loanCancellationDate;
+    }
 
     public Integer getTermin() {
         return termin;
@@ -57,16 +85,6 @@ public class LoanNewCancellationFormModel implements Serializable {
         this.termin = termin;
     }
 
-    public List<EmpData> getListApprover() {
-        return listApprover;
-    }
-
-    public void setListApprover(List<EmpData> listApprover) {
-        this.listApprover = listApprover;
-    }
-    
-    
-    
     public Double getSubsidiCicilan() {
         return subsidiCicilan;
     }
@@ -82,8 +100,6 @@ public class LoanNewCancellationFormModel implements Serializable {
     public void setSubsidiBunga(Integer subsidiBunga) {
         this.subsidiBunga = subsidiBunga;
     }
-    
-    
 
     public String getSubsidiType() {
         return subsidiType;
@@ -92,8 +108,6 @@ public class LoanNewCancellationFormModel implements Serializable {
     public void setSubsidiType(String subsidiType) {
         this.subsidiType = subsidiType;
     }
-    
-    
 
     public Boolean getIsSubsidi() {
         return isSubsidi;
@@ -102,8 +116,6 @@ public class LoanNewCancellationFormModel implements Serializable {
     public void setIsSubsidi(Boolean isSubsidi) {
         this.isSubsidi = isSubsidi;
     }
-    
-    
 
     public String getDescription() {
         return description;
@@ -112,8 +124,7 @@ public class LoanNewCancellationFormModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
     public Double getMinimumInstallment() {
         return minimumInstallment;
     }
@@ -122,44 +133,12 @@ public class LoanNewCancellationFormModel implements Serializable {
         this.minimumInstallment = minimumInstallment;
     }
 
-    public List<LoanNewApplicationInstallment> getListLoanNewApplicationInstallments() {
-        return listLoanNewApplicationInstallments;
-    }
-
-    public void setListLoanNewApplicationInstallments(List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments) {
-        this.listLoanNewApplicationInstallments = listLoanNewApplicationInstallments;
-    }
-
     public Integer getLoanPeriod() {
         return loanPeriod;
     }
 
     public void setLoanPeriod(Integer loanPeriod) {
         this.loanPeriod = loanPeriod;
-    }
-
-    public Double getUsedLoanAmount() {
-        return usedLoanAmount;
-    }
-
-    public void setUsedLoanAmount(Double usedLoanAmount) {
-        this.usedLoanAmount = usedLoanAmount;
-    }
-
-    public Double getAvailableLoanAmount() {
-        return availableLoanAmount;
-    }
-
-    public void setAvailableLoanAmount(Double availableLoanAmount) {
-        this.availableLoanAmount = availableLoanAmount;
-    }
-
-    public List<LoanNewSchemaListOfType> getListLoanNewSchemaListOfType() {
-        return listLoanNewSchemaListOfType;
-    }
-
-    public void setListLoanNewSchemaListOfType(List<LoanNewSchemaListOfType> listLoanNewSchemaListOfType) {
-        this.listLoanNewSchemaListOfType = listLoanNewSchemaListOfType;
     }
 
     public Double getMaxLoanAmount() {
@@ -200,22 +179,6 @@ public class LoanNewCancellationFormModel implements Serializable {
 
     public void setNamakaryawan(String namakaryawan) {
         this.namakaryawan = namakaryawan;
-    }
-
-    public Long getLoanNewTypeId() {
-        return loanNewTypeId;
-    }
-
-    public void setLoanNewTypeId(Long loanNewTypeId) {
-        this.loanNewTypeId = loanNewTypeId;
-    }
-
-    public Integer getRangeFirstInstallmentToDisbursement() {
-        return rangeFirstInstallmentToDisbursement;
-    }
-
-    public void setRangeFirstInstallmentToDisbursement(Integer rangeFirstInstallmentToDisbursement) {
-        this.rangeFirstInstallmentToDisbursement = rangeFirstInstallmentToDisbursement;
     }
 
     public Double getNominalLoan() {
@@ -274,12 +237,60 @@ public class LoanNewCancellationFormModel implements Serializable {
         this.nomor = nomor;
     }
 
-    public Boolean getIsPaginator() {
-        return listLoanNewApplicationInstallments.size() > 11;
+    public Long getId() {
+        return id;
     }
-    
-    public Boolean getIspaginatorLoanApprover() {
-        return listApprover.size() > 11;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LoanNewSchema getLoanNewSchema() {
+        return loanNewSchema;
+    }
+
+    public void setLoanNewSchema(LoanNewSchema loanNewSchema) {
+        this.loanNewSchema = loanNewSchema;
+    }
+
+    public LoanNewType getLoanNewType() {
+        return loanNewType;
+    }
+
+    public void setLoanNewType(LoanNewType loanNewType) {
+        this.loanNewType = loanNewType;
+    }
+
+    public Date getFirstPaymentDate() {
+        return firstPaymentDate;
+    }
+
+    public void setFirstPaymentDate(Date firstPaymentDate) {
+        this.firstPaymentDate = firstPaymentDate;
+    }
+
+    public Date getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(Date lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    public Double getNominalUsedLoan() {
+        return nominalUsedLoan;
+    }
+
+    public void setNominalUsedLoan(Double nominalUsedLoan) {
+        this.nominalUsedLoan = nominalUsedLoan;
+    }
+
+    public Double getTotalNominalUsedLoan() {
+        return totalNominalUsedLoan;
+    }
+
+    public void setTotalNominalUsedLoan(Double totalNominalUsedLoan) {
+        this.totalNominalUsedLoan = totalNominalUsedLoan;
     }
 
 }

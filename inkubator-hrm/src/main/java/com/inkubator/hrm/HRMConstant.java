@@ -365,12 +365,14 @@ public class HRMConstant {
     public static final String LOAN_KODE = "LOAN";
     public static final String REIMBURSEMENT_KODE = "REIM";
     public static final String REIMBURSEMENT_CANCEL_KODE = "REIM-CL";
+    public static final String REIMBURSEMENT_DISBURSED_KODE = "REIM-DI";
     public static final String ACHIEFMENT_KODE = "ACHI";
     public static final String TATIB_KODE = "DEML";
     public static final String TRAVEL_KODE = "TRAV";
     public static final String TERMINASI_KODE = "TERM";
     public static final String OVERTIME_KODE = "OTIM";
     public static final String ANNOUNCEMENT_KODE = "ANNO";
+    public static final String LOAN_CANCELLATION_KODE = "LCAN";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -391,6 +393,7 @@ public class HRMConstant {
     public static final Integer RMBS_STATUS_DISBURSED = 1;
     public static final Integer RMBS_STATUS_CANCELED = 2;
     public static final Integer RMBS_STATUS_REJECTED = 3;
+    public static final Integer RMBS_STATUS_PAID = 5;
     /* END */
 
     /* 

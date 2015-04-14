@@ -93,8 +93,10 @@ public class UnitKerjaDaoImpl extends IDAOImpl<UnitKerja> implements UnitKerjaDa
     @Override
     public UnitKerja getEntityByPkWithCity(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.ne("id", id));
+        criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.setFetchMode("city.province", FetchMode.JOIN);
+        criteria.setFetchMode("city.province.country", FetchMode.JOIN);
         return (UnitKerja) criteria.uniqueResult();
     }
 }

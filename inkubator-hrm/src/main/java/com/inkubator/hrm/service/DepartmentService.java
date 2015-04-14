@@ -32,4 +32,6 @@ public interface DepartmentService extends IService<Department> {
     public List<Department> listChildGetByParentId(Long parentId) throws Exception;
 
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception;
+
+    public void saveOrganisasiLevel(Department department) throws Exception;
 }

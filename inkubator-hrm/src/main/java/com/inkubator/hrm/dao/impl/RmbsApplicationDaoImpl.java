@@ -65,7 +65,7 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 	}
 	
 	@Override
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT approvalActivity.id AS approvalActivityId, " +
     			"rmbsApplication.id AS rmbsApplicationId, " +
@@ -87,19 +87,19 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
     			"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
     			"AND approvalDefinition.name = :appDefinitionName ");    	
-    	selectQuery.append(this.setWhereQueryUndisburseByParam(parameter));
+    	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
     	selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY " + orderable);
         
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
                 	.setResultTransformer(Transformers.aliasToBean(RmbsApplicationUndisbursedViewModel.class));
-    	hbm = this.setValueQueryUndisburseByParam(hbm, parameter);
+    	hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
     	
     	return hbm.list();                
     }
     
     @Override
-    public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter) {
+    public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(*) " +
     			"FROM hrm.approval_activity approvalActivity " +
@@ -113,15 +113,15 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
     	    	"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
     	    	"AND approvalDefinition.name = :appDefinitionName ");    	
-    	selectQuery.append(this.setWhereQueryUndisburseByParam(parameter));
+    	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
     	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
-    	hbm = this.setValueQueryUndisburseByParam(hbm, parameter);
+    	hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
     	
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
-    private String setWhereQueryUndisburseByParam(RmbsApplicationUndisbursedSearchParameter parameter) {
+    private String setWhereQueryUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) {
     	StringBuffer whereQuery = new StringBuffer();    	
     	
         if (StringUtils.isNotEmpty(parameter.getEmpNik())) {
@@ -145,7 +145,7 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
         return whereQuery.toString();
     }
     
-    private Query setValueQueryUndisburseByParam(Query hbm, RmbsApplicationUndisbursedSearchParameter parameter){    	
+    private Query setValueQueryUndisbursedActivityByParam(Query hbm, RmbsApplicationUndisbursedSearchParameter parameter){    	
     	for(String param : hbm.getNamedParameters()){
     		if(StringUtils.equals(param, "empName")){
     			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
@@ -177,6 +177,26 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
 		criteria.setFetchMode("currency", FetchMode.JOIN);
 		return (RmbsApplication) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalUndisbursedByParam() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
 }
