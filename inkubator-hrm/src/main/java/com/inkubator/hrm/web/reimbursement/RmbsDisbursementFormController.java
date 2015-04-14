@@ -9,12 +9,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.hamcrest.Matchers;
+
+import ch.lambdaj.Lambda;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.RmbsDisbursement;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.RmbsApplicationService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.RmbsApplicationUndisbursedLazyDataModel;
 import com.inkubator.hrm.web.model.RmbsDisbursementModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -27,17 +34,29 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class RmbsDisbursementFormController extends BaseController {
 
+	private Boolean isAdministator;
+	
+	private WtPeriode period;
 	private RmbsApplicationUndisbursedLazyDataModel lazyData;
     private RmbsDisbursementModel model;
+    
     @ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));        
         model = new RmbsDisbursementModel();
         model.setDisbursementDate(new Date());
+        try {
+        	period = wtPeriodeService.getEntityByPayrollTypeActive();
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
     }
 
     @PreDestroy
@@ -45,6 +64,9 @@ public class RmbsDisbursementFormController extends BaseController {
     	rmbsApplicationService = null;
         model = null;
         lazyData = null;
+        isAdministator = null;
+        wtPeriodeService = null;
+        period = null;
 	}
 
     public String doBack() {
@@ -54,10 +76,10 @@ public class RmbsDisbursementFormController extends BaseController {
     public String doDisbursement() {
     	RmbsDisbursement disbursement = getEntityFromModel(model);
         try {
-        	rmbsApplicationService.disbursement(model.getListRmbsApplication(), disbursement);
+        	rmbsApplicationService.disbursement(model.getListRmbsApplicationId(), disbursement);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
             		FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/reimbursement/rmbs_disbursement_form.htm?faces-redirect=true";
+            return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
             
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -70,7 +92,6 @@ public class RmbsDisbursementFormController extends BaseController {
 
     private RmbsDisbursement getEntityFromModel(RmbsDisbursementModel m) {
     	RmbsDisbursement entity = new RmbsDisbursement();
-        entity.setCode(m.getCode());
         entity.setDisbursementDate(m.getDisbursementDate());
         entity.setPayrollPeriodDate(m.getPayrollPeriodDate());
         entity.setDescription(m.getDescription());
@@ -103,5 +124,29 @@ public class RmbsDisbursementFormController extends BaseController {
 	public void setRmbsApplicationService(RmbsApplicationService rmbsApplicationService) {
 		this.rmbsApplicationService = rmbsApplicationService;
 	}
-    
+
+	public Boolean getIsAdministator() {
+		return isAdministator;
+	}
+
+	public void setIsAdministator(Boolean isAdministator) {
+		this.isAdministator = isAdministator;
+	}
+
+	public WtPeriode getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(WtPeriode period) {
+		this.period = period;
+	}
+
+	public WtPeriodeService getWtPeriodeService() {
+		return wtPeriodeService;
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+	
 }
