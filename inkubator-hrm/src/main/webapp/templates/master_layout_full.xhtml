@@ -377,8 +377,14 @@
                                                 <p:submenu label="#{appmsg['personalia.others']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['admonitiontype.admonition_type']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['admonitiontype.admonition_type']}" url="/protected/personalia/admonition_type_view.htm" /> 
                                                     <p:menuitem value="#{appmsg['terminationtype.termination_type']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['terminationtype.termination_type']}" url="/protected/personalia/termination_type_view.htm" />
-                                                    <p:menuitem value="#{appmsg['reimbursementschema.reimbursement_schema']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursementschema.reimbursement_schema']}" url="/protected/personalia/reimbursment_schema_view.htm" />
-                                                    <p:menuitem value="#{appmsg['loanschema.loan']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['loanschema.loan']}" url="/protected/personalia/loan_schema_view.htm" />
+                                                </p:submenu>
+                                                <p:submenu label="#{appmsg['menu.recruitment']}"  styleClass="menu_child" >
+                                                    <p:menuitem value="#{appmsg['menu.adv_source_category']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.adv_source_category']}" url="#" /> 
+                                                    <p:menuitem value="#{appmsg['menu.advertising_media']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['advertising_media']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.selection_type']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.selection_type_series']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_series']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.selection_type_library']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_library']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.man_power_plan_period']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.man_power_plan_period']}" url="#" />
                                                 </p:submenu>
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['payroll.payroll_conf']}"  styleClass="menu_child" >
@@ -394,7 +400,7 @@
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.organisation_setting']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="#{appmsg['organization.organization_profile']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_profile']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
-                                            <p:menuitem value="#{appmsg['organization.organization_level']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_level']}" url="#" icon="img-company"/>
+                                            <p:menuitem value="#{appmsg['organization.organization_level']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_level']}"  icon="img-company"  url="/protected/organisation/organiztion_level.htm"/>
                                             <p:menuitem value="#{appmsg['organization.job_grade_category']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.job_grade_category']}" url="/protected/organisation/position_view.htm" icon="img-company"/>
                                             <p:menuitem value="#{appmsg['menu.job_grade']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.job_grade']}" url="/protected/organisation/function_group_view.htm" icon="img-function-group"/> 
                                             <p:menuitem value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" icon="img-klasifikasiKerja" style="font-size: 12px !important;color: #003366" title="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" url="/protected/reference/job_family_view.htm" /> 

@@ -35,6 +35,9 @@ public class UnitKerja implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private City city;
+    private String phoneNumber;
+    private String faxNumber;
+    private String emailAddress;
     private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
 
     public UnitKerja() {
@@ -44,7 +47,7 @@ public class UnitKerja implements java.io.Serializable {
         this.id = id;
     }
 
-    public UnitKerja(long id, String code, String name, String location, String createdBy, Date createdOn, String updatedBy, Date updatedOn,City city) {
+    public UnitKerja(long id, String code, String name, String location, String createdBy, Date createdOn, String updatedBy, Date updatedOn,City city, String phoneNumber, String faxNumber, String emailAddress) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -54,6 +57,9 @@ public class UnitKerja implements java.io.Serializable {
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
         this.city = city;
+        this.phoneNumber = phoneNumber;
+        this.faxNumber = faxNumber;
+        this.emailAddress = emailAddress;
     }
 
     @Id
@@ -160,4 +166,32 @@ public class UnitKerja implements java.io.Serializable {
     public void setCity(City city) {
         this.city = city;
     }
+
+    @Column(name = "phone_number")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Column(name = "faxNumber")
+    public String getFaxNumber() {
+        return faxNumber;
+    }
+
+    public void setFaxNumber(String faxNumber) {
+        this.faxNumber = faxNumber;
+    }
+
+    @Column(name = "email")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+    
 }

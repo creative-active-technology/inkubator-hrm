@@ -275,8 +275,7 @@ public class CompanyServiceImpl extends IServiceImpl implements CompanyService {
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Company> getAllData() throws Exception {
-        return companyDao.getAllData();
-        
+        return this.companyDao.getAllData();
     }
 
     @Override

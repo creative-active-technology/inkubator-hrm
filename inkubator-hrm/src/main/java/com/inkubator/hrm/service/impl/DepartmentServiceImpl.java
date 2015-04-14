@@ -7,9 +7,12 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.CompanyDao;
 import com.inkubator.hrm.dao.CostCenterDeptDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.UnregDepartementDao;
+import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.CostCenterDept;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.UnregDepartement;
@@ -17,9 +20,13 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -41,6 +48,8 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     private CostCenterDeptDao costCenterDeptDao;
     @Autowired
     private UnregDepartementDao unregDepartementDao;
+    @Autowired
+    private CompanyDao companyDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -209,7 +218,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Department> getAllData() {
         return this.departmentDao.getAllData();
     }
@@ -264,8 +273,89 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         for (UnregDepartement unregDepartement : this.unregDepartementDao.getAllDataByUnregSalaryId(unregSalaryId)) {
             departments.add(unregDepartement.getDepartment());
         }
-     
+
         department.setListDepartments(departments);
         return department;
     }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public Department getByLevelOneAndCompany(String orgLevel, Long companyId) throws Exception {
+        Department department = this.departmentDao.getByLevelOneAndCompany(orgLevel, companyId);
+
+        if (department == null) {
+            department = new Department();
+            department.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            Company company = companyDao.getEntiyByPK(companyId);
+            department.setCompany(company);
+            department.setDepartmentCode("ROOT-" + company.getId());
+            department.setDepartmentName("ROOT - " + company.getId());
+            department.setIsActive(Boolean.TRUE);
+            department.setOrgLevel("ROOT");
+            department.setCreatedBy(UserInfoUtil.getUserName());
+            department.setCreatedOn(new Date());
+            departmentDao.save(department);
+            System.out.println(" heeheh save departement");
+            Department d = new Department();
+            d.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            d.setCompany(company);
+            d.setDepartmentCode(company.getCode() + " - BD");
+            d.setDepartmentName("Board of director");
+            d.setDepartment(department);
+            d.setIsActive(Boolean.TRUE);
+            d.setOrgLevel(HRMConstant.ORGANISASI);
+            d.setCreatedBy(UserInfoUtil.getUserName());
+            d.setCreatedOn(new Date());
+            departmentDao.save(d);
+
+        }
+
+        return department;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<Department> listChildGetByParentId(Long parentId) throws Exception {
+        return this.departmentDao.listChildGetByParentId(parentId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception {
+        TreeNode root;
+        Department endPointDepartment = departmentDao.getEntiyByPK(Long.parseLong(param.substring(1)));
+        System.out.println(" End postny nya adalah "+endPointDepartment);
+        List<Department> data = new ArrayList<>();
+        data.add(endPointDepartment);
+        gerParent(endPointDepartment, data);
+        Collections.reverse(data);
+        Department master = data.get(0);
+        master.getCompany().getName();// digunakan untuk di tampilkan di xhtml dan tidak mengguakan fetch karena cuma perlu nama saja
+        data.remove(0);
+        root = new DefaultTreeNode(master, null);
+        int i = 1;
+        TreeNode before = new DefaultTreeNode();
+        for (Department data1 : data) {
+            if (i == 1) {
+                TreeNode node = new DefaultTreeNode(data1, root);
+                node.setExpanded(true);
+                before = node;
+            } else {
+                TreeNode node = new DefaultTreeNode(data1, before);
+                node.setExpanded(true);
+                before = node;
+            }
+            i++;
+        }
+        return root;
+    }
+
+    private void gerParent(Department department, List<Department> list) {
+        Department data = department.getDepartment();
+        list.add(data);
+        if (data.getDepartment() != null) {
+            gerParent(data, list);
+        }
+    }
+
 }

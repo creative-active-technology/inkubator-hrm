@@ -394,4 +394,12 @@ public class HRMConstant {
     public static final Integer RMBS_STATUS_REJECTED = 3;
     /* END */
 
+    /* 
+     * Constant for ORGANISASI LEVEL */
+    public static final String ORGANISASI = "ORG";
+    public static final String DEPARTMENT = "DEP";
+    public static final String DIVISI = "DIV";
+    public static final String DIREKTORAT = "DIR";
+    public static final String SEKRETARIAT = "SKR";
+
 }

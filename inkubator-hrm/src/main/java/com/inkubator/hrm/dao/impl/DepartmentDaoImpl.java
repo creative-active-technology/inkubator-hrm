@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "departmentDao")
 @Lazy
-public class DepartmentDaoImpl extends IDAOImpl<Department> implements DepartmentDao{
+public class DepartmentDaoImpl extends IDAOImpl<Department> implements DepartmentDao {
 
     @Override
     public Class<Department> getEntityClass() {
@@ -55,13 +56,13 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.add(Restrictions.like("departmentCode", code, MatchMode.ANYWHERE));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     private void doSearchDepartmentByParam(DepartmentSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getName()!=null) {
-        	criteria.add(Restrictions.like("departmentName", searchParameter.getName(), MatchMode.START));
-        } 
-        if(searchParameter.getCode()!=null){
-        	criteria.add(Restrictions.like("departmentCode", searchParameter.getCode(), MatchMode.START));
+        if (searchParameter.getName() != null) {
+            criteria.add(Restrictions.like("departmentName", searchParameter.getName(), MatchMode.START));
+        }
+        if (searchParameter.getCode() != null) {
+            criteria.add(Restrictions.like("departmentCode", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
 //        criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
@@ -75,11 +76,33 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public Department getEntityByPkWithDetail(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("id", id));
-		criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
-		return (Department) criteria.uniqueResult();
-	}
+    @Override
+    public Department getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
+        return (Department) criteria.uniqueResult();
+    }
+
+    @Override
+    public Department getByLevelOneAndCompany(String orgLevel, Long companyId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("company", "co", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("orgLevel", orgLevel));
+        criteria.add(Restrictions.eq("co.id", companyId));
+        return (Department) criteria.uniqueResult();
+
+    }
+
+    @Override
+    public List<Department> listChildGetByParentId(Long parentId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("department", "dp", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("dp.id", parentId));
+        criteria.setFetchMode("departments", FetchMode.JOIN);
+        criteria.setFetchMode("departments.department", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return criteria.list();
+
+    }
 }
