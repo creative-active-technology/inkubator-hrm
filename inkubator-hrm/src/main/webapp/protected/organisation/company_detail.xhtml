@@ -13,159 +13,159 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center"> 
-            	<p:growl id="growlCompanyDetailId" globalOnly="true" showDetail="true"/>              
+                <p:growl id="growlCompanyDetailId" globalOnly="true" showDetail="true"/>              
                 <h:form id="formCompanyDetailId">
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid columns="2">
-	                        <p:graphicImage library="images" name="company.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['organization.organization']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['organization.organization_data_from_reference']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.organization_code']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.code}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.address}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.organization_business_type']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.businessType.name}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.country.countryName}"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column style="width: 30%">
-		                        	<p:outputLabel value="#{companyDetailController.selectedCompany.companyLogoName}" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}"/> 
-	                                &nbsp;&nbsp;
-	                                <p:commandLink rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                            <p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" /> 
-	                                    <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
-	                                </p:commandLink>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.province.provinceName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.name}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.city.cityName}"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.official_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.officialName}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.postalCode}"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.legal_no']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.legalNo}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.phone}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.company_level']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.level}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.fax}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.tax_country']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.taxCountry.countryName}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.vision']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.vision}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.tax_account_number']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.taxAccountNumber}"/>
-	                            </p:column>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['organization.mision']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 30%">
-	                            	<p:outputLabel value="#{companyDetailController.selectedCompany.mision}"/>
-	                            </p:column>
-	                        </p:row>	                               
-	                 	</p:panelGrid>
-	                 	
-	                 	<p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
-	                 		<p:tab id="tabBankId" title="#{appmsg['bank.bank']}" >
-	                 			<p:dataTable  id="tableBankId" var="bankData"  value="#{companyDetailController.companyBankAccounts}" lazy="false" paginator="false"
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="company.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['organization.organization']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['organization.organization_data_from_reference']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.organization_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.code}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.address}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.organization_business_type']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.businessType.name}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.city.province.country.countryName}"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.organization_logo']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.companyLogoName}" rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}"/> 
+                                    &nbsp;&nbsp;
+                                    <p:commandLink rendered="#{not empty companyDetailController.selectedCompany.companyLogoName}" ajax="false" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{imageCompanyStreamerController.companyLogo}" /> 
+                                        <f:param name="companyId" value="#{companyDetailController.selectedCompany.id}" />
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.city.province.provinceName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.organization_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.name}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.city.cityName}"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.official_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.officialName}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.postalCode}"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.legal_no']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.legalNo}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.phone}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.company_level']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.level}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.fax}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.tax_country']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.taxCountry.countryName}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.vision']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.vision}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.tax_account_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.taxAccountNumber}"/>
+                                </p:column>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organization.mision']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 30%">
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.mision}"/>
+                                </p:column>
+                            </p:row>	                               
+                        </p:panelGrid>
+
+                        <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+                            <p:tab id="tabBankId" title="#{appmsg['bank.bank']}" >
+                                <p:dataTable  id="tableBankId" var="bankData"  value="#{companyDetailController.companyBankAccounts}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
                                     <f:facet name="header">  
                                         <h:outputText value="#{appmsg['bank.list_of_bank']}"/>
@@ -205,7 +205,7 @@
                                             <h:outputText value="#{appmsg['global.default']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bankData.isDefault}">
-                                        	<f:converter converterId="booleanMessageConverter"/>
+                                            <f:converter converterId="booleanMessageConverter"/>
                                         </h:outputLabel>
                                     </p:column>
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
@@ -228,10 +228,10 @@
                                         <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnCompanyBankAccount}"  update="tableBankId,:growlCompanyDetailId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
-	                 		</p:tab>
-	                 		
-	                 		<p:tab id="tabFinancialPartnerId" title="#{appmsg['organization.financial_other_partner']}" >
-	                 			<p:dataTable  id="tableFinancialPartnerId" var="financialPartnerData"  value="#{companyDetailController.financialPartners}" lazy="false" paginator="false"
+                            </p:tab>
+
+                            <p:tab id="tabFinancialPartnerId" title="#{appmsg['organization.financial_other_partner']}" >
+                                <p:dataTable  id="tableFinancialPartnerId" var="financialPartnerData"  value="#{companyDetailController.financialPartners}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
                                     <f:facet name="header">  
                                         <h:outputText value="#{appmsg['organization.list_of_financial_partner']}"/>
@@ -253,7 +253,7 @@
                                             <h:outputText value="#{appmsg['organization.service_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{financialPartnerData.financialNonBanking.financialService}">
-                                        	<f:converter converterId="financialServiceConverter"/>
+                                            <f:converter converterId="financialServiceConverter"/>
                                         </h:outputLabel>
                                     </p:column>
                                     <p:column style="width: 20%">
@@ -294,19 +294,67 @@
                                         <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnFinancialPartner}"  update="tableFinancialPartnerId,:growlCompanyDetailId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
-	                 		</p:tab>
-	                 	</p:tabView>	  
-                                                        
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{companyDetailController.doUpdate()}" immediate="true"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{companyDetailController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+                            </p:tab>
+                            
+                            <p:tab id="tabCommisioner" title="Commisioner" >
+                                <p:dataTable  id="tableCommisioner" var="data"  value="#{companyDetailController.listCompanyCommmisioner}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['organization.list_of_financial_partner']}"/>
+                                    </f:facet>
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="Nama"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.name}"/>
+                                    </p:column>
+                                    <p:column style="width: 10%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No. Identitas"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.socialNumber}">
+                                            <f:converter converterId="financialServiceConverter"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogFinancialPartnerConfirmId" 
+                                                         action="#{companyDetailController.doSelectFinancialPartner()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmFinancialPartner.show()">
+                                            <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{companyDetailController.doUpdateFinancialPartner()}" >
+                                            <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
+                                            <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnFinancialPartner}"  update="tableCommisioner,:growlCompanyDetailId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{companyDetailController.doAddCommisioner()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{companyDetailController.onDialogReturnCommisioner}"  update="tableCommisioner,:growlCompanyDetailId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:tabView>	  
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{companyDetailController.doUpdate()}" immediate="true"
+                                             style="margin-right: 5px" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{companyDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
-                
+
                 <!-- START DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmCompanyBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -332,7 +380,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyBankAccount.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                
+
                 <p:dialog widgetVar="dialogConfirmFinancialPartner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
@@ -358,7 +406,7 @@
                     </div>
                 </p:dialog>
                 <!-- END DIALOG -->
-                
+
             </ui:define>
         </ui:composition>
     </h:body>

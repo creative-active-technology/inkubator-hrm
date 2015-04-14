@@ -25,8 +25,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.CompanyBankAccount;
+import com.inkubator.hrm.entity.CompanyCommisioner;
 import com.inkubator.hrm.entity.FinancialPartner;
 import com.inkubator.hrm.service.CompanyBankAccountService;
+import com.inkubator.hrm.service.CompanyCommisionerService;
 import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.hrm.service.FinancialPartnerService;
 import com.inkubator.webcore.controller.BaseController;
@@ -46,12 +48,15 @@ public class CompanyDetailController extends BaseController {
     private FinancialPartner selectedFinancialPartner;
     private List<CompanyBankAccount> companyBankAccounts;
     private List<FinancialPartner> financialPartners;
+    private List<CompanyCommisioner> listCompanyCommmisioner;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
     @ManagedProperty(value = "#{companyBankAccountService}")
     private CompanyBankAccountService companyBankAccountService;
     @ManagedProperty(value = "#{financialPartnerService}")
     private FinancialPartnerService financialPartnerService;
+    @ManagedProperty(value = "#{companyCommisionerService}")
+    private CompanyCommisionerService companyCommisionerService;
 
     @PostConstruct
     @Override
@@ -62,6 +67,7 @@ public class CompanyDetailController extends BaseController {
             selectedCompany = companyService.getEntityByPKWithDetail(Long.parseLong(id.substring(1))); 
             companyBankAccounts = companyBankAccountService.getAllDataByCompanyId(selectedCompany.getId());
             financialPartners = financialPartnerService.getAllDataByCompanyId(selectedCompany.getId());
+            listCompanyCommmisioner = companyCommisionerService.getEntityByCompanyId(selectedCompany.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -77,6 +83,8 @@ public class CompanyDetailController extends BaseController {
         selectedCompanyBankAccount = null;
         selectedFinancialPartner = null;
         companyBankAccountService = null;
+        listCompanyCommmisioner = null;
+        companyCommisionerService = null;
     }    
 
 	public Company getSelectedCompany() {
@@ -283,5 +291,54 @@ public class CompanyDetailController extends BaseController {
     /**
      * END FinancialPartner tabView
      */
+    
+    /**
+     * START Commisioner tabView
+     */
+    
+    public void doAddCommisioner() {
+    	List<String> companyId = new ArrayList<>();
+        companyId.add(String.valueOf(selectedCompany.getId()));
 
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("companyId", companyId);
+        this.showDialogCompanyCommisioner(dataToSend);
+    }
+    
+    private void showDialogCompanyCommisioner(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 350);
+        RequestContext.getCurrentInstance().openDialog("commisioner_form", options, params);
+    }
+    
+    public void onDialogReturnCommisioner(SelectEvent event) {
+        try {
+        	listCompanyCommmisioner = companyCommisionerService.getEntityByCompanyId(selectedCompany.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public List<CompanyCommisioner> getListCompanyCommmisioner() {
+        return listCompanyCommmisioner;
+    }
+
+    public void setListCompanyCommmisioner(List<CompanyCommisioner> listCompanyCommmisioner) {
+        this.listCompanyCommmisioner = listCompanyCommmisioner;
+    }
+
+    public CompanyCommisionerService getCompanyCommisionerService() {
+        return companyCommisionerService;
+    }
+
+    public void setCompanyCommisionerService(CompanyCommisionerService companyCommisionerService) {
+        this.companyCommisionerService = companyCommisionerService;
+    }
+    
+    
 }
