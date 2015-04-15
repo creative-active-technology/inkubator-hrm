@@ -739,7 +739,11 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void disbursement(List<RmbsApplication> listRmbsApplication, RmbsDisbursement disbursement) throws Exception {
+	public void disbursement(List<Long> listRmbsApplicationId, RmbsDisbursement disbursement) throws Exception {
+		
+		if(listRmbsApplicationId.isEmpty()){
+			throw new BussinessException("rmbs_disbursement.error_no_application_selected");
+		}
 		
 		String code = this.generateDisbursedReimbursementNumber();
 		disbursement.setCode(code);
@@ -747,8 +751,8 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		disbursement.setCreatedOn(new Date());
 		rmbsDisbursementDao.save(disbursement);
 		
-		for(RmbsApplication e : listRmbsApplication){
-			RmbsApplication application = rmbsApplicationDao.getEntiyByPK(e.getId());
+		for(Long id : listRmbsApplicationId){
+			RmbsApplication application = rmbsApplicationDao.getEntiyByPK(id);
 			if(application.getApplicationStatus() != HRMConstant.RMBS_STATUS_UNDISBURSED){
 				throw new BussinessException("rmbs_disbursement.error_application_status_is_not_valid");
 			}
@@ -763,8 +767,6 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 			rmbsApplicationDisbursement.setRmbsApplication(application);
 			rmbsApplicationDisbursement.setRmbsDisbursement(disbursement);
 			rmbsApplicationDisbursementDao.save(rmbsApplicationDisbursement);
-		}
+		}		
 	}
-	
-
 }

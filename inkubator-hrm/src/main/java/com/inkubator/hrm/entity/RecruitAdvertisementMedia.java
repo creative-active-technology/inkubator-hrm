@@ -162,3 +162,4 @@ public class RecruitAdvertisementMedia  implements java.io.Serializable {
 
 
 }
+

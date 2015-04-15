@@ -52,6 +52,7 @@ public class Department implements java.io.Serializable {
     private Boolean isActive;
     private Set<Department> departments = new HashSet<>(0);
     private Set<DepartementUnitLocation> departementUnitLocations = new HashSet<>(0);
+    private List<UnitKerja> listUnit = new ArrayList<>(0);
 
     public Department() {
     }
@@ -315,4 +316,14 @@ public class Department implements java.io.Serializable {
     public void setDepartementUnitLocations(Set<DepartementUnitLocation> departementUnitLocations) {
         this.departementUnitLocations = departementUnitLocations;
     }
+
+    @Transient
+    public List<UnitKerja> getListUnit() {
+        return listUnit;
+    }
+
+    public void setListUnit(List<UnitKerja> listUnit) {
+        this.listUnit = listUnit;
+    }
+
 }
