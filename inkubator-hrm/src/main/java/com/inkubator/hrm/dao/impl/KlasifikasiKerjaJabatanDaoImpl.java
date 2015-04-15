@@ -13,6 +13,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository(value = "klasifikasiKerjaJabatanDao")
+@Lazy
 public class KlasifikasiKerjaJabatanDaoImpl extends IDAOImpl<KlasifikasiKerjaJabatan> implements KlasifikasiKerjaJabatanDao {
 
     @Override

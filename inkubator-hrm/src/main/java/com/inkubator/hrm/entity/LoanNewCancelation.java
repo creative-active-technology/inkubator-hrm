@@ -5,7 +5,10 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,17 +21,20 @@ import javax.persistence.Version;
 @Entity
 @Table(name="loan_new_cancelation"
     ,catalog="hrm"
-    , uniqueConstraints = {@UniqueConstraint(columnNames="cancelation_code"), @UniqueConstraint(columnNames="approval_activity_number")} 
+    , uniqueConstraints = {@UniqueConstraint(columnNames="loan_cancellation_number"), @UniqueConstraint(columnNames="approval_activity_number")} 
 )
 public class LoanNewCancelation  implements java.io.Serializable {
 
 
      private long id;
      private Integer version;
-     private String cancelationCode;
-     private long loanNewApplicationId;
+     private String loanCancellationNumber;
+     private String loanNumber;
      private String approvalActivityNumber;
      private Date cancelationDate;
+     private EmpData empData;
+     private LoanNewSchema loanNewSchema;
+     private LoanNewType loanNewType;
      private String reason;
      private Date createdOn;
      private String createdBy;
@@ -39,15 +45,15 @@ public class LoanNewCancelation  implements java.io.Serializable {
     }
 
 	
-    public LoanNewCancelation(long id, String cancelationCode, long loanNewApplicationId) {
+    public LoanNewCancelation(long id, String loanCancellationNumber, String loanNumber) {
         this.id = id;
-        this.cancelationCode = cancelationCode;
-        this.loanNewApplicationId = loanNewApplicationId;
+        this.loanCancellationNumber = loanCancellationNumber;
+        this.loanNumber = loanNumber;
     }
-    public LoanNewCancelation(long id, String cancelationCode, long loanNewApplicationId, String approvalActivityNumber, Date cancelationDate, String reason, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
+    public LoanNewCancelation(long id, String loanCancellationNumber, String loanNumber, String approvalActivityNumber, Date cancelationDate, String reason, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
        this.id = id;
-       this.cancelationCode = cancelationCode;
-       this.loanNewApplicationId = loanNewApplicationId;
+       this.loanCancellationNumber = loanCancellationNumber;
+       this.loanNumber = loanNumber;
        this.approvalActivityNumber = approvalActivityNumber;
        this.cancelationDate = cancelationDate;
        this.reason = reason;
@@ -78,28 +84,25 @@ public class LoanNewCancelation  implements java.io.Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
     
-    @Column(name="cancelation_code", unique=true, nullable=false, length=10)
-    public String getCancelationCode() {
-        return this.cancelationCode;
-    }
-    
-    public void setCancelationCode(String cancelationCode) {
-        this.cancelationCode = cancelationCode;
+    @Column(name="loan_cancellation_number", unique=true, nullable=false, length=45)
+    public String getLoanCancellationNumber() {
+        return loanCancellationNumber;
     }
 
-    
-    @Column(name="loan_new_application_id", nullable=false)
-    public long getLoanNewApplicationId() {
-        return this.loanNewApplicationId;
+    public void setLoanCancellationNumber(String loanCancellationNumber) {
+        this.loanCancellationNumber = loanCancellationNumber;
     }
     
-    public void setLoanNewApplicationId(long loanNewApplicationId) {
-        this.loanNewApplicationId = loanNewApplicationId;
+    @Column(name="loan_number", nullable=false, length=45)
+    public String getLoanNumber() {
+        return loanNumber;
     }
 
-    
+    public void setLoanNumber(String loanNumber) {
+        this.loanNumber = loanNumber;
+    }
+
     @Column(name="approval_activity_number", unique=true, length=45)
     public String getApprovalActivityNumber() {
         return this.approvalActivityNumber;
@@ -119,6 +122,37 @@ public class LoanNewCancelation  implements java.io.Serializable {
         this.cancelationDate = cancelationDate;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="emp_data_id", nullable=false)
+    public EmpData getEmpData() {
+        return empData;
+    }
+
+    public void setEmpData(EmpData empData) {
+        this.empData = empData;
+    }
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="loan_new_schema_id", nullable=false)
+    public LoanNewSchema getLoanNewSchema() {
+        return loanNewSchema;
+    }
+
+    public void setLoanNewSchema(LoanNewSchema loanNewSchema) {
+        this.loanNewSchema = loanNewSchema;
+    }
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="loan_new_type_id", nullable=false)
+    public LoanNewType getLoanNewType() {
+        return loanNewType;
+    }
+
+    public void setLoanNewType(LoanNewType loanNewType) {
+        this.loanNewType = loanNewType;
+    }
+    
+    
     
     @Column(name="reason")
     public String getReason() {

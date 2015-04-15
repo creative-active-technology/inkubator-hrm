@@ -18,6 +18,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Repository;
  * @author Deni Husni FR,rizkykojek
  */
 @Repository(value = "golonganJabatanDao")
+@Lazy
 public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements GolonganJabatanDao {
 
     @Override

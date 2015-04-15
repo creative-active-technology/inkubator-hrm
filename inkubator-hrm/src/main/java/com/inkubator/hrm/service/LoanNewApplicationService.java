@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import java.util.Date;
 
@@ -23,9 +24,13 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
 
     public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef) throws Exception;
 
-    public Long getCurrentMaxId();
+    public Long getCurrentMaxId() throws Exception;
 
     public String saveWithApproval(LoanNewApplication entity) throws Exception;
 
     public String saveWithRevised(LoanNewApplication entity, Long approvalActivityId, String activityNumber) throws Exception;
+    
+    public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewSchemaId(Long empDataId, Long loanNewSchemaId) throws Exception;
+    
+    public void cancelLoanApplicationAndSaveToLoanNewCancellation(LoanNewCancellationFormModel loanNewCancellationFormModel) throws Exception;
 }

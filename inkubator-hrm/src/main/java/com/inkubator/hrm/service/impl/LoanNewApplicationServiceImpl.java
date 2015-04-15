@@ -20,6 +20,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewCancelationDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -29,6 +30,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LoanNewCancelation;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
@@ -37,6 +39,7 @@ import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -82,6 +85,8 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private LoanNewCancelationDao LoanNewCancelationDao;
 
     @Override
     public LoanNewApplication getEntiyByPK(String string) throws Exception {
@@ -437,7 +442,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getCurrentMaxId() {
+    public Long getCurrentMaxId() throws Exception {
         return this.loanNewApplicationDao.getCurrentMaxId();
     }
 
@@ -601,5 +606,41 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         // if no rule violation found, return yes
         return "yes";
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewSchemaId(Long empDataId, Long loanNewSchemaId) throws Exception {
+        return this.loanNewApplicationDao.getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewSchemaId(empDataId, loanNewSchemaId);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void cancelLoanApplicationAndSaveToLoanNewCancellation(LoanNewCancellationFormModel loanNewCancellationFormModel) throws Exception {
+        Long actvityId = loanNewCancellationFormModel.getLoanPendingActivity();
+        ApprovalActivity approvalActivity = approvalActivityDao.getEntityByPkWithDetail(actvityId);
+        String activityNumber = approvalActivity.getActivityNumber();
+        
+        
+        //Set Loan Approval Activity status = Cancelled
+        approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
+        approvalActivityDao.update(approvalActivity);
+        
+        //Save LoanNewCancellation log
+        LoanNewCancelation loanNewCancelation = new LoanNewCancelation();
+        loanNewCancelation.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        loanNewCancelation.setApprovalActivityNumber(activityNumber);
+        loanNewCancelation.setEmpData(empDataDao.getEntiyByPK(loanNewCancellationFormModel.getEmpData().getId()));
+        loanNewCancelation.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewSchema().getId()));
+        loanNewCancelation.setLoanNewType(loanNewTypeDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewType().getId()));
+        loanNewCancelation.setLoanCancellationNumber(loanNewCancellationFormModel.getCancellationNumber());
+        loanNewCancelation.setLoanNumber(loanNewCancellationFormModel.getLoanNumber());
+        loanNewCancelation.setReason(loanNewCancellationFormModel.getReasonCancellation());
+        loanNewCancelation.setCancelationDate(loanNewCancellationFormModel.getLoanCancellationDate());
+        loanNewCancelation.setCreatedOn(new Date());
+        loanNewCancelation.setCreatedBy(UserInfoUtil.getUserName());
+        
+        LoanNewCancelationDao.save(loanNewCancelation);
+        
     }
 }
