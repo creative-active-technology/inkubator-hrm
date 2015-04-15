@@ -85,7 +85,7 @@ public class DepartmentHirarkiViewController extends BaseController {
                     createNodes(dep, node);
                 }
             }
-            System.out.println(" heere master");
+            
         } else {
             List<Department> data1 = departmentService.listChildGetByParentId(department.getId());
             for (Department dep2 : data1) {
@@ -95,7 +95,7 @@ public class DepartmentHirarkiViewController extends BaseController {
                     createNodes(dep2, node);
                 }
             }
-            System.out.println(" heere anak");
+          
         }
         return root;
     }
@@ -143,23 +143,17 @@ public class DepartmentHirarkiViewController extends BaseController {
     }
 
     public String doAdd() {
-        System.out.println(" rediererer lho");
         Department department = (Department) selectedNode.getData();
-
         return "/protected/organisation/organiztion_level_form.htm?faces-redirect=true&execution=a" + department.getId();
     }
 
     public String doEdit() {
-        System.out.println(" rediererer lho");
         Department department = (Department) selectedNode.getData();
-
         return "/protected/organisation/organiztion_level_form.htm?faces-redirect=true&execution=e" + department.getId();
     }
 
     public String doDetil() {
-        System.out.println(" rediererer lho");
         Department department = (Department) selectedNode.getData();
-
         return "/protected/organisation/organiztion_level_form.htm?faces-redirect=true&execution=d" + department.getId();
     }
 

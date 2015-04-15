@@ -24,6 +24,7 @@ public class OrganisasiLevelModel implements Serializable  {
     private Boolean isNextHirarki;
     private Boolean isActive;
     private DualListModel<UnitKerja> dualListModel=new DualListModel<>();
+    private String companyCode;
 
     public Long getDepartemetId() {
         return departemetId;
@@ -103,6 +104,14 @@ public class OrganisasiLevelModel implements Serializable  {
 
     public void setDualListModel(DualListModel<UnitKerja> dualListModel) {
         this.dualListModel = dualListModel;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
     
     

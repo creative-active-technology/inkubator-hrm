@@ -16,22 +16,22 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlCompanyFormId" globalOnly="true" showDetail="true"/>                
-                <h:form id="formCompanyFormId">
-                    <p:focus context="formCompanyFormId"/>
+                <p:growl id="growlOrganisasiLevelFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="organisasiLevelFormId">
+                    <p:focus context="organisasiLevelFormId"/>
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Organisasi Level Form" styleClass="header_big" />
-                                    <p:outputLabel value="Data Organisasi Level dari Organisasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['org_level_organization_level_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['org_level.organization_level_data_from_organization']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                         <p:treeTable id="tree" value="#{departmentHirarkiFormController.root}" style="width: 100%" var="dep"  >
-                            <p:column  headerText="Organisasi Utama : #{departmentHirarkiFormController.companyName}" style="text-align: left">
+                            <p:column  headerText="#{appmsg['org_level.organization_level_parent']} : #{departmentHirarkiFormController.companyName}" style="text-align: left">
                                 <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
                                 <h:outputText value=" - #{dep.departmentCode}" />
                                 <h:outputText value=" - #{dep.departmentName}" />
@@ -40,27 +40,103 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="codeId" value="Kode Organisasi Level" styleClass="label_hrm"/>
+                                    <p:outputLabel for="codeId" value="#{appmsg['org_level.organization_level_code']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="codeId" title="#{appmsg['organization.organization_code']}" value="#{companyFormController.model.code}" 
-                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:inputText id="parentCode" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.companyCode}" 
+                                                 readonly="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:50px;margin-right: 3px" />
+                                    <p:inputText id="codeId" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.code}" 
+                                                 required="true" maxlength="20" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:228px;" />
                                     <p:message for="codeId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="name" value="Nama Organisasi Level" styleClass="label_hrm"/>
+                                    <p:outputLabel for="name" value="#{appmsg['org_level.organization_level_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="name" title="#{appmsg['organization.organization_code']}" value="#{companyFormController.model.code}" 
-                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:inputText id="name" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.name}" 
+                                                 required="true" maxlength="45" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="organisasiLevel" value="#{appmsg['org_level.organization_level']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu value="#{departmentHirarkiFormController.organisasiLevelModel.orgLevel}"  id="organisasiLevel" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemValue="ORG" itemLabel="#{appmsg['organization.organization']}" />
+                                        <f:selectItem itemValue="DEP" itemLabel="#{appmsg['department.department']}" />
+                                        <f:selectItem itemValue="DEV" itemLabel="#{appmsg['division.division']}" />
+                                        <f:selectItem itemValue="DIR" itemLabel="#{appmsg['org_level.directorate']}" />
+                                        <f:selectItem itemValue="SKR" itemLabel="#{appmsg['org_level.secretariat']}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="posisiNextId" value="#{appmsg['org_level.position_next']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectBooleanButton value="#{departmentHirarkiFormController.organisasiLevelModel.isNextHirarki}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="posisiNextId" styleClass="label_button" />
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectBooleanButton value="#{departmentHirarkiFormController.organisasiLevelModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%" >
+                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{departmentHirarkiFormController.organisasiLevelModel.description}" 
+                                                     style="width: 290px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
+                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <br/><p:outputLabel id="counter" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="listLokasi" value="#{appmsg['org_level.work_location']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column>
+                                    <p:pickList value="#{departmentHirarkiFormController.organisasiLevelModel.dualListModel}" var="unitKerja" itemValue="#{unitKerja}" converter="unitKerjaConverter" id="listLokasi"
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="Lokasi Kerja" styleClass="isitext_hrm"
+                                                itemLabel="#{unitKerja.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="listLokasi" />
+                                </p:column>
+                            </p:row>
 
                         </p:panelGrid>
-
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <!--<p:panel style="margin: 10px">-->
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
+                                             action="#{departmentHirarkiFormController.doSave()}" styleClass="label_button" validateClient="false" update="organisasiLevelFormId,:growlOrganisasiLevelFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="organisasiLevelFormId"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="organisasiLevelFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentHirarkiFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

@@ -105,4 +105,10 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         return criteria.list();
 
     }
+
+    @Override
+    public void saveAndMerge(Department department) throws Exception {
+        getCurrentSession().update(department);
+        getCurrentSession().flush();
+    }
 }

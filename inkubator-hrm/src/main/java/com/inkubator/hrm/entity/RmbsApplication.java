@@ -3,6 +3,8 @@ package com.inkubator.hrm.entity;
 // Generated Mar 13, 2015 9:01:09 AM by Hibernate Tools 4.3.1
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,6 +46,7 @@ public class RmbsApplication implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<RmbsApplicationDisbursement> rmbsApplicationDisbursements = new HashSet<RmbsApplicationDisbursement>(0);
 
     public RmbsApplication() {
     }
@@ -222,5 +226,16 @@ public class RmbsApplication implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rmbsApplication")
+	public Set<RmbsApplicationDisbursement> getRmbsApplicationDisbursements() {
+		return rmbsApplicationDisbursements;
+	}
+
+	public void setRmbsApplicationDisbursements(Set<RmbsApplicationDisbursement> rmbsApplicationDisbursements) {
+		this.rmbsApplicationDisbursements = rmbsApplicationDisbursements;
+	}
+    
+    
 
 }

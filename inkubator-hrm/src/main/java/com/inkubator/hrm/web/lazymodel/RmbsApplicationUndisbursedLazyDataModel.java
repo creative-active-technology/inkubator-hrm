@@ -10,41 +10,38 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.service.RmbsApplicationService;
-import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
-import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 
 /**
 *
 * @author rizkykojek
 */
-public class RmbsApplicationUndisbursedLazyDataModel extends LazyDataModel<RmbsApplicationUndisbursedViewModel> implements Serializable {
+public class RmbsApplicationUndisbursedLazyDataModel extends LazyDataModel<RmbsApplication> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(RmbsApplicationUndisbursedLazyDataModel.class);
-    private final RmbsApplicationUndisbursedSearchParameter parameter;
+	private static final Logger LOGGER = Logger.getLogger(RmbsApplicationUndisbursedActivityLazyDataModel.class);
     private final RmbsApplicationService rmbsApplicationService;
-    private List<RmbsApplicationUndisbursedViewModel> list = new ArrayList<>();
+    private List<RmbsApplication> list = new ArrayList<>();
     private Integer total;
 
-    public RmbsApplicationUndisbursedLazyDataModel(RmbsApplicationUndisbursedSearchParameter parameter, RmbsApplicationService rmbsApplicationService) {
-        this.parameter = parameter;
+    public RmbsApplicationUndisbursedLazyDataModel(RmbsApplicationService rmbsApplicationService) {
         this.rmbsApplicationService = rmbsApplicationService;
     }
 
     @Override
-    public List<RmbsApplicationUndisbursedViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RmbsApplication> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("approvalActivityId");
+	        	orderable = Order.desc("id");
 	        }
 	        
-	        list = rmbsApplicationService.getUndisbursedByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(rmbsApplicationService.getTotalUndisbursedByParam(parameter)));            
+	        list = rmbsApplicationService.getUndisbursedByParam(first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(rmbsApplicationService.getTotalUndisbursedByParam()));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -58,14 +55,14 @@ public class RmbsApplicationUndisbursedLazyDataModel extends LazyDataModel<RmbsA
     }
 
     @Override
-    public Object getRowKey(RmbsApplicationUndisbursedViewModel entity) {
-        return entity.getApprovalActivityId();
+    public Object getRowKey(RmbsApplication entity) {
+        return entity.getId();
     }
 
     @Override
-    public RmbsApplicationUndisbursedViewModel getRowData(String id) {
-        for (RmbsApplicationUndisbursedViewModel entity : list) {
-            if (id.equals(String.valueOf(entity.getApprovalActivityId()))) {
+    public RmbsApplication getRowData(String id) {
+        for (RmbsApplication entity : list) {
+            if (id.equals(String.valueOf(entity.getId()))) {
                 return entity;
             }
         }

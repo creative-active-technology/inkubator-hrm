@@ -10,20 +10,23 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.CompanyDao;
 import com.inkubator.hrm.dao.CostCenterDeptDao;
+import com.inkubator.hrm.dao.DepartementUnitLocationDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.UnregDepartementDao;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.CostCenterDept;
+import com.inkubator.hrm.entity.DepartementUnitLocation;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.entity.UnregDepartement;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -50,6 +53,8 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     private UnregDepartementDao unregDepartementDao;
     @Autowired
     private CompanyDao companyDao;
+    @Autowired
+    private DepartementUnitLocationDao departementUnitLocationDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -289,7 +294,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             Company company = companyDao.getEntiyByPK(companyId);
             department.setCompany(company);
             department.setDepartmentCode("ROOT-" + company.getId());
-            department.setDepartmentName("ROOT - " + company.getId());
+            department.setDepartmentName("ROOT-" + company.getId());
             department.setIsActive(Boolean.TRUE);
             department.setOrgLevel("ROOT");
             department.setCreatedBy(UserInfoUtil.getUserName());
@@ -299,7 +304,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             Department d = new Department();
             d.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             d.setCompany(company);
-            d.setDepartmentCode(company.getCode() + " - BD");
+            d.setDepartmentCode(company.getCode() + "-BD");
             d.setDepartmentName("Board of director");
             d.setDepartment(department);
             d.setIsActive(Boolean.TRUE);
@@ -324,7 +329,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception {
         TreeNode root;
         Department endPointDepartment = departmentDao.getEntiyByPK(Long.parseLong(param.substring(1)));
-        System.out.println(" End postny nya adalah "+endPointDepartment);
+        System.out.println(" End postny nya adalah " + endPointDepartment);
         List<Department> data = new ArrayList<>();
         data.add(endPointDepartment);
         gerParent(endPointDepartment, data);
@@ -356,6 +361,67 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         if (data.getDepartment() != null) {
             gerParent(data, list);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveOrganisasiLevel(Department department) throws Exception {
+
+        long totalDuplicates = departmentDao.getByDepartmentCode(department.getDepartmentCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
+        Department parent = this.departmentDao.getEntiyByPK(department.getDepartment().getId());
+        Company company = this.companyDao.getEntiyByPK(department.getCompany().getId());
+        department.setCreatedBy(UserInfoUtil.getUserName());
+        department.setDepartment(parent);
+        department.setCompany(company);
+        department.setCreatedOn(new Date());
+        this.departmentDao.save(department);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Department getDepartementWithUnitKerja(Long departementId) throws Exception {
+        Department department = this.departmentDao.getEntiyByPK(departementId);
+        List<UnitKerja> dataToShow = new ArrayList<>();
+        for (DepartementUnitLocation location : this.departementUnitLocationDao.getByDepartementId(departementId)) {
+            dataToShow.add(location.getUnitKerja());
+        }
+        department.setListUnit(dataToShow);
+        department.getCompany().getCode();
+        department.getCompany().getName();
+        department.getDepartment().getOrgLevel();
+        return department;
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
+    public void updateOrganisasiLevel(Department department) throws Exception {
+        long totalDuplicates = departmentDao.getTotalByCodeAndNotId(department.getDepartmentCode(), department.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("department.error_duplicate_department_name");
+        }
+
+        Department dep = this.departmentDao.getEntiyByPK(department.getId());
+        dep.getDepartementUnitLocations().clear();
+        dep.setCompany(this.companyDao.getEntiyByPK(department.getCompany().getId()));
+        dep.setDepartment(this.departmentDao.getEntiyByPK(department.getDepartment().getId()));
+        dep.setDepartmentCode(department.getDepartmentCode());
+        dep.setDepartmentName(department.getDepartmentName());
+        dep.setDescription(department.getDescription());
+        dep.setIsActive(department.getIsActive());
+        dep.setIsNeckHierarki(department.getIsNeckHierarki());
+        dep.setOrgLevel(department.getOrgLevel());
+        dep.setUpdatedBy(UserInfoUtil.getUserName());
+        dep.setUpdatedOn(new Date());
+        this.departmentDao.saveAndMerge(dep);
+        Set<DepartementUnitLocation> dataToSave = department.getDepartementUnitLocations();
+        for (DepartementUnitLocation depLoc : dataToSave) {
+            depLoc.setDepartment(dep);
+            this.departementUnitLocationDao.save(depLoc);
+        }
+
     }
 
 }

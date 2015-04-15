@@ -7,10 +7,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/config/web-application-config.xml</param-value>
     </context-param>
-    <context-param>
+<!--    <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
-    </context-param>
+    </context-param>-->
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>/WEB-INF/config/faces-config.xml</param-value>

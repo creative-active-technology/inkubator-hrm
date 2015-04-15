@@ -18,13 +18,19 @@ import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 
 	public BigDecimal getTotalNominalByEmpDataIdAndRmbsTypeIdAndDateBetween(Long empDataId, Long rmbsTypeId, Date startDate, Date endDate);
-	
-	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
-
-	public Long getTotalUndisbursedByParam(RmbsApplicationUndisbursedSearchParameter parameter);
 
 	public Long getCurrentMaxId();
 	
 	public RmbsApplication getEntityByPkWithDetail(Long id);
+	
+	
+	//pageable
+	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter);
+	
+	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalUndisbursedByParam();
 
 }
