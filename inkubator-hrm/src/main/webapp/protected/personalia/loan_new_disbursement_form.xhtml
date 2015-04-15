@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true"  globalOnly="true" />
+                <h:form id="scheduleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['loan.disbursementTable']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loan.disbursementTable']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['rmbs_disbursement.disbursement_code']}" for="loanDisbursementNo" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:inputText id="loanDisbursementNo" value="#{loanNewDisbursementFormController.model.disbursementCode}"
+                                                     required="false" styleClass="isitext_hrm" readonly="true"
+                                                     style="width:200px;"/>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['rmbs_disbursement.disbursement_date']}"  for="loanDisbursementDate" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <p:calendar  id="loanDisbursementDate" pattern="dd MMMM yyyy" label="#{appmsg['loanCanceled.canceledDate']}"
+                                                     value="#{loanNewDisbursementFormController.model.disbursementDate}"  
+                                                     readonly="false" required="true" size="28" showOn="button"
+                                                     style="width:250px;" >                                    
+                                        </p:calendar>
+                                        <p:message for="loanDisbursementDate"/>                                 
+
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>                            
+                           
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['costcenter.code']}"  for="coaCode" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+
+                                    <p:selectOneMenu id="coaCode" value="#{loanNewDisbursementFormController.model.coaId}" 
+                                                     label="#{appmsg['costcenter.code']}"  
+                                                     style="min-width: 200px;margin-right: 3px" required="true" >
+
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{loanNewDisbursementFormController.model.mapCoa}"/>
+                                        <p:ajax   listener="#{loanNewDisbursementFormController.updateDataPinjamanByCoa()}" 
+                                                  update=""/>
+                                    </p:selectOneMenu>
+                                    <p:message for="coaCode"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['role_view.role_description']}"  for="descriptionId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <h:panelGrid columns="2" style="margin-left: -10px;">
+                                        <p:inputTextarea id="descriptionId" title="#{appmsg['role_view.role_description']}"
+                                                         value="#{loanNewDisbursementFormController.model.description}" 
+                                                         required="true" maxlength="255" counter="counter"
+                                                         counterTemplate="#{appmsg['global.remaining']}" 
+                                                         styleClass="isitext_hrm" style="width:200px;" />
+                                        &nbsp;
+                                        <p:outputLabel  for="counter" styleClass="label_hrm" />
+                                        <p:outputLabel  for="counter" styleClass="label_hrm" />
+                                        <h:outputText id="counter" />
+                                        <p:message for="descriptionId"/>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+<!--                        <p:outputLabel value="#{appmsg['loanCanceled.detail_info_of_loan_cancellation']}" styleClass="header_big" />                     -->
+                        <p:separator/>
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                           <p:dataTable  var="data"  value="#{loanNewDisbursementFormController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['loan.list_of_loan']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                             <p:column sortBy="empData.nik" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['workschedule.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.empData.nik}" />
+                            </p:column>                           
+                            <p:column sortBy="bioData.firstName" style="width: 13%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
+                            <p:column sortBy="loanSchema.name" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['rmbs_disbursement.disbursement_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanSchema.name}" />
+                            </p:column>
+                            <p:column sortBy="loanSchema.name" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loanschema.loan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanSchema.name}" />
+                            </p:column>
+                            <p:column sortBy="nominalPrincipal" style="width: 10%;" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
+                                </f:facet>
+                                 <h:outputText value="Rp. "/>
+                                <h:outputLabel value= "#{data.nominalPrincipal}" >
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                                
+                            </p:column>                            
+                            <p:column sortBy="termin" style="width: 7%;text-align: center" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.termin']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.termin}" />                                
+                            </p:column>
+                             <p:column sortBy="loanDate" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.submission_date']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.loanDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                             <p:column sortBy="loanPaymentDate" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.disbursement_date']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.loanPaymentDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{loanDisbursementViewController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanDisbursementViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId, :growlLoanViewlId" />
+                                </p:commandButton>                              
+                            </p:column>    
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{loanDisbursementViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                            
+                        </p:panelGrid>
+
+                        <p:focus context="scheduleFormId" />     
+
+                    </div>
+
+                    <div id="box_bg" style="margin: 10px">
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.disbursed']}" ajax="true" update="scheduleFormId,:growlUserFormId" 
+                                             action="#{loanNewDisbursementFormController.doDisburse()}" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['global.disbursed']}"
+                                             icon="ui-icon-disk" 
+                                             title="#{appmsg['global.disbursed']}"/>                         
+                            
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{loanNewDisbursementFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+
+                        </div>
+                    </div>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

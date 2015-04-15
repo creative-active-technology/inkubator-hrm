@@ -40,6 +40,7 @@ import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -642,5 +643,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         
         LoanNewCancelationDao.save(loanNewCancelation);
         
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewApplication> getByParamByStatusUndisbursed(LoanNewSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.loanNewApplicationDao.getByParamByStatusUndisbursed(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamByStatusUndisbursed(LoanNewSearchParameter parameter) throws Exception {
+        return this.loanNewApplicationDao.getTotalByParamByStatusUndisbursed(parameter);
     }
 }
