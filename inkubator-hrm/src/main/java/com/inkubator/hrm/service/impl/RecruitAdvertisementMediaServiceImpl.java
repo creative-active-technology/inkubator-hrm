@@ -9,9 +9,11 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.RecruitAdvertisementCategoryDao;
+import com.inkubator.hrm.dao.RecruitAdvertisementMediaDao;
 import com.inkubator.hrm.entity.RecruitAdvertisementCategory;
-import com.inkubator.hrm.service.RecruitAdvertisementCategoryService;
-import com.inkubator.hrm.web.search.RecruitAdvertisementCategorySearchParameter;
+import com.inkubator.hrm.entity.RecruitAdvertisementMedia;
+import com.inkubator.hrm.service.RecruitAdvertisementMediaService;
+import com.inkubator.hrm.web.search.RecruitAdvertisementMediaSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -27,157 +29,173 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "recruitAdvertisementCategoryService")
+@Service(value = "recruitAdvertisementMediaService")
 @Lazy
-public class RecruitAdvertisementCategoryServiceImpl extends IServiceImpl implements RecruitAdvertisementCategoryService{
+public class RecruitAdvertisementMediaServiceImpl extends IServiceImpl implements RecruitAdvertisementMediaService {
 
+    @Autowired
+    private RecruitAdvertisementMediaDao recruitAdvertisementMediaDao;
     @Autowired
     private RecruitAdvertisementCategoryDao recruitAdvertisementCategoryDao;
     
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<RecruitAdvertisementCategory> getByParam(RecruitAdvertisementCategorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return recruitAdvertisementCategoryDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<RecruitAdvertisementMedia> getByParam(RecruitAdvertisementMediaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        return recruitAdvertisementMediaDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(RecruitAdvertisementMediaSearchParameter searchParameter) {
+        return recruitAdvertisementMediaDao.getTotalByParam(searchParameter);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParam(RecruitAdvertisementCategorySearchParameter searchParameter) throws Exception {
-        return recruitAdvertisementCategoryDao.getTotalByParam(searchParameter);
+    public RecruitAdvertisementMedia getEntityByPkWithDetail(Long id) {
+        return recruitAdvertisementMediaDao.getEntityByPkWithDetail(id);
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntiyByPK(String id) throws Exception {
+    public RecruitAdvertisementMedia getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntiyByPK(Integer id) throws Exception {
+    public RecruitAdvertisementMedia getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public RecruitAdvertisementCategory getEntiyByPK(Long id) throws Exception {
-        return recruitAdvertisementCategoryDao.getEntiyByPK(id);
+    public RecruitAdvertisementMedia getEntiyByPK(Long id) throws Exception {
+        return recruitAdvertisementMediaDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(RecruitAdvertisementCategory entity) throws Exception {
+    public void save(RecruitAdvertisementMedia entity) throws Exception {
         // check duplicate code
-        long totalDuplicateCodes = recruitAdvertisementCategoryDao.getTotalByCode(entity.getCode());
+        long totalDuplicateCodes = recruitAdvertisementMediaDao.getTotalByCode(entity.getCode());
         if (totalDuplicateCodes > 0) {
             throw new BussinessException("global.error_duplicate_code");
         }
         // check duplicate name
-        long totalDuplicateNames = recruitAdvertisementCategoryDao.getTotalByName(entity.getName());
+        long totalDuplicateNames = recruitAdvertisementMediaDao.getTotalByName(entity.getName());
         if (totalDuplicateNames > 0) {
             throw new BussinessException("global.error_duplicate_name");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setRecruitAdvertisementCategory(recruitAdvertisementCategoryDao.getEntiyByPK(entity.getRecruitAdvertisementCategory().getId()));
         entity.setCreatedOn(new Date());
-        this.recruitAdvertisementCategoryDao.save(entity);
+        this.recruitAdvertisementMediaDao.save(entity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(RecruitAdvertisementCategory entity) throws Exception {
+    public void update(RecruitAdvertisementMedia entity) throws Exception {
         // check duplicate code
-        long totalDuplicateCodes = recruitAdvertisementCategoryDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+        long totalDuplicateCodes = recruitAdvertisementMediaDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicateCodes > 0) {
             throw new BussinessException("global.error_duplicate_code");
         }
         // check duplicate name
-        long totalDuplicateNames = recruitAdvertisementCategoryDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
+        long totalDuplicateNames = recruitAdvertisementMediaDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
         if (totalDuplicateNames > 0) {
             throw new BussinessException("global.error_duplicate_name");
         }
         
-        RecruitAdvertisementCategory update = recruitAdvertisementCategoryDao.getEntiyByPK(entity.getId());
+        RecruitAdvertisementMedia update = recruitAdvertisementMediaDao.getEntiyByPK(entity.getId());
         update.setName(entity.getName());
         update.setCode(entity.getCode());
-        update.setIsOnline(entity.getIsOnline());
+        update.setRecruitAdvertisementCategory(recruitAdvertisementCategoryDao.getEntiyByPK(entity.getRecruitAdvertisementCategory().getId()));
+        update.setMediaAddress(entity.getMediaAddress());
+        update.setContactPerson(entity.getContactPerson());
         update.setDescription(entity.getDescription());
+        update.setAddress(entity.getAddress());
+        update.setPhone(entity.getPhone());
+        update.setTypeOfMedia(entity.getTypeOfMedia());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
-        this.recruitAdvertisementCategoryDao.update(update);
+        this.recruitAdvertisementMediaDao.update(update);
     }
 
     @Override
-    public void saveOrUpdate(RecruitAdvertisementCategory enntity) throws Exception {
+    public void saveOrUpdate(RecruitAdvertisementMedia enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory saveData(RecruitAdvertisementCategory entity) throws Exception {
+    public RecruitAdvertisementMedia saveData(RecruitAdvertisementMedia entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory updateData(RecruitAdvertisementCategory entity) throws Exception {
+    public RecruitAdvertisementMedia updateData(RecruitAdvertisementMedia entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory saveOrUpdateData(RecruitAdvertisementCategory entity) throws Exception {
+    public RecruitAdvertisementMedia saveOrUpdateData(RecruitAdvertisementMedia entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RecruitAdvertisementCategory getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public RecruitAdvertisementMedia getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(RecruitAdvertisementCategory entity) throws Exception {
-        this.recruitAdvertisementCategoryDao.delete(entity);
+    public void delete(RecruitAdvertisementMedia entity) throws Exception {
+        this.recruitAdvertisementMediaDao.delete(entity);
     }
 
     @Override
-    public void softDelete(RecruitAdvertisementCategory entity) throws Exception {
+    public void softDelete(RecruitAdvertisementMedia entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -202,44 +220,43 @@ public class RecruitAdvertisementCategoryServiceImpl extends IServiceImpl implem
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<RecruitAdvertisementCategory> getAllData() throws Exception {
-        return recruitAdvertisementCategoryDao.getAllData();
-    }
-
-    @Override
-    public List<RecruitAdvertisementCategory> getAllData(Boolean isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllData(Integer isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllData(Byte isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<RecruitAdvertisementCategory> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<RecruitAdvertisementMedia> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public List<RecruitAdvertisementMedia> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
