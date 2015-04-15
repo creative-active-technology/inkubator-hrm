@@ -223,4 +223,7 @@ public class DepartmentHirarkiFormController extends BaseController {
         this.isEdit = isEdit;
     }
 
+    public String doBack() {
+        return  "/protected/organisation/organiztion_level.htm?faces-redirect=true";
+    }
 }
