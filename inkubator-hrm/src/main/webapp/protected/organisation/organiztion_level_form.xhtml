@@ -24,14 +24,14 @@
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Organisasi Level Form" styleClass="header_big" />
-                                    <p:outputLabel value="Data Organisasi Level dari Organisasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['org_level_organization_level_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['org_level.organization_level_data_from_organization']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                         <p:treeTable id="tree" value="#{departmentHirarkiFormController.root}" style="width: 100%" var="dep"  >
-                            <p:column  headerText="Parent Organisasi Level. Organisasi Utama : #{departmentHirarkiFormController.companyName}" style="text-align: left">
+                            <p:column  headerText="#{appmsg['org_level.organization_level_parent']} : #{departmentHirarkiFormController.companyName}" style="text-align: left">
                                 <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
                                 <h:outputText value=" - #{dep.departmentCode}" />
                                 <h:outputText value=" - #{dep.departmentName}" />
@@ -40,7 +40,7 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="codeId" value="Kode Organisasi Level" styleClass="label_hrm"/>
+                                    <p:outputLabel for="codeId" value="#{appmsg['org_level.organization_level_code']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="parentCode" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.companyCode}" 
@@ -52,7 +52,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="name" value="Nama Organisasi Level" styleClass="label_hrm"/>
+                                    <p:outputLabel for="name" value="#{appmsg['org_level.organization_level_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:inputText id="name" title="#{appmsg['organization.organization_code']}" value="#{departmentHirarkiFormController.organisasiLevelModel.name}" 
@@ -62,23 +62,23 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="organisasiLevel" value="Organisasi Level" styleClass="label_hrm"/>
+                                    <p:outputLabel for="organisasiLevel" value="#{appmsg['org_level.organization_level']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu value="#{departmentHirarkiFormController.organisasiLevelModel.orgLevel}"  id="organisasiLevel" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemValue="ORG" itemLabel="Organisasi" />
-                                        <f:selectItem itemValue="DEP" itemLabel="Departement" />
-                                        <f:selectItem itemValue="DEV" itemLabel="Divisi" />
-                                        <f:selectItem itemValue="DIR" itemLabel="Direktori" />
-                                        <f:selectItem itemValue="SKR" itemLabel="Sekretariat" />
+                                        <f:selectItem itemValue="ORG" itemLabel="#{appmsg['organization.organization']}" />
+                                        <f:selectItem itemValue="DEP" itemLabel="#{appmsg['department.department']}" />
+                                        <f:selectItem itemValue="DEV" itemLabel="#{appmsg['division.division']}" />
+                                        <f:selectItem itemValue="DIR" itemLabel="#{appmsg['org_level.directorate']}" />
+                                        <f:selectItem itemValue="SKR" itemLabel="#{appmsg['org_level.secretariat']}" />
                                     </p:selectOneMenu>
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="posisiNextId" value="Posisi is Next" styleClass="label_hrm"/>
+                                    <p:outputLabel for="posisiNextId" value="#{appmsg['org_level.position_next']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column>
                                     <p:selectBooleanButton value="#{departmentHirarkiFormController.organisasiLevelModel.isNextHirarki}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -88,7 +88,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="isActive" value="Aktif" styleClass="label_hrm"/>
+                                    <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column>
                                     <p:selectBooleanButton value="#{departmentHirarkiFormController.organisasiLevelModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -109,7 +109,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="listLokasi" value="Lokasi Kerja" styleClass="label_hrm"/>
+                                    <p:outputLabel for="listLokasi" value="#{appmsg['org_level.work_location']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column>
                                     <p:pickList value="#{departmentHirarkiFormController.organisasiLevelModel.dualListModel}" var="unitKerja" itemValue="#{unitKerja}" converter="unitKerjaConverter" id="listLokasi"
