@@ -18,6 +18,8 @@ public interface LoanNewCancelationDao extends IDAO<LoanNewCancelation> {
 //	public List<LoanNewCancelation> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 //
 //	public Long getTotalBankByParam(BankSearchParameter parameter);
+    
+    public Long getCurrentMaxId();
 	
 	
 }

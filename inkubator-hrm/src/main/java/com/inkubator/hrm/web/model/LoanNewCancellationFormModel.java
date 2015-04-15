@@ -25,7 +25,8 @@ import java.util.Map;
 public class LoanNewCancellationFormModel implements Serializable {
 
     private Long id;
-    private String nomor;
+    private String cancellationNumber;
+    private Long loanPendingActivity;
     private Long loanId;
     private Date loanDate;
     private Date expectedDisbursementDate;
@@ -40,6 +41,7 @@ public class LoanNewCancellationFormModel implements Serializable {
     private String purpose;
     private String description;
     private Integer termin;
+    private Integer maxTermin;
     private String namakaryawan;
     private Double nominalLoan;
     private Double nominalUsedLoan;
@@ -47,12 +49,68 @@ public class LoanNewCancellationFormModel implements Serializable {
     private Double maxLoanAmount;
     private Double minLoanAmount;
     private Double minimumInstallment;
+    private Double maximumInstallment;
+    private Double installment;
     private Integer loanPeriod;
     private Boolean isSubsidi;
     private String subsidiType;
-    private Double subsidiCicilan;
-    private Integer subsidiBunga;
+    private Double nilaiSubsidi;
     private Map<String, Long> mapNomorActivity;
+    private String loanStatus;
+    private String reasonCancellation;
+    private String loanNumber;
+
+    public String getLoanNumber() {
+        return loanNumber;
+    }
+
+    public void setLoanNumber(String loanNumber) {
+        this.loanNumber = loanNumber;
+    }
+    
+    
+
+    public String getReasonCancellation() {
+        return reasonCancellation;
+    }
+
+    public void setReasonCancellation(String reasonCancellation) {
+        this.reasonCancellation = reasonCancellation;
+    }
+    
+    
+
+    public String getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(String loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
+    public Double getMaximumInstallment() {
+        return maximumInstallment;
+    }
+
+    public void setMaximumInstallment(Double maximumInstallment) {
+        this.maximumInstallment = maximumInstallment;
+    }
+
+    public Double getInstallment() {
+        return installment;
+    }
+
+    public void setInstallment(Double installment) {
+        this.installment = installment;
+    }
+
+    public Integer getMaxTermin() {
+        return maxTermin;
+    }
+
+    public void setMaxTermin(Integer maxTermin) {
+        this.maxTermin = maxTermin;
+    }
 
     public LoanNewCancellationFormModel() {
         this.mapNomorActivity = new HashMap<>();
@@ -66,8 +124,6 @@ public class LoanNewCancellationFormModel implements Serializable {
     public void setMapNomorActivity(Map<String, Long> mapNomorActivity) {
         this.mapNomorActivity = mapNomorActivity;
     }
-    
-    
 
     public Date getLoanCancellationDate() {
         return loanCancellationDate;
@@ -85,20 +141,12 @@ public class LoanNewCancellationFormModel implements Serializable {
         this.termin = termin;
     }
 
-    public Double getSubsidiCicilan() {
-        return subsidiCicilan;
+    public Double getNilaiSubsidi() {
+        return nilaiSubsidi;
     }
 
-    public void setSubsidiCicilan(Double subsidiCicilan) {
-        this.subsidiCicilan = subsidiCicilan;
-    }
-
-    public Integer getSubsidiBunga() {
-        return subsidiBunga;
-    }
-
-    public void setSubsidiBunga(Integer subsidiBunga) {
-        this.subsidiBunga = subsidiBunga;
+    public void setNilaiSubsidi(Double nilaiSubsidi) {
+        this.nilaiSubsidi = nilaiSubsidi;
     }
 
     public String getSubsidiType() {
@@ -229,12 +277,20 @@ public class LoanNewCancellationFormModel implements Serializable {
         this.loanId = loanId;
     }
 
-    public String getNomor() {
-        return nomor;
+    public String getCancellationNumber() {
+        return cancellationNumber;
     }
 
-    public void setNomor(String nomor) {
-        this.nomor = nomor;
+    public void setCancellationNumber(String cancellationNumber) {
+        this.cancellationNumber = cancellationNumber;
+    }
+
+    public Long getLoanPendingActivity() {
+        return loanPendingActivity;
+    }
+
+    public void setLoanPendingActivity(Long loanPendingActivity) {
+        this.loanPendingActivity = loanPendingActivity;
     }
 
     public Long getId() {

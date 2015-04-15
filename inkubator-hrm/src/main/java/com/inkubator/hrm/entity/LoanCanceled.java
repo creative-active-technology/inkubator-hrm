@@ -101,7 +101,7 @@ public class LoanCanceled  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="emp_data_id", nullable=false)
     public EmpData getEmpData() {
         return this.empData;
