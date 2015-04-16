@@ -6,23 +6,34 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -460,8 +471,43 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	protected void sendingEmailApprovalNotif(ApprovalActivity appActivity)throws Exception {
-		
-		
+		//initialization
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+        
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+        
+        RmbsApplication application = gson.fromJson(appActivity.getPendingData(), RmbsApplication.class);
+        RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(application.getRmbsType().getId());
+        
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(application.getCreatedOn()));
+            jsonObj.put("reimbursementType", rmbsType.getName());
+            jsonObj.put("applicationDate", dateFormat.format(application.getApplicationDate()));
+            jsonObj.put("nominal", decimalFormat.format(application.getNominal()));
+            Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
+            jsonObj.put("deadline", dateFormat.format(deadline));
+
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });		
 	}
 
 	@Override
