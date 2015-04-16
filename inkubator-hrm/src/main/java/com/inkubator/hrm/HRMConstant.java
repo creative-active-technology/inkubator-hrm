@@ -390,11 +390,11 @@ public class HRMConstant {
     public static final Integer RMBS_TYPE_ROUND_DIGIT_3 = 3;
     public static final Integer RMBS_TYPE_PERIOD_RECEIPT_DATE = 0;
     public static final Integer RMBS_TYPE_PERIOD_FILLING_DATE = 1;
-    public static final Integer RMBS_STATUS_UNDISBURSED = 0;
-    public static final Integer RMBS_STATUS_DISBURSED = 1;
-    public static final Integer RMBS_STATUS_CANCELED = 2;
-    public static final Integer RMBS_STATUS_REJECTED = 3;
-    public static final Integer RMBS_STATUS_PAID = 5;
+    public static final Integer RMBS_APPLICATION_STATUS_UNDISBURSED = 0;
+    public static final Integer RMBS_APPLICATION_STATUS_DISBURSED = 1;
+    public static final Integer RMBS_APPLICATION_STATUS_CANCELED = 2;
+    public static final Integer RMBS_APPLICATION_STATUS_REJECTED = 3;
+    public static final Integer RMBS_APPLICATION_STATUS_PAID = 5;
     public static final Integer RMBS_DISBURSEMENT_STATUS_APPROVED = 0;
     public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;

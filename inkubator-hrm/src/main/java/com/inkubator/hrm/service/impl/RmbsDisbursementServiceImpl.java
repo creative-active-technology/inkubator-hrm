@@ -441,11 +441,11 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 			RmbsApplication application = rmbsApplicationDao.getEntiyByPK(id);
 			
 			/** Jika status (bukan undisbursed), artinya sudah berubah karena sudah di eksekusi oleh user yang lain */
-			if(application.getApplicationStatus() != HRMConstant.RMBS_STATUS_UNDISBURSED){
+			if(application.getApplicationStatus() != HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED){
 				throw new BussinessException("rmbs_disbursement.error_application_status_is_not_valid");
 			}
 			
-			application.setApplicationStatus(HRMConstant.RMBS_STATUS_DISBURSED);
+			application.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED);
 			application.setUpdatedBy(UserInfoUtil.getUserName());
 			application.setUpdatedOn(new Date());
 			rmbsApplicationDao.update(application);

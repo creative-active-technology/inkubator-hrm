@@ -316,7 +316,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-    		entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set approved application status
+    		entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set approved application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
 
             /** convert to UploadedFile before saving */
@@ -342,7 +342,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-            entity.setApplicationStatus(HRMConstant.RMBS_STATUS_REJECTED); //set rejected application status
+            entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_REJECTED); //set rejected application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
             
             /** convert to UploadedFile before saving */
@@ -368,7 +368,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */                        
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-            entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set approved application status
+            entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set approved application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
             /** convert to UploadedFile before saving */
@@ -398,7 +398,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         
         /** saving entity RmbsApplication to DB */
     	RmbsApplication application = this.convertJsonToEntity(appActivity.getPendingData());
-    	application.setApplicationStatus(HRMConstant.RMBS_STATUS_CANCELED); // set cancelled application status
+    	application.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_CANCELED); // set cancelled application status
     	application.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
         this.save(application, uploadedFile, Boolean.TRUE);
     	
@@ -468,7 +468,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveWithApproval(RmbsApplication entity, UploadedFile reimbursmentFile) throws Exception {
 		
-		entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set default application status
+		entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set default application status
 		return this.save(entity, reimbursmentFile, Boolean.FALSE);
 		
 	}
