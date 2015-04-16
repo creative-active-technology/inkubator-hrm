@@ -11,7 +11,6 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsCancelation;
-import com.inkubator.hrm.entity.RmbsDisbursement;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
@@ -27,8 +26,6 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	public String saveWithRevised(RmbsApplication entity, UploadedFile reimbursmentFile, Long approvalActivityId) throws Exception;
 	
 	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;	
-	
-	public void disbursement(List<Long> listRmbsApplicationId, RmbsDisbursement disbursement) throws Exception;
 	
 
 	//return entity/property

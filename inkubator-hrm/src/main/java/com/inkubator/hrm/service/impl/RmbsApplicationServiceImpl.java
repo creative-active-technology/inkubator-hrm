@@ -41,9 +41,7 @@ import com.inkubator.hrm.dao.CurrencyDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
-import com.inkubator.hrm.dao.RmbsApplicationDisbursementDao;
 import com.inkubator.hrm.dao.RmbsCancelationDao;
-import com.inkubator.hrm.dao.RmbsDisbursementDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
 import com.inkubator.hrm.dao.RmbsSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.RmbsTypeDao;
@@ -55,10 +53,7 @@ import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RmbsApplication;
-import com.inkubator.hrm.entity.RmbsApplicationDisbursement;
-import com.inkubator.hrm.entity.RmbsApplicationDisbursementId;
 import com.inkubator.hrm.entity.RmbsCancelation;
-import com.inkubator.hrm.entity.RmbsDisbursement;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
@@ -101,11 +96,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Autowired
 	private TransactionCodeficationDao transactionCodeficationDao;
 	@Autowired
-	private RmbsCancelationDao rmbsCancelationDao;
-	@Autowired
-	private RmbsDisbursementDao rmbsDisbursementDao;
-	@Autowired
-	private RmbsApplicationDisbursementDao rmbsApplicationDisbursementDao;
+	private RmbsCancelationDao rmbsCancelationDao;	
 	
 	@Override
 	public RmbsApplication getEntiyByPK(String id) throws Exception {
@@ -325,7 +316,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-    		entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set default application status
+    		entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set approved application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
 
             /** convert to UploadedFile before saving */
@@ -351,7 +342,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-            entity.setApplicationStatus(HRMConstant.RMBS_STATUS_REJECTED); //set rejected application status
+            entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_REJECTED); //set rejected application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
             
             /** convert to UploadedFile before saving */
@@ -377,7 +368,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */                        
             RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
-            entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set default application status
+            entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set approved application status
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
             /** convert to UploadedFile before saving */
@@ -407,7 +398,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         
         /** saving entity RmbsApplication to DB */
     	RmbsApplication application = this.convertJsonToEntity(appActivity.getPendingData());
-    	application.setApplicationStatus(HRMConstant.RMBS_STATUS_CANCELED); // set cancelled application status
+    	application.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_CANCELED); // set cancelled application status
     	application.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
         this.save(application, uploadedFile, Boolean.TRUE);
     	
@@ -477,7 +468,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveWithApproval(RmbsApplication entity, UploadedFile reimbursmentFile) throws Exception {
 		
-		entity.setApplicationStatus(HRMConstant.RMBS_STATUS_UNDISBURSED); // set default application status
+		entity.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED); // set default application status
 		return this.save(entity, reimbursmentFile, Boolean.FALSE);
 		
 	}
@@ -596,15 +587,6 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		/** generate cancelation number form codification, from reimbursement module */
 		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_CANCEL_KODE);
         Long currentMaxId = rmbsCancelationDao.getCurrentMaxId();
-        currentMaxId = currentMaxId != null ? currentMaxId : 0;
-        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
-        return nomor;
-	}
-	
-	private String generateDisbursedReimbursementNumber(){
-		/** generate disbursed number form codification, from reimbursement module */
-		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_DISBURSED_KODE);
-        Long currentMaxId = rmbsDisbursementDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
         String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
         return nomor;
@@ -736,37 +718,5 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	public Long getTotalUndisbursedByParam() {
 		return rmbsApplicationDao.getTotalUndisbursedByParam();
 	}
-
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void disbursement(List<Long> listRmbsApplicationId, RmbsDisbursement disbursement) throws Exception {
-		
-		if(listRmbsApplicationId.isEmpty()){
-			throw new BussinessException("rmbs_disbursement.error_no_application_selected");
-		}
-		
-		String code = this.generateDisbursedReimbursementNumber();
-		disbursement.setCode(code);
-		disbursement.setCreatedBy(UserInfoUtil.getUserName());
-		disbursement.setCreatedOn(new Date());
-		rmbsDisbursementDao.save(disbursement);
-		
-		for(Long id : listRmbsApplicationId){
-			RmbsApplication application = rmbsApplicationDao.getEntiyByPK(id);
-			if(application.getApplicationStatus() != HRMConstant.RMBS_STATUS_UNDISBURSED){
-				throw new BussinessException("rmbs_disbursement.error_application_status_is_not_valid");
-			}
-			
-			application.setApplicationStatus(HRMConstant.RMBS_STATUS_DISBURSED);
-			application.setUpdatedBy(UserInfoUtil.getUserName());
-			application.setUpdatedOn(new Date());
-			rmbsApplicationDao.update(application);
-			
-			RmbsApplicationDisbursement rmbsApplicationDisbursement = new RmbsApplicationDisbursement();
-			rmbsApplicationDisbursement.setId(new RmbsApplicationDisbursementId(disbursement.getId(), application.getId()));
-			rmbsApplicationDisbursement.setRmbsApplication(application);
-			rmbsApplicationDisbursement.setRmbsDisbursement(disbursement);
-			rmbsApplicationDisbursementDao.save(rmbsApplicationDisbursement);
-		}		
-	}
+	
 }
