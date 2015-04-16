@@ -49,6 +49,7 @@ public class LoanNewApplication implements java.io.Serializable {
     private String createdBy;
     private String updatedBy;
     private Set<LoanNewApplicationInstallment> loanNewApplicationInstallments = new HashSet<LoanNewApplicationInstallment>(0);
+    private Set<LoanNewDisbursementList> loanNewDibursementLists = new HashSet<LoanNewDisbursementList>(0);
 
     public LoanNewApplication() {
     }
@@ -274,6 +275,15 @@ public class LoanNewApplication implements java.io.Serializable {
 
     public void setLoanNewApplicationInstallments(Set<LoanNewApplicationInstallment> loanNewApplicationInstallments) {
         this.loanNewApplicationInstallments = loanNewApplicationInstallments;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="loanNewApplication")
+    public Set<LoanNewDisbursementList> getLoanNewDibursementLists() {
+        return this.loanNewDibursementLists;
+    }
+    
+    public void setLoanNewDibursementLists(Set<LoanNewDisbursementList> loanNewDibursementLists) {
+        this.loanNewDibursementLists = loanNewDibursementLists;
     }
     
     @Column(name = "approval_activity_number", length = 45, unique = true)
