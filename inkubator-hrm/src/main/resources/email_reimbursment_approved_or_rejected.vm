@@ -5,20 +5,32 @@
     </head>
     <body>
         <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
-            PERMOHONAN PENGAJUAN PENGGANTIAN BIAYA ${nik} NOMOR ${reimbursmentNo}</div>
+            PERMOHONAN PENGAJUAN PENGGANTIAN BIAYA ${nik} </div>
         <div style="padding-left: 10px;font-family: Verdana">
             Yth ${requesterName},
             <br />
             <br />
             <br />
             Pada tanggal ${proposeDate}, anda mengajukan permohonan untuk penggantian biaya.<br /><br />
-			Adapun biaya yang dimaksud yaitu: <br /><br />
-			Nomor Pengajuan : ${reimbursmentNo}<br />
-			Tanggal pengajuan : ${claim_date}<br />
-			Nominal penggantian : ${nominalOrUnit}<br />
-			<br />
-            
-            Status : <b>${statusDesc}</b><br />
+			Adapun penggantian yang dimaksud yaitu: <br /><br />
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Nama Penggantian</td>   
+					<td>: ${reimbursementType}</td>
+				</tr>
+				<tr>
+					<td>Tanggal Pengajuan</td>   
+					<td>: ${applicationDate} </td>
+				</tr>
+				<tr>
+					<td>Nominal</td> 
+					<td>: Rp. ${nominal} </td>
+				</tr>
+				<tr>
+					<td>Status Pengajuan</td> 
+					<td>: <b>${statusDesc}</b> </td>
+				</tr>
+            </table>
             <br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.

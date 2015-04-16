@@ -125,16 +125,15 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
                         
                         case HRMConstant.REIMBURSEMENT:
-                            vtm.setSubject("Permohonan Pergantian Biaya");
+                            vtm.setSubject("Permohonan Penggantian Biaya");
                             vtm.setTemplatePath("email_reimbursment_waiting_approval.vm");
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
-                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
-                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
+                            maptoSend.put("reimbursementType", jsonObject.get("reimbursementType").getAsString());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
-                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
                             maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
                             break;
                         
@@ -249,11 +248,10 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             vtm.setTemplatePath("email_reimbursment_approved_or_rejected.vm");
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
-                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
-                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
+                            maptoSend.put("reimbursementType", jsonObject.get("reimbursementType").getAsString());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
-                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
                         
@@ -354,11 +352,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
-                            maptoSend.put("reimbursment_schema", jsonObject.get("reimbursment_schema").getAsString());
-                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
-                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
-                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            maptoSend.put("reimbursementType", jsonObject.get("reimbursementType").getAsString());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
                         
