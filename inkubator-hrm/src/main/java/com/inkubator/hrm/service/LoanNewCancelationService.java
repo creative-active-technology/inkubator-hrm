@@ -20,5 +20,5 @@ import org.primefaces.model.StreamedContent;
  */
 public interface LoanNewCancelationService extends IService<LoanNewCancelation> {
 
-   
+   public Long getCurrentMaxId() throws Exception;
 }

@@ -40,7 +40,7 @@
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <h:panelGrid columns="1" style="margin-left: -10px;">
-                                        <p:inputText id="loanCancellationNo" value="#{loanNewCancellationFormController.model.nomor}"
+                                        <p:inputText id="loanCancellationNo" value="#{loanNewCancellationFormController.model.cancellationNumber}"
                                                      required="false" styleClass="isitext_hrm" readonly="true"
                                                      style="width:200px;"/>
                                     </h:panelGrid>
@@ -81,7 +81,7 @@
                                                         requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                         styleClass="isitext_hrm" size="28"  style="width:250px;" >
                                             <p:ajax event="itemSelect" listener="#{loanNewCancellationFormController.updateDataPinjamanByEmployee()}" 
-                                                    update=""/>
+                                                    update="loanNumberId"/>
 
                                         </p:autoComplete>
 
@@ -107,13 +107,13 @@
                                 </p:column>
                                 <p:column style="width: 80%">
 
-                                    <p:selectOneMenu id="loanNumberId" value="#{loanNewCancellationFormController.model.nomor}" 
+                                    <p:selectOneMenu id="loanNumberId" value="#{loanNewCancellationFormController.model.loanPendingActivity}" 
                                                      label="#{appmsg['loantype.loantype']}"  
                                                      style="min-width: 200px;margin-right: 3px" required="true" >
 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{loanNewCancellationFormController.model.mapNomorActivity}"/>
-                                        <p:ajax   listener="#{loanNewCancellationFormController.updateDataPinjamanByNomor()}"  
+                                        <p:ajax   listener="#{loanNewCancellationFormController.updateDataPinjamanByNomor()}" 
                                                   update="labelLoanSubmissionDateId,loanPurposeId,labelSchema,labelLoanExpectedDisbursementDateId,
                                                   labelTermin,loanFirstPaymentDateId,loanLastPaymentDateId,labelNominalLoan,labelUsedNominalLoan,
                                                   labelTotalUsedNominalLoan,labelMaxNominalLoan,labelMinNominalLoan,labelLoanDuration,labelMaxLoanDuration,
@@ -130,7 +130,7 @@
                                 <p:column style="width: 85%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:inputTextarea id="reasonId" title="#{appmsg['loginform.alasan']}"
-                                                         value="#{loanNewCancellationFormController.model.purpose}" 
+                                                         value="#{loanNewCancellationFormController.model.reasonCancellation}" 
                                                          required="true" maxlength="255" counter="counter"
                                                          counterTemplate="#{appmsg['global.remaining']}" 
                                                          styleClass="isitext_hrm" style="width:200px;" />
@@ -175,7 +175,7 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.loan']}"   styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                   <p:outputLabel id="labelSchema" value="#{loanNewCancellationFormController.model.loanNewSchemaListOfEmp.loanNewSchema.loanSchemaCode}  -  #{loanNewCancellationFormController.model.loanNewSchemaListOfEmp.loanNewSchema.loanSchemaName}"
+                                    <p:outputLabel id="labelSchema" value="#{loanNewCancellationFormController.model.loanNewSchema.loanSchemaCode}  -  #{loanNewCancellationFormController.model.loanNewSchema.loanSchemaName}"
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
@@ -203,15 +203,15 @@
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
-                                    <p:outputLabel value="#{loanNewCancellationFormController.model.termin} #{appmsg['global.month']} ("/>
-                                    <p:outputLabel id="loanFirstPaymentDateId" value= "#{loanNewCancellationFormController.model.expectedDisbursementDate}">
-	                                	<f:convertDateTime pattern="dd MMM yyyy" />
+                                    <p:outputLabel value="#{loanNewCancellationFormController.model.termin} #{appmsg['global.month']} (" styleClass="label_hrm" />
+                                    <p:outputLabel id="loanFirstPaymentDateId" value= "#{loanNewCancellationFormController.model.firstPaymentDate}" styleClass="label_hrm" >
+	                                	<f:convertDateTime pattern="dd MMMM yyyy" />
 	                                </p:outputLabel>
-	                                <p:outputLabel value=" #{appmsg['global.to']} "/>
-                                        <p:outputLabel id="loanLastPaymentDateId" value= "#{loanNewCancellationFormController.model.expectedDisbursementDate}">
-	                                	<f:convertDateTime pattern="dd MMM yyyy" />
+	                                <p:outputLabel value=" #{appmsg['global.to']} " styleClass="label_hrm"/>
+                                        <p:outputLabel id="loanLastPaymentDateId" value= "#{loanNewCancellationFormController.model.lastPaymentDate}" styleClass="label_hrm" >
+	                                	<f:convertDateTime pattern="dd MMMM yyyy" />
 	                                </p:outputLabel>
-	                                <p:outputLabel value=")"/>
+	                                <p:outputLabel value=")" styleClass="label_hrm" />
                                 </p:column>
                             </p:row>
                             
@@ -240,7 +240,7 @@
                                     <p:outputLabel  value="#{appmsg['loanCanceled.used_nominal_loan_cancelled']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelUsedNominalLoan" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelUsedNominalLoan" value="#{loanNewCancellationFormController.model.nominalUsedLoan}"
                                                    styleClass="label_hrm" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
@@ -251,7 +251,7 @@
                                     <p:outputLabel  value="#{appmsg['loanCanceled.total_used_nominal_loan_cancelled']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelTotalUsedNominalLoan" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelTotalUsedNominalLoan" value="#{loanNewCancellationFormController.model.totalNominalUsedLoan}"
                                                    styleClass="label_hrm" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
@@ -262,7 +262,7 @@
                                     <p:outputLabel  value="#{appmsg['loanCanceled.loan_max_limit']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelMaxNominalLoan" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelMaxNominalLoan" value="#{loanNewCancellationFormController.model.maxLoanAmount}"
                                                    styleClass="label_hrm" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
@@ -273,7 +273,7 @@
                                     <p:outputLabel  value="#{appmsg['loanCanceled.loan_min_limit']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelMinNominalLoan" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelMinNominalLoan" value="#{loanNewCancellationFormController.model.minLoanAmount}"
                                                    styleClass="label_hrm" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
@@ -294,10 +294,11 @@
                                     <p:outputLabel  value="#{appmsg['loan.duration']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanDuration" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelLoanDuration" value="#{loanNewCancellationFormController.model.termin} "
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
+                                    <p:outputLabel value="#{loanNewCancellationFormController.model.termin} #{appmsg['global.month']}" styleClass="label_hrm" />
                                 </p:column>
                             </p:row>
                              <p:row>
@@ -305,10 +306,11 @@
                                     <p:outputLabel  value="#{appmsg['loanCanceled.max_duration']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelMaxLoanDuration" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelMaxLoanDuration" value="#{loanNewCancellationFormController.model.maxTermin} "
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
+                                    <p:outputLabel value="#{loanNewCancellationFormController.model.termin} #{appmsg['global.month']}" styleClass="label_hrm" />
                                 </p:column>
                             </p:row>
                             
@@ -326,9 +328,9 @@
                                     <p:outputLabel  value="#{appmsg['global.installment_nominal']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanInstallment" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelLoanInstallment" value="#{loanNewCancellationFormController.model.installment}"
                                                    styleClass="label_hrm" >
-                                        
+                                        <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
@@ -338,9 +340,9 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.max_installment']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelMaxLoanInstallment" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelMaxLoanInstallment" value="#{loanNewCancellationFormController.model.maximumInstallment}"
                                                    styleClass="label_hrm" >
-                                        
+                                        <f:convertNumber pattern="###,###" type="currency"/>
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
@@ -371,7 +373,7 @@
                                     <p:outputLabel  value="#{appmsg['global.name']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanSubsidyName" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelLoanSubsidyName" value="#{loanNewCancellationFormController.model.subsidiType}"
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
@@ -383,9 +385,14 @@
                                     <p:outputLabel  value="#{appmsg['reimbursement.nominal']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanSubsidyNominal" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelLoanSubsidyNominal" value="#{loanNewCancellationFormController.model.nilaiSubsidi}"
                                                    styleClass="label_hrm" >
-                                        
+                                        <f:convertNumber pattern="###,###" type="#{loanNewCancellationFormController.model.subsidiType eq 'Nominal' ? 'currency' : 'percent'}" />
+                                    </p:outputLabel>
+                                    &nbsp;
+                                    <p:outputLabel  value="%" rendered="#{loanNewCancellationFormController.model.subsidiType eq 'Bunga'}"
+                                                   styleClass="label_hrm" >
+                                       
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
@@ -395,7 +402,8 @@
                                     <p:outputLabel  value="#{appmsg['global.type']}"   styleClass="label_hrm" style="margin-left:30px;" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanSubsidyType" value="#{loanNewCancellationFormController.model.nominalLoan}"
+                                    <p:outputLabel id="labelLoanSubsidyType" 
+                                                   value="#{loanNewCancellationFormController.model.subsidiType eq 'Nominal' ? appmsg['reimbursement.nominal'] : loanNewCancellationFormController.model.subsidiType eq 'Bunga' ? appmsg['loan.interest'] : '-'}"
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>
@@ -407,7 +415,7 @@
                                     <p:outputLabel  value="#{appmsg['loan.loanStatus']}"   styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:outputLabel id="labelLoanStatus" value="#{loanNewCancellationFormController.model.description}"
+                                    <p:outputLabel id="labelLoanStatus" value="#{loanNewCancellationFormController.model.loanPendingActivity  eq null ? '' : appmsg['approvalactivity.waiting']}"
                                                    styleClass="label_hrm" >
                                         
                                     </p:outputLabel>

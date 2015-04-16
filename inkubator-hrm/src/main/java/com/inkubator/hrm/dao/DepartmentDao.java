@@ -30,4 +30,6 @@ public interface DepartmentDao extends IDAO<Department> {
 
     public List<Department> listChildGetByParentId(Long parentId);
 
+    public void saveAndMerge(Department department) throws Exception;
+
 }

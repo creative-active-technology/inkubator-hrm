@@ -20,21 +20,21 @@
                         <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Organisasi Level" styleClass="header_big" />
-                                <p:outputLabel value="Data Organisasi Level dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['org_level.organization_level']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['org_level.organization_level_data_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <p:growl id="growlJabatan" showDetail="true" showSummary="true" globalOnly="true"/>
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
                     <h:form >
                         <p:contextMenu for="tree" >
-                            <p:menuitem value="Add Organisasi"  icon="ui-icon-document" action="#{departmentHirarkiViewController.doAdd()}" />
-                            <p:menuitem value="Edit Organisasi" icon="ui-icon-folder-open" action="#{departmentHirarkiViewController.doEdit()}" />
-                            <p:menuitem value="Detil Organisasi" icon="ui-icon-zoomin" action="#{departmentHirarkiViewController.doDetil()}" />
+                            <p:menuitem value="#{appmsg['org_level.add_organization']}"  icon="ui-icon-document" action="#{departmentHirarkiViewController.doAdd()}" />
+                            <p:menuitem value="#{appmsg['org_level.edit_organization']}" icon="ui-icon-folder-open" action="#{departmentHirarkiViewController.doEdit()}" />
+                            <!--<p:menuitem value="Detil Organisasi" icon="ui-icon-zoomin" action="#{departmentHirarkiViewController.doDetil()}" />-->
                         </p:contextMenu>
                         <h:panelGrid columns="3" style="margin-bottom: 7px">
-                            <p:outputLabel value="Nama Organisasi" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['org_level.organization_name']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <p:selectOneMenu value="#{departmentHirarkiViewController.selectedOrganisasi}">
                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
@@ -46,17 +46,17 @@
                         <div style="margin-bottom: 7px" align="left">
                             <p:treeTable id="tree" value="#{departmentHirarkiViewController.root}" style="width: 100%" var="dep" 
                                          selection="#{departmentHirarkiViewController.selectedNode}"  selectionMode="single" >
-                                <p:column  headerText="Organisasi Utama : #{departmentHirarkiViewController.companyName}" style="text-align: left">
+                                <p:column  headerText="#{appmsg['org_level.main_organization']} : #{departmentHirarkiViewController.companyName}" style="text-align: left">
                                     <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
                                     <h:outputText value=" - #{dep.departmentCode}" />
                                     <h:outputText value=" - #{dep.departmentName}" />
                                 </p:column>
                             </p:treeTable>
                         </div>
-                        <p:outputLabel value=" *)Clik kanan pada nama organisasi untuk menambah atau mengedit data organisasi"  style="margin-top: 10px"/>
+                        <p:outputLabel value=" #{appmsg['org_level.click']}"  style="margin-top: 10px"/>
                         <p:separator style="margin-top: 10px"/>
                         <h:panelGrid columns="1" style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSchemaController.doBack()}" styleClass="label_button" immediate="true"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentHirarkiViewController.doClose()}" styleClass="label_button" immediate="true"/>
                         </h:panelGrid>
                     </h:form>
                 </div>

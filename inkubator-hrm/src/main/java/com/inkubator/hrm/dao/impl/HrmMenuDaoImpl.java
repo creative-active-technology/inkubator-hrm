@@ -15,12 +15,14 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.HrmMenuDao;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
+import org.springframework.context.annotation.Lazy;
 
 /**
  *
  * @author rizkykojek
  */
 @Repository(value = "hrmMenuDao")
+@Lazy
 public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
 
 	@Override
