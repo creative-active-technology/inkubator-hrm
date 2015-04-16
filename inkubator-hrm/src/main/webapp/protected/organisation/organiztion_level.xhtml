@@ -14,7 +14,7 @@
             <ui:define name="windowTitle">
                 Organisasi Level
             </ui:define>
-            <ui:define name="center">
+            <ui:define name="center">              
                 <div id="box_bg" style="margin: 10px">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
@@ -42,7 +42,7 @@
                                 <p:ajax listener="#{departmentHirarkiViewController.doChangeCompany()}" update="tree" process="@this" partialSubmit="true"/>
                             </p:selectOneMenu>
                         </h:panelGrid>
-
+                    
                         <div style="margin-bottom: 7px" align="left">
                             <p:treeTable id="tree" value="#{departmentHirarkiViewController.root}" style="width: 100%" var="dep" 
                                          selection="#{departmentHirarkiViewController.selectedNode}"  selectionMode="single" >
@@ -60,6 +60,7 @@
                         </h:panelGrid>
                     </h:form>
                 </div>
+             
             </ui:define>
 
         </ui:composition>
