@@ -104,6 +104,9 @@ public class HomeApproalActivityController extends BaseController {
                     //redirect = "/protected/personalia/reimbursment_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                    redirect = "/protected/reimbursement/rmbs_disbursement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
@@ -142,6 +145,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.REIMBURSEMENT:
                     //redirect = "/protected/personalia/reimbursment_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     redirect = "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.REIMBURSEMENT_DISBURSEMENT:                    
+                    redirect = "/protected/reimbursement/rmbs_disbursement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.LOAN:
                     //redirect = "/protected/personalia/loan_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();

@@ -169,6 +169,7 @@ public class HRMConstant {
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
+    public static final String REIMBURSEMENT_DISBURSEMENT = "REIMBURSEMENT_DISBURSEMENT";
     public static final String ANNOUNCEMENT = "ANNOUNCEMENT";
     public static final String PERMIT = "PERMIT";
     public static final String LOAN = "LOAN";
@@ -394,6 +395,9 @@ public class HRMConstant {
     public static final Integer RMBS_STATUS_CANCELED = 2;
     public static final Integer RMBS_STATUS_REJECTED = 3;
     public static final Integer RMBS_STATUS_PAID = 5;
+    public static final Integer RMBS_DISBURSEMENT_STATUS_APPROVED = 0;
+    public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
+    public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;
     /* END */
 
     /* 

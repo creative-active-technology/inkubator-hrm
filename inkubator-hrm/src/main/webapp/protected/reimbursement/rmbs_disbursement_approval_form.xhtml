@@ -17,10 +17,9 @@
             <ui:define name="windowTitle">
 				Home
             </ui:define>
-            <ui:define name="center">
-                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+            <ui:define name="center">     
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>         
                 <h:form id="formId">
-                	<p:focus context="formId"/>
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid  columns="2">
 	                        <p:graphicImage library="images" name="pencairan_pinjaman_ico.png" height="36" width="36" />
@@ -33,76 +32,53 @@
 	                    </h:panelGrid>
 	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
+	                    	<p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="codeId" value="#{appmsg['rmbs_disbursement.disbursement_code']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_disbursement.disbursement_code']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="codeId" title="#{appmsg['rmbs_disbursement.disbursement_code']}" value="#{rmbsDisbursementFormController.model.code}" 
-	                                    		 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="codeId"/>
-	                            </p:column>
-	                        </p:row> 
-                            <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="disbursementDateId" value="#{appmsg['rmbs_disbursement.disbursement_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:calendar id="disbursementDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementFormController.model.disbursementDate}"/>
-	                                <p:message for="disbursementDateId"/>
+	                            	<p:outputLabel value="#{rmbsDisbursementApprovalFormController.rmbsDisbursement.code}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="payrollPeriodDateId" value="#{appmsg['rmbs_disbursement.salary_disbursement_period']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['rmbs_disbursement.disbursement_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="payrollPeriodDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementFormController.model.payrollPeriodDate}" mindate="#{of:addDays(rmbsDisbursementFormController.period.untilPeriode, 1)}"/>
-	                                <p:message for="payrollPeriodDateId"/>
-	                            </p:column>
-	                        </p:row>
-	                        
-                            <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="descriptionId" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsDisbursementFormController.model.description}" 
-                                                 	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
-                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['rmbs_application.purpose']}" />
-                                    <p:message for="descriptionId"/>
-                                    <h:outputText id="counter" />
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvedBy}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvalStatus}">
-	                            		<f:converter converterId="approvalStatusConverter" />
+	                            	<p:outputLabel value="#{rmbsDisbursementApprovalFormController.rmbsDisbursement.disbursementDate}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
-	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['rmbs_disbursement.salary_disbursement_period']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvalCommment}"/>
+	                            	<p:outputLabel value="#{rmbsDisbursementApprovalFormController.rmbsDisbursement.payrollPeriodDate}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
 	                            </p:column>
-	                      	</p:row>            
-	                 	</p:panelGrid>	
-	                 	
-	                 	<p:dataTable  id="tableId" var="data"  value="#{rmbsDisbursementFormController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsDisbursementApprovalFormController.rmbsDisbursement.description}"/>
+	                            </p:column>
+	                        </p:row>	                                                
+	                        <p:row rendered="#{rmbsDisbursementApprovalFormController.isWaitingApproval}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{rmbsDisbursementApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>	                        	                              
+	                 	</p:panelGrid>
+	                 	<p:dataTable  id="tableId" var="data"  value="#{rmbsDisbursementApprovalFormController.listRmbsApplications}" lazy="false" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -158,34 +134,23 @@
                                 <h:outputLabel value= "#{data.nominal}">
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
-                            </p:column>
-                            <p:column style="width: 3%">
-					            <f:facet name="header">
-					                <h:outputText value=" " />
-					            </f:facet>
-					            <p:selectBooleanButton value="#{rmbsDisbursementFormController.model.selectedIds[data.id]}" styleClass="label_button"
-					            					   onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
-					        </p:column>                                                 
+                            </p:column>                                                 
                         </p:dataTable>
-                        <p:blockUI block="formId" trigger="tableId" >
-                            <h:panelGrid columns="2" styleClass="grid_no_border">
-                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
-                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
-                            </h:panelGrid>
-                        </p:blockUI>
-                        
-                                            
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.disbursed']}" rendered="#{rmbsDisbursementFormController.isAdministator and not rmbsDisbursementFormController.isRevised}" ajax="true" update="formId,:growlId"
-	                                         action="#{rmbsDisbursementFormController.doDisbursement}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.disbursed']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.disbursed']}"/>
-	                        <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{rmbsDisbursementFormController.isRevised}"
-	                                         action="#{rmbsDisbursementFormController.doRevised()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
-	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsDisbursementFormController.doBack()}" immediate="true"
+	                    	<h:panelGroup rendered="#{rmbsDisbursementApprovalFormController.isWaitingApproval}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{rmbsDisbursementApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsDisbursementApprovalFormController.isApprover}" update=":growlId"/>
+								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{rmbsDisbursementApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsDisbursementApprovalFormController.isApprover}" update=":growlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{rmbsDisbursementApprovalFormController.doAskingRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsDisbursementApprovalFormController.isApprover}" update=":growlId"/>
+	                        </h:panelGroup>
+	                        <h:panelGroup rendered="#{rmbsDisbursementApprovalFormController.isWaitingRevised}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{rmbsDisbursementApprovalFormController.doRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsDisbursementApprovalFormController.isRequester}" update=":growlId"/>		                        
+	                        </h:panelGroup>
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsDisbursementApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
