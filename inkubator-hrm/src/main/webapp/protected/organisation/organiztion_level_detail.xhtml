@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlOrganisasiLevelFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="organisasiLevelFormId">
+                    <p:focus context="organisasiLevelFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['org_level_organization_level_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['org_level.organization_level_data_from_organization']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:treeTable id="tree" value="#{departmentHirarkiDetailController.root}" style="width: 100%" var="dep"  >
+                            <p:column  headerText="#{appmsg['org_level.organization_level_parent']} : #{departmentHirarkiDetailController.companyName}" style="text-align: left">
+                                <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
+                                <h:outputText value=" - #{dep.departmentCode}" />
+                                <h:outputText value=" - #{dep.departmentName}" />
+                            </p:column>
+                        </p:treeTable>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="#{appmsg['org_level.organization_level_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="codeId" value="#{departmentHirarkiDetailController.department.departmentCode}"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="name" value="#{appmsg['org_level.organization_level_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="name" value="#{departmentHirarkiDetailController.department.departmentName}"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="level" value="#{appmsg['org_level.organization_level']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="level" value="#{departmentHirarkiDetailController.department.orgLevel}">
+                                        <f:converter converterId="organisasiLevelConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="isNext" value="#{appmsg['org_level.position_next']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="isNext" value="#{departmentHirarkiDetailController.department.isNeckHierarki}">
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="isActive" value="#{departmentHirarkiDetailController.department.isActive}">
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="deskripsi" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+                                    <p:outputLabel id="deskripsi" value="#{departmentHirarkiDetailController.department.description}"/>
+                                </p:column>
+                            </p:row> 
+
+                        </p:panelGrid>
+
+                        <p:dataTable value="#{departmentHirarkiDetailController.listUnitKerja}" var="unitKerja" rowIndexVar="no" style="margin-top: 15px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['unitkerja.list_of_unit_kerja']}"/>
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+
+                            <p:column sortBy="code" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unitkerja.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.code}" />
+                            </p:column>
+                            <p:column sortBy="name" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unitkerja.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.name}" />
+                            </p:column>
+                            <p:column sortBy="location" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.address']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.location}" />
+                            </p:column>
+                            <p:column sortBy="city" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['unitkerja.city']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.city.cityName}" />
+                            </p:column>
+                            <p:column sortBy="phoneNumber" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.phone_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.phoneNumber}" />
+                            </p:column>
+                            <p:column sortBy="emailAddress" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.email_address']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{unitKerja.emailAddress}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <!--<p:panel style="margin: 10px">-->
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" ajax="true" 
+                                             action="#{departmentHirarkiDetailController.doEdit()}" styleClass="label_button" validateClient="false" 
+                                             style="margin-right: 5px" label="#{appmsg['global.edit']}"
+                                             icon="ui-icon-folder-open"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentHirarkiDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -163,7 +163,8 @@ public class DepartmentHirarkiFormController extends BaseController {
                 departmentService.updateOrganisasiLevel(department);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                redirect = "/protected/organisation/organiztion_level.htm?faces-redirect=true";
+
+                redirect = "/protected/organisation/organiztion_level_detail.htm?faces-redirect=true&execution=d" + department.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {
@@ -187,7 +188,7 @@ public class DepartmentHirarkiFormController extends BaseController {
                 departmentService.saveOrganisasiLevel(department);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                redirect = "/protected/organisation/organiztion_level.htm?faces-redirect=true";
+                 redirect = "/protected/organisation/organiztion_level_detail.htm?faces-redirect=true&execution=d" + department.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {
@@ -224,6 +225,6 @@ public class DepartmentHirarkiFormController extends BaseController {
     }
 
     public String doBack() {
-        return  "/protected/organisation/organiztion_level.htm?faces-redirect=true";
+        return "/protected/organisation/organiztion_level.htm?faces-redirect=true";
     }
 }
