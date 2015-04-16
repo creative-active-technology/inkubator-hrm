@@ -71,7 +71,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     @Override
     public Long getTotalByCodeAndNotId(String code, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("departmentCode", code, MatchMode.ANYWHERE));
+        criteria.add(Restrictions.eq("departmentCode", code));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

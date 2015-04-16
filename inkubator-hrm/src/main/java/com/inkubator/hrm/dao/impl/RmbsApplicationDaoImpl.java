@@ -49,8 +49,8 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"AND applicationStatus IN (:applicationStatus)");
 		
 		List<Integer> applicationStatus =  new ArrayList<Integer>();
-		applicationStatus.add(HRMConstant.RMBS_STATUS_DISBURSED);
-		applicationStatus.add(HRMConstant.RMBS_STATUS_UNDISBURSED);
+		applicationStatus.add(HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED);
+		applicationStatus.add(HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED);
 		
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
     			.setParameter("empDataId", empDataId)
@@ -135,8 +135,8 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
         }    
         
         if (StringUtils.isNotEmpty(parameter.getUserId())) {
-        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6)) " +
-        			"OR (approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
+        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6) " +
+        			"OR approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
         } else {
         	//view for administrator(can view all employee)
         	whereQuery.append("AND approvalActivity.approval_status IN (0,1,6) ");
@@ -182,7 +182,7 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 	@Override
 	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
@@ -195,7 +195,7 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 	@Override
 	public Long getTotalUndisbursedByParam() {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_STATUS_UNDISBURSED));
+		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
