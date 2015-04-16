@@ -136,6 +136,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
                             break;
+                            
+                        case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                            vtm.setSubject("Permohonan Pencairan Penggantian Biaya");
+                            vtm.setTemplatePath("email_rmbs_disbursement_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
+                            break;
                         
                         case HRMConstant.LOAN:
                             vtm.setSubject("Permohonan Pinjaman Lunak");
@@ -251,6 +261,15 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("reimbursementType", jsonObject.get("reimbursementType").getAsString());
                             maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
                             maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                            
+                        case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                            vtm.setSubject("Permohonan Pencairan Pergantian Biaya");
+                            vtm.setTemplatePath("email_rmbs_disbursement_approved_or_rejected.vm");
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
