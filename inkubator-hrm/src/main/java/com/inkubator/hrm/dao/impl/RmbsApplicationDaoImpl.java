@@ -135,8 +135,8 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
         }    
         
         if (StringUtils.isNotEmpty(parameter.getUserId())) {
-        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6)) " +
-        			"OR (approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
+        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6) " +
+        			"OR approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
         } else {
         	//view for administrator(can view all employee)
         	whereQuery.append("AND approvalActivity.approval_status IN (0,1,6) ");
