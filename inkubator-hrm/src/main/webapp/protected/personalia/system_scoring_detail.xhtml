@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">            	
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="cost_center.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['systemScoring.systemScoringDetail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['systemScoring.systemScoring_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemScoring.code']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{systemScoringDetailController.selectedSystemScoring.code}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemScoring.name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{systemScoringDetailController.selectedSystemScoring.name}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel  value="#{systemScoringDetailController.selectedSystemScoring.description}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="4" >
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{systemScoringDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{systemScoringDetailController.onDialogReturn}"  update="tableId, :growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{unregPayrollDetailController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>                                                                        
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:dataTable  var="data"  value="#{systemScoringDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['systemScoring.list_of_system_scoring_index']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <p:selectOneMenu style="width: 60px" value="#{data.orderScala}" id="selectId">
+                                    <p:ajax update="tableId"  process="@this" listener="#{systemScoringDetailController.doChangeLevel(data)}" partialSubmit="true"/>
+                                    <f:selectItems value="#{systemScoringDetailController.dataToShow}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column sortBy="labelMask" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['systemScoring.label_mask']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.labelMask}" />
+                            </p:column>
+                            <p:column sortBy="value" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['systemScoring.value']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.value}" />
+                            </p:column>
+                            <p:column sortBy="description" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.description']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.description}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId"
+                                                                 action="#{systemScoringDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{systemScoringDetailController.selectedSystemScoringIndex}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{systemScoringDetailController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{systemScoringDetailController.selectedSystemScoringIndex}" />
+                                    <p:ajax event="dialogReturn" listener="#{systemScoringDetailController.onDialogReturn}"  update="tableId"/>
+                                </p:commandButton> 
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{systemScoringDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{systemScoringDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </h:form>
+                </div>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['systemScoring.label_mask']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{systemScoringDetailController.selectedSystemScoringIndex.labelMask}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{systemScoringDetailController.doDelete()}" update="formId"
+                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -5,19 +5,30 @@
     </head>
     <body>
         <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
-            PERMOHONAN PENGAJUAN REIMBURST ${reimbursment_schema} </div>
+            PERMOHONAN PENGAJUAN PENGGANTIAN BIAYA</div>
         <div style="padding-left: 10px;font-family: Verdana">
             Yth ${approverName},
             <br />
             <br />
             <br />
-            Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk biaya pengantian.<br /><br />
-			Adapun dinas yang dimaksud yaitu: <br /><br />
-			Nomor Penggantian : ${reimbursmentNo}<br />
-			Tanggal pengajuan : ${claim_date}<br />
-                        Nominal penggantian : ${nominalOrUnit}<br />
+            Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk pengantian biaya.<br /><br />
+			Adapun penggantian yang dimaksud yaitu: <br /><br />
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Nama Penggantian</td>   
+					<td>: ${reimbursementType}</td>
+				</tr>
+				<tr>
+					<td>Tanggal Pengajuan</td>   
+					<td>: ${applicationDate} </td>
+				</tr>
+				<tr>
+					<td>Nominal</td> 
+					<td>: Rp. ${nominal} </td>
+				</tr>
+            </table>
 			<br />
-            Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
+            Untuk informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
             Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
             <br />
  			<br />

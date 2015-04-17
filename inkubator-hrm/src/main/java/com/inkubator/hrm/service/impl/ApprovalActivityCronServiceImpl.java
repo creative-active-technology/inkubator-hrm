@@ -19,7 +19,8 @@ import com.inkubator.hrm.service.ApprovalActivityCronService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.LoanService;
-import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.service.RmbsApplicationService;
+import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 
 /**
@@ -36,7 +37,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	@Autowired
 	private BusinessTravelService businessTravelService;
 	@Autowired
-	private ReimbursmentService reimbursmentService;
+	private RmbsApplicationService rmbsApplicationService;
+	@Autowired
+	private RmbsDisbursementService rmbsDisbursementService;
 	@Autowired
 	private TempJadwalKaryawanService tempJadwalKaryawanService;
 	@Autowired
@@ -72,7 +75,11 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							loanService.approved(approvalActivity.getId(), null, null);
 							break;
 						case HRMConstant.REIMBURSEMENT:
-							reimbursmentService.approved(approvalActivity.getId(), null, null);
+							//reimbursmentService.approved(approvalActivity.getId(), null, null);
+							rmbsApplicationService.approved(approvalActivity.getId(), null, null);
+							break;
+						case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+							rmbsDisbursementService.approved(approvalActivity.getId(), null, null);
 							break;
 						case HRMConstant.SHIFT_SCHEDULE:
 							tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
@@ -96,8 +103,12 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							loanService.diverted(approvalActivity.getId());
 							break;
 						case HRMConstant.REIMBURSEMENT:
-							reimbursmentService.diverted(approvalActivity.getId());
+							//reimbursmentService.diverted(approvalActivity.getId());
+							rmbsApplicationService.diverted(approvalActivity.getId());
 							break;
+						case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+							rmbsDisbursementService.diverted(approvalActivity.getId());
+							break;	
 						case HRMConstant.SHIFT_SCHEDULE:
 							tempJadwalKaryawanService.diverted(approvalActivity.getId());
 							break;

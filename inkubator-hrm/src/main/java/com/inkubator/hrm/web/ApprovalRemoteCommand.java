@@ -62,6 +62,14 @@ public class ApprovalRemoteCommand {
                 	}
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                	if(isWaitingApproval){
+                		infoMessages = messages.getString("rmbs_disbursement.disbursement_of_reimbursment_from") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	} else if(isWaitingRevised){
+                		infoMessages = messages.getString("rmbs_disbursement.disbursement_of_reimbursment_from") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                	}
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 case HRMConstant.SHIFT_SCHEDULE:
                     infoMessages = messages.getString("workschedule.submission_of_employee_working_schedule") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));

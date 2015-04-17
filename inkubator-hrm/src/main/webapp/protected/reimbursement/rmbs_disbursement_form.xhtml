@@ -73,7 +73,33 @@
                                     <p:message for="descriptionId"/>
                                     <h:outputText id="counter" />
 	                            </p:column>
-	                        </p:row>            
+	                        </p:row>
+	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvalStatus}">
+	                            		<f:converter converterId="approvalStatusConverter" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsDisbursementFormController.isRevised}">
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsDisbursementFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                      	</p:row>            
 	                 	</p:panelGrid>	
 	                 	
 	                 	<p:dataTable  id="tableId" var="data"  value="#{rmbsDisbursementFormController.lazyData}" lazy="true" paginator="true" pageLinks="7"
@@ -151,10 +177,14 @@
                                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.disbursed']}" rendered="#{rmbsDisbursementFormController.isAdministator}" ajax="true" update="formId,:growlId"
+	                        <p:commandButton value="#{appmsg['global.disbursed']}" rendered="#{rmbsDisbursementFormController.isAdministator and not rmbsDisbursementFormController.isRevised}" ajax="true" update="formId,:growlId"
 	                                         action="#{rmbsDisbursementFormController.doDisbursement}" styleClass="isitext_hrm"
 	                                         style="margin-right: 5px" label="#{appmsg['global.disbursed']}"
 	                                         icon="ui-icon-disk" title="#{appmsg['global.disbursed']}"/>
+	                        <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{rmbsDisbursementFormController.isRevised}"
+	                                         action="#{rmbsDisbursementFormController.doRevised()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
 	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsDisbursementFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
