@@ -21,7 +21,7 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="System score form" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['systemScoring.systemScoring_index_form']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['advertismentCategory.advertismentCategory_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -35,7 +35,7 @@
 
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['advertismentCategory.code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['systemScoring.label_mask']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>

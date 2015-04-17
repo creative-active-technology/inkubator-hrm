@@ -26,5 +26,9 @@ public interface SystemScoringIndexDao extends IDAO<SystemScoringIndex>{
     public Long getTotalByValue(Integer value);
     
     public Long getTotalByValueAndNotId(Integer value, Long id);
+    
+    public Integer getLastOrderScala();
+    
+    public SystemScoringIndex getByGradeNumber(int number);
 }
 
