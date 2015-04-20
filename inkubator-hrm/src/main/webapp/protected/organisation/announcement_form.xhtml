@@ -5,7 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -15,10 +17,10 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formId" >
+                	<p:focus context="formId"/>
                     <div id="box_bg" style="margin: 10px">
-                        <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
                             <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
                             <h:panelGroup layout="block">
@@ -29,9 +31,7 @@
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator/>
-
-
-
+                        
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -40,7 +40,7 @@
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="companyId" value="#{announcementFormController.model.companyId}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{announcementFormController.model.dropDownCompany}"/>
+                                        <f:selectItems value="#{announcementFormController.model.dropDownCompany}" var="company" itemValue="#{company.id}" itemLabel="#{company.name}"/>
                                     </p:selectOneMenu>
                                     <p:message for="companyId"/>
                                 </p:column>
@@ -52,7 +52,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{announcementFormController.model.dualListEmployeeType}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
                                     <p:message for="picklistUserRoleId" />
@@ -65,7 +65,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{announcementFormController.model.dualListGolonganJabatan}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistGolonganJabatan"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
                                     <p:message for="picklistGolonganJabatan" />
@@ -78,7 +78,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{announcementFormController.model.dualListUnitKerja}" var="role" itemValue="#{role}" converter="unitKerjaConverter" id="picklistUnitKerja"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
                                     <p:message for="picklistUnitKerja" />
@@ -119,7 +119,7 @@
                                                   dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
                                     <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                     <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-                                    <p:outputLabel value="#{announcementFormController.model.fotoFileName}" id="fotoNameId"/>
+                                    <p:outputLabel value="#{announcementFormController.model.attachmentFileName}" id="fotoNameId"/>
                                     <p:message for="uploadLampiran"/>
                                 </p:column>
                             </p:row>
@@ -133,6 +133,7 @@
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Harian" itemValue="0" />
                                         <f:selectItem itemLabel="Periode" itemValue="1" />
+                                        <p:ajax update="startId,endId"/>
                                     </p:selectOneRadio> 
                                 </p:column>
                             </p:row>
@@ -140,13 +141,17 @@
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="startId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeStartDate}" >
+                                    <p:calendar id="startId" required="#{announcementFormController.model.timeModel == 1}" disabled="#{announcementFormController.model.timeModel != 1}" 
+                                    			pattern="dd MMMM yyyy" mindate="#{now}" value="#{announcementFormController.model.periodeStartDate}">
+                                    	<f:validator validatorId="dateBetweenValidator"  />
+	                                    <f:attribute name="endTime" value="#{endDateId}"/>
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
                                     </p:calendar>
                                     - 
-                                    <p:calendar id="endId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeEndDate}">
-                                    </p:calendar>
-                                    <p:message for="endId"/>
+                                    <p:calendar id="endId" binding="#{endDateId}" required="#{announcementFormController.model.timeModel == 1}" disabled="#{announcementFormController.model.timeModel != 1}" 
+                                    			pattern="dd MMMM yyyy" mindate="#{now}" value="#{announcementFormController.model.periodeEndDate}"/>
                                     <p:message for="startId"/>
+                                    <p:message for="endId"/>                                    
                                 </p:column>
                             </p:row>
 
@@ -177,10 +182,6 @@
                             </p:row>
 
                         </p:panelGrid>
-                        <p:focus context="formId" />
-
-                        <!--</p:panel>-->
-
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{announcementFormController.doSaved()}"

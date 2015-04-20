@@ -5,7 +5,7 @@
     </head>
     <body>
         <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
-            PERMOHONAN PENGAJUAN PENGUMUMAN ${subjek} SUBJEK ${subjek}</div>
+            PERMOHONAN PENGAJUAN PENGUMUMAN ${subjek}</div>
         <div style="padding-left: 10px;font-family: Verdana">
             Yth ${approverName},
             <br />
@@ -13,22 +13,62 @@
             <br />
             Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk diumumkan.<br /><br />
 			Adapun pengumuman yang dimaksud yaitu: <br /><br />
-			Subjek : ${subjek}<br />
-			Content : ${content}<br />
-			<br />
-            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
-            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
-            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Employee Type</th>
-            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Unit Kerja</th>
-            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Golongan Jabatan</th>
-            #foreach($listEmployeeType in $listEmployeeType)
-            <tr>
-                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
-                <td style="background: #91d5f2; width: 89%; padding: 4px;">${listEmployeeType}</td>
-                <td style="background: #91d5f2; width: 89%; padding: 4px;">${listGolonganJabatan}</td>
-            </tr>
-            #end
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Subjek</td>   
+					<td>: ${subjek}</td>
+				</tr>
+				<tr>
+					<td>Konten</td>   
+					<td>: ${content} </td>
+				</tr>
+				<tr>
+					<td>Perusahaan</td> 
+					<td>: Rp. ${company} </td>
+				</tr>
             </table>
+            <br />
+            #if (!$listEmployeeType.isEmpty())
+				<br />
+	            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+		            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Tipe Karyawan</th>
+		            #foreach($employeeType in $listEmployeeType)
+		            <tr>
+		                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${employeeType}</td>
+		            </tr>
+		            #end
+	            </table>
+            #end
+            #if (!$listGolonganJabatan.isEmpty())
+	            <br />
+	            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+		            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Golongan Jabatan</th>
+		            #foreach($golonganJabatan in $listGolonganJabatan)
+		            <tr>
+		                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${golonganJabatan}</td>
+		            </tr>
+		            #end
+	            </table>
+            #end
+            #if (!$listUnitKerja.isEmpty())
+	            <br />
+	            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+		            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Unit Kerja</th>
+		            #foreach($unitKerja in $listUnitKerja)
+		            <tr>
+		                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${unitKerja}</td>
+		            </tr>
+		            #end
+	            </table>
+            #end
+            <br />
+ 			<br />
             Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
             <br />
  			<br />
