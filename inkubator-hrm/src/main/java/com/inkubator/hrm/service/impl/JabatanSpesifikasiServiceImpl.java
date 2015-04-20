@@ -173,7 +173,7 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(JabatanSpesifikasi entity, Long oldId) throws Exception {
         //check jika ada duplikat
-        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanAndSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId(), new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
         if(totalDuplicate > 0){
             throw new BussinessException("jabatanSpesifikasi.error_duplicate");
         }
