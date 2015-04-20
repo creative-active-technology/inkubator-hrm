@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LeaveSearchParameter;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import java.util.Date;
 
 /**
@@ -33,4 +34,8 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
     public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewSchemaId(Long empDataId, Long loanNewSchemaId) throws Exception;
     
     public void cancelLoanApplicationAndSaveToLoanNewCancellation(LoanNewCancellationFormModel loanNewCancellationFormModel) throws Exception;
+    
+    public List<LoanNewApplication> getByParamByStatusUndisbursed(LoanNewSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    
+    public Long getTotalByParamByStatusUndisbursed(LoanNewSearchParameter parameter) throws Exception;
 }

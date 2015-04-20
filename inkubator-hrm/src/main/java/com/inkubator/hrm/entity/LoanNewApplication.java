@@ -48,7 +48,10 @@ public class LoanNewApplication implements java.io.Serializable {
     private Date updateOn;
     private String createdBy;
     private String updatedBy;
+    private String noPencairan;
+    private Boolean isSelected = Boolean.TRUE;
     private Set<LoanNewApplicationInstallment> loanNewApplicationInstallments = new HashSet<LoanNewApplicationInstallment>(0);
+    private Set<LoanNewDisbursementList> loanNewDibursementLists = new HashSet<LoanNewDisbursementList>(0);
 
     public LoanNewApplication() {
     }
@@ -276,6 +279,15 @@ public class LoanNewApplication implements java.io.Serializable {
         this.loanNewApplicationInstallments = loanNewApplicationInstallments;
     }
     
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="loanNewApplication")
+    public Set<LoanNewDisbursementList> getLoanNewDibursementLists() {
+        return this.loanNewDibursementLists;
+    }
+    
+    public void setLoanNewDibursementLists(Set<LoanNewDisbursementList> loanNewDibursementLists) {
+        this.loanNewDibursementLists = loanNewDibursementLists;
+    }
+    
     @Column(name = "approval_activity_number", length = 45, unique = true)
     public String getApprovalActivityNumber() {
         return approvalActivityNumber;
@@ -294,4 +306,23 @@ public class LoanNewApplication implements java.io.Serializable {
     public Date getMaxLoanPaymentDate() {
         return DateTimeUtil.getDateFrom(getFirstLoanPaymentDate(), termin - 1, CommonUtilConstant.DATE_FORMAT_MONTH);
     }
+    
+     @Transient
+    public String getNoPencairan() {
+        return noPencairan;
+    }    
+   
+    public void setNoPencairan(String noPencairan) {
+        this.noPencairan = noPencairan;
+    }
+
+    public Boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+    
+    
 }

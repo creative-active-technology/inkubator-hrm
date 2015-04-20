@@ -63,7 +63,7 @@ public class DivisiFormController extends BaseController{
             }
             doSelectOneMenuDepartment();
         } catch (Exception e){
-            LOGGER.error("error, e");
+            LOGGER.error("error", e);
         }
     }
     
