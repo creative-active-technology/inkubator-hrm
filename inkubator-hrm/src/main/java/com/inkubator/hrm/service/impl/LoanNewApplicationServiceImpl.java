@@ -40,6 +40,7 @@ import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -381,6 +382,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println("isEndOfApprovalProcess ? " + StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true"));
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
@@ -393,7 +395,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             /**
              * saving to DB
              */
-            this.save(entity, Boolean.FALSE, null);
+            this.save(entity, Boolean.TRUE, null);
         }
 
         //if there is no error, then sending the email notification
@@ -642,5 +644,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         
         LoanNewCancelationDao.save(loanNewCancelation);
         
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewApplication> getByParamByStatusUndisbursed(LoanNewSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.loanNewApplicationDao.getByParamByStatusUndisbursed(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamByStatusUndisbursed(LoanNewSearchParameter parameter) throws Exception {
+        return this.loanNewApplicationDao.getTotalByParamByStatusUndisbursed(parameter);
     }
 }

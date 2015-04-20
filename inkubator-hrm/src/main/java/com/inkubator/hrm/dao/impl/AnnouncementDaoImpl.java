@@ -37,7 +37,7 @@ public class AnnouncementDaoImpl extends IDAOImpl<Announcement> implements Annou
     }
 
     @Override
-    public Long getTotalAnnouncementByParam(AnnouncementSearchParameter parameter) {
+    public Long getTotalByParam(AnnouncementSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchAnnouncementByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();

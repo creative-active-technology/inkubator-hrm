@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 
 
 /**
@@ -29,4 +30,8 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
         public List<LoanNewApplication> getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(Long empDataId, Long loanNewTypeId);
         
         public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewSchemaId(Long empDataId, Long loanNewSchemaId);
+        
+        public List<LoanNewApplication> getByParamByStatusUndisbursed(LoanNewSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    
+        public Long getTotalByParamByStatusUndisbursed(LoanNewSearchParameter parameter);
 }
