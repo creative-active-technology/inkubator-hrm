@@ -18,11 +18,11 @@
                 <p:growl id="growlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formId">
                     <h:panelGrid  columns="2">
-                        <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
+                        <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['systemScoring.systemScoring_index_form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['advertismentCategory.advertismentCategory_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Formulir Tipe Spesifikasi Detail" styleClass="header_big" />
+                                <p:outputLabel value="Tipe Spesifikasi Detail dari Organisasi" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,18 +30,18 @@
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
-
+                    
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-
+                        
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['systemScoring.label_mask']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="Kode" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="code"  value="#{systemScoringIndexFormController.model.name}"
+                                <p:inputText id="code"  value="#{orgTypeOfSpecListFormController.model.code}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -50,16 +50,16 @@
                                 <p:message for="code"/>
                             </p:column>
                         </p:row>
-
+                        
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['advertismentCategory.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="Nama" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="name"  value="#{systemScoringIndexFormController.model.value}"
+                                <p:inputText id="name"  value="#{orgTypeOfSpecListFormController.model.name}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -68,23 +68,42 @@
                                 <p:message for="name"/>
                             </p:column>
                         </p:row>
-
-
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="departmentId" value="Tipe Spesifikasi" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="departmentId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%">
+                                <p:selectOneMenu id="departmentId" value="#{orgTypeOfSpecListFormController.model.orgTypeOfSpecId}" style="width: 156px" >
+                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                <f:selectItems value="#{orgTypeOfSpecListFormController.dropDownOrgTypeOfSpec}"/>
+                                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="departmentId"/>
+                            </p:column>
+                        </p:row>
+                        
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%" >
-                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{systemScoringIndexFormController.model.description}" 
-                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{orgTypeOfSpecListFormController.model.description}" 
+                                                 style="width: 96%; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
                         </p:row>
-
+                        
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="description"/>
@@ -107,7 +126,7 @@
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{systemScoringIndexFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{orgTypeOfSpecListFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 

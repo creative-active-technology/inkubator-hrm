@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['systemScoring.systemScoring']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['systemScoring.systemScoring_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="Tipe Spesifikasi Detail" styleClass="header_big" />
+                                    <p:outputLabel value="Tipe Spesifikasi Detail dari Organisasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,35 +33,35 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{systemScoringViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{orgTypeOfSpecListViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="Kode" itemValue="code"/>
+                                        <f:selectItem itemLabel="Nama" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{systemScoringViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{systemScoringViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{orgTypeOfSpecListViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{orgTypeOfSpecListViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_System_Scoring"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{systemScoringViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{systemScoringViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{orgTypeOfSpecListViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{orgTypeOfSpecListViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{systemScoringViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{orgTypeOfSpecListViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['systemScoring.list_of_system_scoring']}"/>
+                                <h:outputText value="Daftar Tipe Spesifikasi Detail"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,46 +69,46 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 26%">
+                            <p:column sortBy="code" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['systemScoring.code']}"/>
+                                    <h:outputText value="Kode"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 26%">
+                            <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['systemScoring.name']}"/>
+                                    <h:outputText value="Nama"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="description" style="width: 26%">
+                            <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.description']}"/>
+                                    <h:outputText value="Tipe Spesifikasi"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.description}" />
+                                <h:outputLabel value= "#{data.orgTypeOfSpec.name}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 action="#{systemScoringViewController.doDetail()}" update=":detailPanel">
-                                                 <!--style="font-size: 10px!important" action="#{systemScoringViewController.doSelectEntity()}">-->                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{systemScoringViewController.selected}" />
+                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{orgTypeOfSpecListViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{orgTypeOfSpecListViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{systemScoringViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{systemScoringViewController.selected}" />
+                                                                 action="#{orgTypeOfSpecListViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{orgTypeOfSpecListViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{systemScoringViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{systemScoringViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{systemScoringViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                                  action="#{orgTypeOfSpecListViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{orgTypeOfSpecListViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{systemScoringViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{orgTypeOfSpecListViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -137,35 +137,35 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['systemScoring.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{systemScoringViewController.selected.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{orgTypeOfSpecListViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{systemScoringViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{orgTypeOfSpecListViewController.doDelete()}" update="formId"
                                          oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['advertismentCategory.advertismentCategory_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="Tipe Spesifikasi Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['advertismentCategory.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{recruitAdvertisementCategoryViewController.selected.code}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.code}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['advertismentCategory.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{recruitAdvertisementCategoryViewController.selected.name}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{recruitAdvertisementCategoryViewController.selected.description}"/> </p:column>
+                            <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.description}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['advertismentCategory.advertismentCategory_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

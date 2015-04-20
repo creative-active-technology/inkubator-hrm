@@ -18,4 +18,6 @@ public interface SystemScoringIndexService extends IService<SystemScoringIndex> 
     public List<SystemScoringIndex> getByParam(int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParam() throws Exception;
+    
+    public void doChangerOrderScala(int newGradeLevel, long oldId) throws Exception;
 }

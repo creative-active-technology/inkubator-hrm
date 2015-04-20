@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.SystemScoring;
 import com.inkubator.hrm.entity.SystemScoringIndex;
 import com.inkubator.hrm.service.SystemScoringIndexService;
@@ -12,6 +13,7 @@ import com.inkubator.hrm.service.SystemScoringService;
 import com.inkubator.hrm.web.lazymodel.SystemScoringIndexLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +22,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -42,6 +47,7 @@ public class SystemScoringDetailController extends BaseController {
     private SystemScoring selectedSystemScoring;
     private SystemScoringIndex selectedSystemScoringIndex;
     private LazyDataModel<SystemScoringIndex> lazyDataModel;
+    private List<Integer> dataToShow;
 
     @PostConstruct
     @Override
@@ -97,12 +103,33 @@ public class SystemScoringDetailController extends BaseController {
     }
 
     public LazyDataModel<SystemScoringIndex> getLazyDataModel() {
+        try {
+            dataToShow = new ArrayList<>();
+            Long totalData = systemScoringIndexService.getTotalData();
+            for (int i = 1; i < totalData + 1; i++) {
+                dataToShow.add(i);
+            }
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
         if (lazyDataModel == null) {
             lazyDataModel = new SystemScoringIndexLazyDataModel(systemScoringIndexService);
         }
         return lazyDataModel;
     }
 
+    public void doChangeLevel(SystemScoringIndex systemScoringIndex) {
+
+        try {
+            int newGrade = systemScoringIndex.getOrderScala();
+            Long idOldData = systemScoringIndex.getId();
+            systemScoringIndexService.doChangerOrderScala(newGrade, idOldData);
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+
+    }
+    
     public void setLazyDataModel(LazyDataModel<SystemScoringIndex> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
@@ -115,6 +142,9 @@ public class SystemScoringDetailController extends BaseController {
         showDialog(dataToSend);
     }
 
+    public void doSelectEntity() throws Exception{
+        selectedSystemScoringIndex = systemScoringIndexService.getEntiyByPK(selectedSystemScoringIndex.getId());
+    }
     public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> systemScoringId = new ArrayList<>();
@@ -148,4 +178,30 @@ public class SystemScoringDetailController extends BaseController {
         lazyDataModel = null;
     }
 
+    public void doDelete() {
+        try {
+            this.systemScoringIndexService.delete(selectedSystemScoringIndex);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+    public List<Integer> getDataToShow() {
+        return dataToShow;
+    }
+
+    public void setDataToShow(List<Integer> dataToShow) {
+        this.dataToShow = dataToShow;
+    }
+    
+    public String doBack(){
+        return "/protected/personalia/system_scoring_view.htm?faces-redirect=true";
+    }
 }

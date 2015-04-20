@@ -4,6 +4,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.web.search.OrgTypeOfSpecSearchParameter;
@@ -187,8 +188,9 @@ public class OrgTypeOfSpecServiceImpl extends IServiceImpl implements OrgTypeOfS
     }
 
     @Override
-    public List<OrgTypeOfSpec> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<OrgTypeOfSpec> getAllData() {
+        return orgTypeOfSpecDao.getAllData();
     }
 
     @Override
