@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Formulir Divisi" styleClass="header_big" />
-                                <p:outputLabel value="Divisi dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['division.division_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['division.division_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Kode Divisi" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['division.division_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama Divisi" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['division.division_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -71,7 +71,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="departmentId" value="Department" styleClass="label_hrm"/>
+                                <p:outputLabel for="departmentId" value="#{appmsg['department.department']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="departmentId" value=":" styleClass="label_hrm"/>
