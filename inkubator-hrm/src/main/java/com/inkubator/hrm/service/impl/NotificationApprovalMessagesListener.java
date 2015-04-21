@@ -354,7 +354,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             List<String> dataEmployeeType = gson.fromJson(jsonObject.get("listEmployeeType"), token.getType());
                             
                             vtm.setSubject("Pengajuan Pengumuman");
-                            vtm.setTemplatePath("email_announcement_waiting_approval.vm");
+                            vtm.setTemplatePath("email_announcement_approved_or_rejected_approval.vm");
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());

@@ -16,6 +16,7 @@ import org.primefaces.model.StreamedContent;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -74,6 +75,30 @@ public class FileStreamerController extends BaseController {
                 
     	    	JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
                 String path = elReimbursementFileName.isJsonNull() ? facesIO.getPathUpload() + "no_image.png" : elReimbursementFileName.getAsString();   
+                
+                InputStream is = facesIO.getInputStreamFromURL(path);
+                streamedContent = new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        }
+        
+        return streamedContent;
+    }
+	
+	public StreamedContent getAnnouncementAttachmentPath() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String approvalActivityId = context.getExternalContext().getRequestParameterMap().get("approvalActivityId");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        
+        if (!context.getRenderResponse() && approvalActivityId != null) {
+            try {
+                ApprovalActivity appActivity = approvalActivityService.getEntiyByPK(Long.parseLong(approvalActivityId));
+                
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    	    	Announcement announcement =  gson.fromJson(appActivity.getPendingData(), Announcement.class);
+                String path = StringUtils.isEmpty(announcement.getAttachmentPath()) ? facesIO.getPathUpload() + "no_image.png" : announcement.getAttachmentPath();   
                 
                 InputStream is = facesIO.getInputStreamFromURL(path);
                 streamedContent = new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
