@@ -24,4 +24,6 @@ public interface JabatanSpesifikasiDao extends IDAO<JabatanSpesifikasi>{
     public JabatanSpesifikasi getEntityByBioJabatanSpesifikasiId(JabatanSpesifikasiId id);
     
     public Long getTotalEntityByBioJabatanSpesifikasiId(JabatanSpesifikasiId id);
+    
+    public Long getTotalEntityByBioJabatanAndSpesifikasiId(Long jabatanId, Long specId, JabatanSpesifikasiId id);
 }

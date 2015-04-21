@@ -374,6 +374,7 @@ public class HRMConstant {
     public static final String OVERTIME_KODE = "OTIM";
     public static final String ANNOUNCEMENT_KODE = "ANNO";
     public static final String LOAN_CANCELLATION_KODE = "LCAN";
+    public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -398,6 +399,17 @@ public class HRMConstant {
     public static final Integer RMBS_DISBURSEMENT_STATUS_APPROVED = 0;
     public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;
+    /* END */
+    
+    /* 
+     * Constant for Reimbursement Module */
+    public static final Integer ANNOUNCEMENT_STATUS_APPROVED = 0;
+    public static final Integer ANNOUNCEMENT_STATUS_REJECTED = 1;
+    public static final Integer ANNOUNCEMENT_STATUS_CANCELLED = 2;
+    public static final Integer ANNOUNCEMENT_TIME_DAILY = 0;
+    public static final Integer ANNOUNCEMENT_TIME_PERIOD = 1;
+    public static final Integer ANNOUNCEMENT_VIEW_MAIL = 0;
+    public static final Integer ANNOUNCEMENT_VIEW_WEB = 1;
     /* END */
 
     /* 

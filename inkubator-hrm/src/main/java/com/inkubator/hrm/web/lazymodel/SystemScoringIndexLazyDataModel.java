@@ -40,7 +40,7 @@ public class SystemScoringIndexLazyDataModel extends LazyDataModel<SystemScoring
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("labelMask");
+                    order = Order.asc("orderScala");
                 }
                 listSystemScoringIndex = service.getByParam(first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam()));

@@ -78,7 +78,13 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
         if (totalDuplicateValue > 0) {
             throw new BussinessException("global.error_duplicate_code");
         }
+        Integer lastOrderScala = systemScoringIndexDao.getLastOrderScala();
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        if(lastOrderScala != null){
+            entity.setOrderScala(lastOrderScala + 1);
+        }else{
+            entity.setOrderScala(1);
+        }
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         entity.setSystemScoring(systemScoringDao.getEntiyByPK(entity.getSystemScoring().getId()));
@@ -175,8 +181,9 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(SystemScoringIndex entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.systemScoringIndexDao.delete(entity);
     }
 
     @Override
@@ -185,8 +192,9 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.systemScoringIndexDao.getTotalData();
     }
 
     @Override
@@ -242,6 +250,29 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     @Override
     public List<SystemScoringIndex> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void doChangerOrderScala(int newGradeLevel, long oldId) throws Exception {
+        SystemScoringIndex targetChage = this.systemScoringIndexDao.getByGradeNumber(newGradeLevel);
+        targetChage.setOrderScala(0);
+        targetChage.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChage.setUpdatedOn(new Date());
+        this.systemScoringIndexDao.update(targetChage);
+
+        SystemScoringIndex newChange = this.systemScoringIndexDao.getEntiyByPK(oldId);
+        int gradeNumberOld = newChange.getOrderScala();
+        newChange.setOrderScala(newGradeLevel);
+        newChange.setUpdatedBy(UserInfoUtil.getUserName());
+        newChange.setUpdatedOn(new Date());
+        this.systemScoringIndexDao.update(newChange);
+
+        SystemScoringIndex targetChageLast = this.systemScoringIndexDao.getByGradeNumber(0);
+        targetChageLast.setOrderScala(gradeNumberOld);
+        targetChageLast.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChageLast.setUpdatedOn(new Date());
+        this.systemScoringIndexDao.update(targetChageLast);
     }
     
 }

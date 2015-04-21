@@ -36,14 +36,14 @@ public class AnnouncementLazyDataModel extends LazyDataModel<Announcement> imple
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
                     announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.asc(sortField));
-                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalAnnouncementByParam(announcementSearchParameter)));
+                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
                     announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc(sortField));
-                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalAnnouncementByParam(announcementSearchParameter)));
+                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
@@ -52,7 +52,7 @@ public class AnnouncementLazyDataModel extends LazyDataModel<Announcement> imple
             try {
 // Change default type order if u want change from id to other entity variable
                 announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc("subject"));
-                totalData = Integer.parseInt(String.valueOf(announcementService.getTotalAnnouncementByParam(announcementSearchParameter)));
+                totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

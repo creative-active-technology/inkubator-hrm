@@ -75,5 +75,19 @@ public class SystemScoringIndexDaoImpl extends IDAOImpl<SystemScoringIndex> impl
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public Integer getLastOrderScala() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.addOrder(Order.desc("orderScala"));
+        return (Integer) criteria.setProjection(Projections.property("orderScala")).setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public SystemScoringIndex getByGradeNumber(int number) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("orderScala", number));
+        return (SystemScoringIndex) criteria.uniqueResult();
+    }
     
 }

@@ -173,20 +173,20 @@ public class JabatanSpesifikasiServiceImpl extends IServiceImpl implements Jabat
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(JabatanSpesifikasi entity, Long oldId) throws Exception {
         //check jika ada duplikat
-        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
-        if(totalDuplicate > 0){
-            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
-        }
+//        Long totalDuplicate = jabatanSpesifikasiDao.getTotalEntityByBioJabatanAndSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId(), new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+//        if(totalDuplicate > 0){
+//            throw new BussinessException("jabatanSpesifikasi.error_duplicate");
+//        }
         JabatanSpesifikasi jobSpek = this.jabatanSpesifikasiDao.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(entity.getJabatan().getId(), oldId));
-        this.jabatanSpesifikasiDao.delete(jobSpek);
-        entity.setId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
-        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
-        entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
-        entity.setValue(entity.getValue());
-        entity.setUpdatedBy(UserInfoUtil.getUserName());
-        entity.setUpdatedOn(new Date());
-        entity.setOptionAbility(entity.getOptionAbility());
-        this.jabatanSpesifikasiDao.save(entity);
+//        this.jabatanSpesifikasiDao.delete(jobSpek);
+//        entity.setId(new JabatanSpesifikasiId(entity.getJabatan().getId(), entity.getSpecificationAbility().getId()));
+//        entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+//        entity.setSpecificationAbility(specAbilityDao.getEntiyByPK(entity.getSpecificationAbility().getId()));
+        jobSpek.setValue(entity.getValue());
+        jobSpek.setUpdatedBy(UserInfoUtil.getUserName());
+        jobSpek.setUpdatedOn(new Date());
+        jobSpek.setOptionAbility(entity.getOptionAbility());
+        this.jabatanSpesifikasiDao.update(jobSpek);
     }
 
     @Override
