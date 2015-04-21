@@ -4,3 +4,8 @@
 .isitext_disabled_hrm{font-family:Calibri!important;font-size:13px!important;color:#245485!important;background-color:#dfe4e6!important}.header_big{font-family:Lucida Sans!important;font-size:13px!important;font-weight:bold;color:#036}.header_small_no_bold{font-family:Lucida Sans!important;font-size:12px!important;font-weight:normal;color:#036}.ui-growl-title{font:18px "Lucida Console"!important;color:#900;text-align:left}.ui-growl-message p{font:12px Verdana!important;color:#036}
 .ui-growl{position:fixed;top:2%;right:1%}.ui-menu-child{width:200px!important}.panel{color:#fff!important}.ui-selectonemenu-panel .ui-selectonemenu-filter{padding-right:23px}.ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon{position:absolute;top:11px;right:10px}.midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter{width:60%!important;padding-right:30px}.midle_combo_box .ui-selectonemenu-panel .ui-selectonemenu-filter-container .ui-icon{position:absolute;top:10px;right:-30px}
 .watermark{position:absolute;font-size:24px!important;font-style:italic;opacity:.7;z-index:99;color:red;transform:rotate(-20deg);-ms-transform:rotate(-20deg);-webkit-transform:rotate(-20deg)}.ui-clock{color:red!important;font-size:18px!important}
+.ui-widget-content{
+	/*border:1px solid #dddddd;*/
+        background: #fff url("/OPTIMA-HR/javax.faces.resource/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png.htm?ln=primefaces-cupertino") 50% top repeat-x ;
+	color: #036;
+}
