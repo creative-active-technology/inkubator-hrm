@@ -32,7 +32,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AnnouncementDao;
@@ -56,11 +55,9 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.RmbsDisbursement;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AnnouncementService;
-import com.inkubator.hrm.web.model.AnnouncementModelJson;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -273,11 +270,6 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
     }
 
     @Override
-    public String save(AnnouncementModelJson announcementModelJson, boolean isBypassApprovalChecking) throws Exception {
-    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
     	//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -359,7 +351,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	Gson gson = new GsonBuilder().create();
         	JsonObject jsonObject = (JsonObject) gson.fromJson(appActivity.getPendingData(), JsonObject.class);
         	List<Long> listEmployeeTypeId = gson.fromJson(jsonObject.get("listEmployeeTypeId").getAsString(), new TypeToken<List<Long>>() {}.getType());
-        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja").getAsString(), new TypeToken<List<Long>>() {}.getType());
+        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerjaId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	List<Long> listGolonganJabatanId = gson.fromJson(jsonObject.get("listGolonganJabatanId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	Announcement announcement = this.convertJsonToEntity(appActivity.getPendingData());
         	announcement.setStatus(HRMConstant.ANNOUNCEMENT_STATUS_APPROVED); // set approved status
@@ -386,7 +378,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	Gson gson = new GsonBuilder().create();
         	JsonObject jsonObject = (JsonObject) gson.fromJson(appActivity.getPendingData(), JsonObject.class);
         	List<Long> listEmployeeTypeId = gson.fromJson(jsonObject.get("listEmployeeTypeId").getAsString(), new TypeToken<List<Long>>() {}.getType());
-        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja").getAsString(), new TypeToken<List<Long>>() {}.getType());
+        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerjaId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	List<Long> listGolonganJabatanId = gson.fromJson(jsonObject.get("listGolonganJabatanId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	Announcement announcement = this.convertJsonToEntity(appActivity.getPendingData());
         	announcement.setStatus(HRMConstant.ANNOUNCEMENT_STATUS_REJECTED); // set rejected status
@@ -413,7 +405,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	Gson gson = new GsonBuilder().create();
         	JsonObject jsonObject = (JsonObject) gson.fromJson(appActivity.getPendingData(), JsonObject.class);
         	List<Long> listEmployeeTypeId = gson.fromJson(jsonObject.get("listEmployeeTypeId").getAsString(), new TypeToken<List<Long>>() {}.getType());
-        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja").getAsString(), new TypeToken<List<Long>>() {}.getType());
+        	List<Long> listUnitKerja = gson.fromJson(jsonObject.get("listUnitKerjaId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	List<Long> listGolonganJabatanId = gson.fromJson(jsonObject.get("listGolonganJabatanId").getAsString(), new TypeToken<List<Long>>() {}.getType());
         	Announcement announcement = this.convertJsonToEntity(appActivity.getPendingData());
         	announcement.setStatus(HRMConstant.ANNOUNCEMENT_STATUS_APPROVED); // set approved status
