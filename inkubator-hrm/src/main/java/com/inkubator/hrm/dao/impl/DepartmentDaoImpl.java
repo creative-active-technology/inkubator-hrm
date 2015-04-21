@@ -107,7 +107,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     }
 
     @Override
-    public void saveAndMerge(Department department) throws Exception {
+    public void saveAndMerge(Department department) {
         getCurrentSession().update(department);
         getCurrentSession().flush();
     }

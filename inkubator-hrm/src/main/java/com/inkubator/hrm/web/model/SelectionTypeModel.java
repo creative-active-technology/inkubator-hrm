@@ -24,6 +24,7 @@ public class SelectionTypeModel implements Serializable {
     private Double targetNilai;
     private String description;
     private DualListModel<Jabatan> dualListModel = new DualListModel<>();
+    private Boolean isActive;
 
     public Long getSelectionTemplateId() {
         return selectionTemplateId;
@@ -95,6 +96,14 @@ public class SelectionTypeModel implements Serializable {
 
     public void setDualListModel(DualListModel<Jabatan> dualListModel) {
         this.dualListModel = dualListModel;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
     
     

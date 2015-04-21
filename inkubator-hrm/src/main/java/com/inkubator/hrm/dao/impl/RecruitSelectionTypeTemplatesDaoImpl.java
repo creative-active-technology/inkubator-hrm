@@ -48,4 +48,10 @@ public class RecruitSelectionTypeTemplatesDaoImpl extends IDAOImpl<RecruitSelect
         return criteria.list();
     }
 
+    @Override
+    public void saveAndMerge(RecruitSelectionTypeTemplates rstt) {
+         getCurrentSession().update(rstt);
+        getCurrentSession().flush();
+    }
+
 }

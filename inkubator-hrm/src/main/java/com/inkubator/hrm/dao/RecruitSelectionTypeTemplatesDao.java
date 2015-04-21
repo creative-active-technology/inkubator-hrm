@@ -18,4 +18,6 @@ public interface RecruitSelectionTypeTemplatesDao extends IDAO<RecruitSelectionT
     public RecruitSelectionTypeTemplates getLevelOne(String root);
 
     public List<RecruitSelectionTypeTemplates> getByParentId(long id);
+
+    public void saveAndMerge(RecruitSelectionTypeTemplates rstt);
 }

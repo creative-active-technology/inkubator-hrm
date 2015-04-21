@@ -43,9 +43,7 @@ public class RecruitSelectionTypeTemplatesViewController extends BaseController 
         super.initialization();
         root = new DefaultTreeNode();
         try {
-            
             RecruitSelectionTypeTemplates data = recruitSelectionTypeTemplatesService.getLevelOne("ROOT");
-            System.out.println(" sfsdfsdfdsf "+data);
             root = createNodes(data, null);
             root.setExpanded(false);
         } catch (Exception ex) {

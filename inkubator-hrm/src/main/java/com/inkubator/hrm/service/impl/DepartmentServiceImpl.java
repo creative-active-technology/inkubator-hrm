@@ -399,8 +399,6 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
     public void updateOrganisasiLevel(Department department) throws Exception {
-        System.out.println("code dep  " + department.getDepartmentCode());
-        System.out.println("id dep  " + department.getId());
         long totalDuplicates = departmentDao.getTotalByCodeAndNotId(department.getDepartmentCode(), department.getId());
         System.out.println("total   " + totalDuplicates);
         if (totalDuplicates > 0) {

@@ -8,6 +8,7 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitSelectionTypeTemplates;
 import java.util.List;
+import org.primefaces.model.TreeNode;
 
 /**
  *
@@ -18,5 +19,9 @@ public interface RecruitSelectionTypeTemplatesService extends IService<RecruitSe
     public RecruitSelectionTypeTemplates getLevelOne(String root) throws Exception;
 
     public List<RecruitSelectionTypeTemplates> getByParentId(long id) throws Exception;
+
+    public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception;
+    
+    public RecruitSelectionTypeTemplates getWithJabatan(long id) throws Exception;
 
 }
