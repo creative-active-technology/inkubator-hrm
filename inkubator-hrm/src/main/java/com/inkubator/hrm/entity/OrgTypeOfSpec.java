@@ -36,6 +36,9 @@ public class OrgTypeOfSpec  implements java.io.Serializable {
     public OrgTypeOfSpec() {
     }
 
+    public OrgTypeOfSpec(long id){
+        this.id = id;
+    }
 	
     public OrgTypeOfSpec(long id, String code, String name) {
         this.id = id;

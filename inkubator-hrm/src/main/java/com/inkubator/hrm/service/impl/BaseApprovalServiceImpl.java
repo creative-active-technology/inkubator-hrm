@@ -95,7 +95,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @return approvalActivity object
      */
 	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
-		System.out.println("masuk checkApprovalProcess ");
 		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));		
 		return this.checkApprovalProcess(listAppDef, requestByEmployee);
 	}

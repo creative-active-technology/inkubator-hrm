@@ -27,6 +27,8 @@ public class RmbsDisbursement implements java.io.Serializable {
     private Date disbursementDate;
     private Date payrollPeriodDate;
     private String description;
+    private Integer status;
+    private String approvalActivityNumber;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -98,8 +100,26 @@ public class RmbsDisbursement implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}	
+	
+	@Column(name = "status", nullable = false)
+	public Integer getStatus() {
+		return status;
 	}
 
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	@Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;

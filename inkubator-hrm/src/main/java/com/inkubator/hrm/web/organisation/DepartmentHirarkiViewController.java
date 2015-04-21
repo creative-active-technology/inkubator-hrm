@@ -5,13 +5,11 @@
  */
 package com.inkubator.hrm.web.organisation;
 
-import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -154,7 +152,7 @@ public class DepartmentHirarkiViewController extends BaseController {
 
     public String doDetil() {
         Department department = (Department) selectedNode.getData();
-        return "/protected/organisation/organiztion_level_form.htm?faces-redirect=true&execution=d" + department.getId();
+        return "/protected/organisation/organiztion_level_detail.htm?faces-redirect=true&execution=d" + department.getId();
     }
 
     public String getCompanyName() {

@@ -386,6 +386,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         Department department = this.departmentDao.getEntiyByPK(departementId);
         List<UnitKerja> dataToShow = new ArrayList<>();
         for (DepartementUnitLocation location : this.departementUnitLocationDao.getByDepartementId(departementId)) {
+          location.getUnitKerja().getCity().getCityName();
             dataToShow.add(location.getUnitKerja());
         }
         department.setListUnit(dataToShow);
@@ -398,7 +399,10 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
     public void updateOrganisasiLevel(Department department) throws Exception {
+        System.out.println("code dep  " + department.getDepartmentCode());
+        System.out.println("id dep  " + department.getId());
         long totalDuplicates = departmentDao.getTotalByCodeAndNotId(department.getDepartmentCode(), department.getId());
+        System.out.println("total   " + totalDuplicates);
         if (totalDuplicates > 0) {
             throw new BussinessException("department.error_duplicate_department_name");
         }
