@@ -5,9 +5,12 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -18,9 +21,11 @@ public class LoanNewDisbursementFormModel implements Serializable {
     private Long id;
     private String disbursementCode;
     private Long coaId;
-    private Date disbursementDate;    
+    private Date disbursementDate;
     private String description;
-    private Map<String,Long> mapCoa;
+    private Map<String, Long> mapCoa;
+    private Map<Integer, Boolean> selectedIds = new HashMap<Integer, Boolean>();
+    private List<Integer> listLoanNewApplicationId;
 
     public LoanNewDisbursementFormModel() {
         this.mapCoa = new HashMap<>();
@@ -33,8 +38,6 @@ public class LoanNewDisbursementFormModel implements Serializable {
     public void setMapCoa(Map<String, Long> mapCoa) {
         this.mapCoa = mapCoa;
     }
-    
-    
 
     public Long getId() {
         return id;
@@ -75,6 +78,27 @@ public class LoanNewDisbursementFormModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public Map<Integer, Boolean> getSelectedIds() {
+        return selectedIds;
+    }
+
+    public void setSelectedIds(Map<Integer, Boolean> selectedIds) {
+        this.selectedIds = selectedIds;
+    }
+
+    public List<Integer> getListLoanNewApplicationId() {
+        listLoanNewApplicationId = new ArrayList<Integer>();
+        for (Map.Entry<Integer, Boolean> selected : selectedIds.entrySet()) {
+            if (StringUtils.equals(String.valueOf(selected.getValue()), "true")) {
+                listLoanNewApplicationId.add(selected.getKey());
+            }
+        }
+        return listLoanNewApplicationId;
+    }
+
+    public void setListLoanNewApplicationId(List<Integer> listLoanNewApplicationId) {
+        this.listLoanNewApplicationId = listLoanNewApplicationId;
+    }
+
 }

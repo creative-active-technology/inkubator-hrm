@@ -71,7 +71,7 @@ public class LoanNewDisbursementList implements java.io.Serializable {
     }
 
     public void setLoanNewDisbursement(LoanNewDisbursement loanNewDibursement) {
-        this.loanNewDisbursement = loanNewDisbursement;
+        this.loanNewDisbursement = loanNewDibursement;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

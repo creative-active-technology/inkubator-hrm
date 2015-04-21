@@ -79,7 +79,7 @@ public class LoanNewDisbursement  implements java.io.Serializable {
     }
 
     
-    @Column(name="dibursement_code", unique=true, nullable=false, length=10)
+    @Column(name="dibursement_code", unique=true, nullable=false, length=45)
     public String getDibursementCode() {
         return this.dibursementCode;
     }

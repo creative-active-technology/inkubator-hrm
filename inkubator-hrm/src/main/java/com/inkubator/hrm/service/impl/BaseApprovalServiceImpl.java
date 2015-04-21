@@ -251,6 +251,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
         /** checking process if there is any nextApproval for ApprovalActivity */
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity, pendingDataUpdate);
+        System.out.println("nextApproval == null : " + (nextApproval == null));
         HashMap<String, Object> result = new HashMap<String, Object>();
         if (nextApproval == null) {
             //added approval activity, hanya untuk nge-track perubahan terakhir di pendingData

@@ -76,9 +76,7 @@
                                                      style="min-width: 200px;margin-right: 3px" required="true" >
 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanNewDisbursementFormController.model.mapCoa}"/>
-                                        <p:ajax   listener="#{loanNewDisbursementFormController.updateDataPinjamanByCoa()}" 
-                                                  update=""/>
+                                        <f:selectItems value="#{loanNewDisbursementFormController.model.mapCoa}"/>                                       
                                     </p:selectOneMenu>
                                     <p:message for="coaCode"/>
                                 </p:column>
@@ -105,7 +103,7 @@
                         </p:panelGrid>
 <!--                        <p:outputLabel value="#{appmsg['loanCanceled.detail_info_of_loan_cancellation']}" styleClass="header_big" />                     -->
                         <p:separator/>
-                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
+                        
                            <p:dataTable  var="data"  value="#{loanNewDisbursementFormController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -131,66 +129,58 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="loanSchema.name" style="width: 20%">
+                            <p:column sortBy="nomor" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['rmbs_disbursement.disbursement_code']}"/>
+                                    <h:outputText value="#{appmsg['loan.number']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.loanSchema.name}" />
-                            </p:column>
-                            <p:column sortBy="loanSchema.name" style="width: 20%">
+                                <h:outputLabel value= "#{data.nomor}" />
+                            </p:column>                               
+                            <p:column sortBy="applicationDate" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['loanschema.loan']}"/>
+                                    <h:outputText value="#{appmsg['loan.submission_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.loanSchema.name}" />
+                                <h:outputLabel value= "#{data.applicationDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="nominalPrincipal" style="width: 10%;" >
+                             <p:column sortBy="dibursementDate" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.approvalPlanDate']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.dibursementDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="loanNewType.loanTypeName" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewType.loanTypeCode} #{data.loanNewType.loanTypeName}" />
+                            </p:column>                            
+                            <p:column sortBy="nominalPrincipal" style="width: 13%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
                                  <h:outputText value="Rp. "/>
-                                <h:outputLabel value= "#{data.nominalPrincipal}" >
+                                 <h:outputLabel value= "#{data.nominalPrincipal}" >
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                                 
-                            </p:column>                            
-                            <p:column sortBy="termin" style="width: 7%;text-align: center" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['loan.termin']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.termin}" />                                
-                            </p:column>
-                             <p:column sortBy="loanDate" style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['loan.submission_date']}"/>
-                                </f:facet>
-                                 <h:outputLabel value= "#{data.loanDate}" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </h:outputLabel>
-                            </p:column>
-                             <p:column sortBy="loanPaymentDate" style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['loan.disbursement_date']}"/>
-                                </f:facet>
-                                 <h:outputLabel value= "#{data.loanPaymentDate}" >
-                                    <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </h:outputLabel>
-                            </p:column>
-                           <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{loanDisbursementViewController.doDetail()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{loanDisbursementViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId, :growlLoanViewlId" />
-                                </p:commandButton>                              
+                            </p:column>                           
+                            
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">                               
+                                <p:selectBooleanButton value="#{loanNewDisbursementFormController.model.selectedIds[data.id]}" styleClass="label_button"
+					onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
                             </p:column>    
                             
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{loanDisbursementViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{loanNewDisbursementFormController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
                             
-                        </p:panelGrid>
+                    
 
                         <p:focus context="scheduleFormId" />     
 

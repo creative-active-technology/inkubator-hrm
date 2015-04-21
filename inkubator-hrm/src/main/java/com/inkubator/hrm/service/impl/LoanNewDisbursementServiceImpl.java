@@ -5,13 +5,28 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewDisbursementDao;
+import com.inkubator.hrm.dao.LoanNewDisbursementListDao;
+import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewDisbursement;
+import com.inkubator.hrm.entity.LoanNewDisbursementList;
 import com.inkubator.hrm.service.LoanNewDisbursementService;
+import com.inkubator.hrm.web.model.LoanNewDisbursementFormModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -20,6 +35,17 @@ import org.springframework.stereotype.Service;
 @Service(value = "loanNewDisbursementService")
 @Lazy
 public class LoanNewDisbursementServiceImpl extends IServiceImpl implements LoanNewDisbursementService {
+    
+    @Autowired
+    private LoanNewDisbursementDao loanNewDisbursementDao;
+    
+    @Autowired
+    private LoanNewDisbursementListDao loanNewDisbursementListDao;
+    
+    
+    @Autowired
+    private LoanNewApplicationDao loanNewApplicationDao;
+    
 
     @Override
     public LoanNewDisbursement getEntiyByPK(String string) throws Exception {
@@ -179,6 +205,50 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
     @Override
     public List<LoanNewDisbursement> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void disburseLoanApplication(LoanNewDisbursement loanNewDisbursement, List<Integer> listLoanNewApplicationid) throws Exception {
+        
+        if(listLoanNewApplicationid.isEmpty()){
+            throw new BussinessException("loan_disbursement.error_no_application_selected");
+        }
+        
+        Long id = Long.parseLong(RandomNumberUtil.getRandomNumber(9));
+        loanNewDisbursement.setId(id);        
+        loanNewDisbursement.setCreatedBy(UserInfoUtil.getUserName());
+        loanNewDisbursement.setCreatedOn(new Date());
+        
+        //Save Disbursement header
+       loanNewDisbursementDao.save(loanNewDisbursement);
+        
+       LoanNewDisbursement lnd = loanNewDisbursementDao.getEntiyByPK(id);
+      
+        // iterate each Loan
+        for (Integer loanNewApplicationId : listLoanNewApplicationid){
+            
+           
+            //Update Loan Status to HRMConstant.LOAN_DISBURSED
+            LoanNewApplication loanToUpdate = loanNewApplicationDao.getEntiyByPK(loanNewApplicationId);
+            loanToUpdate.setLoanStatus(HRMConstant.LOAN_DISBURSED);
+            loanNewApplicationDao.update(loanToUpdate);
+            
+             LoanNewDisbursementList loanNewDisbursementList = new LoanNewDisbursementList();
+            loanNewDisbursementList.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            loanNewDisbursementList.setLoanNewApplication(loanToUpdate);
+            loanNewDisbursementList.setLoanNewDisbursement(lnd);
+            loanNewDisbursementList.setCreatedBy(UserInfoUtil.getUserName());
+            loanNewDisbursementList.setCreatedOn(new Date());
+            //Save each detail disbursement
+            loanNewDisbursementListDao.save(loanNewDisbursementList);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getCurrentMaxId() throws Exception {
+        return loanNewDisbursementDao.getCurrentMaxId();
     }
     
 }

@@ -382,6 +382,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println("isEndOfApprovalProcess ? " + StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true"));
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
@@ -394,7 +395,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             /**
              * saving to DB
              */
-            this.save(entity, Boolean.FALSE, null);
+            this.save(entity, Boolean.TRUE, null);
         }
 
         //if there is no error, then sending the email notification

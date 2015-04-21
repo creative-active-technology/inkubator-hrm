@@ -21,4 +21,6 @@ public interface LoanNewDisbursementDao extends IDAO<LoanNewDisbursement> {
 	
 	
         public LoanNewDisbursement getEntityWithDetail(Long id);
+        
+        public Long getCurrentMaxId();
 }
