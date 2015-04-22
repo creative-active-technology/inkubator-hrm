@@ -178,7 +178,11 @@ public class JabatanSpesifikasiFormController extends BaseController{
     }
     
     public void doReset(){
-        model.setSpecId(null);
+        if (!isEdit) {
+            model.setSpecId(null);
+        }else{
+            model.setSpecId(model.getOldId());
+        }
     }
     
     public void doChangeValue() throws Exception{
