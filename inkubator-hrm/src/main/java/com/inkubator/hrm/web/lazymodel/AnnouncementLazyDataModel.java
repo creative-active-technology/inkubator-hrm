@@ -32,32 +32,22 @@ public class AnnouncementLazyDataModel extends LazyDataModel<Announcement> imple
     @Override
     public List<Announcement> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-        if (sortField != null) {
-            if (sortOrder == SortOrder.ASCENDING) {
-                try {
-                    announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.asc(sortField));
-                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            } else {
-                try {
-                    announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc(sortField));
-                    totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
-            }
-        } else {
-            try {
-// Change default type order if u want change from id to other entity variable
-                announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, Order.desc("subject"));
-                totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
-            }
+        try {
+        	Order orderable = null;
+	        if (sortField != null) {
+	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+	        } else {
+	        	orderable = Order.desc("periodeStartDate");
+	        }
+	        
+	        announcements = announcementService.getByParam(announcementSearchParameter, first, pageSize, orderable);
+	        totalData = Integer.parseInt(String.valueOf(announcementService.getTotalByParam(announcementSearchParameter)));	
+	        LOGGER.info("Success Load Lazy data Model");
+        } catch (Exception ex) {
+            LOGGER.error("Failed Load Lazy data Model");
+            LOGGER.error("Error = ", ex);
         }
-        LOGGER.info("Success Load Lazy data Model");
+        
         setPageSize(pageSize);
         setRowCount(totalData);
         return announcements;

@@ -5,6 +5,8 @@ import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -44,10 +46,7 @@ public class AnnouncementDaoImpl extends IDAOImpl<Announcement> implements Annou
     }
 
     private void doSearchAnnouncementByParam(AnnouncementSearchParameter parameter, Criteria criteria) {
-        if (parameter.getAnnouncementContent() != null) {
-            criteria.add(Restrictions.like("announcementContent", parameter.getAnnouncementContent(), MatchMode.ANYWHERE));
-        }
-        if (parameter.getSubject() != null) {
+        if (StringUtils.isNotEmpty(parameter.getSubject())) {
             criteria.add(Restrictions.like("subject", parameter.getSubject(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));

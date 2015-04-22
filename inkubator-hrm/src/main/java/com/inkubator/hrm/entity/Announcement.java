@@ -4,6 +4,8 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,6 +46,8 @@ public class Announcement implements java.io.Serializable {
     private Set<AnnouncementGoljab> announcementGoljabs = new HashSet<AnnouncementGoljab>(0);
     private Set<AnnouncementUnit> announcementUnits = new HashSet<AnnouncementUnit>(0);
     private Set<AnnouncementEmpType> announcementEmpTypes = new HashSet<AnnouncementEmpType>(0);
+    private Set<AnnouncementLog> announcementLogs = new HashSet<AnnouncementLog>(0);
+    
 
     public Announcement() {
     }
@@ -236,7 +240,7 @@ public class Announcement implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementGoljab> getAnnouncementGoljabs() {
         return this.announcementGoljabs;
     }
@@ -245,7 +249,7 @@ public class Announcement implements java.io.Serializable {
         this.announcementGoljabs = announcementGoljabs;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementUnit> getAnnouncementUnits() {
         return this.announcementUnits;
     }
@@ -254,7 +258,7 @@ public class Announcement implements java.io.Serializable {
         this.announcementUnits = announcementUnits;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementEmpType> getAnnouncementEmpTypes() {
         return this.announcementEmpTypes;
     }
@@ -262,5 +266,16 @@ public class Announcement implements java.io.Serializable {
     public void setAnnouncementEmpTypes(Set<AnnouncementEmpType> announcementEmpTypes) {
         this.announcementEmpTypes = announcementEmpTypes;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
+	public Set<AnnouncementLog> getAnnouncementLogs() {
+		return announcementLogs;
+	}
+
+	public void setAnnouncementLogs(Set<AnnouncementLog> announcementLogs) {
+		this.announcementLogs = announcementLogs;
+	}
+    
+    
 
 }

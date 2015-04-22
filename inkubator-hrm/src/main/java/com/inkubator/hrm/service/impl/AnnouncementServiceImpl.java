@@ -358,7 +358,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	announcement.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
             
             /** saving to DB */
-            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.FALSE);
+            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.TRUE);
         }
 
         //if there is no error, then sending the email notification
@@ -385,7 +385,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	announcement.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
             
             /** saving to DB */
-            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.FALSE);
+            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.TRUE);
         }
 
         //if there is no error, then sending the email notification
@@ -412,7 +412,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         	announcement.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose
             
             /** saving to DB */
-            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.FALSE);
+            this.save(announcement, null, listEmployeeTypeId, listGolonganJabatanId, listUnitKerja, Boolean.TRUE);
         }
 
         //if there is no error, then sending the email notification
@@ -456,7 +456,8 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 		/** start approval checking and saving data also */
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.ANNOUNCEMENT, UserInfoUtil.getUserName());
 		if(approvalActivity == null){				
-			/** proceed of saving data(entity) to DB */            
+			/** proceed of saving data(entity) to DB */   
+			entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 	        announcementDao.save(entity);
 	        
 	        for(Long id : listEmployeeTypeId){
