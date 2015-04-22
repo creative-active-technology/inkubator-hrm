@@ -20,4 +20,6 @@ public interface RecruitSelectionTypeTemplatesDao extends IDAO<RecruitSelectionT
     public List<RecruitSelectionTypeTemplates> getByParentId(long id);
 
     public void saveAndMerge(RecruitSelectionTypeTemplates rstt);
+
+    public RecruitSelectionTypeTemplates getByIdWithScore(long id);
 }

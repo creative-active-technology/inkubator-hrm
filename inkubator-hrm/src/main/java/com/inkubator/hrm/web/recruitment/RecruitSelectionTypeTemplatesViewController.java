@@ -99,7 +99,7 @@ public class RecruitSelectionTypeTemplatesViewController extends BaseController 
     
     public String doDetil() {
         RecruitSelectionTypeTemplates department = (RecruitSelectionTypeTemplates) selectedNode.getData();
-        return "/protected/recruitment/organiztion_level_detail.htm?faces-redirect=true&execution=d" + department.getId();
+        return "/protected/recruitment/selection_typel_detil.htm?faces-redirect=true&execution=d" + department.getId();
     }
     
     public void setRecruitSelectionTypeTemplatesService(RecruitSelectionTypeTemplatesService recruitSelectionTypeTemplatesService) {

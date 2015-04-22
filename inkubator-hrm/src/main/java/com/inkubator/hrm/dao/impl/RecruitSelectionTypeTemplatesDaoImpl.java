@@ -54,4 +54,12 @@ public class RecruitSelectionTypeTemplatesDaoImpl extends IDAOImpl<RecruitSelect
         getCurrentSession().flush();
     }
 
+    @Override
+    public RecruitSelectionTypeTemplates getByIdWithScore(long id) {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+         criteria.add(Restrictions.eq("id", id));
+         criteria.setFetchMode("systemScoring", FetchMode.JOIN);
+         return (RecruitSelectionTypeTemplates) criteria.uniqueResult();
+    }
+
 }

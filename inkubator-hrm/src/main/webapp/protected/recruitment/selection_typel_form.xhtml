@@ -128,8 +128,8 @@
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <!--<p:panel style="margin: 10px">-->
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{recruitSelectionTypeTemplatesFormController.doSave()}" styleClass="label_button" validateClient="false" update="selectionTipeFormId,:growlOrganisasiLevelFormId"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true"
+                                             action="#{recruitSelectionTypeTemplatesFormController.doSave()}" styleClass="label_button" update="selectionTipeFormId"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>

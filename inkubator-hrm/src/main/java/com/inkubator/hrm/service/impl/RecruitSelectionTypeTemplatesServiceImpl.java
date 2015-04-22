@@ -322,14 +322,16 @@ public class RecruitSelectionTypeTemplatesServiceImpl extends IServiceImpl imple
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public RecruitSelectionTypeTemplates getWithJabatan(long id) throws Exception {
-        RecruitSelectionTypeTemplates recruitSelectionTypeTemplates = this.recruitSelectionTypeTemplatesDao.getEntiyByPK(id);
+        RecruitSelectionTypeTemplates recruitSelectionTypeTemplates = this.recruitSelectionTypeTemplatesDao.getByIdWithScore(id);
         List<Jabatan> dataToShow = new ArrayList<>();
         for (RecruitSelectionTypeTemplatesJobTitle jobTitle : recruitSelectionTypeTemplatesJobTitleDao.getByRecruitSelectionTypeTemplatesId(id)) {
             jobTitle.getJabatan().getName();
+            jobTitle.getJabatan().getDepartment().getDepartmentName();
             dataToShow.add(jobTitle.getJabatan());
         }
         recruitSelectionTypeTemplates.setListJabatan(dataToShow);
         recruitSelectionTypeTemplates.getRecruitSelectionTypeTemplates().getCode();
+//        recruitSelectionTypeTemplates.getSystemScoring().getName();
         return recruitSelectionTypeTemplates;
     }
 

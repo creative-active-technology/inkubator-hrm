@@ -166,6 +166,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
     public String doSave() {
         String redirect = null;
         if (isEdit) {
+             System.out.println(" editiitit mode");
             try {
                 Set<RecruitSelectionTypeTemplatesJobTitle> templatesJobTitles = new HashSet<>();
                 List<Jabatan> listSelectedJabatan = selectionTypeModel.getDualListModel().getTarget();
@@ -181,7 +182,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
                 recruitSelectionTypeTemplatesService.update(rstt);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                redirect = "/protected/organisation/organiztion_level_detail.htm?faces-redirect=true&execution=d" + rstt.getId();
+                redirect = "/protected/recruitment/selection_typel_detil.htm?faces-redirect=true&execution=d" + rstt.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {
@@ -189,6 +190,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
             }
         } else {
             try {
+                System.out.println(" Sveeeeeee mode");
                 Set<RecruitSelectionTypeTemplatesJobTitle> templatesJobTitles = new HashSet<>();
                 List<Jabatan> listSelectedJabatan = selectionTypeModel.getDualListModel().getTarget();
                 RecruitSelectionTypeTemplates rstt = getEntityFromViewModel(selectionTypeModel);
@@ -204,7 +206,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
                 recruitSelectionTypeTemplatesService.save(rstt);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                redirect = "/protected/organisation/organiztion_level_detail.htm?faces-redirect=true&execution=d" + rstt.getId();
+                redirect = "/protected/recruitment/selection_typel_detil.htm?faces-redirect=true&execution=d" + rstt.getId();
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } catch (Exception ex) {

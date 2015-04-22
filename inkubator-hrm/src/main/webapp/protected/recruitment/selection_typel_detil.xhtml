@@ -24,13 +24,13 @@
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Template Tipe Seleksi" styleClass="header_big" />
+                                    <p:outputLabel value="Detil Template Tipe Seleksi" styleClass="header_big" />
                                     <p:outputLabel value="Data Template Tipe Seleksi dari Rekruitment" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                        <p:treeTable id="tree" value="#{recruitSelectionTypeTemplatesFormController.root}" style="width: 100%" var="dep"  >
+                        <p:treeTable id="tree" value="#{recruitSelectionTypeTemplatesDetilController.root}" style="width: 100%" var="dep"  >
                             <p:column  headerText="Parent Level" style="text-align: left">
                                 <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
                                 <!--<h:outputText value=" - #{dep.code}" />-->
@@ -39,107 +39,136 @@
                         </p:treeTable>
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="codeId" value="Kode Template Tipe Seleksi" styleClass="label_hrm"/>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Kode Template Tipe Seleksi" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column  style="width: 80%">
+                                <p:column  style="width: 75%">
 
-                                    <p:inputText id="codeId" title="Kode Template Tipe Seleksi" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.code}" 
-                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
-                                    <p:message for="codeId"/>
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.code}" 
+                                                    styleClass="isitext_hrm"  />
+
                                 </p:column>
                             </p:row> 
                             <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="name" value="Nama Tempalte Tipe Seleksi" styleClass="label_hrm"/>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Tempalte Tipe Seleksi" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:inputText id="name" title="Nama Tempalte Tipe Seleksi" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.name}" 
-                                                 required="true" maxlength="80" styleClass="isitext_hrm" style="width:290px;" />
-                                    <p:message for="name"/>
-                                </p:column>
-                            </p:row>                      
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="posisiNextId" value="Kategori" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column>
-                                    <p:selectBooleanButton value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.isCategory}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="posisiNextId" styleClass="label_button" />
+                                <p:column  style="width: 75%">
 
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column>
-                                    <p:selectBooleanButton value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.name}" 
+                                                    styleClass="isitext_hrm"  />
 
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="organisasiLevel" value="Skala Nilai" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:selectOneMenu value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.systemScoringId}"  id="organisasiLevel" required="true">
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{recruitSelectionTypeTemplatesFormController.mapScoring}" />
-                                    </p:selectOneMenu>
-                                    <p:message for="name"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="targetNilai" value="Target Nilai" styleClass="label_hrm"/>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Kategori" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:spinner min="0" max="100"  id="targetNilai" size="2" required="true" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.targetNilai}"/>
-                                    <p:message for="targetNilai"/>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.isCategory}" 
+                                                    styleClass="isitext_hrm"  >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+
                                 </p:column>
                             </p:row> 
                             <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Aktif" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column style="width: 80%" >
-                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.description}" 
-                                                     style="width: 290px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
-                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
-                                    <br/><p:outputLabel id="counter" />
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="listJabatan" value="Jabatan" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column>
-                                    <p:pickList value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.dualListModel}" var="jabatan" itemValue="#{jabatan}" converter="jabatanDualModelConverter" id="listJabatan"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="Jabatan" styleClass="isitext_hrm"
-                                                itemLabel="#{jabatan.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                                removeLabel="#{appmsg['global.remove']}"/>
-                                    <p:message for="listJabatan" />
-                                </p:column>
-                            </p:row>
+                                <p:column  style="width: 75%">
 
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.isActive}" 
+                                                    styleClass="isitext_hrm"  >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Skala Nilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.systemScoring.name}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Target Nilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.targetNilai}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Deskripsi" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.description}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row>    
                         </p:panelGrid>
+
+                        <p:dataTable value="#{recruitSelectionTypeTemplatesDetilController.listJabatans}" var="jabatan" rowIndexVar="no" style="margin-top: 15px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Jabatan"/>
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" >
+                                <f:facet name="header">
+                                    <h:outputText value="Kode Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.code}" />
+                            </p:column> 
+                            <p:column sortBy="name" >
+                                <f:facet name="header">
+                                    <h:outputText value="Nama Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.name}" />
+                            </p:column> 
+                            <p:column sortBy="department" >
+                                <f:facet name="header">
+                                    <h:outputText value="Departement"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.department.departmentName}" />
+                            </p:column>
+                            <p:column sortBy="tujuanJabatan" >
+                                <f:facet name="header">
+                                    <h:outputText value="Tujuan Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.tujuanJabatan}" />
+                            </p:column>
+
+
+                        </p:dataTable>
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <!--<p:panel style="margin: 10px">-->
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" 
-                                             action="#{recruitSelectionTypeTemplatesFormController.doSave()}" styleClass="label_button" validateClient="false" update="selectionTipeFormId,:growlOrganisasiLevelFormId"
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk"
+                            <p:commandButton value="#{appmsg['global.edit']}" ajax="true" 
+                                             action="#{recruitSelectionTypeTemplatesDetilController.doEdit()}" styleClass="label_button" validateClient="false" 
+                                             style="margin-right: 5px" label="#{appmsg['global.edit']}"
+                                             icon="ui-icon-folder-open"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="selectionTipeFormId"
-                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target="selectionTipeFormId" />  
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitSelectionTypeTemplatesFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitSelectionTypeTemplatesDetilController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
-                            <!--</p:panel>-->
+
                         </div>
                     </div>
                 </h:form>
