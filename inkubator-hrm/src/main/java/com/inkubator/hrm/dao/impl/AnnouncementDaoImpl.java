@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -51,4 +52,17 @@ public class AnnouncementDaoImpl extends IDAOImpl<Announcement> implements Annou
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public Announcement getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("company", FetchMode.JOIN);
+		criteria.setFetchMode("announcementEmpTypes", FetchMode.JOIN);
+		criteria.setFetchMode("announcementEmpTypes.employeeType", FetchMode.JOIN);
+		criteria.setFetchMode("announcementGoljabs", FetchMode.JOIN);
+		criteria.setFetchMode("announcementGoljabs.golonganJabatan", FetchMode.JOIN);
+		criteria.setFetchMode("announcementUnits", FetchMode.JOIN);
+		criteria.setFetchMode("announcementUnits.unitKerja", FetchMode.JOIN);
+		return (Announcement) criteria.uniqueResult();
+	}
 }

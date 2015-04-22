@@ -22,5 +22,7 @@ public interface AnnouncementService extends IService<Announcement>, BaseApprova
     public String saveWithApproval(Announcement entity, UploadedFile attachmentFile, List<Long> listEmployeeTypeId, List<Long> listGolonganJabatanId, List<Long> listUnitKerja) throws Exception;
     
     public String saveWithRevised(Announcement entity, UploadedFile attachmentFile, List<Long> listEmployeeTypeId, List<Long> listGolonganJabatanId, List<Long> listUnitKerja, Long approvalActivityId) throws Exception;
+
+	public Announcement getEntityByPkWithDetail(Long id) throws Exception;
     
 }

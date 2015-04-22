@@ -15,4 +15,6 @@ public interface AnnouncementDao extends IDAO<Announcement> {
     public List<Announcement> getByParam(AnnouncementSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(AnnouncementSearchParameter searchParameter);
+
+	public Announcement getEntityByPkWithDetail(Long id);
 }

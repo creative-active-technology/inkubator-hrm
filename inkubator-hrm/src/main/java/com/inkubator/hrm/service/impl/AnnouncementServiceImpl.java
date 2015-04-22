@@ -570,4 +570,10 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 		Announcement entity = gson.fromJson(json, Announcement.class);
         return entity;
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Announcement getEntityByPkWithDetail(Long id) throws Exception {
+		return announcementDao.getEntityByPkWithDetail(id);
+	}
 }

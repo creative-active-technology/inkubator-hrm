@@ -67,8 +67,8 @@ public class AnnouncementViewController extends BaseController {
         }
     }
     
-    public void doDetail(){
-    	
+    public String doDetail(){
+    	return "/protected/organisation/announcement_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public void doDelete() {
