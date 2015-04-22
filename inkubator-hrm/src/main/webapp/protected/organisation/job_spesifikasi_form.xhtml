@@ -41,7 +41,7 @@
                                 <h:outputLabel for="specId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="specId" value="#{jabatanSpesifikasiFormController.model.specId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="specId" required="true" value="#{jabatanSpesifikasiFormController.model.specId}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{jabatanSpesifikasiFormController.listSpecAbility}"/>
                                         <p:ajax update="value" process="@this" listener="#{jabatanSpesifikasiFormController.doChangeValue()}"/>
@@ -61,7 +61,7 @@
                                 <h:outputLabel for="value" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="value" value="#{jabatanSpesifikasiFormController.model.value}" style="width: 150px;margin-right: 3px">
+                                <p:selectOneMenu id="value" required="true" value="#{jabatanSpesifikasiFormController.model.value}" style="width: 150px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{jabatanSpesifikasiFormController.listValue}"/>
                                     </p:selectOneMenu>

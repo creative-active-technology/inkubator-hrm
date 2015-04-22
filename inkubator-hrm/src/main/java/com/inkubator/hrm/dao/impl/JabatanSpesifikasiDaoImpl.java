@@ -61,5 +61,13 @@ public class JabatanSpesifikasiDaoImpl extends IDAOImpl<JabatanSpesifikasi> impl
         criteria.add(Restrictions.eq("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+    
+    @Override
+    public Long getTotalEntityByBioJabatanAndSpesifikasiId(Long jabatanId, Long specId, JabatanSpesifikasiId id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        criteria.add(Restrictions.eq("specificationAbility.id", specId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 
 }
