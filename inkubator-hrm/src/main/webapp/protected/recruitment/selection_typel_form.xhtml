@@ -32,8 +32,9 @@
                         <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                         <p:treeTable id="tree" value="#{recruitSelectionTypeTemplatesFormController.root}" style="width: 100%" var="dep"  >
                             <p:column  headerText="Parent Level" style="text-align: left">
-                                <p:graphicImage library="images" name="organisasi.png" height="14" width="14" cache="false" />
-                                <!--<h:outputText value=" - #{dep.code}" />-->
+                                <p:graphicImage library="images" name="direktori.png" height="18" width="18" cache="false" rendered="#{dep.isCategory}" />
+                                <p:graphicImage library="images" name="file.png" height="18" width="18" cache="false" rendered="#{!dep.isCategory}" />
+                            <!--<h:outputText value=" - #{dep.code}" />-->
                                 <h:outputText value=" - #{dep.name}" />
                             </p:column>
                         </p:treeTable>

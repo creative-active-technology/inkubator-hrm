@@ -20,6 +20,7 @@ import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,6 +56,7 @@ public class UserFormController extends BaseController {
     @ManagedProperty(value = "#{passwordComplexityService}")
     private PasswordComplexityService passwordComplexityService;
     private Boolean isEdit;
+  
 
     @PostConstruct
     @Override
