@@ -37,7 +37,7 @@
 	                                <p:outputLabel value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.company.name}" />
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.company.name}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -45,18 +45,18 @@
 	                                <p:outputLabel value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<ui:repeat value="#{announcementApprovalFormController.listEmployeeType}" var="empType" varStatus="no">
-									   #{no.index+1}. #{empType.name} <br />
+	                            	<ui:repeat value="#{announcementDetailController.announcement.announcementEmpTypes.toArray()}" var="announcementEmpTypes" varStatus="no">
+									   #{no.index+1}. #{announcementEmpTypes.employeeType.name} <br />
 									</ui:repeat>
-	                            </p:column>
+								</p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<ui:repeat value="#{announcementApprovalFormController.listGolonganJabatan}" var="golJab" varStatus="no">
-									   #{no.index+1}. #{golJab.code} <br />
+	                            	<ui:repeat value="#{announcementDetailController.announcement.announcementGoljabs.toArray()}" var="announcementGoljabs" varStatus="no">
+									   #{no.index+1}. #{announcementGoljabs.golonganJabatan.code} <br />
 									</ui:repeat>
 	                            </p:column>
 	                        </p:row>
@@ -65,8 +65,8 @@
 	                                <p:outputLabel value="#{appmsg['unitkerja.unit_kerja']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<ui:repeat value="#{announcementApprovalFormController.listUnitKerja}" var="unitKerja" varStatus="no">
-									   #{no.index+1}. #{unitKerja.name} <br />
+	                            	<ui:repeat value="#{announcementDetailController.announcement.announcementUnits.toArray()}" var="announcementUnits" varStatus="no">
+									   #{no.index+1}. #{announcementUnits.unitKerja.name} <br />
 									</ui:repeat>
 	                            </p:column>
 	                        </p:row>
@@ -75,7 +75,7 @@
 	                                <p:outputLabel value="#{appmsg['announcement.title_announcement']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.subject}">
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.subject}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -85,7 +85,7 @@
 	                                <p:outputLabel value="#{appmsg['announcement.content_announcement']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.announcementContent}"/>
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.announcementContent}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -93,13 +93,13 @@
 	                                <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.isHaveAttachment}">
+	                            	<p:outputLabel value="#{announcementDetailController.isHaveAttachment}">
 	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>
-	                            	<p:outputLabel value="&nbsp;&nbsp;"/>
-	                            	<p:commandLink ajax="false" rendered="#{announcementApprovalFormController.isHaveAttachment}" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+	                            	<p:outputLabel value="&nbsp;&nbsp;"/>	                            	
+	                            	<p:commandLink ajax="false" rendered="#{announcementDetailController.isHaveAttachment}" value="Download" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
                                     	<p:fileDownload value="#{fileStreamerController.announcementAttachmentPath}" />
-                                        <f:param name="approvalActivityId" value="#{announcementApprovalFormController.selectedApprovalActivity.id}"/>
+                                        <f:param name="id" value="#{announcementDetailController.announcement.id}"/>
                                    	</p:commandLink>
 	                            </p:column>
 	                        </p:row>
@@ -108,16 +108,16 @@
 	                                <p:outputLabel value="#{appmsg['announcement.show']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.timeModel}">
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.timeModel}">
 	                            		<f:converter converterId="announcementTimeModelConverter"/>
 	                            	</p:outputLabel>
-	                            	<h:panelGroup rendered="#{announcementApprovalFormController.announcement.timeModel == 1}">
+	                            	<h:panelGroup rendered="#{announcementDetailController.announcement.timeModel == 1}">
 		                            	<p:outputLabel value=" - ("/>
-		                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.periodeStartDate}">
+		                            	<p:outputLabel value="#{announcementDetailController.announcement.periodeStartDate}">
 		                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 		                            	</p:outputLabel>
 		                            	<p:outputLabel  value="&nbsp; #{appmsg['global.to']} &nbsp;"/>
-		                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.periodeEndDate}">
+		                            	<p:outputLabel value="#{announcementDetailController.announcement.periodeEndDate}">
 		                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 		                            	</p:outputLabel>
 		                            	<p:outputLabel value=")"/>
@@ -129,7 +129,7 @@
 	                                <p:outputLabel value="#{appmsg['announcement.view_method']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.viewModel}">
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.viewModel}">
 	                            		<f:converter converterId="announcementViewModelConverter"/>
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -139,36 +139,15 @@
 	                                <p:outputLabel value="#{appmsg['announcement.publish']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{announcementApprovalFormController.announcement.internetPublish}">
+	                            	<p:outputLabel value="#{announcementDetailController.announcement.internetPublish}">
 	                            		<f:converter converterId="booleanMessageConverter"/>
 	                            	</p:outputLabel>
 	                            </p:column>
-	                        </p:row>            
-	                        <p:row rendered="#{announcementApprovalFormController.isWaitingApproval}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{announcementApprovalFormController.comment}" 
-	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
-	                            </p:column>
-	                        </p:row>	                        	                              
+	                        </p:row>                           	                              
 	                 	</p:panelGrid>
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<h:panelGroup rendered="#{announcementApprovalFormController.isWaitingApproval}">
-		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{announcementApprovalFormController.doApproved()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{announcementApprovalFormController.isApprover}" update=":growlId"/>
-								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{announcementApprovalFormController.doRejected()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{announcementApprovalFormController.isApprover}" update=":growlId"/>
-	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{announcementApprovalFormController.doAskingRevised()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{announcementApprovalFormController.isApprover}" update=":growlId"/>
-	                        </h:panelGroup>
-	                        <h:panelGroup rendered="#{announcementApprovalFormController.isWaitingRevised}">
-		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{announcementApprovalFormController.doRevised()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{announcementApprovalFormController.isRequester}" update=":growlId"/>		                        
-	                        </h:panelGroup>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{announcementApprovalFormController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{announcementDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
