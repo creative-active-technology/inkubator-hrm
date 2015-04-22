@@ -177,6 +177,10 @@ public class JabatanSpesifikasiFormController extends BaseController{
         
     }
     
+    public void doReset(){
+        model.setSpecId(null);
+    }
+    
     public void doChangeValue() throws Exception{
         selectSpecAbility = specificationAbilityService.getEntiyByPK(model.getSpecId());
         StringTokenizer st2 = new StringTokenizer(selectSpecAbility.getScaleValue(), "|");

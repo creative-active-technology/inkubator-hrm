@@ -83,10 +83,11 @@
                                          action="#{jabatanSpesifikasiFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formJobSpesifikasiId" 
+<!--                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formJobSpesifikasiId" 
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formJobSpesifikasiId" />  
-                        </p:commandButton>
+                        </p:commandButton>-->
+                        <p:commandButton value="#{appmsg['global.clear']}" update="formJobSpesifikasiId" process="@this" actionListener="#{jabatanSpesifikasiFormController.doReset()}"  style="margin-right:20px;" />
                     </h:panelGrid>
                 </h:form>
             </ui:define>
