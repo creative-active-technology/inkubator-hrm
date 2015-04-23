@@ -6,14 +6,13 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.EmpData;
+
 import com.inkubator.hrm.entity.LoanNewCancelation;
-import com.inkubator.hrm.web.search.BioDataSearchParameter;
+import com.inkubator.hrm.web.model.LoanNewCancelationBoxViewModel;
+
+import com.inkubator.hrm.web.search.LoanNewCancelationBoxSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
-import org.primefaces.model.StreamedContent;
-
 /**
  *
  * @author Ahmad Mudzakkir Amal
@@ -21,4 +20,8 @@ import org.primefaces.model.StreamedContent;
 public interface LoanNewCancelationService extends IService<LoanNewCancelation> {
 
    public Long getCurrentMaxId() throws Exception;
+   
+   public List<LoanNewCancelationBoxViewModel> getByParam(LoanNewCancelationBoxSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+
+   public Long getTotalByParam(LoanNewCancelationBoxSearchParameter parameter) throws Exception;
 }
