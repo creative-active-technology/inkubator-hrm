@@ -40,25 +40,27 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean(name = "jabatanSpesifikasiFormController")
 @ViewScoped
-public class JabatanSpesifikasiFormController extends BaseController{
+public class JabatanSpesifikasiFormController extends BaseController {
+
     //service
+
     @ManagedProperty(value = "#{specificationAbilityService}")
     private SpecificationAbilityService specificationAbilityService;
     @ManagedProperty(value = "#{jabatanSpesifikasiService}")
     private JabatanSpesifikasiService service;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
-    
+
     //list
     private List<SpecificationAbility> specAbility = new ArrayList<SpecificationAbility>();
     private Map<String, Long> listSpecAbility;
     private Map<String, String> listValue;
-    
+
     private JabatanSpesifikasiModel model;
     private SpecificationAbility selectSpecAbility;
     private Boolean isEdit;
     private long jabatanId;
-    
+
     public JabatanService getJabatanService() {
         return jabatanService;
     }
@@ -66,7 +68,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setJabatanService(JabatanService jabatanService) {
         this.jabatanService = jabatanService;
     }
-    
+
     public long getJabatanId() {
         return jabatanId;
     }
@@ -74,8 +76,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setJabatanId(long jabatanId) {
         this.jabatanId = jabatanId;
     }
-    
-    
+
     public JabatanSpesifikasiService getService() {
         return service;
     }
@@ -83,8 +84,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setService(JabatanSpesifikasiService service) {
         this.service = service;
     }
-    
-    
+
     public Boolean getIsEdit() {
         return isEdit;
     }
@@ -92,8 +92,6 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
-    
 
     public Map<String, String> getListValue() {
         return listValue;
@@ -102,7 +100,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setListValue(Map<String, String> listValue) {
         this.listValue = listValue;
     }
-    
+
     public JabatanSpesifikasiModel getModel() {
         return model;
     }
@@ -110,7 +108,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setModel(JabatanSpesifikasiModel model) {
         this.model = model;
     }
-    
+
     public List<SpecificationAbility> getSpecAbility() {
         return specAbility;
     }
@@ -134,11 +132,11 @@ public class JabatanSpesifikasiFormController extends BaseController{
     public void setListSpecAbility(Map<String, Long> listSpecAbility) {
         this.listSpecAbility = listSpecAbility;
     }
-    
+
     @PostConstruct
     @Override
     public void initialization() {
-        
+
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         model = new JabatanSpesifikasiModel();
@@ -147,12 +145,13 @@ public class JabatanSpesifikasiFormController extends BaseController{
                 jabatanId = Long.parseLong(param.substring(1));
                 isEdit = Boolean.FALSE;
             }
-            if(param.contains("e")){
+            if (param.contains("e")) {
                 String jabatanIdParam = FacesUtil.getRequestParameter("jabatanId");
                 isEdit = Boolean.TRUE;
                 long jobSpekId = Long.parseLong(param.substring(1));
                 JabatanSpesifikasi jabatanSpesifikasi = service.getEntityByBioJabatanSpesifikasiId(new JabatanSpesifikasiId(Long.parseLong(jabatanIdParam.substring(1)), Long.parseLong(param.substring(1))));
-//                model.setId(jabatanSpesifikasi.getId());
+                model.setJabatanId(Long.parseLong(jabatanIdParam.substring(1)));
+                model.setSpecId(jobSpekId);
                 model.setOptionAbility(jabatanSpesifikasi.getOptionAbility());
                 model.setValue(jabatanSpesifikasi.getValue());
                 model.setSpecId(jabatanSpesifikasi.getSpecificationAbility().getId());
@@ -160,7 +159,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
                 jabatanId = jabatanSpesifikasi.getJabatan().getId();
                 //select one menu dropdown
                 doChangeValue();
-                
+
             }
             //get all specification list
             specAbility = specificationAbilityService.getAllData();
@@ -173,11 +172,18 @@ public class JabatanSpesifikasiFormController extends BaseController{
             listSpecAbility.put(specificationAbility.getName(), specificationAbility.getId());
         }
         MapUtil.sortByValue(listSpecAbility);
-        
-        
+
     }
-    
-    public void doChangeValue() throws Exception{
+
+    public void doReset() {
+        if (!isEdit) {
+            model.setSpecId(null);
+        }else{
+            model.setSpecId(model.getOldId());
+        }
+    }
+
+    public void doChangeValue() throws Exception {
         selectSpecAbility = specificationAbilityService.getEntiyByPK(model.getSpecId());
         StringTokenizer st2 = new StringTokenizer(selectSpecAbility.getScaleValue(), "|");
         StringTokenizer st3 = new StringTokenizer(selectSpecAbility.getOptionAbility(), "|");
@@ -187,7 +193,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
         }
         MapUtil.sortByValue(listValue);
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         specificationAbilityService = null;
@@ -196,7 +202,7 @@ public class JabatanSpesifikasiFormController extends BaseController{
         model = null;
         listValue = null;
     }
-    
+
     public void doSave() {
         JabatanSpesifikasi jabatanSpesifikasi = getEntityFromViewModel(model);
         try {
@@ -208,15 +214,15 @@ public class JabatanSpesifikasiFormController extends BaseController{
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     private JabatanSpesifikasi getEntityFromViewModel(JabatanSpesifikasiModel model) {
-        
+
         String optionAbility = "";
         JabatanSpesifikasi jabatanSpesifikasi = new JabatanSpesifikasi();
         if (model.getId() != null) {
@@ -225,16 +231,16 @@ public class JabatanSpesifikasiFormController extends BaseController{
         jabatanSpesifikasi.setJabatan(new Jabatan(jabatanId));
         jabatanSpesifikasi.setSpecificationAbility(new SpecificationAbility(model.getSpecId()));
         jabatanSpesifikasi.setValue(model.getValue());
-        for (Iterator it = listValue.entrySet().iterator(); it.hasNext(); ) {  
-            Map.Entry e = (Map.Entry) it.next();   
+        for (Iterator it = listValue.entrySet().iterator(); it.hasNext();) {
+            Map.Entry e = (Map.Entry) it.next();
             String value = e.getValue().toString();
             // now do something with key and value
-            if(value.equals(model.getValue())){
+            if (value.equals(model.getValue())) {
                 optionAbility = e.getKey().toString();
             }
         }
         jabatanSpesifikasi.setOptionAbility(optionAbility);
-        
+
         return jabatanSpesifikasi;
     }
 }

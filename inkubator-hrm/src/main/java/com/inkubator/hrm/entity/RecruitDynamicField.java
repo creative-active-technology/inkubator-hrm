@@ -3,6 +3,7 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -27,6 +29,7 @@ public class RecruitDynamicField  implements java.io.Serializable {
      private String fieldStaticReference;
      private String fieldDataType;
      private String formModel;
+     private String fieldNewLabel;
      private Set<RecruitSelectionTypeField> recruitSelectionTypeFields = new HashSet<RecruitSelectionTypeField>(0);
 
     public RecruitDynamicField() {
@@ -93,6 +96,53 @@ public class RecruitDynamicField  implements java.io.Serializable {
     
     public void setRecruitSelectionTypeFields(Set<RecruitSelectionTypeField> recruitSelectionTypeFields) {
         this.recruitSelectionTypeFields = recruitSelectionTypeFields;
+    }
+
+    @Transient
+    public String getFieldNewLabel() {
+        return fieldNewLabel;
+    }
+
+    public void setFieldNewLabel(String fieldNewLabel) {
+        this.fieldNewLabel = fieldNewLabel;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 89 * hash + Objects.hashCode(this.fieldStaticReference);
+        hash = 89 * hash + Objects.hashCode(this.fieldDataType);
+        hash = 89 * hash + Objects.hashCode(this.formModel);
+        hash = 89 * hash + Objects.hashCode(this.fieldNewLabel);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RecruitDynamicField other = (RecruitDynamicField) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.fieldStaticReference, other.fieldStaticReference)) {
+            return false;
+        }
+        if (!Objects.equals(this.fieldDataType, other.fieldDataType)) {
+            return false;
+        }
+        if (!Objects.equals(this.formModel, other.formModel)) {
+            return false;
+        }
+        if (!Objects.equals(this.fieldNewLabel, other.fieldNewLabel)) {
+            return false;
+        }
+        return true;
     }
 
 
