@@ -15,9 +15,11 @@ import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -31,14 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "orgTypeOfSpecListService")
 @Lazy
-public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTypeOfSpecListService{
+public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTypeOfSpecListService {
 
     @Autowired
     private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
-    
+
     @Autowired
     private OrgTypeOfSpecDao orgTypeOfSpecDao;
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<OrgTypeOfSpecList> getByParam(OrgTypeOfSpecListSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -53,7 +55,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) {
+    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception {
         return this.orgTypeOfSpecListDao.getSpecTypeNameByOrgTypeOfSpecListId(id);
     }
 
@@ -77,7 +79,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(OrgTypeOfSpecList entity) throws Exception {
         long totalDuplicates = orgTypeOfSpecListDao.getTotalByCode(entity.getCode());
-        if(totalDuplicates > 0){
+        if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -90,7 +92,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
     @Override
     public void update(OrgTypeOfSpecList entity) throws Exception {
         long totalDuplicates = orgTypeOfSpecListDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
-        if(totalDuplicates > 0){
+        if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
         OrgTypeOfSpecList update = orgTypeOfSpecListDao.getEntiyByPK(entity.getId());
@@ -237,5 +239,30 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
     public List<OrgTypeOfSpecList> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<DualListModel> getAllBySpectJabatan() throws Exception {
+        List<DualListModel> dataAll = new ArrayList<>();
+        List<OrgTypeOfSpec> listOrgTypeOfSpecs = this.orgTypeOfSpecDao.getAllData();
+        for (OrgTypeOfSpec listOrgTypeOfSpec : listOrgTypeOfSpecs) {
+            DualListModel<OrgTypeOfSpecList> dualListModel = new DualListModel<>();
+            List<OrgTypeOfSpecList> listToInsert = this.orgTypeOfSpecListDao.getOrgTypeOfSpecList(listOrgTypeOfSpec.getId());
+            dualListModel.setSource(listToInsert);
+            dataAll.add(dualListModel);
+        }
+        return dataAll;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<String> getOrgTypeSpecName() throws Exception {
+        List<String> data = new ArrayList<>();
+        List<OrgTypeOfSpec> list = this.orgTypeOfSpecDao.getAllData();
+        for (OrgTypeOfSpec ofSpec : list) {
+            data.add(ofSpec.getName());
+        }
+        return data;
+    }
+
 }

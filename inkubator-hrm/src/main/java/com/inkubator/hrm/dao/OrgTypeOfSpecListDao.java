@@ -16,10 +16,13 @@ import org.hibernate.criterion.Order;
  *
  * @author EKA
  */
-public interface OrgTypeOfSpecListDao extends IDAO<OrgTypeOfSpecList>{
+public interface OrgTypeOfSpecListDao extends IDAO<OrgTypeOfSpecList> {
+
     public List<OrgTypeOfSpecList> getByParam(OrgTypeOfSpecListSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-    
+
     public Long getTotalOrgTypeOfSpecListByParam(OrgTypeOfSpecListSearchParameter searchParameter);
-    
+
     public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id);
+
+    public List<OrgTypeOfSpecList> getOrgTypeOfSpecList(long id);
 }

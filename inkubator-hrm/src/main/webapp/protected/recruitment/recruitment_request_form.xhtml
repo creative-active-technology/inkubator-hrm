@@ -5,7 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -47,6 +48,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="mppPeriodeId">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitHireApplyFormController.mapPeriode}" />
                                     </p:selectOneMenu>
                                     <p:message for="mppPeriodeId"/>
                                 </p:column>
@@ -65,8 +67,9 @@
                                     <p:outputLabel for="jabatanId" value="Jabatan" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="jabatanId">
+                                    <p:selectOneMenu id="jabatanId" filter="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitHireApplyFormController.mapJabatan}" />
                                     </p:selectOneMenu>
                                     <p:message for="jabatanId"/>
                                 </p:column>
@@ -97,6 +100,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="statusId">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitHireApplyFormController.mapEmployeeType}" />
                                     </p:selectOneMenu>
                                     <p:message for="statusId"/>
                                 </p:column>
@@ -108,7 +112,7 @@
                                 <p:column  style="width: 80%">
                                     <h:panelGrid columns="4" style="margin-left: -10px">
                                         <p:selectOneMenu id="rentangGajiId">
-                                            <f:selectItem itemLabel="USD" itemValue=""/>
+                                            <f:selectItems value="#{recruitHireApplyFormController.mapCurrency}" />
                                         </p:selectOneMenu>
                                         <pe:inputNumber style="margin-left: -10px"/>
                                         <p:outputLabel value="s.d" style="margin-left: -10px"/>
@@ -136,8 +140,11 @@
                                         <p:outputLabel for="genderId" value="Jenid Kelamin" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:selectOneMenu id="genderId">
+                                        <p:selectOneMenu id="genderId" style="width: 120px">
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItem itemLabel="Semua" itemValue="Any"/>
+                                            <f:selectItem itemLabel="Laki-Laki" itemValue="Male"/>
+                                            <f:selectItem itemLabel="Perempuan" itemValue="Female"/>
                                         </p:selectOneMenu>
                                         <p:message for="genderId"/>
                                     </p:column>
@@ -147,8 +154,11 @@
                                         <p:outputLabel for="mariedId" value="Status Pernikahan" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:selectOneMenu id="mariedId">
+                                        <p:selectOneMenu id="mariedId" style="width: 120px">
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItem itemLabel="Semua" itemValue="Any"/>
+                                            <f:selectItem itemLabel="Menikah" itemValue="Married"/>
+                                            <f:selectItem itemLabel="Tidak Menikah" itemValue="Single"/>
                                         </p:selectOneMenu>
                                         <p:message for="mariedId"/>
                                     </p:column>
@@ -190,21 +200,25 @@
                         </p:fieldset>
                         <p:fieldset legend="Spesifikasi Pekerjaan" style="margin-bottom:15px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
-                                <p:row>
-                                    <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="bidangId" value="Bidang" styleClass="label_hrm"/>
-                                    </p:column>
-                                    <p:column  style="width: 80%">
-                                        <!--<p:pickList id="bidangId" />-->
-                                        <p:outputLabel id="bidangId" />
-                                    </p:column>
-                                </p:row>
+                                <c:forEach   var="ordinate2" id="repeat" begin="0" end="#{recruitHireApplyFormController.dataForRenders.size()-1}"  >
+                                    <p:row>
+                                        <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                            <p:outputLabel  value="#{recruitHireApplyFormController.name.get(ordinate2)}" styleClass="label_hrm"/>
+                                        </p:column>
+                                        <p:column  style="width: 80%">
+                                            <p:pickList value="#{recruitHireApplyFormController.dataForRenders.get(ordinate2)}" var="orgTypeOfSpecList" itemValue="#{orgTypeOfSpecList}" converter="orgTipeListConverter" 
+                                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="Lokasi Kerja" styleClass="isitext_hrm"
+                                                        itemLabel="#{orgTypeOfSpecList.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                        removeLabel="#{appmsg['global.remove']}"/>
+                                        </p:column>
+
+                                    </p:row>
+                                </c:forEach>
 
                             </p:panelGrid>
                         </p:fieldset>
                         <p:fieldset legend="Pengajuan Oleh" style="margin-bottom:15px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
-                                
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
                                         <p:outputLabel  value="Nama" styleClass="label_hrm"/>
