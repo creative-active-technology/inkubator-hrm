@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Selection Type Template
+            </ui:define>
+            <ui:define name="center">              
+                <div id="box_bg" style="margin: 10px">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="selection_type.png" height="36" width="36" cache="true" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Template Tipe Seleksi" styleClass="header_big" />
+                                <p:outputLabel value="Data Template Tipe Seleksi dari Rekruitment" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form >
+                        <p:contextMenu for="tree" >
+                            <p:menuitem value="Tambah Tipe Seleksi"  icon="ui-icon-document" action="#{recruitSelectionTypeTemplatesViewController.doAdd()}" />
+                            <p:menuitem value="Edit Tipe Seleksi" icon="ui-icon-folder-open" action="#{recruitSelectionTypeTemplatesViewController.doEdit()}" />
+                            <p:menuitem value="Detil Tipe Seleksi" icon="ui-icon-zoomin" action="#{recruitSelectionTypeTemplatesViewController.doDetil()}" />
+                        </p:contextMenu>
+                        <div style="margin-bottom: 7px" align="left">
+                            <p:treeTable id="tree" value="#{recruitSelectionTypeTemplatesViewController.root}" style="width: 100%" var="dep" 
+                                         selection="#{recruitSelectionTypeTemplatesViewController.selectedNode}"  selectionMode="single" >
+                                <p:column  headerText="Template Tipe Seleksi" style="text-align: left">
+                                    <p:graphicImage library="images" name="direktori.png" height="18" width="18" cache="false" rendered="#{dep.isCategory}" />
+                                    <p:graphicImage library="images" name="file.png" height="18" width="18" cache="false" rendered="#{!dep.isCategory}" />
+                                  <!--<h:outputText value=" - #{dep.code}" />-->
+                                    <h:outputText value="  #{dep.name}"  />
+                                </p:column>
+                            </p:treeTable>
+                        </div>
+                        <p:outputLabel value="*)Klik kanan pada Tipe Seleksi untuk menambah atau mengedit data Tipe Seleksi"  style="margin-top: 10px"/>
+                        <p:separator style="margin-top: 10px"/>
+                        <h:panelGrid columns="1" style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentHirarkiViewController.doClose()}" styleClass="label_button" immediate="true"/>
+                        </h:panelGrid>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

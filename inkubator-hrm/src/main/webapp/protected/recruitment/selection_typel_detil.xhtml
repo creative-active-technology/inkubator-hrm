@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlOrganisasiLevelFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="selectionTipeFormId">
+                    <p:focus context="selectionTipeFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Detil Template Tipe Seleksi" styleClass="header_big" />
+                                    <p:outputLabel value="Data Template Tipe Seleksi dari Rekruitment" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:treeTable id="tree" value="#{recruitSelectionTypeTemplatesDetilController.root}" style="width: 100%" var="dep"  >
+                            <p:column  headerText="Parent Level" style="text-align: left">
+                                <p:graphicImage library="images" name="direktori.png" height="18" width="18" cache="false" rendered="#{dep.isCategory}" />
+                                <p:graphicImage library="images" name="file.png" height="18" width="18" cache="false" rendered="#{!dep.isCategory}" />
+                            <!--<h:outputText value=" - #{dep.code}" />-->
+                                <h:outputText value=" - #{dep.name}" />
+                            </p:column>
+                        </p:treeTable>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Kode Template Tipe Seleksi" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.code}" 
+                                                    styleClass="isitext_hrm"  />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Nama Tempalte Tipe Seleksi" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.name}" 
+                                                    styleClass="isitext_hrm"  />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Kategori" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.isCategory}" 
+                                                    styleClass="isitext_hrm"  >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Aktif" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.isActive}" 
+                                                    styleClass="isitext_hrm"  >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Skala Nilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.systemScoring.name}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Target Nilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.targetNilai}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Deskripsi" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 75%">
+
+                                    <p:outputLabel  value="#{recruitSelectionTypeTemplatesDetilController.templates.description}" 
+                                                    styleClass="isitext_hrm" />
+
+                                </p:column>
+                            </p:row>    
+                        </p:panelGrid>
+
+                        <p:dataTable value="#{recruitSelectionTypeTemplatesDetilController.listJabatans}" var="jabatan" rowIndexVar="no" style="margin-top: 15px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Jabatan"/>
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="code" >
+                                <f:facet name="header">
+                                    <h:outputText value="Kode Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.code}" />
+                            </p:column> 
+                            <p:column sortBy="name" >
+                                <f:facet name="header">
+                                    <h:outputText value="Nama Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.name}" />
+                            </p:column> 
+                            <p:column sortBy="department" >
+                                <f:facet name="header">
+                                    <h:outputText value="Departement"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.department.departmentName}" />
+                            </p:column>
+                            <p:column sortBy="tujuanJabatan" >
+                                <f:facet name="header">
+                                    <h:outputText value="Tujuan Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{jabatan.tujuanJabatan}" />
+                            </p:column>
+
+
+                        </p:dataTable>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <!--<p:panel style="margin: 10px">-->
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" ajax="true" 
+                                             action="#{recruitSelectionTypeTemplatesDetilController.doEdit()}" styleClass="label_button" validateClient="false" 
+                                             style="margin-right: 5px" label="#{appmsg['global.edit']}"
+                                             icon="ui-icon-folder-open"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitSelectionTypeTemplatesDetilController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

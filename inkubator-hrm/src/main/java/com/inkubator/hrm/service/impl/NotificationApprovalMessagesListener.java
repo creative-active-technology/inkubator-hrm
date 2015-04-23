@@ -92,9 +92,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-            toSend.add("deni.arianto24@yahoo.com");
+//            toSend.add("deni.arianto24@yahoo.com");
 //            toSend.add("rizal2_dhfr@yahoo.com");
-//            toSentCC.add("rizkykojek@gmail.com");
+            toSentCC.add("rizkykojek@gmail.com");
 //            toSentCC.add("amjadicky@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
@@ -223,8 +223,13 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             
                             vtm.setSubject("Pengajuan Pengumuman");
                             vtm.setTemplatePath("email_announcement_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("subjek", jsonObject.get("subjek").getAsString());
                             maptoSend.put("content", jsonObject.get("content").getAsString());
+                            maptoSend.put("company", jsonObject.get("company").getAsString());
                             maptoSend.put("listEmployeeType", dataEmployeeType);
                             maptoSend.put("listUnitKerja", dataUnitKerja);
                             maptoSend.put("listGolonganJabatan", dataGolonganJabatan);
@@ -340,6 +345,26 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                            
+                        case HRMConstant.ANNOUNCEMENT:
+                            TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                            List<String> dataGolonganJabatan = gson.fromJson(jsonObject.get("listGolonganJabatan"), token.getType());
+                            List<String> dataUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja"), token.getType());
+                            List<String> dataEmployeeType = gson.fromJson(jsonObject.get("listEmployeeType"), token.getType());
+                            
+                            vtm.setSubject("Pengajuan Pengumuman");
+                            vtm.setTemplatePath("email_announcement_approved_or_rejected_approval.vm");
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            maptoSend.put("subjek", jsonObject.get("subjek").getAsString());
+                            maptoSend.put("content", jsonObject.get("content").getAsString());
+                            maptoSend.put("company", jsonObject.get("company").getAsString());
+                            maptoSend.put("listEmployeeType", dataEmployeeType);
+                            maptoSend.put("listUnitKerja", dataUnitKerja);
+                            maptoSend.put("listGolonganJabatan", dataGolonganJabatan);
                             break;
                         
                         default:

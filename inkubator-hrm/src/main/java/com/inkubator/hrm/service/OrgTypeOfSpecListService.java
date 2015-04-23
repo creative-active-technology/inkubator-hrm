@@ -11,16 +11,21 @@ import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.DualListModel;
 
 /**
  *
  * @author EKA
  */
-public interface OrgTypeOfSpecListService extends IService<OrgTypeOfSpecList>{
+public interface OrgTypeOfSpecListService extends IService<OrgTypeOfSpecList> {
+
     public List<OrgTypeOfSpecList> getByParam(OrgTypeOfSpecListSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
-    
+
     public Long getTotalOrgTypeOfSpecListByParam(OrgTypeOfSpecListSearchParameter searchParameter) throws Exception;
-    
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id);
-    
+
+    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception;
+
+    public List<DualListModel> getAllBySpectJabatan() throws Exception;
+
+    public List<String> getOrgTypeSpecName() throws Exception;
 }

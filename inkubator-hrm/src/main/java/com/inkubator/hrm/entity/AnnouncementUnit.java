@@ -54,7 +54,7 @@ public class AnnouncementUnit  implements java.io.Serializable {
 
     
     @AttributeOverrides( {
-        @AttributeOverride(name="announcementJd", column=@Column(name="announcement_jd", nullable=false) ), 
+        @AttributeOverride(name="announcementId", column=@Column(name="announcement_id", nullable=false) ), 
         @AttributeOverride(name="unitId", column=@Column(name="unit_id", nullable=false) ) } )
     public AnnouncementUnitId getId() {
         return this.id;
@@ -75,7 +75,7 @@ public class AnnouncementUnit  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="announcement_jd", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="announcement_id", nullable=false, insertable=false, updatable=false)
     public Announcement getAnnouncement() {
         return this.announcement;
     }

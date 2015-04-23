@@ -4,6 +4,8 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +26,7 @@ import javax.persistence.Version;
 )
 public class Announcement implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private Company company;
     private String subject;
@@ -32,24 +34,25 @@ public class Announcement implements java.io.Serializable {
     private Integer timeModel;
     private Date periodeStartDate;
     private Date periodeEndDate;
-    private int viewModel;
-    private boolean internetPublish;
+    private Integer viewModel;
+    private Boolean internetPublish;
     private String attachmentPath;
-    private Boolean emailIsSend;
+    private Integer status;
+    private String approvalActivityNumber;
     private Date createdOn;
     private String createdBy;
-    private String updatedBy;
-    private String nomor;
+    private String updatedBy;    
     private Date updatedOn;
-    private Boolean isAlreadyShow;
     private Set<AnnouncementGoljab> announcementGoljabs = new HashSet<AnnouncementGoljab>(0);
     private Set<AnnouncementUnit> announcementUnits = new HashSet<AnnouncementUnit>(0);
     private Set<AnnouncementEmpType> announcementEmpTypes = new HashSet<AnnouncementEmpType>(0);
+    private Set<AnnouncementLog> announcementLogs = new HashSet<AnnouncementLog>(0);
+    
 
     public Announcement() {
     }
 
-    public Announcement(long id, Company company, String subject, int viewModel, boolean internetPublish) {
+    public Announcement(Long id, Company company, String subject, Integer viewModel, boolean internetPublish) {
         this.id = id;
         this.company = company;
         this.subject = subject;
@@ -57,7 +60,7 @@ public class Announcement implements java.io.Serializable {
         this.internetPublish = internetPublish;
     }
 
-    public Announcement(long id, Company company, String subject, String announcementContent, Integer timeModel, Date periodeStartDate, Date periodeEndDate, int viewModel, boolean internetPublish, String attachmentPath, Boolean emailIsSend, Date createdOn, String createdBy, String updatedBy, Date updatedOn, Boolean isAlreadyShow, Set<AnnouncementGoljab> announcementGoljabs, Set<AnnouncementUnit> announcementUnits, Set<AnnouncementEmpType> announcementEmpTypes) {
+    public Announcement(Long id, Company company, String subject, String announcementContent, Integer timeModel, Date periodeStartDate, Date periodeEndDate, Integer viewModel, Boolean internetPublish, String attachmentPath, Date createdOn, String createdBy, String updatedBy, Date updatedOn, Set<AnnouncementGoljab> announcementGoljabs, Set<AnnouncementUnit> announcementUnits, Set<AnnouncementEmpType> announcementEmpTypes) {
         this.id = id;
         this.company = company;
         this.subject = subject;
@@ -68,25 +71,22 @@ public class Announcement implements java.io.Serializable {
         this.viewModel = viewModel;
         this.internetPublish = internetPublish;
         this.attachmentPath = attachmentPath;
-        this.emailIsSend = emailIsSend;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
-        this.isAlreadyShow = isAlreadyShow;
         this.announcementGoljabs = announcementGoljabs;
         this.announcementUnits = announcementUnits;
         this.announcementEmpTypes = announcementEmpTypes;
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -119,7 +119,7 @@ public class Announcement implements java.io.Serializable {
         this.subject = subject;
     }
 
-    @Column(name = "announcement_content", length = 65535, columnDefinition="Text")
+    @Column(name = "announcement_content", length = 65535, columnDefinition="Text", nullable = false)
     public String getAnnouncementContent() {
         return this.announcementContent;
     }
@@ -128,7 +128,7 @@ public class Announcement implements java.io.Serializable {
         this.announcementContent = announcementContent;
     }
 
-    @Column(name = "time_model")
+    @Column(name = "time_model", nullable = false)
     public Integer getTimeModel() {
         return this.timeModel;
     }
@@ -157,31 +157,22 @@ public class Announcement implements java.io.Serializable {
         this.periodeEndDate = periodeEndDate;
     }
 
-    @Column(name = "view_model", nullable = false)
-    public int getViewModel() {
+	@Column(name = "view_model", nullable = false)
+    public Integer getViewModel() {
         return this.viewModel;
     }
-
-    public void setViewModel(int viewModel) {
-        this.viewModel = viewModel;
-    }
+	
+	public void setViewModel(Integer viewModel) {
+		this.viewModel = viewModel;
+	}
 
     @Column(name = "internet_publish", nullable = false)
-    public boolean getInternetPublish() {
+    public Boolean getInternetPublish() {
         return this.internetPublish;
     }
 
-    public void setInternetPublish(boolean internetPublish) {
+    public void setInternetPublish(Boolean internetPublish) {
         this.internetPublish = internetPublish;
-    }
-
-    @Column(name="nomor", unique=true, length = 45)
-    public String getNomor() {
-        return nomor;
-    }
-
-    public void setNomor(String nomor) {
-        this.nomor = nomor;
     }
     
     @Column(name = "attachment_path", length = 200)
@@ -193,16 +184,25 @@ public class Announcement implements java.io.Serializable {
         this.attachmentPath = attachmentPath;
     }
 
-    @Column(name = "email_is_send")
-    public Boolean getEmailIsSend() {
-        return this.emailIsSend;
-    }
+    @Column(name = "status", nullable = false)
+    public Integer getStatus() {
+		return status;
+	}
 
-    public void setEmailIsSend(Boolean emailIsSend) {
-        this.emailIsSend = emailIsSend;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "approval_activity_number", length = 45, unique = true)
+	public String getApprovalActivityNumber() {
+		return approvalActivityNumber;
+	}
+
+	public void setApprovalActivityNumber(String approvalActivityNumber) {
+		this.approvalActivityNumber = approvalActivityNumber;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)
     public Date getCreatedOn() {
         return this.createdOn;
@@ -240,16 +240,7 @@ public class Announcement implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "is_already_show")
-    public Boolean getIsAlreadyShow() {
-        return this.isAlreadyShow;
-    }
-
-    public void setIsAlreadyShow(Boolean isAlreadyShow) {
-        this.isAlreadyShow = isAlreadyShow;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementGoljab> getAnnouncementGoljabs() {
         return this.announcementGoljabs;
     }
@@ -258,7 +249,7 @@ public class Announcement implements java.io.Serializable {
         this.announcementGoljabs = announcementGoljabs;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementUnit> getAnnouncementUnits() {
         return this.announcementUnits;
     }
@@ -267,7 +258,7 @@ public class Announcement implements java.io.Serializable {
         this.announcementUnits = announcementUnits;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
     public Set<AnnouncementEmpType> getAnnouncementEmpTypes() {
         return this.announcementEmpTypes;
     }
@@ -275,5 +266,16 @@ public class Announcement implements java.io.Serializable {
     public void setAnnouncementEmpTypes(Set<AnnouncementEmpType> announcementEmpTypes) {
         this.announcementEmpTypes = announcementEmpTypes;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "announcement", cascade=CascadeType.REMOVE)
+	public Set<AnnouncementLog> getAnnouncementLogs() {
+		return announcementLogs;
+	}
+
+	public void setAnnouncementLogs(Set<AnnouncementLog> announcementLogs) {
+		this.announcementLogs = announcementLogs;
+	}
+    
+    
 
 }

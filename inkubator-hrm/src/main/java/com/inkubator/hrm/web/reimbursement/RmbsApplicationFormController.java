@@ -237,8 +237,6 @@ public class RmbsApplicationFormController extends BaseController {
             	reimbursementFile = rmbsApplicationService.convertFileToUploadedFile(json);
             	model.setReimbursementFileName(reimbursementFile.getFileName());
             }
-	    	
-	    	
     		
     	} catch (Exception e) {
 			LOGGER.error("Error", e);

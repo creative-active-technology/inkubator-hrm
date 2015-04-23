@@ -16,9 +16,11 @@ import org.primefaces.model.StreamedContent;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.webcore.controller.BaseController;
@@ -35,6 +37,8 @@ public class FileStreamerController extends BaseController {
 
 	@ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
+	@ManagedProperty(value = "#{announcementService}")
+    private AnnouncementService announcementService;
 	@ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
 	@ManagedProperty(value = "#{facesIO}")
@@ -85,6 +89,36 @@ public class FileStreamerController extends BaseController {
         
         return streamedContent;
     }
+	
+	public StreamedContent getAnnouncementAttachmentPath() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String approvalActivityId = context.getExternalContext().getRequestParameterMap().get("approvalActivityId");
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        
+        if (!context.getRenderResponse() && (StringUtils.isNotEmpty(approvalActivityId) || StringUtils.isNotEmpty(id))) {
+            try {
+            	Announcement announcement = null;
+            	if(StringUtils.isNotEmpty(approvalActivityId)){
+            		ApprovalActivity appActivity = approvalActivityService.getEntiyByPK(Long.parseLong(approvalActivityId));
+                    Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        	    	announcement =  gson.fromJson(appActivity.getPendingData(), Announcement.class);
+            	} else if(StringUtils.isNotEmpty(id)){
+            		announcement = announcementService.getEntiyByPK(Long.parseLong(id));
+            	}
+                
+                String path = StringUtils.isEmpty(announcement.getAttachmentPath()) ? facesIO.getPathUpload() + "no_image.png" : announcement.getAttachmentPath();   
+                
+                InputStream is = facesIO.getInputStreamFromURL(path);
+                streamedContent = new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        }
+        
+        return streamedContent;
+    }
 
 	public RmbsApplicationService getRmbsApplicationService() {
 		return rmbsApplicationService;
@@ -108,6 +142,14 @@ public class FileStreamerController extends BaseController {
 
 	public void setFacesIO(FacesIO facesIO) {
 		this.facesIO = facesIO;
+	}
+
+	public AnnouncementService getAnnouncementService() {
+		return announcementService;
+	}
+
+	public void setAnnouncementService(AnnouncementService announcementService) {
+		this.announcementService = announcementService;
 	}	
 	
 }
