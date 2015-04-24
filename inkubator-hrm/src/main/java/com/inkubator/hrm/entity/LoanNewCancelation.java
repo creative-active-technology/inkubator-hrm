@@ -33,6 +33,7 @@ public class LoanNewCancelation  implements java.io.Serializable {
      private String approvalActivityNumber;
      private Date cancelationDate;
      private EmpData empData;
+     private LoanNewApplication loanNewApplication;
      private LoanNewSchema loanNewSchema;
      private LoanNewType loanNewType;
      private String reason;
@@ -150,6 +151,16 @@ public class LoanNewCancelation  implements java.io.Serializable {
 
     public void setLoanNewType(LoanNewType loanNewType) {
         this.loanNewType = loanNewType;
+    }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loan_id", nullable = false)
+    public LoanNewApplication getLoanNewApplication() {
+        return loanNewApplication;
+    }
+
+    public void setLoanNewApplication(LoanNewApplication loanNewApplication) {
+        this.loanNewApplication = loanNewApplication;
     }
     
     

@@ -646,6 +646,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         LoanNewCancelation loanNewCancelation = new LoanNewCancelation();
         loanNewCancelation.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         loanNewCancelation.setApprovalActivityNumber(activityNumber);
+        loanNewCancelation.setLoanNewApplication(application);
         loanNewCancelation.setEmpData(empDataDao.getEntiyByPK(loanNewCancellationFormModel.getEmpData().getId()));
         loanNewCancelation.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewSchema().getId()));
         loanNewCancelation.setLoanNewType(loanNewTypeDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewType().getId()));

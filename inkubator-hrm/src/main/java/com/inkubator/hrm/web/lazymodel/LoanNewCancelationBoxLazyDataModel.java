@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.lazymodel;
 
+import com.inkubator.hrm.service.LoanNewCancelationService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,40 +12,42 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.service.RmbsCancelationService;
+import com.inkubator.hrm.web.model.LoanNewCancelationBoxViewModel;
 import com.inkubator.hrm.web.model.RmbsCancelationViewModel;
+import com.inkubator.hrm.web.search.LoanNewCancelationBoxSearchParameter;
 import com.inkubator.hrm.web.search.RmbsCancelationSearchParameter;
 
 
 /**
 *
-* @author rizkykojek
+* @author Ahmad Mudzakkir Amal
 */
-public class LoanNewCancelationBoxLazyDataModel extends LazyDataModel<RmbsCancelationViewModel> implements Serializable {
+public class LoanNewCancelationBoxLazyDataModel extends LazyDataModel<LoanNewCancelationBoxViewModel> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(LoanNewCancelationBoxLazyDataModel.class);
-    private final RmbsCancelationSearchParameter parameter;
-    private final RmbsCancelationService rmbsCancelationService;
-    private List<RmbsCancelationViewModel> list = new ArrayList<>();
+    private final LoanNewCancelationBoxSearchParameter parameter;
+    private final LoanNewCancelationService loanNewCancelationService;
+    private List<LoanNewCancelationBoxViewModel> list = new ArrayList<>();
     private Integer total;
 
-    public LoanNewCancelationBoxLazyDataModel(RmbsCancelationSearchParameter parameter, RmbsCancelationService rmbsCancelationService) {
+    public LoanNewCancelationBoxLazyDataModel(LoanNewCancelationBoxSearchParameter parameter, LoanNewCancelationService loanNewCancelationService) {
         this.parameter = parameter;
-        this.rmbsCancelationService = rmbsCancelationService;
+        this.loanNewCancelationService = loanNewCancelationService;
     }
 
     @Override
-    public List<RmbsCancelationViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LoanNewCancelationBoxViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("cancellation.code");
+	        	orderable = Order.desc("cancellation.loan_cancellation_number");
 	        }
 	        
-	        list = rmbsCancelationService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(rmbsCancelationService.getTotalByParam(parameter)));            
+	        list = loanNewCancelationService.getByParam(parameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(loanNewCancelationService.getTotalByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -58,13 +61,13 @@ public class LoanNewCancelationBoxLazyDataModel extends LazyDataModel<RmbsCancel
     }
 
     @Override
-    public Object getRowKey(RmbsCancelationViewModel entity) {
+    public Object getRowKey(LoanNewCancelationBoxViewModel entity) {
         return entity.getCancelationId();
     }
 
     @Override
-    public RmbsCancelationViewModel getRowData(String id) {
-        for (RmbsCancelationViewModel entity : list) {
+    public LoanNewCancelationBoxViewModel getRowData(String id) {
+        for (LoanNewCancelationBoxViewModel entity : list) {
             if (id.equals(String.valueOf(entity.getCancelationId()))) {
                 return entity;
             }
