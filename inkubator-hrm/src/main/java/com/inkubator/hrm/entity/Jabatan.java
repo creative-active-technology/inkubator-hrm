@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,17 +47,17 @@ public class Jabatan implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Integer levelJabatan;
-    private Set<Jabatan> jabatans = new HashSet<Jabatan>(0);
-    private Set<JabatanDeskripsi> jabatanDeskripsis = new HashSet<JabatanDeskripsi>(0);
-    private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<JabatanSpesifikasi>(0);
-    private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<KlasifikasiKerjaJabatan>(0);
-    private List<KlasifikasiKerja> kerjaJabatans = new ArrayList<KlasifikasiKerja>();
-    private Set<EmpRotasi> empRotasisForNewFunctionId = new HashSet<EmpRotasi>(0);
-    private Set<EmpRotasi> empRotasisForOldFunctionId = new HashSet<EmpRotasi>(0);
-    private Set<JabatanFakulty> jabatanFakulties = new HashSet<JabatanFakulty>(0);
-    private Set<JabatanProfesi> jabatanProfesis = new HashSet<JabatanProfesi>(0);
-    private Set<JabatanMajor> jabatanMajors = new HashSet<JabatanMajor>(0);
-    private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<JabatanEdukasi>(0);
+    private Set<Jabatan> jabatans = new HashSet<>(0);
+    private Set<JabatanDeskripsi> jabatanDeskripsis = new HashSet<>(0);
+    private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<>(0);
+    private Set<KlasifikasiKerjaJabatan> klasifikasiKerjaJabatans = new HashSet<>(0);
+    private List<KlasifikasiKerja> kerjaJabatans = new ArrayList<>();
+    private Set<EmpRotasi> empRotasisForNewFunctionId = new HashSet<>(0);
+    private Set<EmpRotasi> empRotasisForOldFunctionId = new HashSet<>(0);
+    private Set<JabatanFakulty> jabatanFakulties = new HashSet<>(0);
+    private Set<JabatanProfesi> jabatanProfesis = new HashSet<>(0);
+    private Set<JabatanMajor> jabatanMajors = new HashSet<>(0);
+    private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<>(0);
 
     public Jabatan() {
     }
@@ -339,5 +340,41 @@ public class Jabatan implements java.io.Serializable {
     public void setJabatanEdukasis(Set<JabatanEdukasi> jabatanEdukasis) {
         this.jabatanEdukasis = jabatanEdukasis;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 83 * hash + Objects.hashCode(this.version);
+        hash = 83 * hash + Objects.hashCode(this.code);
+        hash = 83 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Jabatan other = (Jabatan) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+  
 
 }

@@ -12,26 +12,26 @@ import javax.persistence.Embeddable;
 public class AnnouncementUnitId  implements java.io.Serializable {
 
 
-     private long announcementJd;
+     private long announcementId;
      private long unitId;
 
     public AnnouncementUnitId() {
     }
 
-    public AnnouncementUnitId(long announcementJd, long unitId) {
-       this.announcementJd = announcementJd;
+    public AnnouncementUnitId(long announcementId, long unitId) {
+       this.announcementId = announcementId;
        this.unitId = unitId;
     }
    
 
 
-    @Column(name="announcement_jd", nullable=false)
-    public long getAnnouncementJd() {
-        return this.announcementJd;
+    @Column(name="announcement_id", nullable=false)
+    public long getAnnouncementId() {
+        return this.announcementId;
     }
     
-    public void setAnnouncementJd(long announcementJd) {
-        this.announcementJd = announcementJd;
+    public void setAnnouncementId(long announcementId) {
+        this.announcementId = announcementId;
     }
 
 
@@ -51,14 +51,14 @@ public class AnnouncementUnitId  implements java.io.Serializable {
 		 if ( !(other instanceof AnnouncementUnitId) ) return false;
 		 AnnouncementUnitId castOther = ( AnnouncementUnitId ) other; 
          
-		 return (this.getAnnouncementJd()==castOther.getAnnouncementJd())
+		 return (this.getAnnouncementId()==castOther.getAnnouncementId())
  && (this.getUnitId()==castOther.getUnitId());
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + (int) this.getAnnouncementJd();
+         result = 37 * result + (int) this.getAnnouncementId();
          result = 37 * result + (int) this.getUnitId();
          return result;
    }   

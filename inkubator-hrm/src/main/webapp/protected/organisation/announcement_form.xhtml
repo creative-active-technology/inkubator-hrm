@@ -5,7 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -15,182 +17,198 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formId" >
+                	<p:focus context="formId"/>
                     <div id="box_bg" style="margin: 10px">
-                        <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="employee-rotation_ico.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Announcement Form" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['reimbursmentschema.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['announcement.form_header']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['announcement.form_desc_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
                         <p:separator/>
-
-
-
+                        
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Nama Perusahaan"  for="companyId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['organization.company_name']}"  for="companyId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="companyId" value="#{announcementFormController.model.companyId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="companyId" value="#{announcementFormController.model.companyId}" style="margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{announcementFormController.model.dropDownCompany}"/>
+                                        <f:selectItems value="#{announcementFormController.dropDownCompany}" var="company" itemValue="#{company.id}" itemLabel="#{company.name}"/>
                                     </p:selectOneMenu>
                                     <p:message for="companyId"/>
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tipe Karyawan"  for="picklistUserRoleId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employeetype.employee_type']}"  for="employeeTypeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:pickList value="#{announcementFormController.model.dualListEmployeeType}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                    <p:pickList value="#{announcementFormController.dualListEmployeeType}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="employeeTypeId"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
-                                    <p:message for="picklistUserRoleId" />
+                                    <p:message for="employeeTypeId" />
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Golongan Jabatan"  for="picklistGolonganJabatan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golonganJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:pickList value="#{announcementFormController.model.dualListGolonganJabatan}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistGolonganJabatan"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                    <p:pickList value="#{announcementFormController.dualListGolonganJabatan}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="golonganJabatanId"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
-                                    <p:message for="picklistGolonganJabatan" />
+                                    <p:message for="golonganJabatanId" />
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Unit Kerja"  for="picklistUnitKerja" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['unitkerja.unit_kerja']}"  for="unitKerjaId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:pickList value="#{announcementFormController.model.dualListUnitKerja}" var="role" itemValue="#{role}" converter="unitKerjaConverter" id="picklistUnitKerja"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                    <p:pickList value="#{announcementFormController.dualListUnitKerja}" var="role" itemValue="#{role}" converter="unitKerjaConverter" id="unitKerjaId"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
-                                    <p:message for="picklistUnitKerja" />
+                                    <p:message for="unitKerjaId" />
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Judul"  for="judul" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['announcement.title_announcement']}"  for="titleId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText id="judul" value="#{announcementFormController.model.subject}" 
+                                    <p:inputText id="titleId" value="#{announcementFormController.model.subject}" 
                                                  required="true" styleClass="isitext_hrm" style="width:210px;"/>
-                                    <p:message for="judul"/>
+                                    <p:message for="titleId"/>
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Isi Pengumuman"  for="pengumuman" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['announcement.content_announcement']}" for="contentId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputTextarea id="pengumuman" rows="5" cols="37" maxlength="500" value="#{announcementFormController.model.announcementContent}" 
-                                                     style="width: 49%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                    <p:inputTextarea id="contentId" rows="5" cols="37" maxlength="500" value="#{announcementFormController.model.announcementContent}" 
+                                                     style="width: 49%; height: 80px;" counter="counter" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" required="false"
                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
-                                    <p:message for="pengumuman"/>
+                                    <p:message for="contentId"/>
+                                    <h:outputText id="counter" />
                                 </p:column>
                             </p:row>
-
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Lampiran"  for="uploadLampiran" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['biodocument.attachments']}"  for="attachmentId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{announcementFormController.handingAttachmentUpload}" 
-                                                  mode="advanced"  id="uploadLampiran"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                                   dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
                                     <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                     <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-                                    <p:outputLabel value="#{announcementFormController.model.fotoFileName}" id="fotoNameId"/>
-                                    <p:message for="uploadLampiran"/>
+                                    <p:outputLabel value="#{announcementFormController.model.attachmentFileName}" id="fotoNameId"/>
+                                    <p:message for="attachmentId"/>
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tampilkan"  for="tampilkan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['announcement.show']}"  for="timeModelId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="tampilkan" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.timeModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="timeModelId" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.timeModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Harian" itemValue="0" />
-                                        <f:selectItem itemLabel="Periode" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['announcement.daily']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['salaryJournal.period']}" itemValue="1" />
+                                        <p:ajax listener="#{announcementFormController.onChangeTimeModel()}" update="startId,endId"/>
                                     </p:selectOneRadio> 
+                                    <p:message for="timeModelId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="startId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeStartDate}" >
+                                    <p:calendar id="startId" required="#{announcementFormController.model.timeModel == 1}" disabled="#{announcementFormController.model.timeModel != 1}" 
+                                    			pattern="dd MMMM yyyy" mindate="#{now}" value="#{announcementFormController.model.periodeStartDate}">
+                                    	<f:validator validatorId="dateBetweenValidator"  />
+	                                    <f:attribute name="endTime" value="#{endDateId}"/>
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
                                     </p:calendar>
-                                    - 
-                                    <p:calendar id="endId" required="true" pattern="dd-MMMM-yyyy" value="#{announcementFormController.model.periodeEndDate}">
-                                    </p:calendar>
-                                    <p:message for="endId"/>
+                                    <p:outputLabel  value="&nbsp; #{appmsg['global.to']} &nbsp;"  styleClass="label_hrm" /> 
+                                    <p:calendar id="endId" binding="#{endDateId}" required="#{announcementFormController.model.timeModel == 1}" disabled="#{announcementFormController.model.timeModel != 1}" 
+                                    			pattern="dd MMMM yyyy" mindate="#{now}" value="#{announcementFormController.model.periodeEndDate}"/>
                                     <p:message for="startId"/>
+                                    <p:message for="endId"/>                                    
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="View Metode"  for="viewMetode" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['announcement.view_method']}"  for="viewMetodeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="viewMetode" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.viewModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="viewMetodeId" styleClass="isitext_hrm" required="true" value="#{announcementFormController.model.viewModel}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                         <!--Cek HRM Constanta..-->
-                                        <f:selectItem itemLabel="Mailing" itemValue="0" />
-                                        <f:selectItem itemLabel="Web Broad Cast" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['announcement.mailing']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['announcement.web_bc']}" itemValue="1" />
                                     </p:selectOneRadio>
-                                    <p:message for="viewMetode"/>
+                                    <p:message for="viewMetodeId"/>
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Publikasikan"  for="publikasikan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['announcement.publish']}"  for="internetPublishId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectBooleanButton value="#{announcementFormController.model.internetPublish}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="publikasikan" styleClass="label_button" >
+                                                           offIcon="ui-icon-close"  id="internetPublishId" styleClass="label_button" >
                                     </p:selectBooleanButton>
-                                    <p:message for="publikasikan"/>
+                                    <p:message for="internetPublishId"/>
                                 </p:column>
                             </p:row>
-
+                            <p:row rendered="#{announcementFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{announcementFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{announcementFormController.isRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{announcementFormController.askingRevisedActivity.approvalStatus}">
+	                            		<f:converter converterId="approvalStatusConverter" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{announcementFormController.isRevised}">
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{announcementFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                      	</p:row>
                         </p:panelGrid>
-                        <p:focus context="formId" />
-
-                        <!--</p:panel>-->
-
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{announcementFormController.doSaved()}"
-                                             styleClass="isitext_hrm" 
+                                             styleClass="isitext_hrm" rendered="#{announcementFormController.isAdministator and not announcementFormController.isRevised}"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{reimbursmentSchemaFormController.doReset()}"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="formId" />  
-                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{announcementFormController.isRevised}"
+	                                         action="#{announcementFormController.doRevised()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.ApprovalActivityCronService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LeaveImplementationService;
@@ -44,6 +45,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	private TempJadwalKaryawanService tempJadwalKaryawanService;
 	@Autowired
 	private LeaveImplementationService leaveImplementationService;
+	@Autowired
+	private AnnouncementService announcementService;
 	
 	
 	@Override
@@ -90,6 +93,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 						case HRMConstant.LEAVE_CANCELLATION:
 							leaveImplementationService.approved(approvalActivity.getId(), null, null);
 							break;
+						case HRMConstant.ANNOUNCEMENT:
+							announcementService.approved(approvalActivity.getId(), null, null);
+							break;
 						default:
 							break;
 					}
@@ -117,6 +123,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							break;
 						case HRMConstant.LEAVE_CANCELLATION:
 							leaveImplementationService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.ANNOUNCEMENT:
+							announcementService.diverted(approvalActivity.getId());
 							break;
 						default:
 							break;

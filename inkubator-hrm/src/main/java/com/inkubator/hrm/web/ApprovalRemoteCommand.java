@@ -86,6 +86,14 @@ public class ApprovalRemoteCommand {
                     infoMessages = messages.getString("overtimeimplementation.submission_of_overtime") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.ANNOUNCEMENT:
+                	if(isWaitingApproval){
+                		infoMessages = messages.getString("announcement.submission_of_announcement") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	} else if(isWaitingRevised){
+                		infoMessages = messages.getString("announcement.submission_of_announcement") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                	}
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 default:
                     break;
             }

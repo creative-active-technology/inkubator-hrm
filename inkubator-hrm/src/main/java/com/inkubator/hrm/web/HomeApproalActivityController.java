@@ -123,6 +123,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/ot_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
+                case HRMConstant.ANNOUNCEMENT:
+                    redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }
@@ -166,7 +169,7 @@ public class HomeApproalActivityController extends BaseController {
                     redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.ANNOUNCEMENT:
-                    redirect = "/protected/organisation/announcement_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

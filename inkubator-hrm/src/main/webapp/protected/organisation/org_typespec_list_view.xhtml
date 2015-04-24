@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="bank.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Tipe Spesifikasi Detail" styleClass="header_big" />
-                                    <p:outputLabel value="Tipe Spesifikasi Detail dari Organisasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['org_type_of_spec_list.org_type_of_spec_list']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['org_type_of_spec_list.specification_type_detail_list']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{orgTypeOfSpecListViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode" itemValue="code"/>
-                                        <f:selectItem itemLabel="Nama" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['org_type_of_spec_list.specification_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['org_type_of_spec_list.specification_name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{orgTypeOfSpecListViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{orgTypeOfSpecListViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Tipe Spesifikasi Detail"/>
+                                <h:outputText value="#{appmsg['org_type_of_spec_list.specification_type_detail_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -71,19 +71,19 @@
                             </p:column>
                             <p:column sortBy="code" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="Kode"/>
+                                    <h:outputText value="#{appmsg['org_type_of_spec_list.specification_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['org_type_of_spec_list.specification_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
-                                    <h:outputText value="Tipe Spesifikasi"/>
+                                    <h:outputText value="#{appmsg['org_type_of_spec_list.job_specification_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.orgTypeOfSpec.name}" />
                             </p:column>
@@ -147,7 +147,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="Tipe Spesifikasi Detail" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['org_type_of_spec_list.org_type_of_spec_list']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>

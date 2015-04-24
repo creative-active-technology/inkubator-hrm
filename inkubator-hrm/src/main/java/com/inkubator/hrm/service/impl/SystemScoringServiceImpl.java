@@ -202,8 +202,9 @@ public class SystemScoringServiceImpl extends IServiceImpl implements SystemScor
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<SystemScoring> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.systemScoringDao.getAllData();
     }
 
     @Override

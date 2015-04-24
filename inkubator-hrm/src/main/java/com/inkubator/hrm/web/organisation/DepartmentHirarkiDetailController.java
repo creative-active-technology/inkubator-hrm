@@ -5,30 +5,18 @@
  */
 package com.inkubator.hrm.web.organisation;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Company;
-import com.inkubator.hrm.entity.DepartementUnitLocation;
-import com.inkubator.hrm.entity.DepartementUnitLocationId;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.UnitKerjaService;
-import com.inkubator.hrm.web.model.OrganisasiLevelModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.DualListModel;
 import org.primefaces.model.TreeNode;
 
 /**

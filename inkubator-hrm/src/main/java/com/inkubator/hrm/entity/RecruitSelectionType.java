@@ -5,6 +5,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -163,7 +164,7 @@ public class RecruitSelectionType  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="recruitSelectionType")
+@OneToMany(fetch=FetchType.LAZY, mappedBy="recruitSelectionType", cascade=CascadeType.REMOVE)
     public Set<RecruitSelectionTypeField> getRecruitSelectionTypeFields() {
         return this.recruitSelectionTypeFields;
     }
