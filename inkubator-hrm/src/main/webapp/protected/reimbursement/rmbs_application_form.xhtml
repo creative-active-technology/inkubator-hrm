@@ -8,254 +8,258 @@
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:o="http://omnifaces.org/ui"
-	  xmlns:of="http://omnifaces.org/functions">
+      xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>IGNORED</title>
     </h:head>
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
                 <h:form id="formId">
-                	<p:focus context="formId"/>
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="user_ico.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['rmbs_application.form_header']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['rmbs_application.form_desc_header']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="codeId" value="#{appmsg['global.number2']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="codeId" title="#{appmsg['global.number2']}" value="#{rmbsApplicationFormController.model.code}" 
-	                                    		 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="codeId"/>
-	                            </p:column>
-	                        </p:row> 
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="user_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['rmbs_application.form_header']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['rmbs_application.form_desc_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
                             <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="applicationDateId" value="#{appmsg['rmbs_application.request_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}" maxdate="#{now}"/>
-	                                <p:message for="applicationDateId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{rmbsApplicationFormController.model.empData}"
-                                                completeMethod="#{rmbsApplicationFormController.doAutoCompleteEmployee}"                                                
-                                                var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="empDataConverter" styleClass="isitext_hrm" size="45"
-                                                required="true" readonly="#{not (rmbsApplicationFormController.isAdministator and not rmbsApplicationFormController.isRevised)}">
-                                    	<p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,listApproverId"/>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="#{appmsg['global.number2']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="codeId" title="#{appmsg['global.number2']}" value="#{rmbsApplicationFormController.model.code}" 
+                                                 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="applicationDateId" value="#{appmsg['rmbs_application.request_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}" maxdate="#{now}"/>
+                                    <p:message for="applicationDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{rmbsApplicationFormController.model.empData}"
+                                                    completeMethod="#{rmbsApplicationFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                    required="true" readonly="#{not (rmbsApplicationFormController.isAdministator and not rmbsApplicationFormController.isRevised)}">
+                                        <p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,listApproverId"/>
                                     </p:autoComplete>
-                              		<p:message for="employeeId"/>
-	                        	</p:column>
-	                        </p:row>  
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="rmbsSchemaId" value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="rmbsSchemaId" title="#{appmsg['rmbs_schema.reimbursement_schema']}" value="#{rmbsApplicationFormController.rmbsSchema.name}" 
-	                                    		 required="true" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="rmbsSchemaId"/>
-	                            </p:column>
-	                        </p:row>  
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>  
                             <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="purposeId" value="#{appmsg['rmbs_application.purpose']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="purposeId" rows="5" cols="37" counter="counterPurpose" maxlength="225" value="#{rmbsApplicationFormController.model.purpose}" 
-                                                 	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
-                                                 	 label="#{appmsg['rmbs_application.purpose']}" title="#{appmsg['rmbs_application.purpose']}" />
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="rmbsSchemaId" value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="rmbsSchemaId" title="#{appmsg['rmbs_schema.reimbursement_schema']}" value="#{rmbsApplicationFormController.rmbsSchema.name}" 
+                                                 required="true" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="rmbsSchemaId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="purposeId" value="#{appmsg['rmbs_application.purpose']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="purposeId" rows="5" cols="37" counter="counterPurpose" maxlength="225" value="#{rmbsApplicationFormController.model.purpose}" 
+                                                     style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                     label="#{appmsg['rmbs_application.purpose']}" title="#{appmsg['rmbs_application.purpose']}" />
                                     <p:message for="purposeId"/>
                                     <h:outputText id="counterPurpose" />
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="descriptionId" rows="5" cols="37" counter="counterDesc" maxlength="225" value="#{rmbsApplicationFormController.model.description}" 
-                                                 	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
-                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputTextarea id="descriptionId" rows="5" cols="37" counter="counterDesc" maxlength="225" value="#{rmbsApplicationFormController.model.description}" 
+                                                     style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                     label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
                                     <p:message for="descriptionId"/>
                                     <h:outputText id="counterDesc" />
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="rmbsTypeId" value="#{appmsg['rmbs_type.reimbursement_type']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:selectOneMenu id="rmbsTypeId" styleClass="isitext_hrm" required="true"  value="#{rmbsApplicationFormController.model.rmbsTypeId}" style="width:290px;">
-		                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-		                               	<f:selectItems value="#{rmbsApplicationFormController.listRmbsType}" var="rmbsType" itemValue="#{rmbsType.id}" itemLabel="#{rmbsType.name}"/>
-		                               	<p:ajax listener="#{rmbsApplicationFormController.onChangeRmbsType()}" update="limitPerClaimId,maxPerMonthId,totalRequestedId"/>
-		                          	</p:selectOneMenu> 
-	                                <p:message for="rmbsTypeId"/>
-	                            </p:column>
-	                        </p:row>  
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_application.reimbursement_info']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="" styleClass="label_hrm"/>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm" style="margin-left:30px;"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<c:set var="submissionDeadline" value="#{of:addDays(now, -rmbsApplicationFormController.rmbsSchema.submissionDeadline)}" scope="request" />
-	                            	<p:inputText id="submissionDeadlineId" title="#{appmsg['rmbs_schema.submission_deadline']}" value="#{of:formatDate(submissionDeadline, 'dd-MMMM-yyyy')}" 
-	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;" />
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_application.limit_nominal_per_claim']}" styleClass="label_hrm" style="margin-left:30px;"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="limitPerClaimId" title="#{appmsg['rmbs_application.limit_nominal_per_claim']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.limitPerClaim}" 
-	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </p:inputText>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_application.max_total_request_per_month']}" styleClass="label_hrm" style="margin-left:30px;"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="maxPerMonthId" title="#{appmsg['rmbs_application.max_total_request_per_month']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.maxPerMonth}" 
-	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </p:inputText>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['rmbs_application.total_requested_this_month']}" styleClass="label_hrm" style="margin-left:30px;"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="totalRequestedId" title="#{appmsg['rmbs_application.total_requested_this_month']}" value="#{rmbsApplicationFormController.totalRequestThisMoth}" 
-	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </p:inputText>
-	                            </p:column>
-	                        </p:row> 
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{rmbsApplicationFormController.handingFileUpload}"
-	                                          	  mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
-	                                          	  dragDropSupport="true" multiple="false" update="fileNameId,:growlId"
-	                                          	  allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
-	                            	<p:outputLabel value="#{appmsg['global.file_name']}"/>
-	                            	<p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-	                            	<p:outputLabel value="#{rmbsApplicationFormController.model.reimbursementFileName}" id="fileNameId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="currencyId" value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:selectOneMenu id="currencyId" styleClass="isitext_hrm" required="true"  value="#{rmbsApplicationFormController.model.currencyId}" style="width:290px;">
-		                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-		                               	<f:selectItems value="#{rmbsApplicationFormController.listCurrency}" var="currency" itemValue="#{currency.id}" itemLabel="#{currency.name}"/>
-		                          	</p:selectOneMenu> 
-	                                <p:message for="currencyId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nominalId" value="#{appmsg['global.nominal']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
-	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/> 
-	                                <p:message for="nominalId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['loan.loan_approver']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column id="listApproverId" style="width: 80%">
-	                            	<ui:repeat value="#{rmbsApplicationFormController.listApprover}" var="approver" varStatus="no">
-									   #{no.index+1}. #{approver.nikWithFullName} <br />
-									</ui:repeat>
-	                            </p:column>
-	                        </p:row>	                        
-	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvedBy}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalStatus}">
-	                            		<f:converter converterId="approvalStatusConverter" />
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row rendered="#{rmbsApplicationFormController.isRevised}">
-	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalCommment}"/>
-	                            </p:column>
-	                      	</p:row>     
-	                                               
-	                 	</p:panelGrid>	                    
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.apply']}" ajax="true" update="formId,:growlId" rendered="#{not rmbsApplicationFormController.isRevised}"
-	                                         action="#{rmbsApplicationFormController.doSave()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.apply']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.apply']}"/>
-	                        <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{rmbsApplicationFormController.isRevised}"
-	                                         action="#{rmbsApplicationFormController.doRevised()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            	<p:resetInput target="formId" />  
-                        	</p:commandButton>
-	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsApplicationFormController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="rmbsTypeId" value="#{appmsg['rmbs_type.reimbursement_type']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="rmbsTypeId" styleClass="isitext_hrm" required="true"  value="#{rmbsApplicationFormController.model.rmbsTypeId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{rmbsApplicationFormController.listRmbsType}" var="rmbsType" itemValue="#{rmbsType.id}" itemLabel="#{rmbsType.name}"/>
+                                        <p:ajax listener="#{rmbsApplicationFormController.onChangeRmbsType()}" update="limitPerClaimId,maxPerMonthId,totalRequestedId"/>
+                                    </p:selectOneMenu> 
+                                    <p:message for="rmbsTypeId"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['rmbs_application.reimbursement_info']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <c:set var="submissionDeadline" value="#{of:addDays(now, -rmbsApplicationFormController.rmbsSchema.submissionDeadline)}" scope="request" />
+                                    <p:inputText id="submissionDeadlineId" title="#{appmsg['rmbs_schema.submission_deadline']}" value="#{of:formatDate(submissionDeadline, 'dd-MMMM-yyyy')}" 
+                                                 readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['rmbs_application.limit_nominal_per_claim']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="limitPerClaimId" title="#{appmsg['rmbs_application.limit_nominal_per_claim']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.limitPerClaim}" 
+                                                 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:inputText>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['rmbs_application.max_total_request_per_month']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="maxPerMonthId" title="#{appmsg['rmbs_application.max_total_request_per_month']}" value="#{rmbsApplicationFormController.rmbsSchemaListOfType.maxPerMonth}" 
+                                                 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:inputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['rmbs_application.total_requested_this_month']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="totalRequestedId" title="#{appmsg['rmbs_application.total_requested_this_month']}" value="#{rmbsApplicationFormController.totalRequestThisMoth}" 
+                                                 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:inputText>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{rmbsApplicationFormController.handingFileUpload}"
+                                                  mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fileNameId,:growlId"
+                                                  allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                    <p:outputLabel value="#{rmbsApplicationFormController.model.reimbursementFileName}" id="fileNameId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="currencyId" value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="currencyId" styleClass="isitext_hrm" required="true"  value="#{rmbsApplicationFormController.model.currencyId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{rmbsApplicationFormController.listCurrency}" var="currency" itemValue="#{currency.id}" itemLabel="#{currency.name}"/>
+                                    </p:selectOneMenu> 
+                                    <p:message for="currencyId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="nominalId" value="#{appmsg['global.nominal']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
+                                                    decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/> 
+                                    <p:message for="nominalId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['loan.loan_approver']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column id="listApproverId" style="width: 80%">
+                                    <ui:repeat value="#{rmbsApplicationFormController.listApprover}" var="approver" varStatus="no">
+                                        #{no.index+1}. #{approver.nikWithFullName} <br />
+                                    </ui:repeat>
+                                </p:column>
+                            </p:row>	                        
+                            <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvedBy}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalStatus}">
+                                        <f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{rmbsApplicationFormController.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{rmbsApplicationFormController.askingRevisedActivity.approvalCommment}"/>
+                                </p:column>
+                            </p:row>     
+
+                        </p:panelGrid>	                    
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.apply']}" ajax="true" update="formId,:growlId" rendered="#{not rmbsApplicationFormController.isRevised}"
+                                             action="#{rmbsApplicationFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.apply']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.apply']}"/>
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{rmbsApplicationFormController.isRevised}"
+                                             action="#{rmbsApplicationFormController.doRevised()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
+<!--                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" 
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>-->
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{rmbsApplicationFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsApplicationFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>
