@@ -24,8 +24,8 @@
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Template Tipe Seleksi" styleClass="header_big" />
-                                    <p:outputLabel value="Data Template Tipe Seleksi dari Rekruitment" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['selection_type.selection_type_template_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['selection_type.selection_type_template_data_from_recruitment']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -41,28 +41,28 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="codeId" value="Kode Template Tipe Seleksi" styleClass="label_hrm"/>
+                                    <p:outputLabel for="codeId" value="#{appmsg['selection_type.selection_type_template_code']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
 
-                                    <p:inputText id="codeId" title="Kode Template Tipe Seleksi" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.code}" 
+                                    <p:inputText id="codeId" title="#{appmsg['selection_type.selection_type_template_code']}" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.code}" 
                                                  required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="codeId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="name" value="Nama Tempalte Tipe Seleksi" styleClass="label_hrm"/>
+                                    <p:outputLabel for="name" value="#{appmsg['selection_type.selection_type_template_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="name" title="Nama Tempalte Tipe Seleksi" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.name}" 
+                                    <p:inputText id="name" title="#{appmsg['selection_type.selection_type_template_name']}" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.name}" 
                                                  required="true" maxlength="80" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="name"/>
                                 </p:column>
                             </p:row>                      
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="posisiNextId" value="Kategori" styleClass="label_hrm"/>
+                                    <p:outputLabel for="posisiNextId" value="#{appmsg['selection_type.category']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column>
                                     <p:selectBooleanButton value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.isCategory}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -82,7 +82,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="organisasiLevel" value="Skala Nilai" styleClass="label_hrm"/>
+                                    <p:outputLabel for="organisasiLevel" value="#{appmsg['selection_type.point_scale']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.systemScoringId}"  id="organisasiLevel" required="true">
@@ -94,7 +94,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="targetNilai" value="Target Nilai" styleClass="label_hrm"/>
+                                    <p:outputLabel for="targetNilai" value="#{appmsg['selection_type.target_point']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner min="0" max="100"  id="targetNilai" size="2" required="true" value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.targetNilai}"/>
@@ -114,7 +114,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="listJabatan" value="Jabatan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="listJabatan" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column>
                                     <p:pickList value="#{recruitSelectionTypeTemplatesFormController.selectionTypeModel.dualListModel}" var="jabatan" itemValue="#{jabatan}" converter="jabatanDualModelConverter" id="listJabatan"
