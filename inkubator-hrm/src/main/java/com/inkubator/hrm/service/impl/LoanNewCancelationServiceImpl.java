@@ -10,6 +10,8 @@ import com.inkubator.hrm.dao.LoanNewCancelationDao;
 import com.inkubator.hrm.entity.LoanNewCancelation;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanNewCancelationService;
+import com.inkubator.hrm.web.model.LoanNewCancelationBoxViewModel;
+import com.inkubator.hrm.web.search.LoanNewCancelationBoxSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,6 +196,18 @@ public class LoanNewCancelationServiceImpl extends IServiceImpl implements LoanN
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getCurrentMaxId() throws Exception {
         return this.loanNewCancelationDao.getCurrentMaxId();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewCancelationBoxViewModel> getByParam(LoanNewCancelationBoxSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.loanNewCancelationDao.getByParam(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(LoanNewCancelationBoxSearchParameter parameter) throws Exception {
+        return this.loanNewCancelationDao.getTotalByParam(parameter);
     }
     
 }

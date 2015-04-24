@@ -22,6 +22,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.dao.LoanNewCancelationDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
+import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -32,6 +33,7 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewCancelation;
 import com.inkubator.hrm.entity.LoanNewSchema;
+import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -39,10 +41,13 @@ import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
+import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +87,8 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     private LoanNewTypeDao loanNewTypeDao;
     @Autowired
     private LoanNewSchemaDao loanNewSchemaDao;
+    @Autowired
+    private LoanNewSchemaListOfEmpDao loanNewSchemaListOfEmpDao;
     @Autowired
     private HrmUserDao hrmUserDao;
     @Autowired
@@ -457,7 +464,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         if (!StringUtils.equals("yes", result)) {
             throw new BussinessException(result);
         }
-
+        entity.setLoanStatus(HRMConstant.LOAN_UNDISBURSED);//Default status loan undisbursed
         return this.save(entity, Boolean.FALSE, null);
     }
 
@@ -483,7 +490,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         return message;
     }
 
-    private String save(LoanNewApplication entity, Boolean isBypassApprovalChecking, Long revisedApprActivityId) throws Exception {
+    private String save(LoanNewApplication entity, Boolean isBypassApprovalChecking,  Long revisedApprActivityId) throws Exception {
         String result = "error";
 
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
@@ -501,8 +508,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
        
         if (approvalActivity == null) {
 
-            entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
-            entity.setLoanStatus(HRMConstant.LOAN_UNDISBURSED);
+            entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));        
             loanNewApplicationDao.save(entity);
 
             result = "success_without_approval";
@@ -533,7 +539,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
     /*
      Loan validation
-     allow only if : 
+     allow if and only if : 
      - no previos loan with same loanType which still in approval process, or still have outstanding.
      - Total loan amount from existing loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
      */
@@ -621,12 +627,20 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public void cancelLoanApplicationAndSaveToLoanNewCancellation(LoanNewCancellationFormModel loanNewCancellationFormModel) throws Exception {
         Long actvityId = loanNewCancellationFormModel.getLoanPendingActivity();
         ApprovalActivity approvalActivity = approvalActivityDao.getEntityByPkWithDetail(actvityId);
+        
+        //check if there is already approved by someone(approver), then it shouldn't be cancelled
+    	if(approvalActivityDao.isAlreadyHaveApprovedStatus(approvalActivity.getActivityNumber())){                
+    		throw new BussinessException("approval.error_cancelled_already_approved");
+    	}
+        
         String activityNumber = approvalActivity.getActivityNumber();
         
+        /** saving entity LoanApplication to DB */
+    	LoanNewApplication application = this.convertJsonToEntity(approvalActivity.getPendingData());
+    	application.setLoanStatus(HRMConstant.LOAN_CANCELED); // set cancelled application status
+    	application.setApprovalActivityNumber(activityNumber);  //set approval activity number, for history approval purpose
+        this.save(application, Boolean.TRUE, null);
         
-        //Set Loan Approval Activity status = Cancelled
-        approvalActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_CANCELLED);
-        approvalActivityDao.update(approvalActivity);
         
         //Save LoanNewCancellation log
         LoanNewCancelation loanNewCancelation = new LoanNewCancelation();
@@ -644,7 +658,15 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         
         LoanNewCancelationDao.save(loanNewCancelation);
         
+        /** cancel this approval activity and saving log approver history */
+        LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpDao.getEntityWithDetailByEmpDataId(application.getEmpData().getId());
+        LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntityByPkFetchApprovalDefinition(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
+        List<ApprovalDefinition> appDefs = Lambda.extract(loanNewSchema.getApprovalDefinitionLoanSchemas(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());        
+    	super.cancelled(actvityId, loanNewCancellationFormModel.getReasonCancellation(), appDefs);
+        
     }
+    
+    
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -656,5 +678,47 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParamByStatusUndisbursed(LoanNewSearchParameter parameter) throws Exception {
         return this.loanNewApplicationDao.getTotalByParamByStatusUndisbursed(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<LoanNewApplicationBoxViewModel> getUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        
+        List<LoanNewApplicationBoxViewModel> listUndisbursedModel = this.loanNewApplicationDao.getUndisbursedActivityByParam(parameter, firstResult, maxResults, orderable);
+        setUndisbursedLoanComplexData(listUndisbursedModel);
+        
+        return listUndisbursedModel;
+    }
+    
+    private void setUndisbursedLoanComplexData(List<LoanNewApplicationBoxViewModel> listLoanUdisbursedModel){
+        for(LoanNewApplicationBoxViewModel loanModel : listLoanUdisbursedModel){
+            
+            ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(loanModel.getApprovalActivityId().longValue());
+            loanModel.setApprovalDate(approvalActivity.getApprovalTime());
+            
+            if(loanModel.getLoanNewApplicationId() == null){
+                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+                LoanNewApplication loanNewApplicationTemp = gson.fromJson(loanModel.getJsonData(), LoanNewApplication.class);                
+                
+                loanModel.setLoanNumber(loanNewApplicationTemp.getNomor());
+                loanModel.setNominalPrincipal(new BigDecimal(loanNewApplicationTemp.getNominalPrincipal()));
+                loanModel.setApplicationDate(loanNewApplicationTemp.getApplicationDate());
+                loanModel.setDisbursementStatus(HRMConstant.LOAN_UNDISBURSED);
+                
+            }else{
+                
+                LoanNewApplication loanNewApplication = loanNewApplicationDao.getEntiyByPK(loanModel.getLoanNewApplicationId());
+                loanModel.setLoanNumber(loanNewApplication.getNomor());
+                loanModel.setNominalPrincipal(new BigDecimal(loanNewApplication.getNominalPrincipal()));
+                loanModel.setApplicationDate(loanNewApplication.getApplicationDate());
+                loanModel.setDisbursementStatus(loanNewApplication.getLoanStatus());
+            }
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter) throws Exception {
+        return this.loanNewApplicationDao.getTotalUndisbursedActivityByParam(parameter);
     }
 }

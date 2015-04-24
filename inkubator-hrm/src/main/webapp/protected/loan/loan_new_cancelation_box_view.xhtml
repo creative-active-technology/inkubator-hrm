@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="data_pembatalan_ico.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['rmbs_cancelation.view_header']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_cancelation.view_desc_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{rmbsCancelationViewController.parameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_cancelation.request_no']}" itemValue="codeApplication"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_cancelation.cancelation_number']}" itemValue="codeCancelation"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_type.name']}" itemValue="rmbsType"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="empName" itemDisabled="#{not rmbsCancelationViewController.isAdministrator}"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{rmbsCancelationViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{rmbsCancelationViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment_Cancellation"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{rmbsCancelationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableId" var="data"  value="#{rmbsCancelationViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['rmbs_cancelation.list_of_cancellation']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.employeeName}"/>
+                            </p:column>
+                            <p:column sortBy="applicationCode" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_cancelation.request_no']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.applicationCode}"/>
+                            </p:column>
+                            <p:column sortBy="cancelationCode" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.cancelationCode}"/>
+                            </p:column>
+                            <p:column sortBy="rmbsTypeName" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsTypeName}"/>
+                            </p:column>
+                            <p:column sortBy="nominal" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "Rp. "/>
+                                <h:outputLabel value= "#{data.nominal}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="applicationDate" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_application.request_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.applicationDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="cancelationDate" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.cancelationDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="reason" style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_reason']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.reason}"/>
+                            </p:column>                              
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

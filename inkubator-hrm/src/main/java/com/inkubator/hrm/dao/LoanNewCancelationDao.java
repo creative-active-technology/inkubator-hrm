@@ -5,9 +5,9 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.entity.LoanNewCancelation;
-import com.inkubator.hrm.web.search.BankSearchParameter;
+import com.inkubator.hrm.web.model.LoanNewCancelationBoxViewModel;
+import com.inkubator.hrm.web.search.LoanNewCancelationBoxSearchParameter;
 
 /**
 *
@@ -15,11 +15,11 @@ import com.inkubator.hrm.web.search.BankSearchParameter;
 */
 public interface LoanNewCancelationDao extends IDAO<LoanNewCancelation> {
 
-//	public List<LoanNewCancelation> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable);
-//
-//	public Long getTotalBankByParam(BankSearchParameter parameter);
-    
     public Long getCurrentMaxId();
+    
+    public List<LoanNewCancelationBoxViewModel> getByParam(LoanNewCancelationBoxSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalByParam(LoanNewCancelationBoxSearchParameter parameter);
 	
 	
 }
