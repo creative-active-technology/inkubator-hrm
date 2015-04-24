@@ -14,8 +14,8 @@ public class LoanNewCancelationBoxViewModel implements Serializable{
 	private BigInteger cancelationId;
 	private String cancelationCode;
 	private String applicationCode;
-	private String rmbsTypeName;
-	private BigDecimal nominal;
+	private String loanNewTypeName;
+	private Double nominal;
 	private Date applicationDate;
 	private Date cancelationDate;
 	private String reason;
@@ -39,16 +39,20 @@ public class LoanNewCancelationBoxViewModel implements Serializable{
 	public void setApplicationCode(String applicationCode) {
 		this.applicationCode = applicationCode;
 	}
-	public String getRmbsTypeName() {
-		return rmbsTypeName;
-	}
-	public void setRmbsTypeName(String rmbsTypeName) {
-		this.rmbsTypeName = rmbsTypeName;
-	}
-	public BigDecimal getNominal() {
+
+    public String getLoanNewTypeName() {
+        return loanNewTypeName;
+    }
+
+    public void setLoanNewTypeName(String loanNewTypeName) {
+        this.loanNewTypeName = loanNewTypeName;
+    }
+	
+        
+	public Double getNominal() {
 		return nominal;
 	}
-	public void setNominal(BigDecimal nominal) {
+	public void setNominal(Double nominal) {
 		this.nominal = nominal;
 	}
 	public Date getApplicationDate() {

@@ -13,7 +13,7 @@ public class LoanNewCancelationBoxSearchParameter extends SearchParameter {
 	private String userId;
     private String codeApplication;
     private String codeCancelation;
-    private String rmbsType;
+    private String loanNewTypeName;
     private String empName;
 
 	public String getUserId() {
@@ -50,18 +50,20 @@ public class LoanNewCancelationBoxSearchParameter extends SearchParameter {
 		this.codeCancelation = codeCancelation;
 	}
 
-	public String getRmbsType() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "rmbsType")) {
-			rmbsType = getParameter();
+    public String getLoanNewTypeName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "loanNewTypeName")) {
+			loanNewTypeName = getParameter();
         } else {
-        	rmbsType = null;
+        	loanNewTypeName = null;
         }
-		return rmbsType;
-	}
+        return loanNewTypeName;
+    }
 
-	public void setRmbsType(String rmbsType) {
-		this.rmbsType = rmbsType;
-	}
+    public void setLoanNewTypeName(String loanNewTypeName) {
+        this.loanNewTypeName = loanNewTypeName;
+    }
+
+	
 
 	public String getEmpName() {
 		if (StringUtils.equalsIgnoreCase(getKeyParam(), "empName")) {
