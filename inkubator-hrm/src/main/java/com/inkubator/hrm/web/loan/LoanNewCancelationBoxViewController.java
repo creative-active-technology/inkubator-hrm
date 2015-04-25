@@ -10,9 +10,13 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.service.LoanNewCancelationService;
 import com.inkubator.hrm.service.RmbsCancelationService;
+import com.inkubator.hrm.web.lazymodel.LoanNewCancelationBoxLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.RmbsCancelationLazyDataModel;
+import com.inkubator.hrm.web.model.LoanNewCancelationBoxViewModel;
 import com.inkubator.hrm.web.model.RmbsCancelationViewModel;
+import com.inkubator.hrm.web.search.LoanNewCancelationBoxSearchParameter;
 import com.inkubator.hrm.web.search.RmbsCancelationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -25,17 +29,17 @@ import com.inkubator.webcore.controller.BaseController;
 @ViewScoped
 public class LoanNewCancelationBoxViewController extends BaseController {
 
-	private Boolean isAdministrator;
-    private RmbsCancelationSearchParameter parameter;
-    private LazyDataModel<RmbsCancelationViewModel> lazyData;
-    @ManagedProperty(value = "#{rmbsCancelationService}")
-    private RmbsCancelationService rmbsCancelationService;
+    private Boolean isAdministrator;
+    private LoanNewCancelationBoxSearchParameter parameter;
+    private LazyDataModel<LoanNewCancelationBoxViewModel> lazyData;
+    @ManagedProperty(value = "#{loanNewCancelationService}")
+    private LoanNewCancelationService loanNewCancelationService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        parameter = new RmbsCancelationSearchParameter();
+        parameter = new LoanNewCancelationBoxSearchParameter();
         isAdministrator = UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE);
         if(!isAdministrator){
         	parameter.setUserId(UserInfoUtil.getUserName());
@@ -44,7 +48,7 @@ public class LoanNewCancelationBoxViewController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-    	rmbsCancelationService = null;
+    	loanNewCancelationService = null;
         parameter = null;
         lazyData = null;
         isAdministrator = null;
@@ -54,34 +58,30 @@ public class LoanNewCancelationBoxViewController extends BaseController {
         lazyData = null;
     }
 
-	public RmbsCancelationSearchParameter getParameter() {
+	public LoanNewCancelationBoxSearchParameter getParameter() {
 		return parameter;
 	}
 
-	public void setParameter(RmbsCancelationSearchParameter parameter) {
+	public void setParameter(LoanNewCancelationBoxSearchParameter parameter) {
 		this.parameter = parameter;
 	}
 
-	public LazyDataModel<RmbsCancelationViewModel> getLazyData() {
+	public LazyDataModel<LoanNewCancelationBoxViewModel> getLazyData() {
 		if(lazyData == null){
-			lazyData = new RmbsCancelationLazyDataModel(parameter, rmbsCancelationService);
+			lazyData = new LoanNewCancelationBoxLazyDataModel(parameter, loanNewCancelationService);
 		}
 		return lazyData;
 	}
 
-	public void setLazyData(LazyDataModel<RmbsCancelationViewModel> lazyData) {
+	public void setLazyData(LazyDataModel<LoanNewCancelationBoxViewModel> lazyData) {
 		this.lazyData = lazyData;
 	}
 
-	public RmbsCancelationService getRmbsCancelationService() {
-		return rmbsCancelationService;
-	}
+        public void setLoanNewCancelationService(LoanNewCancelationService loanNewCancelationService) {
+            this.loanNewCancelationService = loanNewCancelationService;
+        }
 
-	public void setRmbsCancelationService(
-			RmbsCancelationService rmbsCancelationService) {
-		this.rmbsCancelationService = rmbsCancelationService;
-	}
-
+	
 	public Boolean getIsAdministrator() {
 		return isAdministrator;
 	}

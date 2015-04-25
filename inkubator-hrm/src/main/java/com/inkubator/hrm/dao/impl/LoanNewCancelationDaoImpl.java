@@ -43,22 +43,23 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
     public List<LoanNewCancelationBoxViewModel> getByParam(LoanNewCancelationBoxSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         StringBuffer selectQuery = new StringBuffer(
     			"SELECT DISTINCT (cancellation.id) AS cancelationId, " +
-    			"cancellation.code AS cancelationCode, " +
-    			"application.code AS applicationCode, " +
-    			"rmbsType.name AS rmbsTypeName, " +
-    			"application.nominal AS nominal, " +
-    			"cancellation.cancelled_date AS cancelationDate, " +
-    			"application.application_date AS applicationDate, " +
-    			"cancellation.reason AS reason, " +
-    			"CONCAT(bioData.first_name,' ',bioData.last_name) AS employeeName " +
-    			"FROM hrm.rmbs_cancelation cancellation " +
-    			"LEFT JOIN hrm.rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
-    			"LEFT JOIN hrm.rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
-    			"LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-    			"LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
-    			"LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-    			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
+                        "cancellation.loan_cancellation_number AS cancelationCode, " +
+                        "application.nomor AS applicationCode," +
+                        "loanNewType.loan_type_name AS loanNewTypeName, " +
+                        "application.nominal_principal AS nominal, " +
+                        "cancellation.cancelation_date AS cancelationDate, " +
+                        "application.application_date AS applicationDate, " +
+                        "cancellation.reason AS reason, " +
+                        "CONCAT(bioData.first_name,' ',bioData.last_name) AS employeeName " +
+                        "FROM hrm.loan_new_cancelation cancellation " +
+                        "LEFT JOIN hrm.loan_new_application AS application ON application.id = cancellation.loan_id " +
+                        "LEFT JOIN hrm.loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
+                        "LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
+                        "LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+                        "LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_id " +
+                        "LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
+                        "LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );
+        
     	selectQuery.append(this.setWhereQueryByParam(parameter));
     	selectQuery.append("ORDER BY " + orderable);
         
@@ -72,17 +73,19 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
     }
 
     @Override
-    public Long getTotalByParam(LoanNewCancelationBoxSearchParameter parameter) {
-        StringBuffer selectQuery = new StringBuffer(
-    			"SELECT COUNT(DISTINCT(cancellation.id)) " +
-    			"FROM hrm.rmbs_cancelation cancellation " +
-    			"LEFT JOIN hrm.rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
-    			"LEFT JOIN hrm.rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
-    			"LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-    			"LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
-    			"LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-    			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
+    public Long getTotalByParam(LoanNewCancelationBoxSearchParameter parameter) {  
+        
+         StringBuffer selectQuery = new StringBuffer(
+    			"SELECT COUNT(DISTINCT(cancellation.id)) " +                        
+                        "FROM hrm.loan_new_cancelation cancellation " +
+                        "LEFT JOIN hrm.loan_new_application AS application ON application.id = cancellation.loan_id " +
+                        "LEFT JOIN hrm.loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
+                        "LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
+                        "LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+                        "LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_id " +
+                        "LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
+                        "LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );
+         
     	selectQuery.append(this.setWhereQueryByParam(parameter));
         
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
@@ -98,19 +101,19 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
         	if(StringUtils.isNotEmpty(whereQuery)){
     			whereQuery.append("AND ");
     		}
-        	whereQuery.append("application.code LIKE :codeApplication ");
+        	whereQuery.append("application.nomor LIKE :codeApplication ");
         }        
         if (StringUtils.isNotEmpty(parameter.getCodeCancelation())) {
         	if(StringUtils.isNotEmpty(whereQuery)){
     			whereQuery.append("AND ");
     		}
-        	whereQuery.append("cancellation.code LIKE :codeCancellation ");
+        	whereQuery.append("cancellation.loan_cancellation_number LIKE :codeCancellation ");
         }        
-        if (StringUtils.isNotEmpty(parameter.getRmbsType())) {
+        if (StringUtils.isNotEmpty(parameter.getLoanNewTypeName())) {
         	if(StringUtils.isNotEmpty(whereQuery)){
     			whereQuery.append("AND ");
     		}
-        	whereQuery.append("rmbsType.name LIKE :rmbsType ");
+        	whereQuery.append("loanNewType.loan_type_name LIKE :loanNewTypeName ");
         }    
         if (StringUtils.isNotEmpty(parameter.getEmpName())) {
         	if(StringUtils.isNotEmpty(whereQuery)){
@@ -134,8 +137,8 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
     			hbm.setParameter("codeApplication", "%" + parameter.getCodeApplication() + "%");
     		} else if(StringUtils.equals(param, "codeCancellation")){
     			hbm.setParameter("codeCancellation", "%" + parameter.getCodeCancelation() + "%");
-    		} else if(StringUtils.equals(param, "rmbsType")){
-    			hbm.setParameter("rmbsType", "%" + parameter.getRmbsType() + "%");
+    		} else if(StringUtils.equals(param, "loanNewTypeName")){
+    			hbm.setParameter("loanNewTypeName", "%" + parameter.getLoanNewTypeName()+ "%");
     		} else if(StringUtils.equals(param, "empName")){
     			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
     		} else if(StringUtils.equals(param, "userId")){
