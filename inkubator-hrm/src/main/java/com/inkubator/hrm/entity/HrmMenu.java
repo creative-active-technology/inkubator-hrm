@@ -31,6 +31,7 @@ public class HrmMenu implements java.io.Serializable {
     private String urlName;
     private String iconName;
     private Integer menuLevel;
+    private Integer orderLevelMenu;
     private String menuStyle;
     private String menuStyleClass;
     private String createdBy;
@@ -217,14 +218,23 @@ public class HrmMenu implements java.io.Serializable {
             return this.getId() == castOther.getId();
         }
     }
-    
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="hrmMenu")
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hrmMenu")
     public Set<FavoriteMenu> getFavoriteMenus() {
         return this.favoriteMenus;
     }
-    
+
     public void setFavoriteMenus(Set<FavoriteMenu> favoriteMenus) {
         this.favoriteMenus = favoriteMenus;
+    }
+
+    @Column(name = "order_level_menu")
+    public Integer getOrderLevelMenu() {
+        return orderLevelMenu;
+    }
+
+    public void setOrderLevelMenu(Integer orderLevelMenu) {
+        this.orderLevelMenu = orderLevelMenu;
     }
 
 }
