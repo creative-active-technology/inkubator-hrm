@@ -3,6 +3,8 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -17,4 +19,6 @@ public interface AnnouncementDao extends IDAO<Announcement> {
     public Long getTotalByParam(AnnouncementSearchParameter searchParameter);
 
 	public Announcement getEntityByPkWithDetail(Long id);
+	
+	public List<Announcement> getAllDataValidForGeneratingLog(Date planExecutionDate);
 }

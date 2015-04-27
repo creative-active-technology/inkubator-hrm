@@ -8,6 +8,7 @@ package com.inkubator.hrm.web;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.HrmMenuService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
@@ -36,13 +37,15 @@ import org.primefaces.model.menu.MenuModel;
 @ManagedBean(name = "homeController")
 @ViewScoped
 public class HomeController extends BaseController {
-    
+
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
-    private MenuModel menuModel;
-    
+//    @ManagedProperty(value = "#{hrmMenuService}")
+//    private HrmMenuService hrmMenuService;
+//    private MenuModel menuModel;
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -61,38 +64,38 @@ public class HomeController extends BaseController {
         }
         try {
             riwayatAksesService.doSaveAccess(akses);
+//            menuModel = hrmMenuService.getMenuHirarki();
+            System.out.println(" nsdfdsnfsdnfsdnfnsdfnsdfn " + UserInfoUtil.getRoles());
         } catch (Exception ex) {
             LOGGER.error("Error when saving User Access History", ex);
         }
-        menuModel = new DynamicMenuModel();
-        DefaultSubMenu dsm = new DefaultSubMenu();
-        DefaultSubMenu dsm1 = new DefaultSubMenu();
-        DefaultMenuItem dmi = new DefaultMenuItem();
-        DefaultMenuItem dmi2 = new DefaultMenuItem(ResourceBundleUtil.getAsString("menu.user_view"));
-        
-        
-//        dmi2.setValue(akses);
-        dmi.setIcon("ui-icon-home");
-        dmi.setUrl("/protected/home.htm");
-        dmi.setTitle("Back To Home");
-        
-        dsm.setLabel(ResourceBundleUtil.getAsString("menu.system"));
-        dsm.setStyleClass("menu");
-        dsm.setIcon("img-user-account");
-        dsm.addElement(dsm1);
-        dsm1.setLabel(ResourceBundleUtil.getAsString("menu.account"));
-        dsm1.setStyleClass("menu_child");
-        dsm1.addElement(dmi2);
-        menuModel.addElement(dmi);
-        menuModel.addElement(dsm);
-        menuModel.addElement(dsm1);
-        
+
+//        DefaultSubMenu dsm = new DefaultSubMenu();
+//        DefaultSubMenu dsm1 = new DefaultSubMenu();
+//        DefaultMenuItem dmi = new DefaultMenuItem();
+//        DefaultMenuItem dmi2 = new DefaultMenuItem(ResourceBundleUtil.getAsString("menu.user_view"));
+//
+////        dmi2.setValue(akses);
+//        dmi.setIcon("ui-icon-home");
+//        dmi.setUrl("/protected/home.htm");
+//        dmi.setTitle("Back To Home");
+//
+//        dsm.setLabel(ResourceBundleUtil.getAsString("menu.system"));
+//        dsm.setStyleClass("menu");
+//        dsm.setIcon("img-user-account");
+//        dsm.addElement(dsm1);
+//        dsm1.setLabel(ResourceBundleUtil.getAsString("menu.account"));
+//        dsm1.setStyleClass("menu_child");
+//        dsm1.addElement(dmi2);
+//        menuModel.addElement(dmi);
+//        menuModel.addElement(dsm);
+//        menuModel.addElement(dsm1);
     }
-    
+
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
     }
-    
+
     public String doCheckInOut() {
 //
         try {
@@ -106,7 +109,7 @@ public class HomeController extends BaseController {
             } else {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.error_employee",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                
+
             }
 //
         } catch (Exception ex) {
@@ -114,17 +117,21 @@ public class HomeController extends BaseController {
         }
         return null;
     }
-    
+
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
-    
-    public MenuModel getMenuModel() {
-        return menuModel;
-    }
-    
-    public void setMenuModel(MenuModel menuModel) {
-        this.menuModel = menuModel;
-    }
-    
+
+//    public MenuModel getMenuModel() {
+//        return menuModel;
+//    }
+//
+//    public void setMenuModel(MenuModel menuModel) {
+//        this.menuModel = menuModel;
+//    }
+//
+//    public void setHrmMenuService(HrmMenuService hrmMenuService) {
+//        this.hrmMenuService = hrmMenuService;
+//    }
+
 }
