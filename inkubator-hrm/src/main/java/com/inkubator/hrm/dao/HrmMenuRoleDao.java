@@ -6,16 +6,13 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.HrmUserRole;
+import com.inkubator.hrm.entity.HrmMenuRole;
 import java.util.List;
 
 /**
  *
- * @author Deni Husni FR
+ * @author deni.fahri
  */
-public interface HrmUserRoleDao extends IDAO<HrmUserRole> {
-
-    List<HrmUserRole> getByUserId(long id);
-
-    List<HrmUserRole> getUserName(String name);
+public interface HrmMenuRoleDao extends IDAO<HrmMenuRole> {
+    public List<HrmMenuRole> getByLevelOneAndRoleName(String name);
 }
