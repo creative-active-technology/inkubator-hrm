@@ -238,10 +238,12 @@
                                          action="#{institutionEducationFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formInstitutionEducationFormId"
+<!--                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formInstitutionEducationFormId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formInstitutionEducationFormId" />  
-                        </p:commandButton>
+                        </p:commandButton>-->
+                        <p:commandButton value="#{appmsg['global.clear']}" update="formInstitutionEducationFormId" process="@this" actionListener="#{institutionEducationFormController.doReset()}"  style="margin-right:20px;" />
+ 
                     </h:panelGrid>
                 </h:form>
             </ui:define>

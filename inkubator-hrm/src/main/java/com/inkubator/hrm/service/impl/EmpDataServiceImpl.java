@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
 import com.inkubator.common.util.DateTimeUtil;
@@ -27,6 +29,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
@@ -41,6 +44,10 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.entity.Announcement;
+import com.inkubator.hrm.entity.AnnouncementEmpType;
+import com.inkubator.hrm.entity.AnnouncementGoljab;
+import com.inkubator.hrm.entity.AnnouncementUnit;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
@@ -105,6 +112,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private TaxFreeDao taxFreeDao;
     @Autowired
     private BioEducationHistoryDao bioEducationHistoryDao;
+    @Autowired
+    private AnnouncementDao announcementDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -867,4 +876,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId) throws Exception {
         return empDataDao.getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(empTypeId, golJabId, unitKerjaId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataByAnnouncementId(Long announcementId) {
+		Announcement announcement =  announcementDao.getEntiyByPK(announcementId);
+		Long companyId = announcement.getCompany().getId();
+		List<Long> empTypes = Lambda.extract(announcement.getAnnouncementEmpTypes(), Lambda.on(AnnouncementEmpType.class).getEmployeeType().getId());
+		List<Long> golJabs = Lambda.extract(announcement.getAnnouncementGoljabs(), Lambda.on(AnnouncementGoljab.class).getGolonganJabatan().getId());
+		List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
+		return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId,empTypes,golJabs,unitKerjas);
+	}
 }

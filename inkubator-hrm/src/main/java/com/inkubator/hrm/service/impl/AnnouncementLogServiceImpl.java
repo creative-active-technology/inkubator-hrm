@@ -1,12 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.hrm.entity.AnnouncementLog;
-import com.inkubator.hrm.dao.AnnouncementLogDao;
-import com.inkubator.hrm.service.AnnouncementLogService;
-import com.inkubator.hrm.web.search.AnnouncementLogSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,10 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.inkubator.securitycore.util.UserInfoUtil;
+
+import com.inkubator.common.notification.service.VelocityTemplateSender;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.dao.AnnouncementLogDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.entity.AnnouncementLog;
+import com.inkubator.hrm.service.AnnouncementLogService;
+import com.inkubator.hrm.web.search.AnnouncementLogSearchParameter;
 
 /**
  *
@@ -29,6 +29,10 @@ public class AnnouncementLogServiceImpl extends IServiceImpl implements Announce
 
     @Autowired
     private AnnouncementLogDao announcementLogDao;
+    @Autowired
+    private VelocityTemplateSender velocityTemplateSender;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -39,34 +43,13 @@ public class AnnouncementLogServiceImpl extends IServiceImpl implements Announce
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(AnnouncementLog announcementLog) throws Exception {
-//Uncomment below if u have unik code
-//long totalDuplicates = announcementLogDao.getTotalByCode(announcementLog.getCode());
-//if (totalDuplicates > 0) {
-//throw new BussinessException("announcementLog.error_duplicate_code")
-//}
-        announcementLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-        announcementLog.setCreatedBy(UserInfoUtil.getUserName());
-        announcementLog.setCreatedOn(new Date());
-        announcementLogDao.save(announcementLog);
+    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(AnnouncementLog announcementLog) throws Exception {
-//Uncomment below if u have unik code
-//long totalDuplicates = announcementLogDao.getTotalByCodeAndNotId(announcementLog.getCode(),announcementLog.getId())
-//if (totalDuplicates > 0) {
-//throw new BussinessException("announcementLog.error_duplicate_code")
-//}
-        AnnouncementLog announcementLog1 = announcementLogDao.getEntiyByPK(announcementLog.getId());
-        announcementLog1.setUpdatedBy(UserInfoUtil.getUserName());
-        announcementLog1.setUpdatedOn(new Date());
-        announcementLog1.setEmailIsSend(announcementLog.getEmailIsSend());
-        announcementLog1.setAnnouncement(announcementLog.getAnnouncement());
-        announcementLog1.setEmpData(announcementLog.getEmpData());
-        announcementLog1.setDateSend(announcementLog.getDateSend());
-        announcementLog1.setIsAlreadyShow(announcementLog.getIsAlreadyShow());
-        announcementLogDao.update(announcementLog1);
+    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -226,4 +209,17 @@ public class AnnouncementLogServiceImpl extends IServiceImpl implements Announce
     public List<AnnouncementLog> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AnnouncementLog> getAllDataEmailNotSent() {
+		return announcementLogDao.getAllDataEmailNotSent();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AnnouncementLog> getAllDataEmailNotSentByParam(Long announcementId, Date planExecutionDate) throws Exception {
+		return announcementLogDao.getAllDataEmailNotSentByParam(announcementId, planExecutionDate);
+	}
+    
 }
