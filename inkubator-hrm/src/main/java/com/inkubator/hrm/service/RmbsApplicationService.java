@@ -27,7 +27,7 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	
 	public void cancelled(long approvalActivityId, RmbsCancelation rmbsCancelation) throws Exception;	
 	
-
+            
 	//return entity/property
 	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
 
