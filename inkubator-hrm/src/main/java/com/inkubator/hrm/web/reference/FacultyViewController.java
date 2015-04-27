@@ -4,6 +4,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.hrm.web.lazymodel.FacultyLazyDataModel;
+import com.inkubator.hrm.web.search.FacultySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -31,7 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class FacultyViewController extends BaseController {
 
-    private String parameter;
+    private FacultySearchParameter searchParameter;
     private LazyDataModel<Faculty> lazyDataFaculty;
     private Faculty selectedFaculty;
     @ManagedProperty(value = "#{facultyService}")
@@ -41,12 +42,13 @@ public class FacultyViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        this.searchParameter = new FacultySearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
         facultyService = null;
-        parameter = null;
+        searchParameter = null;
         lazyDataFaculty = null;
         selectedFaculty = null;
     }
@@ -55,17 +57,9 @@ public class FacultyViewController extends BaseController {
         this.facultyService = facultyService;
     }
 
-    public String getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
-    }
-
     public LazyDataModel<Faculty> getLazyDataFaculty() {
         if (lazyDataFaculty == null) {
-            lazyDataFaculty = new FacultyLazyDataModel(parameter, facultyService);
+            lazyDataFaculty = new FacultyLazyDataModel(searchParameter, facultyService);
         }
         return lazyDataFaculty;
     }
@@ -82,6 +76,14 @@ public class FacultyViewController extends BaseController {
         this.selectedFaculty = selectedFaculty;
     }
 
+    public FacultySearchParameter getSearchParameter() {
+        return searchParameter;
+    }
+
+    public void setSearchParameter(FacultySearchParameter searchParameter) {
+        this.searchParameter = searchParameter;
+    }
+    
     public void doSearch() {
         lazyDataFaculty = null;
     }
