@@ -38,6 +38,7 @@ public class HrmMenu implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date upatedOn;
+    private Boolean isGroup;
     private Set<HrmMenu> hrmMenus = new HashSet<HrmMenu>(0);
     private Set<HrmMenuRole> hrmMenuRoles = new HashSet<HrmMenuRole>(0);
     private Set<FavoriteMenu> favoriteMenus = new HashSet<FavoriteMenu>(0);
@@ -95,7 +96,7 @@ public class HrmMenu implements java.io.Serializable {
         this.hrmMenu = hrmMenu;
     }
 
-    @Column(name = "name", length = 45)
+    @Column(name = "name", length = 115)
     public String getName() {
         return this.name;
     }
@@ -104,7 +105,7 @@ public class HrmMenu implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "url_name", length = 45)
+    @Column(name = "url_name", length = 115)
     public String getUrlName() {
         return this.urlName;
     }
@@ -235,6 +236,15 @@ public class HrmMenu implements java.io.Serializable {
 
     public void setOrderLevelMenu(Integer orderLevelMenu) {
         this.orderLevelMenu = orderLevelMenu;
+    }
+
+    @Column(name = "is_group", nullable = false)
+    public Boolean getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(Boolean isGroup) {
+        this.isGroup = isGroup;
     }
 
 }

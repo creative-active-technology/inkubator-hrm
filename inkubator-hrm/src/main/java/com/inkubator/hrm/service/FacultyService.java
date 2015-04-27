@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.web.search.FacultySearchParameter;
 
 /**
 *
@@ -13,9 +14,9 @@ import com.inkubator.hrm.entity.Faculty;
 */
 public interface FacultyService extends IService<Faculty> {
 
-	public List<Faculty> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<Faculty> getByParam(FacultySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalFacultyByParam(String parameter) throws Exception;
+	public Long getTotalFacultyByParam(FacultySearchParameter SearchParameter) throws Exception;
 
         public Faculty getEntityByPkWithDetail(Long id) throws Exception;
 }

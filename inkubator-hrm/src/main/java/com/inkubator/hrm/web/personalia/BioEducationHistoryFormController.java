@@ -188,7 +188,7 @@ public class BioEducationHistoryFormController extends BaseController{
         //Faculty
         listFaculty = facultyService.getAllData();
         for (Faculty faculty : listFaculty) {
-            listFaculties.put(faculty.getFacultyName(), faculty.getId());
+            listFaculties.put(faculty.getName(), faculty.getId());
         }
         //Major
         listMajor = majorService.getAllData();

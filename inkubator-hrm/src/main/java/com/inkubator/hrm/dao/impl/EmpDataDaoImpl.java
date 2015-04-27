@@ -12,6 +12,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
@@ -1362,5 +1363,45 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT empData " +
+    			"FROM EmpData as empData " +
+    			"INNER JOIN empData.jabatanByJabatanId as jabatan " +
+    			"INNER JOIN jabatan.unitKerja as unitKerja " +
+    			"INNER JOIN jabatan.department as department " +
+    			"INNER JOIN department.company as company " +
+    			"INNER JOIN empData.employeeType as employeeType " +
+    			"INNER JOIN empData.golonganJabatan as golonganJabatan " +
+    			"WHERE company.id = :companyId " +
+    			"AND status != :status ");
+		
+		if(!empTypes.isEmpty()){
+			selectQuery.append("AND employeeType.id IN (:employeeTypes) ");
+		}
+		if(!golJabs.isEmpty()){
+			selectQuery.append("AND golonganJabatan.id IN (:golonganJabatans) ");
+		}
+		if(!unitKerjas.isEmpty()){
+			selectQuery.append("AND unitKerja.id IN (:unitKerjas) ");
+		}
+		
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+    			.setParameter("companyId", companyId)
+    			.setParameter("status", HRMConstant.EMP_TERMINATION);
+    	if(!empTypes.isEmpty()){
+    		hbm.setParameterList("employeeTypes", empTypes);
+    	}
+    	if(!golJabs.isEmpty()){
+    		hbm.setParameterList("golonganJabatans", golJabs);
+    	}
+    	if(!unitKerjas.isEmpty()){
+    		hbm.setParameterList("unitKerjas", unitKerjas);
+    	}
+		
+    	return hbm.list();
+	}
 
 }

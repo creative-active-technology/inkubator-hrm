@@ -1,8 +1,10 @@
 package com.inkubator.hrm.entity;
 // Generated May 9, 2014 9:50:44 AM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -35,6 +38,7 @@ public class HrmRole implements java.io.Serializable {
     private Date updatedOn;
     private Set<HrmUserRole> hrmUserRoles = new HashSet<>(0);
     private Set<HrmMenuRole> hrmMenuRoles = new HashSet<>(0);
+    private List<HrmMenuRole> menuRoles = new ArrayList<>();
 
     public HrmRole() {
     }
@@ -84,7 +88,7 @@ public class HrmRole implements java.io.Serializable {
         this.roleName = roleName;
     }
 
-    @Column(name = "description", length = 65535, columnDefinition="Text")
+    @Column(name = "description", length = 65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
@@ -197,6 +201,11 @@ public class HrmRole implements java.io.Serializable {
 
     public void setHrmMenuRoles(Set<HrmMenuRole> hrmMenuRoles) {
         this.hrmMenuRoles = hrmMenuRoles;
+    }
+
+    @Transient
+    public List<HrmMenuRole> getMenuRoles() {
+        return new ArrayList<>(getHrmMenuRoles());
     }
 
 }
