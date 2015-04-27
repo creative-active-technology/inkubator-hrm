@@ -141,4 +141,6 @@ public interface EmpDataService extends IService<EmpData> {
     
     public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId) throws Exception;
 
+	public List<EmpData> getAllDataByAnnouncementId(Long announcementId);
+
 }
