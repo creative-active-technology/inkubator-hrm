@@ -24,8 +24,8 @@
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Detil Template Tipe Seleksi" styleClass="header_big" />
-                                    <p:outputLabel value="Data Template Tipe Seleksi dari Rekruitment" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['selection_type.selection_type_template_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['selection_type.selection_type_template_data_from_recruitment']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -41,7 +41,7 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Kode Template Tipe Seleksi" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['selection_type.selection_type_template_code']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -52,7 +52,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Nama Tempalte Tipe Seleksi" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['selection_type.selection_type_template_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -63,7 +63,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Kategori" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['selection_type.category']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -76,7 +76,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Aktif" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -89,7 +89,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Skala Nilai" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['selection_type.point_scale']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -100,7 +100,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Target Nilai" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['selection_type.target_point']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -111,7 +111,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="Deskripsi" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 75%">
 
@@ -124,7 +124,7 @@
 
                         <p:dataTable value="#{recruitSelectionTypeTemplatesDetilController.listJabatans}" var="jabatan" rowIndexVar="no" style="margin-top: 15px;margin-bottom: 15px">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Jabatan"/>
+                                <h:outputText value="#{appmsg['jabatan.jabatan_list']}"/>
                             </f:facet>
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
@@ -134,25 +134,25 @@
                             </p:column>
                             <p:column sortBy="code" >
                                 <f:facet name="header">
-                                    <h:outputText value="Kode Jabatan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_list']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatan.code}" />
                             </p:column> 
                             <p:column sortBy="name" >
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Jabatan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatan.name}" />
                             </p:column> 
                             <p:column sortBy="department" >
                                 <f:facet name="header">
-                                    <h:outputText value="Departement"/>
+                                    <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatan.department.departmentName}" />
                             </p:column>
                             <p:column sortBy="tujuanJabatan" >
                                 <f:facet name="header">
-                                    <h:outputText value="Tujuan Jabatan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_purpose']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatan.tujuanJabatan}" />
                             </p:column>

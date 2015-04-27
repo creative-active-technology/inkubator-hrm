@@ -283,6 +283,7 @@
                             <div class="art-sheet-body">
                                 <h:form>
                                     <p:sticky target="menuId" />
+                                         <!--      buka untuk dinamik menu <p:menubar model="#{homeController.menuModel}" style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId"/>-->
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
                                         <p:submenu label="#{appmsg['menu.system']}"  styleClass="menu" icon="img-user-account">
@@ -382,7 +383,7 @@
                                                 <p:submenu label="#{appmsg['menu.recruitment']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['menu.adv_source_category']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.adv_source_category']}" url="/protected/recruitment/recruitment_category_view.htm" /> 
                                                     <p:menuitem value="#{appmsg['menu.advertising_media']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['advertising_media']}" url="/protected/recruitment/recruitment_media_view.htm" />
-                                                    <p:menuitem value="#{appmsg['menu.selection_type']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.selection_type']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type']}" url="/protected/recruitment/recruit_selection_view.htm" />
                                                     <p:menuitem value="#{appmsg['menu.selection_type_series']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_series']}" url="#" />
                                                     <p:menuitem value="#{appmsg['menu.selection_type_library']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_library']}" url="/protected/recruitment/selection_type_view.htm" />
                                                     <p:menuitem value="#{appmsg['menu.man_power_plan_period']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.man_power_plan_period']}" url="#" />
@@ -496,7 +497,7 @@
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['recruitment.search_candidate']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
                                             <p:submenu label="#{appmsg['recruitment.recruitment_request']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['recruitment.recruitment_request_history']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_history']}" url="#" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.recruitment_request_history']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_history']}" url="/protected/recruitment/recruitment_request_form.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.recruitment_request_inbox']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_inbox']}" url="#" /> 
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['recruitment.vacancy']}"  styleClass="menu_child" >
@@ -588,9 +589,9 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.loan_request']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.loan_application_form']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_application_form']}" url="/protected/personalia/loan_application_form.htm" />  
-                                                <p:menuitem value="#{appmsg['menu.loan_application_inbox']}" icon="img-loan_application_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_application_inbox']}" url="" />
+                                                <p:menuitem value="#{appmsg['menu.loan_application_inbox']}" icon="img-loan_application_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_application_inbox']}" url="/protected/loan/loan_new_application_box_view.htm" />
                                                 <p:menuitem value="#{appmsg['menu.employee_cancellation_form']}" icon="img-cancellation_form" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_form']}" url="/protected/personalia/loan_new_cancellation_form.htm" />
-                                                <p:menuitem value="#{appmsg['menu.employee_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_inbox']}" url="" />
+                                                <p:menuitem value="#{appmsg['menu.employee_cancellation_inbox']}" icon="img-cancellation_inbox" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_cancellation_inbox']}" url="/protected/loan/loan_new_cancelation_box_view.htm" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['menu.loan_upload']}" icon="img-loan_upload" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_upload']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['menu.loan_verification_approval']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_verification_approval']}" url="#" /> 

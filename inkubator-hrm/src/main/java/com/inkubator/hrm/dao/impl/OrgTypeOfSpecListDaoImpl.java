@@ -17,6 +17,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -24,10 +25,10 @@ import org.springframework.stereotype.Repository;
  *
  * @author EKA
  */
-@Repository(value="orgTypeOfSpecListDao")
+@Repository(value = "orgTypeOfSpecListDao")
 @Lazy
-public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implements OrgTypeOfSpecListDao{
-    
+public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implements OrgTypeOfSpecListDao {
+
     @Override
     public Class<OrgTypeOfSpecList> getEntityClass() {
         return OrgTypeOfSpecList.class;
@@ -50,12 +51,12 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
-    private void doSearchByParam(OrgTypeOfSpecListSearchParameter searchParameter, Criteria criteria){
-        if(searchParameter.getName() != null){
+
+    private void doSearchByParam(OrgTypeOfSpecListSearchParameter searchParameter, Criteria criteria) {
+        if (searchParameter.getName() != null) {
             criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
-        if(searchParameter.getCode() != null){
+        if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -68,5 +69,13 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
         criteria.setFetchMode("orgTypeOfSpecList", FetchMode.JOIN);
         return (OrgTypeOfSpec) criteria.uniqueResult();
     }
-    
+
+    @Override
+    public List<OrgTypeOfSpecList> getOrgTypeOfSpecList(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("orgTypeOfSpec", "op", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("op.id", id));
+        return criteria.list();
+    }
+
 }

@@ -115,7 +115,7 @@ public class InstitutionEducationFormController extends BaseController {
                         }
 
                         MapUtil.sortByValue(provinces);
-                        
+
                         List<City> listCities = cityService.getByProvinceIdWithDetail(institutionEducationModel.getProvinceId());
 
                         for (City city : listCities) {
@@ -259,12 +259,11 @@ public class InstitutionEducationFormController extends BaseController {
 
     public void countryChanged(ValueChangeEvent event) {
         try {
-            
 
             Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-            
+
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
 
@@ -287,7 +286,6 @@ public class InstitutionEducationFormController extends BaseController {
 
     public void provinceChanged(ValueChangeEvent event) {
         try {
-            
 
             Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
@@ -329,4 +327,63 @@ public class InstitutionEducationFormController extends BaseController {
         this.dropDownEducationLevel = dropDownEducationLevel;
     }
 
+    public void doReset() throws Exception {
+        if (isUpdate) {
+            InstitutionEducation institutionEducation = institutionEducationService.getInstitutionEducationByIdWithDetail(institutionEducationModel.getId());
+
+            institutionEducationModel.setAddress(institutionEducation.getAddress());
+            institutionEducationModel.setCountryId(institutionEducation.getCity().getProvince().getCountry().getId());
+            institutionEducationModel.setDescription(institutionEducation.getDescription());
+            if (institutionEducation.getEducationLevel() != null) {
+                institutionEducationModel.setEducationLevelId(institutionEducation.getEducationLevel().getId());
+                institutionEducationModel.setInstitutionEducationCode(institutionEducation.getInstitutionEducationCode());
+                institutionEducationModel.setInstitutionEducationName(institutionEducation.getInstitutionEducationName());
+            }
+            institutionEducationModel.setPostalCode(institutionEducation.getPostalCode());
+            List<Province> listProvinces = provinceService.getByCountryIdWithDetail(institutionEducation.getCity().getProvince().getCountry().getId());
+
+            if (listProvinces.isEmpty() || listProvinces == null) {
+                disabledProvince = Boolean.TRUE;
+
+                FacesContext.getCurrentInstance().addMessage("formInstitutionEducationFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
+
+            } else {
+                disabledProvince = Boolean.FALSE;
+                provinces.clear();
+                for (Province province : listProvinces) {
+                    provinces.put(province.getProvinceName(), province.getId());
+                }
+
+                MapUtil.sortByValue(provinces);
+            }
+            institutionEducationModel.setProvinceId(institutionEducation.getCity().getProvince().getId());
+            List<City> listCities = cityService.getByProvinceIdWithDetail(institutionEducation.getCity().getProvince().getId());
+
+            if (listCities.isEmpty() || listCities == null) {
+                disabledCity = Boolean.TRUE;
+
+                FacesContext.getCurrentInstance().addMessage("formInstitutionEducationFormId:cityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
+
+            } else {
+                disabledCity = Boolean.FALSE;
+                citys.clear();
+                for (City city : listCities) {
+                    citys.put(city.getCityName(), city.getId());
+                }
+
+                MapUtil.sortByValue(citys);
+            }
+            institutionEducationModel.setCityId(institutionEducation.getCity().getId());
+        } else {
+            institutionEducationModel.setAddress(null);
+            institutionEducationModel.setCityId(null);
+            institutionEducationModel.setCountryId(null);
+            institutionEducationModel.setDescription(null);
+            institutionEducationModel.setEducationLevelId(null);
+            institutionEducationModel.setInstitutionEducationCode(null);
+            institutionEducationModel.setInstitutionEducationName(null);
+            institutionEducationModel.setPostalCode(null);
+            institutionEducationModel.setProvinceId(null);
+        }
+    }
 }
