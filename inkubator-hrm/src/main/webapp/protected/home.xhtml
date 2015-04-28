@@ -469,7 +469,9 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['hrm_menu.url_name']}" />
                                         </f:facet>
-                                        <h:outputLink value="#{favoriteMenu.urlName}">#{favoriteMenu.name}</h:outputLink>
+                                        <h:outputLink value="#{request.contextPath}#{favoriteMenu.urlName}" title="#{favoriteMenu.nameByResourceBundle}">
+                                            <p:outputLabel value="#{favoriteMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
+                                        </h:outputLink>
                                     </p:column>
                                 </p:dataTable>
                             </p:panel>
