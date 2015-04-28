@@ -5,10 +5,14 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.SystemLetterReferenceDao;
 import com.inkubator.hrm.entity.SystemLetterReference;
 import com.inkubator.hrm.service.SystemLetterReferenceService;
+import com.inkubator.hrm.web.search.SystemLetterReferenceSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,16 +47,6 @@ public class SystemLetterReferenceServiceImpl extends IServiceImpl implements Sy
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public SystemLetterReference getEntiyByPK(Long id) throws Exception {
         return systemLetterReferenceDao.getEntiyByPK(id);
-    }
-
-    @Override
-    public void save(SystemLetterReference entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void update(SystemLetterReference entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -190,5 +184,52 @@ public class SystemLetterReferenceServiceImpl extends IServiceImpl implements Sy
     public List<SystemLetterReference> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(SystemLetterReference systemLetterReference) throws Exception {
+//Uncomment below if u have unik code
+//long totalDuplicates = systemLetterReferenceDao.getTotalByCode(systemLetterReference.getCode());
+//if (totalDuplicates > 0) {
+//throw new BussinessException("systemLetterReference.error_duplicate_code")
+//}
+        systemLetterReference.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        systemLetterReference.setCreatedBy(UserInfoUtil.getUserName());
+        systemLetterReference.setCreatedOn(new Date());
+        systemLetterReferenceDao.save(systemLetterReference);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(SystemLetterReference systemLetterReference) throws Exception {
+//Uncomment below if u have unik code
+//long totalDuplicates = systemLetterReferenceDao.getTotalByCodeAndNotId(systemLetterReference.getCode(),systemLetterReference.getId())
+//if (totalDuplicates > 0) {
+//throw new BussinessException("systemLetterReference.error_duplicate_code")
+//}
+        SystemLetterReference systemLetterReference1 = systemLetterReferenceDao.getEntiyByPK(systemLetterReference.getId());
+        systemLetterReference1.setUpdatedBy(UserInfoUtil.getUserName());
+        systemLetterReference1.setUpdatedOn(new Date());
+        systemLetterReference1.setLetterSumary(systemLetterReference.getLetterSumary());
+        systemLetterReference1.setDescription(systemLetterReference.getDescription());
+        systemLetterReference1.setName(systemLetterReference.getName());
+        systemLetterReference1.setUploadData(systemLetterReference.getUploadData());
+        systemLetterReference1.setCode(systemLetterReference.getCode());
+        systemLetterReferenceDao.update(systemLetterReference1);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SystemLetterReference> getByParam(SystemLetterReferenceSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return this.systemLetterReferenceDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalSystemLetterReferenceByParam(SystemLetterReferenceSearchParameter searchParameter) throws Exception {
+        return this.systemLetterReferenceDao.getTotalSystemLetterReferenceByParam(searchParameter);
+    }
+
     
 }

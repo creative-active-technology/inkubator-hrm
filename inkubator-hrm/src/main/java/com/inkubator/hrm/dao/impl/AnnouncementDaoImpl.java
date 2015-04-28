@@ -1,20 +1,24 @@
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.AnnouncementDao;
-import com.inkubator.hrm.entity.Announcement;
-import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.AnnouncementDao;
+import com.inkubator.hrm.entity.Announcement;
+import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 
 /**
  *
@@ -64,5 +68,22 @@ public class AnnouncementDaoImpl extends IDAOImpl<Announcement> implements Annou
 		criteria.setFetchMode("announcementUnits", FetchMode.JOIN);
 		criteria.setFetchMode("announcementUnits.unitKerja", FetchMode.JOIN);
 		return (Announcement) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<Announcement> getAllDataValidForGeneratingLog(Date planExecutionDate) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT announcement " +
+    			"FROM Announcement AS announcement " +
+    			"WHERE status = :status " +
+    			"AND (timeModel = :timeDaily OR (timeModel = :timePeriod AND periodeStartDate <= :date AND periodeEndDate >= :date)) ");
+		
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+    			.setParameter("status", HRMConstant.ANNOUNCEMENT_STATUS_APPROVED)
+    			.setParameter("timeDaily", HRMConstant.ANNOUNCEMENT_TIME_DAILY)
+    			.setParameter("timePeriod", HRMConstant.ANNOUNCEMENT_TIME_PERIOD)
+    			.setParameter("date", planExecutionDate);
+    	
+		return hbm.list();
 	}
 }

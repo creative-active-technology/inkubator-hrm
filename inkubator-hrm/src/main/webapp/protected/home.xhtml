@@ -12,15 +12,15 @@
     </h:head>
     <h:body onload="onLoadTest()">
         <ui:composition template="/templates/master_layout_full.xhtml">
-            
+
             <ui:define name="windowTitle">
                 Home
             </ui:define>
             <ui:define name="center">
-<!--                <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
-                    <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
-                    <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
-                </p:notificationBar>-->
+                <!--                <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                                    <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
+                                    <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                                </p:notificationBar>-->
 
                 <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                     <p:row>
@@ -365,19 +365,21 @@
                                     <p:outputLabel value="#{appmsg['accesshistory.list_access_history']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <p:panelGrid  styleClass="grid_border" style="width: 98%;margin-left: 5px;margin-right: 10px;margin-top: 0px;margin-bottom: 10px;color: #036;height: 161px">
-                                    <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAksesModel}">
+                                    <c:forEach var="riwayatAkses" items="#{homeHistoryController.dataRiwayatAkses}">
                                         <p:row>
                                             <p:column style="width: 40%;text-align: center"  >
-                                                <p:outputLabel value="#{riwayatAkses.dateAkses}" styleClass="isitext_hrm">
+                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
                                                     <f:convertDateTime pattern="dd-MMM-yyyy" />
                                                 </p:outputLabel>
                                                 <br/>
-                                                <p:outputLabel value="#{riwayatAkses.dateAkses}" styleClass="isitext_hrm">
+                                                <p:outputLabel value="#{riwayatAkses.dateAccess}" styleClass="isitext_hrm">
                                                     <f:convertDateTime pattern="HH:mm aa" />
                                                 </p:outputLabel>
                                             </p:column>
                                             <p:column style="width: 60%" >
-                                                <p:outputLabel value="#{riwayatAkses.name}" styleClass="isitext_hrm"/>
+                                                <h:outputLink value="#{riwayatAkses.contextPath}#{riwayatAkses.hrmMenu.urlName}" title="#{riwayatAkses.hrmMenu.nameByResourceBundle}">
+                                                    <p:outputLabel value="#{riwayatAkses.hrmMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
+                                                </h:outputLink>
                                             </p:column>	
                                         </p:row>
                                     </c:forEach>
@@ -467,7 +469,9 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['hrm_menu.url_name']}" />
                                         </f:facet>
-                                        <h:outputLink value="#{favoriteMenu.urlName}">#{favoriteMenu.name}</h:outputLink>
+                                        <h:outputLink value="#{request.contextPath}#{favoriteMenu.urlName}" title="#{favoriteMenu.nameByResourceBundle}">
+                                            <p:outputLabel value="#{favoriteMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
+                                        </h:outputLink>
                                     </p:column>
                                 </p:dataTable>
                             </p:panel>
@@ -639,8 +643,8 @@
 <!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>-->
-                
-            <h:outputScript library="js" name="announcement.js" />
+
+                <h:outputScript library="js" name="announcement.js" />
             </ui:define>
 
         </ui:composition>

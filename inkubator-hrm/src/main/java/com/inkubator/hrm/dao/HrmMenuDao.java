@@ -13,23 +13,32 @@ import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
  * @author rizkykojek
  */
 public interface HrmMenuDao extends IDAO<HrmMenu> {
-	
-	public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+    public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalByParam(HrmMenuSearchParameter parameter);
-    
+
     public List<HrmMenu> getAllDataByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids, int firstResult, int maxResults, Order orderable);
-	
-	public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids);
 
-	public List<HrmMenu> getAllDataByLevel(Integer level);
+    public Long getTotalByParamAndNotIds(HrmMenuSearchParameter parameter, List<Long> ids);
 
-	public HrmMenu getEntityByPkWithDetail(long id);
+    public List<HrmMenu> getAllDataByLevel(Integer level);
 
-	public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
-	
-	public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable);
+    public HrmMenu getEntityByPkWithDetail(long id);
 
-	public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles);
+    public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id);
 
+    public List<HrmMenu> getAllDataByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalByUserRolesAndHaveNoChild(String parameter, List<Long> exceptMenuIds, List<String> roles);
+
+    public List<HrmMenu> getMunuByLevelOneAndRoleName(String roleName);
+
+    public List<HrmMenu> getlistChildByParentMenu(long parentId, String roleName);
+    
+    public List<HrmMenu> gelAllDataByOrderLevelMenuGreaterThan(Integer orderLevelMenu, Integer menuLevel, Long id);
+    
+    public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Integer menuLevel, Long id);
+
+    public HrmMenu getByPathRelative(String Name);
 }

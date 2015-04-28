@@ -22,4 +22,6 @@ public interface RiwayatAksesDao extends IDAO<RiwayatAkses> {
 
     public void deleteBatch(List<RiwayatAkses> data);
 
+    public List<RiwayatAkses> getRiwayatAksesByUserIdWithModel(String userID, int firstResult, int maxResults, Order order);
+
 }

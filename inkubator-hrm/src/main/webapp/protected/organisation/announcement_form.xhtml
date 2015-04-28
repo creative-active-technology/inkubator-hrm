@@ -96,11 +96,8 @@
                                     <p:outputLabel  value="#{appmsg['announcement.content_announcement']}" for="contentId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputTextarea id="contentId" rows="5" cols="37" maxlength="500" value="#{announcementFormController.model.announcementContent}" 
-                                                     style="width: 49%; height: 80px;" counter="counter" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" required="false"
-                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                	<p:editor id="contentId" required="true" widgetVar="editorWidget" value="#{announcementFormController.model.announcementContent}" width="600" />
                                     <p:message for="contentId"/>
-                                    <h:outputText id="counter" />
                                 </p:column>
                             </p:row>
                             <p:row>

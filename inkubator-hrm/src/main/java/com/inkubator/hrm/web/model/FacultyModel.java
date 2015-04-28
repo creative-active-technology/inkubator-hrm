@@ -9,8 +9,8 @@ import java.io.Serializable;
 public class FacultyModel implements Serializable {
 
 	private Long id;
-	private String facultyName;
-        private String facultyCode;
+	private String name;
+        private String code;
         private String description;
 	
 	public Long getId() {
@@ -18,16 +18,24 @@ public class FacultyModel implements Serializable {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
+        }
 
-    public String getFacultyName() {
-        return facultyName;
+    public String getName() {
+        return name;
     }
 
-    public void setFacultyName(String facultyName) {
-        this.facultyName = facultyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+        
     public String getDescription() {
         return description;
     }
@@ -35,15 +43,4 @@ public class FacultyModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getFacultyCode() {
-        return facultyCode;
-    }
-
-    public void setFacultyCode(String facultyCode) {
-        this.facultyCode = facultyCode;
-    }
-	
-	
-	
 }

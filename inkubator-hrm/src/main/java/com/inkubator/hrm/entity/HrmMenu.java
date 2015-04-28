@@ -1,6 +1,7 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 16, 2014 8:44:01 PM by Hibernate Tools 3.6.0
 
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -38,9 +40,10 @@ public class HrmMenu implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date upatedOn;
-    private Set<HrmMenu> hrmMenus = new HashSet<HrmMenu>(0);
-    private Set<HrmMenuRole> hrmMenuRoles = new HashSet<HrmMenuRole>(0);
-    private Set<FavoriteMenu> favoriteMenus = new HashSet<FavoriteMenu>(0);
+    private Boolean isGroup;
+    private Set<HrmMenu> hrmMenus = new HashSet<>(0);
+    private Set<HrmMenuRole> hrmMenuRoles = new HashSet<>(0);
+    private Set<FavoriteMenu> favoriteMenus = new HashSet<>(0);
 
     public HrmMenu() {
     }
@@ -95,7 +98,7 @@ public class HrmMenu implements java.io.Serializable {
         this.hrmMenu = hrmMenu;
     }
 
-    @Column(name = "name", length = 45)
+    @Column(name = "name", length = 115)
     public String getName() {
         return this.name;
     }
@@ -104,7 +107,7 @@ public class HrmMenu implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "url_name", length = 45)
+    @Column(name = "url_name", length = 115)
     public String getUrlName() {
         return this.urlName;
     }
@@ -237,4 +240,20 @@ public class HrmMenu implements java.io.Serializable {
         this.orderLevelMenu = orderLevelMenu;
     }
 
+    @Column(name = "is_group", nullable = false)
+    public Boolean getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(Boolean isGroup) {
+        this.isGroup = isGroup;
+    }
+
+    @Transient
+    public String getNameByResourceBundle() {
+        if (name != null) {
+            return ResourceBundleUtil.getAsString(name);
+        }
+        return ResourceBundleUtil.getAsString("global.dashboard");
+    }
 }

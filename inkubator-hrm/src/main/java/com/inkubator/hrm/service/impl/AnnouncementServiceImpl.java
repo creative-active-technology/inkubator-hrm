@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -15,12 +16,14 @@ import javax.jms.Session;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -58,6 +61,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AnnouncementService;
+import com.inkubator.hrm.web.model.AnnouncementJsonModel;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -92,6 +96,8 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
     private EmpDataDao empDataDao;
     @Autowired
     private FacesIO facesIO;
+    @Autowired
+    protected JmsTemplate jmsTemplateBroadcastAnnouncement;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -491,8 +497,28 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 	        	announcementUnit.setCreatedBy(entity.getCreatedBy());
 	        	announcementUnit.setCreatedOn(entity.getCreatedOn());
 	        	announcementUnitDao.save(announcementUnit);
+	        }	        
+	        
+	        //jika period start untuk announcement sudah lewat, 
+	        //maka langsung di generate-kan announcement log nya, agar bisa di lihat langsung oleh employee
+	        if(entity.getTimeModel() == HRMConstant.ANNOUNCEMENT_TIME_PERIOD && entity.getPeriodeStartDate().before(new Date())){
+	        	
+	        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	        	AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
+	        	jsonModel.setIsGeneratingAnnouncementLog(Boolean.TRUE);
+	        	jsonModel.setAnnouncementId(entity.getId());
+	        	jsonModel.setViewModel(entity.getViewModel());	
+	        	jsonModel.setPlanExecutionDate(DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH));
+	        	final String json = gson.toJson(jsonModel);
+	        	
+		        jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
+		            @Override
+		            public Message createMessage(Session session) throws JMSException {
+		                return session.createTextMessage(json);
+		            }
+		        });
 	        }
-            
+	        
             message = "success_without_approval";
             
 		} else {	
@@ -509,7 +535,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 		
 		return message;
 	}
-
+	
 	private Announcement entityBindingAndValidation(Announcement entity) {
 		
 		Company company = companyDao.getEntiyByPK(entity.getCompany().getId());

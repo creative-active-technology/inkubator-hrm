@@ -8,6 +8,7 @@ import com.inkubator.hrm.dao.JabatanFakultyDao;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.JabatanFakulty;
 import com.inkubator.hrm.service.FacultyService;
+import com.inkubator.hrm.web.search.FacultySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
@@ -205,7 +206,7 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
             throw new BussinessException("faculty.error_duplicate_faculty_code");
         }
         // check duplicate name
-        long totalDuplicates = facultyDao.getTotalByName(faculty.getFacultyName());
+        long totalDuplicates = facultyDao.getTotalByName(faculty.getName());
         if (totalDuplicates > 0) {
             throw new BussinessException("faculty.error_duplicate_faculty_name");
         }
@@ -249,13 +250,13 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
             throw new BussinessException("faculty.error_duplicate_faculty_code");
         }
         // check duplicate name
-        long totalDuplicates = facultyDao.getTotalByNameAndNotId(r.getFacultyName(), r.getId());
+        long totalDuplicates = facultyDao.getTotalByNameAndNotId(r.getName(), r.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("faculty.error_duplicate_faculty_name");
         }
 
         Faculty faculty = facultyDao.getEntiyByPK(r.getId());
-        faculty.setFacultyName(r.getFacultyName());
+        faculty.setName(r.getName());
         faculty.setCode(r.getCode());
         faculty.setDescription(r.getDescription());
         faculty.setUpdatedBy(UserInfoUtil.getUserName());
@@ -271,14 +272,14 @@ public class FacultyServiceImpl extends IServiceImpl implements FacultyService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<Faculty> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        return this.facultyDao.getByParam(parameter, firstResult, maxResults, orderable);
+    public List<Faculty> getByParam(FacultySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.facultyDao.getByParam(searchParameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalFacultyByParam(String parameter) throws Exception {
-        return this.facultyDao.getTotalFacultyByParam(parameter);
+    public Long getTotalFacultyByParam(FacultySearchParameter searchParameter) throws Exception {
+        return this.facultyDao.getTotalFacultyByParam(searchParameter);
     }
 
     @Override

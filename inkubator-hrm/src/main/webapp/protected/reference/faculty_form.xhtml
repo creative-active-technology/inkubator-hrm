@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:focus for ="codeId">
-                                    <p:inputText id="codeId" title="#{appmsg['faculty.faculty_code']}" value="#{facultyFormController.facultyModel.facultyCode}" 
+                                    <p:inputText id="codeId" title="#{appmsg['faculty.faculty_code']}" value="#{facultyFormController.facultyModel.code}" 
                                     			 required="true" requiredMessage="#{appmsg['faculty.faculty_code_should_not_be_empty']}" onkeyup="this.value = this.value.toUpperCase();" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
                                 </p:focus>
                             </p:column>
@@ -61,7 +61,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:focus for ="nameId">
-                                    <p:inputText id="nameId" title="#{appmsg['faculty.faculty_name']}" value="#{facultyFormController.facultyModel.facultyName}" 
+                                    <p:inputText id="nameId" title="#{appmsg['faculty.faculty_name']}" value="#{facultyFormController.facultyModel.name}" 
                                     			 required="true" requiredMessage="#{appmsg['faculty.faculty_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
                                 </p:focus>
                             </p:column>

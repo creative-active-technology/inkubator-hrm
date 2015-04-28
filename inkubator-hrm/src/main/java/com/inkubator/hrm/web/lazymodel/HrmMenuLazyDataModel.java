@@ -38,8 +38,6 @@ public class HrmMenuLazyDataModel extends LazyDataModel<HrmMenu> implements Seri
         	Order orderable = null;
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
-	        } else {
-	        	orderable = Order.desc("name");
 	        }
 	        
 	        menus = service.getByParam(parameter, first, pageSize, orderable);

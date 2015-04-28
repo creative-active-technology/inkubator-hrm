@@ -257,7 +257,7 @@ public class ApprovalActivityNotSendServiceImpl implements ApprovalActivityNotSe
                 }
             }
         }
-        System.out.println("ukurand data not send yet " + dataToSend.size());
+     
 
     }
 

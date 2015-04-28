@@ -39,4 +39,12 @@ public class HrmUserRoleDaoImpl extends IDAOImpl<HrmUserRole> implements HrmUser
         return criteria.list();
     }
 
+    @Override
+    public List<HrmUserRole> getUserName(String name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("hrmUser", "su");
+        criteria.add(Restrictions.eq("su.userId", name));
+        return criteria.list();
+    }
+
 }

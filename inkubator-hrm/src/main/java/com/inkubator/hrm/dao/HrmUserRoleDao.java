@@ -16,4 +16,6 @@ import java.util.List;
 public interface HrmUserRoleDao extends IDAO<HrmUserRole> {
 
     List<HrmUserRole> getByUserId(long id);
+
+    List<HrmUserRole> getUserName(String name);
 }
