@@ -8,11 +8,9 @@ package com.inkubator.hrm.web;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RiwayatAkses;
-import com.inkubator.hrm.service.HrmMenuService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -25,10 +23,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.DynamicMenuModel;
-import org.primefaces.model.menu.MenuModel;
 
 /**
  *
@@ -59,9 +53,10 @@ public class HomeController extends BaseController {
         akses.setDateAccess(new Date());
         akses.setPathUrl(urlPath.toString());
         akses.setUserId(UserInfoUtil.getUserName());
-        if (!FacesContext.getCurrentInstance().isPostback()) {
-            RequestContext.getCurrentInstance().execute("bar.show()");
-        }
+        akses.setContextPath(FacesUtil.getRequest().getContextPath());
+//        if (!FacesContext.getCurrentInstance().isPostback()) {
+//            RequestContext.getCurrentInstance().execute("bar.show()");
+//        }
         try {
             riwayatAksesService.doSaveAccess(akses);
 //            menuModel = hrmMenuService.getMenuHirarki();
@@ -133,5 +128,4 @@ public class HomeController extends BaseController {
 //    public void setHrmMenuService(HrmMenuService hrmMenuService) {
 //        this.hrmMenuService = hrmMenuService;
 //    }
-
 }

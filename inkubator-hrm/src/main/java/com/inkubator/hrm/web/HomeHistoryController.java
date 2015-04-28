@@ -33,7 +33,7 @@ public class HomeHistoryController extends BaseController {
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
     private List<RiwayatAkses> dataRiwayatAkses;
-    private List<RiwayatAksesModel> dataRiwayatAksesModel;
+//    private List<RiwayatAksesModel> dataRiwayatAksesModel;
     private List<LoginHistory> loginHistories;
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
@@ -44,7 +44,9 @@ public class HomeHistoryController extends BaseController {
     @Override
     public void initialization() {
         try {
-            dataRiwayatAksesModel = riwayatAksesService.getDataByUserIdWithModel(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
+//            dataRiwayatAksesModel = riwayatAksesService.getDataByUserIdWithModel(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
+
+            dataRiwayatAkses = riwayatAksesService.getRiwayatAksesByUserIdWithModel(UserInfoUtil.getUserName(), 0, 4, Order.desc("dateAccess"));
             loginHistories = loginHistoryService.getByParam(0, 4, Order.desc("loginDate"));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -57,7 +59,7 @@ public class HomeHistoryController extends BaseController {
         riwayatAksesService = null;
         loginHistoryService = null;
         loginHistories = null;
-        dataRiwayatAksesModel = null;
+//        dataRiwayatAksesModel = null;
 
     }
 
@@ -81,11 +83,11 @@ public class HomeHistoryController extends BaseController {
         this.loginHistoryService = loginHistoryService;
     }
 
-    public List<RiwayatAksesModel> getDataRiwayatAksesModel() {
-        return dataRiwayatAksesModel;
-    }
-
-    public void setDataRiwayatAksesModel(List<RiwayatAksesModel> dataRiwayatAksesModel) {
-        this.dataRiwayatAksesModel = dataRiwayatAksesModel;
-    }
+//    public List<RiwayatAksesModel> getDataRiwayatAksesModel() {
+//        return dataRiwayatAksesModel;
+//    }
+//
+//    public void setDataRiwayatAksesModel(List<RiwayatAksesModel> dataRiwayatAksesModel) {
+//        this.dataRiwayatAksesModel = dataRiwayatAksesModel;
+//    }
 }

@@ -159,7 +159,7 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     }
 
     @Override
-    public List<HrmMenu> getlistChildByParentMenu(long parentId,String roleName) {
+    public List<HrmMenu> getlistChildByParentMenu(long parentId, String roleName) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("hrmMenu", "hm", JoinType.INNER_JOIN);
         criteria.createAlias("hrmMenuRoles", "hrole", JoinType.INNER_JOIN);
@@ -171,5 +171,12 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
 
+    }
+
+    @Override
+    public HrmMenu getByPathRelative(String Name) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("urlName", Name));
+        return (HrmMenu) criteria.uniqueResult();
     }
 }

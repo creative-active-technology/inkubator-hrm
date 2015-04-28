@@ -8,7 +8,9 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.HrmMenuDao;
 import com.inkubator.hrm.dao.RiwayatAksesDao;
+import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.entity.RiwayatAkses;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -30,6 +32,8 @@ public class RiwayatAccessMessagesListener extends IServiceImpl implements Messa
     private JsonConverter jsonConverter;
     @Autowired
     private RiwayatAksesDao riwayatAksesDao;
+    @Autowired
+    private HrmMenuDao hrmMenuDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED,
@@ -40,15 +44,17 @@ public class RiwayatAccessMessagesListener extends IServiceImpl implements Messa
             String json = textMessage.getText();
             RiwayatAkses riwayatAccess = (RiwayatAkses) jsonConverter.getClassFromJson(json, RiwayatAkses.class);
             riwayatAccess.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(14)));
-            String b = StringUtils.reverse(riwayatAccess.getPathUrl());
-            String c = StringUtils.substringBefore(b, "/");
-            String d = StringUtils.reverse(c);
-            riwayatAccess.setName(d);
-            if (StringUtils.containsOnly(c, "htm")) {
-                d = StringUtils.substringAfter(c, ".");
-                riwayatAccess.setName(StringUtils.reverse(d));
-            }
-
+            String data = StringUtils.substringAfter(riwayatAccess.getPathUrl(), riwayatAccess.getContextPath());
+            HrmMenu hrmMenu = hrmMenuDao.getByPathRelative(data);
+            riwayatAccess.setHrmMenu(hrmMenu);
+//            String b = StringUtils.reverse(riwayatAccess.getPathUrl());
+//            String c = StringUtils.substringBefore(b, "/");
+//            String d = StringUtils.reverse(c);
+//            riwayatAccess.setName(d);
+//            if (StringUtils.containsOnly(c, "htm")) {
+//                d = StringUtils.substringAfter(c, ".");
+//                riwayatAccess.setName(StringUtils.reverse(d));
+//            }
             riwayatAksesDao.save(riwayatAccess);
         } catch (JMSException | NumberFormatException ex) {
             LOGGER.error("Error", ex);
