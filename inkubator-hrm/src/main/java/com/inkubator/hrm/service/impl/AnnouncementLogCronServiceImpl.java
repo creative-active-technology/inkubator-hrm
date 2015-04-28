@@ -111,30 +111,29 @@ public class AnnouncementLogCronServiceImpl extends IServiceImpl implements Anno
         List<String> toSentBCC = new ArrayList<String>();
         HrmUser user = hrmUserDao.getByEmpDataId(announcementLog.getEmpData().getId());
         
-        vtm.setTemplatePath("email_announcement_broadcast.vm");
-        vtm.setFrom(ownerEmail);
-        vtm.setSubject(announcementLog.getAnnouncement().getSubject());
-        toSend.add(user.getEmailAddress());
-        vtm.setTo(toSend.toArray(new String[toSend.size()]));
-        vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
-        vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
-        Map<String,String> maptoSend = new HashMap<String,String>();
-        maptoSend.put("empployeeName", announcementLog.getEmpData().getBioData().getFullName());
-        maptoSend.put("content", announcementLog.getAnnouncement().getAnnouncementContent());
-        maptoSend.put("ownerAdministrator", ownerAdministrator);
-        maptoSend.put("ownerCompany", ownerCompany);
-        maptoSend.put("applicationUrl", applicationUrl);
-        maptoSend.put("applicationName", applicationName);
-        if(StringUtils.equals(user.getUserId(), "nugroho.agung")) {
-        	velocityTemplateSender.sendMail(vtm, maptoSend); 
-        }
-        
-        announcementLog.setIsAlreadyExecuted(Boolean.TRUE);
-        announcementLog.setExecutionDate(new Date());
-        announcementLog.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
-        announcementLog.setUpdatedOn(new Date());
-        announcementLogDao.update(announcementLog);
-        
+        if(user != null && StringUtils.isNotEmpty(user.getEmailAddress())){
+	        vtm.setTemplatePath("email_announcement_broadcast.vm");
+	        vtm.setFrom(ownerEmail);
+	        vtm.setSubject(announcementLog.getAnnouncement().getSubject());
+	        toSend.add(user.getEmailAddress());
+	        vtm.setTo(toSend.toArray(new String[toSend.size()]));
+	        vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
+	        vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
+	        Map<String,String> maptoSend = new HashMap<String,String>();
+	        maptoSend.put("empployeeName", announcementLog.getEmpData().getBioData().getFullName());
+	        maptoSend.put("content", announcementLog.getAnnouncement().getAnnouncementContent());
+	        maptoSend.put("ownerAdministrator", ownerAdministrator);
+	        maptoSend.put("ownerCompany", ownerCompany);
+	        maptoSend.put("applicationUrl", applicationUrl);
+	        maptoSend.put("applicationName", applicationName);
+	        velocityTemplateSender.sendMail(vtm, maptoSend); 
+	        
+	        announcementLog.setIsAlreadyExecuted(Boolean.TRUE);
+	        announcementLog.setExecutionDate(new Date());
+	        announcementLog.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
+	        announcementLog.setUpdatedOn(new Date());
+	        announcementLogDao.update(announcementLog);
+        }        
 	}
 
 	public String getApplicationUrl() {

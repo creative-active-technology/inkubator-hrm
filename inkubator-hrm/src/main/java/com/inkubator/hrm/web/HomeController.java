@@ -15,14 +15,34 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.Calendar;
 import java.util.Date;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.primefaces.context.RequestContext;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.AnnouncementLog;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.AnnouncementLogService;
+import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.service.RiwayatAksesService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
+
+
 
 /**
  *
@@ -36,9 +56,10 @@ public class HomeController extends BaseController {
     private RiwayatAksesService riwayatAksesService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
-//    @ManagedProperty(value = "#{hrmMenuService}")
-//    private HrmMenuService hrmMenuService;
-//    private MenuModel menuModel;
+    @ManagedProperty(value = "#{announcementLogService}")
+    private AnnouncementLogService announcementLogService;
+    private AnnouncementLog announcementLog;
+    private Boolean isRenderAnnouncement;
 
     @PostConstruct
     @Override
@@ -59,40 +80,24 @@ public class HomeController extends BaseController {
 //        }
         try {
             riwayatAksesService.doSaveAccess(akses);
-//            menuModel = hrmMenuService.getMenuHirarki();
-            System.out.println(" nsdfdsnfsdnfsdnfnsdfnsdfn " + UserInfoUtil.getRoles());
         } catch (Exception ex) {
             LOGGER.error("Error when saving User Access History", ex);
         }
 
-//        DefaultSubMenu dsm = new DefaultSubMenu();
-//        DefaultSubMenu dsm1 = new DefaultSubMenu();
-//        DefaultMenuItem dmi = new DefaultMenuItem();
-//        DefaultMenuItem dmi2 = new DefaultMenuItem(ResourceBundleUtil.getAsString("menu.user_view"));
-//
-////        dmi2.setValue(akses);
-//        dmi.setIcon("ui-icon-home");
-//        dmi.setUrl("/protected/home.htm");
-//        dmi.setTitle("Back To Home");
-//
-//        dsm.setLabel(ResourceBundleUtil.getAsString("menu.system"));
-//        dsm.setStyleClass("menu");
-//        dsm.setIcon("img-user-account");
-//        dsm.addElement(dsm1);
-//        dsm1.setLabel(ResourceBundleUtil.getAsString("menu.account"));
-//        dsm1.setStyleClass("menu_child");
-//        dsm1.addElement(dmi2);
-//        menuModel.addElement(dmi);
-//        menuModel.addElement(dsm);
-//        menuModel.addElement(dsm1);
-    }
-
-    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
-        this.riwayatAksesService = riwayatAksesService;
+        /**
+         * do checking announcement web view
+         */
+        try {
+            Long empDataId = HrmUserInfoUtil.getEmpData().getId();
+            Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+            announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
+            isRenderAnnouncement = announcementLog != null;
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
     }
 
     public String doCheckInOut() {
-//
         try {
             Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
             LOGGER.info("Begin redirecting");
@@ -106,11 +111,24 @@ public class HomeController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             }
-//
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
         return null;
+    }
+
+    public void doAnnouncementExecute() {
+        try {
+            announcementLogService.execute(announcementLog);
+            announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
+            isRenderAnnouncement = announcementLog != null;
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+
+    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
+        this.riwayatAksesService = riwayatAksesService;
     }
 
     public void setHrmUserService(HrmUserService hrmUserService) {
@@ -128,4 +146,36 @@ public class HomeController extends BaseController {
 //    public void setHrmMenuService(HrmMenuService hrmMenuService) {
 //        this.hrmMenuService = hrmMenuService;
 //    }
+    public AnnouncementLogService getAnnouncementLogService() {
+        return announcementLogService;
+    }
+
+    public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
+        this.announcementLogService = announcementLogService;
+    }
+
+    public AnnouncementLog getAnnouncementLog() {
+        return announcementLog;
+    }
+
+    public void setAnnouncementLog(AnnouncementLog announcementLog) {
+        this.announcementLog = announcementLog;
+    }
+
+    public Boolean getIsRenderAnnouncement() {
+        return isRenderAnnouncement;
+    }
+
+    public void setIsRenderAnnouncement(Boolean isRenderAnnouncement) {
+        this.isRenderAnnouncement = isRenderAnnouncement;
+    }
+
+    public RiwayatAksesService getRiwayatAksesService() {
+        return riwayatAksesService;
+    }
+
+    public HrmUserService getHrmUserService() {
+        return hrmUserService;
+    }
+
 }

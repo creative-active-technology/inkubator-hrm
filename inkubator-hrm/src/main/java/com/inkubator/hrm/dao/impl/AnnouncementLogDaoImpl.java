@@ -85,4 +85,18 @@ public class AnnouncementLogDaoImpl extends IDAOImpl<AnnouncementLog> implements
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		return criteria.list();
 	}
+	
+	@Override
+	public List<AnnouncementLog> getAllDataWebViewByEmpDataIdAndPlanExecutionDate(Long empDataId, Date planExecutionDate){
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("announcement", "announcement");
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("planExecutionDate", planExecutionDate));
+		criteria.add(Restrictions.eq("isAlreadyExecuted", Boolean.FALSE));
+		criteria.add(Restrictions.eq("announcement.viewModel", HRMConstant.ANNOUNCEMENT_VIEW_WEB));
+		
+		criteria.setFetchMode("announcement", FetchMode.JOIN);
+		return criteria.list();
+	}
+	
 }
