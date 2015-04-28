@@ -19,5 +19,7 @@ public interface AnnouncementLogDao extends IDAO<AnnouncementLog>{
 	public List<AnnouncementLog> getAllDataEmailNotSent();
 
 	public List<AnnouncementLog> getAllDataEmailNotSentByParam(Long announcementId, Date planExecutionDate);
+
+	public List<AnnouncementLog> getAllDataWebViewByEmpDataIdAndPlanExecutionDate(Long empDataId, Date planExecutionDate);
 	
 }

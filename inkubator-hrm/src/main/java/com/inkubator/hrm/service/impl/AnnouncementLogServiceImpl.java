@@ -18,6 +18,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.AnnouncementLog;
 import com.inkubator.hrm.service.AnnouncementLogService;
 import com.inkubator.hrm.web.search.AnnouncementLogSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -220,6 +221,29 @@ public class AnnouncementLogServiceImpl extends IServiceImpl implements Announce
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<AnnouncementLog> getAllDataEmailNotSentByParam(Long announcementId, Date planExecutionDate) throws Exception {
 		return announcementLogDao.getAllDataEmailNotSentByParam(announcementId, planExecutionDate);
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public AnnouncementLog getEntityWebView(Long empDataId, Date planExecutionDate) throws Exception {
+		List<AnnouncementLog> list = announcementLogDao.getAllDataWebViewByEmpDataIdAndPlanExecutionDate(empDataId, planExecutionDate);
+		AnnouncementLog entity = null;
+		if(!list.isEmpty()){
+			entity = list.get(0);
+		}
+		return entity;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void execute(AnnouncementLog announcementLog) {
+		AnnouncementLog entity = announcementLogDao.getEntiyByPK(announcementLog.getId());
+		entity.setExecutionDate(new Date());
+		entity.setIsAlreadyExecuted(Boolean.TRUE);
+		entity.setUpdatedBy(UserInfoUtil.getUserName());
+		entity.setUpdatedOn(new Date());
+		
+		announcementLogDao.update(entity);
 	}
     
 }

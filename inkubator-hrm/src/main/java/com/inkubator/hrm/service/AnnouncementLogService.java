@@ -19,5 +19,9 @@ public interface AnnouncementLogService extends IService<AnnouncementLog>{
 	public List<AnnouncementLog> getAllDataEmailNotSent() throws Exception;
 
 	public List<AnnouncementLog> getAllDataEmailNotSentByParam(Long announcementId, Date planExecutionDate) throws Exception;
+
+	public AnnouncementLog getEntityWebView(Long empDataId, Date planExecutionDate) throws Exception;
+
+	public void execute(AnnouncementLog announcementLog);
 	
 }

@@ -5,9 +5,28 @@
  */
 package com.inkubator.hrm.web;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.DynamicMenuModel;
+import org.primefaces.model.menu.MenuModel;
+
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.AnnouncementLog;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RiwayatAkses;
+import com.inkubator.hrm.service.AnnouncementLogService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
@@ -16,18 +35,6 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.Date;
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.DynamicMenuModel;
-import org.primefaces.model.menu.MenuModel;
 
 /**
  *
@@ -41,13 +48,17 @@ public class HomeController extends BaseController {
     private RiwayatAksesService riwayatAksesService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
+    @ManagedProperty(value = "#{announcementLogService}")
+    private AnnouncementLogService announcementLogService;
+    
     private MenuModel menuModel;
+    private AnnouncementLog announcementLog;
+    private Boolean isRenderAnnouncement;
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-
         /**
          * saving process of User Access History
          */
@@ -87,14 +98,18 @@ public class HomeController extends BaseController {
         menuModel.addElement(dsm);
         menuModel.addElement(dsm1);
         
+        try {
+        	Long empDataId = HrmUserInfoUtil.getEmpData().getId();
+        	Date planExecutionDate = DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH);
+        	announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
+        	isRenderAnnouncement = announcementLog != null;
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
     }
     
-    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
-        this.riwayatAksesService = riwayatAksesService;
-    }
     
     public String doCheckInOut() {
-//
         try {
             Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
             LOGGER.info("Begin redirecting");
@@ -108,11 +123,24 @@ public class HomeController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 
             }
-//
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
         return null;
+    }
+    
+    public void doAnnouncementExecute(){
+    	try {
+	    	//announcementLogService.execute(announcementLog);
+	    	announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
+	    	isRenderAnnouncement = announcementLog != null;
+    	} catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+    
+    public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
+        this.riwayatAksesService = riwayatAksesService;
     }
     
     public void setHrmUserService(HrmUserService hrmUserService) {
@@ -126,5 +154,25 @@ public class HomeController extends BaseController {
     public void setMenuModel(MenuModel menuModel) {
         this.menuModel = menuModel;
     }
+
+	public AnnouncementLog getAnnouncementLog() {
+		return announcementLog;
+	}
+
+	public void setAnnouncementLog(AnnouncementLog announcementLog) {
+		this.announcementLog = announcementLog;
+	}
+
+	public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
+		this.announcementLogService = announcementLogService;
+	}
+
+	public Boolean getIsRenderAnnouncement() {
+		return isRenderAnnouncement;
+	}
+
+	public void setIsRenderAnnouncement(Boolean isRenderAnnouncement) {
+		this.isRenderAnnouncement = isRenderAnnouncement;
+	}
     
 }
