@@ -77,6 +77,17 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.hrmMenuDao.save(entity);
+        
+        //increment others orderLevelMenu if conflict
+        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(entity.getOrderLevelMenu(), entity.getMenuLevel(), entity.getId()) != null){
+        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(entity.getOrderLevelMenu(), entity.getMenuLevel(), entity.getId());
+        	for(HrmMenu m : listGreaterMenu){
+        		m.setOrderLevelMenu(m.getOrderLevelMenu() + 1);
+        		m.setUpdatedBy(UserInfoUtil.getUserName());
+        		m.setUpatedOn(new Date());
+        		this.hrmMenuDao.update(m);
+        	}
+        }
     }
 
     @Override
@@ -96,9 +107,22 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         menu.setMenuLevel(entity.getMenuLevel());
         menu.setMenuStyle(entity.getMenuStyle());
         menu.setMenuStyleClass(entity.getMenuStyleClass());
+        menu.setIsGroup(entity.getIsGroup());
+        menu.setOrderLevelMenu(entity.getOrderLevelMenu());
         menu.setUpdatedBy(UserInfoUtil.getUserName());
         menu.setUpatedOn(new Date());
         this.hrmMenuDao.update(menu);
+        
+        //increment others orderLevelMenu if conflict
+        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(menu.getOrderLevelMenu(), menu.getMenuLevel(), menu.getId()) != null){
+        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(menu.getOrderLevelMenu(), menu.getMenuLevel(), menu.getId());
+        	for(HrmMenu m : listGreaterMenu){
+        		m.setOrderLevelMenu(m.getOrderLevelMenu() + 1);
+        		m.setUpdatedBy(UserInfoUtil.getUserName());
+        		m.setUpatedOn(new Date());
+        		this.hrmMenuDao.update(m);
+        	}
+        }
     }
 
     @Override

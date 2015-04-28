@@ -128,6 +128,8 @@ public class MenuFormController extends BaseController {
         menu.setMenuLevel(model.getMenuLevel());
         menu.setMenuStyle(model.getMenuStyle());
         menu.setMenuStyleClass(model.getMenuStyleClass());
+        menu.setIsGroup(model.getIsGroup());
+        menu.setOrderLevelMenu(model.getOrderLevelMenu());
         if(menu.getMenuLevel() > 1){
         	HrmMenu parentMenu = new HrmMenu(model.getParentMenuId());
         	menu.setHrmMenu(parentMenu);
@@ -145,6 +147,8 @@ public class MenuFormController extends BaseController {
 	        model.setMenuLevel(menu.getMenuLevel());
 	        model.setMenuStyle(menu.getMenuStyle());
 	        model.setMenuStyleClass(menu.getMenuStyleClass());
+	        model.setIsGroup(menu.getIsGroup());
+	        model.setOrderLevelMenu(menu.getOrderLevelMenu());
 	        if(menu.getMenuLevel() > 1){
 	        	model.setParentMenuId(menu.getHrmMenu().getId());
 	        	List<HrmMenu> listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
@@ -189,6 +193,12 @@ public class MenuFormController extends BaseController {
     	} else {
     		isDisableParent = Boolean.TRUE;
 			model.getListParentMenu().clear();
+    	}
+    }
+    
+    public void onChangeIsGroupMenu(){
+    	if(model.getIsGroup()){
+    		model.setUrlName(StringUtils.EMPTY);
     	}
     }
 }
