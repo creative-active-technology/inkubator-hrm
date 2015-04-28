@@ -33,10 +33,13 @@
                     <h:form id="formFacultyViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="4">
-                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
-                                    <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" value="#{facultyViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                <h:panelGrid columns="5">
+                                    <p:selectOneMenu value="#{facultyViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['faculty.faculty_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['faculty.faculty_name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{facultyViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{facultyViewController.doSearch()}" update="tableFacultyId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -74,11 +77,11 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{facultyData.code}"/>
                             </p:column>
-                            <p:column sortBy="facultyName"  style="width: 44%">
+                            <p:column sortBy="name"  style="width: 44%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{facultyData.facultyName}"/>
+                                <h:outputLabel value= "#{facultyData.name}"/>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
 <!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -133,7 +136,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['faculty.faculty']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{facultyViewController.selectedFaculty.facultyName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{facultyViewController.selectedFaculty.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{facultyViewController.doDelete()}" update="formFacultyViewId,:growlFacultyViewlId"
@@ -146,7 +149,7 @@
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['faculty.faculty_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{facultyViewController.selectedFaculty.facultyName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{facultyViewController.selectedFaculty.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>

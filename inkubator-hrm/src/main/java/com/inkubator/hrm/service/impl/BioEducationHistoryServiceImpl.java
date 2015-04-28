@@ -301,7 +301,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         view.setScore(bioEducationHistory.getScore());
         view.setCertificateNumber(bioEducationHistory.getCertificateNumber());
         if(bioEducationHistory.getFaculty() != null){
-            view.setFaculty(bioEducationHistory.getFaculty().getFacultyName());
+            view.setFaculty(bioEducationHistory.getFaculty().getName());
         }
         view.setInstitutionEducation(bioEducationHistory.getInstitutionEducation().getInstitutionEducationName());
         view.setId(bioEducationHistory.getId());

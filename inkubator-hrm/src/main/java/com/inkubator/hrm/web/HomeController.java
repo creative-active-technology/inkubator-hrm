@@ -17,10 +17,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultSubMenu;
-import org.primefaces.model.menu.DynamicMenuModel;
-import org.primefaces.model.menu.MenuModel;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AnnouncementLog;
@@ -30,7 +26,6 @@ import com.inkubator.hrm.service.AnnouncementLogService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -43,15 +38,14 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ManagedBean(name = "homeController")
 @ViewScoped
 public class HomeController extends BaseController {
-    
+
     @ManagedProperty(value = "#{riwayatAksesService}")
     private RiwayatAksesService riwayatAksesService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
     @ManagedProperty(value = "#{announcementLogService}")
-    private AnnouncementLogService announcementLogService;
-    
-    private MenuModel menuModel;
+    private AnnouncementLogService announcementLogService;    
+
     private AnnouncementLog announcementLog;
     private Boolean isRenderAnnouncement;
     
@@ -59,6 +53,7 @@ public class HomeController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        
         /**
          * saving process of User Access History
          */
@@ -75,29 +70,10 @@ public class HomeController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error when saving User Access History", ex);
         }
-        menuModel = new DynamicMenuModel();
-        DefaultSubMenu dsm = new DefaultSubMenu();
-        DefaultSubMenu dsm1 = new DefaultSubMenu();
-        DefaultMenuItem dmi = new DefaultMenuItem();
-        DefaultMenuItem dmi2 = new DefaultMenuItem(ResourceBundleUtil.getAsString("menu.user_view"));
         
-        
-//        dmi2.setValue(akses);
-        dmi.setIcon("ui-icon-home");
-        dmi.setUrl("/protected/home.htm");
-        dmi.setTitle("Back To Home");
-        
-        dsm.setLabel(ResourceBundleUtil.getAsString("menu.system"));
-        dsm.setStyleClass("menu");
-        dsm.setIcon("img-user-account");
-        dsm.addElement(dsm1);
-        dsm1.setLabel(ResourceBundleUtil.getAsString("menu.account"));
-        dsm1.setStyleClass("menu_child");
-        dsm1.addElement(dmi2);
-        menuModel.addElement(dmi);
-        menuModel.addElement(dsm);
-        menuModel.addElement(dsm1);
-        
+        /**
+         * do checking announcement web view
+         */
         try {
         	Long empDataId = HrmUserInfoUtil.getEmpData().getId();
         	Date planExecutionDate = DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH);
@@ -107,8 +83,7 @@ public class HomeController extends BaseController {
             LOGGER.error(ex, ex);
         }
     }
-    
-    
+
     public String doCheckInOut() {
         try {
             Boolean isValid = HrmUserInfoUtil.isValidRemoteAddress();
@@ -121,7 +96,7 @@ public class HomeController extends BaseController {
             } else {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "ceckinout.error_employee",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                
+
             }
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
@@ -131,7 +106,7 @@ public class HomeController extends BaseController {
     
     public void doAnnouncementExecute(){
     	try {
-	    	//announcementLogService.execute(announcementLog);
+	    	announcementLogService.execute(announcementLog);
 	    	announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
 	    	isRenderAnnouncement = announcementLog != null;
     	} catch (Exception ex) {
@@ -142,18 +117,18 @@ public class HomeController extends BaseController {
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
     }
-    
+
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
-    
-    public MenuModel getMenuModel() {
-        return menuModel;
-    }
-    
-    public void setMenuModel(MenuModel menuModel) {
-        this.menuModel = menuModel;
-    }
+
+	public AnnouncementLogService getAnnouncementLogService() {
+		return announcementLogService;
+	}
+
+	public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
+		this.announcementLogService = announcementLogService;
+	}
 
 	public AnnouncementLog getAnnouncementLog() {
 		return announcementLog;
@@ -163,10 +138,6 @@ public class HomeController extends BaseController {
 		this.announcementLog = announcementLog;
 	}
 
-	public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
-		this.announcementLogService = announcementLogService;
-	}
-
 	public Boolean getIsRenderAnnouncement() {
 		return isRenderAnnouncement;
 	}
@@ -174,5 +145,12 @@ public class HomeController extends BaseController {
 	public void setIsRenderAnnouncement(Boolean isRenderAnnouncement) {
 		this.isRenderAnnouncement = isRenderAnnouncement;
 	}
-    
+
+	public RiwayatAksesService getRiwayatAksesService() {
+		return riwayatAksesService;
+	}
+
+	public HrmUserService getHrmUserService() {
+		return hrmUserService;
+	}
 }

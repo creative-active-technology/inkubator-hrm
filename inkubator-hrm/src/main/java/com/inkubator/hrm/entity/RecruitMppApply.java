@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -29,7 +30,7 @@ import javax.persistence.Version;
 public class RecruitMppApply  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Integer version;
      private RecruitMppPeriod recruitMppPeriod;
      private String recruitMppApplyCode;
@@ -41,13 +42,14 @@ public class RecruitMppApply  implements java.io.Serializable {
      private String createdBy;
      private String updatedBy;
      private Date updatedOn;
+     private Long totalDetailJabatan;
      private Set<RecruitMppApplyDetail> recruitMppApplyDetails = new HashSet<RecruitMppApplyDetail>(0);
 
     public RecruitMppApply() {
     }
 
 	
-    public RecruitMppApply(long id, RecruitMppPeriod recruitMppPeriod, String recruitMppApplyCode, String recruitMppApplyName) {
+    public RecruitMppApply(Long id, RecruitMppPeriod recruitMppPeriod, String recruitMppApplyCode, String recruitMppApplyName) {
         this.id = id;
         this.recruitMppPeriod = recruitMppPeriod;
         this.recruitMppApplyCode = recruitMppApplyCode;
@@ -68,15 +70,13 @@ public class RecruitMppApply  implements java.io.Serializable {
        this.recruitMppApplyDetails = recruitMppApplyDetails;
     }
    
-     @Id 
-
-    
+     @Id    
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -198,9 +198,18 @@ public class RecruitMppApply  implements java.io.Serializable {
     public void setRecruitMppApplyDetails(Set<RecruitMppApplyDetail> recruitMppApplyDetails) {
         this.recruitMppApplyDetails = recruitMppApplyDetails;
     }
+    
+    @Transient
+    public Long getTotalDetailJabatan() {
+        return totalDetailJabatan;
+    }
+
+    public void setTotalDetailJabatan(Long totalDetailJabatan) {
+        this.totalDetailJabatan = totalDetailJabatan;
+    }
 
 
-
+    
 
 }
 

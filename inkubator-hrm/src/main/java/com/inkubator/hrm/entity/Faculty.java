@@ -31,14 +31,13 @@ import javax.persistence.Version;
 )
 public class Faculty  implements java.io.Serializable {
 
-
      private long id;
      private Integer version;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
-     private String facultyName;
+     private String name;
      private String code;
      private String description;
      private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
@@ -51,13 +50,13 @@ public class Faculty  implements java.io.Serializable {
     public Faculty(long id) {
         this.id = id;
     }
-    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String facultyName, String description, Set<BioEducationHistory> educationHistorys) {
+    public Faculty(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String name, String description, Set<BioEducationHistory> educationHistorys) {
        this.id = id;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
        this.updatedOn = updatedOn;
-       this.facultyName = facultyName;
+       this.name = name;
        this.description = description;
        this.educationHistorys = educationHistorys;
     }
@@ -126,12 +125,12 @@ public class Faculty  implements java.io.Serializable {
 
     
     @Column(name="faculty_name", unique=true, length=60)
-    public String getFacultyName() {
-        return this.facultyName;
+    public String getName() {
+        return this.name;
     }
     
-    public void setFacultyName(String facultyName) {
-        this.facultyName = facultyName;
+    public void setName(String facultyName) {
+        this.name = facultyName;
     }
 
     
@@ -180,7 +179,7 @@ public class Faculty  implements java.io.Serializable {
         hash = 89 * hash + Objects.hashCode(this.createdOn);
         hash = 89 * hash + Objects.hashCode(this.updatedBy);
         hash = 89 * hash + Objects.hashCode(this.updatedOn);
-        hash = 89 * hash + Objects.hashCode(this.facultyName);
+        hash = 89 * hash + Objects.hashCode(this.name);
         hash = 89 * hash + Objects.hashCode(this.code);
         hash = 89 * hash + Objects.hashCode(this.description);
         return hash;
@@ -213,7 +212,7 @@ public class Faculty  implements java.io.Serializable {
         if (!Objects.equals(this.updatedOn, other.updatedOn)) {
             return false;
         }
-        if (!Objects.equals(this.facultyName, other.facultyName)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.code, other.code)) {

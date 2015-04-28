@@ -6,6 +6,8 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.web.search.FacultySearchParameter;
+
 
 /**
 *
@@ -13,9 +15,9 @@ import com.inkubator.hrm.entity.Faculty;
 */
 public interface FacultyDao extends IDAO<Faculty> {
 
-	public List<Faculty> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
+	public List<Faculty> getByParam(FacultySearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalFacultyByParam(String parameter);
+	public Long getTotalFacultyByParam(FacultySearchParameter searchParameter);
 	
 	public Long getTotalByName(String name);
 	
