@@ -44,6 +44,9 @@ public class SystemLetterReference  implements java.io.Serializable {
     public SystemLetterReference() {
     }
 
+    public SystemLetterReference(long id) {
+        this.id = id;
+    }
 	
     public SystemLetterReference(long id, String code, String name) {
         this.id = id;
