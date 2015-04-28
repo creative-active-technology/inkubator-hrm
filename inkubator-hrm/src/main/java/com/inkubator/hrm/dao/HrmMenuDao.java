@@ -40,4 +40,5 @@ public interface HrmMenuDao extends IDAO<HrmMenu> {
     
     public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Integer menuLevel, Long id);
 
+    public HrmMenu getByPathRelative(String Name);
 }

@@ -13,11 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.lang3.time.DateUtils;
-import org.primefaces.context.RequestContext;
-
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AnnouncementLog;
 import com.inkubator.hrm.entity.HrmUser;
@@ -30,6 +26,9 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+
+
 
 /**
  *
@@ -44,16 +43,15 @@ public class HomeController extends BaseController {
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
     @ManagedProperty(value = "#{announcementLogService}")
-    private AnnouncementLogService announcementLogService;    
-
+    private AnnouncementLogService announcementLogService;
     private AnnouncementLog announcementLog;
     private Boolean isRenderAnnouncement;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        
+
         /**
          * saving process of User Access History
          */
@@ -62,23 +60,24 @@ public class HomeController extends BaseController {
         akses.setDateAccess(new Date());
         akses.setPathUrl(urlPath.toString());
         akses.setUserId(UserInfoUtil.getUserName());
-        if (!FacesContext.getCurrentInstance().isPostback()) {
-            RequestContext.getCurrentInstance().execute("bar.show()");
-        }
+        akses.setContextPath(FacesUtil.getRequest().getContextPath());
+//        if (!FacesContext.getCurrentInstance().isPostback()) {
+//            RequestContext.getCurrentInstance().execute("bar.show()");
+//        }
         try {
             riwayatAksesService.doSaveAccess(akses);
         } catch (Exception ex) {
             LOGGER.error("Error when saving User Access History", ex);
         }
-        
+
         /**
          * do checking announcement web view
          */
         try {
-        	Long empDataId = HrmUserInfoUtil.getEmpData().getId();
-        	Date planExecutionDate = DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH);
-        	announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
-        	isRenderAnnouncement = announcementLog != null;
+            Long empDataId = HrmUserInfoUtil.getEmpData().getId();
+            Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+            announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
+            isRenderAnnouncement = announcementLog != null;
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -103,17 +102,17 @@ public class HomeController extends BaseController {
         }
         return null;
     }
-    
-    public void doAnnouncementExecute(){
-    	try {
-	    	announcementLogService.execute(announcementLog);
-	    	announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
-	    	isRenderAnnouncement = announcementLog != null;
-    	} catch (Exception ex) {
+
+    public void doAnnouncementExecute() {
+        try {
+            announcementLogService.execute(announcementLog);
+            announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
+            isRenderAnnouncement = announcementLog != null;
+        } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
     }
-    
+
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
     }
@@ -122,35 +121,36 @@ public class HomeController extends BaseController {
         this.hrmUserService = hrmUserService;
     }
 
-	public AnnouncementLogService getAnnouncementLogService() {
-		return announcementLogService;
-	}
+    public AnnouncementLogService getAnnouncementLogService() {
+        return announcementLogService;
+    }
 
-	public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
-		this.announcementLogService = announcementLogService;
-	}
+    public void setAnnouncementLogService(AnnouncementLogService announcementLogService) {
+        this.announcementLogService = announcementLogService;
+    }
 
-	public AnnouncementLog getAnnouncementLog() {
-		return announcementLog;
-	}
+    public AnnouncementLog getAnnouncementLog() {
+        return announcementLog;
+    }
 
-	public void setAnnouncementLog(AnnouncementLog announcementLog) {
-		this.announcementLog = announcementLog;
-	}
+    public void setAnnouncementLog(AnnouncementLog announcementLog) {
+        this.announcementLog = announcementLog;
+    }
 
-	public Boolean getIsRenderAnnouncement() {
-		return isRenderAnnouncement;
-	}
+    public Boolean getIsRenderAnnouncement() {
+        return isRenderAnnouncement;
+    }
 
-	public void setIsRenderAnnouncement(Boolean isRenderAnnouncement) {
-		this.isRenderAnnouncement = isRenderAnnouncement;
-	}
+    public void setIsRenderAnnouncement(Boolean isRenderAnnouncement) {
+        this.isRenderAnnouncement = isRenderAnnouncement;
+    }
 
-	public RiwayatAksesService getRiwayatAksesService() {
-		return riwayatAksesService;
-	}
+    public RiwayatAksesService getRiwayatAksesService() {
+        return riwayatAksesService;
+    }
 
-	public HrmUserService getHrmUserService() {
-		return hrmUserService;
-	}
+    public HrmUserService getHrmUserService() {
+        return hrmUserService;
+    }
+
 }

@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.RiwayatAkses;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
@@ -45,7 +46,7 @@ public class RiwayatAksesDaoImpl extends IDAOImpl<RiwayatAkses> implements Riway
     public List<RiwayatAkses> getByWeekDif(int value) {
         Date now = new Date();
         Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_WEEK);
-        
+
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.lt("dateAccess", parameter));
         return criteria.list();
@@ -53,7 +54,7 @@ public class RiwayatAksesDaoImpl extends IDAOImpl<RiwayatAkses> implements Riway
 
     @Override
     public void deleteBatch(List<RiwayatAkses> data) {
-       int counter = 0;
+        int counter = 0;
         for (RiwayatAkses dataToDelte : data) {
             getCurrentSession().delete(dataToDelte);
             counter++;
@@ -62,6 +63,17 @@ public class RiwayatAksesDaoImpl extends IDAOImpl<RiwayatAkses> implements Riway
                 getCurrentSession().clear();
             }
         }
+    }
+
+    @Override
+    public List<RiwayatAkses> getRiwayatAksesByUserIdWithModel(String userID, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("userId", userID));
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        criteria.setFetchMode("hrmMenu", FetchMode.JOIN);
+        return criteria.list();
     }
 
 }

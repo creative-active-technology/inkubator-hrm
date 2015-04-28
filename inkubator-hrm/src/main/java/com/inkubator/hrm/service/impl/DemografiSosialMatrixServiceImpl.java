@@ -82,7 +82,7 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
             totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
             tempTotalAllFemale = tempTotalAllFemale + totalFemale;
             tempTotalAllMale = tempTotalAllMale + totalMale;
-            System.out.println(totalMale + " - total");
+       
             listEducationShow.add(educationLevel.getName());
             listEducationShow.add(String.valueOf(totalFemale));
             listEducationShow.add(String.valueOf(totalMale));
@@ -197,7 +197,7 @@ public class DemografiSosialMatrixServiceImpl implements DemografiSosialMatrixSe
         for (EmpDataMatrixModel ages : listAgeFemale) {
             ageMapFemale.put(ages.getAges2(), ages.getBanyakDatas().doubleValue());
         }
-        System.out.println(listAgeFemale.size() + " = " + listAgeMale.size());
+  
         Double totalMale = null;
         Double totalFemale = null;
         Double totalSamping;

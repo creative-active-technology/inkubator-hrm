@@ -4,7 +4,10 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +25,8 @@ public class RiwayatAkses implements java.io.Serializable {
     private String pathUrl;
     private Date dateAccess;
     private String name;
+    private HrmMenu hrmMenu;
+    private String contextPath;
 
     public RiwayatAkses() {
     }
@@ -78,12 +83,30 @@ public class RiwayatAkses implements java.io.Serializable {
 
     @Column(name = "name_path", length = 45)
     public String getName() {
-   
+
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = false)
+    public HrmMenu getHrmMenu() {
+        return hrmMenu;
+    }
+
+    public void setHrmMenu(HrmMenu hrmMenu) {
+        this.hrmMenu = hrmMenu;
+    }
+    @Column(name = "context_path", length = 60)
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
     }
 
 }
