@@ -5,16 +5,6 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.RiwayatAkses;
-import com.inkubator.hrm.service.HrmUserService;
-import com.inkubator.hrm.service.RiwayatAksesService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,11 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.lang3.time.DateUtils;
-import org.primefaces.context.RequestContext;
-
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AnnouncementLog;
 import com.inkubator.hrm.entity.HrmUser;
@@ -135,17 +121,6 @@ public class HomeController extends BaseController {
         this.hrmUserService = hrmUserService;
     }
 
-//    public MenuModel getMenuModel() {
-//        return menuModel;
-//    }
-//
-//    public void setMenuModel(MenuModel menuModel) {
-//        this.menuModel = menuModel;
-//    }
-//
-//    public void setHrmMenuService(HrmMenuService hrmMenuService) {
-//        this.hrmMenuService = hrmMenuService;
-//    }
     public AnnouncementLogService getAnnouncementLogService() {
         return announcementLogService;
     }

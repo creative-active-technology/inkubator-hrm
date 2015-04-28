@@ -300,7 +300,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             department.setCreatedBy(UserInfoUtil.getUserName());
             department.setCreatedOn(new Date());
             departmentDao.save(department);
-            System.out.println(" heeheh save departement");
+         
             Department d = new Department();
             d.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             d.setCompany(company);
@@ -329,7 +329,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception {
         TreeNode root;
         Department endPointDepartment = departmentDao.getEntiyByPK(Long.parseLong(param.substring(1)));
-        System.out.println(" End postny nya adalah " + endPointDepartment);
+     
         List<Department> data = new ArrayList<>();
         data.add(endPointDepartment);
         gerParent(endPointDepartment, data);
@@ -400,7 +400,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
     public void updateOrganisasiLevel(Department department) throws Exception {
         long totalDuplicates = departmentDao.getTotalByCodeAndNotId(department.getDepartmentCode(), department.getId());
-        System.out.println("total   " + totalDuplicates);
+    
         if (totalDuplicates > 0) {
             throw new BussinessException("department.error_duplicate_department_name");
         }

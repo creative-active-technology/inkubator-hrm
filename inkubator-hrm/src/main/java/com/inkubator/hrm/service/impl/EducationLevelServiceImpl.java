@@ -334,7 +334,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
             empDataMatrixModel = new EmpDataMatrixModel();
             totalMale = bioEducationHistoryDao.getTotalByGenderMaleAndEducationLevel(educationLevel.getId());
             totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
-            System.out.println(totalMale + " - total");
+         
             listEducationShow.add(educationLevel.getName());
             listEducationShow.add(String.valueOf(totalFemale));
             listEducationShow.add(String.valueOf(totalMale));

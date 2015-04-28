@@ -213,7 +213,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) {
-        System.out.println("masukkkkkkkkkkkkkkkkkkkkk");
+    
         BigDecimal zero = new BigDecimal(0.0);
         final StringBuilder query = new StringBuilder("select D.code as costCenterCode,");
         query.append("D.name AS costCenterName,");
