@@ -21,6 +21,8 @@ public class MenuModel implements Serializable {
     private Integer menuLevel;
     private String menuStyle;
     private String menuStyleClass;
+    private Boolean isGroup;
+    private Integer orderLevelMenu;
     
     public MenuModel(){
     	listParentMenu = new ArrayList<HrmMenu>();
@@ -80,4 +82,21 @@ public class MenuModel implements Serializable {
 	public void setMenuStyleClass(String menuStyleClass) {
 		this.menuStyleClass = menuStyleClass;
 	}
+
+	public Boolean getIsGroup() {
+		return isGroup;
+	}
+
+	public void setIsGroup(Boolean isGroup) {
+		this.isGroup = isGroup;
+	}
+
+	public Integer getOrderLevelMenu() {
+		return orderLevelMenu;
+	}
+
+	public void setOrderLevelMenu(Integer orderLevelMenu) {
+		this.orderLevelMenu = orderLevelMenu;
+	}
+	
 }

@@ -35,6 +35,10 @@ public interface HrmMenuDao extends IDAO<HrmMenu> {
     public List<HrmMenu> getMunuByLevelOneAndRoleName(String roleName);
 
     public List<HrmMenu> getlistChildByParentMenu(long parentId, String roleName);
+    
+    public List<HrmMenu> gelAllDataByOrderLevelMenuGreaterThan(Integer orderLevelMenu, Integer menuLevel, Long id);
+    
+    public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Integer menuLevel, Long id);
 
     public HrmMenu getByPathRelative(String Name);
 }

@@ -68,7 +68,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>  
-                            <p:column sortBy="name"  style="text-align: center;width: 35%">
+                            <p:column sortBy="name"  style="text-align: center;width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
@@ -85,6 +85,12 @@
                                     <h:outputText value="#{appmsg['hrm_menu.menu_level']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.menuLevel}"/>
+                            </p:column>
+                            <p:column sortBy="orderLevelMenu"  style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['hrm_menu.order_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{menuData.orderLevelMenu}"/>
                             </p:column>                            
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
