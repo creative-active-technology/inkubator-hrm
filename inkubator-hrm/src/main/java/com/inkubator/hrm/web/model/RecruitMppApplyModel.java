@@ -19,6 +19,7 @@ public class RecruitMppApplyModel implements Serializable {
     private String recruitMppApplyName;
     private Date applyDate;
     private String reason;
+    private String recruitMppApplyFileName;
     private String uploadPath;
     private Long mppPeriodId;
 
@@ -76,6 +77,14 @@ public class RecruitMppApplyModel implements Serializable {
 
     public void setMppPeriodId(Long mppPeriodId) {
         this.mppPeriodId = mppPeriodId;
+    }
+
+    public String getRecruitMppApplyFileName() {
+        return recruitMppApplyFileName;
+    }
+
+    public void setRecruitMppApplyFileName(String recruitMppApplyFileName) {
+        this.recruitMppApplyFileName = recruitMppApplyFileName;
     }
    
     

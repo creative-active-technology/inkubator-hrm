@@ -66,12 +66,10 @@ public class RecruitMppApplyViewController extends BaseController{
         lazyData = null;
     }
 
-    public void doDetail() {
-        try {
+    public String doDetail() {       
             selectedRecruitMppApply = this.recruitMppApplyService.getEntityWithDetailById(selectedRecruitMppApply.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+            return "/protected/recruitment/recruit_mpp_apply_detail.htm?faces-redirect=true&execution=e" + selectedRecruitMppApply.getId();
+       
     }
 
     public void doDelete() {
@@ -87,8 +85,9 @@ public class RecruitMppApplyViewController extends BaseController{
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+    public String doAdd() {
+        //showDialog(null);
+        return "/protected/recruitment/recruit_mpp_apply_form.htm?faces-redirect=true";
     }
 
     public void doUpdate() {
