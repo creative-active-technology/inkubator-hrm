@@ -3,7 +3,10 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -24,8 +27,9 @@ import javax.persistence.Version;
 public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
 
 
-     private long recruitmenSelectionSeriesId;
+     private RecruitmenSelectionSeriesDetailId id;
      private Integer version;
+     private RecruitSelectionType recruitSelectionType;
      private RecruitmenSelectionSeries recruitmenSelectionSeries;
      private SystemLetterReference systemLetterReferenceByRejectLetterId;
      private SystemLetterReference systemLetterReferenceByAcceptLetterId;
@@ -34,16 +38,20 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
      private Date createdOn;
      private String updatedOn;
      private Date updatedBy;
+     private Integer listOrder;
 
     public RecruitmenSelectionSeriesDetail() {
     }
 
 	
-    public RecruitmenSelectionSeriesDetail(long recruitmenSelectionSeriesId) {
-        this.recruitmenSelectionSeriesId = recruitmenSelectionSeriesId;
+    public RecruitmenSelectionSeriesDetail(RecruitmenSelectionSeriesDetailId id, RecruitSelectionType recruitSelectionType, RecruitmenSelectionSeries recruitmenSelectionSeries) {
+        this.id = id;
+        this.recruitSelectionType = recruitSelectionType;
+        this.recruitmenSelectionSeries = recruitmenSelectionSeries;
     }
-    public RecruitmenSelectionSeriesDetail(long recruitmenSelectionSeriesId, RecruitmenSelectionSeries recruitmenSelectionSeries, SystemLetterReference systemLetterReferenceByRejectLetterId, SystemLetterReference systemLetterReferenceByAcceptLetterId, String note, String createdBy, Date createdOn, String updatedOn, Date updatedBy) {
-       this.recruitmenSelectionSeriesId = recruitmenSelectionSeriesId;
+    public RecruitmenSelectionSeriesDetail(RecruitmenSelectionSeriesDetailId id, RecruitSelectionType recruitSelectionType, RecruitmenSelectionSeries recruitmenSelectionSeries, SystemLetterReference systemLetterReferenceByRejectLetterId, SystemLetterReference systemLetterReferenceByAcceptLetterId, String note, String createdBy, Date createdOn, String updatedOn, Date updatedBy) {
+       this.id = id;
+       this.recruitSelectionType = recruitSelectionType;
        this.recruitmenSelectionSeries = recruitmenSelectionSeries;
        this.systemLetterReferenceByRejectLetterId = systemLetterReferenceByRejectLetterId;
        this.systemLetterReferenceByAcceptLetterId = systemLetterReferenceByAcceptLetterId;
@@ -54,16 +62,18 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
        this.updatedBy = updatedBy;
     }
    
-     @Id 
+     @EmbeddedId
 
     
-    @Column(name="recruitmen_selection_series_id", unique=true, nullable=false)
-    public long getRecruitmenSelectionSeriesId() {
-        return this.recruitmenSelectionSeriesId;
+    @AttributeOverrides( {
+        @AttributeOverride(name="recruitmenSelectionSeriesId", column=@Column(name="recruitmen_selection_series_id", nullable=false) ), 
+        @AttributeOverride(name="selectionTypeId", column=@Column(name="selection_type_id", nullable=false) ) } )
+    public RecruitmenSelectionSeriesDetailId getId() {
+        return this.id;
     }
     
-    public void setRecruitmenSelectionSeriesId(long recruitmenSelectionSeriesId) {
-        this.recruitmenSelectionSeriesId = recruitmenSelectionSeriesId;
+    public void setId(RecruitmenSelectionSeriesDetailId id) {
+        this.id = id;
     }
 
     @Version
@@ -77,7 +87,17 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="selection_type_id")
+    @JoinColumn(name="selection_type_id", nullable=false, insertable=false, updatable=false)
+    public RecruitSelectionType getRecruitSelectionType() {
+        return this.recruitSelectionType;
+    }
+    
+    public void setRecruitSelectionType(RecruitSelectionType recruitSelectionType) {
+        this.recruitSelectionType = recruitSelectionType;
+    }
+
+@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="recruitmen_selection_series_id", nullable=false, insertable=false, updatable=false)
     public RecruitmenSelectionSeries getRecruitmenSelectionSeries() {
         return this.recruitmenSelectionSeries;
     }
@@ -156,9 +176,16 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name="list_order")
+    public Integer getListOrder() {
+        return listOrder;
+    }
 
+    public void setListOrder(Integer listOrder) {
+        this.listOrder = listOrder;
+    }
 
-
+    
 }
 
 

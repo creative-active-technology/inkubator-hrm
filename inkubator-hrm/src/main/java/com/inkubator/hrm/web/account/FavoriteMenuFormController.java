@@ -135,7 +135,7 @@ public class FavoriteMenuFormController extends BaseController {
         HrmMenu droppedMenu = (HrmMenu) event.getData();
         if (favoriteMenus.contains(droppedMenu)) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "favorite_menu.menu_already_added", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } else if (favoriteMenus.size() >= 6) {
+        } else if (favoriteMenus.size() >= 8) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "favorite_menu.max_six_menu_in_favorite_menu", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } else {
             favoriteMenus.add(droppedMenu);
