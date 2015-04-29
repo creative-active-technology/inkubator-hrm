@@ -47,7 +47,6 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.RmbsDisbursement;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AnnouncementService;
@@ -173,6 +172,10 @@ public class AnnouncementFormController extends BaseController {
     		model.setPeriodeEndDate(null);
     		model.setPeriodeStartDate(null);
     	}
+    }
+    
+    public String doBack() {
+        return "/protected/organisation/announcement_view.htm?faces-redirect=true";
     }
 
     public String doSaved() {
