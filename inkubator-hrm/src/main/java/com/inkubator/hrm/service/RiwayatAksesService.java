@@ -20,7 +20,9 @@ public interface RiwayatAksesService extends IService<RiwayatAkses> {
     public void doSaveAccess(RiwayatAkses akses) throws Exception;
 
     public List<RiwayatAkses> getDataByUserId(String userID, int firstResult, int maxResults, Order order) throws Exception;
-    
+
     public List<RiwayatAksesModel> getDataByUserIdWithModel(String userID, int firstResult, int maxResults, Order order) throws Exception;
+
+    public List<RiwayatAkses> getRiwayatAksesByUserIdWithModel(String userID, int firstResult, int maxResults, Order order) throws Exception;
 
 }

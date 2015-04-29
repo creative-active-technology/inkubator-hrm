@@ -234,8 +234,8 @@ public class RiwayatAksesServiceImpl extends IServiceImpl implements RiwayatAkse
                 modelView.setName("Home");
                 listRiwayatAksesView.add(modelView);
             }
-            
-        }else{
+
+        } else {
             for (RiwayatAkses riwayatAkses : listRiwayatAkses) {
                 modelView = new RiwayatAksesModel();
                 modelView.setName(riwayatAkses.getName());
@@ -243,7 +243,13 @@ public class RiwayatAksesServiceImpl extends IServiceImpl implements RiwayatAkse
                 listRiwayatAksesView.add(modelView);
             }
         }
-        
+
         return listRiwayatAksesView;
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<RiwayatAkses> getRiwayatAksesByUserIdWithModel(String userID, int firstResult, int maxResults, Order order) throws Exception {
+        return this.riwayatAksesDao.getRiwayatAksesByUserIdWithModel(userID, firstResult, maxResults, order);
     }
 }

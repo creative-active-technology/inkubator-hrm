@@ -36,4 +36,5 @@ public interface HrmMenuDao extends IDAO<HrmMenu> {
 
     public List<HrmMenu> getlistChildByParentMenu(long parentId, String roleName);
 
+    public HrmMenu getByPathRelative(String Name);
 }

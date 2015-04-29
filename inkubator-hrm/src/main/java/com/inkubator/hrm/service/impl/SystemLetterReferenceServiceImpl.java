@@ -1,8 +1,11 @@
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.hrm.entity.SystemLetterReference;
+import com.inkubator.hrm.dao.SystemLetterReferenceDao;
+import com.inkubator.hrm.service.SystemLetterReferenceService;
+import com.inkubator.hrm.web.search.SystemLetterReferenceSearchParameter;
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -10,144 +13,155 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.inkubator.common.notification.service.VelocityTemplateSender;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.AnnouncementLogDao;
-import com.inkubator.hrm.dao.HrmUserDao;
-import com.inkubator.hrm.entity.AnnouncementLog;
-import com.inkubator.hrm.service.AnnouncementLogService;
-import com.inkubator.hrm.web.search.AnnouncementLogSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.common.util.RandomNumberUtil;
 
 /**
  *
  * @author WebGenX
  */
-@Service(value = "announcementLogService")
+@Service(value = "systemLetterReferenceService")
 @Lazy
-public class AnnouncementLogServiceImpl extends IServiceImpl implements AnnouncementLogService {
+public class SystemLetterReferenceServiceImpl extends IServiceImpl implements SystemLetterReferenceService {
 
     @Autowired
-    private AnnouncementLogDao announcementLogDao;
-    @Autowired
-    private VelocityTemplateSender velocityTemplateSender;
-    @Autowired
-    private HrmUserDao hrmUserDao;
+    private SystemLetterReferenceDao systemLetterReferenceDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(AnnouncementLog announcementLog) throws Exception {
-        announcementLogDao.delete(announcementLog);
+    public void delete(SystemLetterReference systemLetterReference) throws Exception {
+        systemLetterReferenceDao.delete(systemLetterReference);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(AnnouncementLog announcementLog) throws Exception {
-    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void save(SystemLetterReference systemLetterReference) throws Exception {
+//Uncomment below if u have unik code
+//long totalDuplicates = systemLetterReferenceDao.getTotalByCode(systemLetterReference.getCode());
+//if (totalDuplicates > 0) {
+//throw new BussinessException("systemLetterReference.error_duplicate_code")
+//}
+        systemLetterReference.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        systemLetterReference.setCreatedBy(UserInfoUtil.getUserName());
+        systemLetterReference.setCreatedOn(new Date());
+        systemLetterReferenceDao.save(systemLetterReference);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(AnnouncementLog announcementLog) throws Exception {
-    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(SystemLetterReference systemLetterReference) throws Exception {
+//Uncomment below if u have unik code
+//long totalDuplicates = systemLetterReferenceDao.getTotalByCodeAndNotId(systemLetterReference.getCode(),systemLetterReference.getId())
+//if (totalDuplicates > 0) {
+//throw new BussinessException("systemLetterReference.error_duplicate_code")
+//}
+        SystemLetterReference systemLetterReference1 = systemLetterReferenceDao.getEntiyByPK(systemLetterReference.getId());
+        systemLetterReference1.setUpdatedBy(UserInfoUtil.getUserName());
+        systemLetterReference1.setUpdatedOn(new Date());
+        systemLetterReference1.setLetterSumary(systemLetterReference.getLetterSumary());
+        systemLetterReference1.setDescription(systemLetterReference.getDescription());
+        systemLetterReference1.setName(systemLetterReference.getName());
+        systemLetterReference1.setUploadData(systemLetterReference.getUploadData());
+        systemLetterReference1.setCode(systemLetterReference.getCode());
+        systemLetterReferenceDao.update(systemLetterReference1);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public AnnouncementLog getEntiyByPK(Long id) {
-        return this.announcementLogDao.getEntiyByPK(id);
+    public SystemLetterReference getEntiyByPK(Long id) {
+        return this.systemLetterReferenceDao.getEntiyByPK(id);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<AnnouncementLog> getByParam(AnnouncementLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return this.announcementLogDao.getByParam(searchParameter, firstResult, maxResults, order);
+    public List<SystemLetterReference> getByParam(SystemLetterReferenceSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return this.systemLetterReferenceDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalAnnouncementLogByParam(AnnouncementLogSearchParameter searchParameter) throws Exception {
-        return this.announcementLogDao.getTotalAnnouncementLogByParam(searchParameter);
+    public Long getTotalSystemLetterReferenceByParam(SystemLetterReferenceSearchParameter searchParameter) throws Exception {
+        return this.systemLetterReferenceDao.getTotalSystemLetterReferenceByParam(searchParameter);
     }
 
     @Override
-    public AnnouncementLog getEntiyByPK(String id) throws Exception {
+    public SystemLetterReference getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntiyByPK(Integer id) throws Exception {
+    public SystemLetterReference getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveOrUpdate(AnnouncementLog enntity) throws Exception {
+    public void saveOrUpdate(SystemLetterReference enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog saveData(AnnouncementLog entity) throws Exception {
+    public SystemLetterReference saveData(SystemLetterReference entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog updateData(AnnouncementLog entity) throws Exception {
+    public SystemLetterReference updateData(SystemLetterReference entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog saveOrUpdateData(AnnouncementLog entity) throws Exception {
+    public SystemLetterReference saveOrUpdateData(SystemLetterReference entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AnnouncementLog getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public SystemLetterReference getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void softDelete(AnnouncementLog entity) throws Exception {
+    public void softDelete(SystemLetterReference entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -172,78 +186,42 @@ public class AnnouncementLogServiceImpl extends IServiceImpl implements Announce
     }
 
     @Override
-    public List<AnnouncementLog> getAllData() throws Exception {
+    public List<SystemLetterReference> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllData(Boolean isActive) throws Exception {
+    public List<SystemLetterReference> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllData(Integer isActive) throws Exception {
+    public List<SystemLetterReference> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllData(Byte isActive) throws Exception {
+    public List<SystemLetterReference> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<SystemLetterReference> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<SystemLetterReference> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<SystemLetterReference> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<AnnouncementLog> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<SystemLetterReference> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<AnnouncementLog> getAllDataEmailNotSent() {
-		return announcementLogDao.getAllDataEmailNotSent();
-	}
-
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<AnnouncementLog> getAllDataEmailNotSentByParam(Long announcementId, Date planExecutionDate) throws Exception {
-		return announcementLogDao.getAllDataEmailNotSentByParam(announcementId, planExecutionDate);
-	}
-	
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public AnnouncementLog getEntityWebView(Long empDataId, Date planExecutionDate) throws Exception {
-		List<AnnouncementLog> list = announcementLogDao.getAllDataWebViewByEmpDataIdAndPlanExecutionDate(empDataId, planExecutionDate);
-		AnnouncementLog entity = null;
-		if(!list.isEmpty()){
-			entity = list.get(0);
-		}
-		return entity;
-	}
-
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void execute(AnnouncementLog announcementLog) {
-		AnnouncementLog entity = announcementLogDao.getEntiyByPK(announcementLog.getId());
-		entity.setExecutionDate(new Date());
-		entity.setIsAlreadyExecuted(Boolean.TRUE);
-		entity.setUpdatedBy(UserInfoUtil.getUserName());
-		entity.setUpdatedOn(new Date());
-		
-		announcementLogDao.update(entity);
-	}
-    
 }

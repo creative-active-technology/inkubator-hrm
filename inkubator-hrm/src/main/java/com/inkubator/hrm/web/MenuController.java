@@ -7,8 +7,6 @@ package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.service.HrmMenuService;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;

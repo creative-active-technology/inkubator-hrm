@@ -43,13 +43,17 @@
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
         <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />     
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
-        <!--<h:outputScript library="js" name="announcement.js" />-->
-<!--        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
-            <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
-            <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
-        </p:notificationBar>
-        <p:commandButton value="Show" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>-->
-        
+        <h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}">
+	        <h:outputScript library="js" name="announcement.js" />
+	        <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif" >
+	            <p:panel>
+	            <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false"></p:outputLabel>
+	            <br/>
+	            <p:commandButton value="#{appmsg['announcement.hide']}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement" type="button" icon="ui-icon-arrow-1-n"/>
+	        	</p:panel>
+	        </p:notificationBar>
+	        <p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>
+        </h:panelGroup>
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 

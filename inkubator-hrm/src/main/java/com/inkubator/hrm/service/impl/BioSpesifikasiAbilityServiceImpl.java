@@ -102,9 +102,9 @@ public class BioSpesifikasiAbilityServiceImpl extends IServiceImpl implements Bi
     public void updateBioSpecAbility(BioSpesifikasiAbility entity, Long oldId) throws Exception {
         //check jika ada duplikat
         Long totalDuplicate = bioSpesifikasiAbilityDao.getTotalEntityByBioBioSpesifikasiAbilityId(entity.getSpecificationAbility().getId(), entity.getBioData().getId());
-        System.out.println("sebelum masuk");
+      
         if(totalDuplicate > 0){
-            System.out.println("masuk throw");
+          
             throw new BussinessException("jabatanSpesifikasi.error_duplicate");
         }
         BioSpesifikasiAbility update = this.bioSpesifikasiAbilityDao.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(entity.getBioData().getId(), oldId));

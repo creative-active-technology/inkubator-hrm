@@ -51,7 +51,7 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
             query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
         }
         query.append(" LIMIT " + firstResult + ", " + maxResults);
-        System.out.println(parameter.getCode());
+       
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(LoanNewSchemaListOfEmpViewModel.class))
                 .list();
