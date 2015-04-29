@@ -60,6 +60,7 @@ public class AnnouncementDaoImpl extends IDAOImpl<Announcement> implements Annou
 	@Override
 	public Announcement getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("company", FetchMode.JOIN);
 		criteria.setFetchMode("announcementEmpTypes", FetchMode.JOIN);
 		criteria.setFetchMode("announcementEmpTypes.employeeType", FetchMode.JOIN);
