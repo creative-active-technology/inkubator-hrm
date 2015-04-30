@@ -400,7 +400,7 @@ public class HRMConstant {
     public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;
     /* END */
-    
+
     /* 
      * Constant for Reimbursement Module */
     public static final Integer ANNOUNCEMENT_STATUS_APPROVED = 0;
@@ -419,5 +419,7 @@ public class HRMConstant {
     public static final String DIVISI = "DIV";
     public static final String DIREKTORAT = "DIR";
     public static final String SEKRETARIAT = "SKR";
+    public static final String COMPANY_ACTIVE = "COMPANY_ACTIVE";
+    public static final String SUPER_ADMIN = "SUPER ADMIN";
 
 }

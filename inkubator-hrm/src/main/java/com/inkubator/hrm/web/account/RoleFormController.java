@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.account;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +118,7 @@ public class RoleFormController extends BaseController {
         } else {
             doInsert(hrmRole);
         }
-        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + roleModel.getId();
+        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + hrmRole.getId();
     }
 
     public String doBack() {
@@ -206,6 +207,8 @@ public class RoleFormController extends BaseController {
         HrmRole hrmRole = new HrmRole();
         if (roleModel.getId() != null) {
             hrmRole.setId(roleModel.getId());
+        } else {
+            hrmRole.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         }
         hrmRole.setRoleName(roleModel.getRoleName());
         hrmRole.setDescription(roleModel.getDescription());

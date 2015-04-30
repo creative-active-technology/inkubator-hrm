@@ -58,7 +58,7 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(HrmRole entity) throws Exception {
-        entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
+//        entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.hrmRoleDao.save(entity);
