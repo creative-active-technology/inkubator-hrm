@@ -12,21 +12,22 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.service.FacultyService;
+import com.inkubator.hrm.web.search.FacultySearchParameter;
 
 /**
 *
 * @author Taufik Hidayat
 */
 public class FacultyLazyDataModel extends LazyDataModel<Faculty> implements Serializable {
-
-	private static final Logger LOGGER = Logger.getLogger(FacultyLazyDataModel.class);
-    private final String parameter;
+    
+    private static final Logger LOGGER = Logger.getLogger(FacultyLazyDataModel.class);
+    private final FacultySearchParameter searchParameter;
     private final FacultyService facultyService;
     private List<Faculty> facultys = new ArrayList<>();
     private Integer total;
 
-    public FacultyLazyDataModel(String parameter, FacultyService facultyService) {
-        this.parameter = parameter;
+    public FacultyLazyDataModel(FacultySearchParameter searchParameter, FacultyService facultyService) {
+        this.searchParameter = searchParameter;
         this.facultyService = facultyService;
     }
 
@@ -38,11 +39,11 @@ public class FacultyLazyDataModel extends LazyDataModel<Faculty> implements Seri
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("facultyName");
+	        	orderable = Order.desc("name");
 	        }
 	        
-	        facultys = facultyService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(facultyService.getTotalFacultyByParam(parameter)));            
+	        facultys = facultyService.getByParam(searchParameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(facultyService.getTotalFacultyByParam(searchParameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {

@@ -42,8 +42,8 @@ public class FacultyFormController extends BaseController {
                 Faculty faculty = facultyService.getEntiyByPK(Long.parseLong(param));
                 if (faculty != null) {
                     facultyModel.setId(faculty.getId());
-                    facultyModel.setFacultyName(faculty.getFacultyName());
-                    facultyModel.setFacultyCode(faculty.getCode());
+                    facultyModel.setName(faculty.getName());
+                    facultyModel.setCode(faculty.getCode());
                     facultyModel.setDescription(faculty.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
@@ -103,9 +103,9 @@ public class FacultyFormController extends BaseController {
         if (facultyModel.getId() != null) {
             faculty.setId(facultyModel.getId());
         }
-        faculty.setFacultyName(facultyModel.getFacultyName());
+        faculty.setName(facultyModel.getName());
         faculty.setDescription(facultyModel.getDescription());
-        faculty.setCode(facultyModel.getFacultyCode());
+        faculty.setCode(facultyModel.getCode());
         return faculty;
     }
 }
