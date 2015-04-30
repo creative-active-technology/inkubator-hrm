@@ -6,6 +6,7 @@
 .watermark{position:absolute;font-size:24px!important;font-style:italic;opacity:.7;z-index:99;color:red;transform:rotate(-20deg);-ms-transform:rotate(-20deg);-webkit-transform:rotate(-20deg)}.ui-clock{color:red!important;font-size:18px!important}
 .ui-widget-content{
 	/*border:1px solid #dddddd;*/
-        background: #fff url("/OPTIMA-HR/javax.faces.resource/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png.htm?ln=primefaces-cupertino") 50% top repeat-x ;
+        
+	background: #fff url("/OPTIMA-HR/javax.faces.resource/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png.htm?ln=primefaces-cupertino") 100% top repeat-x;
 	color: #036;
 }

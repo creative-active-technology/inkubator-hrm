@@ -78,4 +78,13 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
         return criteria.list();
     }
 
+    @Override
+    public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("orgTypeOfSpec.id", id));
+        criteria.setFetchMode("orgTypeOfSpec", FetchMode.JOIN);
+        criteria.addOrder(Order.asc("code"));
+        return criteria.list();
+    }
+
 }

@@ -28,4 +28,6 @@ public interface OrgTypeOfSpecListService extends IService<OrgTypeOfSpecList> {
     public List<DualListModel> getAllBySpectJabatan() throws Exception;
 
     public List<String> getOrgTypeSpecName() throws Exception;
+    
+    public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id) throws Exception;
 }

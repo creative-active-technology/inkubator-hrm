@@ -265,4 +265,10 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
         return data;
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id) throws Exception {
+        return orgTypeOfSpecListDao.getAllDataByOrgTypeOfSpecIdAndOrderByCode(id);
+    }
+
 }

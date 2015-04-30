@@ -25,4 +25,6 @@ public interface OrgTypeOfSpecListDao extends IDAO<OrgTypeOfSpecList> {
     public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id);
 
     public List<OrgTypeOfSpecList> getOrgTypeOfSpecList(long id);
+    
+    public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id);
 }
