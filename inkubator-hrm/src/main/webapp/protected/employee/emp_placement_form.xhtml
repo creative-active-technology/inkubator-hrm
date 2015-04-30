@@ -157,7 +157,7 @@
                                 </p:column>
 
                             </p:row>
-                            <p:row>
+<!--                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['placement.rotation_date']}"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
@@ -166,13 +166,13 @@
                                     <p:message for="rotasiDate"/>
                                 </p:column>
 
-                            </p:row>
+                            </p:row>-->
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paysalarygrade.paysalarygrade']}"  for="salaryGrade" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 158px" id="salaryGrade" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px" id="salaryGrade" filter="true" required="true"
                                                       value="#{empDataFormController.empDataModel.paySalaryGradeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapPaySalary}" />
