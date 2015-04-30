@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['jobspek.job_spek_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['jobspek.job_specificatoin_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel value="#{appmsg['jabat.jabatan_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:outputLabel value="#{orgTypeOfSpecJabatanFormController.model.jabatanCode}" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel value="#{appmsg['jabatan.jabatan_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:outputLabel value="#{orgTypeOfSpecJabatanFormController.model.jabatanName}" styleClass="label_hrm"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="specListId" value="#{appmsg['jobspec.spec_type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="specListId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectOneMenu id="specListId" value="#{orgTypeOfSpecJabatanFormController.model.orgTypeOfSpecListId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{orgTypeOfSpecJabatanFormController.dropDownSpecList}"/>
+                                    <p:ajax update="specDualListId" process="@this" listener="#{orgTypeOfSpecJabatanFormController.doChangeDualSpecList()}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="specListId"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="specDualListId" value="#{appmsg['jobspec.spec']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="specDualListId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:pickList value="#{orgTypeOfSpecJabatanFormController.dualListOrgTypeOfSpecList}" var="role" itemValue="#{role}" converter="orgTypeOfSpecListConverter" id="specDualListId"
+                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Spesifikasi" styleClass="isitext_hrm"
+                                            itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                            removeLabel="#{appmsg['global.remove']}"/>
+                                <p:message for="specDualListId" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="specDualListId"/>
+                            </p:column>
+                        </p:row>
+
+
+
+
+                    </p:panelGrid>
+                    <p:focus context="formId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                         action="#{orgTypeOfSpecJabatanFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
