@@ -97,7 +97,7 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         disjunction.add(Restrictions.eq("userId", param));
         disjunction.add(Restrictions.eq("emailAddress", param));
         criteria.add(disjunction);
-        
+
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (HrmUser) criteria.uniqueResult();
@@ -123,32 +123,32 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
     @Override
     public List<HrmUser> getByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("realName", name,MatchMode.ANYWHERE));
+        criteria.add(Restrictions.like("realName", name, MatchMode.ANYWHERE));
         criteria.add(Restrictions.eq("isActive", HRMConstant.ACTIVE));
         criteria.setFirstResult(0);
         criteria.setMaxResults(7);
         return criteria.list();
     }
 
-	@Override
-	public HrmUser getByEmpDataId(long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		return (HrmUser) criteria.uniqueResult();
-	}
+    @Override
+    public HrmUser getByEmpDataId(long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        return (HrmUser) criteria.uniqueResult();
+    }
 
-	@Override
-	public List<HrmUser> getAllDataByNameOrNik(String param) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-		Disjunction disjunction = Restrictions.disjunction();
+    @Override
+    public List<HrmUser> getAllDataByNameOrNik(String param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("empData.nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
         return criteria.list();
-	}
+    }
 
     @Override
     public HrmUser getByEmailAddressInNotLock(String emailAddress) {
@@ -156,7 +156,7 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         criteria.add(Restrictions.eq("emailAddress", emailAddress));
         criteria.add(Restrictions.eq("isLock", 0));
         return (HrmUser) criteria.uniqueResult();
-        
+
     }
 
     @Override
@@ -165,7 +165,9 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         criteria.add(Restrictions.eq("userId", userId));;
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        return (HrmUser) criteria.uniqueResult();        
+        return (HrmUser) criteria.uniqueResult();
     }
+
+    
 
 }

@@ -29,12 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service(value = "ohsaCategoryService")
 @Lazy
-public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategoryService{
-    
+public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategoryService {
+
     @Autowired
     private OhsaCategoryDao ohsaCategoryDao;
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
     public List<OhsaCategory> getByParam(OhsaCategorySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return ohsaCategoryDao.getByParam(searchParameter, firstResult, maxResults, order);
     }
@@ -64,7 +65,7 @@ public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategor
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(OhsaCategory entity) throws Exception {
         long totalDuplicates = ohsaCategoryDao.getTotalByCode(entity.getCode());
-        if(totalDuplicates > 0){
+        if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(5)));
@@ -74,9 +75,10 @@ public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategor
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OhsaCategory entity) throws Exception {
         long totalDuplicates = ohsaCategoryDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
-        if(totalDuplicates > 0){
+        if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
         OhsaCategory update = ohsaCategoryDao.getEntiyByPK(entity.getId());
@@ -224,5 +226,5 @@ public class OhsaCategoryServiceImpl extends IServiceImpl implements OhsaCategor
     public List<OhsaCategory> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

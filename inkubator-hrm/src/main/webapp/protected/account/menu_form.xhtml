@@ -47,7 +47,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputText id="urlId" title="#{appmsg['hrm_menu.url_name']}" value="#{menuFormController.model.urlName}" 
-	                                    		 maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+	                                    		 maxlength="45" readonly="#{menuFormController.model.isGroup}" required="#{not menuFormController.model.isGroup}" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="urlId"/>
 	                            </p:column>
 	                        </p:row>
@@ -84,6 +84,27 @@
                                         <f:selectItems value="#{menuFormController.model.listParentMenu}" var="menu" itemLabel="#{menu.name}" itemValue="#{menu.id}" />
                                     </p:selectOneMenu>
 	                                <p:message for="parentId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="orderLevelMenuId" value="#{appmsg['hrm_menu.order_level']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<pe:inputNumber id="orderLevelMenuId" title="#{appmsg['global.nominal']}" value="#{menuFormController.model.orderLevelMenu}" 
+                                                    decimalPlaces="0" maxValue="9999" required="true" styleClass="isitext_hrm" style="width:50px;"/>
+	                                <p:message for="orderLevelMenuId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isGroupId" value="#{appmsg['hrm_menu.is_a_group_menu']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton id="isGroupId" value="#{menuFormController.model.isGroup}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button">
+                                    	<p:ajax listener="#{menuFormController.onChangeIsGroupMenu()}" update="urlId"/>
+                                  	</p:selectBooleanButton>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>

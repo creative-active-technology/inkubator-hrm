@@ -43,7 +43,10 @@ public class RecruitSelectionType  implements java.io.Serializable {
     public RecruitSelectionType() {
     }
 
-	
+    public RecruitSelectionType(long id) {
+        this.id = id;
+    }
+    
     public RecruitSelectionType(long id, String code, String name) {
         this.id = id;
         this.code = code;

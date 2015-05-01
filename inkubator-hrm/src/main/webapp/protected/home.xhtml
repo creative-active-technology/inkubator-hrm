@@ -465,11 +465,13 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column style="width: 25px">
+                                    <p:column style="width: 50px">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['hrm_menu.url_name']}" />
                                         </f:facet>
-                                        <h:outputLink value="#{favoriteMenu.urlName}">#{favoriteMenu.name}</h:outputLink>
+                                        <h:outputLink value="#{request.contextPath}#{favoriteMenu.urlName}" title="#{favoriteMenu.nameByResourceBundle}">
+                                            <p:outputLabel value="#{favoriteMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
+                                        </h:outputLink>
                                     </p:column>
                                 </p:dataTable>
                             </p:panel>
@@ -642,7 +644,7 @@
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>-->
 
-                <h:outputScript library="js" name="announcement.js" />
+                <!--<h:outputScript library="js" name="announcement.js" />-->
             </ui:define>
 
         </ui:composition>

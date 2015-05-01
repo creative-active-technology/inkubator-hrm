@@ -36,7 +36,13 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     public List<HrmMenu> getByParam(HrmMenuSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria = doSearchByParam(parameter, criteria);
-        criteria.addOrder(orderable);
+        if(orderable == null) {
+        	criteria.addOrder(Order.asc("menuLevel"));
+        	criteria.addOrder(Order.asc("orderLevelMenu"));        	
+        } else {
+        	criteria.addOrder(orderable);
+        }
+        
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -172,6 +178,24 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
         return criteria.list();
 
     }
+
+	@Override
+	public List<HrmMenu> gelAllDataByOrderLevelMenuGreaterThan(Integer orderLevelMenu, Integer menuLevel, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("menuLevel", menuLevel));
+		criteria.add(Restrictions.ge("orderLevelMenu", orderLevelMenu));
+		criteria.add(Restrictions.ne("id", id));
+		return criteria.list();
+	}
+
+	@Override
+	public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Integer menuLevel, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("menuLevel", menuLevel));
+		criteria.add(Restrictions.eq("orderLevelMenu", orderLevelMenu));
+		criteria.add(Restrictions.ne("id", id));
+		return (HrmMenu) criteria.uniqueResult();
+	}
 
     @Override
     public HrmMenu getByPathRelative(String Name) {

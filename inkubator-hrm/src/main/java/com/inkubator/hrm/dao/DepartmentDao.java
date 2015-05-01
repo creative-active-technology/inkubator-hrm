@@ -32,4 +32,6 @@ public interface DepartmentDao extends IDAO<Department> {
 
     public void saveAndMerge(Department department);
 
+    public List<Department> getAllWithSpecificCompany();
+
 }

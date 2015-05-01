@@ -54,16 +54,16 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText/>
 	                                </f:facet>
-	                                <p:graphicImage id="dragIcon" name="/images/#{menuData.iconName}" height="22" title="#{appmsg['favorite_menu.drag_icon_drop_to_favorite_menu_list']}" />
+	                                <p:graphicImage id="dragIcon" name="/images/menu.png"  height="22" title="#{appmsg['favorite_menu.drag_icon_drop_to_favorite_menu_list']}" />
 	                                <p:draggable for="dragIcon" revert="true" zindex="10000" />
 	                            </p:column>  
-	                            <p:column sortBy="name"  style="text-align: center;width: 35%">
+	                            <p:column sortBy="name"  style="width: 35%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{menuData.name}"/>
+                                        <h:outputLabel value= "#{menuData.nameByResourceBundle}"/>
 	                            </p:column>
-	                            <p:column sortBy="urlName"  style="text-align: center;width: 35%">
+	                            <p:column sortBy="urlName"  style="width: 35%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
 	                                </f:facet>
@@ -99,13 +99,13 @@
 	                                </f:facet>
 	                                <h:outputLabel value="#{no+1}." />
 	                            </p:column>  
-	                            <p:column style="text-align: center;width: 35%">
+	                            <p:column style="width: 35%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{favoriteMenuData.name}"/>
+	                                 <h:outputLabel value= "#{favoriteMenuData.nameByResourceBundle}"/>
 	                            </p:column>
-	                            <p:column style="text-align: center;width: 35%">
+	                            <p:column style="width: 35%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
 	                                </f:facet>

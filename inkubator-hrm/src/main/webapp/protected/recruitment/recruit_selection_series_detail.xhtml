@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series_detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['recruitSelectionSeriesView.code']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitmenSelectionSeriesDetailController.selected.code}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['recruitSelectionSeriesView.name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitmenSelectionSeriesDetailController.selected.name}" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitmenSelectionSeriesDetailController.selected.description}" />
+                                </p:column>
+
+                            </p:row>
+                        </p:panelGrid>
+                        <p:dataTable  var="data"  value="#{recruitmenSelectionSeriesDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}" />
+                                </f:facet>
+                                <p:selectOneMenu style="width: 60px" value="#{data.listOrder}" id="selectId">
+                                    <p:ajax update="tableId"  process="@this" listener="#{recruitmenSelectionSeriesDetailController.doChangeLevel(data)}" partialSubmit="true"/>
+                                    <f:selectItems value="#{recruitmenSelectionSeriesDetailController.listOrder}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['recruitSelectionSeriesView.selection_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value=" #{data.recruitSelectionType.name}" />
+                            </p:column> 
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['recruitSelectionSeriesView.accept_letter']}"/>
+                                </f:facet>
+                                <h:outputLabel value=" #{data.systemLetterReferenceByAcceptLetterId.name}" />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['recruitSelectionSeriesView.reject_letter']}"/>
+                                </f:facet>
+                                <h:outputLabel value=" #{data.systemLetterReferenceByRejectLetterId.name}" />
+                            </p:column>
+                            <p:column > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['recruitSelectionSeriesView.note']}"/>
+                                </f:facet>
+                                <h:outputLabel value=" #{data.note}" />
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{recruitmenSelectionSeriesDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmenSelectionSeriesDetailController.selectedRecruitmenSelectionSeriesDetail}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{recruitmenSelectionSeriesDetailController.doEdit(data)}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmenSelectionSeriesDetailController.selectedRecruitmenSelectionSeriesDetail}" />
+                                    <p:ajax event="dialogReturn" listener="#{recruitmenSelectionSeriesDetailController.onDialogReturn}"  update="tableId, :growlId"/>
+                                </p:commandButton> 
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{recruitmenSelectionSeriesDetailController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>   
+
+                        <p:separator/>
+                        
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.add']}" action="#{recruitmenSelectionSeriesDetailController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                <p:ajax event="dialogReturn" listener="#{recruitmenSelectionSeriesDetailController.onDialogReturn}"  update="tableId, :growlId"/>
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitmenSelectionSeriesDetailFormController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                        <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                                  appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                            <div align="center">
+                                <div align="center">
+                                    <h:panelGrid columns="2" style="text-align: justify">
+                                        <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                        <h:panelGroup>
+                                            <h:panelGrid style="text-align: center">
+                                                <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </h:panelGrid>
+                                </div>
+                                <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                                    <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
+                                    <p:outputLabel value=":"  style="font-weight: bold"/>
+                                    <p:outputLabel value="#{recruitmenSelectionSeriesDetailController.selectedRecruitmenSelectionSeriesDetail.recruitSelectionType.name}" styleClass="label_hrm"/>
+                                </h:panelGrid>
+                                <p:separator/>
+                                <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitmenSelectionSeriesDetailController.doDelete()}" update="formId, :growlId"
+                                                 oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                            </div>
+                        </p:dialog>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
