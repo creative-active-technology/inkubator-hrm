@@ -113,10 +113,10 @@ public class RecruitMppApplyFormController extends BaseController {
         try {
             RecruitMppApply recruitMppApply = getEntityFromViewModel(recruitMppApplyModel);
             if (isUpdate) {
-                recruitMppApplyService.update(recruitMppApply);
+                recruitMppApplyService.updateRecruitMppApplytWithApproval(recruitMppApply, listMppDetail, mppApplyFile);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                recruitMppApplyService.save(recruitMppApply);
+                recruitMppApplyService.saveRecruitMppApplytWithApproval(recruitMppApply, listMppDetail, mppApplyFile);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -124,6 +124,17 @@ public class RecruitMppApplyFormController extends BaseController {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void updateMppPeriod(){
+        try{
+            System.out.println("mppPeriodeId : " + mppPeriodeId);
+            RecruitMppPeriod period = recruitMppPeriodService.getEntiyByPK(mppPeriodeId);
+            recruitMppApplyModel.setSelectedRecruitMppPeriod(period);
+            
+        }catch(Exception e){
+            LOGGER.error("Error", e);
         }
     }
 
@@ -167,8 +178,7 @@ public class RecruitMppApplyFormController extends BaseController {
     
     public void doDeleteRecruitMppApplyDetail() {
         try {
-//            bioEmploymentHistoryService.delete(selectedBioEmploymentHistory);
-//            bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioEmploymentHistory.getBioData().getId());
+            
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -194,11 +204,23 @@ public class RecruitMppApplyFormController extends BaseController {
     }
     
     public void doAddRecruitMppApplyDetail() {
-//        List<String> bioDataId = new ArrayList<>();
-//        bioDataId.add(String.valueOf(selectedBioData.getId()));
+        List<String> mppApplyCode = new ArrayList<>();
+        mppApplyCode.add(recruitMppApplyModel.getRecruitMppApplyCode());
+        
+        List<String> mppApplyName = new ArrayList<>();
+        mppApplyName.add(recruitMppApplyModel.getRecruitMppApplyName());
+        
+        List<String> mppApplyPeriod = new ArrayList<>();
+        mppApplyPeriod.add(String.valueOf(mppPeriodeId));
+        
+        List<String> isUpdate = new ArrayList<>();
+        mppApplyPeriod.add(String.valueOf("true"));
 
         Map<String, List<String>> dataToSend = new HashMap<>();
-        //dataToSend.put("bioDataId", bioDataId);
+        dataToSend.put("mppApplyCode", mppApplyCode);
+        dataToSend.put("mppApplyName", mppApplyName);
+        dataToSend.put("mppApplyPeriod", mppApplyPeriod);
+        dataToSend.put("isUpdate", isUpdate);
         showDialogRecruitMppApplyDetail(dataToSend);
     }
     
@@ -209,13 +231,16 @@ public class RecruitMppApplyFormController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 450);
-        RequestContext.getCurrentInstance().openDialog("bio_emp_hist_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("mpp_apply_detail_form", options, params);
+//        bio_emp_hist_form
     }
     
      public void onDialogReturnRecruitMppApplyDetail(SelectEvent event) {
         try {
-            //bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedBioData.getId());
-            super.onDialogReturn(event);
+            
+            RecruitMppApplyDetail recruitMppApplyDetail = (RecruitMppApplyDetail) event.getObject();          
+            listMppDetail.add(recruitMppApplyDetail);            
+            
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

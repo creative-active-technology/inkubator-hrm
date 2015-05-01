@@ -13,6 +13,7 @@ import com.inkubator.hrm.service.LoanNewTypeService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.web.lazymodel.LoanNewTypeLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.RecruitMppApplyViewLazyDataModel;
+import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.LoanNewTypeSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -42,7 +43,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class RecruitMppApplyViewController extends BaseController{
     private RecruitMppApplySearchParameter searchParameter;
-    private LazyDataModel<RecruitMppApply> lazyData;
+    private LazyDataModel<RecruitMppApplyViewModel> lazyData;
     private RecruitMppApply selectedRecruitMppApply;
     @ManagedProperty(value = "#{recruitMppApplyService}")
     private RecruitMppApplyService recruitMppApplyService;
@@ -123,14 +124,14 @@ public class RecruitMppApplyViewController extends BaseController{
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<RecruitMppApply> getLazyData() {
+    public LazyDataModel<RecruitMppApplyViewModel> getLazyData() {
         if (lazyData == null) {
             lazyData = new RecruitMppApplyViewLazyDataModel(searchParameter, recruitMppApplyService);
         }
         return lazyData;
     }
 
-    public void setLazyData(LazyDataModel<RecruitMppApply> lazyData) {
+    public void setLazyData(LazyDataModel<RecruitMppApplyViewModel> lazyData) {
         this.lazyData = lazyData;
     }
 

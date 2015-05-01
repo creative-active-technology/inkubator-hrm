@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 
@@ -27,5 +28,9 @@ public interface RecruitMppApplyService extends IService<RecruitMppApply> {
     public String saveRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile) throws Exception;
     
     public String updateRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile) throws Exception;
+    
+    public List<RecruitMppApplyViewModel> getUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+        
+    public Long getTotalUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter) throws Exception;
     
 }

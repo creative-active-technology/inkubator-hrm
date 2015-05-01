@@ -1404,4 +1404,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     	return hbm.list();
 	}
 
+    @Override
+    public Long getTotalKaryawanByJabatanId(Long jabatanId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));       
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
 }

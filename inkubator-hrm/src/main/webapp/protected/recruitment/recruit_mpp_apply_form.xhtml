@@ -128,7 +128,9 @@
                                     <p:selectOneMenu id="mppPeriodeId" value="#{recruitMppApplyFormController.mppPeriodeId}"  filter="true" 
                                                   required="true" label="#{appmsg['mpp_recruitment.mpp_recruitment_period']}"> 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{recruitMppApplyFormController.mapMppPeriode}"  />                                                                                
+                                        <f:selectItems value="#{recruitMppApplyFormController.mapMppPeriode}"  />       
+                                        <p:ajax   listener="#{recruitMppApplyFormController.updateMppPeriod()}"  
+                                             update="tableDetailRecruitMppApply"/>
                                 </p:selectOneMenu>
                                  <p:message for="mppPeriodeId"/>
                                 </h:panelGrid>
@@ -138,11 +140,13 @@
                     
                       <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_detail_recruiment']}" styleClass="header_big" />                     
                       <p:separator/>
-                       <p:commandButton value="#{appmsg['global.add']}" ajax="true" update="formRecruitMppId,:growlId,tableDetailRecruitMppApply" 
+                       <p:commandButton value="#{appmsg['global.add']}" ajax="true" 
                                          action="#{recruitMppApplyFormController.doAddRecruitMppApplyDetail()}" styleClass="label_button" 
                                          style="margin-right: 5px" label="#{appmsg['global.add']}"
                                          icon="ui-icon-folder-open"
-                                         id="btnAddMppApplyDetail" title="#{appmsg['global.add']}"/>
+                                         id="btnAddMppApplyDetail" title="#{appmsg['global.add']}">
+                            <p:ajax event="dialogReturn" listener="#{recruitMppApplyFormController.onDialogReturnRecruitMppApplyDetail}"  update="tableDetailRecruitMppApply"/>
+                       </p:commandButton>
                      <p:dataTable  id="tableDetailRecruitMppApply" var="data"  value="#{recruitMppApplyFormController.listMppDetail}" lazy="false" paginator="false"
                                     style="margin-top: 10px;margin-bottom: 10px"   rowIndexVar="no">
                                     <f:facet name="header">  
@@ -166,14 +170,36 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{data.jabatan.name}"/>
                                     </p:column>  
-                                    <p:column sortBy="recruitMppApply.recruitMppPeriod.periodeStart"  style="width: 25%">
+                                    <p:column  style="width: 20%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['menu.period']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{data.recruitMppApply.recruitMppPeriod.periodeStart}">
-                                            <f:convertDateTime pattern="MMMM yyyy" />
+                                        <h:outputLabel value= "#{recruitMppApplyFormController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}">
+                                            <f:convertDateTime pattern="dd MMM yyyy" />
+                                        </h:outputLabel>
+                                        <h:outputLabel value= " - " />
+                                        <h:outputLabel value= "#{recruitMppApplyFormController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}">
+                                            <f:convertDateTime pattern="dd MMM yyyy" />
                                         </h:outputLabel>
                                     </p:column> 
+                                    <p:column sortBy="actualNumber"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.actualNumber}"/> 
+                                    </p:column> 
+                                     <p:column sortBy="recruitPlan"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
+                                        </f:facet>
+                                         <h:outputLabel value= "#{data.recruitPlan}"/> 
+                                    </p:column>  
+                                    <p:column sortBy="difference"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.difference}"/> 
+                                    </p:column>  
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -185,7 +211,7 @@
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                          action="#{recruitMppApplyFormController.doEditRecruitMppApplyDetail()}" >
                                             <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyFormController.selectedRecruitMppApplyDetail}" />
-                                            <p:ajax event="dialogReturn" listener="#{recruitMppApplyFormController.onDialogReturnRecruitMppApplyDetail}"  update="tableDetailRecruitMppApply,:growlBioDetailFormId"/>
+                                            <p:ajax event="dialogReturn" listener="#{recruitMppApplyFormController.onDialogReturnRecruitMppApplyDetail}"  update="tableDetailRecruitMppApply,:growlId"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
