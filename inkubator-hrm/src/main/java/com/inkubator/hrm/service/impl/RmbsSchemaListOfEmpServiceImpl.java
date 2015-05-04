@@ -115,7 +115,7 @@ public class RmbsSchemaListOfEmpServiceImpl extends IServiceImpl implements Rmbs
 			rmbsSchemaListOfEmp.setNomorSk(entity.getNomorSk());
 			rmbsSchemaListOfEmp.setUpdatedBy(UserInfoUtil.getUserName());
 			rmbsSchemaListOfEmp.setUpdatedOn(new Date());
-			rmbsSchemaListOfEmpDao.updateData(rmbsSchemaListOfEmp);	
+			rmbsSchemaListOfEmpDao.update(rmbsSchemaListOfEmp);	
 		}			
 	}
 
