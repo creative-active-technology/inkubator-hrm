@@ -65,9 +65,12 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     }
 
     @Override
-    public List<HrmMenu> getAllDataByLevel(Integer level) {
+    public List<HrmMenu> getAllDataFetchChildByLevel(Integer level) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("menuLevel", level));
+        criteria.setFetchMode("hrmMenus", FetchMode.JOIN);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.addOrder(Order.asc("orderLevelMenu"));
         return criteria.list();
 
     }
@@ -86,6 +89,16 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
         criteria.add(Restrictions.eq("menuLevel", level));
         if (id != null) {
             criteria.add(Restrictions.ne("id", id));
+        }
+        return criteria.list();
+    }
+    
+    @Override
+    public List<HrmMenu> getAllDataByLevelAndNotId(int level, List<Long> ids) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("menuLevel", level));
+        if (!ids.isEmpty()) {
+            criteria.add(Restrictions.not(Restrictions.in("id", ids)));
         }
         return criteria.list();
     }
@@ -180,20 +193,20 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     }
 
 	@Override
-	public List<HrmMenu> gelAllDataByOrderLevelMenuGreaterThan(Integer orderLevelMenu, Integer menuLevel, Long id) {
+	public List<HrmMenu> gelAllDataByOrderLevelMenuGreaterThan(Integer orderLevelMenu, Long parentMenuId, Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("menuLevel", menuLevel));
+		criteria.add(Restrictions.eq("hrmMenu.id", parentMenuId));
 		criteria.add(Restrictions.ge("orderLevelMenu", orderLevelMenu));
 		criteria.add(Restrictions.ne("id", id));
 		return criteria.list();
 	}
 
 	@Override
-	public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Integer menuLevel, Long id) {
+	public HrmMenu getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(Integer orderLevelMenu, Long parentMenuId, Long exceptId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("menuLevel", menuLevel));
+		criteria.add(Restrictions.eq("hrmMenu.id", parentMenuId));
 		criteria.add(Restrictions.eq("orderLevelMenu", orderLevelMenu));
-		criteria.add(Restrictions.ne("id", id));
+		criteria.add(Restrictions.ne("id", exceptId));
 		return (HrmMenu) criteria.uniqueResult();
 	}
 
@@ -203,4 +216,26 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
         criteria.add(Restrictions.eq("urlName", Name));
         return (HrmMenu) criteria.uniqueResult();
     }
+
+	@Override
+	public List<HrmMenu> getAllDataFetchChildByParentId(Long parentId, List<Long> exceptId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("hrmMenu.id", parentId));
+		if(!exceptId.isEmpty()){
+			criteria.add(Restrictions.not(Restrictions.in("id", exceptId))); //where clause to except menu that already choose
+		}
+		criteria.setFetchMode("hrmMenus", FetchMode.JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.addOrder(Order.asc("orderLevelMenu"));
+		return criteria.list();
+	}
+	
+	@Override
+	public HrmMenu getEntityFetchChildById(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("hrmMenus", FetchMode.JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (HrmMenu) criteria.uniqueResult();
+	}
 }
