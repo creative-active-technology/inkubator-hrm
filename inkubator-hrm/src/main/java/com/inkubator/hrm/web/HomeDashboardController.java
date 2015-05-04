@@ -152,7 +152,7 @@ public class HomeDashboardController extends BaseController {
 
             
             //Get Period Active
-            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByAbsentTypeActive();
             persentasiKehadiranPerWeek = new CartesianChartModel();
             barChartModel = new BarChartModel();
             barChartModel.setStacked(false);
@@ -176,7 +176,7 @@ public class HomeDashboardController extends BaseController {
             	charDepartmentSeries.setLabel(entry.getKey());
             	
             	for(DepAttendanceRealizationViewModel depAttendanceModel : entry.getValue()){            		
-            		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue());
+            		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue()*100);
             	}
             	
             	barChartModel.addSeries(charDepartmentSeries);            	
