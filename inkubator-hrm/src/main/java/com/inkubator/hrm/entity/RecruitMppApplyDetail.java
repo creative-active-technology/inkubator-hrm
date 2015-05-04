@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -30,11 +31,13 @@ public class RecruitMppApplyDetail  implements java.io.Serializable {
      private RecruitMppApply recruitMppApply;
      private Date recruitMppMonth;
      private Integer recruitPlan;
+     private Integer actualNumber;
+     private Integer difference;
      private Date createdOn;
      private String createdBy;
      private String updatedBy;
      private Date updatedOn;
-
+     
     public RecruitMppApplyDetail() {
     }
 
@@ -155,9 +158,29 @@ public class RecruitMppApplyDetail  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+    
+    @Transient
+    public Integer getActualNumber() {
+        return actualNumber;
+    }
+
+    public void setActualNumber(Integer actualNumber) {
+        this.actualNumber = actualNumber;
+    }
+    
+    @Transient
+    public Integer getDifference() {
+        return difference;
+    }
+
+    public void setDifference(Integer difference) {
+        this.difference = difference;
+    }
+
+    
 
 
-
+    
 
 }
 

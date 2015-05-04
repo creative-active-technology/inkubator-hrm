@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.lazymodel;
 
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.service.RecruitMppApplyService;
+import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppApply> implements Serializable{
+public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppApplyViewModel> implements Serializable{
     
     private static final Logger LOGGER = Logger.getLogger(RecruitMppApplyViewLazyDataModel.class);
     private final RecruitMppApplySearchParameter searchParameter;
     private final RecruitMppApplyService service;
-    private List<RecruitMppApply> recruitMppApplyList = new ArrayList<>();
+    private List<RecruitMppApplyViewModel> recruitMppApplyViewModelList = new ArrayList<>();
     private Integer jumlahData;
 
     public RecruitMppApplyViewLazyDataModel(RecruitMppApplySearchParameter searchParameter, RecruitMppApplyService service) {
@@ -35,7 +36,7 @@ public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppAp
     }
     
     @Override
-    public List<RecruitMppApply> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RecruitMppApplyViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;
@@ -44,8 +45,8 @@ public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppAp
                 }else{
                     order = Order.desc("recruitMppApplyCode");
                 }
-                recruitMppApplyList = service.getByParam(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
+                recruitMppApplyViewModelList = service.getUndisbursedActivityByParam(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalUndisbursedActivityByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -53,19 +54,19 @@ public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppAp
 
         setPageSize(pageSize);
         setRowCount(jumlahData);
-        return recruitMppApplyList;
+        return recruitMppApplyViewModelList;
     }
     
     @Override
-    public Object getRowKey(RecruitMppApply recruitMppApply) {
-        return recruitMppApply.getId();
+    public Object getRowKey(RecruitMppApplyViewModel RecruitMppApplyViewModel) {
+        return RecruitMppApplyViewModel.getApprovalActivityId();
     }
 
     @Override
-    public RecruitMppApply getRowData(String id) {
-        for (RecruitMppApply recruitMppApply : recruitMppApplyList) {
-            if (id.equals(String.valueOf(recruitMppApply.getId()))) {
-                return recruitMppApply;
+    public RecruitMppApplyViewModel getRowData(String id) {
+        for (RecruitMppApplyViewModel recruitMppApplyViewModel : recruitMppApplyViewModelList) {
+            if (id.equals(String.valueOf(recruitMppApplyViewModel.getApprovalActivityId()))) {
+                return recruitMppApplyViewModel;
             }
         }
         return null;

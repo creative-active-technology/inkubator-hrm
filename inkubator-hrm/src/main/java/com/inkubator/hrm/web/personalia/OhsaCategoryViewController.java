@@ -35,55 +35,56 @@ import org.springframework.dao.DataIntegrityViolationException;
  */
 @ManagedBean(name = "ohsaCategoryViewController")
 @ViewScoped
-public class OhsaCategoryViewController extends BaseController{
+public class OhsaCategoryViewController extends BaseController {
+
     @ManagedProperty(value = "#{ohsaCategoryService}")
-    private OhsaCategoryService service;
+    private OhsaCategoryService ohsaCategoryService;
     private OhsaCategorySearchParameter searchParameter;
     private LazyDataModel<OhsaCategory> lazy;
     private OhsaCategory selected;
-    
+
     @PostConstruct
     @Override
-    public void initialization(){
+    public void initialization() {
         super.initialization();
         searchParameter = new OhsaCategorySearchParameter();
     }
-    
+
     @PreDestroy
-    private void cleandAndExit(){
+    private void cleandAndExit() {
         searchParameter = null;
         lazy = null;
-        service = null;
+        ohsaCategoryService = null;
         selected = null;
     }
-    
-    public void doSearch(){
+
+    public void doSearch() {
         lazy = null;
     }
-    
-    public void doSelectEntity(){
-        try{
-            selected = this.service.getEntiyByPK(selected.getId());
-        } catch(Exception ex){
+
+    public void doSelectEntity() {
+        try {
+            selected = this.ohsaCategoryService.getEntiyByPK(selected.getId());
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
-    public void doDelete(){
-        try{
-            this.service.delete(selected);
+
+    public void doDelete() {
+        try {
+            this.ohsaCategoryService.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        }catch (ConstraintViolationException | DataIntegrityViolationException ex){
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "global.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error", ex);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
     }
-    
-    public void showDialog(Map<String, List<String>> params){
+
+    public void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
@@ -92,39 +93,35 @@ public class OhsaCategoryViewController extends BaseController{
         options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("ohsa_cat_form", options, params);
     }
-    
-    public void doAdd(){
+
+    public void doAdd() {
         showDialog(null);
     }
-    
-    public void doEdit(){
+
+    public void doEdit() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
         dataToSend.put("ohsaCategoryId", dataIsi);
         showDialog(dataToSend);
     }
-    
+
     @Override
-    public void onDialogReturn(SelectEvent event){
+    public void onDialogReturn(SelectEvent event) {
         lazy = null;
         super.onDialogReturn(event);
     }
-    
-    public void onDelete(){
-        try{
-            selected = this.service.getEntiyByPK(selected.getId());
-        } catch (Exception ex){
+
+    public void onDelete() {
+        try {
+            selected = this.ohsaCategoryService.getEntiyByPK(selected.getId());
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
-    public OhsaCategoryService getService() {
-        return service;
-    }
-
-    public void setService(OhsaCategoryService service) {
-        this.service = service;
+    public void setOhsaCategoryService(OhsaCategoryService ohsaCategoryService) {
+        this.ohsaCategoryService = ohsaCategoryService;
     }
 
     public OhsaCategorySearchParameter getSearchParameter() {
@@ -136,8 +133,8 @@ public class OhsaCategoryViewController extends BaseController{
     }
 
     public LazyDataModel<OhsaCategory> getLazy() {
-        if(lazy == null){
-            lazy = new OhsaCategoryLazyDataModel(searchParameter, service);
+        if (lazy == null) {
+            lazy = new OhsaCategoryLazyDataModel(searchParameter, ohsaCategoryService);
         }
         return lazy;
     }
@@ -153,5 +150,5 @@ public class OhsaCategoryViewController extends BaseController{
     public void setSelected(OhsaCategory selected) {
         this.selected = selected;
     }
-    
+
 }

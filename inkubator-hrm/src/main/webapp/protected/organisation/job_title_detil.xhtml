@@ -97,33 +97,51 @@
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
                             <p:tab id="jobSpesificationId" title="#{appmsg['jobspek.jobspek']}">  
-                                <p:dataTable value="#{jabatanDetailController.listJabatanSpesifikasi}" var="listJobSpecifikasi" rowIndexVar="no" id="jobDesId"
-                                             >
+                                <p:dataTable  var="listJobSpecifikasi"  value="#{jabatanDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                              id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column > 
-                                        <f:facet name="header">  
-                                            <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
-                                        </f:facet>
-                                        <h:outputLabel value=" #{listJobSpecifikasi.specificationAbility.name}" />
-                                    </p:column> 
                                     <p:column style="width: 150px;text-align: center"> 
                                         <f:facet name="header" >  
-                                            <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
+                                            <h:outputText value="#{appmsg['jobspec.code']}"/>
                                         </f:facet>
-                                        <p:outputLabel value="#{listJobSpecifikasi.optionAbility}" />
+                                        <p:outputLabel value="#{listJobSpecifikasi.orgTypeOfSpecList.code}" />
                                     </p:column>
-                                    <p:column style="width: 80px;text-align: center"> 
+                                    <p:column > 
                                         <f:facet name="header">  
-                                            <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                            <h:outputText value="#{appmsg['jobspec.nama']}"/>
                                         </f:facet>
-                                        <p:outputLabel value="#{listJobSpecifikasi.value}" />
-                                    </p:column>
+                                        <h:outputLabel value=" #{listJobSpecifikasi.orgTypeOfSpecList.name}" />
+                                    </p:column> 
+                                    
+                                    <!--                                    <p:column style="width: 80px;text-align: center"> 
+                                                                            <f:facet name="header">  
+                                                                                <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
+                                                                            </f:facet>
+                                                                            <p:outputLabel value="#{listJobSpecifikasi.value}" />
+                                                                        </p:column>-->
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                        
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                         action="#{jabatanDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                            <f:setPropertyActionListener value="#{listJobSpecifikasi}" target="#{jabatanDetailController.selectedOrgTypeSpecJabatan}" />
+                                        </p:commandButton>
+                                        
+                                    </p:column> 
                                 </p:dataTable>  
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" label="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{jabatanDetailController.doAdd()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" update=":jobTitleViewId:tabView1:tableId, :userViewGrowlId" listener="#{jabatanDetailController.onDialogReturn}"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
                             </p:tab>  
                             <p:tab id="jobDeskriptionId" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}">  
                                 <!--<h:panelGrid columns="2" cellpadding="10">-->  
@@ -198,7 +216,33 @@
                         <div style="clear: both"/>
                     </h:form>
                 </div>
-
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{jabatanDetailController.selectedOrgTypeSpecJabatan.orgTypeOfSpecList.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanDetailController.doDelete()}" update="jobTitleViewId, userViewGrowlId"
+                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
 
             </ui:define>
 

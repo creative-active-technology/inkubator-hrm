@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -110,5 +111,18 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     public void saveAndMerge(Department department) {
         getCurrentSession().update(department);
         getCurrentSession().flush();
+    }
+
+    @Override
+    public List<Department> getAllWithSpecificCompany() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("company", "co", JoinType.INNER_JOIN);
+        if (HrmUserInfoUtil.getCompanyId() != null) {
+            criteria.add(Restrictions.eq("co.id", HrmUserInfoUtil.getCompanyId()));
+        }
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+        criteria.add(Restrictions.not(Restrictions.like("departmentCode", "ROOT", MatchMode.START)));
+        return criteria.list();
+
     }
 }

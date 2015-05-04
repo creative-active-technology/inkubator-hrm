@@ -51,7 +51,6 @@ public class HomeController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-
         /**
          * saving process of User Access History
          */

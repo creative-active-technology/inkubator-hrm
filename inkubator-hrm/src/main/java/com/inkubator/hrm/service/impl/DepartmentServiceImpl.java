@@ -225,7 +225,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Department> getAllData() {
-        return this.departmentDao.getAllData();
+        return this.departmentDao.getAllWithSpecificCompany();
     }
 
     @Override

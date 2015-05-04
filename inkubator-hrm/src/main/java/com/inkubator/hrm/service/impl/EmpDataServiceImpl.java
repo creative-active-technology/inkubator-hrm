@@ -887,4 +887,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
 		return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId,empTypes,golJabs,unitKerjas);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception {
+        return empDataDao.getTotalKaryawanByJabatanId(jabatanId);
+    }
 }
