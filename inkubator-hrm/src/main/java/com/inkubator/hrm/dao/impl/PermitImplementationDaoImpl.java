@@ -15,11 +15,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+
 import java.util.Date;
 
 /**
@@ -197,5 +199,19 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.add(Restrictions.ge("startDate", dateFrom));
         criteria.add(Restrictions.le("startDate", dateUntill));
         return criteria.list();
+	}
+    
+    @Override
+	public Long getTotalActualPermit(Date date, Long companyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.le("startDate", date));
+        criteria.add(Restrictions.ge("endDate", date));
+        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 }

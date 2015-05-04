@@ -15,26 +15,27 @@ import java.util.Date;
  * @author rizkykojek
  */
 public interface BusinessTravelDao extends IDAO<BusinessTravel> {
-	
+
 	public List<BusinessTravel> getByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalByParam(BusinessTravelSearchParameter parameter);
 
 	public BusinessTravel getEntityByPkWithDetail(Long id);
-	
+
 	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo);
-	
+
 	public Long getTotalByBusinessTravelNo(String businessTravelNo);
-	
+
 	public Long getTotalByBusinessTravelNoAndNotId(String businessTravelNo, Long id);
 
 	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
-        
-        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
-        
-        public BusinessTravel getByEmpIdAndDate(long empId, Date doDate);
-        
-        public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(
-    			Long empDataId, Date dateFrom, Date dateUntill);
+
+	public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+
+	public BusinessTravel getByEmpIdAndDate(long empId, Date doDate);
+
+	public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(Long empDataId, Date dateFrom, Date dateUntill);
+
+	public Long getTotalActualBusinessTravel(Date date, Long companyId);
 
 }
