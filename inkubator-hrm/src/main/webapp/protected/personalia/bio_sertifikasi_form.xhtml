@@ -42,7 +42,7 @@
                             <p:column  style="width: 72%">                            	
                                 <p:selectOneMenu id="issuerId" value="#{bioSertifikasiFormController.eduNonFormalId}"  filter="true" required="true"
                                                         requiredMessage="#{appmsg['employeeCertification.certification_issuer_should_not_be_empty']}"
-                                                     style="width: 100%;margin-right: 3px" >
+                                                     style="width: 66%;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioSertifikasiFormController.mapEduNonFormal}"  />                                                                                
                                 </p:selectOneMenu>
@@ -101,7 +101,7 @@
                             <p:column  style="width: 72%">                            	
                                 <p:selectOneMenu id="majorId" value="#{bioSertifikasiFormController.occupationTypeId}"  filter="true" required="true"
                                                         requiredMessage="#{appmsg['employeeCertification.major_should_not_be_empty']}"
-                                                     style="width: 100%;margin-right: 3px" >
+                                                     style="width: 66%;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioSertifikasiFormController.mapOccupType}"  />                                                                                
                                 </p:selectOneMenu>

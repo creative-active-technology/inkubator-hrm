@@ -1940,7 +1940,7 @@ public class BioDataDetilController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 550);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 480);
         RequestContext.getCurrentInstance().openDialog("bio_project_form", options, params);
     }
 
@@ -2009,8 +2009,8 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 600);
-        options.put("contentHeight", 520);
+        options.put("contentWidth", 550);
+        options.put("contentHeight", 415);
         RequestContext.getCurrentInstance().openDialog("bio_sertifikasi_form", options, params);
     }
 
