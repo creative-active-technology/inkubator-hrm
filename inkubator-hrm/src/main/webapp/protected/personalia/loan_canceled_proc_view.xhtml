@@ -102,7 +102,7 @@
                             
                             <p:column sortBy="approvalTime"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Proses Pencairan"/>
+                                    <h:outputText value="#{appmsg['loan.disbursement_process']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.approvalTime}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
