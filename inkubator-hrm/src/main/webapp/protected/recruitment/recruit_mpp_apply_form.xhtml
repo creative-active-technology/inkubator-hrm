@@ -10,13 +10,14 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
 
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlBankFormlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formBankFormId">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formRecruitMppId">
+                    <div id="box_bg" style="margin: 10px">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -27,176 +28,236 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_dialog1']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                    
+                    <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="recruitMppApplyCode" value="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="recruitMppApplyCode" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                
-                                    <p:inputText id="recruitMppApplyCode" title="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeCode}" 
-                                                 required="true"  maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="recruitMppApplyCode"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="loanTypeName" value="#{appmsg['loantype.loantype_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="loanTypeName" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="loanTypeName">
-                                    <p:inputText id="loanTypeName" title="loanTypeName" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeName}" 
-                                                 required="true" requiredMessage="#{appmsg['loantype.loan_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="loanTypeName"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="currencyCode" value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="currencyCode" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 59%">
-                                <p:focus for ="currencyCode">
-                                     <p:selectOneMenu id="currencyCode" value="#{loanNewTypeFormController.currencyId}" filter="true" 
-                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanNewTypeFormController.mapCurrency}"  />                                                                                
-                                    </p:selectOneMenu>
-                                </p:focus>                               
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="currencyCode"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="interestMethod" value="#{appmsg['loantype.interest_method']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="interestMethod" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="interestMethod">
-                                    <p:selectOneMenu id="interestMethod" value="#{loanNewTypeFormController.loanNewTypeModel.interestMethod}"
-                                                 style="width: 100%;" required="true" requiredMessage="#{appmsg['loantype.interest_method_should_not_be_empty']}"> 
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.flat']}" itemValue="1"/>
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.annuity']}" itemValue="0"/>
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.floating']}" itemValue="2"/>                                                                                                                      
-                                    </p:selectOneMenu>
-                                    
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="interestMethod"/>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="interest" value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="interest" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">                                
-                                <p:spinner id="interest" required="true" value="#{loanNewTypeFormController.loanNewTypeModel.interest}" size="2" min="0.25" stepFactor="0.25" max="100" styleClass="isitext_hrm" />                                
-                                 <h:outputLabel  value="  %" styleClass="label_hrm"/>
-                            </p:column>
-                          
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="interest"/>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="roundingStatus" value="#{appmsg['loantype.rounding']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="roundingStatus" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">                                           
-                                <p:selectBooleanButton value="#{loanNewTypeFormController.rounding}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="roundingStatus" styleClass="label_button" >                                        
-                                 </p:selectBooleanButton>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="roundingStatus"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:inputTextarea id="description" title="#{appmsg['global.description']}" value="#{loanNewTypeFormController.loanNewTypeModel.description}" 
-                                                 required="false" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
-                            
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 1%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 70%">
-                                <h:outputText id="counter" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="description"/>
+                            </p:column>                          
+                            <p:column  style="width: 80%"> 
+                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                                <p:inputText id="recruitMppApplyCode" title="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyCode}" 
+                                          required="true"  maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:270px;" />
+                             <p:message for="recruitMppApplyCode"/>
+                                </h:panelGrid>
                             </p:column>
                         </p:row>
 
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="recruitMppApplyName" value="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                           
+                            <p:column  style="width: 80%">     
+                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                                <p:inputText id="recruitMppApplyName" title="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyName}" 
+                                        required="true" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
+                                <p:message for="recruitMppApplyName"/>
+                                </h:panelGrid>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="applyDate" value="#{appmsg['global.date']}" styleClass="label_hrm"/>
+                            </p:column>
+                           
+                            <p:column  style="width: 80%">
+                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                                <p:calendar  id="applyDate" pattern="dd MMMM yyyy"
+                                                 label="#{appmsg['global.date']}"
+                                                 value="#{recruitMppApplyFormController.recruitMppApplyModel.applyDate}"  
+                                                 readonly="false" required="true"  showOn="button" 
+                                                 style="width:200px;"> 
+                                    
+                                </p:calendar>         
+                                <p:message for="applyDate"/>
+                                </h:panelGrid>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="mppReason" value="#{appmsg['loginform.alasan']}" styleClass="label_hrm"/>
+                            </p:column>
+                          
+                            <p:column  style="width: 80%">
+                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                                <p:inputTextarea id="mppReason" title="#{appmsg['loginform.alasan']}"
+                                                 value="#{recruitMppApplyFormController.recruitMppApplyModel.reason}" 
+                                                 maxlength="255" counter="counterReason" label="#{appmsg['loginform.alasan']}"
+                                                 counterTemplate="#{appmsg['global.remaining']}" 
+                                                 styleClass="isitext_hrm" style="width:200px;" required="true" />
+                               <h:panelGrid columns="3" style="margin-left: -10px;">
+                                <p:outputLabel  for="counterReason" styleClass="label_hrm" />
+                                <p:outputLabel  for="counterReason" styleClass="label_hrm" />
+                                 <h:outputText id="counterReason" />
+                               </h:panelGrid>
+                                  <p:message for="mppReason"/>
+                                </h:panelGrid>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="uploadRecruitMppApply" value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
+                            </p:column>
+                            
+                            <p:column  style="width: 80%"> 
+                                <h:panelGrid columns="1"  style="margin-left: -10px;width: 100%">
+                                 <p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{recruitMppApplyFormController.handleFileUpload}"
+                                                  mode="advanced"  id="uploadRecruitMppApply"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fileNameId,:growlId"
+                                                  allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+                                 <h:panelGrid columns="3" style="margin-left: -10px;">
+                                 <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                 <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                 <p:outputLabel value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyFileName}" id="fileNameId"/>
+                                 </h:panelGrid>
+                                <p:message for="uploadRecruitMppApply"/>
+                                </h:panelGrid>
+                            </p:column>
+                          
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="mppPeriodeId" value="#{appmsg['mpp_recruitment.mpp_recruitment_period']}" styleClass="label_hrm"/>
+                            </p:column>
+                           
+                            <p:column  style="width: 80%">    
+                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                                    <p:selectOneMenu id="mppPeriodeId" value="#{recruitMppApplyFormController.mppPeriodeId}"  filter="true" 
+                                                  required="true" label="#{appmsg['mpp_recruitment.mpp_recruitment_period']}"> 
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitMppApplyFormController.mapMppPeriode}"  />       
+                                        <p:ajax   listener="#{recruitMppApplyFormController.updateMppPeriod()}"  
+                                             update="tableDetailRecruitMppApply"/>
+                                </p:selectOneMenu>
+                                 <p:message for="mppPeriodeId"/>
+                                </h:panelGrid>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
-                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBankFormId,:growlBankFormlId"
-                                         action="#{loanNewTypeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBankFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" disabled="#{loanTypeFormController.isUpdate}"  >  
-                            <p:resetInput target="formBankFormId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
+                    
+                      <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_detail_recruiment']}" styleClass="header_big" />                     
+                      <p:separator/>
+                       <p:commandButton value="#{appmsg['global.add']}" ajax="true" 
+                                         action="#{recruitMppApplyFormController.doAddRecruitMppApplyDetail()}" styleClass="label_button" 
+                                         style="margin-right: 5px" label="#{appmsg['global.add']}"
+                                         icon="ui-icon-folder-open"
+                                         id="btnAddMppApplyDetail" title="#{appmsg['global.add']}">
+                            <p:ajax event="dialogReturn" listener="#{recruitMppApplyFormController.onDialogReturnRecruitMppApplyDetail}"  update="tableDetailRecruitMppApply"/>
+                       </p:commandButton>
+                     <p:dataTable  id="tableDetailRecruitMppApply" var="data"  value="#{recruitMppApplyFormController.listMppDetail}" lazy="false" paginator="false"
+                                    style="margin-top: 10px;margin-bottom: 10px"   rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['mpp_recruitment.list_of_mpp_recruitment_detail']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="jabatan.code"  style="width: 12%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.jabatan.code}"/> 
+                                    </p:column>  
+                                    <p:column sortBy="jabatan.name"  style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.jabatan.name}"/>
+                                    </p:column>  
+                                    <p:column  style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['menu.period']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{recruitMppApplyFormController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}">
+                                            <f:convertDateTime pattern="dd MMM yyyy" />
+                                        </h:outputLabel>
+                                        <h:outputLabel value= " - " />
+                                        <h:outputLabel value= "#{recruitMppApplyFormController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}">
+                                            <f:convertDateTime pattern="dd MMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column> 
+                                    <p:column sortBy="actualNumber"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.actualNumber}"/> 
+                                    </p:column> 
+                                     <p:column sortBy="recruitPlan"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
+                                        </f:facet>
+                                         <h:outputLabel value= "#{data.recruitPlan}"/> 
+                                    </p:column>  
+                                    <p:column sortBy="difference"  style="width: 8%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{data.difference}"/> 
+                                    </p:column>  
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update="tableDetailRecruitMppApply,:panelDialogMppApplyDetailConfirmId" 
+                                                         action="#{recruitMppApplyFormController.doSelectRecruitMppApplyDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMppApplyDetail.show()">
+                                            <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyFormController.selectedRecruitMppApplyDetail}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{recruitMppApplyFormController.doEditRecruitMppApplyDetail()}" >
+                                            <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyFormController.selectedRecruitMppApplyDetail}" />
+                                            <p:ajax event="dialogReturn" listener="#{recruitMppApplyFormController.onDialogReturnRecruitMppApplyDetail}"  update="tableDetailRecruitMppApply,:growlId"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+                      </div>
+                    
+                     <div id="box_bg" style="margin: 10px">
+
+                       <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formRecruitMppId,:growlId"
+                                             action="#{recruitMppApplyFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitMppId"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" disabled="#{recruitMppApplyFormController.isUpdate}"  >  
+                                <p:resetInput target="formRecruitMppId" />  
+                            </p:commandButton>
+                        </div>
+                     </div>
+                    
+                    
                 </h:form>
+                 <p:dialog widgetVar="dialogConfirmMppApplyDetail" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogMppApplyDetailConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['placement.jabatan']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{recruitMppApplyFormController.selectedRecruitMppApplyDetail.jabatan.code} - #{recruitMppApplyFormController.selectedRecruitMppApplyDetail.jabatan.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitMppApplyFormController.doDeleteRecruitMppApplyDetail()}" update="formRecruitMppId:tableDetailRecruitMppApply,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmMppApplyDetail.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmMppApplyDetail.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>

@@ -5,9 +5,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-
 import static com.google.common.collect.Lists.newArrayList;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
 import com.inkubator.hrm.entity.HrmUser;
@@ -63,11 +63,15 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
             }
             throw new UsernameNotFoundException("user " + userName + " could not be found");
         }
+
 //        List<SpiRole> spiRoles = new ArrayList<>();
         List<String> dataRole = new ArrayList<>();
         for (HrmUserRole spiUserRole : hrmUserRoleDao.getByUserId(spiUser.getId())) {
 //            spiRoles.add(spiUserRole.getSpiRole());
             dataRole.add(spiUserRole.getHrmRole().getRoleName());
+        }
+        if (spiUser.getEmpData() == null && !dataRole.contains(HRMConstant.SUPER_ADMIN))  {
+            throw new UsernameNotFoundException("user " + userName + " could not be found");
         }
         Collection<GrantedAuthority> grantedAuthorities = toGrantedAuthorities(dataRole);
         String password = spiUser.getPassword();
@@ -87,7 +91,7 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
 //        for (SpiRole spiRole : spiRoles) {
 //            dataRole.add(spiRole.getRoleName());
 //        }
-         return new User(userName, password, isActive, true, !isExired, !isLock, grantedAuthorities);
+        return new User(userName, password, isActive, true, !isExired, !isLock, grantedAuthorities);
     }
 
     private Collection<GrantedAuthority> toGrantedAuthorities(List<String> roles) {

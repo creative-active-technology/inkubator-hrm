@@ -5,10 +5,14 @@
  */
 package com.inkubator.hrm.web.account;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -17,9 +21,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.TreeNode;
+
+import ch.lambdaj.Lambda;
+import ch.lambdaj.function.compare.ArgumentComparator;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmMenu;
@@ -117,7 +126,7 @@ public class RoleFormController extends BaseController {
         } else {
             doInsert(hrmRole);
         }
-        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + roleModel.getId();
+        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + hrmRole.getId();
     }
 
     public String doBack() {
@@ -186,26 +195,50 @@ public class RoleFormController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", true);
-        options.put("contentWidth", 800);
-        options.put("contentHeight", 400);
+        options.put("contentWidth", 900);
+        options.put("contentHeight", 550);
         RequestContext.getCurrentInstance().openDialog("role_menus_form", options, dataToSend);
     }
 
     @Override
     public void onDialogReturn(SelectEvent event) {
-        HrmMenu menu = (HrmMenu) event.getObject();
-        if (!menus.contains(menu)) {
-            menus.add(menu);
-        } else {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "role_form.selected_menu_already_contained_in_the_list",
-                    FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
-        }
+    	
+    	/** looping sampai parent paling atas dari node, 
+    	 *  exclude jika terdapat duplicate parent node */    	
+    	Set<HrmMenu> menuSets = new HashSet<HrmMenu>();
+    	TreeNode[] selectedNodes = (TreeNode[]) event.getObject();
+    	if(selectedNodes != null){
+	    	for(TreeNode node : selectedNodes){
+	    		HrmMenu menu = (HrmMenu) node.getData();
+	    		if(menu.getId() != null){
+	    			menuSets.add(menu);
+	    		}
+	    		
+	    		while(node.getParent() != null){
+	    			node = node.getParent();
+	    			HrmMenu parentMenu = (HrmMenu) node.getData();
+	    			if(parentMenu.getId() != null){
+	    				menuSets.add(parentMenu);
+	    			}
+	    		}    		
+	    	}
+    	}
+    	
+    	/** order list by menu level asc, orderMenuLevel asc */
+    	Comparator<HrmMenu> byMenuLevel = new ArgumentComparator(Lambda.on(HrmMenu.class).getMenuLevel());
+    	Comparator<HrmMenu> byOrderLevelMenu = new ArgumentComparator(Lambda.on(HrmMenu.class).getOrderLevelMenu());
+    	Comparator<HrmMenu> orderBy = ComparatorUtils.chainedComparator(byMenuLevel, byOrderLevelMenu);
+    	
+    	menus.clear();
+    	menus = Lambda.sort(menuSets, Lambda.on(HrmMenu.class), orderBy);
     }
 
     public HrmRole getEntityFromView(RoleModel roleModel) {
         HrmRole hrmRole = new HrmRole();
         if (roleModel.getId() != null) {
             hrmRole.setId(roleModel.getId());
+        } else {
+            hrmRole.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         }
         hrmRole.setRoleName(roleModel.getRoleName());
         hrmRole.setDescription(roleModel.getDescription());

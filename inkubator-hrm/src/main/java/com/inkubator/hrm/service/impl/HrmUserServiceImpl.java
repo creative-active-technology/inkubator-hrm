@@ -534,9 +534,16 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         return this.hrmUserDao.getByEmailAddressInNotLock(emailAddress);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public HrmUser getByEmpDataId(long empDataId) throws Exception {
-		return hrmUserDao.getByEmpDataId(empDataId);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getByEmpDataId(long empDataId) throws Exception {
+        return hrmUserDao.getByEmpDataId(empDataId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getCompanyId(String userId) throws Exception {
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(userId);
+        return hrmUser.getEmpData().getJabatanByJabatanId().getDepartment().getCompany().getId();
+    }
 }

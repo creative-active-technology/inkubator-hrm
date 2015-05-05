@@ -1,13 +1,7 @@
 package com.inkubator.hrm.web.account;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.HrmMenu;
-import com.inkubator.hrm.service.HrmMenuService;
-import com.inkubator.hrm.web.model.MenuModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +12,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.HrmMenu;
+import com.inkubator.hrm.service.HrmMenuService;
+import com.inkubator.hrm.web.model.MenuModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 
 /**
@@ -29,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 @ViewScoped
 public class MenuFormController extends BaseController {
 
+	private List<Long> listTreeId;
     private MenuModel model;
     private Boolean isUpdate;
     private Boolean isDisableParent;
@@ -40,6 +45,7 @@ public class MenuFormController extends BaseController {
     public void initialization() {
         super.initialization();
         
+        listTreeId =  new ArrayList<Long>();
         model = new MenuModel();
         model.setMenuLevel(1);
         isUpdate = Boolean.FALSE;
@@ -48,15 +54,30 @@ public class MenuFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("execution");
         if (StringUtils.isNotEmpty(param)) {
             try {
-                HrmMenu menu = menuService.getEntiyByPK(Long.parseLong(param.substring(1)));
+                HrmMenu menu = menuService.getEntityFetchChildById(Long.parseLong(param.substring(1)));
                 if (menu != null) {
-                    getModelFromEntity(menu);
+                	this.getAllTreeId(menu);
+                    this.getModelFromEntity(menu);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
                 LOGGER.error("Error", e);
             }
         }
+    }
+    
+    private void getAllTreeId(HrmMenu menu){
+    	listTreeId.add(menu.getId());
+    	Iterator<HrmMenu> listChild = menu.getHrmMenus().iterator();
+    	while(listChild.hasNext()){
+    		HrmMenu child = listChild.next(); 
+    		try {
+    			child = menuService.getEntityFetchChildById(child.getId());
+    		} catch (Exception e) {
+                LOGGER.error("Error", e);
+            }
+    		this.getAllTreeId(child);
+    	}
     }
 
     @PreDestroy
@@ -65,6 +86,7 @@ public class MenuFormController extends BaseController {
         model = null;
         isUpdate = null;
         isDisableParent = null;
+        listTreeId = null;
     }
 	
 	public MenuModel getModel() {
@@ -185,7 +207,7 @@ public class MenuFormController extends BaseController {
     		isDisableParent = Boolean.FALSE;
     		List<HrmMenu> listParentMenu;
                 try {
-                    listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, model.getId());
+                    listParentMenu = menuService.getAllDataByLevelAndNotId(model.getMenuLevel() - 1, listTreeId);
                     model.setListParentMenu(listParentMenu);
                 } catch (Exception ex) {
                     Logger.getLogger(MenuFormController.class.getName()).log(Level.SEVERE, null, ex);

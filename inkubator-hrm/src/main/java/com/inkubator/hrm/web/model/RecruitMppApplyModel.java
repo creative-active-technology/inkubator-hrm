@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.RecruitMppPeriod;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,8 +20,10 @@ public class RecruitMppApplyModel implements Serializable {
     private String recruitMppApplyName;
     private Date applyDate;
     private String reason;
+    private String recruitMppApplyFileName;
     private String uploadPath;
-    private Long mppPeriodId;
+    private Long mppPeriodId;    
+    private RecruitMppPeriod selectedRecruitMppPeriod;
 
     public Long getId() {
         return id;
@@ -77,6 +80,24 @@ public class RecruitMppApplyModel implements Serializable {
     public void setMppPeriodId(Long mppPeriodId) {
         this.mppPeriodId = mppPeriodId;
     }
+
+    public String getRecruitMppApplyFileName() {
+        return recruitMppApplyFileName;
+    }
+
+    public void setRecruitMppApplyFileName(String recruitMppApplyFileName) {
+        this.recruitMppApplyFileName = recruitMppApplyFileName;
+    }
+
+    public RecruitMppPeriod getSelectedRecruitMppPeriod() {
+        return selectedRecruitMppPeriod;
+    }
+
+    public void setSelectedRecruitMppPeriod(RecruitMppPeriod selectedRecruitMppPeriod) {
+        this.selectedRecruitMppPeriod = selectedRecruitMppPeriod;
+    }
+
+    
    
     
 }

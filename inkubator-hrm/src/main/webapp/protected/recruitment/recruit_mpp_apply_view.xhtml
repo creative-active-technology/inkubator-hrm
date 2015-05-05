@@ -47,8 +47,8 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_MPP_Implementation"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{recruitMppApplyViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{recruitMppApplyViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{recruitMppApplyViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" >
+                                       
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{recruitMppApplyViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -93,7 +93,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_number_of_job_position']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{data.totalDetailJabatan}"/>
+                                 <h:outputLabel value= "#{data.jobPositionTotal}"/>
                             </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 13%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"                                                   

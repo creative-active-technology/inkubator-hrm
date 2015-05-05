@@ -5,11 +5,13 @@
  */
 package com.inkubator.hrm.util;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.IpPermit;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.IpPermitService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.ServiceWebUtil;
 import java.util.List;
 import java.util.logging.Level;
@@ -96,4 +98,10 @@ public class HrmUserInfoUtil extends UserInfoUtil {
         }
         return null;
     }
+    
+    public static Long getCompanyId(){
+        return (Long) FacesUtil.getSessionAttribute(HRMConstant.COMPANY_ACTIVE);
+    }
 }
+
+

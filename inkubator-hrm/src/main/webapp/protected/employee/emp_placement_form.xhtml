@@ -82,7 +82,7 @@
                                     <p:outputLabel  value="#{appmsg['department.department']}"  for="departement" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false" disabled="#{empDataFormController.isEdit}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="departement" filter="true" required="false" 
                                                       value="#{empDataFormController.empDataModel.departementId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapDepartements}" />
@@ -97,7 +97,7 @@
                                     <p:outputLabel  value="#{appmsg['placement.jabatan']}"  for="jabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true" disabled="#{empDataFormController.isEdit}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="jabatan" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.jabatanByJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapJabatans}" />
@@ -112,7 +112,7 @@
                                     <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" disabled="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatan" filter="true" required="true" 
                                                       value="#{empDataFormController.empDataModel.golonganJabatan}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapGolonganJabatan}" />
@@ -157,7 +157,7 @@
                                 </p:column>
 
                             </p:row>
-                            <p:row>
+<!--                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['placement.rotation_date']}"  for="rotasiDate" styleClass="label_hrm" />
                                 </p:column>
@@ -166,13 +166,13 @@
                                     <p:message for="rotasiDate"/>
                                 </p:column>
 
-                            </p:row>
+                            </p:row>-->
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paysalarygrade.paysalarygrade']}"  for="salaryGrade" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 158px" id="salaryGrade" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px" id="salaryGrade" filter="true" required="true"
                                                       value="#{empDataFormController.empDataModel.paySalaryGradeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapPaySalary}" />

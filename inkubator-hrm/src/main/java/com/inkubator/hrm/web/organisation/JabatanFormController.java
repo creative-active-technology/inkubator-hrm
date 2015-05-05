@@ -27,11 +27,14 @@ import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -81,7 +84,7 @@ public class JabatanFormController extends BaseController {
                 isEdit = Boolean.TRUE;
                 jabatanModel = getJabatanModelFromEntity(jabatan);
 //                doChangeLevel();
-             
+
                 List<KlasifikasiKerja> source = this.klasifikasiKerjaService.getAllData();
                 List<KlasifikasiKerja> target = jabatan.getKerjaJabatans();
                 source.removeAll(target);
@@ -104,7 +107,7 @@ public class JabatanFormController extends BaseController {
             List<GolonganJabatan> listGolonganJabatans = golonganJabatanService.getAllWithDetail();
             List<Jabatan> listJabatans = jabatanService.getAllData();
             for (Jabatan jabatan : listJabatans) {
-                jabatanAtasans.put(jabatan.getCode()+" | "+ jabatan.getName(), jabatan.getId());
+                jabatanAtasans.put(jabatan.getCode() + " | " + jabatan.getName(), jabatan.getId());
             }
             for (GolonganJabatan golonganJabatan : listGolonganJabatans) {
                 golJabatans.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
@@ -170,7 +173,7 @@ public class JabatanFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/organisation/job_title_detil.htm?faces-redirect=true&execution=e" + jabatan.getId();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -280,7 +283,7 @@ public class JabatanFormController extends BaseController {
     }
 
     public Map<String, Long> getDepartments() {
-      
+
         return departments;
     }
 
@@ -354,4 +357,17 @@ public class JabatanFormController extends BaseController {
         this.klasifikasiKerjaService = klasifikasiKerjaService;
     }
 
+    public void doChangeDepartement() {
+        untiKerjas=new HashMap<>();
+        try {
+            Department selected = departmentService.getDepartementWithUnitKerja(jabatanModel.getDepartementId());
+            List<UnitKerja> listUnitKerjas = selected.getListUnit();
+            for (UnitKerja unitKerja : listUnitKerjas) {
+                untiKerjas.put(unitKerja.getName(), unitKerja.getId());
+            }
+
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
 }
