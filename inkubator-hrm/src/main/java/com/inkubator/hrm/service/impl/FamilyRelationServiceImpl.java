@@ -74,6 +74,7 @@ public class FamilyRelationServiceImpl extends IServiceImpl implements FamilyRel
         FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(entity.getId());
         familyRelation.setRelasiName(entity.getRelasiName());
         familyRelation.setCode(entity.getCode());
+        familyRelation.setIsActive(entity.getIsActive());
         familyRelation.setDescription(entity.getDescription());
         familyRelation.setUpdatedBy(UserInfoUtil.getUserName());
         familyRelation.setUpdatedOn(new Date());
