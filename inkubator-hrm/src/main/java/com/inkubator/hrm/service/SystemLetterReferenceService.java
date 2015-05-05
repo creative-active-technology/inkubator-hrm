@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.web.search.SystemLetterReferenceSearchParameter;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -19,4 +20,9 @@ public interface SystemLetterReferenceService extends IService<SystemLetterRefer
     public List<SystemLetterReference> getByParam(SystemLetterReferenceSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalSystemLetterReferenceByParam(SystemLetterReferenceSearchParameter searchParameter) throws Exception;
+    
+    public void save(SystemLetterReference entity, UploadedFile uploadedFile) throws Exception;
+    
+    public void update(SystemLetterReference entity, UploadedFile uploadedFile) throws Exception;
+    
 }

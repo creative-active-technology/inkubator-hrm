@@ -33,11 +33,14 @@ public class SystemLetterReference  implements java.io.Serializable {
      private String name;
      private byte[] uploadData;
      private String letterSumary;
+     private String fileUploadName;
      private String description;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
      private String updatedBy;
+     private Date effectiveDate;
+     private Boolean isActive;
      private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
      private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
 
@@ -198,7 +201,35 @@ public class SystemLetterReference  implements java.io.Serializable {
         this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
     }
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "effective_date", length = 10)
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
 
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    @Column(name = "is_active", nullable = false)
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    @Column(name="file_upload_name")
+    public String getFileUploadName() {
+        return fileUploadName;
+    }
+
+    public void setFileUploadName(String fileUploadName) {
+        this.fileUploadName = fileUploadName;
+    }
+
+    
 
 
 }
