@@ -196,5 +196,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId) throws Exception {
+      return this.recruitMppApplyDetailDao.getListWithDetailByRecruitMppApplyId(recruitMppApplyId);
+    }
+
     
 }

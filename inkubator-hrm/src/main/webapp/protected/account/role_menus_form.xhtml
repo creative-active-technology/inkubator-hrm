@@ -43,7 +43,9 @@
 					    	<h:outputText value="#{appmsg['hrm_menu.list_of_menu']}"/>
 					    </f:facet>
 					   	<p:column headerText="#{appmsg['hrm_menu.menu_name']}">
-					    	<h:outputText value="#{menu.name}" />
+					    	<h:outputText value="#{menu.name}">
+					    		<f:converter converterId="menuNameConverter"/>
+					    	</h:outputText>
 					    </p:column>
 						<p:column headerText="#{appmsg['hrm_menu.url_name']}">
 					    	<h:outputText value="#{menu.urlName}" />
