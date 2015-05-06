@@ -156,7 +156,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
         return model;
     }
 
-    public void doSave() throws Exception {
+    public String doSave() throws Exception {
         
         List<GolonganJabatan> listGolonganJabatan = goljabDualListModel.getTarget();
         List<Department> listDepartement = departmentDualListModel.getTarget();
@@ -165,6 +165,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
         this.unregSalaryService.save(Long.parseLong(unregSalaryId.substring(1)), model.getStartPeriodDate(), model.getEndPeriodDate(), listGolonganJabatan, listDepartement, listReligion, listEmployeeType);
         MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                 FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        return "/protected/payroll/unreg_salary_view.htm?faces-redirect=true";
     }
 
     public String doBack() {

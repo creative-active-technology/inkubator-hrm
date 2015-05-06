@@ -2,35 +2,43 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
- * @author WebGenX
+ * @author Deni
  */
 public class SystemLetterReferenceModel implements Serializable {
 
-    private Date createdOn;
     private Long id;
-    private String createdBy;
     private String letterSumary;
     private String description;
     private String name;
+    private Date effectiveDate;
     private byte[] uploadData;
     private String code;
-    private Date updatedOn;
-    private String updatedBy;
-    private Integer version;
+    private String fileUploadName;
+    private Boolean isActive;
+    private UploadedFile fileUpload;
 
-    public Date getCreatedOn() {
-        return createdOn;
+    public UploadedFile getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(UploadedFile fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
     }
 
     public String getLetterSumary() {
@@ -53,28 +61,8 @@ public class SystemLetterReferenceModel implements Serializable {
         return code;
     }
 
-    public Date getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public void setLetterSumary(String letterSumary) {
@@ -97,15 +85,21 @@ public class SystemLetterReferenceModel implements Serializable {
         this.code = code;
     }
 
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
+    public String getFileUploadName() {
+        return fileUploadName;
     }
 
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setFileUploadName(String fileUploadName) {
+        this.fileUploadName = fileUploadName;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
+    public Boolean getIsActive() {
+        return isActive;
     }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+    
+    
 }

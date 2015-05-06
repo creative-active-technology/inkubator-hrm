@@ -43,6 +43,7 @@ public class RecruitMppApply  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Long totalDetailJabatan;
+     private String approvalActivityNumber;
      private Set<RecruitMppApplyDetail> recruitMppApplyDetails = new HashSet<RecruitMppApplyDetail>(0);
 
     public RecruitMppApply() {
@@ -118,6 +119,15 @@ public class RecruitMppApply  implements java.io.Serializable {
     
     public void setRecruitMppApplyName(String recruitMppApplyName) {
         this.recruitMppApplyName = recruitMppApplyName;
+    }
+    
+    @Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
     }
 
     @Temporal(TemporalType.DATE)

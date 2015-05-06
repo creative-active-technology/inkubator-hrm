@@ -14,7 +14,7 @@ import com.inkubator.hrm.web.search.SystemLetterReferenceSearchParameter;
 
 /**
  *
- * @author WebGenX
+ * @author Deni
  */
 public class SystemLetterReferenceLazyDataModel extends LazyDataModel<SystemLetterReference> implements Serializable {
 
