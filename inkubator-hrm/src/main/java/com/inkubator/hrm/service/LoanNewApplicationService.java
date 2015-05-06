@@ -25,7 +25,7 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
 
     public List<LoanNewApplicationInstallment> getAllDataLoanNewApplicationInstallment(Double interestRate, Integer termin, Date loanPaymentDate, Double nominalPrincipal, Integer typeOfInterest) throws Exception;
 
-    public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef) throws Exception;
+    public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef, Long empDataId) throws Exception;
 
     public Long getCurrentMaxId() throws Exception;
 

@@ -445,8 +445,9 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef) throws Exception {
-        return super.getListApproverByListAppDef(listAppDef);
+    public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef, Long empDataId) throws Exception {
+        HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+    	return super.getListApproverByListAppDef(listAppDef,requester.getUserId());
     }
 
     @Override
@@ -541,7 +542,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
      Loan validation
      allow if and only if : 
      - no previos loan with same loanType which still in approval process, or still have outstanding.
-     - Total loan amount from existing loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
+     - Total loan amount from current loan application and previos loans not exceed maximum loan amount of selected employee loan schema.
      */
     private String isLoanAllowed(Long loanNewTypeId, Long loanNewSchemaId, EmpData empData, Double loanPrincipal, Boolean isRevised, String activityNumber) {
 

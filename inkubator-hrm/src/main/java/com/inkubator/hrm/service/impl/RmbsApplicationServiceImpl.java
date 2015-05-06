@@ -698,10 +698,11 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpData> getListApproverByEmpDataId(Long empDataId) throws Exception {
+		HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
 		RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empDataId).get(0).getRmbsSchema();
         List<ApprovalDefinition> appDefs = Lambda.extract(rmbsSchema.getApprovalDefinitionRmbsSchemas(), Lambda.on(ApprovalDefinitionRmbsSchema.class).getApprovalDefinition());
         
-		return super.getListApproverByListAppDef(appDefs);
+		return super.getListApproverByListAppDef(appDefs, requester.getUserId());
 	}
 
 	@Override

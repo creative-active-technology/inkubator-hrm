@@ -6,12 +6,16 @@
 package com.inkubator.hrm.web;
 
 import com.inkubator.common.util.FilesUtil;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.OhsaIncidentDocument;
 import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
@@ -61,7 +65,7 @@ public class ImageBioDataStreamerController extends BaseController {
     @ManagedProperty(value = "#{bioSertifikasiService}")
     private BioSertifikasiService bioSertifikasiService;
     @ManagedProperty(value = "#{ohsaIncidentDocumentService}")
-    private OhsaIncidentDocumentService ohsaIncidentDocumentService;
+    private OhsaIncidentDocumentService ohsaIncidentDocumentService;  
     private StreamedContent ijazahFile;
 
     public OhsaIncidentDocumentService getOhsaIncidentDocumentService() {
@@ -71,8 +75,6 @@ public class ImageBioDataStreamerController extends BaseController {
     public void setOhsaIncidentDocumentService(OhsaIncidentDocumentService ohsaIncidentDocumentService) {
         this.ohsaIncidentDocumentService = ohsaIncidentDocumentService;
     }
-    
-    
 
     public void setBioDataService(BioDataService bioDataService) {
         this.bioDataService = bioDataService;
@@ -113,12 +115,9 @@ public class ImageBioDataStreamerController extends BaseController {
     public void setBioSertifikasiService(BioSertifikasiService bioSertifikasiService) {
         this.bioSertifikasiService = bioSertifikasiService;
     }
+    
+    
 
-    
-    
-    
-    
-    
     public StreamedContent getFotoImage() throws IOException {
 
         FacesContext context = FacesUtil.getFacesContext();
@@ -274,8 +273,8 @@ public class ImageBioDataStreamerController extends BaseController {
     public StreamedContent getAttachmentFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("permitId");
-        System.out.println("id====" +id);
-        System.out.println("context====" +context);
+        System.out.println("id====" + id);
+        System.out.println("context====" + context);
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {
@@ -296,12 +295,12 @@ public class ImageBioDataStreamerController extends BaseController {
             }
         }
     }
-    
+
     public StreamedContent getMedicalFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("permitId");
-        System.out.println("id====" +id);
-        System.out.println("context====" +context);
+        System.out.println("id====" + id);
+        System.out.println("context====" + context);
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {
@@ -322,7 +321,7 @@ public class ImageBioDataStreamerController extends BaseController {
             }
         }
     }
-    
+
     public StreamedContent getSertifikasiFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("id");
@@ -345,12 +344,12 @@ public class ImageBioDataStreamerController extends BaseController {
                 return new DefaultStreamedContent();
             }
         }
-    }
-    
+    }   
+
     public StreamedContent getOhsaIncidentDocumentFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();
         String id = context.getExternalContext().getRequestParameterMap().get("id");
-        
+
         if (context.getRenderResponse() || id == null) {
             return new DefaultStreamedContent();
         } else {
@@ -358,12 +357,12 @@ public class ImageBioDataStreamerController extends BaseController {
             try {
                 OhsaIncidentDocument ohsaIncidentDocument = ohsaIncidentDocumentService.getEntiyByPK(Integer.parseInt(id));
                 String path = ohsaIncidentDocument.getUploadedPath();
-              
+
                 if (StringUtils.isEmpty(path)) {
                     path = facesIO.getPathUpload() + "no_image.png";
                 }
                 is = facesIO.getInputStreamFromURL(path);
-                
+
                 return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
 
             } catch (Exception ex) {
@@ -372,6 +371,5 @@ public class ImageBioDataStreamerController extends BaseController {
             }
         }
     }
-    
-   
+
 }

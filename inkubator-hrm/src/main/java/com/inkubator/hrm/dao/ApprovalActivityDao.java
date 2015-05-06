@@ -41,6 +41,7 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     
     public Boolean isAlreadyHaveApprovedStatus(String activityNumber);
     
+    
 	
     /** get All Data */
 	public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order);
@@ -65,5 +66,6 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     
     public List<ApprovalActivity> getAllDataNotApprovedYet(String userId, String approvalDefinitionName);
     
+     public List<ApprovalActivity> getAllDataWaitingStatusApprovalFetchedApprovalDef();
     
 }

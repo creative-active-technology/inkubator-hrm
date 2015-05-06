@@ -68,17 +68,21 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>  
-                            <p:column sortBy="name"  style="text-align: center;width: 25%">
+                            <p:column sortBy="name"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{menuData.name}"/>
+                                <h:outputLabel value= "#{menuData.name}">
+                                	<f:converter converterId="menuNameConverter"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="urlName"  style="text-align: center;width: 35%">
+                            <p:column sortBy="urlName"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{menuData.urlName}"/>
+                                <h:outputLabel value= "#{menuData.urlName}">
+                                	<f:converter converterId="menuNameConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="menuLevel"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  

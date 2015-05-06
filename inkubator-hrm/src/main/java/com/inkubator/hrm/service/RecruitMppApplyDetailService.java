@@ -20,6 +20,6 @@ public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDe
 //
 //    public Long getTotalByParam(AnnouncementSearchParameter searchParameter) throws Exception;
     
-   
+    public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId) throws Exception;
     
 }

@@ -333,7 +333,7 @@ public class LoanApplicationFormController extends BaseController {
 
             List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
 
-            List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef);
+            List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef, model.getEmpData().getId());
             model.setListApprover(listApprover);
 
             if (!model.getListLoanNewApplicationInstallments().isEmpty()) {

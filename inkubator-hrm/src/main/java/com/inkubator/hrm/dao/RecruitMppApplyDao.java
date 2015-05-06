@@ -27,5 +27,9 @@ public interface RecruitMppApplyDao extends IDAO<RecruitMppApply> {
         public List<RecruitMppApplyViewModel> getUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable);
         
         public Long getTotalUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter);
+        
+        public RecruitMppApply getEntityWithDetailByActivityNumber(String activityNumber);
+        
+        public Long getTotalDataByMppCode(String mppCode);
 
 }

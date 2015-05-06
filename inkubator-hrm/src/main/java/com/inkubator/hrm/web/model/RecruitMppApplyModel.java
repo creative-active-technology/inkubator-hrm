@@ -24,6 +24,7 @@ public class RecruitMppApplyModel implements Serializable {
     private String uploadPath;
     private Long mppPeriodId;    
     private RecruitMppPeriod selectedRecruitMppPeriod;
+    private Integer approvalStatus;
 
     public Long getId() {
         return id;
@@ -95,6 +96,14 @@ public class RecruitMppApplyModel implements Serializable {
 
     public void setSelectedRecruitMppPeriod(RecruitMppPeriod selectedRecruitMppPeriod) {
         this.selectedRecruitMppPeriod = selectedRecruitMppPeriod;
+    }
+
+    public Integer getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(Integer approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     

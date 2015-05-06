@@ -66,6 +66,12 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
             criteria.add(Restrictions.like("departmentCode", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
+        criteria.createAlias("company", "co", JoinType.INNER_JOIN);
+        if (HrmUserInfoUtil.getCompanyId() != null) {
+            criteria.add(Restrictions.eq("co.id", HrmUserInfoUtil.getCompanyId()));
+        }
+        criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+        criteria.add(Restrictions.not(Restrictions.like("departmentCode", "ROOT", MatchMode.START)));
 //        criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
     }
 
@@ -104,7 +110,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.setFetchMode("departments.department", FetchMode.JOIN);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
-
+// Tidak menggununakan set active karena bagian yang akan mengedit is active
     }
 
     @Override
