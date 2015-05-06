@@ -122,6 +122,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.getBioData().getFirstName();
         empData.getBioData().getLastName();
         empData.getJabatanByJabatanId().getName();
+        if(empData.getGolonganJabatan() != null){
+        	empData.getGolonganJabatan().getPangkat().getPangkatCode();
+        }        
         if (empData.getWtGroupWorking() != null) {
             empData.getWtGroupWorking().getCode();
         }
