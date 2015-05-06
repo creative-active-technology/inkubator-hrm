@@ -78,7 +78,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{menuData.id}"/>
+                                <h:outputLabel value= "#{menuData.name}">
+                                	<f:converter converterId="menuNameConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column style="text-align: center;width: 40%">
                                 <f:facet name="header">  
