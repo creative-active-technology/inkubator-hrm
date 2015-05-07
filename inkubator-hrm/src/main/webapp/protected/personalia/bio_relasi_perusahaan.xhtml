@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId" >
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['biodata.company_relation_relation']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.company_relation']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <!--Year In-->
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="nameId" value="#{appmsg['companyRelation.relation_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="nameId"  value="#{bioRelasiPerusahaanFormController.model.relasiName}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="noHandphone" value="#{appmsg['companyRelation.mobile_phone']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="noHandphone" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="noHandphone"  value="#{bioRelasiPerusahaanFormController.model.relasiMobilePhone}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:message for="noHandphone"/>
+                            </p:column>
+                        </p:row>
+
+                        <!--education level-->
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="email" value="#{appmsg['companyRelation.email_address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="email" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="email"  value="#{bioRelasiPerusahaanFormController.model.relasiEmail}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="telephone" value="#{appmsg['global.phone']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="telephone" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="telephone"  value="#{bioRelasiPerusahaanFormController.model.relasiPhoneNumber}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="email"/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:message for="telephone"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="namaPerusahaan" value="#{appmsg['companyRelation.relation_company']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="namaPerusahaan" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="namaPerusahaan"  value="#{bioRelasiPerusahaanFormController.model.relasiCompany}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="jabatan" value="#{appmsg['companyRelation.jabatan']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="jabatan" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:inputText id="jabatan"  value="#{bioRelasiPerusahaanFormController.model.relasiJabatan}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="namaPerusahaan"/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:message for="jabatan"/>
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column style="width: 16%" rowspan="4">
+                                <p:outputLabel for="address" value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%" rowspan="4">
+                                <h:outputLabel for="address" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%" rowspan="4">
+                                <p:inputTextarea id="address" rows="5" cols="37" counter="counter" maxlength="500" value="#{bioRelasiPerusahaanFormController.model.relasiAddress}" 
+                                                 style="width:220px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                            </p:column>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="countryId" value="#{appmsg['country.country']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 33%">
+                                <p:selectOneMenu id="countryId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.countryId}" style="width:227px;">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioRelasiPerusahaanFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+                                    <p:ajax listener="#{bioRelasiPerusahaanFormController.onChangeCountries()}" update="provinceId, cityId"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="address"/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:message for="countryId"/>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="provinceId" value="#{appmsg['city.province_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:selectOneMenu id="provinceId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.provinceId}" style="width:227px;">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioRelasiPerusahaanFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
+                                    <p:ajax listener="#{bioRelasiPerusahaanFormController.onChangeProvinces()}" update="cityId"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="provinceId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 20%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="kodePos" value="Kode Pos" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="kodePos" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <pe:inputNumber id="kodePos"  value="#{bioRelasiPerusahaanFormController.model.postCode}"
+                                                required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                            </p:column>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="cityId" value="#{appmsg['city.city']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 35%">
+                                <p:selectOneMenu id="cityId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.cityId}" style="width:227px;">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{bioRelasiPerusahaanFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="kodePos"/>
+                            </p:column>
+                            <p:column colspan="3">
+                                <p:message for="cityId"/>
+                            </p:column>
+                        </p:row>
+
+
+                        <p:row>
+                            <p:column style="width: 16%">
+                                <p:outputLabel for="uploadFoto" value="#{appmsg['bioeducation.ijazah']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="uploadFoto" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 100%" colspan="6">
+                                <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{bioRelasiPerusahaanFormController.handingFileUpload}" 
+                                              mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                              dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                <p:outputLabel value="#{bioRelasiPerusahaanFormController.model.relasiAttachmentName}" id="fotoNameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="uploadFoto"/>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <p:focus context="formId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                         action="#{bioRelasiPerusahaanFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
