@@ -151,9 +151,9 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ApprovalActivity entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-
+       this.approvalActivityDao.delete(entity);
     }
 
     @Override

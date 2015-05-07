@@ -3,10 +3,10 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -28,9 +28,9 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
     }
 
     @Override
-    public List<EducationLevel> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+    public List<EducationLevel> getByParam(EducationLevelSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
+        doSearchByParam(searchParameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -38,15 +38,18 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
     }
 
     @Override
-    public Long getTotalByParam(String parameter) {
+    public Long getTotalByParam(EducationLevelSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
+        doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchByParam(String parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter)) {
-            criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
+    private void doSearchByParam(EducationLevelSearchParameter searchParameter, Criteria criteria) {
+        if(searchParameter.getName() != null){
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+        }
+        if(searchParameter.getCode() != null){
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

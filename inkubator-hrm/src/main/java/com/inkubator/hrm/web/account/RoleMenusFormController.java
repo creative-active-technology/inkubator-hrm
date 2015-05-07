@@ -49,6 +49,7 @@ public class RoleMenusFormController extends BaseController {
 		
 		//create menu tree
 		try {
+			temporaryNodes =  new ArrayList<TreeNode>();
 			rootNode = new DefaultTreeNode(new HrmMenu(), null);
 			this.createNodes(null, null);
 		} catch (Exception e) {

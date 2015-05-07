@@ -261,6 +261,10 @@
                             				 ajax="true"  update=":growlapprovalFormId,approvalFormId"
                                              action="#{approvalDefinitionPopupFormController.doSaveWithPersistedToDB()}" 
                                              rendered="#{approvalDefinitionPopupFormController.isPersistedToDB}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{approvalDefinitionPopupFormController.doReset()}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
+                                <p:resetInput target="approvalFormId" />  
+                            </p:commandButton>
                         </div>
                     </h:form>
                 </div>

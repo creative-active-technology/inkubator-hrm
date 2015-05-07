@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formRecruitMppId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_Detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_data']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" styleClass="label_hrm"/>
+                                </p:column>                          
+                                <p:column  style="width: 80%"> 
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyCode}" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">     
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyName}" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['global.date']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.applyDate}" >
+                                            <f:convertDateTime pattern="dd MMM yyyy" />
+                                        </p:outputLabel>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['loginform.alasan']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.reason}" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['biodocument.attachments']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%"> 
+                                    <h:panelGrid columns="2"  style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyFileName}" />
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{recruitMppApplyDetailController.mppApplyFile == null}" icon="ui-icon-arrowthick-1-s">
+                                            <p:fileDownload value="#{recruitMppApplyDetailController.recruitMppApplyFile}" />                                    
+                                        </p:commandButton>
+                                    </h:panelGrid>
+                                </p:column>
+
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['mpp_recruitment.mpp_recruitment_period']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">    
+                                    <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.name}" />
+                                    &nbsp;&nbsp;
+                                    <p:outputLabel value="(" />
+                                    <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}" >
+                                        <f:convertDateTime pattern="dd MMM yyyy" />
+                                    </p:outputLabel>
+                                    <p:outputLabel  value=" #{appmsg['global.to']} " />
+                                    <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}"  >
+                                        <f:convertDateTime pattern="dd MMM yyyy" />
+                                    </p:outputLabel>
+                                    <p:outputLabel value=")" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.approvalStatus}" >
+                                            <f:converter converterId="approvalStatusConverter" />
+                                        </p:outputLabel>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_detail_recruiment']}" styleClass="header_big" />                     
+                        <p:separator/>
+
+                        <p:dataTable  id="tableDetailRecruitMppApply" var="data"  value="#{recruitMppApplyDetailController.listMppDetail}" lazy="false" paginator="false"
+                                      style="margin-top: 10px;margin-bottom: 10px"   rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['mpp_recruitment.list_of_mpp_recruitment_detail']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="jabatan.code"  style="width: 12%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jabatan.code}"/> 
+                            </p:column>  
+                            <p:column sortBy="jabatan.name"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jabatan.name}"/>
+                            </p:column>  
+                            <p:column  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.period']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}">
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                                <h:outputLabel value= " - " />
+                                <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}">
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column sortBy="actualNumber"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.actualNumber}"/> 
+                            </p:column> 
+                            <p:column sortBy="recruitPlan"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.recruitPlan}"/> 
+                            </p:column>  
+                            <p:column sortBy="difference"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.difference}"/> 
+                            </p:column>                                      
+                        </p:dataTable>
+                    </div>
+
+                    <div id="box_bg" style="margin: 10px">
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" ajax="true" update="formRecruitMppId,:growlId"
+                                             action="#{recruitMppApplyDetailController.doEdit()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.edit']}"
+                                             rendered="#{!recruitMppApplyDetailController.isApproved}" 
+                                             icon="ui-icon-folder-open" title="#{appmsg['global.edit']}"/>
+                            <p:commandButton value="#{appmsg['global.back']}" ajax="true" 
+                                             action="#{recruitMppApplyDetailController.doBack()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.back']}"
+                                             icon="ui-icon-home" title="#{appmsg['global.back']}"/>
+                        </div>
+                    </div>
+
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

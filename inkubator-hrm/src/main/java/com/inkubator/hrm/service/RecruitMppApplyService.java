@@ -27,10 +27,14 @@ public interface RecruitMppApplyService extends IService<RecruitMppApply> {
     
     public String saveRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile) throws Exception;
     
-    public String updateRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile) throws Exception;
+    public String updateRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile, String activityNumber) throws Exception;
     
     public List<RecruitMppApplyViewModel> getUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
         
     public Long getTotalUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter) throws Exception;
+    
+    public RecruitMppApply getEntityWithDetailByActivityNumber(String activityNumber) throws Exception;
+    
+    public UploadedFile convertFileToUploadedFile(String path);
     
 }

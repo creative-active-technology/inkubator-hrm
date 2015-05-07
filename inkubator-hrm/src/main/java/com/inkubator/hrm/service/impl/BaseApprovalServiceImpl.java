@@ -666,7 +666,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	}
     	
     	//saving process
-    	List<EmpData> listEmployee = this.getListApproverByListAppDef(listAppDef);
+    	List<EmpData> listEmployee = this.getListApproverByListAppDef(listAppDef, appActivity.getRequestBy());
     	for(EmpData empData : listEmployee){
     		LogApproverHistory log =  new LogApproverHistory();
     		HrmUser approver = hrmUserDao.getByEmpDataId(empData.getId());
@@ -831,7 +831,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     }
 
    
-    protected List<EmpData> getListApproverByListAppDef(List<ApprovalDefinition> listAppDef) {
+    protected List<EmpData> getListApproverByListAppDef(List<ApprovalDefinition> listAppDef, String requesterUserId) {
         List<EmpData> listApprover = new ArrayList<>();
 
         /** sorting by sequence */
@@ -840,7 +840,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         for (ApprovalDefinition approvalDefinition : listApprovelDefSortBySequence) {
             int minApprover = approvalDefinition.getMinApprover();
 
-            String userId = this.getApproverByAppDefinition(approvalDefinition, null);
+            String userId = this.getApproverByAppDefinition(approvalDefinition, requesterUserId);
             HrmUser user = hrmUserDao.getUserWithDetailByUserId(userId);
             listApprover.add(user.getEmpData());
 

@@ -24,18 +24,18 @@
                     }
         
                 </style>-->
-        <script type="text/javascript">
-
-            function cancel() {
-                clearInterval(window['progress']);
-                PF('pbClient').setValue(0);
-                PF('startButton1').enable();
-            }
-
-            function onLoadTest() {
-                PF('bar').show();
-            }
-        </script>
+                <script type="text/javascript">
+                    
+                    function cancel() {
+                        clearInterval(window['progress']);
+                        PF('pbClient').setValue(0);
+                        PF('startButton1').enable();
+                    }
+                    
+                    function onLoadTest(){
+                        PF('bar').show();
+                    }
+                </script>
         <!--<ui:insert name="jsInclude"/>-->
     </h:head>
     <h:body>
@@ -43,21 +43,17 @@
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
         <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />     
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
-        <!--<h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}" >-->
-        <!--<h:outputScript library="js" name="announcement.js" />-->
-        <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif" autoDisplay="true" rendered="#{homeController.isRenderAnnouncement}" style="height: 375px" >
-            <p:outputLabel value="Pengumuman !" style="font-size: 27px; font-weight: bold"/>
-            <p:scrollPanel mode="native" style="width:99%;height:300px;margin-left: -5px;margin-right: -10px;margin-top: 5px;margin-bottom: 10px" id="panelGroupAnnouncement">
-                <div style="margin: 10px" >
-                     <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false" />
-                    <br/>
-                </div>
-            </p:scrollPanel>
-            <p:commandButton value="#{appmsg['global.close']}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement" action="#{homeController.doAnnouncementExecute()}" icon="ui-icon-contact" />
-            <!--</p:panel>-->
-        </p:notificationBar>
-        <!--<p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>-->
-        <!--</h:panelGroup>-->
+        <h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}">
+	        <!--<h:outputScript library="js" name="announcement.js" />-->
+	        <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif" >
+	            <p:panel>
+	            <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false"></p:outputLabel>
+	            <br/>
+	            <p:commandButton value="#{appmsg['announcement.hide']}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement" type="button" icon="ui-icon-arrow-1-n"/>
+	        	</p:panel>
+	        </p:notificationBar>
+	        <p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>
+        </h:panelGroup>
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
@@ -458,7 +454,7 @@
                                                 <p:menuitem value="#{appmsg['menu.employee_data_change_inbox']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_data_change_inbox']}" url="" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.ohsa']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['menu.ohsa_category']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ohsa_category']}" url="/protected/personalia/ohsa_cat_view.htm" />  
+                                                <p:menuitem value="#{appmsg['menu.ohsa_category']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ohsa_category']}" url="" />  
                                                 <p:menuitem value="#{appmsg['menu.ohsa_incident']}" icon="img-employee_rotation" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ohsa_incident']}" url="/protected/personalia/ohsa_incident_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.employee_report']}"  styleClass="menu_child" >
@@ -498,7 +494,7 @@
                                             <p:menuitem value="#{appmsg['menu.custom_field_upload']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.custom_field_upload']}" url="#" /> 
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.recruitment']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
-                                            <p:menuitem value="#{appmsg['recruitment.recruitment_plan']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_plan']}" url="#" /> 
+                                            <p:menuitem value="#{appmsg['recruitment.recruitment_plan']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_plan']}" url="/protected/recruitment/recruit_mpp_apply_view.htm" /> 
                                             <p:submenu label="#{appmsg['recruitment.man_power_planning']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['recruitment.man_power_planning_request_history']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.man_power_planning_request_history']}" url="#" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.man_power_inbox']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.man_power_inbox']}" url="#" /> 

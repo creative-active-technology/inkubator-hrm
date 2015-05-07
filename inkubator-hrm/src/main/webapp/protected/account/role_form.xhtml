@@ -78,7 +78,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{menuData.id}"/>
+                                <h:outputLabel value= "#{menuData.name}">
+                                	<f:converter converterId="menuNameConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column style="text-align: center;width: 40%">
                                 <f:facet name="header">  
@@ -113,7 +115,7 @@
 	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
 	                                         icon="ui-icon-disk"
 	                                         id="buttonSave" title="#{appmsg['global.save']}"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" styleClass="label_button" icon="ui-icon-refresh"
+                                <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" styleClass="label_button" icon="ui-icon-refresh" style="margin-right: 5px"
 	                                         process="@this"  update="roleFormId"  action="#{roleFormController.doReset()}"  >  
 	                            <p:resetInput target="roleFormId" />  
 	                        </p:commandButton>

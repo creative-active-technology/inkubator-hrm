@@ -181,6 +181,31 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         rmbsSchemaService = null;
     }
 
+    public void doReset(){
+    	approvalDefinitionModel.setAutoApproveOnDelay(Boolean.TRUE);
+        approvalDefinitionModel.setEscalateOnDelay(Boolean.FALSE);
+        approvalDefinitionModel.setSmsNotification(Boolean.FALSE);
+        approvalDefinitionModel.setSequence(1);
+        approvalDefinitionModel.setMinApprover(1);
+        approvalDefinitionModel.setMinRejector(1);
+        approvalDefinitionModel.setDelayTime(1);
+        approvalDefinitionModel.setProcessType(null);
+        approvalDefinitionModel.setApproverType(null);
+        approvalDefinitionModel.setHrmUserByApproverIndividual(null);
+        approvalDefinitionModel.setJabatanByApproverPosition(null);
+        approvalDefinitionModel.setOnBehalfType(null);
+        approvalDefinitionModel.setHrmUserByOnBehalfIndividual(null);
+        approvalDefinitionModel.setJabatanByOnBehalfPosition(null);
+        approvalDefinitionModel.setAllowOnBehalf(Boolean.FALSE);
+        onBehalf = Boolean.TRUE;
+        onProcess = Boolean.TRUE;
+        approverTypeIndividual = Boolean.TRUE;
+        approverTypePosition = Boolean.TRUE;
+        onBehalfApproverTypeIndividual = Boolean.TRUE;
+        onBehalfApproverTypePosition = Boolean.TRUE;
+        onAutoApprove = Boolean.TRUE;
+        
+    }
     public void onProcessChange() {
         String approvalProcess = approvalDefinitionModel.getProcessType();
         if (StringUtils.equalsIgnoreCase(approvalProcess, HRMConstant.ON_APPROVE_INFO)

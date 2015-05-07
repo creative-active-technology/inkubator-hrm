@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.recruitment;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.web.personalia.*;
 import com.inkubator.hrm.web.reference.*;
 import com.inkubator.exception.BussinessException;
@@ -70,64 +71,89 @@ public class MppApplyDetailFormController extends BaseController {
     private JabatanService jabatanService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-    private Map<String,Long> mapDepartement = new HashMap<>();
-    private Map<String,Long> mapJabatan = new HashMap<>();
+    private Map<String, Long> mapDepartement = new HashMap<>();
+    private Map<String, Long> mapJabatan = new HashMap<>();
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
-            
 
             mppApplyDetailModel = new MppApplyDetailModel();
             isUpdate = Boolean.FALSE;
-            
+
             List<Department> listDepartments = departmentService.getAllData();
-            for(Department department : listDepartments){
+            for (Department department : listDepartments) {
                 mapDepartement.put(department.getDepartmentName(), department.getId());
             }
-            
+
             String mppApplyCode = FacesUtil.getRequestParameter("mppApplyCode");
             String mppApplyName = FacesUtil.getRequestParameter("mppApplyName");
             String mppApplyPeriod = FacesUtil.getRequestParameter("mppApplyPeriod");
+            String isDataUpdate = FacesUtil.getRequestParameter("isUpdate");
+            
             RecruitMppPeriod mppPeriod = recruitMppPeriodService.getEntiyByPK(Long.parseLong(mppApplyPeriod));
             
+            
+            if (StringUtils.equals(isDataUpdate, "true")) {
+                isUpdate = Boolean.TRUE;
+                
+                //get existing data parameter
+                String idDetail = FacesUtil.getRequestParameter("idDetail");
+                String idJabatan = FacesUtil.getRequestParameter("jabatan");
+                String departemen = FacesUtil.getRequestParameter("departemen");
+                String numberOfActualPosition = FacesUtil.getRequestParameter("numberOfActualPosition");
+                String numberOfPlanningPosition = FacesUtil.getRequestParameter("numberOfPlanningPosition");               
+                
+                mapJabatan.clear();
+                List<Jabatan> listJabatan = jabatanService.getByDepartementId(Long.parseLong(departemen));
+                for (Jabatan jabatan : listJabatan) {
+                    mapJabatan.put(jabatan.getName(), jabatan.getId());
+                }
+                
+                //if isUpdate equals true, set field with existing data
+                mppApplyDetailModel.setDepartemenId(Long.parseLong(departemen));               
+                mppApplyDetailModel.setJabatanId(Long.parseLong(idJabatan));
+                mppApplyDetailModel.setId(Long.parseLong(idDetail));
+                mppApplyDetailModel.setNumberOfActualPosition(Long.parseLong(numberOfActualPosition));
+                mppApplyDetailModel.setNumberOfPlanningPosition(Long.parseLong(numberOfPlanningPosition));
+                
+            } else if (StringUtils.equals(isDataUpdate, "false")) {
+                //if isUpdate equals false, set new Random ID
+                mppApplyDetailModel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            }
+
             mppApplyDetailModel.setMppCode(mppApplyCode);
             mppApplyDetailModel.setMppName(mppApplyName);
             mppApplyDetailModel.setMppPeriodeId(Long.parseLong(mppApplyPeriod));
             mppApplyDetailModel.setMppPeriodeName(mppPeriod.getName());
             mppApplyDetailModel.setRecruitMppMoth(mppPeriod.getPeriodeStart());
 
-            String isDataUpdate = FacesUtil.getRequestParameter("isUpdate");
-            if (StringUtils.equals(isDataUpdate,"true")) {
-                isUpdate = Boolean.TRUE;
-            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
-    
+
     public void updateJabatanByDepartment() {
         try {
-            
+
             mapJabatan.clear();
             mppApplyDetailModel.setJabatanId(null);
             mppApplyDetailModel.setNumberOfActualPosition(0l);
-            
+
             List<Jabatan> listJabatan = jabatanService.getByDepartementId(mppApplyDetailModel.getDepartemenId());
-            for(Jabatan jabatan : listJabatan){
+            for (Jabatan jabatan : listJabatan) {
                 mapJabatan.put(jabatan.getName(), jabatan.getId());
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(MppApplyDetailFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateActualTotalEmployeeBasedOnJabatan() {
         try {
-            
             Long totalEmp = empDataService.getTotalKaryawanByJabatanId(mppApplyDetailModel.getJabatanId());
             mppApplyDetailModel.setNumberOfActualPosition(totalEmp);
         } catch (Exception ex) {
@@ -140,48 +166,42 @@ public class MppApplyDetailFormController extends BaseController {
         recruitMppApplyService = null;
         recruitMppApplyDetailService = null;
         recruitMppPeriodService = null;
-        departmentService = null;              
-        jabatanService = null;       
-        isUpdate = null; 
+        departmentService = null;
+        jabatanService = null;
+        isUpdate = null;
     }
 
-    
-    
     public void doSave() {
-        
-        RecruitMppApplyDetail recruitMppApplyDetail = getEntityFromViewModel(mppApplyDetailModel);        
+
+        RecruitMppApplyDetail recruitMppApplyDetail = getEntityFromViewModel(mppApplyDetailModel);
         try {
-            RequestContext.getCurrentInstance().closeDialog(recruitMppApplyDetail);  
-            cleanAndExit();            
-       } 
-//      catch (BussinessException ex) { 
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//        }
-        catch (Exception ex) {
+            RequestContext.getCurrentInstance().closeDialog(recruitMppApplyDetail);
+            cleanAndExit();
+        } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
     private RecruitMppApplyDetail getEntityFromViewModel(MppApplyDetailModel mppApplyDetailModel) {
         try {
-            
+
             RecruitMppApplyDetail recruitMppApplyDetail = new RecruitMppApplyDetail();
             if (mppApplyDetailModel.getId() != null) {
                 recruitMppApplyDetail.setId(mppApplyDetailModel.getId());
-            }           
-           
+            }
+
             Jabatan jabatan = jabatanService.getEntiyByPK(mppApplyDetailModel.getJabatanId());
-            
+
             recruitMppApplyDetail.setJabatan(jabatan);
             recruitMppApplyDetail.setRecruitMppMonth(mppApplyDetailModel.getRecruitMppMoth());
-            
+
             Integer plan = mppApplyDetailModel.getNumberOfPlanningPosition().intValue();
             Integer actual = mppApplyDetailModel.getNumberOfActualPosition().intValue();
             Integer difference = plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan);
             recruitMppApplyDetail.setActualNumber(actual);
             recruitMppApplyDetail.setRecruitPlan(plan);
             recruitMppApplyDetail.setDifference(difference);
-            
+
             return recruitMppApplyDetail;
         } catch (Exception ex) {
             Logger.getLogger(MppApplyDetailFormController.class.getName()).log(Level.SEVERE, null, ex);
@@ -189,22 +209,7 @@ public class MppApplyDetailFormController extends BaseController {
         return null;
     }
 
-    private BioEmploymentHistoryModel getModelFromEntity(BioEmploymentHistory entity) {
-        BioEmploymentHistoryModel bioEmploymentHistoryModel = new BioEmploymentHistoryModel();
-        bioEmploymentHistoryModel.setId(entity.getId());
-        bioEmploymentHistoryModel.setBioDataId(entity.getBioData().getId());
-        bioEmploymentHistoryModel.setCity(entity.getCity());
-        bioEmploymentHistoryModel.setYearIn(entity.getYearIn());
-        bioEmploymentHistoryModel.setYearOut(entity.getYearOut());
-        bioEmploymentHistoryModel.setCompanyName(entity.getCompanyName());
-        bioEmploymentHistoryModel.setLastOccupation(entity.getLastOccupation());
-        bioEmploymentHistoryModel.setSalary(entity.getSalary());
-        bioEmploymentHistoryModel.setJobSector(entity.getJobSector());
-        return bioEmploymentHistoryModel;
-    }
 
-    
-    
     public Boolean getIsUpdate() {
         return isUpdate;
     }
@@ -260,6 +265,5 @@ public class MppApplyDetailFormController extends BaseController {
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
-    
-    
+
 }

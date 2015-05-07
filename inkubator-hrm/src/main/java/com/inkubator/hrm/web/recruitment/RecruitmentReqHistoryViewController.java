@@ -41,9 +41,9 @@ import org.springframework.dao.DataIntegrityViolationException;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "recruitMppApplyViewController")
+@ManagedBean(name = "recruitmentReqHistoryViewController")
 @ViewScoped
-public class RecruitMppApplyViewController extends BaseController {
+public class RecruitmentReqHistoryViewController extends BaseController {
 
     private RecruitMppApplySearchParameter searchParameter;
     private LazyDataModel<RecruitMppApplyViewModel> lazyData;
