@@ -4,6 +4,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.web.lazymodel.EducationLevelLazyDataModel;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -31,7 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class EducationLevelViewController extends BaseController {
 
-    private String parameter;
+    private EducationLevelSearchParameter searchParameter;
     private LazyDataModel<EducationLevel> lazyDataEducationLevel;
     private EducationLevel selectedEducationLevel;
     @ManagedProperty(value = "#{educationLevelService}")
@@ -41,19 +42,20 @@ public class EducationLevelViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        this.searchParameter = new EducationLevelSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
         educationLevelService = null;
-        parameter = null;
+        searchParameter = null;
         lazyDataEducationLevel = null;
         selectedEducationLevel = null;
     }
 
     public LazyDataModel<EducationLevel> getLazyDataEducationLevel() {
         if (lazyDataEducationLevel == null) {
-            lazyDataEducationLevel = new EducationLevelLazyDataModel(parameter, educationLevelService);
+            lazyDataEducationLevel = new EducationLevelLazyDataModel(searchParameter, educationLevelService);
         }
         return lazyDataEducationLevel;
     }
@@ -74,12 +76,12 @@ public class EducationLevelViewController extends BaseController {
         this.educationLevelService = educationLevelService;
     }
 
-    public String getParameter() {
-        return parameter;
+    public EducationLevelSearchParameter getSearchParameter() {
+        return searchParameter;
     }
 
-    public void setParameter(String parameter) {
-        this.parameter = parameter;
+    public void setSearchParameter(EducationLevelSearchParameter searchParameter) {
+        this.searchParameter = searchParameter;
     }
 
     public void doSearch() {
