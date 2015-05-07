@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -209,18 +210,80 @@ public class HrmMenu implements java.io.Serializable {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        } else if (other == null) {
-            return false;
-        } else if (!(other instanceof HrmMenu)) {
-            return false;
-        } else {
-            HrmMenu castOther = (HrmMenu) other;
-            return this.getId() == castOther.getId();
-        }
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        hash = 37 * hash + Objects.hashCode(this.version);
+        hash = 37 * hash + Objects.hashCode(this.name);
+        hash = 37 * hash + Objects.hashCode(this.urlName);
+        hash = 37 * hash + Objects.hashCode(this.iconName);
+        hash = 37 * hash + Objects.hashCode(this.menuLevel);
+        hash = 37 * hash + Objects.hashCode(this.orderLevelMenu);
+        hash = 37 * hash + Objects.hashCode(this.menuStyle);
+        hash = 37 * hash + Objects.hashCode(this.menuStyleClass);
+        hash = 37 * hash + Objects.hashCode(this.createdBy);
+        hash = 37 * hash + Objects.hashCode(this.createdOn);
+        hash = 37 * hash + Objects.hashCode(this.updatedBy);
+        hash = 37 * hash + Objects.hashCode(this.upatedOn);
+        hash = 37 * hash + Objects.hashCode(this.isGroup);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HrmMenu other = (HrmMenu) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.urlName, other.urlName)) {
+            return false;
+        }
+        if (!Objects.equals(this.iconName, other.iconName)) {
+            return false;
+        }
+        if (!Objects.equals(this.menuLevel, other.menuLevel)) {
+            return false;
+        }
+        if (!Objects.equals(this.orderLevelMenu, other.orderLevelMenu)) {
+            return false;
+        }
+        if (!Objects.equals(this.menuStyle, other.menuStyle)) {
+            return false;
+        }
+        if (!Objects.equals(this.menuStyleClass, other.menuStyleClass)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.updatedBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.upatedOn, other.upatedOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.isGroup, other.isGroup)) {
+            return false;
+        }
+        return true;
+    }
+
+ 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hrmMenu")
     public Set<FavoriteMenu> getFavoriteMenus() {
