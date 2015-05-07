@@ -20,4 +20,6 @@ public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
 //	public RecruitMppApplyDetail getEntityByPkWithDetail(Long id);
     
     public Long getTotalByRecruitMppApplyId(Long recruitMppApplyId);
+    
+    public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId);
 }

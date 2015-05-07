@@ -81,7 +81,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.recruitMppApplyName}"/>
                             </p:column> 
-                            <p:column sortBy="applyDate"  style="width: 20%">
+                            <p:column sortBy="applyDate"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.date']}"/>
                                 </f:facet>
@@ -89,28 +89,36 @@
                                     <f:convertDateTime pattern="dd MMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="totalDetailJabatan"  style="width: 20%">
+                             <p:column sortBy="totalDetailJabatan"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_number_of_job_position']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{data.jobPositionTotal}"/>
                             </p:column> 
+                            
+                             <p:column style="width: 20%" sortBy="approvalStatus">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approvalStatus}">
+                                	<f:converter converterId="approvalStatusConverter" />
+                                </h:outputLabel>
+                            </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 13%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"                                                   
                                                  style="font-size: 10px!important" action="#{recruitMppApplyViewController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selectedRecruitMppApply}" />
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{recruitMppApplyViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selectedRecruitMppApply}" />
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1}"
+                                                 action="#{recruitMppApplyViewController.doSelectDataToDelete(data)}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{recruitMppApplyViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selectedRecruitMppApply}" />
-                                    <p:ajax event="dialogReturn" listener="#{recruitMppApplyViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                                  action="#{recruitMppApplyViewController.doEdit()}" >
+                                   <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />                                  
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
@@ -146,7 +154,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{recruitMppApplyViewController.selectedRecruitMppApply.recruitMppApplyCode} - #{recruitMppApplyViewController.selectedRecruitMppApply.recruitMppApplyName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{recruitMppApplyViewController.selected.recruitMppApplyCode} - #{recruitMppApplyViewController.selected.recruitMppApplyName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitMppApplyViewController.doDelete()}" update="formId"
@@ -154,33 +162,6 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-<!--                <p:dialog widgetVar="detail" header="#{appmsg['loanNewType.loanNewType_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
-                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanNewTypeViewController.selectedLoanType.loanTypeCode}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loantype.loantype_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanNewTypeViewController.selectedLoanType.loanTypeName}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['currency.currency']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanNewTypeViewController.selectedLoanType.currency.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanNewTypeViewController.selectedLoanType.description}"/> </p:column>
-                        </p:row>
-
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['loantype.loantype_data']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:dialog>-->
             </ui:define>
         </ui:composition>
     </h:body>

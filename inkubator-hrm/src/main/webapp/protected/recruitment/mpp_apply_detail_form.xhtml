@@ -86,8 +86,6 @@
                                                   update="jabatanId,actualId"/>
                                 </p:selectOneMenu>
                                     
-<!--                                <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
-                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />-->
                             </p:column>
                         </p:row>
                         <p:row>
@@ -112,16 +110,6 @@
                                         <p:ajax   listener="#{mppApplyDetailFormController.updateActualTotalEmployeeBasedOnJabatan()}"  
                                                   update="actualId"/>
                                 </p:selectOneMenu>
-<!--                                <p:autoComplete id="cityId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" scrollHeight="100" 
-                                                value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.city}"
-                                                completeMethod="#{bioEmploymentHistoryFormController.completeCity}"
-                                                var="city" emptyMessage="Kota tidak ditemukan"
-                                                 maxResults="8"
-                                                itemValue="#{city}"
-                                                itemLabel="#{city.cityName}"
-                                                converter="cityConverter"
-                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>-->
-
 
                             </p:column>
                         </p:row>
