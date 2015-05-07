@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.code']}"  for="codeId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="codeId" value="#{systemLetterReferenceFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                                 required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.name']}"  for="nameId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="nameId" value="#{systemLetterReferenceFormController.model.name}" 
+                                                 required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="nameId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.summary']}"  for="summaryLetterId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="summaryLetterId" value="#{systemLetterReferenceFormController.model.letterSumary}" 
+                                                 required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <p:message for="summaryLetterId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.effective_date']}"  for="effectiveDateId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar  id="effectiveDateId" size="32" pattern="dd MMMM yyyy" label="#{appmsg['reimbursement.claim_date']}" value="#{systemLetterReferenceFormController.model.effectiveDate}"
+                                                 required="true" navigator="true">
+                                    </p:calendar>
+                                    <p:message for="effectiveDateId"/>
+                                </p:column>
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="uploadFoto" value="File Upload" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 100%" colspan="5">
+                                    <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{systemLetterReferenceFormController.handleFileUpload}" 
+                                                  mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(doc?x|pdf|csv|xls?x|jpe?g|png)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                    <p:outputLabel value="#{systemLetterReferenceFormController.model.fileUploadName}" id="fotoNameId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}"  for="tujuanJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId" value="#{systemLetterReferenceFormController.model.description}" required="false"
+                                                      style="width: 350px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
+                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:message for="tujuanJabatanId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row> 
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  for="tujuanJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <h:outputText id="counter" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.active']}"  for="isActive" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectBooleanButton id="isActive" value="#{systemLetterReferenceFormController.model.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button" >
+                                    </p:selectBooleanButton>
+                                    <p:message for="isActive"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:focus context="formId" />
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{systemLetterReferenceFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId, :growlId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

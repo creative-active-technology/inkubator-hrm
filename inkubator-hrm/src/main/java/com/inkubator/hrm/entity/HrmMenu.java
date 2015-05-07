@@ -26,7 +26,7 @@ import javax.persistence.Version;
 )
 public class HrmMenu implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private HrmMenu hrmMenu;
     private String name;
@@ -52,7 +52,7 @@ public class HrmMenu implements java.io.Serializable {
         this.id = id;
     }
 
-    public HrmMenu(long id, HrmMenu hrmMenu, String name, String urlName, String iconName, Integer menuLevel, String createdBy, Date createdOn, String updatedBy, Date upatedOn, Set<HrmMenu> hrmMenus, Set<HrmMenuRole> hrmMenuRoles) {
+    public HrmMenu(Long id, HrmMenu hrmMenu, String name, String urlName, String iconName, Integer menuLevel, String createdBy, Date createdOn, String updatedBy, Date upatedOn, Set<HrmMenu> hrmMenus, Set<HrmMenuRole> hrmMenuRoles) {
         this.id = id;
         this.hrmMenu = hrmMenu;
         this.name = name;
@@ -70,11 +70,11 @@ public class HrmMenu implements java.io.Serializable {
     @Id
 
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -78,7 +78,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{menuData.name}"/>
+                                <h:outputLabel value= "#{menuData.id}"/>
                             </p:column>
                             <p:column style="text-align: center;width: 40%">
                                 <f:facet name="header">  
@@ -91,17 +91,16 @@
                                     <h:outputText value="#{appmsg['hrm_menu.menu_level']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.menuLevel}"/>
-                            </p:column> 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update="tableMenuId" 
-                                				 action="#{roleFormController.doDeleteMenu()}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
-                                    <f:setPropertyActionListener value="#{menuData}" target="#{roleFormController.selectedMenu}" />
-                                </p:commandButton>
+                            </p:column>
+                            <p:column style="text-align: center;width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['hrm_menu.order_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{menuData.orderLevelMenu}"/>
                             </p:column> 
                         </p:dataTable>
                         <h:panelGrid columns="1">
-                    		<p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-document" 
+                    		<p:commandButton value="#{appmsg['global.edit']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.edit']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.edit']} #{appmsg['hrm_menu.menu']}" styleClass="label_button" icon="ui-icon-document" 
                     						 actionListener="#{roleFormController.doShowMenuList()}" ajax="true" immediate="true">
                             	<p:ajax event="dialogReturn" listener="#{roleFormController.onDialogReturn}"  update="tableMenuId,:formRoleGrowl"/>
                            	</p:commandButton>

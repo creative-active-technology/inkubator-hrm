@@ -3,6 +3,7 @@ package com.inkubator.hrm.service.impl;
 import ch.lambdaj.Lambda;
 import java.util.Date;
 
+import org.apache.commons.collections.ListUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -24,6 +25,7 @@ import com.inkubator.hrm.web.search.HrmMenuSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -79,8 +81,9 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         this.hrmMenuDao.save(entity);
         
         //increment others orderLevelMenu if conflict
-        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(entity.getOrderLevelMenu(), entity.getMenuLevel(), entity.getId()) != null){
-        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(entity.getOrderLevelMenu(), entity.getMenuLevel(), entity.getId());
+        Long parentMenuId = parentMenu == null ? null:parentMenu.getId();
+        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(entity.getOrderLevelMenu(), parentMenuId, entity.getId()) != null){
+        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(entity.getOrderLevelMenu(), parentMenuId, entity.getId());
         	for(HrmMenu m : listGreaterMenu){
         		m.setOrderLevelMenu(m.getOrderLevelMenu() + 1);
         		m.setUpdatedBy(UserInfoUtil.getUserName());
@@ -99,6 +102,13 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         }
 
         HrmMenu menu = hrmMenuDao.getEntiyByPK(entity.getId());
+        //update child menu level recursive
+        if((menu.getMenuLevel()!= entity.getMenuLevel()) && menu.getHrmMenus().size() > 0 ){
+        	Integer deviation = entity.getMenuLevel() - menu.getMenuLevel();
+        	this.updateChildMenuLevel(menu, deviation);
+        }        
+        
+        
         HrmMenu parentMenu = entity.getHrmMenu() == null ? null : hrmMenuDao.getEntiyByPK(entity.getHrmMenu().getId());
         menu.setHrmMenu(parentMenu);
         menu.setName(entity.getName());
@@ -111,11 +121,13 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         menu.setOrderLevelMenu(entity.getOrderLevelMenu());
         menu.setUpdatedBy(UserInfoUtil.getUserName());
         menu.setUpatedOn(new Date());
-        this.hrmMenuDao.update(menu);
+        this.hrmMenuDao.update(menu);       
+        
         
         //increment others orderLevelMenu if conflict
-        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(menu.getOrderLevelMenu(), menu.getMenuLevel(), menu.getId()) != null){
-        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(menu.getOrderLevelMenu(), menu.getMenuLevel(), menu.getId());
+        Long parentMenuId = parentMenu == null ? null:parentMenu.getId();
+        if(hrmMenuDao.getEntityByOrderLevelMenuAndParentMenuIdAndExceptId(menu.getOrderLevelMenu(), parentMenuId, menu.getId()) != null){
+        	List<HrmMenu> listGreaterMenu = hrmMenuDao.gelAllDataByOrderLevelMenuGreaterThan(menu.getOrderLevelMenu(), parentMenuId, menu.getId());
         	for(HrmMenu m : listGreaterMenu){
         		m.setOrderLevelMenu(m.getOrderLevelMenu() + 1);
         		m.setUpdatedBy(UserInfoUtil.getUserName());
@@ -125,6 +137,20 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         }
     }
 
+    private void updateChildMenuLevel(HrmMenu  menu, Integer deviation){
+    	Iterator<HrmMenu> listChild = menu.getHrmMenus().iterator();
+    	while(listChild.hasNext()){
+    		HrmMenu child = listChild.next();
+    		Integer level = child.getMenuLevel() + deviation;
+    		child.setMenuLevel(level);
+    		child.setUpdatedBy(UserInfoUtil.getUserName());
+    		child.setUpatedOn(new Date());
+    		this.hrmMenuDao.update(child);
+    		
+    		this.updateChildMenuLevel(child, deviation);
+    	}
+    }
+    
     @Override
     public void saveOrUpdate(HrmMenu enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -318,8 +344,8 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<HrmMenu> getAllDataByLevel(Integer level) throws Exception {
-        return hrmMenuDao.getAllDataByLevel(level);
+    public List<HrmMenu> getAllDataFetchChildByLevel(Integer level) throws Exception {
+        return hrmMenuDao.getAllDataFetchChildByLevel(level);
 
     }
 
@@ -330,8 +356,16 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) throws Exception {
         return hrmMenuDao.getAllDataByLevelAndNotId(level, id);
+
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<HrmMenu> getAllDataByLevelAndNotId(int level, List<Long> ids) throws Exception {
+        return hrmMenuDao.getAllDataByLevelAndNotId(level, ids);
 
     }
 
@@ -454,5 +488,23 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
             }
         }
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<HrmMenu> getAllDataFetchChildByParentId(Long parentId, List<Long> exceptId) throws Exception {
+		return hrmMenuDao.getAllDataFetchChildByParentId(parentId, exceptId);
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<HrmMenu> getAllDataFetchChildByParentId(Long parentId) throws Exception {
+		return hrmMenuDao.getAllDataFetchChildByParentId(parentId, ListUtils.EMPTY_LIST);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public HrmMenu getEntityFetchChildById(Long id) throws Exception {
+		return hrmMenuDao.getEntityFetchChildById(id);
+	}
 
 }
