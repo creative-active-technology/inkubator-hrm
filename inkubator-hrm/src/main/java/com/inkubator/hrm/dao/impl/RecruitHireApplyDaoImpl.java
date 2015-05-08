@@ -11,7 +11,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
 import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
+import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
 
 /**
  *
@@ -54,5 +56,15 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
             criteria.add(Restrictions.like("maritalStatus", parameter.getMaritalStatus(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
