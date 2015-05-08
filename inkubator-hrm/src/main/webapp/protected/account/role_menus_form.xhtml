@@ -26,31 +26,35 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    
-                    <p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" 
-	                    			 action="#{roleMenusFormController.doPickMenuFromList(roleMenusFormController.selectedNodes)}" styleClass="label_button" style="font-size: 10px!important;margin-bottom: 20px" icon="ui-icon-circle-plus">
-	                </p:commandButton>
-	                <p:commandButton value="#{appmsg['global.check_all']}" title="#{appmsg['global.check_all']}" label="#{appmsg['global.check_all']}" 
-	                    			 action="#{roleMenusFormController.selectAllNode()}" update="treeNodeId" ajax="true" styleClass="label_button" style="font-size: 10px!important;margin-bottom: 20px;margin-left: 50px;" icon="ui-icon-circle-check">
-	                </p:commandButton>
-	                <p:commandButton value="#{appmsg['global.uncheck_all']}" title="#{appmsg['global.uncheck_all']}" label="#{appmsg['global.uncheck_all']}" 
-	                    			 action="#{roleMenusFormController.unselectAllNode()}" update="treeNodeId" ajax="true" styleClass="label_button" style="font-size: 10px!important;margin-bottom: 20px" icon="ui-icon-circle-close">
-	                </p:commandButton>
-	                
-                	<p:treeTable id="treeNodeId" value="#{roleMenusFormController.rootNode}" var="menu" scrollable="true" scrollHeight="350"
-                    			 selectionMode="checkbox" selection="#{roleMenusFormController.selectedNodes}">
-					  	<f:facet name="header">
-					    	<h:outputText value="#{appmsg['hrm_menu.list_of_menu']}"/>
-					    </f:facet>
-					   	<p:column headerText="#{appmsg['hrm_menu.menu_name']}">
-					    	<h:outputText value="#{menu.name}">
-					    		<f:converter converterId="menuNameConverter"/>
-					    	</h:outputText>
-					    </p:column>
-						<p:column headerText="#{appmsg['hrm_menu.url_name']}">
-					    	<h:outputText value="#{menu.urlName}" />
-						</p:column>
-					</p:treeTable>              
+                    <h:panelGrid columns="3" >
+                        <p:commandButton value="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" title="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" label="#{appmsg['global.add']} #{appmsg['hrm_menu.menu']}" 
+                                         action="#{roleMenusFormController.doPickMenuFromList(roleMenusFormController.selectedNodes)}" styleClass="label_button"  icon="ui-icon-circle-plus">
+                        </p:commandButton>
+                        <p:commandButton value="#{appmsg['global.check_all']}" title="#{appmsg['global.check_all']}" label="#{appmsg['global.check_all']}" 
+                                         action="#{roleMenusFormController.selectAllNode()}" update="treeNodeId" ajax="true" styleClass="label_button"  icon="ui-icon-circle-check">
+                        </p:commandButton>
+                        <p:commandButton value="#{appmsg['global.uncheck_all']}" title="#{appmsg['global.uncheck_all']}" label="#{appmsg['global.uncheck_all']}" 
+                                         action="#{roleMenusFormController.unselectAllNode()}" update="treeNodeId" ajax="true" styleClass="label_button" icon="ui-icon-circle-close">
+                        </p:commandButton>
+                    </h:panelGrid>
+
+
+
+
+                    <p:treeTable id="treeNodeId" value="#{roleMenusFormController.rootNode}" var="menu" scrollable="true" scrollHeight="350"
+                                 selectionMode="checkbox" selection="#{roleMenusFormController.selectedNodes}">
+                        <f:facet name="header">
+                            <h:outputText value="#{appmsg['hrm_menu.list_of_menu']}"/>
+                        </f:facet>
+                        <p:column headerText="#{appmsg['hrm_menu.menu_name']}">
+                            <h:outputText value="#{menu.name}">
+                                <f:converter converterId="menuNameConverter"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{appmsg['hrm_menu.url_name']}">
+                            <h:outputText value="#{menu.urlName}" />
+                        </p:column>
+                    </p:treeTable>              
                 </h:form>
             </ui:define>
         </ui:composition>
