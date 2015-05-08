@@ -33,10 +33,13 @@
                     <h:form id="formEducationLevelViewId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="4">
-                                    <p:outputLabel value="#{appmsg['global.searching']} #{appmsg['educationlevel.name']}" styleClass="label_hrm" />
-                                    <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" value="#{educationLevelViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                <h:panelGrid columns="5">
+                                    <p:selectOneMenu value="#{educationLevelViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['education_level.level_code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['education_level.level_name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{educationLevelViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{educationLevelViewController.doSearch()}" update="tableEducationLevelId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
