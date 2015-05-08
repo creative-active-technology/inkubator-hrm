@@ -116,4 +116,8 @@ public class MenuViewController extends BaseController {
     public String doUpdate() {
         return "/protected/account/menu_form.htm?faces-redirect=true&execution=e" + selectedMenu.getId();
     }
+    
+    public String doViewShema(){
+           return "/protected/account/menu_diagram.htm?faces-redirect=true";
+    }
 }

@@ -44,7 +44,9 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >
+                                <h:panelGrid columns="4" >
+                                    <p:commandButton value="Diagram" action="#{menuViewController.doViewShema()}" title="Diagram Menu" label="Diagram Menu" icon="ui-icon-image"
+                                                     styleClass="label_button" ajax="true" immediate="true" />
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableMenuId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Menu"/>
                                     </p:commandButton>
@@ -73,7 +75,7 @@
                                     <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.name}">
-                                	<f:converter converterId="menuNameConverter"/>
+                                    <f:converter converterId="menuNameConverter"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="urlName"  style="width: 35%">
@@ -81,7 +83,7 @@
                                     <h:outputText value="#{appmsg['hrm_menu.url_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.urlName}">
-                                	<f:converter converterId="menuNameConverter"/>
+                                    <f:converter converterId="menuNameConverter"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="menuLevel"  style="text-align: center;width: 10%">
@@ -96,16 +98,16 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{menuData.orderLevelMenu}"/>
                             </p:column>                            
-                            
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" action="#{menuViewController.doDetail()}">                        
+                                                 style="font-size: 10px!important" action="#{menuViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{menuData}" target="#{menuViewController.selectedMenu}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{menuViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMenu.show()">
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{menuViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMenu.show()">
                                     <f:setPropertyActionListener value="#{menuData}" target="#{menuViewController.selectedMenu}" />
                                 </p:commandButton>
                                 -
@@ -128,7 +130,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                
+
                 <p:dialog widgetVar="dialogConfirmMenu" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">

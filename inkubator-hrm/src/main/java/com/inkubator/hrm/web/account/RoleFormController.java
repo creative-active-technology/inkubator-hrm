@@ -36,7 +36,6 @@ import com.inkubator.hrm.entity.HrmMenuRole;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.service.HrmRoleService;
 import com.inkubator.hrm.web.model.RoleModel;
-import com.inkubator.webcore.WebCoreConstant;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -194,7 +193,7 @@ public class RoleFormController extends BaseController {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
-        options.put("resizable", true);
+        options.put("resizable", false);
         options.put("contentWidth", 900);
         options.put("contentHeight", 550);
         RequestContext.getCurrentInstance().openDialog("role_menus_form", options, dataToSend);

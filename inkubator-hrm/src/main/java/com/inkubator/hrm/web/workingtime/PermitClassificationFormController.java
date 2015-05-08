@@ -97,9 +97,11 @@ public class PermitClassificationFormController extends BaseController {
                     isUpdate = Boolean.TRUE;
                     disabled = Boolean.FALSE;
                     if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
+                        hidden = Boolean.FALSE;
+                    }
+                       if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_MONTH)) {
                         hidden = Boolean.TRUE;
                     }
-                    
                     Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
                     for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
                     	appDefs.add(appDefPermit.getApprovalDefinition());
