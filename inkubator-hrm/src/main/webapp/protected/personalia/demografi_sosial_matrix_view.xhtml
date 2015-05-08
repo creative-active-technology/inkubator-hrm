@@ -127,21 +127,6 @@
                         </c:forEach>
                             </p:scrollPanel>
                     </h:form>
-
-                    <p:separator/>
-                    <!--                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                                                <ui:repeat value="#{demografiSosialMatrixViewController.dataAbsis}" var="divis" id="matrix">
-                                                    <h:outputText value="#{divis}" />
-                                                </ui:repeat>
-                    
-                                            </h:panelGrid>-->
-
-                    <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                        <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{demografiSosialMatrixViewController.updateMatrix()}" styleClass="label_button"/>
-                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{reimbursmentSchemaDetailController.doBack()}" styleClass="label_button"/>
-                    </h:panelGrid>
-                    <div style="clear: both"/>
-                    <!--</h:form>-->
                 </div>
 
 

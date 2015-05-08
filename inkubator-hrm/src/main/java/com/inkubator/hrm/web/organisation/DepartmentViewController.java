@@ -117,7 +117,7 @@ public class DepartmentViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 370);
+        options.put("contentHeight", 400);
         
 //        options.put("closable", false);
 //        options.put("height", "auto");
@@ -132,7 +132,7 @@ public class DepartmentViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 300);
+        options.put("contentHeight", 400);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedDepartment.getId()));
