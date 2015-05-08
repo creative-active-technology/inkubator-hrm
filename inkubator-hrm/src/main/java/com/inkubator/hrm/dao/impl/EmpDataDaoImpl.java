@@ -33,6 +33,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
@@ -65,55 +66,83 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return EmpData.class;
     }
 
+    private Criteria addJoinRelationsOfCompanyId(Criteria criteria, Long companyId){
+    	criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+    	criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+    	criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+    	criteria.add(Restrictions.eq("company.id", companyId));
+    	
+    	return criteria;
+    }
+    
     @Override
     public Long getTotalByGender(Integer gender) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId()); 
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("bioData.gender", gender));
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByAgeBetween(Date startDate, Date endDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", startDate));
         criteria.add(Restrictions.lt("bioData.dateOfBirth", endDate));
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByAgeLessThan(Date date) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.lt("bioData.dateOfBirth", date));
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByAgeMoreThan(Date date) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.add(Restrictions.gt("bioData.dateOfBirth", date));
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByDepartmentId(Long departmentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("jabatan.department.id", departmentId));
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
+        criteria.add(Restrictions.eq("department.id", departmentId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         doSearchEmpDataByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
@@ -139,14 +168,18 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         if (dataSearchParameter.getJabatanKode() != null) {
-            criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
 
         if (dataSearchParameter.getJabatanName() != null) {
-            criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
         }
 
         if (dataSearchParameter.getNIK() != null) {
@@ -160,8 +193,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
-        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-
     }
 
     @Override
@@ -195,6 +226,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalByNikandNotId(String nik, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.eq("nik", nik));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
@@ -203,27 +238,28 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalByNIK(String nik) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.eq("nik", nik));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
-    public List<EmpData> getAllDataWithRelation() {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("bioData", FetchMode.JOIN);
-        return criteria.list();
-    }
-
-    @Override
     public List<EmpData> getAllDataByNameOrNik(String param) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return criteria.list();
     }
 
@@ -274,6 +310,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     private Criteria doSearchNotExistInUserByParam(String param, Criteria criteria) {
+    	
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         if (param != null) {
             Disjunction disjunction = Restrictions.disjunction();
@@ -282,15 +324,18 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         return criteria;
     }
 
     @Override
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
         criteria.addOrder(order);
 
         return criteria.list();
@@ -299,19 +344,26 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataByGolJabatanIdAndDepartmentId(Long golJabatanId, Long departmentId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
         criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", departmentId));
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         return criteria.list();
     }
 
     @Override
     public List<EmpData> getTotalBySearchEmployee(PlacementOfEmployeeWorkScheduleModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
@@ -325,9 +377,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
-                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+                criteria.add(Restrictions.eq("department.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("department.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or like
@@ -363,9 +415,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
@@ -383,9 +438,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
-                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+                criteria.add(Restrictions.eq("department.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("department.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or likeS
@@ -421,10 +476,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("overTimeDistributions", "ot", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("ot.wtOverTime", "wt", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
@@ -451,9 +509,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
-                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+                criteria.add(Restrictions.eq("department.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("department.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or likeS
@@ -502,8 +560,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         doSearchReportEmpWorkingGroupByParam(param, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -514,12 +570,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         doSearchReportEmpWorkingGroupByParam(param, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     private Criteria doSearchReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, Criteria criteria) {
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
@@ -538,9 +596,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        
         criteria.createAlias("permitDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
@@ -558,9 +619,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
-                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+                criteria.add(Restrictions.eq("department.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("department.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or likeS
@@ -594,45 +655,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-//        criteria.createAlias("bioData.bioFamilyRelationships", "familyRelationShip", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
-        criteria.setFetchMode("bioData.bioFamilyRelationships", FetchMode.JOIN);
-//        criteria.setFetchMode("jabatanByJabatanId.jabatanSpesifikasis.specificationAbility", FetchMode.JOIN);
-
-        doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
-        criteria.addOrder(orderable);
-        criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);
-        return criteria.list();
-    }
-
-    @Override
-    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        doSearchReportOfEmployeesFamilyByParam(searchParameter, criteria);
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
-
-    private Criteria doSearchReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter param, Criteria criteria) {
-        if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
-            criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
-        }
-
-        return criteria;
-    }
-
-    @Override
     public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         doSearchReportEmpDepartmentJabatanByParam(param, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -643,14 +669,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         doSearchReportEmpDepartmentJabatanByParam(param, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     private Criteria doSearchReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, Criteria criteria) {
-
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         if (param.getDepartmentId() != null && param.getDepartmentId() != 0) {
             criteria.add(Restrictions.eq("jabatanByJabatanId.department.id", param.getDepartmentId()));
         }
@@ -665,8 +693,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+                
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
@@ -680,9 +711,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         //departermen equal or like
         if (model.getDepartmentLikeOrEqual() != 3) {
             if (Objects.equals(model.getDepartmentLikeOrEqual(), HRMConstant.DEPARTMENT_EQUAL)) {
-                criteria.add(Restrictions.eq("dept.departmentName", model.getDepartmentName()));
+                criteria.add(Restrictions.eq("department.departmentName", model.getDepartmentName()));
             } else {
-                criteria.add(Restrictions.like("dept.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
+                criteria.add(Restrictions.like("department.departmentName", model.getDepartmentName(), MatchMode.ANYWHERE));
             }
         }
         //employee type equal or likeS
@@ -727,8 +758,25 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
+    public List<String> getAllNikBetween(String from, String until) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        criteria.add(Restrictions.ge("nik", from));
+        criteria.add(Restrictions.le("nik", until));
+        criteria.setProjection(Projections.property("nik"));
+        return criteria.list();
+    }
+    
+    @Override
     public List<EmpData> getAllDataNotTerminate() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return criteria.list();
     }
@@ -736,22 +784,34 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalEmpDataNotTerminate() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByTaxFreeIsNull() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.isNull("taxFree"));
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        criteria.add(Restrictions.isNull("taxFree"));        
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
         return criteria.list();
     }
@@ -759,7 +819,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         this.doSearchSalaryConfirmationByParam(param, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -776,6 +835,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     private Criteria doSearchSalaryConfirmationByParam(SalaryConfirmationParameter param, Criteria criteria) {
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         criteria.add(Restrictions.isNotEmpty("payTempKalkulasis"));
@@ -819,13 +883,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return criteria.list();
-
-    }
-
-    @Override
     public BioDataModel getEmpNameWithNearestBirthDate() {
         final StringBuilder query = new StringBuilder("SELECT a.first_name AS firstName, a.last_name AS lastName, a.date_of_birth AS dateOfBirth,");
         query.append("DATE_ADD(a.date_of_birth, INTERVAL IF (DAYOFYEAR(a.date_of_birth) >= DAYOFYEAR(CURDATE()), YEAR(CURDATE())-YEAR(a.date_of_birth), YEAR(CURDATE())-YEAR(a.date_of_birth)+1) YEAR) AS nextBirthday ");
@@ -857,11 +914,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     public void doCreateAliasByDepartmentAndEducation(List<Long> departementId, List<Long> educationId, Criteria criteria) {
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("bioData.educationHistories", "educationHistories", JoinType.INNER_JOIN);
         criteria.createAlias("educationHistories.educationLevel", "educationLevel", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         if (departementId.isEmpty() != Boolean.TRUE) {
             criteria.add(Restrictions.in("department.id", departementId));
         }
@@ -945,11 +1005,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     public void doCreateAliasByDepartmentAndEmployeeType(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, Criteria criteria) {
+    	/** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         if (!listDepartmentId.isEmpty()) {
             criteria.add(Restrictions.in("department.id", listDepartmentId));
         }
@@ -1138,29 +1200,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
 
-    public void doCreateAliasByDepartmentAndEmployeeTypeAndAges(List<Long> listDepartmentId, List<Long> listEmployeeTypeId, List<Integer> listEmpAges, Criteria criteria) {
-        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
-        if (!listDepartmentId.isEmpty()) {
-            criteria.add(Restrictions.in("department.id", listDepartmentId));
-        }
-        if (!listEmployeeTypeId.isEmpty()) {
-            criteria.add(Restrictions.in("employeeType.id", listEmployeeTypeId));
-        }
-
-        if (!listEmpAges.isEmpty()) {
-            criteria.add(Restrictions.in("employeeType.id", listEmployeeTypeId));
-        }
-    }
-
     @Override
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);
 
@@ -1211,9 +1258,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             ageList.append("?");
         }
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
@@ -1243,15 +1293,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-        return criteria.list();
-    }
-
-    @Override
-    public List<String> getAllNikBetween(String from, String until) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.ge("nik", from));
-        criteria.add(Restrictions.le("nik", until));
-        criteria.setProjection(Projections.property("nik"));
         return criteria.list();
     }
 
@@ -1286,9 +1327,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             ageList.append("?");
         }
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
@@ -1322,7 +1366,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("jabatanByJabatanId.unitKerja", "unitKerja", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId.golonganJabatan", "goljab", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createAlias("department.company", "company", JoinType.LEFT_OUTER_JOIN);
@@ -1346,7 +1394,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.LEFT_OUTER_JOIN);
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.createAlias("jabatanByJabatanId.unitKerja", "unitKerja", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId.golonganJabatan", "goljab", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createAlias("department.company", "company", JoinType.LEFT_OUTER_JOIN);
@@ -1406,8 +1458,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public Long getTotalKaryawanByJabatanId(Long jabatanId) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
-        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());  
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
         criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));       
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
