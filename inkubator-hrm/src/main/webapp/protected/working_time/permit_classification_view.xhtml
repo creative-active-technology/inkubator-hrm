@@ -87,7 +87,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitClassification.permitClassification_status']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{permitClassificationData.status}"/>
+                                <h:outputLabel value= "#{permitClassificationData.status}">
+                                    <f:converter converterId="booleanMessageConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="calculation"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
