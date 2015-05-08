@@ -13,105 +13,109 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">
                 <h:form id="formMenuDetailId">
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="menu.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_data_from_application']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.name}"/>
-	                            </p:column>
-	                        </p:row>  
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.url_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.urlName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.icon_name']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.iconName}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_level']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.menuLevel}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.parent_menu']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.hrmMenu.name}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.order_level']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.orderLevelMenu}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.is_a_group_menu']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.isGroup}">
-	                                	<f:converter converterId="booleanMessageConverter" />
-	                                </p:outputLabel>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_style']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.menuStyle}"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['hrm_menu.menu_style_class']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:outputLabel value="#{menuDetailController.selectedMenu.menuStyleClass}"/>
-	                            </p:column>
-	                        </p:row>
-	                           
-	                 	</p:panelGrid>	                    
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{menuDetailController.doUpdate()}" immediate="true"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{menuDetailController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="menu.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu_data_from_application']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.name}">
+                                        <f:converter converterId="menuNameConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.url_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.urlName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.icon_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.iconName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu_level']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.menuLevel}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.parent_menu']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.hrmMenu.name}">
+                                        <f:converter converterId="menuNameConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.order_level']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.orderLevelMenu}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.is_a_group_menu']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.isGroup}">
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu_style']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.menuStyle}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['hrm_menu.menu_style_class']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{menuDetailController.selectedMenu.menuStyleClass}"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>	                    
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{menuDetailController.doUpdate()}" immediate="true"
+                                             style="margin-right: 5px" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{menuDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

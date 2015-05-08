@@ -33,9 +33,12 @@
                                     var="node" orientation="horizontal" dynamic="true" highlight="true" cache="true" >
                                 <!--<div style="margin-right: 10px">-->
                                 <p:treeNode id="treeNode">  
+                                    <!--<p:outputLabel value=" Level : #{node.menuLevel} " id="menulevelId" escape="true" />-->
+                                    <!--<p:outputLabel value=" Order level : #{node.orderLevelMenu}" id="orderLevelId" escape="true" />-->
                                     <p:outputLabel value="#{node.name}" id="lblNode" escape="true">
                                         <f:converter converterId="menuNameConverter" />
                                     </p:outputLabel>  
+
                                 </p:treeNode>  
                                 <!--</div>-->
                             </p:tree>

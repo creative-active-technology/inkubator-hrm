@@ -39,6 +39,7 @@ public class MenuSchemaController extends BaseController {
         try {
             super.initialization();
             root = new DefaultTreeNode(new HrmMenu(), null);
+            root.setExpanded(true);
             this.createNodes(null, null);
         } catch (Exception ex) {
            LOGGER.error(ex, ex);
