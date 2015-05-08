@@ -70,25 +70,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="text-align: left;width: 15%">
+                            <p:column sortBy="code" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="text-align: left;width: 27%">
+                            <p:column sortBy="name" style="width: 27%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="nominalUnit" style="text-align: left;width: 22%">
+                            <p:column sortBy="nominalUnit" style="width: 22%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursment.nominal_unit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nominalUnit}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="ratioSalary" style="text-align: left;width: 23%">
+                            <p:column sortBy="ratioSalary" style="width: 23%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['reimbursment.ratio_salary']}"/>
                                 </f:facet>
