@@ -1108,12 +1108,12 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{businessTravelHistoryData.travelType.name}" />                                            
                                     </p:column>
-                                     <p:column sortBy="totalAmount"  style="width: 15%">
+                                    <p:column sortBy="totalAmount"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['businesstravel.total_amount']}"/>
                                         </f:facet>
-                                         <h:outputLabel value= "#{businessTravelHistoryData.totalAmount}" >
-                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.totalAmount}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
                                         </h:outputLabel>
                                     </p:column>
                                     <p:column sortBy="description"  style="width: 20%">
@@ -1191,7 +1191,7 @@
                                             <h:outputText value="#{appmsg['employeeCertification.certification_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioSertifikasiData.namaSertifikasi}">
-                                           
+
                                         </h:outputLabel>
                                     </p:column>  
                                     <p:column sortBy="nomorDokumen"  style="width: 15%">
@@ -1199,7 +1199,7 @@
                                             <h:outputText value="#{appmsg['employeeCertification.certification_doc_number']}"/>
                                         </f:facet>
                                         <h:outputLabel value="#{bioSertifikasiData.nomorDokumen}">
-                                            
+
                                         </h:outputLabel>
                                     </p:column>  
                                     <p:column sortBy="educationNonFormal.name"  style="width: 15%">
@@ -1245,14 +1245,14 @@
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable> 
-                                 <h:panelGrid columns="1">
+                                <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" label="#{appmsg['global.add']} #{appmsg['employeeCertification.certification']}" styleClass="label_button" icon="ui-icon-document" 
                                                      actionListener="#{bioDataDetilController.doAddBioSertifikasi()}" ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSertifikasi}"  update="tableBioSertifikasiId,:growlBioDetailFormId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab id="potensiId" title="#{appmsg['biodata.potential']}">  
                                 <p:dataTable  id="tablePotensiId" var="potensi"  value="#{bioDataDetilController.listBioPotensiSwot}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
@@ -1318,6 +1318,83 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab> 
+                            <p:tab id="relasiPerusahaan" title="#{appmsg['companyRelation.company_relation']}">  
+                                <p:dataTable  id="tableRelasiPerusahaanId" var="relasiPerusahaan"  value="#{bioDataDetilController.listBioRelasiPerusaan}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['companyRelation.list_of_company_relation']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="relasiName"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['companyRelation.relation_name']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{relasiPerusahaan.relasiName}">
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['companyRelation.relation_company']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{relasiPerusahaan.relasiCompany}">
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['companyRelation.jabatan']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{relasiPerusahaan.relasiJabatan}">
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['master_layout.email_address']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{relasiPerusahaan.relasiEmail}">
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.phone']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{relasiPerusahaan.relasiPhoneNumber}">
+                                        </h:outputLabel>
+                                    </p:column>
+
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+
+                                        <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                         style="font-size: 10px!important" update=":panelDialogRelasi" 
+                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="statusDialog.show()"  oncomplete="detailRelasi.show()">                        
+                                            <f:setPropertyActionListener value="#{relasiPerusahaan}" target="#{bioDataDetilController.selectedBioRelasiPerusahaan}" />
+                                        </p:commandButton>
+                                        - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogRelasiDelete" 
+                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmRelasi.show()">
+                                            <f:setPropertyActionListener value="#{relasiPerusahaan}" target="#{bioDataDetilController.selectedBioRelasiPerusahaan}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataDetilController.doUpdateBioRelasiPerusahaan()}" >
+                                            <f:setPropertyActionListener value="#{relasiPerusahaan}" target="#{bioDataDetilController.selectedBioRelasiPerusahaan}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioRelasiPerusahaan}"  update="tableRelasiPerusahaanId,:growlBioDetailFormId"/>
+                                        </p:commandButton>
+                                    </p:column>                                                                        
+                                </p:dataTable>  
+                                <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" label="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataDetilController.doAddBioRelasiPerusahaan()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioRelasiPerusahaan}"  update="tableRelasiPerusahaanId,:growlBioDetailFormId"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:tab> 
                         </p:tabView>
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
@@ -1332,6 +1409,83 @@
                     </h:form>
                 </div>
 
+                        <!-- START BIO RELASI DIALOG -->
+                <p:dialog widgetVar="detailRelasi" header="#{appmsg['companyRelation.company_relation_detail']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                    <p:panelGrid id="panelDialogRelasi" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.relation_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.jabatan']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiJabatan}" styleClass="label_hrm"></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.email_address']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiEmail}" styleClass="label_hrm"></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiAddress}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.relation_company']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiCompany}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.mobile_phone']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiMobilePhone}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.phone']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiPhoneNumber}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.city.cityName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['city.province_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.city.province.provinceName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['biodata.company_relation']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmRelasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogRelasiDelete"  columns="3">
+                            <p:outputLabel value="#{appmsg['biodata.potential_name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioRelasiPerusahaan.relasiName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioRelasiPerusahaan()}" update="formBioDetailFormId:tabView:tableRelasiPerusahaanId,:growlBioDetailFormId"
+                                         oncomplete="dialogConfirmRelasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPotensi.hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <!-- END BIO RELASI DIALOG -->
                 <!-- START Bio Address DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioAddress" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -2229,7 +2383,7 @@
                     </p:panelGrid>
                 </p:dialog>
                 <!-- END Bio Project DIALOG -->
-                
+
                 <!-- START Bio Sertifikasi DIALOG --> 
                 <p:dialog widgetVar="dialogConfirmBioSertifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
@@ -2318,7 +2472,7 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioPotensiSwot.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
-                        
+
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['biodata.potential_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>

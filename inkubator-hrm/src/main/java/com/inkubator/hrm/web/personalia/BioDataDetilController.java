@@ -21,6 +21,7 @@ import com.inkubator.hrm.entity.BioMedicalHistory;
 import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.entity.BioPotensiSwot;
 import com.inkubator.hrm.entity.BioProject;
+import com.inkubator.hrm.entity.BioRelasiPerusahaan;
 import com.inkubator.hrm.entity.BioSertifikasi;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
 import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
@@ -44,6 +45,7 @@ import com.inkubator.hrm.service.BioMedicalHistoryService;
 import com.inkubator.hrm.service.BioPeopleInterestService;
 import com.inkubator.hrm.service.BioPotensiSwotService;
 import com.inkubator.hrm.service.BioProjectService;
+import com.inkubator.hrm.service.BioRelasiPerusahaanService;
 import com.inkubator.hrm.service.BioSertifikasiService;
 import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
@@ -192,23 +194,23 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{bioProjectService}")
     private BioProjectService bioProjectService;
 //end. bio project
-    
+
     //start. bio potensi
     private BioPotensiSwot selectedBioPotensiSwot;
     private List<BioPotensiSwot> ListBioPotensiSwot;
     @ManagedProperty(value = "#{bioPotensiSwotService}")
     private BioPotensiSwotService bioPotensiSwotService;
     //end. bio project
-    
+
     //start. Business travel
-    private  BusinessTravel selectedBusinessTravel;
+    private BusinessTravel selectedBusinessTravel;
     private List<BusinessTravel> businessTravelList;
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
     @ManagedProperty(value = "#{businessTravelComponentService}")
     private BusinessTravelComponentService businessTravelComponentService;
     //end. Business travel
-    
+
     //start. leave implementation history
     private LeaveImplementation selectedLeaveImplementation;
     private List<LeaveImplementation> leaveImplementations;
@@ -221,24 +223,30 @@ public class BioDataDetilController extends BaseController {
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
     //end. leave implementation history
-    
+
     //start. Bio Sertifikasi
-     @ManagedProperty(value = "#{bioSertifikasiService}")
-     private BioSertifikasiService  bioSertifikasiService;
-     private List<BioSertifikasi> listBioSertifikasi;
-     private BioSertifikasi selectedBioSertifikasi;
+    @ManagedProperty(value = "#{bioSertifikasiService}")
+    private BioSertifikasiService bioSertifikasiService;
+    private List<BioSertifikasi> listBioSertifikasi;
+    private BioSertifikasi selectedBioSertifikasi;
     //end. Bio Sertifikasi
-    
-    
+
+    //start. Bio Relasi Perusahaan
+    @ManagedProperty(value = "#{bioRelasiPerusahaanService}")
+    private BioRelasiPerusahaanService bioRelasiPerusahaanService;
+    private List<BioRelasiPerusahaan> listBioRelasiPerusaan;
+    private BioRelasiPerusahaan selectedBioRelasiPerusahaan;
+    //end. Bio RelasiPerusahaan
+
     @PostConstruct
     @Override
     public void initialization() {
         try {
-            super.initialization();           
+            super.initialization();
             userId = FacesUtil.getRequestParameter("execution");
             System.out.println(userId);
-            selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));            
-            selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());            
+            selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));
+            selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
             bioInsurances = bioInsuranceService.getAllDataByBioDataId(selectedBioData.getId());
@@ -253,27 +261,25 @@ public class BioDataDetilController extends BaseController {
             bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
             spesifikasiAbilitys = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
             bioProjects = bioProjectService.getAllDataByBioDataId(selectedBioData.getId());
-            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());                    
-            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());            
-            
+            ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
+            listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioData.getId());
+            listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
             //Inisialisasi Riwayat Dinas
             businessTravelList = businessTravelService.getAllDataByEmpDataId(selectedEmpData.getId());
-            
+
             //Looping List Dinas dan hitung Total Biaya dari masing - masing Dinas
-            for(BusinessTravel businessTravel : businessTravelList){
+            for (BusinessTravel businessTravel : businessTravelList) {
                 countTotalAmoutOfBusinessTravel(businessTravel);
             }
-            
+
             //Inisialisasi Riwayat Cuti
             leaveImplementations = leaveImplementationService.getAllDataByEmpDataId(selectedEmpData.getId());
-            for(LeaveImplementation lv : leaveImplementations){
-                if(null != lv.getApprovalActivityNumber()){
+            for (LeaveImplementation lv : leaveImplementations) {
+                if (null != lv.getApprovalActivityNumber()) {
                     setLeaveApprovalOfficer(lv);
                 }
             }
-            
-           
-            
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -286,7 +292,7 @@ public class BioDataDetilController extends BaseController {
         spesifikasiAbilitys = null;
         selectedBioKeahlian = null;
         bioKeahlianService = null;
-        bioKeahlians = null; 
+        bioKeahlians = null;
         selectedBioData = null;
         selectedBioAddress = null;
         selectedBioPotensiSwot = null;
@@ -328,23 +334,26 @@ public class BioDataDetilController extends BaseController {
         selectedBioProject = null;
         bioProjects = null;
         bioProjectService = null;
+        listBioRelasiPerusaan = null;
+        selectedBioRelasiPerusahaan = null;
+        bioRelasiPerusahaanService = null;
     }
-    
+
     //Hitung Total Biaya Perjalanan dari masing-masing perjalanan
-    public void countTotalAmoutOfBusinessTravel(BusinessTravel businessTravel) throws Exception{
-        List<BusinessTravelComponent> businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());            
+    public void countTotalAmoutOfBusinessTravel(BusinessTravel businessTravel) throws Exception {
+        List<BusinessTravelComponent> businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());
         Double totalAmount = 0.0;
-        for(BusinessTravelComponent btc :businessTravelComponents){
-            	totalAmount = totalAmount + btc.getPayByAmount();
-            }
+        for (BusinessTravelComponent btc : businessTravelComponents) {
+            totalAmount = totalAmount + btc.getPayByAmount();
+        }
         businessTravel.setTotalAmount(totalAmount);
     }
-    
-    public void setLeaveApprovalOfficer(LeaveImplementation leaveImplementation) throws Exception{
+
+    public void setLeaveApprovalOfficer(LeaveImplementation leaveImplementation) throws Exception {
         ApprovalActivity selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(leaveImplementation.getApprovalActivityNumber());
         leaveImplementation.setApprovedBy(selectedApprovalActivity.getApprovedBy());
     }
-    
+
     public BioAddress getSelectedBioAddress() {
         return selectedBioAddress;
     }
@@ -407,7 +416,7 @@ public class BioDataDetilController extends BaseController {
 
     public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
-    }   
+    }
 
     public BioDocument getSelectedBioDocument() {
         return selectedBioDocument;
@@ -468,8 +477,7 @@ public class BioDataDetilController extends BaseController {
     public void setBioPotensiSwotService(BioPotensiSwotService bioPotensiSwotService) {
         this.bioPotensiSwotService = bioPotensiSwotService;
     }
-    
-    
+
     public BioPeopleInterest getSelectedPeopleInterest() {
         return selectedPeopleInterest;
     }
@@ -548,7 +556,7 @@ public class BioDataDetilController extends BaseController {
 
     public void setSelectedBioEmploymentHistory(BioEmploymentHistory selectedBioEmploymentHistory) {
         this.selectedBioEmploymentHistory = selectedBioEmploymentHistory;
-    } 
+    }
 
     public List<BioEmploymentHistory> getBioEmploymentHistorys() {
         return bioEmploymentHistorys;
@@ -661,15 +669,14 @@ public class BioDataDetilController extends BaseController {
     public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
         this.leaveSchemeService = leaveSchemeService;
     }
-    
-    
+
     public EmpDataService getEmpDataService() {
         return empDataService;
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
-    }   
+    }
 
     public List<BioIdCard> getBioIdCards() {
         return bioIdCards;
@@ -822,10 +829,7 @@ public class BioDataDetilController extends BaseController {
     public void setSelectedBioSertifikasi(BioSertifikasi selectedBioSertifikasi) {
         this.selectedBioSertifikasi = selectedBioSertifikasi;
     }
-    
-    
 
-    
     public String doDetail() {
         return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
@@ -850,6 +854,40 @@ public class BioDataDetilController extends BaseController {
         return "/protected/personalia/bio_gen_cv_view.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
+    }
+
+    public BioRelasiPerusahaanService getBioRelasiPerusahaanService() {
+        return bioRelasiPerusahaanService;
+    }
+
+    public void setBioRelasiPerusahaanService(BioRelasiPerusahaanService bioRelasiPerusahaanService) {
+        this.bioRelasiPerusahaanService = bioRelasiPerusahaanService;
+    }
+
+    public List<BioRelasiPerusahaan> getListBioRelasiPerusaan() {
+        return listBioRelasiPerusaan;
+    }
+
+    public void setListBioRelasiPerusaan(List<BioRelasiPerusahaan> listBioRelasiPerusaan) {
+        this.listBioRelasiPerusaan = listBioRelasiPerusaan;
+    }
+
+    public BioRelasiPerusahaan getSelectedBioRelasiPerusahaan() {
+        return selectedBioRelasiPerusahaan;
+    }
+
+    public void setSelectedBioRelasiPerusahaan(BioRelasiPerusahaan selectedBioRelasiPerusahaan) {
+        this.selectedBioRelasiPerusahaan = selectedBioRelasiPerusahaan;
+    }
+
+    
+    
     /**
      * START Bio Address method
      */
@@ -1611,7 +1649,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio BankAccount method
      */
-    
     public void doSelectBioPotensiSwot() {
         try {
             selectedBioPotensiSwot = bioPotensiSwotService.getEntiyByPK(selectedBioPotensiSwot.getId());
@@ -1634,7 +1671,7 @@ public class BioDataDetilController extends BaseController {
         showDialogBioPotensiSwot(dataToSend);
 
     }
-    
+
     public void doDeleteBioPotensi() {
         try {
             bioPotensiSwotService.delete(selectedBioPotensiSwot);
@@ -1647,7 +1684,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error when doDelete bioBankAccount", ex);
         }
     }
-    
+
     public void doAddBioPotensiSwot() {
         List<String> bioDataId = new ArrayList<>();
         bioDataId.add(String.valueOf(selectedBioData.getId()));
@@ -1656,7 +1693,7 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioPotensiSwot(dataToSend);
     }
-    
+
     private void showDialogBioPotensiSwot(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -1666,7 +1703,7 @@ public class BioDataDetilController extends BaseController {
         options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("bio_potensi_swot_form", options, params);
     }
-    
+
     public void onDialogReturnBioPotensiSwot(SelectEvent event) {
         try {
             ListBioPotensiSwot = bioPotensiSwotService.getAllDataByBioDataId(selectedBioData.getId());
@@ -1675,7 +1712,7 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
-    
+
     /**
      * START Bio IdCard method
      */
@@ -1886,7 +1923,6 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio FamilyRelationship method
      */
-    
     /**
      * START Bio Project method
      */
@@ -1957,11 +1993,9 @@ public class BioDataDetilController extends BaseController {
     /**
      * END Bio Project method
      */
-        
-     /**
+    /**
      * START Bio Sertifikasi method
      */
-    
     public void doSelectBioSertifikasi() {
         try {
             selectedBioSertifikasi = bioSertifikasiService.getEntityByPKWithDetail(selectedBioSertifikasi.getId());
@@ -1969,8 +2003,8 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
-    
-     public void doDeleteBioSertifikasi() {
+
+    public void doDeleteBioSertifikasi() {
         try {
             bioSertifikasiService.delete(selectedBioSertifikasi);
             listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedBioSertifikasi.getBioData().getId());
@@ -1982,8 +2016,8 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error when doDelete bioProject", ex);
         }
     }
-    
-     public void doAddBioSertifikasi() {
+
+    public void doAddBioSertifikasi() {
         List<String> bioDataId = new ArrayList<>();
         bioDataId.add(String.valueOf(selectedBioData.getId()));
 
@@ -1991,7 +2025,7 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioSertifikasi(dataToSend);
     }
-    
+
     public void doUpdateBioSertifikasi() {
         List<String> bioSertifikasiId = new ArrayList<>();
         bioSertifikasiId.add(String.valueOf(selectedBioSertifikasi.getId()));
@@ -2004,8 +2038,8 @@ public class BioDataDetilController extends BaseController {
         dataToSend.put("bioDataId", bioDataId);
         showDialogBioSertifikasi(dataToSend);
     }
-    
-     private void showDialogBioSertifikasi(Map<String, List<String>> params) {
+
+    private void showDialogBioSertifikasi(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
@@ -2023,9 +2057,77 @@ public class BioDataDetilController extends BaseController {
             LOGGER.error("Error", e);
         }
     }
-     
+
     /**
      * END Bio Sertifikasi Swot method
      */
     
+    /**
+     * START Bio Relasi Perusahaan
+     */
+    public void doSelectBioRelasiPerusahaan() {
+        try {
+            selectedBioRelasiPerusahaan = bioRelasiPerusahaanService.getEntityByPkWithDetail(selectedBioRelasiPerusahaan.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doDeleteBioRelasiPerusahaan() {
+        try {
+            bioRelasiPerusahaanService.delete(selectedBioRelasiPerusahaan);
+            listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioRelasiPerusahaan.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioProject", ex);
+        }
+    }
+
+    public void doAddBioRelasiPerusahaan() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioRelasiPerusahaan(dataToSend);
+    }
+
+    public void doUpdateBioRelasiPerusahaan() {
+        List<String> bioRelasiPerusahaan = new ArrayList<>();
+        bioRelasiPerusahaan.add(String.valueOf(selectedBioRelasiPerusahaan.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedBioData.getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioRelasiPerusahaanId", bioRelasiPerusahaan);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioRelasiPerusahaan(dataToSend);
+    }
+
+    private void showDialogBioRelasiPerusahaan(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 830);
+        options.put("contentHeight", 520);
+        RequestContext.getCurrentInstance().openDialog("bio_relasi_perusahaan", options, params);
+    }
+
+    public void onDialogReturnBioRelasiPerusahaan(SelectEvent event) {
+        try {
+            listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Relasi Perusahaan
+     */
 }
