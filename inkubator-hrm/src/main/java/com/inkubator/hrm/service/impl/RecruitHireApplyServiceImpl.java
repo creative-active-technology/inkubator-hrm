@@ -1,5 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.service.RecruitHireApplyService;
@@ -18,6 +22,9 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
+import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
 
 /**
  *
@@ -237,5 +244,47 @@ public class RecruitHireApplyServiceImpl extends IServiceImpl implements Recruit
     @Override
     public List<RecruitHireApply> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModel = recruitHireApplyDao.getRecruitmentReqActivityByParam(parameter, firstResult, maxResults, orderable);
+        setRecruitmentActivityComplexData(listRecruitReqHistoryViewModel);
+        return listRecruitReqHistoryViewModel;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter) throws Exception {
+        return this.recruitHireApplyDao.getTotalRecruitmentReqActivityByParam(parameter);
+    }
+    
+     private void setRecruitmentActivityComplexData(List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModels) {
+        for (RecruitReqHistoryViewModel recruitReqHistoryViewModel : listRecruitReqHistoryViewModels) {
+
+            if (recruitReqHistoryViewModel.getRhaId() == null) {
+
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+                String jsonData = recruitReqHistoryViewModel.getJsonData();
+                JsonParser parser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
+
+                RecruitHireApply recruitHireApplyTemp = gson.fromJson(jsonObject, RecruitHireApply.class);
+                //JsonArray arrayDetailMpp = jsonObject.getAsJsonArray("listRecruitMppHireApplyDetail");
+
+                recruitReqHistoryViewModel.setRecHireCode(recruitHireApplyTemp.getReqHireCode());
+                recruitReqHistoryViewModel.setEfectiveDate(recruitHireApplyTemp.getEfectiveDate());
+                recruitReqHistoryViewModel.setTotalReq(recruitHireApplyTemp.getCandidateCountRequest());                
+
+            } else {
+                
+                RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntiyByPK(recruitReqHistoryViewModel.getRhaId());
+                recruitReqHistoryViewModel.setRecHireCode(recruitHireApply.getReqHireCode());
+                recruitReqHistoryViewModel.setEfectiveDate(recruitHireApply.getEfectiveDate());
+                recruitReqHistoryViewModel.setTotalReq(recruitHireApply.getCandidateCountRequest());  
+
+            }
+        }
     }
 }

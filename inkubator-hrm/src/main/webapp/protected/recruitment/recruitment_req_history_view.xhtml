@@ -33,35 +33,35 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{recruitMppApplyViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{recruitmentReqHistoryViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" itemValue="recruitMppApplyCode"/>
-                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" itemValue="recruitMppApplyName"/>
+                                        <f:selectItem itemLabel="#{appmsg['mppRecruitmentHist.formulir_code']}" itemValue="formCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.jabatan']}" itemValue="jabatanName"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{recruitMppApplyViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{recruitMppApplyViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{recruitmentReqHistoryViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{recruitmentReqHistoryViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_MPP_Implementation"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Recruitment_Request_History"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{recruitMppApplyViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" >
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{recruitmentReqHistoryViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" >
                                        
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{recruitMppApplyViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{recruitmentReqHistoryViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{recruitMppApplyViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{recruitmentReqHistoryViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_list']}"/>
+                                <h:outputText value="#{appmsg['mppRecruitmentHist.recruitment_req_history_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -69,61 +69,69 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="recruitMppApplyCode"  style="width: 17%">
+                            <p:column sortBy="recHireCode"  style="width: 12%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_code']}"/>
+                                    <h:outputText value="#{appmsg['mppRecruitmentHist.formulir_code']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.recruitMppApplyCode}"/>
+                                <h:outputLabel value= "#{data.recHireCode}"/>
                             </p:column>  
-                            <p:column sortBy="recruitMppApplyName"  style="width: 20%">
+                            <p:column sortBy="efectiveDate"  style="width: 12%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_name']}"/>
+                                    <h:outputText value="#{appmsg['mppRecruitmentHist.effective_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.recruitMppApplyName}"/>
-                            </p:column> 
-                            <p:column sortBy="applyDate"  style="width: 12%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.date']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.applyDate}">
-                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                <h:outputLabel value= "#{data.efectiveDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="totalDetailJabatan"  style="width: 12%">
+                            <p:column sortBy="jabatanName"  style="width: 18%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp_recruitment_number_of_job_position']}"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{data.jobPositionTotal}"/>
+                                <h:outputLabel value= "#{data.jabatanName}"/>
                             </p:column> 
                             
-                             <p:column style="width: 20%" sortBy="approvalStatus">
+                             <p:column sortBy="totalReq"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mppRecruitmentHist.request']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.totalReq}"/>
+                            </p:column> 
+                            
+                             <p:column sortBy="requestBy"  style="width: 17%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.apply_by']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.requestBy}"/>
+                            </p:column> 
+                            
+                             <p:column style="width: 15%" sortBy="approvalStatus">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.approvalStatus}">
+                                 <h:outputLabel value= "#{data.approvalStatus}">
                                 	<f:converter converterId="approvalStatusConverter" />
                                 </h:outputLabel>
                             </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 13%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"                                                   
-                                                 style="font-size: 10px!important" action="#{recruitMppApplyViewController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
+                                                 style="font-size: 10px!important" action="#{recruitmentReqHistoryViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1}"
-                                                 action="#{recruitMppApplyViewController.doSelectDataToDelete(data)}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
+                                                 action="#{recruitmentReqHistoryViewController.doSelectDataToDelete(data)}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{recruitMppApplyViewController.doEdit()}" >
-                                   <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />                                  
+                                                  action="#{recruitmentReqHistoryViewController.doEdit()}" >
+                                   <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />                                  
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{recruitMppApplyViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="#{recruitmentReqHistoryViewController.lazyData.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -154,10 +162,10 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{recruitMppApplyViewController.selected.recruitMppApplyCode} - #{recruitMppApplyViewController.selected.recruitMppApplyName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{recruitmentReqHistoryViewController.selected.recruitMppApplyCode} - #{recruitmentReqHistoryViewController.selected.recruitMppApplyName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitMppApplyViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitmentReqHistoryViewController.doDelete()}" update="formId"
                                          oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>
