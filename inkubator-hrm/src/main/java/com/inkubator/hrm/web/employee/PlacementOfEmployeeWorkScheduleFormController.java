@@ -71,7 +71,6 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
             }
-            source = this.empDataService.getAllDataWithRelation();
             MapUtil.sortByValue(workingGroupDropDown);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

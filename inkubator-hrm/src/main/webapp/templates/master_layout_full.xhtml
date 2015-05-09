@@ -56,7 +56,7 @@
         </h:panelGroup>
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
-        <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
+        <!--<p:growl id="growl" showDetail="true" globalOnly="true" />-->
         <h:form>
             <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
             <p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="5500" />
@@ -682,7 +682,7 @@
                                         </p:submenu>
                            
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
-                                    </p:menubar>  
+                                    </p:menubar>
                                 </h:form>
                                 <div class="art-header" id="logoId">
                                     <div class="art-header-jpeg"></div>

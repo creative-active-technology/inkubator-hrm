@@ -483,12 +483,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataWithRelation() throws Exception {
-        return empDataDao.getAllDataWithRelation();
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataByNameOrNik(String param) throws Exception {
         return empDataDao.getAllDataByNameOrNik(param);
     }
@@ -634,18 +628,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getEmployeelBySearchEmployeePermit(PermitDistributionModel model) throws Exception {
         return empDataDao.getEmployeeBySearchEmployeePermit(model);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        return empDataDao.getAllDataReportOfEmployeesFamilyByParam(searchParameter, firstResult, maxResults, orderable);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception {
-        return empDataDao.getTotalReportOfEmployeesFamilyByParam(searchParameter);
     }
 
     @Override

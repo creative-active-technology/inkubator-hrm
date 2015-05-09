@@ -34,6 +34,7 @@ import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
  */
 public interface EmpDataDao extends IDAO<EmpData> {
 
+	/** get property */
     public Long getTotalByGender(Integer gender);
 
     public Long getTotalByAgeBetween(Date startDate, Date endDate);
@@ -44,29 +45,88 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalByDepartmentId(Long departmentId);
 
-    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-
-    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);
-
-    public EmpData getByEmpIdWithDetail(long id);
-
-    public EmpData getByBioDataWithDepartment(long id);
-
     public Long getTotalByNikandNotId(String nik, Long id);
 
     public Long getTotalByNIK(String nik);
+    
+    public Long getTotalEmpDataNotTerminate();
 
-    public List<EmpData> getAllDataWithRelation();
+    public Long getTotalByTaxFreeIsNull();        
+    
+    public Long getTotalKaryawanByJabatanId(Long jabatanId);
+    
+    
+    
+    
+    /** get entity */       
+    public EmpData getByEmpIdWithDetail(long id);
 
+    public EmpData getByBioDataWithDepartment(long id);
+    
     public EmpData getEntityByNik(String nik);
+    
+    public EmpData getByIdWithDetail(long id);   
+    
+    public EmpData getEmpDataWithBiodata(Long id);    
 
-    public List<EmpData> getAllDataByNameOrNik(String param);
+    public EmpData getByPKBankTransfer(long id);
 
-    public EmpData getByIdWithDetail(long id);
+    public EmpData getByEmpDataByBioDataId(long bioDataid);
+    
+    public BioDataModel getEmpNameWithNearestBirthDate();
+    
+    
+    
+    
+    /** get pageable/paging */
+    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
+    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);    
+
+    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
+    
+    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
+    
+    public List<EmpData> getAllDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order);
+
+    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order);
+
+    public Long getTotalDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId);
+    
+    public List<EmpData> getReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, int firstResult, int maxResults, Order order);
+
+    public Long getTotalReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId);
+    
+    public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order);
+
+    public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
+    
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik, int firstResult, int maxResults, Order order);    
+    
+    public Long getTotalByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik);
+    
+    public List<EmpData> getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId, int firstResult, int maxResults, Order order);
+
+    public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId);
+    
     public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order);
-
+    
     public Long getTotalNotExistInUserByParam(String param);
+    
+    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable);
+    
+    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
+
+    
+    
+    
+    
+    /** get list */
+    public List<EmpData> getAllDataByNameOrNik(String param);    
 
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);
 
@@ -78,73 +138,20 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model);
 
-    public List<EmpData> getEmpDataByListId(List<Long> data);
+    public List<EmpData> getEmpDataByListId(List<Long> data);    
 
-    public List<EmpData> getAllDataReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param);
-
-    public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model);
-
-    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter);
-
-    public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param);
+    public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model);        
 
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model);
 
-    public EmpData getEmpDataWithBiodata(Long id);
-
     public List<EmpData> getAllDataNotTerminate();
-
-    public Long getTotalEmpDataNotTerminate();
-
-    public Long getTotalByTaxFreeIsNull();
 
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
 
-    public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter param, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
-
-    public EmpData getByPKBankTransfer(long id);
-
-    public EmpData getByEmpDataByBioDataId(long bioDataid);
-
-    public List<EmpData> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId);
-
-    public BioDataModel getEmpNameWithNearestBirthDate();
-
-    public List<EmpData> getAllDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order);
-
-    public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Long> departementId, List<Long> educationId, int firstResult, int maxResults, Order order);
-
-    public Long getTotalDataByDepartementAndEducation(List<Long> departementId, List<Long> educationId);
-
-    public List<EmpData> getReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, int firstResult, int maxResults, Order order);
-
-    public Long getTotalReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId);
-
-    public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order);
-
-    public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
-
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik, int firstResult, int maxResults, Order order);
-
-    public Long getTotalByParamWithDetail(List<Department> listDepartment, List<GolonganJabatan> listGoljab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik);
-
     public List<String> getAllNikBetween(String from, String until);
-
-    public List<EmpData> getAllDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId, int firstResult, int maxResults, Order order);
-
-    public Long getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(List<Long> empTypeId, List<Long> golJabId, List<Long> unitKerjaId);
-
-    public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);
     
-    public Long getTotalKaryawanByJabatanId(Long jabatanId);
+    public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);    
+    
 }

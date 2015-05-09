@@ -138,29 +138,7 @@ public class TerminationFormController extends BaseController{
 		}
 		return empDatas;
 	}
-    
-    public List<String> completeEmployeeString(String query) {
-            
-        try {
-            List<EmpData> allEmployee;
-            allEmployee = empDataService.getAllDataWithRelation();
-            List<String> queried = new ArrayList<String>();
-            
-            for (EmpData empData : allEmployee) {
-                if (empData.getNik().toLowerCase().startsWith(query)  || empData.getNik().startsWith(query) && empData.getNik() != null ) {
-                    queried.add(empData.getNikWithFullName());
-                }
-            }
-            Set<String> setFullName = new HashSet<>(queried);
-            List<String> listName = new ArrayList<>(setFullName);
-            return listName;
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(TerminationFormController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-       return null;
-    }
-    
+        
     private Termination getEntityFromViewModel(TerminationModel model) throws Exception {
         Termination termination = new Termination();
         if (model.getId() != null) {

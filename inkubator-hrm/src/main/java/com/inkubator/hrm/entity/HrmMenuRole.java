@@ -1,6 +1,7 @@
 package com.inkubator.hrm.entity;
 // Generated Jun 16, 2014 8:44:01 PM by Hibernate Tools 3.6.0
 
+import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -82,4 +83,40 @@ public class HrmMenuRole implements java.io.Serializable {
         this.description = description;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.hrmMenu);
+        hash = 53 * hash + Objects.hashCode(this.hrmRole);
+        hash = 53 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        System.out.println(" perbandingan duplicate");
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HrmMenuRole other = (HrmMenuRole) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.hrmMenu, other.hrmMenu)) {
+            return false;
+        }
+        if (!Objects.equals(this.hrmRole, other.hrmRole)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
+
+    
 }
