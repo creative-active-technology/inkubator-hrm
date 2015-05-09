@@ -8,12 +8,14 @@ import java.util.Date;
  * @author WebGenX
  */
 public class RecruitHireApplyModel implements Serializable {
-
+    
+    private Long recruitHireApplyId;
     private Long salaryMax;
     private String reason;
     private Date proposeDate;
     private String reqHireCode;
     private Integer ageMax;
+    private Integer yearExperience;
     private String maritalStatus;
     private Double gpaMin;
     private Double gpaMax;
@@ -29,6 +31,14 @@ public class RecruitHireApplyModel implements Serializable {
     private int candidateCountRequest;
     private String gender;
     private Long salaryMin;
+    private Long recruitMppId;
+    private Long currencyId;
+    private Long empStatus;
+    private Long jabatanId;
+    private Long actual;
+    private Long mpp;
+    private String applyBy;
+    private String jabatanPengaju;
     private Date updatedOn;
 
     public Long getSalaryMax() {
@@ -198,4 +208,87 @@ public class RecruitHireApplyModel implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    public Long getRecruitMppId() {
+        return recruitMppId;
+    }
+
+    public void setRecruitMppId(Long recruitMppId) {
+        this.recruitMppId = recruitMppId;
+    }
+
+    public Long getJabatanId() {
+        return jabatanId;
+    }
+
+    public void setJabatanId(Long jabatanId) {
+        this.jabatanId = jabatanId;
+    }
+
+    public Long getActual() {
+        return actual;
+    }
+
+    public void setActual(Long actual) {
+        this.actual = actual;
+    }
+
+    public Long getMpp() {
+        return mpp;
+    }
+
+    public void setMpp(Long mpp) {
+        this.mpp = mpp;
+    }
+
+    public Long getEmpStatus() {
+        return empStatus;
+    }
+
+    public void setEmpStatus(Long empStatus) {
+        this.empStatus = empStatus;
+    }
+
+    public Integer getYearExperience() {
+        return yearExperience;
+    }
+
+    public void setYearExperience(Integer yearExperience) {
+        this.yearExperience = yearExperience;
+    }
+
+    public String getApplyBy() {
+        return applyBy;
+    }
+
+    public void setApplyBy(String applyBy) {
+        this.applyBy = applyBy;
+    }
+
+    public String getJabatanPengaju() {
+        return jabatanPengaju;
+    }
+
+    public void setJabatanPengaju(String jabatanPengaju) {
+        this.jabatanPengaju = jabatanPengaju;
+    }
+
+    public Long getRecruitHireApplyId() {
+        return recruitHireApplyId;
+    }
+
+    public void setRecruitHireApplyId(Long recruitHireApplyId) {
+        this.recruitHireApplyId = recruitHireApplyId;
+    }
+
+    public Long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
+    }
+    
+    
+    
 }

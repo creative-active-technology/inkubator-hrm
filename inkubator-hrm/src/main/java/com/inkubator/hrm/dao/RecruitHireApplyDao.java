@@ -21,4 +21,6 @@ public interface RecruitHireApplyDao extends IDAO<RecruitHireApply> {
     public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable);
         
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter);
+    
+    public Long getTotalDataByReqHireCode(String reqHireCode);
 }

@@ -202,5 +202,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
       return this.recruitMppApplyDetailDao.getListWithDetailByRecruitMppApplyId(recruitMppApplyId);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getRecruitPlanByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) throws Exception {
+        return this.recruitMppApplyDetailDao.getRecruitPlanByJabatanIdAndMppPeriodId(jabatanId, mppPeriodId);
+    }
+
     
 }

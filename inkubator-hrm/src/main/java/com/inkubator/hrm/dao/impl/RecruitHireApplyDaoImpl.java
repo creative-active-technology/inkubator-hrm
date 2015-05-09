@@ -65,19 +65,7 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
 
     @Override
     public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-//        StringBuffer selectQuery = new StringBuffer(
-//                "SELECT approvalActivity.id AS approvalActivityId, "
-//                + "approvalActivity.activity_number AS activityNumber, "
-//                + "mpp.id AS recruitMppApplyId, "
-//                + "mpp.recruit_mpp_apply_code AS recruitMppApplyCode, "
-//                + "mpp.recruit_mpp_apply_name AS recruitMppApplyName,  "
-//                + "approvalActivity.approval_status AS approvalStatus, "
-//                + "approvalActivity.pending_data AS jsonData  "
-//                + "FROM hrm.approval_activity approvalActivity "
-//                + "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
-//                + "LEFT JOIN hrm.recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
-//                + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) "
-//                + "AND approvalDefinition.name = :appDefinitionName  ");
+
         
         StringBuffer selectQuery = new StringBuffer(
                 "SELECT approvalActivity.id AS approvalActivityId, " 
@@ -154,5 +142,12 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
             }
         }
         return hbm;
+    }
+
+    @Override
+    public Long getTotalDataByReqHireCode(String reqHireCode) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("reqHireCode", reqHireCode));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 }

@@ -12,14 +12,10 @@ import org.hibernate.criterion.Order;
  * @author Ahmad Mudzakkir Amal
  */
 public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
-
-//    public List<RecruitMppApplyDetail> getByParam(AnnouncementSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-//
-//    public Long getTotalByParam(AnnouncementSearchParameter searchParameter);
-//
-//	public RecruitMppApplyDetail getEntityByPkWithDetail(Long id);
     
     public Long getTotalByRecruitMppApplyId(Long recruitMppApplyId);
     
     public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId);
+    
+    public Long getRecruitPlanByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId);
 }

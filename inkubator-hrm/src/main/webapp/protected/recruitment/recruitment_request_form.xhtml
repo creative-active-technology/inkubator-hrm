@@ -24,8 +24,8 @@
                             <p:graphicImage library="images" name="recruitment.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Pengajuan Recruitment" styleClass="header_big" />
-                                    <p:outputLabel value="Data Pengajuan Recruitment dari Rekruitment" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['mppRecruitmentHist.recruitment_request_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['mppRecruitmentHist.recruitment_request_data_from_recruitment']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -34,19 +34,19 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="tglPengajuanId" value="Tanggal Pengajuan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="tglPengajuanId" value="#{appmsg['mppRecruitmentHist.filling_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar  id="tglPengajuanId" pattern="dd MMMM yyyy" showOn="button"/>
+                                    <p:calendar  id="tglPengajuanId" pattern="dd MMMM yyyy" value="#{recruitHireApplyFormController.model.proposeDate}" showOn="button"/>
                                     <p:message for="tglPengajuanId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="mppPeriodeId" value="MPP Periode" styleClass="label_hrm"/>
+                                    <p:outputLabel for="mppPeriodeId" value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="mppPeriodeId">
+                                    <p:selectOneMenu id="mppPeriodeId" value="#{recruitHireApplyFormController.model.recruitMppId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitHireApplyFormController.mapPeriode}" />
                                     </p:selectOneMenu>
@@ -55,21 +55,22 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="effectifeDateId" value="Tanggal Efektif" styleClass="label_hrm"/>
+                                    <p:outputLabel for="effectifeDateId" value="#{appmsg['mppRecruitmentHist.effective_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar  id="effectifeDateId" pattern="dd MMMM yyyy" showOn="button"/>
+                                    <p:calendar  id="effectifeDateId" pattern="dd MMMM yyyy" value="#{recruitHireApplyFormController.model.efectiveDate}" showOn="button"/>
                                     <p:message for="effectifeDateId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="jabatanId" value="Jabatan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="jabatanId" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="jabatanId" filter="true">
+                                    <p:selectOneMenu id="jabatanId" filter="true" value="#{recruitHireApplyFormController.model.jabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitHireApplyFormController.mapJabatan}" />
+                                        <p:ajax   listener="#{recruitHireApplyFormController.onChangeJabatan()}"  update="acctuanMppId"/>
                                     </p:selectOneMenu>
                                     <p:message for="jabatanId"/>
                                 </p:column>
@@ -77,28 +78,28 @@
 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="acctuanMppId" value="Aktual MPP" styleClass="label_hrm"/>
+                                    <p:outputLabel for="acctuanMppId" value="#{appmsg['mppRecruitmentHist.actual_mpp']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="2/3" id="acctuanMppId" />
+                                    <p:outputLabel value="#{recruitHireApplyFormController.model.actual} / #{recruitHireApplyFormController.model.mpp}" id="acctuanMppId" />
                                 </p:column>
-                            </p:row>
+                            </p:row> 
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="requestId" value="Permintaan Karyawan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="requestId" value="#{appmsg['mppRecruitmentHist.number_of_emp_req']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:spinner min="0"  max="100" id="requestId"  size="3"/>
+                                    <p:spinner min="0"  max="100" id="requestId"  size="3" value="#{recruitHireApplyFormController.model.candidateCountRequest}" />
                                     <p:outputLabel value="Orang" style="margin-left: 5px" />
                                     <p:message for="requestId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="statusId" value="Status Karyawan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="statusId" value="#{appmsg['organization.job_status']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="statusId">
+                                    <p:selectOneMenu id="statusId" value="#{recruitHireApplyFormController.model.empStatus}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitHireApplyFormController.mapEmployeeType}" />
                                     </p:selectOneMenu>
@@ -107,98 +108,102 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="rentangGajiId" value="Rentang Gaji" styleClass="label_hrm"/>
+                                    <p:outputLabel for="rentangGajiId" value="#{appmsg['mppRecruitmentHist.salary_range']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <h:panelGrid columns="4" style="margin-left: -10px">
-                                        <p:selectOneMenu id="rentangGajiId">
+                                        <p:selectOneMenu id="rentangGajiId" value="#{recruitHireApplyFormController.model.currencyId}">
                                             <f:selectItems value="#{recruitHireApplyFormController.mapCurrency}" />
                                         </p:selectOneMenu>
-                                        <pe:inputNumber style="margin-left: -10px"/>
+                                        <pe:inputNumber style="margin-left: -10px" value="#{recruitHireApplyFormController.model.salaryMin}"/>
                                         <p:outputLabel value="s.d" style="margin-left: -10px"/>
-                                        <pe:inputNumber style="margin-left: -10px"/>
+                                        <pe:inputNumber style="margin-left: -10px" value="#{recruitHireApplyFormController.model.salaryMax}"/>
                                     </h:panelGrid>
                                     <p:message for="rentangGajiId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="reasonId" value="#{appmsg['loginform.alasan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%" >
-                                    <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" 
+                                    <p:inputTextarea id="reasonId" rows="5" cols="37" counter="counter" maxlength="500" 
+                                                     value="#{recruitHireApplyFormController.model.reason}"
                                                      style="width: 290px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" 
-                                                     label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                                     label="#{appmsg['loginform.alasan']}" title="#{appmsg['loginform.alasan']}" />
                                     <br/><p:outputLabel id="counter" />
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
-                        <p:fieldset legend="Informasi Jabatan" style="margin-bottom:10px">
+                        <p:fieldset legend="#{appmsg['mppRecruitmentHist.job_position_information']}" style="margin-bottom:10px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="genderId" value="Jenid Kelamin" styleClass="label_hrm"/>
+                                        <p:outputLabel for="genderId" value="#{appmsg['global.gender']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:selectOneMenu id="genderId" style="width: 120px">
+                                        <p:selectOneMenu id="genderId" style="width: 120px" value="#{recruitHireApplyFormController.model.gender}">
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                            <f:selectItem itemLabel="Semua" itemValue="Any"/>
-                                            <f:selectItem itemLabel="Laki-Laki" itemValue="Male"/>
-                                            <f:selectItem itemLabel="Perempuan" itemValue="Female"/>
+                                            <f:selectItem itemLabel="#{appmsg['global.all']}" itemValue="Any"/>
+                                            <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="Male"/>
+                                            <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="Female"/>
                                         </p:selectOneMenu>
                                         <p:message for="genderId"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="mariedId" value="Status Pernikahan" styleClass="label_hrm"/>
+                                        <p:outputLabel for="mariedId" value="#{appmsg['maritalstatus.maritalstatus']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:selectOneMenu id="mariedId" style="width: 120px">
+                                        <p:selectOneMenu id="mariedId" style="width: 120px" value="#{recruitHireApplyFormController.model.maritalStatus}">
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                            <f:selectItem itemLabel="Semua" itemValue="Any"/>
-                                            <f:selectItem itemLabel="Menikah" itemValue="Married"/>
-                                            <f:selectItem itemLabel="Tidak Menikah" itemValue="Single"/>
+                                            <f:selectItem itemLabel="#{appmsg['global.all']}" itemValue="Any"/>
+                                            <f:selectItem itemLabel="#{appmsg['global.maried_yes']}" itemValue="Married"/>
+                                            <f:selectItem itemLabel="#{appmsg['global.maried_no']}" itemValue="Single"/>
                                         </p:selectOneMenu>
                                         <p:message for="mariedId"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="ageId" value="Umur" styleClass="label_hrm"/>
+                                        <p:outputLabel for="ageId" value="#{appmsg['biodata.age']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
                                         <h:panelGrid columns="3" style="margin-left: -10px">
-                                            <p:spinner min="0"  max="100" id="ageId"  size="3"/>
-                                            <p:outputLabel value="s.d" style="margin-left: -10px"/>
-                                            <p:spinner min="0"  max="100"   size="3"  style="margin-left: -10px"/>
+                                            <p:spinner min="0"  max="100" id="ageId"  size="3" value="#{recruitHireApplyFormController.model.ageMin}"/>
+                                            <p:outputLabel value="#{appmsg['global.to']}" style="margin-left: -10px"/>
+                                            <p:spinner min="0"  max="100"   size="3" value="#{recruitHireApplyFormController.model.ageMax}"  style="margin-left: -10px"/>
                                         </h:panelGrid>
                                         <p:message for="ageId"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="ipkId" value="IPK" styleClass="label_hrm"/>
+                                        <p:outputLabel for="ipkMinId" value="#{appmsg['mppRecruitmentHist.ipk']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber id="ipkId"/>
-                                        <p:outputLabel value="Skala 4"  style="margin-left: 5px"/>
-                                        <p:message for="ipkId"/>
+                                        <pe:inputNumber id="ipkMinId" label="#{appmsg['mppRecruitmentHist.ipk']}" value="#{recruitHireApplyFormController.model.gpaMin}"/>
+                                         <p:outputLabel value="#{appmsg['global.to']}" style="margin-left: -10px"/>
+                                         <pe:inputNumber id="ipkMaxId" label="#{appmsg['mppRecruitmentHist.ipk']}" value="#{recruitHireApplyFormController.model.gpaMax}" style="margin-left: -10px"/>
+                                        <p:outputLabel value="#{appmsg['mppRecruitmentHist.scale_4']}"  style="margin-left: 5px"/>
+                                        <p:message for="ipkMinId"/>
+                                        <p:message for="ipkMaxId"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel for="kerjaId" value="Pengalaman Kerja" styleClass="label_hrm"/>
+                                        <p:outputLabel for="kerjaId" value="#{appmsg['mppRecruitmentHist.work_experience']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber id="kerjaId"/>
-                                        <p:outputLabel value="Tahun"  style="margin-left: 5px"/>
+                                        <pe:inputNumber id="kerjaId" value="#{recruitHireApplyFormController.model.yearExperience}" />
+                                        <p:outputLabel value="#{appmsg['global.year']}"  style="margin-left: 5px"/>
                                         <p:message for="kerjaId"/>
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>
                         </p:fieldset>
-                        <p:fieldset legend="Spesifikasi Pekerjaan" style="margin-bottom:15px">
+                        <p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                                 <c:forEach   var="ordinate2" id="repeat" begin="0" end="#{recruitHireApplyFormController.dataForRenders.size()-1}"  >
                                     <p:row>
@@ -207,7 +212,7 @@
                                         </p:column>
                                         <p:column  style="width: 80%">
                                             <p:pickList value="#{recruitHireApplyFormController.dataForRenders.get(ordinate2)}" var="orgTypeOfSpecList" itemValue="#{orgTypeOfSpecList}" converter="orgTipeListConverter" 
-                                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="Lokasi Kerja" styleClass="isitext_hrm"
+                                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['org_level.work_location']}" styleClass="isitext_hrm"
                                                         itemLabel="#{orgTypeOfSpecList.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                         removeLabel="#{appmsg['global.remove']}"/>
                                         </p:column>
@@ -217,35 +222,32 @@
 
                             </p:panelGrid>
                         </p:fieldset>
-                        <p:fieldset legend="Pengajuan Oleh" style="margin-bottom:15px">
+                        <p:fieldset legend="#{appmsg['mppRecruitmentHist.apply_by']}" style="margin-bottom:15px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel  value="Nama" styleClass="label_hrm"/>
+                                        <p:outputLabel  value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:outputLabel  value="Udin Alias Didin" styleClass="text_hrm"/>
+                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.applyBy}" styleClass="text_hrm"/>
                                     </p:column>
                                 </p:row>
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                        <p:outputLabel  value="Jabatan" styleClass="label_hrm"/>
+                                        <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:outputLabel  value="Direktur Utama" styleClass="text_hrm"/>
+                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.jabatanPengaju}" styleClass="text_hrm"/>
                                     </p:column>
                                 </p:row>
 
                             </p:panelGrid>
                         </p:fieldset>
 
-
-
-                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-                        <!--<p:panel style="margin: 10px">-->
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>                   
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true"
-                                             action="#{recruitSelectionTypeTemplatesFormController.doSave()}" styleClass="label_button" update="selectionTipeFormId"
+                                             action="#{recruitHireApplyFormController.doSave()}" styleClass="label_button" update="selectionTipeFormId"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
@@ -253,9 +255,9 @@
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="selectionTipeFormId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitSelectionTypeTemplatesFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitHireApplyFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
-                            <!--</p:panel>-->
+                         
                         </div>
                     </div>
                 </h:form>
