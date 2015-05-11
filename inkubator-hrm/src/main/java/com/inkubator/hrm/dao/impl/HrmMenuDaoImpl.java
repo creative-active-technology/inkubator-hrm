@@ -87,6 +87,7 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     public List<HrmMenu> getAllDataByLevelAndNotId(int level, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("menuLevel", level));
+        criteria.add(Restrictions.eq("isGroup", Boolean.TRUE));
         if (id != null) {
             criteria.add(Restrictions.ne("id", id));
         }
@@ -97,6 +98,7 @@ public class HrmMenuDaoImpl extends IDAOImpl<HrmMenu> implements HrmMenuDao {
     public List<HrmMenu> getAllDataByLevelAndNotId(int level, List<Long> ids) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("menuLevel", level));
+        criteria.add(Restrictions.eq("isGroup", Boolean.TRUE));
         if (!ids.isEmpty()) {
             criteria.add(Restrictions.not(Restrictions.in("id", ids)));
         }
