@@ -777,6 +777,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return criteria.list();
     }
+    
+    @Override
+    public List<EmpData> getAllData() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of jabatanByJabatanId, department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */        
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        return criteria.list();
+    }
 
     @Override
     public Long getTotalEmpDataNotTerminate() {
