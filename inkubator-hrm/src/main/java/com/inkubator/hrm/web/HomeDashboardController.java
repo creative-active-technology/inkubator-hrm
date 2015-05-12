@@ -99,6 +99,12 @@ public class HomeDashboardController extends BaseController {
             pieModel.set("> 40", employeesByAge.get("moreThan40"));
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
 
+            /**
+             * resume of employee data
+             */
+            this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
+            this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
+            
         } catch (Exception e) {
             LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
         }
@@ -292,8 +298,7 @@ public class HomeDashboardController extends BaseController {
         this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
     }
 
-    public BioDataModel getNearestBirthDate() {
-        this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
+    public BioDataModel getNearestBirthDate() {        
         return nearestBirthDate;
     }
 
@@ -301,8 +306,7 @@ public class HomeDashboardController extends BaseController {
         this.nearestBirthDate = nearestBirthDate;
     }
 
-    public Long getTotalEmp() throws Exception {
-        this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
+    public Long getTotalEmp() throws Exception {    	
         return totalEmp;
     }
 
