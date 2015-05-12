@@ -80,7 +80,6 @@ public class LeaveDistributionSchemeFormController extends BaseController {
                 i++;
             }
             MapUtil.sortByValue(golonganJabatanDropDown);
-            source = this.empDataService.getAllDataWithRelation();
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(LeaveDistributionSchemeFormController.class.getName()).log(Level.SEVERE, null, ex);
         }

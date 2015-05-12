@@ -46,6 +46,7 @@ public class RecruitHireApply  implements java.io.Serializable {
      private String maritalStatus;
      private Integer ageMin;
      private Integer ageMax;
+     private Integer yearExperience;
      private Double gpaMin;
      private Double gpaMax;
      private Date createdOn;
@@ -264,7 +265,17 @@ public class RecruitHireApply  implements java.io.Serializable {
     public void setAgeMax(Integer ageMax) {
         this.ageMax = ageMax;
     }
+    
+    @Column(name="year_experience")
+    public Integer getYearExperience() {
+        return yearExperience;
+    }
 
+    public void setYearExperience(Integer yearExperience) {
+        this.yearExperience = yearExperience;
+    }
+
+    
     
     @Column(name="gpa_min", precision=22, scale=0)
     public Double getGpaMin() {

@@ -77,7 +77,6 @@ public class PermitDistributionFormController extends BaseController {
                 i++;
             }
             MapUtil.sortByValue(golonganJabatanDropDown);
-            source = this.empDataService.getAllDataWithRelation();
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(PermitDistributionFormController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -40,16 +40,6 @@
                                 <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 59%">
-<!--                                <p:autoComplete id="employeeId" 
-                                                title="#{appmsg['personachievement.employee_name']}" 
-                                                value="#{terminationFormController.model.empDataWithNik}"
-                                                completeMethod="#{terminationFormController.completeEmployeeString}" 
-                                                scrollHeight="100"
-                                                required="true" 
-                                                requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" size="44" transient="true" style="width:250px;" disabled="#{terminationFormController.isUpdate}">
-                                </p:autoComplete>-->
-                                
                                 <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{terminationFormController.model.empData}"

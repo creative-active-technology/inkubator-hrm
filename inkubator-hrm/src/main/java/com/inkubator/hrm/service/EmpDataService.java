@@ -50,8 +50,6 @@ public interface EmpDataService extends IService<EmpData> {
 
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
 
-    public List<EmpData> getAllDataWithRelation() throws Exception;
-
     public List<EmpData> getAllDataByNameOrNik(String param) throws Exception;
 
     public EmpData getByIdWithDetail(long id) throws Exception;
@@ -80,10 +78,6 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalReportEmpWorkingGroupByParam(ReportEmpWorkingGroupParameter param) throws Exception;
 
     public List<EmpData> getEmployeelBySearchEmployeePermit(PermitDistributionModel model) throws Exception;
-
-    public List<EmpData> getAllDataReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
-
-    public Long getTotalReportOfEmployeesFamilyByParam(ReportOfEmployeesFamilySearchParameter searchParameter) throws Exception;
 
     public List<EmpData> getAllDataReportEmpDepartmentJabatanByParam(ReportEmpDepartmentJabatanParameter param, int firstResult, int maxResults, Order orderable) throws Exception;
 

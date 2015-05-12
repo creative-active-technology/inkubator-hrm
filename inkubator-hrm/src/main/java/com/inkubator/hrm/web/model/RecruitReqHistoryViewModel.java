@@ -15,59 +15,74 @@ import java.util.Date;
  */
 public class RecruitReqHistoryViewModel implements Serializable {
 
-    private Long recruitMppApplyId;
-    private String recruitMppApplyCode;
-    private String recruitMppApplyName;
-    private Date applyDate;
-    private Long jobPositionTotal;
+    private Long rhaId;
+    private String recHireCode;   
+    private Date efectiveDate;
+    private Integer totalReq;
+    private String jabatanCode;
+    private String jabatanName;
+    private String requestBy;
     private BigInteger approvalActivityId;    
     private String activityNumber;
     private Integer approvalStatus;
     private String jsonData;
 
-    public Long getRecruitMppApplyId() {
-        return recruitMppApplyId;
+    public Long getRhaId() {
+        return rhaId;
     }
 
-    public void setRecruitMppApplyId(Long recruitMppApplyId) {
-        this.recruitMppApplyId = recruitMppApplyId;
+    public void setRhaId(Long rhaId) {
+        this.rhaId = rhaId;
     }
 
-    
-
-    public String getRecruitMppApplyCode() {
-        return recruitMppApplyCode;
+    public String getRecHireCode() {
+        return recHireCode;
     }
 
-    public void setRecruitMppApplyCode(String recruitMppApplyCode) {
-        this.recruitMppApplyCode = recruitMppApplyCode;
+    public void setRecHireCode(String recHireCode) {
+        this.recHireCode = recHireCode;
     }
 
-    public String getRecruitMppApplyName() {
-        return recruitMppApplyName;
+    public Date getEfectiveDate() {
+        return efectiveDate;
     }
 
-    public void setRecruitMppApplyName(String recruitMppApplyName) {
-        this.recruitMppApplyName = recruitMppApplyName;
+    public void setEfectiveDate(Date efectiveDate) {
+        this.efectiveDate = efectiveDate;
     }
 
-    public Date getApplyDate() {
-        return applyDate;
+    public Integer getTotalReq() {
+        return totalReq;
     }
 
-    public void setApplyDate(Date applyDate) {
-        this.applyDate = applyDate;
+    public void setTotalReq(Integer totalReq) {
+        this.totalReq = totalReq;
     }
 
-    public Long getJobPositionTotal() {
-        return jobPositionTotal;
+    public String getJabatanCode() {
+        return jabatanCode;
     }
 
-    public void setJobPositionTotal(Long jobPositionTotal) {
-        this.jobPositionTotal = jobPositionTotal;
+    public void setJabatanCode(String jabatanCode) {
+        this.jabatanCode = jabatanCode;
     }
 
-    
+    public String getJabatanName() {
+        return jabatanName;
+    }
+
+    public void setJabatanName(String jabatanName) {
+        this.jabatanName = jabatanName;
+    }
+
+    public String getRequestBy() {
+        return requestBy;
+    }
+
+    public void setRequestBy(String requestBy) {
+        this.requestBy = requestBy;
+    }
+
     public BigInteger getApprovalActivityId() {
         return approvalActivityId;
     }
@@ -76,7 +91,6 @@ public class RecruitReqHistoryViewModel implements Serializable {
         this.approvalActivityId = approvalActivityId;
     }
 
-    
     public String getActivityNumber() {
         return activityNumber;
     }
@@ -100,6 +114,7 @@ public class RecruitReqHistoryViewModel implements Serializable {
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
     }
+    
     
     
 }

@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,14 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     public Class<Jabatan> getEntityClass() {
         return Jabatan.class;
     }
+    
+    private Criteria addJoinRelationsOfCompanyId(Criteria criteria, Long companyId){
+    	criteria.createAlias("department", "department", JoinType.INNER_JOIN);
+    	criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+    	criteria.add(Restrictions.eq("company.id", companyId));
+    	
+    	return criteria;
+    }
 
     @Override
     public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
@@ -59,6 +68,10 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     }
 
     private void doSearchByParam(JabatanSearchParameter parameter, Criteria criteria) {
+    	/** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
@@ -72,7 +85,6 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         }
 
         if (StringUtils.isNotEmpty(parameter.getDepartementName())) {
-            criteria.createAlias("department", "dd", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("dd.departmentName", parameter.getDepartementName(), MatchMode.ANYWHERE));
         }
             criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
@@ -93,13 +105,20 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public Jabatan getJabatanByLevelOne(Integer level) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("levelJabatan", level));
+//        criteria.add(Restrictions.eq("levelJabatan", level));
+        // kasih restric terhadap company yang active......
+        System.out.println(" Hahhahaah");
+        criteria.add(Restrictions.isNull("jabatan"));
         return (Jabatan) criteria.uniqueResult();
     }
 
     @Override
     public List<Jabatan> getJabatanByParentCode(String parentCode) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.createAlias("jabatan", "jb", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("jb.code", parentCode));
         criteria.setFetchMode("jabatans", FetchMode.JOIN);
@@ -123,6 +142,10 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public List<Jabatan> getJabatansByLevel(Integer level) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.eq("levelJabatan", level));
         return criteria.list();
     }
@@ -151,8 +174,11 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public List<Jabatan> getByDepartementId(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("department", "d", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("d.id", id));
+        /** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
+        criteria.add(Restrictions.eq("department.id", id));
         return criteria.list();
 
     }
@@ -168,6 +194,10 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public List<Jabatan> getByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
         criteria.addOrder(Order.asc("name"));
         criteria.setFetchMode("department", FetchMode.JOIN);
@@ -179,6 +209,10 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
 	@Override
 	public List<Jabatan> getAllDataByCodeOrName(String param) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		/** automatically get relations of department, company 
+         *  don't create alias for that entity, or will get error : duplicate association path */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
 		Disjunction disjunction = Restrictions.disjunction();
 		disjunction.add(Restrictions.like("code", param, MatchMode.ANYWHERE));
 		disjunction.add(Restrictions.like("name", param, MatchMode.ANYWHERE));

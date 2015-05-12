@@ -12,12 +12,16 @@ import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.LoanNewTypeService;
+import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.web.lazymodel.LoanNewTypeLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.RecruitMppApplyViewLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.RecruitmentReqHistoryViewLazyDataModel;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
+import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
 import com.inkubator.hrm.web.search.LoanNewTypeSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
+import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -45,11 +49,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class RecruitmentReqHistoryViewController extends BaseController {
 
-    private RecruitMppApplySearchParameter searchParameter;
-    private LazyDataModel<RecruitMppApplyViewModel> lazyData;
-    private RecruitMppApplyViewModel selected;
-    @ManagedProperty(value = "#{recruitMppApplyService}")
-    private RecruitMppApplyService recruitMppApplyService;
+    private RecruitReqHistorySearchParameter searchParameter;
+    private LazyDataModel<RecruitReqHistoryViewModel> lazyData;
+    private RecruitReqHistoryViewModel selected;
+    @ManagedProperty(value = "#{recruitHireApplyService}")
+    private RecruitHireApplyService recruitHireApplyService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
 
@@ -57,12 +61,12 @@ public class RecruitmentReqHistoryViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new RecruitMppApplySearchParameter();
+        searchParameter = new RecruitReqHistorySearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-        recruitMppApplyService = null;
+        recruitHireApplyService = null;
         approvalActivityService = null;
         searchParameter = null;
         lazyData = null;      
@@ -74,7 +78,7 @@ public class RecruitmentReqHistoryViewController extends BaseController {
     }
     
     public String doAdd() {
-        return "/protected/recruitment/recruit_mpp_apply_form.htm?faces-redirect=true";
+        return "/protected/recruitment/recruitment_request_form.htm?faces-redirect=true";
     }
     
     public String doDetail() {
@@ -82,9 +86,9 @@ public class RecruitmentReqHistoryViewController extends BaseController {
     }
     
     public String doEdit() {
-        return "/protected/recruitment/recruit_mpp_apply_form.htm?faces-redirect=true&execution=" + selected.getActivityNumber();
+        return "/protected/recruitment/recruitment_request_form.htm?faces-redirect=true&execution=" + selected.getActivityNumber();
     }
-    public void doSelectDataToDelete(RecruitMppApplyViewModel selected) {
+    public void doSelectDataToDelete(RecruitReqHistoryViewModel selected) {
         this.selected = selected;
     }
 
@@ -114,34 +118,31 @@ public class RecruitmentReqHistoryViewController extends BaseController {
         super.onDialogReturn(event);
     }
 
-    public RecruitMppApplySearchParameter getSearchParameter() {
+    public RecruitReqHistorySearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(RecruitMppApplySearchParameter searchParameter) {
+    public void setSearchParameter(RecruitReqHistorySearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<RecruitMppApplyViewModel> getLazyData() {
+    public LazyDataModel<RecruitReqHistoryViewModel> getLazyData() {
         if (lazyData == null) {
-            lazyData = new RecruitMppApplyViewLazyDataModel(searchParameter, recruitMppApplyService);
+            lazyData = new RecruitmentReqHistoryViewLazyDataModel(searchParameter, recruitHireApplyService);
         }
         return lazyData;
     }
 
-    public void setLazyData(LazyDataModel<RecruitMppApplyViewModel> lazyData) {
+    public void setLazyData(LazyDataModel<RecruitReqHistoryViewModel> lazyData) {
         this.lazyData = lazyData;
     }
 
-    public void setRecruitMppApplyService(RecruitMppApplyService recruitMppApplyService) {
-        this.recruitMppApplyService = recruitMppApplyService;
-    }
 
-    public RecruitMppApplyViewModel getSelected() {
+    public RecruitReqHistoryViewModel getSelected() {
         return selected;
     }
 
-    public void setSelected(RecruitMppApplyViewModel selected) {
+    public void setSelected(RecruitReqHistoryViewModel selected) {
         this.selected = selected;
     }
 
@@ -149,4 +150,9 @@ public class RecruitmentReqHistoryViewController extends BaseController {
         this.approvalActivityService = approvalActivityService;
     }
 
+    public void setRecruitHireApplyService(RecruitHireApplyService recruitHireApplyService) {
+        this.recruitHireApplyService = recruitHireApplyService;
+    }
+    
+    
 }

@@ -15,11 +15,9 @@ import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
  * @author Ahmad Mudzakkir Amal
  */
 public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDetail> {
-
-//    public List<RecruitMppApplyDetail> getByParam(AnnouncementSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
-//
-//    public Long getTotalByParam(AnnouncementSearchParameter searchParameter) throws Exception;
     
     public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId) throws Exception;
+    
+    public Long getRecruitPlanByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) throws Exception;
     
 }

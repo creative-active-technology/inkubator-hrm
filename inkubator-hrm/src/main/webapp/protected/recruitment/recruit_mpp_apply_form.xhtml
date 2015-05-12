@@ -34,12 +34,10 @@
                             <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="recruitMppApplyCode" value="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" styleClass="label_hrm"/>
                             </p:column>                          
-                            <p:column  style="width: 80%"> 
-                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                            <p:column  style="width: 80%">                                
                                 <p:inputText id="recruitMppApplyCode" title="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyCode}" 
-                                          required="true"  maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:270px;" />
-                             <p:message for="recruitMppApplyCode"/>
-                                </h:panelGrid>
+                                          required="true"  maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:message for="recruitMppApplyCode"/>                               
                             </p:column>
                         </p:row>
 
@@ -48,12 +46,10 @@
                                 <p:outputLabel for="recruitMppApplyName" value="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" styleClass="label_hrm"/>
                             </p:column>
                            
-                            <p:column  style="width: 80%">     
-                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                            <p:column  style="width: 80%">                                    
                                 <p:inputText id="recruitMppApplyName" title="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyName}" 
-                                        required="true" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
-                                <p:message for="recruitMppApplyName"/>
-                                </h:panelGrid>
+                                        required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                <p:message for="recruitMppApplyName"/>                                
                             </p:column>
                         </p:row>
                         <p:row>
@@ -61,17 +57,13 @@
                                 <p:outputLabel for="applyDate" value="#{appmsg['global.date']}" styleClass="label_hrm"/>
                             </p:column>
                            
-                            <p:column  style="width: 80%">
-                                <h:panelGrid columns="1" style="margin-left: -10px;">
+                            <p:column  style="width: 80%">                               
                                 <p:calendar  id="applyDate" pattern="dd MMMM yyyy"
                                                  label="#{appmsg['global.date']}"
                                                  value="#{recruitMppApplyFormController.recruitMppApplyModel.applyDate}"  
-                                                 readonly="false" required="true"  showOn="button" 
-                                                 style="width:200px;"> 
-                                    
-                                </p:calendar>         
-                                <p:message for="applyDate"/>
-                                </h:panelGrid>
+                                                 readonly="false" required="true"  size="30" showOn="button"
+                                                 style="width:250px;" />                                  
+                                <p:message for="applyDate"/>                               
                             </p:column>
                         </p:row>
                         <p:row>
@@ -80,19 +72,18 @@
                             </p:column>
                           
                             <p:column  style="width: 80%">
-                                <h:panelGrid columns="1" style="margin-left: -10px;">
                                 <p:inputTextarea id="mppReason" title="#{appmsg['loginform.alasan']}"
                                                  value="#{recruitMppApplyFormController.recruitMppApplyModel.reason}" 
                                                  maxlength="255" counter="counterReason" label="#{appmsg['loginform.alasan']}"
                                                  counterTemplate="#{appmsg['global.remaining']}" 
-                                                 styleClass="isitext_hrm" style="width:200px;" required="true" />
+                                                 styleClass="isitext_hrm" style="width:250px;" required="true" />
+                                <p:message for="mppReason"/>
                                <h:panelGrid columns="3" style="margin-left: -10px;">
                                 <p:outputLabel  for="counterReason" styleClass="label_hrm" />
                                 <p:outputLabel  for="counterReason" styleClass="label_hrm" />
                                  <h:outputText id="counterReason" />
                                </h:panelGrid>
-                                  <p:message for="mppReason"/>
-                                </h:panelGrid>
+                                  
                             </p:column>
                         </p:row>
 
@@ -102,18 +93,17 @@
                             </p:column>
                             
                             <p:column  style="width: 80%"> 
-                                <h:panelGrid columns="1"  style="margin-left: -10px;width: 100%">
+                               
                                  <p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{recruitMppApplyFormController.handleFileUpload}"
                                                   mode="advanced"  id="uploadRecruitMppApply"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                                   dragDropSupport="true" multiple="false" update="fileNameId,:growlId"
                                                   allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
-                                 <h:panelGrid columns="3" style="margin-left: -10px;">
+                                
                                  <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                  <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-                                 <p:outputLabel value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyFileName}" id="fileNameId"/>
-                                 </h:panelGrid>
+                                 <p:outputLabel value="#{recruitMppApplyFormController.recruitMppApplyModel.recruitMppApplyFileName}" id="fileNameId"/>                                
                                 <p:message for="uploadRecruitMppApply"/>
-                                </h:panelGrid>
+                                
                             </p:column>
                           
                         </p:row>
@@ -125,8 +115,8 @@
                            
                             <p:column  style="width: 80%">    
                                 <h:panelGrid columns="1" style="margin-left: -10px;">
-                                    <p:selectOneMenu id="mppPeriodeId" value="#{recruitMppApplyFormController.mppPeriodeId}"  filter="true" 
-                                                  required="true" label="#{appmsg['mpp_recruitment.mpp_recruitment_period']}"> 
+                                    <p:selectOneMenu id="mppPeriodeId" value="#{recruitMppApplyFormController.mppPeriodeId}"  filter="true"  
+                                            style="width:250px;"  required="true" label="#{appmsg['mpp_recruitment.mpp_recruitment_period']}"> 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitMppApplyFormController.mapMppPeriode}"  />       
                                         <p:ajax   listener="#{recruitMppApplyFormController.updateMppPeriod()}"  
@@ -140,7 +130,7 @@
                     
                       <p:outputLabel value="#{appmsg['mpp_recruitment.mpp_recruitment_detail_recruiment']}" styleClass="header_big" />                     
                       <p:separator/>
-                       <p:commandButton value="#{appmsg['global.add']}" ajax="true" 
+                       <p:commandButton value="#{appmsg['global.add']}" ajax="true" update="formRecruitMppId,:growlId"
                                          action="#{recruitMppApplyFormController.doAddRecruitMppApplyDetail()}" styleClass="label_button" 
                                          style="margin-right: 5px" label="#{appmsg['global.add']}"
                                          icon="ui-icon-folder-open"
