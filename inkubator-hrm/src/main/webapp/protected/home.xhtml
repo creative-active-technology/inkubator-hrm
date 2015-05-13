@@ -352,6 +352,8 @@
                                 <p:barChart id="basic" value="#{homeDashboardController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false"
                                             showDatatip="true"  legendCols="6" max="150" min="0"
                                             style="height:180px;font-size: 11px"/> 
+                                <!--Silahkan diactivekan jika sudah migrasi ke pp 5.2 dan yang atas di tutup-->
+                                <!--<p:chart type="bar" model="#{homeDashboardController.barChartModel}"  style="height:190px;font-size: 11px" responsive="true"  />-->
 
                             </p:panel>
                         </p:column>
@@ -492,7 +494,9 @@
                                 </h:panelGrid>
 
                                 <p:pieChart id="custo2" value="#{homeDashboardController.pieModel}" legendPosition="e" fill="false" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
-                                            style="height:180px;font-size: 11px" sliceMargin="4" diameter="120" />  
+                                            style="height:180px;font-size: 11px" sliceMargin="4" diameter="120" /> 
+                                <!--Silahkan diactivekan jika sudah migrasi ke pp 5.2 dan yang atas di tutup-->
+                                <!--<p:chart model="#{homeDashboardController.pieModel}" type="pie"  style="height:180px;font-size: 11px" responsive="true"/>-->
                             </p:panel>
                         </p:column>
 
@@ -507,6 +511,8 @@
                                 <p:barChart id="basic1" value="#{homeDashboardController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
                                             showDatatip="true" orientation="horizontal" max="300" 
                                             style="height:180px;font-size: 11px"/> 
+                                <!--Silahkan diactivekan jika sudah migrasi ke pp 5.2 dan yang atas di tutup-->
+                                <!--<p:chart type="bar" model="#{homeDashboardController.presensiBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>-->
 
                             </p:panel>
 
@@ -599,7 +605,8 @@
                                 <p:barChart id="basic11" value="#{homeDashboardController.distribusiKaryawanPerDepartment}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,006666"   animate="false"
                                             showDatatip="true"  legendCols="8" 
                                             style="height:180px;font-size: 11px"/> 
-
+                                <!--Silahkan diactivekan jika sudah migrasi ke pp 5.2 dan yang atas di tutup-->
+                                <!--<p:chart type="bar" model="#{homeDashboardController.barChartDistribusiByDept}" style="height:180px;font-size: 11px" responsive="true"/>-->
                             </p:panel>
 
                         </p:column>

@@ -9,17 +9,19 @@ import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.web.search.PermitClassificationSearchParameter;
 
 /**
-*
-* @author Taufik hidayat
-*/
+ * 
+ * @author Taufik hidayat
+ */
 public interface PermitClassificationDao extends IDAO<PermitClassification> {
 
 	public List<PermitClassification> getByParam(PermitClassificationSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalPermitClassificationByParam(PermitClassificationSearchParameter parameter);
-        
-        public PermitClassification getEntityByPKWithDetail(Long id);
-        
-        public PermitClassification getEntityByPkFetchApprovalDefinition(Long id);
+
+	public PermitClassification getEntityByPKWithDetail(Long id);
+
+	public PermitClassification getEntityByPkFetchApprovalDefinition(Long id);
+	
+	public List<PermitClassification> getAllDataByIsActiveAndOnePerEmployee(Boolean isActive, Boolean onePerEmployee);
 
 }

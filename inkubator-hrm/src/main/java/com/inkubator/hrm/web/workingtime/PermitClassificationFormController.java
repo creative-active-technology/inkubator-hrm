@@ -48,9 +48,6 @@ public class PermitClassificationFormController extends BaseController {
     private AttendanceStatusService attendanceStatusService;
     private Map<String, Long> attendanceStatuss = new TreeMap<>();
     private Boolean disabled;
-    private Boolean hidden;
-    private Integer minimum;
-    private Integer maximum;
     private List<ApprovalDefinition> appDefs;
     private ApprovalDefinition selectedAppDef;
     private int indexOfAppDefs;
@@ -64,7 +61,6 @@ public class PermitClassificationFormController extends BaseController {
             permitClassificationModel = new PermitClassificationModel();
             isUpdate = Boolean.FALSE;
             disabled = Boolean.TRUE;
-            hidden = Boolean.FALSE;
             appDefs = new ArrayList<ApprovalDefinition>(); 
             List<AttendanceStatus> listAttendanceStatuss = attendanceStatusService.getAllData();
 
@@ -95,12 +91,11 @@ public class PermitClassificationFormController extends BaseController {
                     permitClassificationModel.setDescription(permitClassification.getDescription());
                     permitClassificationModel.setIsActive(permitClassification.getIsActive());
                     isUpdate = Boolean.TRUE;
-                    disabled = Boolean.FALSE;
-                    if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                        hidden = Boolean.FALSE;
+                    if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
+                    	disabled = Boolean.FALSE;
                     }
-                       if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_MONTH)) {
-                        hidden = Boolean.TRUE;
+                    if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
+                    	disabled = Boolean.TRUE;
                     }
                     Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
                     for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
@@ -120,12 +115,11 @@ public class PermitClassificationFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         permitClassificationService = null;
-//        permitClassificationModel = null;
+        permitClassificationModel = null;
         isUpdate = null;
         attendanceStatusService = null;
         attendanceStatuss = null;
         disabled = null;
-        hidden = null;
         appDefs = null;
         selectedAppDef = null;
         
@@ -195,29 +189,7 @@ public class PermitClassificationFormController extends BaseController {
         this.disabled = disabled;
     }
 
-    public Boolean getHidden() {
-        return hidden;
-    }
-
-    public void setHidden(Boolean hidden) {
-        this.hidden = hidden;
-    }
-
-    public Integer getMinimum() {
-        return minimum;
-    }
-
-    public void setMinimum(Integer minimum) {
-        this.minimum = minimum;
-    }
-
-    public Integer getMaximum() {
-        return maximum;
-    }
-
-    public void setMaximum(Integer maximum) {
-        this.maximum = maximum;
-    }
+    
 
     public String doBack() {
         return "/protected/working_time/permit_classification_view.htm?faces-redirect=true";
@@ -274,30 +246,17 @@ public class PermitClassificationFormController extends BaseController {
 
     public void availibilityChanged(ValueChangeEvent event) {
         try {
-
             Integer availibility = Integer.parseInt(String.valueOf(event.getNewValue()));
 
-            if (availibility.equals(HRMConstant.AVAILIBILITY_FULL)) {
+            if (availibility.equals(HRMConstant.PERMIT_AVAILIBILITY_FULL)) {
+                disabled = Boolean.TRUE;
+                permitClassificationModel.setDateIncreased(null);
+            } else if (availibility.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
+                disabled = Boolean.TRUE;
+                permitClassificationModel.setDateIncreased(null);
+            } else if (availibility.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
                 disabled = Boolean.FALSE;
-                hidden = Boolean.TRUE;
-                minimum = 1;
-                maximum = 365;
-
-            }
-
-            if (availibility.equals(HRMConstant.AVALILIBILITY_PER_MONTH)) {
-                disabled = Boolean.FALSE;
-                hidden = Boolean.TRUE;
-                minimum = 1;
-                maximum = 22;
-            }
-
-            if (availibility.equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                disabled = Boolean.FALSE;
-                hidden = Boolean.FALSE;
-                minimum = 1;
-                maximum = 365;
-
+                permitClassificationModel.setDateIncreased(1);
             }
 
         } catch (Exception ex) {
@@ -327,9 +286,8 @@ public class PermitClassificationFormController extends BaseController {
                 permitClassificationModel.setDescription(permitClassification.getDescription());
                 permitClassificationModel.setIsActive(permitClassification.getIsActive());
                 isUpdate = Boolean.TRUE;
-                disabled = Boolean.FALSE;
-                if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                    hidden = Boolean.FALSE;
+                if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
+                	disabled = Boolean.FALSE;
                 }
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -337,8 +295,6 @@ public class PermitClassificationFormController extends BaseController {
         } else {
             permitClassificationModel = new PermitClassificationModel();
             isUpdate = Boolean.FALSE;
-            disabled = Boolean.TRUE;
-            hidden = Boolean.TRUE;
         }
     }
     

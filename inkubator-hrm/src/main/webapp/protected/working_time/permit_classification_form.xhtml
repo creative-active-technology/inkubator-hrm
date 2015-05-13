@@ -57,15 +57,6 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="statusId" value="#{appmsg['permitClassification.permitClassification_status']}" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:selectBooleanButton id="statusId" value="#{permitClassificationFormController.permitClassificationModel.status}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close" styleClass="label_button" />
-                                </p:column>
-                            </p:row>  
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel for="calculationId" value="#{appmsg['permitClassification.permitClassification_calculation']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
@@ -95,7 +86,7 @@
                                     <p:outputLabel for="baseId" value="#{appmsg['permitClassification.permitClassification_base']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="baseId" value="#{permitClassificationFormController.permitClassificationModel.basePeriod}" style="width: 150px;margin-right: 3px" 
+                                    <p:selectOneMenu id="baseId" value="#{permitClassificationFormController.permitClassificationModel.basePeriod}" style="width: 290px;margin-right: 3px" 
                                                      required="true" requiredMessage="#{appmsg['permitClassification.error_empty_base']}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['permitClassification.permitClassification_from_january']}" itemValue="1" />
@@ -126,7 +117,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner id="dateId" value="#{permitClassificationFormController.permitClassificationModel.dateIncreased}" style="margin-right: 3px" 
-                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.hidden}" min="1" max="31"/>
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_date']}" disabled="#{permitClassificationFormController.disabled}" min="1" max="31"/>
                                      <p:message for="dateId"/>
                                 </p:column>
                             </p:row> 
@@ -136,7 +127,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner id="quantityId" value="#{permitClassificationFormController.permitClassificationModel.quantity}" style="margin-right: 3px" 
-                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_quantity']}" disabled="#{permitClassificationFormController.disabled}" min="#{permitClassificationFormController.minimum}" max="#{permitClassificationFormController.maximum}"/>
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_quantity']}" min="1" max="365"/>
                                     <p:message for="quantityId"/>
                                 </p:column>
                             </p:row>  
@@ -177,7 +168,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner id="cutId" value="#{permitClassificationFormController.permitClassificationModel.salaryCut}" style="margin-right: 3px" 
-                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_cut']}" min="0.1" max="1" stepFactor="0.1"/>
+                                               required="true" requiredMessage="#{appmsg['permitClassification.error_empty_cut']}" min="0" max="1" stepFactor="0.1"/>
                                     <p:outputLabel for="cutId" value="#{appmsg['permitClassification.salary']}" />
                                      <p:message for="cutId"/>
                                 </p:column>
