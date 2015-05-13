@@ -1,5 +1,6 @@
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmpData;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -36,9 +37,8 @@ public class RecruitHireApplyModel implements Serializable {
     private Long empStatus;
     private Long jabatanId;
     private Long actual;
-    private Long mpp;
-    private String applyBy;
-    private String jabatanPengaju;
+    private Long mpp;   
+    private EmpData empDataApplier;     
     private Date updatedOn;
 
     public Long getSalaryMax() {
@@ -255,23 +255,7 @@ public class RecruitHireApplyModel implements Serializable {
 
     public void setYearExperience(Integer yearExperience) {
         this.yearExperience = yearExperience;
-    }
-
-    public String getApplyBy() {
-        return applyBy;
-    }
-
-    public void setApplyBy(String applyBy) {
-        this.applyBy = applyBy;
-    }
-
-    public String getJabatanPengaju() {
-        return jabatanPengaju;
-    }
-
-    public void setJabatanPengaju(String jabatanPengaju) {
-        this.jabatanPengaju = jabatanPengaju;
-    }
+    }    
 
     public Long getRecruitHireApplyId() {
         return recruitHireApplyId;
@@ -287,8 +271,15 @@ public class RecruitHireApplyModel implements Serializable {
 
     public void setCurrencyId(Long currencyId) {
         this.currencyId = currencyId;
+    }   
+
+    public EmpData getEmpDataApplier() {
+        return empDataApplier;
     }
-    
-    
+
+    public void setEmpDataApplier(EmpData empDataApplier) {
+        this.empDataApplier = empDataApplier;
+    }
+
     
 }
