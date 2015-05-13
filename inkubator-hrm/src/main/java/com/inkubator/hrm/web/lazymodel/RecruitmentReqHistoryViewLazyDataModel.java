@@ -55,18 +55,7 @@ public class RecruitmentReqHistoryViewLazyDataModel extends LazyDataModel<Recrui
             LOGGER.error("Error", ex);
         }
         LOGGER.info("Success Load Lazy data Model");
-
-        System.out.println("recruitReqHistoryViewModelsList.size : " + recruitReqHistoryViewModelsList.size());
-        for(RecruitReqHistoryViewModel model : recruitReqHistoryViewModelsList){
-            System.out.println("model.getActivityNumber : " + model.getActivityNumber());
-             System.out.println("model.getRecHireCode : " + model.getRecHireCode());
-             System.out.println("model.getJabatanCode : " + model.getJabatanCode());
-             System.out.println("model.getJabatanName : " + model.getJabatanName());
-             System.out.println("model.getNameRequester : " + model.getNameRequester());
-             System.out.println("model.getNikRequester : " + model.getNikRequester());
-             System.out.println("===========\n");
-        }
-         System.out.println("jumlahData : " + jumlahData);
+        
         setPageSize(pageSize);
         setRowCount(jumlahData);
         return recruitReqHistoryViewModelsList;
