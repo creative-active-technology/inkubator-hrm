@@ -81,7 +81,7 @@
 	                            	<p:selectOneMenu id="parentId" required="true" style="margin-right: 3px;width: 200px" value="#{menuFormController.model.parentMenuId}"
                                                          disabled="#{menuFormController.isDisableParent}" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{menuFormController.model.listParentMenu}" var="menu" itemLabel="#{menu.name}" itemValue="#{menu.id}" />
+                                        <f:selectItems value="#{menuFormController.model.listParentMenu}" var="menu" itemLabel="#{menu.nameByResourceBundle}" itemValue="#{menu.id}" />
                                     </p:selectOneMenu>
 	                                <p:message for="parentId"/>
 	                            </p:column>
