@@ -14,6 +14,7 @@ public class RmbsSchemaEmpViewModel implements Serializable{
 	private String empName;
 	private String empGolJabatan;
 	private String rmbsSchemaCode;
+        private String rmbsSchemaName;
 	private String nomorSK;
 	
 	public Long getEmpDataId() {
@@ -58,5 +59,13 @@ public class RmbsSchemaEmpViewModel implements Serializable{
 	public void setNomorSK(String nomorSK) {
 		this.nomorSK = nomorSK;
 	}	
+
+        public String getRmbsSchemaName() {
+            return rmbsSchemaName;
+        }
+
+        public void setRmbsSchemaName(String rmbsSchemaName) {
+            this.rmbsSchemaName = rmbsSchemaName;
+        }
 	
 }

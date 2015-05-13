@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RmbsSchemaListOfEmpDao;
+import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
 import com.inkubator.hrm.web.model.RmbsSchemaEmpViewModel;
 import com.inkubator.hrm.web.search.RmbsSchemaEmpSearchParameter;
@@ -43,6 +44,7 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
     			"golonganJabatan.code as empGolJabatan, " +
     			"rmbsSchema.id as rmbsSchemaId, " +
     			"rmbsSchema.code as rmbsSchemaCode, " +
+                        "rmbsSchema.name as rmbsSchemaName, " +        
     			"rmbsSchemaListOfEmp.nomorSk as nomorSK " +
     			"FROM EmpData as empData " + 
     			"INNER JOIN empData.bioData as bioData " +
@@ -195,6 +197,14 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
 		return (RmbsSchemaListOfEmp) criteria.uniqueResult();
 		
 	}
+
+    @Override
+    public RmbsSchemaListOfEmp getRmbsSchemaNameById(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("rmbsSchema", FetchMode.JOIN);
+        return (RmbsSchemaListOfEmp) criteria.uniqueResult();
+    }
 
 	
 }
