@@ -22,6 +22,8 @@ public class RecruitReqHistoryViewModel implements Serializable {
     private String jabatanCode;
     private String jabatanName;
     private String requestBy;
+    private String nikRequester;
+    private String nameRequester;
     private BigInteger approvalActivityId;    
     private String activityNumber;
     private Integer approvalStatus;
@@ -113,6 +115,22 @@ public class RecruitReqHistoryViewModel implements Serializable {
 
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
+    }
+
+    public String getNikRequester() {
+        return nikRequester;
+    }
+
+    public void setNikRequester(String nikRequester) {
+        this.nikRequester = nikRequester;
+    }
+
+    public String getNameRequester() {
+        return nameRequester;
+    }
+
+    public void setNameRequester(String nameRequester) {
+        this.nameRequester = nameRequester;
     }
     
     

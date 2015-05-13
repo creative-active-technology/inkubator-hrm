@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -42,16 +43,29 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
     @Override
     public List<RecruitMppApplyDetail> getListWithDetailByRecruitMppApplyId(Long recruitMppApplyId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);      
-        criteria.setFetchMode("jabatan", FetchMode.JOIN);     
-        criteria.add(Restrictions.eq("recruitMppApply.id", recruitMppApplyId));      
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("recruitMppApply.id", recruitMppApplyId));
         return criteria.list();
     }
 
     @Override
     public Long getRecruitPlanByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", mppPeriodId));
+        
+        RecruitMppApplyDetail recruitMppApplyDetail = (RecruitMppApplyDetail) criteria.uniqueResult();
+        if(null == recruitMppApplyDetail){
+            return 0l;
+        }else{
+            return recruitMppApplyDetail.getRecruitPlan().longValue();
+        }
+
     }
 
-  
 }

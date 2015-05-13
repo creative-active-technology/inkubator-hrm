@@ -25,8 +25,8 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class RecruitmentReqHistoryViewLazyDataModel extends LazyDataModel<RecruitReqHistoryViewModel> implements Serializable{
-    
+public class RecruitmentReqHistoryViewLazyDataModel extends LazyDataModel<RecruitReqHistoryViewModel> implements Serializable {
+
     private static final Logger LOGGER = Logger.getLogger(RecruitmentReqHistoryViewLazyDataModel.class);
     private final RecruitReqHistorySearchParameter searchParameter;
     private final RecruitHireApplyService service;
@@ -37,29 +37,41 @@ public class RecruitmentReqHistoryViewLazyDataModel extends LazyDataModel<Recrui
         this.searchParameter = searchParameter;
         this.service = service;
     }
-    
+
     @Override
     public List<RecruitReqHistoryViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-            try {
-                Order order = null;
-                if(sortField != null){
-                    order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
-                }else{
-                    order = Order.desc("activityNumber");
-                }
-                recruitReqHistoryViewModelsList = service.getRecruitmentReqActivityByParam(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalRecruitmentReqActivityByParam(searchParameter)));
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
+        try {
+            Order order = null;
+            if (sortField != null) {
+                order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+            } else {
+                order = Order.desc("activityNumber");
             }
-         LOGGER.info("Success Load Lazy data Model");
+            recruitReqHistoryViewModelsList = service.getRecruitmentReqActivityByParam(searchParameter, first, pageSize, order);
+            jumlahData = Integer.parseInt(String.valueOf(service.getTotalRecruitmentReqActivityByParam(searchParameter)));
+            
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        LOGGER.info("Success Load Lazy data Model");
 
+        System.out.println("recruitReqHistoryViewModelsList.size : " + recruitReqHistoryViewModelsList.size());
+        for(RecruitReqHistoryViewModel model : recruitReqHistoryViewModelsList){
+            System.out.println("model.getActivityNumber : " + model.getActivityNumber());
+             System.out.println("model.getRecHireCode : " + model.getRecHireCode());
+             System.out.println("model.getJabatanCode : " + model.getJabatanCode());
+             System.out.println("model.getJabatanName : " + model.getJabatanName());
+             System.out.println("model.getNameRequester : " + model.getNameRequester());
+             System.out.println("model.getNikRequester : " + model.getNikRequester());
+             System.out.println("===========\n");
+        }
+         System.out.println("jumlahData : " + jumlahData);
         setPageSize(pageSize);
         setRowCount(jumlahData);
         return recruitReqHistoryViewModelsList;
     }
-    
+
     @Override
     public Object getRowKey(RecruitReqHistoryViewModel recruitReqHistoryViewModel) {
         return recruitReqHistoryViewModel.getApprovalActivityId();
