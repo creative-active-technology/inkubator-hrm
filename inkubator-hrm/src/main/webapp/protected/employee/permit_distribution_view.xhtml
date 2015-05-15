@@ -68,24 +68,40 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData">
+                            <p:column sortBy="empData.nik">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="empData">
+                            <p:column sortBy="bioData.firstName">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="permit" >
+                            <p:column sortBy="permitClassification.name" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['permitdistribution.permit_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.permitClassification.name}" />
-                            </p:column>                            
+                            </p:column> 
+                            <p:column sortBy="startDate" style="text-align: left;width: 13%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.start_date']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.startDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column sortBy="endDate" style="text-align: left;width: 12%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.end_date']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.endDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>                           
                             <p:column sortBy="balance" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.balance']}"/>

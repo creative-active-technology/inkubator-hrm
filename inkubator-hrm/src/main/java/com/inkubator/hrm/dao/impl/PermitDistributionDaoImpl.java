@@ -41,9 +41,9 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
     public List<PermitDistribution> getByParamWithDetail(PermitDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+        criteria.createAlias("empData", "empData");
+        criteria.createAlias("empData.bioData", "bioData");
+        criteria.createAlias("permitClassification", "permitClassification");
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

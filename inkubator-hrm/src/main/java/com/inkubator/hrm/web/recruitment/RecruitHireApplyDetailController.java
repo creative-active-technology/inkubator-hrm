@@ -44,6 +44,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -67,9 +68,9 @@ import org.primefaces.model.DualListModel;
  *
  * @author deni.fahri
  */
-@ManagedBean(name = "recruitHireApplyFormController")
+@ManagedBean(name = "recruitHireApplyDetailController")
 @ViewScoped
-public class RecruitHireApplyFormController extends BaseController {
+public class RecruitHireApplyDetailController extends BaseController {
 
     @ManagedProperty(value = "#{recruitMppPeriodService}")
     private RecruitMppPeriodService recruitMppPeriodService;
@@ -82,9 +83,7 @@ public class RecruitHireApplyFormController extends BaseController {
     @ManagedProperty(value = "#{orgTypeOfSpecListService}")
     private OrgTypeOfSpecListService orgTypeOfSpecListService;
     @ManagedProperty(value = "#{orgTypeOfSpecService}")
-    private OrgTypeOfSpecService orgTypeOfSpecService;
-    @ManagedProperty(value = "#{recruitHireApplyService}")
-    private RecruitHireApplyService recruitHireApplyService;
+    private OrgTypeOfSpecService orgTypeOfSpecService;    
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
@@ -98,9 +97,9 @@ public class RecruitHireApplyFormController extends BaseController {
     private Map<String, Long> mapEmployeeType = new TreeMap<>();
     private Map<String, Long> mapCurrency = new TreeMap<>();
     private List<DualListModel> dataForRenders = new ArrayList<>();
+    private Map<String, List<OrgTypeOfSpecList>> mapTypeList = new HashMap<>();
     private RecruitHireApplyModel model;
-    private List<String> name = new ArrayList<>();
-    private Boolean isEdit = Boolean.FALSE;
+    private List<String> name = new ArrayList<>();    
     private String activityNumber;
     private ApprovalActivity selectedApprovalActivity;
 
@@ -140,23 +139,13 @@ public class RecruitHireApplyFormController extends BaseController {
                 name = orgTypeOfSpecListService.getOrgTypeSpecName();
                 selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(activityNumber);
                 if (null != selectedApprovalActivity) {
-                    isEdit = Boolean.TRUE;
-
+                   
                     //Make sure only process who have not been approved that can be modified.
                     if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
-                        model = convertJsonToModel(selectedApprovalActivity.getPendingData());                       
+                        model = convertJsonToModel(selectedApprovalActivity.getPendingData());
                     }
                 }
-            } else {
-                HrmUser user = hrmUserService.getUserWithDetail(UserInfoUtil.getUserName());
-                EmpData employeeApplier = empDataService.getByIdWithDetail(user.getEmpData().getId());
-                model.setEmpDataApplier(employeeApplier);
-                model.setActual(0l);
-                model.setMpp(0l);
-
-                dataForRenders = orgTypeOfSpecListService.getAllBySpectJabatan();
-                name = orgTypeOfSpecListService.getOrgTypeSpecName();
-            }
+            } 
 
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
@@ -164,8 +153,7 @@ public class RecruitHireApplyFormController extends BaseController {
     }
 
     @PreDestroy
-    public void cleanAndExit() {
-        recruitHireApplyService = null;
+    public void cleanAndExit() {        
         recruitMppApplyDetailService = null;
         empDataService = null;
         employeeTypeService = null;
@@ -185,72 +173,19 @@ public class RecruitHireApplyFormController extends BaseController {
         mapPeriode = null;
         mapJabatan = null;
         model = null;
-        isEdit = null;
+        mapTypeList = null;
     }
 
     public String doBack() {
         cleanAndExit();
         return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
     }
-
-    public String doSave() {
-        String redirect = null;
-        try {
-            List<OrgTypeOfSpecList> listSelectedSpec = new ArrayList<>();
-
-            for (DualListModel<OrgTypeOfSpecList> dual : dataForRenders) {
-                listSelectedSpec.addAll(dual.getTarget());
-            }
-
-            Set<RecruitHireApplyDetail> setRecruitHireApplyDetails = new HashSet<>();
-            RecruitHireApply recruitHireApply = getEntityFromModel(model);
-            recruitHireApply.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-
-            for (OrgTypeOfSpecList typeSpecList : listSelectedSpec) {
-                RecruitHireApplyDetail recruitHireApplyDetail = new RecruitHireApplyDetail();
-                recruitHireApplyDetail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                recruitHireApplyDetail.setOrgTypeOfSpecList(typeSpecList);
-                recruitHireApplyDetail.setRecruitHireApply(recruitHireApply);
-                setRecruitHireApplyDetails.add(recruitHireApplyDetail);
-            }
-
-            recruitHireApply.setRecruitHireApplyDetails(setRecruitHireApplyDetails);
-            if (isEdit) {                
-                recruitHireApplyService.updateRecruitHireWithApproval(recruitHireApply, selectedApprovalActivity.getActivityNumber());
-            } else {                
-                recruitHireApplyService.saveRecruitHireWithApproval(recruitHireApply);
-            }
-
-            cleanAndExit();
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error(ex, ex);
-        }
-
-        return redirect;
+    
+    public String doEdit() {
+        return "/protected/recruitment/recruitment_request_form.htm?faces-redirect=true&execution=" + selectedApprovalActivity.getActivityNumber();
     }
-
-    public void onChangeJabatan() {
-        try {
-            Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
-            model.setActual(totalActual);
-
-            if (model.getRecruitMppId() != null) {
-                Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppId());
-                if (null != totalMpp) {
-                    model.setMpp(totalMpp);
-                } else {
-                    model.setMpp(0l);
-                }
-
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(RecruitHireApplyFormController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    
+    
 
     private RecruitHireApplyModel getModelFromEntity(RecruitHireApply recruitHireApply) throws Exception {
         HrmUser user = hrmUserService.getUserWithDetail(selectedApprovalActivity.getRequestBy());
@@ -289,35 +224,7 @@ public class RecruitHireApplyFormController extends BaseController {
 
         return recruitHireApplyModel;
     }
-
-    private RecruitHireApply getEntityFromModel(RecruitHireApplyModel model) throws Exception {
-        RecruitHireApply recruitHireApply = new RecruitHireApply();
-
-        if (model.getRecruitHireApplyId() != null) {
-            recruitHireApply.setId(model.getRecruitHireApplyId());
-        }
-
-        recruitHireApply.setRecruitMppPeriod(new RecruitMppPeriod(model.getRecruitMppId(), null, null, null, null));
-        recruitHireApply.setAgeMax(model.getAgeMax());
-        recruitHireApply.setAgeMin(model.getAgeMin());
-        recruitHireApply.setCandidateCountRequest(model.getCandidateCountRequest());
-        recruitHireApply.setCurrency(new Currency(model.getCurrencyId()));
-        recruitHireApply.setEfectiveDate(model.getEfectiveDate());
-        recruitHireApply.setEmployeeType(new EmployeeType(model.getEmpStatus()));
-        recruitHireApply.setGender(model.getGender());
-        recruitHireApply.setGpaMax(model.getGpaMax());
-        recruitHireApply.setGpaMin(model.getGpaMin());
-        recruitHireApply.setJabatan(new Jabatan(model.getJabatanId()));
-        recruitHireApply.setMaritalStatus(model.getMaritalStatus());
-        recruitHireApply.setProposeDate(model.getProposeDate());
-        recruitHireApply.setReason(model.getReason());
-        recruitHireApply.setReqHireCode(model.getReqHireCode());
-        recruitHireApply.setSalaryMax(model.getSalaryMax());
-        recruitHireApply.setSalaryMin(model.getSalaryMin());
-        recruitHireApply.setYearExperience(model.getYearExperience());
-        return recruitHireApply;
-    }
-
+    
     private RecruitHireApplyModel convertJsonToModel(String jsonData) throws Exception {
 
         RecruitHireApplyModel model = null;
@@ -349,11 +256,12 @@ public class RecruitHireApplyFormController extends BaseController {
             int index = name.indexOf(orgTypeOfSpec.getName());
 
             if (index != -1) {
-
+                
+                mapTypeList.put(orgTypeOfSpec.getName(), listGroupedOrgTypeOfSpecList);
                 List<OrgTypeOfSpecList> listSource = dataForRenders.get(index).getSource();
                 List<OrgTypeOfSpecList> listSourceToRemove = Lambda.select(listSource, Lambda.having(Lambda.on(OrgTypeOfSpecList.class).getCode(), Matchers.isIn(Lambda.extract(listGroupedOrgTypeOfSpecList, Lambda.on(OrgTypeOfSpecList.class).getCode()))));
                 listSource.removeAll(listSourceToRemove);
-
+                
                 dataForRenders.get(index).setTarget(listGroupedOrgTypeOfSpecList);
                 dataForRenders.get(index).setSource(listSource);
             }
@@ -438,18 +346,6 @@ public class RecruitHireApplyFormController extends BaseController {
         this.model = model;
     }
 
-    public Boolean getIsEdit() {
-        return isEdit;
-    }
-
-    public void setIsEdit(Boolean isEdit) {
-        this.isEdit = isEdit;
-    }
-
-    public void setRecruitHireApplyService(RecruitHireApplyService recruitHireApplyService) {
-        this.recruitHireApplyService = recruitHireApplyService;
-    }
-
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
@@ -485,5 +381,15 @@ public class RecruitHireApplyFormController extends BaseController {
     public void setOrgTypeOfSpecService(OrgTypeOfSpecService orgTypeOfSpecService) {
         this.orgTypeOfSpecService = orgTypeOfSpecService;
     }
+
+    public Map<String, List<OrgTypeOfSpecList>> getMapTypeList() {
+        return mapTypeList;
+    }
+
+    public void setMapTypeList(Map<String, List<OrgTypeOfSpecList>> mapTypeList) {
+        this.mapTypeList = mapTypeList;
+    }
+    
+    
 
 }

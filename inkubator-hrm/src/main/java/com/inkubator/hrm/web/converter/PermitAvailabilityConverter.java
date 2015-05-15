@@ -13,8 +13,8 @@ import javax.faces.convert.FacesConverter;
  *
  * @author Taufik Hidayat
  */
-@FacesConverter(value = "permitAvailbilityConverter")
-public class PermitAvailbilityConverter implements Converter {
+@FacesConverter(value = "permitAvailabilityConverter")
+public class PermitAvailabilityConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String str) {
@@ -27,17 +27,17 @@ public class PermitAvailbilityConverter implements Converter {
         ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
      
         Integer data = (Integer) obj;
-        if (data.equals(HRMConstant.AVAILIBILITY_FULL)) {
+        if (data.equals(HRMConstant.PERMIT_AVAILIBILITY_FULL)) {
             return messages.getString("permitClassification.permitClassification_avail_full");
 
         }
 
-        if (data.equals(HRMConstant.AVALILIBILITY_PER_MONTH)) {
+        if (data.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
             return messages.getString("permitClassification.permitClassification_avail_month");
 
         }
         
-        if (data.equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
+        if (data.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
             return messages.getString("permitClassification.permitClassification_avail_date");
 
         }

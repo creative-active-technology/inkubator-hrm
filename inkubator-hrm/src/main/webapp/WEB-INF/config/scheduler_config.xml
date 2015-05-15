@@ -29,6 +29,8 @@
     <bean id="approvalActivityCronService" class="com.inkubator.hrm.service.impl.ApprovalActivityCronServiceImpl"/>
 	
     <bean id="leaveCronService" class="com.inkubator.hrm.service.impl.LeaveCronServiceImpl"/>
+    
+    <bean id="permitCronService" class="com.inkubator.hrm.service.impl.PermitCronServiceImpl"/>
 	
     <bean id="companyPolicyCronService" class="com.inkubator.hrm.service.impl.CompanyPolicyCronServiceImpl" />
     
