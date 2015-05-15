@@ -33,7 +33,7 @@ public class TerminationLazyDataModel extends LazyDataModel<Termination> impleme
     }
     
     @Override
-    public List<Termination> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Termination> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         

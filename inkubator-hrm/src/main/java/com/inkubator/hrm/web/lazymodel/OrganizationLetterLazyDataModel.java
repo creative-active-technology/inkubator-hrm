@@ -31,7 +31,7 @@ public class OrganizationLetterLazyDataModel extends LazyDataModel<OrganizationL
     }
 
     @Override
-    public List<OrganizationLetter> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<OrganizationLetter> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

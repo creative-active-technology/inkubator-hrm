@@ -33,7 +33,7 @@ public class LogUnregPayrollLazyDataModel extends LazyDataModel<UnregPayrollView
     }
 
     @Override
-    public List<UnregPayrollViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<UnregPayrollViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

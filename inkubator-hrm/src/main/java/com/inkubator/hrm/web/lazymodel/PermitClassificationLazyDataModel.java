@@ -32,7 +32,7 @@ public class PermitClassificationLazyDataModel extends LazyDataModel<PermitClass
     }
 
     @Override
-    public List<PermitClassification> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PermitClassification> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

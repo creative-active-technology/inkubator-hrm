@@ -32,7 +32,7 @@ public class PublicHolidayReportLazyDataModel extends LazyDataModel<PublicHolida
     }
 
     @Override
-    public List<PublicHoliday> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PublicHoliday> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         try {
             Order orderable = null;

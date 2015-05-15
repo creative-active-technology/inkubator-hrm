@@ -34,7 +34,7 @@ public class OrgTypeOfSpecListLazyDataModel extends LazyDataModel<OrgTypeOfSpecL
     }
     
     @Override
-    public List<OrgTypeOfSpecList> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters){
+    public List<OrgTypeOfSpecList> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         try{
             Order order = null;

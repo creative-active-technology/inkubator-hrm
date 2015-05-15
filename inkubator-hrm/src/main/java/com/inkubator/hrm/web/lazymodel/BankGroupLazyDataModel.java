@@ -34,7 +34,7 @@ public class BankGroupLazyDataModel extends LazyDataModel<BankGroup> implements 
     }
     
     @Override
-    public List<BankGroup> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters){
+    public List<BankGroup> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         
             try {

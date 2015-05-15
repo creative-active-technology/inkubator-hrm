@@ -32,7 +32,7 @@ public class CountryLazyDataModel extends LazyDataModel<Country> implements Seri
     }
 
     @Override
-    public List<Country> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Country> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

@@ -34,7 +34,7 @@ public class ReportPphLazyDataModel extends LazyDataModel<PphReportModel> implem
     }
     
     @Override
-    public List<PphReportModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PphReportModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

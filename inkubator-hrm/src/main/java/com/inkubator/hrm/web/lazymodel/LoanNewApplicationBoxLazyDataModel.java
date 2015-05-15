@@ -33,7 +33,7 @@ public class LoanNewApplicationBoxLazyDataModel extends LazyDataModel<LoanNewApp
     }
 
     @Override
-    public List<LoanNewApplicationBoxViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LoanNewApplicationBoxViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

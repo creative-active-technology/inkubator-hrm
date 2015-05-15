@@ -47,7 +47,7 @@ public class PayTempAttendanceStatusLazyDataModel extends LazyDataModel<PayTempA
     
     
     @Override
-    public List<PayTempAttendanceStatus> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PayTempAttendanceStatus> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

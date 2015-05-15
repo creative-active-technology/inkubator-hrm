@@ -30,7 +30,7 @@ public class OrgJobFamilyLevelLazyDataModel extends LazyDataModel<OrgJobFamilyLe
     }
 
     @Override
-    public List<OrgJobFamilyLevel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<OrgJobFamilyLevel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
