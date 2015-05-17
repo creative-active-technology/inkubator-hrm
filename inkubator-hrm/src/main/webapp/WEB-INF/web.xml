@@ -192,30 +192,43 @@
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/flow-protected/*</url-pattern>
     </servlet-mapping>
-    <servlet>
+   <servlet>
         <servlet-name>Push Servlet</servlet-name>
         <servlet-class>org.primefaces.push.PushServlet</servlet-class>
        
-        <init-param>
+        <!--        <init-param>
             <param-name>org.atmosphere.useNative</param-name>
             <param-value>true</param-value>
-        </init-param>
+        </init-param>-->
         <!--        <init-param>
             <param-name>org.atmosphere.cpr.sessionSupport</param-name>
+            <param-value>true</param-value>
+        </init-param>-->
+        <!--        <init-param>
+            <param-name>org.atmosphere.useWebSocket</param-name>
             <param-value>true</param-value>
         </init-param>-->
         <!--        <init-param>
                     <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
                     <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
                 </init-param>
-                <init-param>
-                    <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
-                    <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
-                </init-param>
+        -->                
+        <!--        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+            <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+        </init-param>
         -->        
-        <init-param>
+        <!--        <init-param>
             <param-name>org.atmosphere.cpr.CometSupport.maxInactiveActivity</param-name>
             <param-value>1800000</param-value>
+        </init-param>-->
+        <init-param>
+            <param-name>org.atmosphere.annotation.packages</param-name>
+            <param-value>org.primefaces.push</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.packages</param-name>
+            <param-value>com.inkubator.hrm.push</param-value>
         </init-param>
         <async-supported>true</async-supported>
     </servlet>
