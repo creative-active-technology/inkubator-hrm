@@ -19,8 +19,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -42,6 +46,9 @@ public class HomeDashboardController extends BaseController {
     private CartesianChartModel distribusiKaryawanPerDepartment;
     private CartesianChartModel presensiModel;
     private CartesianChartModel persentasiKehadiranPerWeek;
+    private BarChartModel barChartModel;
+    private HorizontalBarChartModel presensiBarChartModel;
+    private BarChartModel barChartDistribusiByDept;
     private List<LoginHistoryModel> logHistorys = new ArrayList<>();
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
@@ -54,6 +61,7 @@ public class HomeDashboardController extends BaseController {
         super.initialization();
 
         distribusiKaryawanPerDepartment = new CartesianChartModel();
+        barChartDistribusiByDept=new BarChartModel();
         pieModel = new PieChartModel();
         totalMale = new Long(0);
         totalFemale = new Long(0);
@@ -84,8 +92,14 @@ public class HomeDashboardController extends BaseController {
                 ChartSeries deptSeries = new ChartSeries();
                 deptSeries.setLabel(entry.getKey());
                 deptSeries.set("Department", entry.getValue());
-                distribusiKaryawanPerDepartment.addSeries(deptSeries);
+                barChartDistribusiByDept.addSeries(deptSeries);
+                
             }
+            barChartDistribusiByDept.setLegendPosition("ne");
+            barChartDistribusiByDept.setStacked(false);
+            barChartDistribusiByDept.setShowDatatip(true);
+            barChartDistribusiByDept.setLegendCols(8);
+            barChartDistribusiByDept.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,006666");
             lastUpdateEmpDistByDepartment = new Date(employeesByDepartment.get("lastUpdate"));
 
             /**
@@ -97,81 +111,93 @@ public class HomeDashboardController extends BaseController {
             pieModel.set("31-35", employeesByAge.get("between31And35"));
             pieModel.set("36-40", employeesByAge.get("between36And40"));
             pieModel.set("> 40", employeesByAge.get("moreThan40"));
+            pieModel.setLegendPosition("e");
+            pieModel.setFill(false);
+            pieModel.setShowDataLabels(true);
+            pieModel.setSliceMargin(4);
+            pieModel.setDiameter(120);
+            pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
 
-            /**
-             * resume of employee data
-             */
-            this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
-            this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
-            
         } catch (Exception e) {
             LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
         }
 
         persentasiKehadiranPerWeek = new CartesianChartModel();
+        barChartModel = new BarChartModel();
         ChartSeries itpercent = new ChartSeries();
         itpercent.setLabel("IT & RND");
-        itpercent.set("Week 1", 98);
-        itpercent.set("Week 2", 90);
-        itpercent.set("Week 3", 80);
-        itpercent.set("Week 4", 95);
-        itpercent.set("Week 5", 100);
-        itpercent.set("Week 6", 80);
+        itpercent.set("Minggu 1", 98);
+        itpercent.set("Minggu 2", 90);
+        itpercent.set("Minggu 3", 80);
+        itpercent.set("Minggu 4", 95);
+        itpercent.set("Minggu 5", 100);
+        itpercent.set("Minggu 6", 80);
 
         ChartSeries hrgaPercent = new ChartSeries();
         hrgaPercent.setLabel("HR & GA");
-        hrgaPercent.set("Week 1", 70);
-        hrgaPercent.set("Week 2", 77);
-        hrgaPercent.set("Week 3", 80);
-        hrgaPercent.set("Week 4", 87);
-        hrgaPercent.set("Week 5", 100);
-        hrgaPercent.set("Week 6", 77);
+        hrgaPercent.set("Minggu 1", 70);
+        hrgaPercent.set("Minggu 2", 77);
+        hrgaPercent.set("Minggu 3", 80);
+        hrgaPercent.set("Minggu 4", 87);
+        hrgaPercent.set("Minggu 5", 100);
+        hrgaPercent.set("Minggu 6", 77);
 
         ChartSeries marketingPercent = new ChartSeries();
         marketingPercent.setLabel("MARKETING");
-        marketingPercent.set("Week 1", 66);
-        marketingPercent.set("Week 2", 55);
-        marketingPercent.set("Week 3", 88);
-        marketingPercent.set("Week 4", 47);
-        marketingPercent.set("Week 5", 69);
-        marketingPercent.set("Week 6", 45);
+        marketingPercent.set("Minggu 1", 66);
+        marketingPercent.set("Minggu 2", 55);
+        marketingPercent.set("Minggu 3", 88);
+        marketingPercent.set("Minggu 4", 47);
+        marketingPercent.set("Minggu 5", 69);
+        marketingPercent.set("Minggu 6", 45);
 
         ChartSeries finacePercent = new ChartSeries();
         finacePercent.setLabel("FINANCE");
-        finacePercent.set("Week 1", 66);
-        finacePercent.set("Week 2", 55);
-        finacePercent.set("Week 3", 66);
-        finacePercent.set("Week 4", 47);
-        finacePercent.set("Week 5", 99);
-        finacePercent.set("Week 6", 90);
+        finacePercent.set("Minggu 1", 66);
+        finacePercent.set("Minggu 2", 55);
+        finacePercent.set("Minggu 3", 66);
+        finacePercent.set("Minggu 4", 47);
+        finacePercent.set("Minggu 5", 99);
+        finacePercent.set("Minggu 6", 90);
 
         ChartSeries designPercent = new ChartSeries();
         designPercent.setLabel("DESIGN");
-        designPercent.set("Week 1", 56);
-        designPercent.set("Week 2", 77);
-        designPercent.set("Week 3", 89);
-        designPercent.set("Week 4", 99);
-        designPercent.set("Week 5", 78);
-        designPercent.set("Week 6", 100);
+        designPercent.set("Minggu 1", 56);
+        designPercent.set("Minggu 2", 77);
+        designPercent.set("Minggu 3", 89);
+        designPercent.set("Minggu 4", 99);
+        designPercent.set("Minggu 5", 78);
+        designPercent.set("Minggu 6", 100);
 
         ChartSeries productionPercent = new ChartSeries();
         productionPercent.setLabel("PRODUCTION");
-        productionPercent.set("Week 1", 89);
-        productionPercent.set("Week 2", 80);
-        productionPercent.set("Week 3", 99);
-        productionPercent.set("Week 4", 100);
-        productionPercent.set("Week 5", 89);
-        productionPercent.set("Week 6", 77);
+        productionPercent.set("Minggu 1", 89);
+        productionPercent.set("Minggu 2", 80);
+        productionPercent.set("Minggu 3", 99);
+        productionPercent.set("Minggu 4", 100);
+        productionPercent.set("Minggu 5", 89);
+        productionPercent.set("Minggu 6", 77);
 
-        persentasiKehadiranPerWeek.addSeries(itpercent);
-        persentasiKehadiranPerWeek.addSeries(hrgaPercent);
-        persentasiKehadiranPerWeek.addSeries(marketingPercent);
-        persentasiKehadiranPerWeek.addSeries(finacePercent);
-        persentasiKehadiranPerWeek.addSeries(designPercent);
-        persentasiKehadiranPerWeek.addSeries(productionPercent);
+        barChartModel.addSeries(itpercent);
+        barChartModel.addSeries(hrgaPercent);
+        barChartModel.addSeries(marketingPercent);
+        barChartModel.addSeries(finacePercent);
+        barChartModel.addSeries(designPercent);
+        barChartModel.addSeries(productionPercent);
+        barChartModel.setStacked(false);
+        barChartModel.setLegendPosition("ne");
+        barChartModel.setLegendCols(6);
+        barChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
+        barChartModel.setShowDatatip(true);
+        barChartModel.setShadow(true);
+        barChartModel.setShowPointLabels(true);
+        Axis yAxis = barChartModel.getAxis(AxisType.Y);
+        yAxis.setMax(150);
+        yAxis.setMin(0);
 
         presensiModel = new CartesianChartModel();
+        presensiBarChartModel = new HorizontalBarChartModel();
         ChartSeries cutiDanDinas = new ChartSeries();
         cutiDanDinas.setLabel("Cuti & Dinas");
         cutiDanDinas.set("18-03-2014", 10);
@@ -203,10 +229,19 @@ public class HomeDashboardController extends BaseController {
         hadir.set("20-03-2014", 193);
         hadir.set("21-03-2014", 180);
         hadir.set("22-03-2014", 200);
-        presensiModel.addSeries(hadir);
-        presensiModel.addSeries(cutiDanDinas);
-        presensiModel.addSeries(ijinDanSakit);
-        presensiModel.addSeries(tanpaKeterangan);
+        presensiBarChartModel.addSeries(hadir);
+        presensiBarChartModel.addSeries(cutiDanDinas);
+        presensiBarChartModel.addSeries(ijinDanSakit);
+        presensiBarChartModel.addSeries(tanpaKeterangan);
+        presensiBarChartModel.setStacked(true);
+        presensiBarChartModel.setShowDatatip(true);
+        presensiBarChartModel.setLegendPosition("se");
+        presensiBarChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55");
+
+        Axis xAxis = presensiBarChartModel.getAxis(AxisType.X);
+        xAxis.setMax(300);
+        xAxis.setTickInterval("20");
+        xAxis.setMin(0);
 
     }
 
@@ -298,7 +333,8 @@ public class HomeDashboardController extends BaseController {
         this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
     }
 
-    public BioDataModel getNearestBirthDate() {        
+    public BioDataModel getNearestBirthDate() {
+        this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
         return nearestBirthDate;
     }
 
@@ -306,13 +342,38 @@ public class HomeDashboardController extends BaseController {
         this.nearestBirthDate = nearestBirthDate;
     }
 
-    public Long getTotalEmp() throws Exception {    	
+    public Long getTotalEmp() throws Exception {
+        this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
         return totalEmp;
     }
 
     public void setTotalEmp(Long totalEmp) {
         this.totalEmp = totalEmp;
     }
-    
+
+    public BarChartModel getBarChartModel() {
+        return barChartModel;
+    }
+
+    public void setBarChartModel(BarChartModel barChartModel) {
+        this.barChartModel = barChartModel;
+    }
+
+    public HorizontalBarChartModel getPresensiBarChartModel() {
+        return presensiBarChartModel;
+    }
+
+    public void setPresensiBarChartModel(HorizontalBarChartModel presensiBarChartModel) {
+        this.presensiBarChartModel = presensiBarChartModel;
+    }
+
+    public BarChartModel getBarChartDistribusiByDept() {
+        return barChartDistribusiByDept;
+    }
+
+    public void setBarChartDistribusiByDept(BarChartModel barChartDistribusiByDept) {
+        this.barChartDistribusiByDept = barChartDistribusiByDept;
+    }
+
     
 }
