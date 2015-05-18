@@ -25,4 +25,6 @@ public interface RecruitmenSelectionSeriesDetailService extends IService<Recruit
     public void doChangerListOrder(int newGradeLevel, RecruitmenSelectionSeriesDetailId id, Long recSelectionSeriesId) throws Exception;
     
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id) throws Exception;
+
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id) throws Exception;
 }

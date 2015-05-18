@@ -17,6 +17,7 @@ import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
 import java.util.ArrayList;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 
@@ -66,17 +67,16 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
     @Override
     public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
 
-        
         StringBuffer selectQuery = new StringBuffer(
-                "SELECT approvalActivity.id AS approvalActivityId, " 
-                + "approvalActivity.activity_number AS activityNumber, " 
-                + "rha.id AS rhaId, "                
+                "SELECT approvalActivity.id AS approvalActivityId, "
+                + "approvalActivity.activity_number AS activityNumber, "
+                + "rha.id AS rhaId, "
                 + "jabatan.code AS jabatanCode, "
-                + "jabatan.name AS jabatanName, " 
-                + "CONCAT(empRequester.NIK,' ',bioRequester.first_name,' ',bioRequester.last_name) AS requestBy, " 
+                + "jabatan.name AS jabatanName, "
+                + "CONCAT(empRequester.NIK,' ',bioRequester.first_name,' ',bioRequester.last_name) AS requestBy, "
                 + "approvalActivity.approval_status AS approvalStatus, "
                 + "approvalActivity.pending_data AS jsonData  "
-                + "FROM hrm.approval_activity approvalActivity " 
+                + "FROM hrm.approval_activity approvalActivity "
                 + "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
                 + "INNER JOIN hrm.hrm_user AS userRequester ON userRequester.user_id = approvalActivity.request_by "
                 + "INNER JOIN hrm.emp_data AS empRequester ON empRequester.id = userRequester.emp_data_id "
@@ -94,14 +94,14 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
                 .setResultTransformer(Transformers.aliasToBean(RecruitReqHistoryViewModel.class));
         hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
 
-        return hbm.list();       
+        return hbm.list();
     }
 
     @Override
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter) {
         StringBuffer selectQuery = new StringBuffer(
-                "SELECT COUNT(*) "                 
-                + "FROM hrm.approval_activity approvalActivity " 
+                "SELECT COUNT(*) "
+                + "FROM hrm.approval_activity approvalActivity "
                 + "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
                 + "INNER JOIN hrm.hrm_user AS userRequester ON userRequester.user_id = approvalActivity.request_by "
                 + "INNER JOIN hrm.emp_data AS empRequester ON empRequester.id = userRequester.emp_data_id "
@@ -117,8 +117,8 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
 
         return Long.valueOf(hbm.uniqueResult().toString());
     }
-    
-     private String setWhereQueryUndisbursedActivityByParam(RecruitReqHistorySearchParameter parameter) {
+
+    private String setWhereQueryUndisbursedActivityByParam(RecruitReqHistorySearchParameter parameter) {
         StringBuffer whereQuery = new StringBuffer();
 
         if (StringUtils.isNotEmpty(parameter.getFormCode())) {
@@ -149,5 +149,14 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("reqHireCode", reqHireCode));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public RecruitHireApply getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        return (RecruitHireApply) criteria.uniqueResult();
     }
 }

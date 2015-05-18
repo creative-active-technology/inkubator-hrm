@@ -26,4 +26,6 @@ public interface RecruitHireApplyService extends IService<RecruitHireApply> {
     public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
     
     public void updateRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
+    
+    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception;
 }

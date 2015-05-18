@@ -223,8 +223,9 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<RecruitHireApply> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return recruitHireApplyDao.getAllData();
     }
 
     @Override
@@ -391,5 +392,11 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     @Override
     protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception {
+        return recruitHireApplyDao.getEntityByPkWithDetail(id);
     }
 }

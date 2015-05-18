@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class RecruitVacancySelection  implements java.io.Serializable {
      private RecruitmenSelectionSeries recruitmenSelectionSeries;
      private String code;
      private Date recruitVacancySelectionDate;
-     private Long extraBudget;
+     private BigDecimal extraBudget;
      private Date createdOn;
      private String createdBy;
      private String updatedBy;
@@ -49,7 +50,7 @@ public class RecruitVacancySelection  implements java.io.Serializable {
         this.recruitHireApply = recruitHireApply;
         this.recruitmenSelectionSeries = recruitmenSelectionSeries;
     }
-    public RecruitVacancySelection(long id, RecruitHireApply recruitHireApply, RecruitmenSelectionSeries recruitmenSelectionSeries, String code, Date recruitVacancySelectionDate, Long extraBudget, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
+    public RecruitVacancySelection(long id, RecruitHireApply recruitHireApply, RecruitmenSelectionSeries recruitmenSelectionSeries, String code, Date recruitVacancySelectionDate, BigDecimal extraBudget, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
        this.id = id;
        this.recruitHireApply = recruitHireApply;
        this.recruitmenSelectionSeries = recruitmenSelectionSeries;
@@ -126,11 +127,11 @@ public class RecruitVacancySelection  implements java.io.Serializable {
 
     
     @Column(name="extra_budget", precision=10, scale=0)
-    public Long getExtraBudget() {
+    public BigDecimal getExtraBudget() {
         return this.extraBudget;
     }
     
-    public void setExtraBudget(Long extraBudget) {
+    public void setExtraBudget(BigDecimal extraBudget) {
         this.extraBudget = extraBudget;
     }
 

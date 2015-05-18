@@ -10,5 +10,18 @@
     </on-start>
     
     <view-state id="start" view="recruit_vacancy_selection_form.xhtml">
+        <transition on="next" to="result" >
+        </transition>
     </view-state>
+    
+    <view-state id="result" view="recruit_vacancy_selection_form_detail.xhtml">
+        <on-render>
+            <evaluate expression="recruitVacancySelectionFormController.getRecruitVacancySelectionDetail(flowRequestContext)" /> 
+        </on-render>
+    	<transition on="save" to="save_recruitment_detail"/>
+    </view-state>
+    
+    <action-state id="save_recruitment_detail">
+        <evaluate expression="recruitVacancySelectionFormController.saveRecruitmentDetail(flowRequestContext)"/>
+    </action-state >
 </flow>
