@@ -474,6 +474,6 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception {
-        return recruitHireApplyDao.getEntityByPkWithDetail(id);
+        return recruitHireApplyDao.getEntityWithDetailByPk(id);
     }
 }

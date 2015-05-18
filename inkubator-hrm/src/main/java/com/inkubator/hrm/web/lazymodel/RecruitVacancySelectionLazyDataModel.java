@@ -35,7 +35,7 @@ public class RecruitVacancySelectionLazyDataModel extends LazyDataModel<RecruitV
     }
     
     @Override
-    public List<RecruitVacancySelection> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RecruitVacancySelection> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {
