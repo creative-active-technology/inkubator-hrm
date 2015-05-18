@@ -33,7 +33,7 @@ public class PangkatLazyDataModel extends LazyDataModel<Pangkat> implements Seri
     }
 
     @Override
-    public List<Pangkat> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Pangkat> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

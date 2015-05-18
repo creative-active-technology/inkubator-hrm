@@ -24,5 +24,5 @@ public interface RecruitHireApplyDao extends IDAO<RecruitHireApply> {
     
     public Long getTotalDataByReqHireCode(String reqHireCode);
     
-    public RecruitHireApply getEntityByPkWithDetail(Long id);
+    public RecruitHireApply getEntityWithDetailByPk(Long recruitHireApplyId);
 }

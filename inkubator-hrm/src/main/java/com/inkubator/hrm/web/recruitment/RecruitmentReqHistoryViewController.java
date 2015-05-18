@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.hrm.web.loan.*;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -22,6 +23,7 @@ import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
 import com.inkubator.hrm.web.search.LoanNewTypeSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -35,6 +37,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.hamcrest.Matchers;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -56,12 +59,16 @@ public class RecruitmentReqHistoryViewController extends BaseController {
     private RecruitHireApplyService recruitHireApplyService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
-
+    private Boolean isAdministator;
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         searchParameter = new RecruitReqHistorySearchParameter();
+        isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
+        if(!isAdministator){ //kalo bukan administrator, maka set userId di parameter searchingnya
+        	searchParameter.setUserId(UserInfoUtil.getUserName());
+        }
     }
 
     @PreDestroy
@@ -82,7 +89,7 @@ public class RecruitmentReqHistoryViewController extends BaseController {
     }
     
     public String doDetail() {
-        return "/protected/recruitment/recruit_mpp_apply_detail.htm?faces-redirect=true&execution=" + selected.getActivityNumber();
+        return "/protected/recruitment/recruitment_request_detail.htm?faces-redirect=true&execution=" + selected.getActivityNumber();
     }
     
     public String doEdit() {
@@ -152,6 +159,14 @@ public class RecruitmentReqHistoryViewController extends BaseController {
 
     public void setRecruitHireApplyService(RecruitHireApplyService recruitHireApplyService) {
         this.recruitHireApplyService = recruitHireApplyService;
+    }
+
+    public Boolean getIsAdministator() {
+        return isAdministator;
+    }
+
+    public void setIsAdministator(Boolean isAdministator) {
+        this.isAdministator = isAdministator;
     }
     
     

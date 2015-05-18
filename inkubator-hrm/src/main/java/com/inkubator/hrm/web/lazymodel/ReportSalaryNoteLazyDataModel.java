@@ -33,7 +33,7 @@ public class ReportSalaryNoteLazyDataModel extends LazyDataModel<ReportSalaryNot
     }
 
     @Override
-    public List<ReportSalaryNoteModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ReportSalaryNoteModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

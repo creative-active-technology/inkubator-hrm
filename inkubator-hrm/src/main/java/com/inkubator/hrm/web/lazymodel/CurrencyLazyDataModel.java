@@ -33,7 +33,7 @@ public class CurrencyLazyDataModel  extends LazyDataModel<Currency> implements S
     }
     
     @Override
-    public List<Currency> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Currency> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;

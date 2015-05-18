@@ -34,7 +34,7 @@ public class LoanCanceledLazyDataModel extends LazyDataModel<LoanCanceled> imple
     }
     
     @Override
-    public List<LoanCanceled> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LoanCanceled> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

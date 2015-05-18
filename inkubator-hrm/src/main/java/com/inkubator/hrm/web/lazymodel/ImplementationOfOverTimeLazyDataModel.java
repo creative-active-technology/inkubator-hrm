@@ -33,7 +33,7 @@ public class ImplementationOfOverTimeLazyDataModel extends LazyDataModel<Impleme
     }
     
     @Override
-    public List<ImplementationOfOverTime> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ImplementationOfOverTime> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

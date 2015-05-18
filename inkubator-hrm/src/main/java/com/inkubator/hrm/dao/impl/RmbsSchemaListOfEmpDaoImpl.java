@@ -43,6 +43,7 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
     			"golonganJabatan.code as empGolJabatan, " +
     			"rmbsSchema.id as rmbsSchemaId, " +
     			"rmbsSchema.code as rmbsSchemaCode, " +
+                        "rmbsSchema.name as rmbsSchemaName, " +        
     			"rmbsSchemaListOfEmp.nomorSk as nomorSK " +
     			"FROM EmpData as empData " + 
     			"INNER JOIN empData.bioData as bioData " +
@@ -195,6 +196,4 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
 		return (RmbsSchemaListOfEmp) criteria.uniqueResult();
 		
 	}
-
-	
 }

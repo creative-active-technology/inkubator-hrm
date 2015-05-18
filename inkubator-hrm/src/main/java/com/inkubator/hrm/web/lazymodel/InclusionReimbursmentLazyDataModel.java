@@ -38,7 +38,7 @@ public class InclusionReimbursmentLazyDataModel extends LazyDataModel<Reimbursme
     
     
     @Override
-    public List<Reimbursment> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Reimbursment> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

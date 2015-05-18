@@ -35,7 +35,7 @@ public class EmpRotasiLazyDataModel extends LazyDataModel<EmpRotasi> implements 
     }
 
     @Override
-    public List<EmpRotasi> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<EmpRotasi> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {

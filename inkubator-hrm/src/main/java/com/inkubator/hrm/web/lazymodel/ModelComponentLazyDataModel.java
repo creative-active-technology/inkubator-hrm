@@ -32,7 +32,7 @@ public class ModelComponentLazyDataModel extends LazyDataModel<ModelComponent> i
     }
 
     @Override
-    public List<ModelComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ModelComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

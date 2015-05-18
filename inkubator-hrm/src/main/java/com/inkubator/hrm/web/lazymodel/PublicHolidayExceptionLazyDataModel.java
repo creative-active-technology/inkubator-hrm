@@ -32,7 +32,7 @@ public class PublicHolidayExceptionLazyDataModel extends LazyDataModel<PublicHol
     }
 
     @Override
-    public List<PublicHolidayException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PublicHolidayException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

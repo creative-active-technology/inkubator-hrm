@@ -34,7 +34,7 @@ public class PaySalaryComponentLazyDataModel extends LazyDataModel<PaySalaryComp
     }
     
     @Override
-    public List<PaySalaryComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PaySalaryComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

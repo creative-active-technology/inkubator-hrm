@@ -32,7 +32,7 @@ public class TravelComponentLazyDataModel extends LazyDataModel<TravelComponent>
     }
 
     @Override
-    public List<TravelComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<TravelComponent> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

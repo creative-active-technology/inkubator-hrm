@@ -35,7 +35,7 @@ public class BioRelasiPerusahaanLazyDataModel extends LazyDataModel<BioRelasiPer
     }
     
     @Override
-    public List<BioRelasiPerusahaan> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<BioRelasiPerusahaan> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

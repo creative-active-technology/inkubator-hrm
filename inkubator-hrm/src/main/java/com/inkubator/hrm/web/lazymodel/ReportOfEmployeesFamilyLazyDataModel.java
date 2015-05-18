@@ -34,7 +34,7 @@ public class ReportOfEmployeesFamilyLazyDataModel extends LazyDataModel<BioFamil
     }
     
     @Override
-    public List<BioFamilyRelationship> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<BioFamilyRelationship> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         try {

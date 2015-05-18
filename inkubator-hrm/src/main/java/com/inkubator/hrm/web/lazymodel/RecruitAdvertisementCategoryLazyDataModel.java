@@ -35,7 +35,7 @@ public class RecruitAdvertisementCategoryLazyDataModel extends LazyDataModel<Rec
     }
     
     @Override
-    public List<RecruitAdvertisementCategory> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RecruitAdvertisementCategory> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

@@ -30,7 +30,7 @@ public class PaCompetenciesLazyDataModel extends LazyDataModel<PaCompetencies> i
     }
 
     @Override
-    public List<PaCompetencies> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PaCompetencies> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {

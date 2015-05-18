@@ -33,7 +33,7 @@ public class BusinessTravelLazyDataModel extends LazyDataModel<BusinessTravel> i
     }
 
     @Override
-    public List<BusinessTravel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<BusinessTravel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

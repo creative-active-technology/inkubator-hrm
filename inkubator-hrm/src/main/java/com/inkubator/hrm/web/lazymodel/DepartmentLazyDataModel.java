@@ -33,7 +33,7 @@ public class DepartmentLazyDataModel extends LazyDataModel<Department> implement
     }
     
     @Override
-    public List<Department> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Department> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;

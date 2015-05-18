@@ -34,7 +34,7 @@ public class DivisiLazyDataModel extends LazyDataModel<Divisi> implements Serial
     }
     
     @Override
-    public List<Divisi> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters){
+    public List<Divisi> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         try{
             Order order = null;

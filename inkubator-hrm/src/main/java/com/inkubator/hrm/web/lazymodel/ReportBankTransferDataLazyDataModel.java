@@ -33,7 +33,7 @@ public class ReportBankTransferDataLazyDataModel extends LazyDataModel<LogListOf
     }
 
     @Override
-    public List<LogListOfTransfer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<LogListOfTransfer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

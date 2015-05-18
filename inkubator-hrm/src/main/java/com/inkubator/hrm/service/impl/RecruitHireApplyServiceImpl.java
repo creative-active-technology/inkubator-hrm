@@ -27,8 +27,14 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
@@ -46,12 +52,21 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
     @Autowired
     private RecruitHireApplyDao recruitHireApplyDao;
-    
+
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
-    
+
     @Autowired
     private ApprovalDefinitionDao approvalDefinitionDao;
+
+    @Autowired
+    private HrmUserDao hrmUserDao;
+
+    @Autowired
+    private EmpDataDao empDataDao;
+
+    @Autowired
+    private JabatanDao jabatanDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -268,6 +283,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModel = recruitHireApplyDao.getRecruitmentReqActivityByParam(parameter, firstResult, maxResults, orderable);
         setRecruitmentActivityComplexData(listRecruitReqHistoryViewModel);
+
         return listRecruitReqHistoryViewModel;
     }
 
@@ -276,9 +292,11 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter) throws Exception {
         return this.recruitHireApplyDao.getTotalRecruitmentReqActivityByParam(parameter);
     }
-    
-     private void setRecruitmentActivityComplexData(List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModels) {
+
+    private void setRecruitmentActivityComplexData(List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModels) {
         for (RecruitReqHistoryViewModel recruitReqHistoryViewModel : listRecruitReqHistoryViewModels) {
+            HrmUser hrmUser = hrmUserDao.getUserWithDetailByUserId(recruitReqHistoryViewModel.getRequestBy());
+            EmpData empData = empDataDao.getEmpDataWithBiodata(hrmUser.getEmpData().getId());
 
             if (recruitReqHistoryViewModel.getRhaId() == null) {
 
@@ -288,52 +306,72 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
 
                 RecruitHireApply recruitHireApplyTemp = gson.fromJson(jsonObject, RecruitHireApply.class);
-                //JsonArray arrayDetailMpp = jsonObject.getAsJsonArray("listRecruitMppHireApplyDetail");
-
+                Jabatan jabatan = jabatanDao.getEntiyByPK(recruitHireApplyTemp.getJabatan().getId());
                 recruitReqHistoryViewModel.setRecHireCode(recruitHireApplyTemp.getReqHireCode());
                 recruitReqHistoryViewModel.setEfectiveDate(recruitHireApplyTemp.getEfectiveDate());
-                recruitReqHistoryViewModel.setTotalReq(recruitHireApplyTemp.getCandidateCountRequest());                
+                recruitReqHistoryViewModel.setTotalReq(recruitHireApplyTemp.getCandidateCountRequest());
+                recruitReqHistoryViewModel.setJabatanCode(jabatan.getCode());
+                recruitReqHistoryViewModel.setJabatanName(jabatan.getName());
+                recruitReqHistoryViewModel.setNikRequester(empData.getNik());
+                recruitReqHistoryViewModel.setNameRequester(empData.getBioData().getFullName());
 
             } else {
-                
-                RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntiyByPK(recruitReqHistoryViewModel.getRhaId());
+
+                RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntityWithDetailByPk(recruitReqHistoryViewModel.getRhaId());
                 recruitReqHistoryViewModel.setRecHireCode(recruitHireApply.getReqHireCode());
                 recruitReqHistoryViewModel.setEfectiveDate(recruitHireApply.getEfectiveDate());
-                recruitReqHistoryViewModel.setTotalReq(recruitHireApply.getCandidateCountRequest());  
-
+                recruitReqHistoryViewModel.setTotalReq(recruitHireApply.getCandidateCountRequest());
+                recruitReqHistoryViewModel.setJabatanCode(recruitHireApply.getJabatan().getCode());
+                recruitReqHistoryViewModel.setJabatanName(recruitHireApply.getJabatan().getName());
+                recruitReqHistoryViewModel.setNikRequester(empData.getNik());
+                recruitReqHistoryViewModel.setNameRequester(empData.getBioData().getFullName());
             }
         }
     }
 
+//   private List<RecruitReqHistoryViewModel> filterComplexData(List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModels, RecruitReqHistorySearchParameter parameter ) {
+//        List<RecruitReqHistoryViewModel> listData = listRecruitReqHistoryViewModels;
+//        if(StringUtils.isNotEmpty(parameter.getJabatanName())){
+//            listData = Lambda.select(listData, Lambda.having(Lambda.on(RecruitReqHistoryViewModel.class).getJabatanName(),Matchers.containsString(parameter.getJabatanName())));
+//        }
+//        
+//        if(StringUtils.isNotEmpty(parameter.getFormCode())){
+//            listData = Lambda.select(listData, Lambda.having(Lambda.on(RecruitReqHistoryViewModel.class).getRecHireCode(),Matchers.containsString(parameter.getFormCode())));
+//        }
+//        return listData;
+//    }
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
         Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
         String reqHireCode = "REQ-" + RandomNumberUtil.getRandomNumber(6);
-        
+
         //If Approval Defintion for RECRUITMENT_REQUEST Process have not been created, throw Exception
         if (totalRecruitApprovalDef <= 0) {
             throw new BussinessException("mppRecruitmentHist.error_approval_def_not_found");
-        }        
-        
+        }
+
         //If reqHireCode duplicate, re-generate reqHireCode
-        while(isRecruitmentHireCodeDuplicate(reqHireCode, null)) {
+        while (isRecruitmentHireCodeDuplicate(reqHireCode, null)) {
             reqHireCode = "REQ-" + RandomNumberUtil.getRandomNumber(6);
         }
-        
+
         String createdBy = StringUtils.isEmpty(recruitHireApply.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getCreatedBy();
         Date createdOn = recruitHireApply.getCreatedOn() == null ? new Date() : recruitHireApply.getCreatedOn();
-        
-        recruitHireApply.setReqHireCode(reqHireCode); 
+
+        recruitHireApply.setReqHireCode(reqHireCode);
         recruitHireApply.setCreatedBy(createdBy);
         recruitHireApply.setCreatedOn(createdOn);
-        
+
         //parsing recruitHireApply to json 
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
+        JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
+        jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
         String jsonPendingData = gson.toJson(jsonObject);
         
+        ////set json pendingData and save activity
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUITMENT_REQUEST, createdBy);
         approvalActivity.setPendingData(jsonPendingData);
         approvalActivityDao.save(approvalActivity);
@@ -341,24 +379,63 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateRecruitHireWithApproval(RecruitHireApply recruitHireApply, String activityNumber) throws Exception {
+        Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
+
+        //If Approval Definition for RECRUITMENT_REQUEST Process have not been created, throw Exception
+        if (totalRecruitApprovalDef <= 0) {
+            throw new BussinessException("mppRecruitmentHist.error_approval_def_not_found");
+        }
+        
+        // if activity already approved throw exception
+        ApprovalActivity approvalActivity = approvalActivityDao.getApprovalTimeByApprovalActivityNumber(activityNumber);        
+        if(approvalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+            throw new BussinessException("mpp_recruitment.error_activity_already_approved");
+        }
+        
+        // parse pending data to get reqHireCode, user Created, and date created
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) parser.parse(approvalActivity.getPendingData());
+        RecruitHireApply recruitHireApplyOld = gson.fromJson(jsonObject, RecruitHireApply.class);
+        
+        String reqHireCode = recruitHireApplyOld.getReqHireCode();
+        String createdBy = StringUtils.isEmpty(recruitHireApplyOld.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApplyOld.getCreatedBy();
+        Date createdOn = recruitHireApplyOld.getCreatedOn() == null ? new Date() : recruitHireApplyOld.getCreatedOn();
+        String updatedBy = StringUtils.isEmpty(recruitHireApply.getUpdatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getUpdatedBy();
+        Date updatedOn = new Date();
+        
+        recruitHireApply.setReqHireCode(reqHireCode);
+        recruitHireApply.setCreatedBy(createdBy);
+        recruitHireApply.setCreatedOn(createdOn);
+        recruitHireApply.setUpdatedBy(updatedBy);
+        recruitHireApply.setUpdatedOn(updatedOn);
+
+        //parsing recruitHireApply to json        
+        JsonObject jsonObjectNewRecruitHireApply = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
+        JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
+        jsonObjectNewRecruitHireApply.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
+        String jsonPendingData = gson.toJson(jsonObjectNewRecruitHireApply);
+        
+        //update json pendingData and update activity
+        approvalActivity.setPendingData(jsonPendingData);
+        approvalActivityDao.update(approvalActivity);
     }
-    
-     private Boolean isRecruitmentHireCodeDuplicate(String reqHireCode, String activityNumber) {
+
+    private Boolean isRecruitmentHireCodeDuplicate(String reqHireCode, String activityNumber) {
         Boolean result = Boolean.FALSE;
 
         Long totalDuplicateFromEntity = this.recruitHireApplyDao.getTotalDataByReqHireCode(reqHireCode);
         Long totalDuplicateFormWaitingApprovalActivity = 0l;
-        
+
         //Get List waiting approval activity
         List<ApprovalActivity> listWaitingApproval = this.approvalActivityDao.getAllDataWaitingStatusApprovalFetchedApprovalDef();
-        
+
         //Filter only activity that comes from RECRUITMENT_REQUEST process
         listWaitingApproval = Lambda.select(listWaitingApproval, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.RECRUITMENT_REQUEST)));
 
         //grouping list by ActivityNumber
-         Group<ApprovalActivity> groupWaitingApprovalActivity = Lambda.group(listWaitingApproval, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
+        Group<ApprovalActivity> groupWaitingApprovalActivity = Lambda.group(listWaitingApproval, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
 
         //iterate each group list element
         for (String key : groupWaitingApprovalActivity.keySet()) {
@@ -366,23 +443,23 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
             // Get activity with highest sequence from each grouped list activities
             ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
-            
+
             // convert json pendingData into RecruitHireApply
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             String jsonData = approvalActivityWithHighestSequence.getPendingData();
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
             RecruitHireApply recruitHireApply = gson.fromJson(jsonObject, RecruitHireApply.class);
-            
+
             // chek whether reqHireCode already used
-            if(StringUtils.equals(reqHireCode, recruitHireApply.getReqHireCode()) && 
-                    !StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())){
-                totalDuplicateFormWaitingApprovalActivity ++; 
+            if (StringUtils.equals(reqHireCode, recruitHireApply.getReqHireCode())
+                    && !StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
+                totalDuplicateFormWaitingApprovalActivity++;
                 break; // Break immediately when duplicate found.
             }
-            
+
         }
-        
+
         if (totalDuplicateFromEntity > 0 || totalDuplicateFormWaitingApprovalActivity > 0) {
             result = Boolean.TRUE;
         }

@@ -33,7 +33,7 @@ public class NeracaPermitLazyDataModel extends LazyDataModel<NeracaPermit> imple
     } 
     
     @Override
-    public List<NeracaPermit> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<NeracaPermit> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

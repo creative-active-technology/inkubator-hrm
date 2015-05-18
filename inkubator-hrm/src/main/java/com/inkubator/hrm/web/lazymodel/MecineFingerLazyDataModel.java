@@ -31,7 +31,7 @@ public class MecineFingerLazyDataModel extends LazyDataModel<MecineFinger> imple
 
  
     @Override
-    public List<MecineFinger> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<MecineFinger> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

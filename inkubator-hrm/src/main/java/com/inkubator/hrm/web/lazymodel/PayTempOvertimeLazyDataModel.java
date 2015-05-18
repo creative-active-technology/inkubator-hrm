@@ -35,7 +35,7 @@ public class PayTempOvertimeLazyDataModel  extends LazyDataModel<PayTempOvertime
     }
     
     @Override
-    public List<PayTempOvertime> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PayTempOvertime> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

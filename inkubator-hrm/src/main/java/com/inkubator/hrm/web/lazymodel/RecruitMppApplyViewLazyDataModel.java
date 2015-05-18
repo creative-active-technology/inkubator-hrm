@@ -36,7 +36,7 @@ public class RecruitMppApplyViewLazyDataModel extends LazyDataModel<RecruitMppAp
     }
     
     @Override
-    public List<RecruitMppApplyViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RecruitMppApplyViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;

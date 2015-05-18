@@ -30,7 +30,7 @@ public class FamilyRelationLazyDataModel extends LazyDataModel<FamilyRelation> i
     }
 
     @Override
-    public List<FamilyRelation> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<FamilyRelation> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {

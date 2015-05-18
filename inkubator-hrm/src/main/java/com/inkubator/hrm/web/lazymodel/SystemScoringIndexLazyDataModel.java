@@ -32,7 +32,7 @@ public class SystemScoringIndexLazyDataModel extends LazyDataModel<SystemScoring
     }
     
     @Override
-    public List<SystemScoringIndex> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<SystemScoringIndex> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

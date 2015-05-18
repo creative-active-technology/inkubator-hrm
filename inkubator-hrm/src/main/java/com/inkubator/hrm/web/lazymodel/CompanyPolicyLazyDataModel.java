@@ -32,7 +32,7 @@ public class CompanyPolicyLazyDataModel extends LazyDataModel<CompanyPolicy> imp
     }
 
     @Override
-    public List<CompanyPolicy> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<CompanyPolicy> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

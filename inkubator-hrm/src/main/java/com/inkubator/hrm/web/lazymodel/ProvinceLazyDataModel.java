@@ -32,7 +32,7 @@ public class ProvinceLazyDataModel extends LazyDataModel<Province> implements Se
     }
 
     @Override
-    public List<Province> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Province> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

@@ -70,7 +70,7 @@ public class PermitClassificationDetailController extends BaseController {
             
             selectedPermitClassification = permitClassificationService.getEntityByPKWithDetail(Long.parseLong(userId.substring(1)));
             selectedApprovalDefinitionPermit = approvalDefinitionPermitService.getByPermitId(Long.parseLong(userId.substring(1)));
-            if(selectedPermitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)){
+            if(selectedPermitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)){
                 hidden = Boolean.TRUE;
             }
                         

@@ -33,7 +33,7 @@ public class CheckInAttendanceLazyDataModel  extends LazyDataModel<CheckInAttend
     }
     
     @Override
-    public List<CheckInAttendance> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<CheckInAttendance> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

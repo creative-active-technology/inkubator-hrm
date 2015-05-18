@@ -32,7 +32,7 @@ public class RaceLazyDataModel extends LazyDataModel<Race> implements Serializab
     }
 
     @Override
-    public List<Race> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Race> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

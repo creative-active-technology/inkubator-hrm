@@ -33,7 +33,7 @@ public class LoanLazyDataModel extends LazyDataModel<Loan> implements Serializab
     }
 
     @Override
-    public List<Loan> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Loan> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

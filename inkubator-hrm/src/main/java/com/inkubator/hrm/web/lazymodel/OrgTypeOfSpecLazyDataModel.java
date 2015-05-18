@@ -34,7 +34,7 @@ public class OrgTypeOfSpecLazyDataModel extends LazyDataModel<OrgTypeOfSpec> imp
     }
     
     @Override
-    public List<OrgTypeOfSpec> load(int first, int pageSize, String sortField, org.primefaces.model.SortOrder sortOrder, Map<String, String> filters){
+    public List<OrgTypeOfSpec> load(int first, int pageSize, String sortField, org.primefaces.model.SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         
             try {
