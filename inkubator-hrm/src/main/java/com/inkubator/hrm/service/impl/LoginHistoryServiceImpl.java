@@ -32,6 +32,9 @@ import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.hrm.web.model.LoginHistoryPushMessageModel;
 import com.inkubator.hrm.web.search.LoginHistorySearchParameter;
 import com.inkubator.webcore.util.FacesUtil;
+import javax.faces.application.FacesMessage;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 
 /**
  *
@@ -231,18 +234,18 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-    public void saveAndPushMessage(LoginHistory entity) throws Exception{
+    public void saveAndPushMessage(LoginHistory entity) throws Exception {
         //saving loginHistory
         HrmUser hrmUser = this.hrmUserDao.getByUserIdOrEmail(entity.getHrmUser().getUserId());
         entity.setHrmUser(hrmUser);
         this.loginHistoryDao.save(entity);
-        
+
         //push message
         FacesUtil.setSessionAttribute(HRMConstant.USER_LOGIN_ID, entity.getId());
-        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+//        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
         ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         String infoMessages = hrmUser.getRealName() + " " + messages.getString("loginhistory.successfully_logged_on") + " : " + dateFormatter.getDateFullAsStringsWithActiveLocale(entity.getLoginDate(), new Locale(entity.getLanguange()));
-        
+
         LoginHistoryPushMessageModel model = new LoginHistoryPushMessageModel();
         model.setLoginName(entity.getHrmUser().getRealName());
         SimpleDateFormat format = new SimpleDateFormat();
@@ -253,14 +256,16 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
         model.setGrowlTitle(messages.getString("loginhistory.login_information"));
         model.setGrowlMessage(infoMessages);
         model.setIsLogin(true);
-        
-        //FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
-        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
+
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
+//        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, facesMessage);
     }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-    public void updateAndPushMessage(LoginHistory entity) throws Exception{
+    public void updateAndPushMessage(LoginHistory entity) throws Exception {
         //saving loginHistory
         LoginHistory loginHistory = this.loginHistoryDao.getEntiyByPK(entity.getId());
         loginHistory.setLogOutDate(new Date());
@@ -268,25 +273,27 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
 
         //push message
         HrmUser hrmUser = this.hrmUserDao.getByUserIdOrEmail(loginHistory.getHrmUser().getUserId());
-        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
+//        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
         //set default to en
         ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale("en"));
         String infoMessages = hrmUser.getRealName() + " " + messages.getString("loginhistory.successfully_logged_out_in") + " : " + dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(), new Locale(loginHistory.getLanguange()));
-        
+
         LoginHistoryPushMessageModel model = new LoginHistoryPushMessageModel();
         model.setLoginName(loginHistory.getHrmUser().getRealName());
         model.setGrowlTitle(messages.getString("loginhistory.logout_information"));
         model.setGrowlMessage(infoMessages);
         model.setIsLogin(false);
-        
-        //FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Logout", infoMessages);
-        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
+
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Logout", infoMessages);
+//        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, facesMessage);
     }
 
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
-	public List<LoginHistory> getByParam(int firstResult, int maxResults, Order order) throws Exception {
-		return loginHistoryDao.getByParam(firstResult, maxResults, order);
-	}
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<LoginHistory> getByParam(int firstResult, int maxResults, Order order) throws Exception {
+        return loginHistoryDao.getByParam(firstResult, maxResults, order);
+    }
 
 }

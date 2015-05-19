@@ -34,7 +34,7 @@ public class WtFingerExceptionLazyDataModel extends LazyDataModel<WtFingerExcept
     }
     
     @Override
-    public List<WtFingerException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<WtFingerException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         try {

@@ -33,7 +33,7 @@ public class CostCenterLazyDataModel extends LazyDataModel<CostCenter> implement
     }
     
     @Override
-    public List<CostCenter> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<CostCenter> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;

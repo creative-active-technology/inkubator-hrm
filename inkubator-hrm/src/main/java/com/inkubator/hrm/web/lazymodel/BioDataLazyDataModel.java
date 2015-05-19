@@ -33,7 +33,7 @@ public class BioDataLazyDataModel extends LazyDataModel<BioData> implements Seri
     }
     
     @Override
-    public List<BioData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<BioData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

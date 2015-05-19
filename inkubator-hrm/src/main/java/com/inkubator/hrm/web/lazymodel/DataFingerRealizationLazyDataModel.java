@@ -33,7 +33,7 @@ public class DataFingerRealizationLazyDataModel extends LazyDataModel<DataFinger
     }
 
     @Override
-    public List<DataFingerRealizationModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<DataFingerRealizationModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

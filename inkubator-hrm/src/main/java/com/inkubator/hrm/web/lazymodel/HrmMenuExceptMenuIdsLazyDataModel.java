@@ -38,7 +38,7 @@ public class HrmMenuExceptMenuIdsLazyDataModel extends LazyDataModel<HrmMenu> im
     }
 
     @Override
-    public List<HrmMenu> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<HrmMenu> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         try {
         	Order orderable = null;

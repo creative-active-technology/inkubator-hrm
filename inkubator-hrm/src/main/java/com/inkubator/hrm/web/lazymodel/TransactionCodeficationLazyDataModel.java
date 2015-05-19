@@ -32,7 +32,7 @@ public class TransactionCodeficationLazyDataModel extends LazyDataModel<Transact
     }
 
     @Override
-    public List<TransactionCodefication> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<TransactionCodefication> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

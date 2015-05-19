@@ -33,7 +33,7 @@ public class WtGroupTimeLazyModel extends LazyDataModel<ScheduleShiftModel> impl
     
 
     @Override
-    public List<ScheduleShiftModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ScheduleShiftModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
         return wtGroupWorkings;
     }

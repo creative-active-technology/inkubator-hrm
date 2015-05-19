@@ -31,7 +31,7 @@ public class AdmonitionTypeLazyDataModel extends LazyDataModel<AdmonitionType> i
 
  
     @Override
-    public List<AdmonitionType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<AdmonitionType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

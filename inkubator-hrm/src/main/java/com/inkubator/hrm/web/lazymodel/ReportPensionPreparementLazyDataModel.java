@@ -38,7 +38,7 @@ public class ReportPensionPreparementLazyDataModel extends LazyDataModel<ReportE
     }
 
     @Override
-    public List<ReportEmpPensionPreparationModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ReportEmpPensionPreparationModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
       
         if (sortField != null) {

@@ -32,7 +32,7 @@ public class MedicalCareLazyDataModel extends LazyDataModel<MedicalCare> impleme
     }
 
     @Override
-    public List<MedicalCare> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<MedicalCare> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

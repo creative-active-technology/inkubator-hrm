@@ -34,7 +34,7 @@ public class OhsaCategoryLazyDataModel extends LazyDataModel<OhsaCategory> imple
     }
     
     @Override
-    public List<OhsaCategory> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters){
+    public List<OhsaCategory> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         
         try{

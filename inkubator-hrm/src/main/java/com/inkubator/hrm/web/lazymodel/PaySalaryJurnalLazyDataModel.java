@@ -32,7 +32,7 @@ public class PaySalaryJurnalLazyDataModel extends LazyDataModel<PaySalaryJurnal>
     }
 
     @Override
-    public List<PaySalaryJurnal> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PaySalaryJurnal> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

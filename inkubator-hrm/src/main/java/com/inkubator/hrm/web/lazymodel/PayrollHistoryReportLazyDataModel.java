@@ -38,7 +38,7 @@ public class PayrollHistoryReportLazyDataModel extends LazyDataModel<PayrollHist
     }
     
     @Override
-    public List<PayrollHistoryReportModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<PayrollHistoryReportModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

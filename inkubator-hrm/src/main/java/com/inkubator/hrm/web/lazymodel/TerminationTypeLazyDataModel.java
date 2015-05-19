@@ -32,7 +32,7 @@ public class TerminationTypeLazyDataModel extends LazyDataModel<TerminationType>
     }
 
     @Override
-    public List<TerminationType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<TerminationType> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

@@ -38,7 +38,7 @@ public class SpecificationAbilityLazyDataModel extends LazyDataModel<Specificati
     }
 
     @Override
-    public List<SpecificationAbilityModelView> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<SpecificationAbilityModelView> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             
         if (sortField != null) {

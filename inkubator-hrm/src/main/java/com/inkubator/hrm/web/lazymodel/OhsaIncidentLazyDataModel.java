@@ -39,7 +39,7 @@ public class OhsaIncidentLazyDataModel extends LazyDataModel<OhsaIncident> imple
     }
 
     @Override
-    public List<OhsaIncident> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<OhsaIncident> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

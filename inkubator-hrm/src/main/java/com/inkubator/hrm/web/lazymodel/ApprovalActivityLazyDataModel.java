@@ -33,7 +33,7 @@ public class ApprovalActivityLazyDataModel extends LazyDataModel<ApprovalActivit
     }
     
     @Override
-    public List<ApprovalActivity> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<ApprovalActivity> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

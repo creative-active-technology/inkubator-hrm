@@ -30,7 +30,7 @@ public class RecruitMppPeriodLazyDataModel extends LazyDataModel<RecruitMppPerio
     }
 
     @Override
-    public List<RecruitMppPeriod> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<RecruitMppPeriod> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {

@@ -32,7 +32,7 @@ public class BenefitGroupLazyDataModel extends LazyDataModel<BenefitGroup> imple
     }
 
     @Override
-    public List<BenefitGroup> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<BenefitGroup> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
           LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {

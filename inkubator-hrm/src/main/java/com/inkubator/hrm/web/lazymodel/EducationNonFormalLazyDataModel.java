@@ -32,7 +32,7 @@ public class EducationNonFormalLazyDataModel extends LazyDataModel<EducationNonF
     }
 
     @Override
-    public List<EducationNonFormal> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<EducationNonFormal> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;

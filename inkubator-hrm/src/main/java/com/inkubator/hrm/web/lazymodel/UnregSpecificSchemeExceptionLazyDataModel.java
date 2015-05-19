@@ -36,7 +36,7 @@ public class UnregSpecificSchemeExceptionLazyDataModel extends LazyDataModel<Unr
     }
     
     @Override
-    public List<UnregPayComponentsException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<UnregPayComponentsException> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {

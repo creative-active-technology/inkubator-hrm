@@ -31,7 +31,7 @@ public class HospitalLazyDataModel extends LazyDataModel<Hospital> implements Se
 
  
     @Override
-    public List<Hospital> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+    public List<Hospital> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         if (sortField != null) {
