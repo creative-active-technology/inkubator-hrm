@@ -81,37 +81,37 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="#{approvalDefinitionData.name}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.name}"/>
                             </p:column>
-                            <p:column sortBy="sequence"  >
+                            <p:column sortBy="#{approvalDefinitionData.processType}"  >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
-                            <p:column sortBy="approverType">
+                            <p:column sortBy="#{approvalDefinitionData.approverType}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
                             </p:column>
-                            <p:column sortBy="sequence"  style="text-align: center">
+                            <p:column sortBy="#{approvalDefinitionData.sequence}"  style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.sequence_approval']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.sequence}"/>
                             </p:column>
-                            <p:column sortBy="minApprover" style="text-align: center">
+                            <p:column sortBy="#{approvalDefinitionData.minApprover}" style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.min_approve']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.minApprover}"/>
                             </p:column>
-                            <p:column sortBy="minRejector" style="text-align: center">
+                            <p:column sortBy="#{approvalDefinitionData.minRejector}" style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.min_reject']}"/>
                                 </f:facet>
@@ -125,7 +125,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteApprovalDefinitionId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{approvalDefinitionViewController.onDelete()}" >
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogHrmUser').show()" action="#{approvalDefinitionViewController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
                                 </p:commandButton>
                                 -
@@ -154,7 +154,7 @@
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteApprovalDefinitionId">
                         <div align="center">
@@ -182,8 +182,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalDefinitionViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogHrmUser').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHrmUser').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

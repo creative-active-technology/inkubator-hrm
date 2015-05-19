@@ -41,8 +41,9 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
     public List<CheckInAttendance> getByParamWithDetail(CheckInAttendanceSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
