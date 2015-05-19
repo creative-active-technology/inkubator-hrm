@@ -119,13 +119,13 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1}"
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1 || data.approvalStatus eq 2}"
                                                  action="#{recruitmentReqHistoryViewController.doSelectDataToDelete(data)}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{recruitmentReqHistoryViewController.doEdit()}" disabled="#{data.approvalStatus eq 1}" >
+                                                  action="#{recruitmentReqHistoryViewController.doEdit()}" disabled="#{data.approvalStatus eq 1 || data.approvalStatus eq 2}" >
                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />                                  
                                 </p:commandButton> 
                             </p:column> 
@@ -162,7 +162,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{recruitmentReqHistoryViewController.selected.recruitMppApplyCode} - #{recruitmentReqHistoryViewController.selected.recruitMppApplyName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{recruitmentReqHistoryViewController.selected.recHireCode} - ( #{recruitmentReqHistoryViewController.selected.jabatanCode}  #{recruitmentReqHistoryViewController.selected.jabatanName} )" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitmentReqHistoryViewController.doDelete()}" update="formId"

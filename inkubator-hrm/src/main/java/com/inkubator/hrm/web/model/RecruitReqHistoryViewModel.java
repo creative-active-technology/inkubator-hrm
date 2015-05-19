@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class RecruitReqHistoryViewModel implements Serializable {
 
-    private Long rhaId;
+    private BigInteger rhaId;
     private String recHireCode;   
     private Date efectiveDate;
     private Integer totalReq;
@@ -29,11 +29,11 @@ public class RecruitReqHistoryViewModel implements Serializable {
     private Integer approvalStatus;
     private String jsonData;
 
-    public Long getRhaId() {
+    public BigInteger getRhaId() {
         return rhaId;
     }
 
-    public void setRhaId(Long rhaId) {
+    public void setRhaId(BigInteger rhaId) {
         this.rhaId = rhaId;
     }
 

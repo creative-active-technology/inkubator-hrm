@@ -171,6 +171,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.ANNOUNCEMENT:
                     redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.RECRUITMENT_REQUEST:
+                    redirect = "/protected/recruitment/recruitment_req_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }

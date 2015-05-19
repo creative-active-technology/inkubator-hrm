@@ -35,7 +35,6 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
-import com.inkubator.hrm.service.RecruitHireApplyDetailService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppPeriodService;
@@ -69,18 +68,14 @@ import org.primefaces.model.DualListModel;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@ManagedBean(name = "recruitHireApplyDetailController")
+@ManagedBean(name = "recruitmentRequestApprovalFormController")
 @ViewScoped
-public class RecruitHireApplyDetailController extends BaseController {
+public class RecruitmentRequestApprovalFormController extends BaseController {
 
-    @ManagedProperty(value = "#{recruitHireApplyService}")
-    private RecruitHireApplyService recruitHireApplyService;
-    @ManagedProperty(value = "#{recruitHireApplyDetailService}")
-    private RecruitHireApplyDetailService recruitHireApplyDetailService;
     @ManagedProperty(value = "#{orgTypeOfSpecListService}")
     private OrgTypeOfSpecListService orgTypeOfSpecListService;
     @ManagedProperty(value = "#{orgTypeOfSpecService}")
-    private OrgTypeOfSpecService orgTypeOfSpecService;
+    private OrgTypeOfSpecService orgTypeOfSpecService;    
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
@@ -88,64 +83,41 @@ public class RecruitHireApplyDetailController extends BaseController {
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
     @ManagedProperty(value = "#{approvalActivityService}")
-    private ApprovalActivityService approvalActivityService;    
+    private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{recruitHireApplyService}")
+    private RecruitHireApplyService recruitHireApplyService;
+    private List<DualListModel> dataForRenders = new ArrayList<>();
     private Map<String, List<OrgTypeOfSpecList>> mapTypeList = new HashMap<>();
     private RecruitHireApplyModel model;
-    private List<String> name = new ArrayList<>();
+    private List<String> name = new ArrayList<>();    
     private String activityNumber;
     private ApprovalActivity selectedApprovalActivity;
-    private Boolean isApprovedOrRejected;
+    private Boolean isWaitingApproval;
+    private String comment;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
 
-            model = new RecruitHireApplyModel();
-            isApprovedOrRejected = Boolean.TRUE;
-            activityNumber = FacesUtil.getRequestParameter("execution");            
+            model = new RecruitHireApplyModel();           
+
+            activityNumber = FacesUtil.getRequestParameter("execution").substring(1);            
 
             //if activityNumber is not empty, it means to edit existing Recruitment Request Data
-            if (StringUtils.isNotBlank(activityNumber)) {                
+            if (StringUtils.isNotBlank(activityNumber)) {
+                dataForRenders = orgTypeOfSpecListService.getAllBySpectJabatan();
                 name = orgTypeOfSpecListService.getOrgTypeSpecName();
-                selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(activityNumber);
+                selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(activityNumber));
                 
                 if (null != selectedApprovalActivity) {
-                    isApprovedOrRejected = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED
-                            || selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED;
-
-
-                    if (!isApprovedOrRejected) {
+                    isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
+                    //Make sure only process who have not been approved that can be modified.
+                    if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
                         model = convertJsonToModel(selectedApprovalActivity.getPendingData());
-                    } else {
-                        RecruitHireApply recruitHireApply = recruitHireApplyService.getEntityWithDetailByActivityNumber(activityNumber);                        
-                        model = convertModelFromEntity(recruitHireApply);
-
-                        List<RecruitHireApplyDetail> listRecruitHireApplyDetails = recruitHireApplyDetailService.getListWithDetailByRecruitHireApplyId(recruitHireApply.getId());
-                        List<OrgTypeOfSpecList> listTypeOfSpec = new ArrayList<>();
-
-                        for (RecruitHireApplyDetail detail : listRecruitHireApplyDetails) {
-                            listTypeOfSpec.add(detail.getOrgTypeOfSpecList());
-                        }
-
-                        //Group list by OrgTypeOfSpec.name
-                        Group<OrgTypeOfSpecList> groupOrgTypeOfSpecList = Lambda.group(listTypeOfSpec, Lambda.by(Lambda.on(OrgTypeOfSpecList.class).getOrgTypeOfSpec().getId()));
-
-                        //iterate each group list element
-                        for (String key : groupOrgTypeOfSpecList.keySet()) {
-
-                            List<OrgTypeOfSpecList> listGroupedOrgTypeOfSpecList = groupOrgTypeOfSpecList.find(key);
-                            OrgTypeOfSpec orgTypeOfSpec = orgTypeOfSpecService.getEntiyByPK(Long.parseLong(key));
-                            int index = name.indexOf(orgTypeOfSpec.getName());
-
-                            if (index != -1) {
-                                mapTypeList.put(orgTypeOfSpec.getName(), listGroupedOrgTypeOfSpecList);
-                            }
-                        }
-
                     }
                 }
-            }
+            } 
 
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
@@ -153,18 +125,18 @@ public class RecruitHireApplyDetailController extends BaseController {
     }
 
     @PreDestroy
-    public void cleanAndExit() {
+    public void cleanAndExit() {        
         recruitMppApplyDetailService = null;
-        empDataService = null;
+        empDataService = null;        
         approvalActivityService = null;
         hrmUserService = null;
         orgTypeOfSpecService = null;
-        orgTypeOfSpecListService = null;
-        recruitHireApplyDetailService = null;
-        recruitHireApplyService = null;
+        orgTypeOfSpecListService = null;        
+        dataForRenders = null;
         name = null;
         activityNumber = null;
         selectedApprovalActivity = null;
+        isWaitingApproval = null;
         model = null;
         mapTypeList = null;
     }
@@ -173,12 +145,37 @@ public class RecruitHireApplyDetailController extends BaseController {
         cleanAndExit();
         return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
     }
-
-    public String doEdit() {
-        return "/protected/recruitment/recruitment_request_form.htm?faces-redirect=true&execution=" + selectedApprovalActivity.getActivityNumber();
+    
+   
+    public String doApproved() {
+        try {
+        	recruitHireApplyService.approved(selectedApprovalActivity.getId(), null, comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+            LOGGER.error("Error ", e);
+        }
+        return null;
     }
 
-    private RecruitHireApplyModel convertModelFromEntity(RecruitHireApply recruitHireApply) throws Exception {
+    public String doRejected() {
+        try {
+        	recruitHireApplyService.rejected(selectedApprovalActivity.getId(), comment);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+        } catch (BussinessException ex) {            
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+            LOGGER.error("Error ", e);
+        }
+        return null;
+    }
+
+    private RecruitHireApplyModel getModelFromEntity(RecruitHireApply recruitHireApply) throws Exception {
         HrmUser user = hrmUserService.getUserWithDetail(selectedApprovalActivity.getRequestBy());
         EmpData employeeApplier = empDataService.getByIdWithDetail(user.getEmpData().getId());
 
@@ -190,13 +187,13 @@ public class RecruitHireApplyDetailController extends BaseController {
         recruitHireApplyModel.setCurrencyId(recruitHireApply.getCurrency().getId());
         recruitHireApplyModel.setEfectiveDate(recruitHireApply.getEfectiveDate());
         recruitHireApplyModel.setEmpDataApplier(employeeApplier);
-        recruitHireApplyModel.setEmpStatus(recruitHireApply.getEmployeeType() == null ? null : recruitHireApply.getEmployeeType().getId());
+        recruitHireApplyModel.setEmpStatus(recruitHireApply.getEmployeeType().getId());
         recruitHireApplyModel.setGender(recruitHireApply.getGender());
         recruitHireApplyModel.setGpaMax(recruitHireApply.getGpaMax());
         recruitHireApplyModel.setGpaMin(recruitHireApply.getGpaMin());
-        recruitHireApplyModel.setJabatanId(recruitHireApply.getJabatan() == null ? null : recruitHireApply.getJabatan().getId());
+        recruitHireApplyModel.setJabatanId(recruitHireApply.getJabatan().getId());
         recruitHireApplyModel.setMaritalStatus(recruitHireApply.getMaritalStatus());
-        recruitHireApplyModel.setRecruitMppId(recruitHireApply.getRecruitMppPeriod() == null ? null : recruitHireApply.getRecruitMppPeriod().getId());
+        recruitHireApplyModel.setRecruitMppId(recruitHireApply.getRecruitMppPeriod().getId());
         recruitHireApplyModel.setProposeDate(recruitHireApply.getProposeDate());
         recruitHireApplyModel.setReason(recruitHireApply.getReason());
         recruitHireApplyModel.setSalaryMin(recruitHireApply.getSalaryMin());
@@ -215,7 +212,7 @@ public class RecruitHireApplyDetailController extends BaseController {
 
         return recruitHireApplyModel;
     }
-
+    
     private RecruitHireApplyModel convertJsonToModel(String jsonData) throws Exception {
 
         RecruitHireApplyModel model = null;
@@ -224,7 +221,7 @@ public class RecruitHireApplyDetailController extends BaseController {
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
         RecruitHireApply recruitHireApply = gson.fromJson(jsonObject, RecruitHireApply.class);
-        model = convertModelFromEntity(recruitHireApply);
+        model = getModelFromEntity(recruitHireApply);
 
         JsonArray arrayDetailRecruitmentRequest = jsonObject.getAsJsonArray("listDetailRecruitHireApply");
         List<OrgTypeOfSpecList> listTypeOfSpec = new ArrayList<>();
@@ -247,11 +244,26 @@ public class RecruitHireApplyDetailController extends BaseController {
             int index = name.indexOf(orgTypeOfSpec.getName());
 
             if (index != -1) {
+                
                 mapTypeList.put(orgTypeOfSpec.getName(), listGroupedOrgTypeOfSpecList);
+                List<OrgTypeOfSpecList> listSource = dataForRenders.get(index).getSource();
+                List<OrgTypeOfSpecList> listSourceToRemove = Lambda.select(listSource, Lambda.having(Lambda.on(OrgTypeOfSpecList.class).getCode(), Matchers.isIn(Lambda.extract(listGroupedOrgTypeOfSpecList, Lambda.on(OrgTypeOfSpecList.class).getCode()))));
+                listSource.removeAll(listSourceToRemove);
+                
+                dataForRenders.get(index).setTarget(listGroupedOrgTypeOfSpecList);
+                dataForRenders.get(index).setSource(listSource);
             }
         }
 
         return model;
+    }
+    
+    public List<DualListModel> getDataForRenders() {
+        return dataForRenders;
+    }
+
+    public void setDataForRenders(List<DualListModel> dataForRenders) {
+        this.dataForRenders = dataForRenders;
     }
 
     public void setOrgTypeOfSpecListService(OrgTypeOfSpecListService orgTypeOfSpecListService) {
@@ -318,20 +330,26 @@ public class RecruitHireApplyDetailController extends BaseController {
         this.mapTypeList = mapTypeList;
     }
 
+    public Boolean getIsWaitingApproval() {
+        return isWaitingApproval;
+    }
+
+    public void setIsWaitingApproval(Boolean isWaitingApproval) {
+        this.isWaitingApproval = isWaitingApproval;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public void setRecruitHireApplyService(RecruitHireApplyService recruitHireApplyService) {
         this.recruitHireApplyService = recruitHireApplyService;
     }
-
-    public Boolean getIsApprovedOrRejected() {
-        return isApprovedOrRejected;
-    }
-
-    public void setIsApprovedOrRejected(Boolean isApprovedOrRejected) {
-        this.isApprovedOrRejected = isApprovedOrRejected;
-    }
-
-    public void setRecruitHireApplyDetailService(RecruitHireApplyDetailService recruitHireApplyDetailService) {
-        this.recruitHireApplyDetailService = recruitHireApplyDetailService;
-    }
-
+    
+    
+    
 }
