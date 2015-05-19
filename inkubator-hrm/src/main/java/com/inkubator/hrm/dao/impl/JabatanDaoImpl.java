@@ -52,7 +52,8 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("department", FetchMode.JOIN);
         criteria.setFetchMode("unitKerja", FetchMode.JOIN);
-        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+//        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
         criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -78,25 +79,26 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         if (StringUtils.isNotEmpty(parameter.getName())) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
-
-        if (StringUtils.isNotEmpty(parameter.getCostCenterName())) {
+        
             criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getCostCenterName())) {
+//            criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("cc.name", parameter.getCostCenterName(), MatchMode.ANYWHERE));
         }
 
         if (StringUtils.isNotEmpty(parameter.getDepartementName())) {
             criteria.add(Restrictions.like("dd.departmentName", parameter.getDepartementName(), MatchMode.ANYWHERE));
         }
-            criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
+            criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter.getJabatan())) {
             
-            criteria.createAlias("gj.pangkat", "pp", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("pp.pangkatName", parameter.getJabatan(), MatchMode.ANYWHERE));
+            criteria.createAlias("golonganJabatan.pangkat", "pangkat", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("pangkat.pangkatName", parameter.getJabatan(), MatchMode.ANYWHERE));
         }
 
         if (StringUtils.isNotEmpty(parameter.getUnitKerjaName())) {
-            criteria.createAlias("unitKerja", "uk", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("uk.name", parameter.getUnitKerjaName(), MatchMode.ANYWHERE));
+            criteria.createAlias("unitKerja", "unitKerja", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("unitKerja.name", parameter.getUnitKerjaName(), MatchMode.ANYWHERE));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

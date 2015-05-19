@@ -123,44 +123,44 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="namaProsesGaji"  style="width: 22%">
+                            <p:column sortBy="#{dataKomponen.namaProsesGaji}"  style="width: 22%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['report.salary_process_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.namaProsesGaji}" />                             
                             </p:column>
-                              <p:column sortBy="department"  style="width: 13%">
+                              <p:column sortBy="#{dataKomponen.department}"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.department']}"/>
                                 </f:facet>
                                   <h:outputLabel value= "#{dataKomponen.department}" />                             
                             </p:column>
-                            <p:column sortBy="jabatan"  style="width: 15%">
+                            <p:column sortBy="#{dataKomponen.jabatan}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.jabatan}" />                             
                             </p:column>
-                             <p:column sortBy="golonganJabatan"  style="width: 10%">
+                             <p:column sortBy="#{dataKomponen.golonganJabatan}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{dataKomponen.golonganJabatan}" />                             
                             </p:column>
-                            <p:column sortBy="karyawan"  style="width: 13%">
+                            <p:column sortBy="#{dataKomponen.karyawan}"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.karyawan}" />
                                 
                             </p:column>
-                            <p:column sortBy="namaKomponen"  style="width: 15%">
+                            <p:column sortBy="#{dataKomponen.namaKomponen}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paySalaryComponent.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{dataKomponen.namaKomponen}"/>
                             </p:column>
-                            <p:column sortBy="nominal"  style="width: 12%">
+                            <p:column sortBy="#{dataKomponen.nominal}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['componentException.nominal']}"/>
                                 </f:facet>

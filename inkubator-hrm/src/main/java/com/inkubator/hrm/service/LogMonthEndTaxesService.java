@@ -18,5 +18,7 @@ public interface LogMonthEndTaxesService extends IService<LogMonthEndTaxes> {
 	
         public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order);
     
+        public Long getTotalDataByParam(LogMonthEndTaxesSearchParameter searchParameter) throws Exception;
+        
         public StreamedContent generatedPph(long id) throws Exception;
 }

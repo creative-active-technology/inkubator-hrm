@@ -107,25 +107,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 10%">
+                            <p:column sortBy="#{data.code}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 30%">
+                            <p:column sortBy="#{data.name}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="jumlahKaryawan" style="width: 25%">
+                            <p:column sortBy="#{data.jumlahKaryawan}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jumlahKaryawan}" />
                             </p:column>
-                            <p:column sortBy="jumlahKaryawan" style="width: 25%">
+                            <p:column sortBy="#{data.nominal}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
                                 </f:facet>

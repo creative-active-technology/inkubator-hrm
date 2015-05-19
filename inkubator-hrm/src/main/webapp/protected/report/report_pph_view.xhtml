@@ -47,9 +47,6 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
-                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
                                 </h:panelGrid>
@@ -61,7 +58,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['savingType.savingType_list']}"/>
+                                <h:outputText value="Daftar Laporan PPh"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -119,7 +116,7 @@
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{reportPphViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

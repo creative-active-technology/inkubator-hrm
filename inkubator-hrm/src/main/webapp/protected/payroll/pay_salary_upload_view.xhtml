@@ -65,13 +65,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 15%">
+                            <p:column sortBy="#{paySalaryUploadData.code}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalaryupload.component_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{paySalaryUploadData.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 50%">
+                            <p:column sortBy="#{paySalaryUploadData.name}" style="width: 50%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalaryupload.component_name']}"/>
                                 </f:facet>
