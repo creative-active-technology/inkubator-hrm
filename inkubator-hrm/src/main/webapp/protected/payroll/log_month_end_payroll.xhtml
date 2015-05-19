@@ -103,19 +103,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empNik" style="width: 10%">
+                            <p:column sortBy="#{monthEndData.empNik}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{monthEndData.empNik}" />
                             </p:column>
-                            <p:column sortBy="empName" style="width: 30%">
+                            <p:column sortBy="#{monthEndData.empName}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{monthEndData.empName}" />
                             </p:column>
-                            <p:column sortBy="income" style="width: 10%">
+                            <p:column sortBy="#{monthEndData.income}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['payroll.income']}"/>
                                 </f:facet>
@@ -123,7 +123,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="deduction" style="width: 10%">
+                            <p:column sortBy="#{monthEndData.deduction}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['payroll.deduction']}"/>
                                 </f:facet>
@@ -131,7 +131,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="subsidy" style="width: 10%">
+                            <p:column sortBy="#{monthEndData.subsidy}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['payroll.subsidy']}"/>
                                 </f:facet>
@@ -139,7 +139,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="takeHomePay" style="width: 10%">
+                            <p:column sortBy="#{monthEndData.takeHomePay}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['payroll.take_home_pay']}"/>
                                 </f:facet>

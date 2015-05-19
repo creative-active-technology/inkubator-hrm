@@ -16,6 +16,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -35,8 +36,8 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
     @Override
     public List<PayTempOvertime> getByParam(PayTempOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         doSearchByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -52,13 +53,12 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
     }
 
     private void doSearchByParam(PayTempOvertimeSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         if (searchParameter.getEmployeeName() != null) {
-            criteria.createAlias("empData", "empData");
-            criteria.createAlias("empData.bioData", "bioData");
             criteria.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.START));
         }
         if (searchParameter.getNim() != null) {
-            criteria.createAlias("empData", "empData");
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNim(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -76,6 +76,7 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
     public PayTempOvertime getEntityByPkWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
         return (PayTempOvertime) criteria.uniqueResult();
     }

@@ -45,7 +45,7 @@ public class ReportPphLazyDataModel extends LazyDataModel<PphReportModel> implem
                     order = Order.desc("empData");
                 }
                 logMonthEndTaxexList = service.getAllDataByParam(searchParameter, first, pageSize, order);
-//                jumlahData = Integer.parseInt(String.valueOf(service.getTotal(searchParameter)));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalDataByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -53,7 +53,7 @@ public class ReportPphLazyDataModel extends LazyDataModel<PphReportModel> implem
         LOGGER.info("Success Load Lazy data Model");
 
         setPageSize(pageSize);
-        setRowCount(500);
+        setRowCount(jumlahData);
         return logMonthEndTaxexList;
     }
     

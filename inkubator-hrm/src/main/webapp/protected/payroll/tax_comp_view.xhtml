@@ -68,7 +68,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 87%">
+                            <p:column sortBy="#{taxComponentData.name}"  style="width: 87%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -77,7 +77,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{taxComponentViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailTaxComponent.show()">                        
+                                				 action="#{taxComponentViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTaxComponent').show()">                        
                                     <f:setPropertyActionListener value="#{taxComponentData}" target="#{taxComponentViewController.selectedTaxComponent}" />
                                 </p:commandButton>
 <!--                                - 
@@ -136,7 +136,7 @@
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailTaxComponent" header="#{appmsg['taxComponent.detail_dialog']}" styleClass="header_small_no_bold" width="700" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:25%"><p:outputLabel value="#{appmsg['taxComponent.taxComponent_name']}" styleClass="label_hrm"/></p:column>

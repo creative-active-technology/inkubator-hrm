@@ -80,7 +80,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="bulanPeriode"  style="width: 10%">
+                            <p:column sortBy="#{payrollHistData.tglAwalPeriode}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.period']}"/>
                                 </f:facet>
@@ -88,7 +88,7 @@
                                     <f:convertDateTime pattern="MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="tglAwalPeriode"  style="width: 15%">
+                            <p:column sortBy="#{payrollHistData.tglAwalPeriode}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.work_period']}"/>
                                 </f:facet>
@@ -100,13 +100,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jumlahKaryawan"  style="width: 10%">
+                            <p:column sortBy="#{payrollHistData.jumlahKaryawan}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalaryupload.total_employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{payrollHistData.jumlahKaryawan}"/>
                             </p:column>
-                            <p:column sortBy="nominal"  style="width: 15%">
+                            <p:column sortBy="#{payrollHistData.nominal}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['salaryConfirmation.paid_salary']}"/>
                                 </f:facet>

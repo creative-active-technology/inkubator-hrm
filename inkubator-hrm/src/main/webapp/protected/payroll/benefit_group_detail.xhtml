@@ -93,19 +93,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="golonganJabatan.code"  style="text-align: center;width: 29%">
+                            <p:column sortBy="#{benefitGroupRateData.golonganJabatan.code}"  style="text-align: center;width: 29%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupRateData.golonganJabatan.code}"/>
                             </p:column> 
-                            <p:column sortBy="golonganJabatan.pangkat"  style="text-align: center;width: 29%">
+                            <p:column sortBy="#{benefitGroupRateData.golonganJabatan.pangkat.pangkatName}"  style="text-align: center;width: 29%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.pangkat_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupRateData.golonganJabatan.pangkat.pangkatName}"/>
                             </p:column> 
-                            <p:column sortBy="nominal"  style="width: 29%">
+                            <p:column sortBy="#{benefitGroupRateData.nominal}"  style="width: 29%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                 </f:facet>
@@ -117,13 +117,13 @@
 
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogBenefitGroupRateDetailId" 
-                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBenefitGroupRate.show()">                        
+                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBenefitGroupRate').show()">                        
                                     <f:setPropertyActionListener value="#{benefitGroupRateData}" target="#{benefitGroupDetailController.selectedBenefitGroupRate}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogBenefitGroupRateConfirmId" 
-                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBenefitGroupRate.show()">
+                                                 action="#{benefitGroupDetailController.doSelectBenefitGroupRate()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBenefitGroupRate').show()">
                                     <f:setPropertyActionListener value="#{benefitGroupRateData}" target="#{benefitGroupDetailController.selectedBenefitGroupRate}" />
                                 </p:commandButton>
                                 -
@@ -134,6 +134,12 @@
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
+                        <p:blockUI block="formBenefitGroupFormId" trigger="tableBenefitGroupRateId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
                         <h:panelGrid columns="1">
                             <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['benefitGroupRate.benefitGroupRate']}" label="#{appmsg['global.add']} #{appmsg['benefitGroupRate.benefitGroupRate']}" styleClass="label_button" icon="ui-icon-document" 
                                              actionListener="#{benefitGroupDetailController.doAddBenefitGroupRate()}" ajax="true" immediate="true">
@@ -147,7 +153,7 @@
                     </div>
                 </h:form>
                 
-                 <p:dialog widgetVar="dialogConfirmBenefitGroupRate" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                 <p:dialog widgetVar="dialogConfirmBenefitGroupRate" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -167,12 +173,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{benefitGroupDetailController.doDeleteBenefitGroupRate()}" update="formBenefitGroupFormId:tableBenefitGroupRateId,:growlBenefitGroupFormlId"
-                                         oncomplete="dialogConfirmBenefitGroupRate.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBenefitGroupRate.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBenefitGroupRate').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBenefitGroupRate').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBenefitGroupRate" header="#{appmsg['benefitGroupRate.benefitGroupRate']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBenefitGroupRateDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['benefitGroup.benefitGroup_name']}" styleClass="label_hrm"/></p:column>

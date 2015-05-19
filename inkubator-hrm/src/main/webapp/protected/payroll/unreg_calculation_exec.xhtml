@@ -85,19 +85,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="paySalaryCompName" style="width: 40%">
+                            <p:column sortBy="#{data.paySalaryCompName}" style="width: 40%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.component_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.paySalaryCompName}" />
                             </p:column>
-                            <p:column sortBy="totalEmployee" style="width: 20%">
+                            <p:column sortBy="#{data.totalEmployee}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.totalEmployee}" />
                             </p:column>
-                            <p:column sortBy="totalNominal" style="width: 20%">
+                            <p:column sortBy="#{data.totalNominal}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>

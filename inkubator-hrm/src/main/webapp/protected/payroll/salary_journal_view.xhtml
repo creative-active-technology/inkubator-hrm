@@ -76,31 +76,31 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="costCenterCode" style="width: 10%">
+                            <p:column sortBy="#{data.costCenterCode}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.costCenterCode']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.costCenterCode}" />
                             </p:column>
-                            <p:column sortBy="costCenterName" style="width: 15%">
+                            <p:column sortBy="#{data.costCenterName}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.costCenterName']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.costCenterName}" />
                             </p:column>
-                            <p:column sortBy="jurnalCode" style="width: 15%">
+                            <p:column sortBy="#{data.jurnalCode}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.journalCode']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jurnalCode}" />
                             </p:column>
-                            <p:column sortBy="jurnalName" style="width: 15%">
+                            <p:column sortBy="#{data.jurnalName}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.journalName']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jurnalName}" />
                             </p:column>
-                            <p:column sortBy="debet2" style="width: 15%">
+                            <p:column sortBy="#{data.debet2}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.debit']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="kredit" style="width: 15%">
+                            <p:column sortBy="#{data.kredit}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryJournal.credit']}"/>
                                 </f:facet>
