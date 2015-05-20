@@ -31,8 +31,7 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
     @Override
     public List<City> getByParam(CitySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchCityByParam(parameter, criteria);
-        criteria.setFetchMode("province", FetchMode.JOIN);
+        doSearchCityByParam(parameter, criteria);        
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -47,6 +46,8 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
     }
 
     private void doSearchCityByParam(CitySearchParameter parameter, Criteria criteria) {
+    	criteria.createAlias("province", "province", JoinType.INNER_JOIN);
+    	
         if (parameter.getCityCode() != null) {
             criteria.add(Restrictions.like("cityCode", parameter.getCityCode(), MatchMode.ANYWHERE));
         }
@@ -56,8 +57,7 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
         }
         
         if (parameter.getProvinceName()!= null) {
-            criteria.createAlias("province", "p", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("p.provinceName", parameter.getProvinceName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("province.provinceName", parameter.getProvinceName(), MatchMode.ANYWHERE));
         }
         
         criteria.add(Restrictions.isNotNull("id"));

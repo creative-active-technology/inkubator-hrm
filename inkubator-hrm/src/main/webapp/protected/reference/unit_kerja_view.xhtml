@@ -103,7 +103,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{unitKerjaController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmUnitKerja').show()">
+                                                 action="#{unitKerjaController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmUnitKerja').show()">
                                     <f:setPropertyActionListener value="#{unitKerjaData}" target="#{unitKerjaController.selectedUnitKerja}" />
                                 </p:commandButton>
                                 -
@@ -127,9 +127,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
+                
                 <p:dialog widgetVar="dialogConfirmUnitKerja" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">

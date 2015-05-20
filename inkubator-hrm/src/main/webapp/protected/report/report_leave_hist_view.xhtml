@@ -27,7 +27,6 @@
                     <p:separator/>
 
                     <h:form id="formReportLeaveImplementationViewId">
-                        <p:focus context="formReportLeaveImplementationViewId"/>
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
@@ -100,25 +99,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="numberFilling"  style="width: 15%">
+                            <p:column sortBy="#{leaveImplementationData.numberFilling}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.numberFilling}"/>
                             </p:column>
-                            <p:column sortBy="leave.name"  style="width: 10%">
+                            <p:column sortBy="#{leaveImplementationData.leave.name}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.leave.name}"/>
                             </p:column>  
-                            <p:column sortBy="empData.bioData.firstName"  style="width: 20%">
+                            <p:column sortBy="#{leaveImplementationData.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.empData.nikWithFullName}"/>
                             </p:column>
-                            <p:column sortBy="startDate"  style="width: 10%">
+                            <p:column sortBy="#{leaveImplementationData.startDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -126,7 +125,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="endDate"  style="width: 10%">
+                            <p:column sortBy="#{leaveImplementationData.endDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -134,7 +133,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="fillingDate"  style="width: 10%">
+                            <p:column sortBy="#{leaveImplementationData.fillingDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
                                 </f:facet>
@@ -145,7 +144,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{reportLeaveHistoryViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetail.show()">                        
+                                                 action="#{reportLeaveHistoryViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetail.show()">                        
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{reportLeaveHistoryViewController.selectedLeaveImplementation}" />
                                 </p:commandButton>
                             </p:column>
@@ -242,7 +241,7 @@
                 </div>           
 
                 <p:dialog widgetVar="dialogDetail" header="#{appmsg['leaveimplementation.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/></p:column>

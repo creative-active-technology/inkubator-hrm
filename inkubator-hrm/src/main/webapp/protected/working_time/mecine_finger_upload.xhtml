@@ -134,12 +134,12 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important"  update=":confirmDialogDeleteId"
-                                                 action="#{fingerUploadFormController.doDeleteData()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="confirmDialogDelete.show()">
+                                                 action="#{fingerUploadFormController.doDeleteData()}" ajax="true" immediate="true" onclick="PF('statusDialog').show()" oncomplete="PF('confirmDialogDelete').show()">
                                     <f:setPropertyActionListener value="#{sparasiData}" target="#{fingerUploadFormController.selectdMacineFingerUpload}" />
                                 </p:commandButton> 
                                 -
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" immediate="false" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{fingerUploadFormController.doEditData()}"  onclick="statusDialog.show()" oncomplete="confirmDialogAdd.show()" update=":forAddId" >
+                                                 action="#{fingerUploadFormController.doEditData()}"  onclick="PF('statusDialog').show()" oncomplete="PF('confirmDialogAdd').show()" update=":forAddId" >
                                     <f:setPropertyActionListener value="#{sparasiData}" target="#{fingerUploadFormController.selectdMacineFingerUpload}" />
                                    
                                 </p:commandButton>
@@ -147,7 +147,7 @@
                         </p:dataTable>
 
                         <h:panelGrid columns="1">
-                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" onclick="statusDialog.show()" oncomplete="confirmDialogAdd.show()" action="#{fingerUploadFormController.doAddData()}" 
+                            <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" onclick="PF('statusDialog').show()" oncomplete="PF('confirmDialogAdd').show()" action="#{fingerUploadFormController.doAddData()}" 
                                              update=":forAddId" immediate="true"
                                              label="#{appmsg['global.add']} #{appmsg['approvaldefinition.approval_definition']}" styleClass="label_button" icon="ui-icon-document" />
                         </h:panelGrid>	                 	
@@ -169,7 +169,7 @@
                     </div>
 
                 </h:form>
-                <p:dialog widgetVar="confirmDialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogDeleteId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogRoleId">
                         <div align="center">
@@ -190,14 +190,14 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{fingerUploadFormController.doDelete()}"  id="yesId" title="#{appmsg['global.yes']}" update=":fingerUploadId:tableSparasiId"
-                                             oncomplete="confirmDialogDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogDelete.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
+                                             oncomplete="PF('confirmDialogDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogDelete').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
                         </div>
                     </h:form>
                 </p:dialog>
 
-                <p:dialog widgetVar="confirmDialogAdd" header="HRIS|PT IIT" modal="true" width="400" dynamic="true" onShow="statusDialog.hide()" height="350"
+                <p:dialog widgetVar="confirmDialogAdd" header="HRIS|PT IIT" modal="true" width="400" dynamic="true" onShow="PF('statusDialog').hide()" height="350"
                           appendTo="@(body)" resizable="false" id="confirmDialogAddId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="forAddId">
                         <h:panelGrid  columns="2">

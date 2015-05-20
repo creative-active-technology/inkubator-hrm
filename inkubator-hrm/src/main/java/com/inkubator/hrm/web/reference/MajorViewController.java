@@ -125,7 +125,7 @@ public class MajorViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 325);
+        options.put("contentHeight", 335);
         RequestContext.getCurrentInstance().openDialog("major_form", options, params);
     }
 

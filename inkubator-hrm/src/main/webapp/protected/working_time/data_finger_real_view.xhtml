@@ -73,19 +73,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData.nik"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{data.nik}"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nik}"/>
                             </p:column>  
-                            <p:column sortBy="empData.bioData.firstName"  style="text-align: center;width: 15%">
+                            <p:column sortBy="#{data.employeeName}"  style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.employeeName}"/>
                             </p:column>
-                            <p:column sortBy="empData.wtGroupWorking.name"  style="text-align: center;width: 15%">
+                            <p:column sortBy="#{data.workingGroupName}"  style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.group']}"/>
                                 </f:facet>

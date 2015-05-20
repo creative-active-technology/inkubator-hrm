@@ -39,10 +39,7 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
     public List<WtFingerException> getByParamWithDetail(WtFingerExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("empData.employeeType", FetchMode.JOIN);
-        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -92,23 +89,24 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
     }
     
     private void doSearch(WtFingerExceptionSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (searchParameter.getNik()!= null) {
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         if(searchParameter.getNamaJabatan() != null){
-            criteria.add(Restrictions.like("jabatan.name", searchParameter.getNamaJabatan(), MatchMode.START));
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", searchParameter.getNamaJabatan(), MatchMode.START));
         }
         if(searchParameter.getCodeJabatan()!= null){
-            criteria.add(Restrictions.like("jabatan.code", searchParameter.getCodeJabatan(), MatchMode.START));
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", searchParameter.getCodeJabatan(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

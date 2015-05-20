@@ -75,7 +75,7 @@ public class WtFingerExceptionViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 420);
-        options.put("contentHeight", 300);
+        options.put("contentHeight", 305);
         RequestContext.getCurrentInstance().openDialog("wt_finger_ex_edit", options, params);
     }
     

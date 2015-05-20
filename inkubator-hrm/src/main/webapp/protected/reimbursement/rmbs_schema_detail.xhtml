@@ -164,7 +164,7 @@
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
 		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
 		                                				 style="font-size: 10px!important" update="tableRmbsSchemaOfTypeId,:growlId" 
-		                                				 action="#{rmbsSchemaDetailController.doDeleteReimbursementType()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+		                                				 action="#{rmbsSchemaDetailController.doDeleteReimbursementType()}" ajax="true" immediate="true" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()">
 		                                    <f:setPropertyActionListener value="#{rmbsSchemaOfTypeData}" target="#{rmbsSchemaDetailController.selectedRmbsSchemaListOfType}" />
 		                                </p:commandButton> 
 		                                -
@@ -241,7 +241,7 @@
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">                                
 		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
 		                                				 style="font-size: 10px!important" update="tableApprovalDevId,:growlId" 
-		                                				 action="#{rmbsSchemaDetailController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="statusDialog.show()" oncomplete="statusDialog.hide()">
+		                                				 action="#{rmbsSchemaDetailController.doDeleteAppDef()}" ajax="true" immediate="true" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()">
 		                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{rmbsSchemaDetailController.selectedAppDef}" />
 		                                </p:commandButton> 
 		                                -

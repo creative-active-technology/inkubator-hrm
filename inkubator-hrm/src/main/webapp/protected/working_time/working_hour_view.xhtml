@@ -71,13 +71,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 5%">
+                            <p:column sortBy="#{workingHourData.code}"  style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingHourData.code}"/>
                             </p:column>   
-                            <p:column sortBy="name"  style="text-align: center;width: 20%">
+                            <p:column sortBy="#{workingHourData.name}"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -140,7 +140,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{workingHourViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmWorkingHour.show()">
+                                				 action="#{workingHourViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmWorkingHour').show()">
                                     <f:setPropertyActionListener value="#{workingHourData}" target="#{workingHourViewController.selectedWorkingHour}" />
                                 </p:commandButton>
                                 -
@@ -161,13 +161,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="dialogConfirmWorkingHour" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmWorkingHour" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -187,8 +184,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{workingHourViewController.doDelete()}" update="formWorkingHourViewId,:growlWorkingHourViewlId"
-                                         oncomplete="dialogConfirmWorkingHour.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmWorkingHour.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmWorkingHour').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmWorkingHour').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

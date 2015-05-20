@@ -71,19 +71,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{leaveData.code}"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.code}"/>
                             </p:column>   
-                            <p:column sortBy="name"  style="text-align: center;width: 40%">
+                            <p:column sortBy="#{leaveData.name}"  style="text-align: center;width: 40%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.name}"/>
                             </p:column> 
-                            <p:column sortBy="dayType"  style="text-align: center;width: 35%">
+                            <p:column sortBy="#{leaveData.dayType}"  style="text-align: center;width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.type_of_day']}"/>
                                 </f:facet>
@@ -98,7 +98,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{leaveViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLeave.show()">
+                                				 action="#{leaveViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmLeave').show()">
                                     <f:setPropertyActionListener value="#{leaveData}" target="#{leaveViewController.selectedLeave}" />
                                 </p:commandButton>
                                 -
@@ -119,13 +119,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="dialogConfirmLeave" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmLeave" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -145,8 +142,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{leaveViewController.doDelete()}" update="formLeaveViewId,:growlLeaveViewlId"
-                                         oncomplete="dialogConfirmLeave.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLeave.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmLeave').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmLeave').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

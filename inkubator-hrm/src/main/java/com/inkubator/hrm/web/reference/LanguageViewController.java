@@ -125,7 +125,7 @@ public class LanguageViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 325);
+        options.put("contentHeight", 330);
         RequestContext.getCurrentInstance().openDialog("language_form", options, params);
     }
 

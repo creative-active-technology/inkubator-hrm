@@ -32,8 +32,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     @Override
     public List<PublicHoliday> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchPublicHolidayByParam(parameter, criteria);
-        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        doSearchPublicHolidayByParam(parameter, criteria);        
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -48,9 +47,9 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     }
 
     private void doSearchPublicHolidayByParam(String parameter, Criteria criteria) {
+    	criteria.createAlias("leaveScheme", "leaveScheme", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter)) {
-            criteria.createAlias("leaveScheme", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", parameter, MatchMode.START));
+            criteria.add(Restrictions.like("leaveScheme.name", parameter, MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -74,7 +73,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, criteria);
-        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        criteria.createAlias("leaveScheme", "leaveScheme", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

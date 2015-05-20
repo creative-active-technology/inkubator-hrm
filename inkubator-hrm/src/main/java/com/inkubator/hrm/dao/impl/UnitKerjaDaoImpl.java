@@ -84,7 +84,6 @@ public class UnitKerjaDaoImpl extends IDAOImpl<UnitKerja> implements UnitKerjaDa
     public List<UnitKerja> getAllDataWithCity(UnitKerjaSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchUnitKerjaByParam(searchParameter, criteria);
-        criteria.setFetchMode("city", FetchMode.JOIN);
         criteria.createAlias("city", "city", JoinType.INNER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);

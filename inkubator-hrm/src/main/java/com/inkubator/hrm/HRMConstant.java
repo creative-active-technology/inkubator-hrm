@@ -121,8 +121,8 @@ public class HRMConstant {
     /* END */
 
     /* Constant for BIO Family Relation Module */
-    public static final Integer BIOFAMILY_DEPENDENTS_YES = 0;
-    public static final Integer BIOFAMILY_DEPENDENTS_NO = 1;
+    public static final Integer BIOFAMILY_DEPENDENTS_YES = 1;
+    public static final Integer BIOFAMILY_DEPENDENTS_NO = 0;
     /* END */
 
     /* Constant for BIO Bank Account Module */
