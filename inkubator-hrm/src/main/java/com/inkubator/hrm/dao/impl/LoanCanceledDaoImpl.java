@@ -40,9 +40,9 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -57,13 +57,15 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
     }
 
     private void doSearchByParam(LoanCanceledSearchParameter searchParameter, Criteria criteria) {
+
+        criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
+
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getLoanSchema())) {
-            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", searchParameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getEmployee())) {
-            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
 
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmployee(), MatchMode.ANYWHERE));

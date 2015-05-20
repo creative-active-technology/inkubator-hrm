@@ -74,19 +74,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="province.provinceName"  style="width: 33%">
+                            <p:column sortBy="#{cityData.province.provinceName}"  style="width: 33%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['city.province_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{cityData.province.provinceName}"/>
                             </p:column>
-                            <p:column sortBy="cityCode"  style="width: 20%">
+                            <p:column sortBy="#{cityData.cityCode}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{cityData.cityCode}"/>
                             </p:column>  
-                            <p:column sortBy="cityName"  style="width: 33%">
+                            <p:column sortBy="#{cityData.cityName}"  style="width: 33%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -101,7 +101,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{cityViewController.doDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCity.show()">
+                                                 action="#{cityViewController.doDelete()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCity').show()">
                                     <f:setPropertyActionListener value="#{cityData}" target="#{cityViewController.selectedCity}" />
                                 </p:commandButton>
                                 -
@@ -123,13 +123,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmCity" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCity" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -149,8 +146,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{cityViewController.doDelete()}" update="formCityViewId,:growlCityViewlId"
-                                         oncomplete="dialogConfirmCity.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCity.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCity').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCity').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 

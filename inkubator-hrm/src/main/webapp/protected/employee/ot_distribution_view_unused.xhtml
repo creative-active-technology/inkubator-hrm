@@ -66,19 +66,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData">
+                            <p:column sortBy="#{data.bioData.firstName}">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Karyawan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="leave" >
+                            <p:column sortBy="#{data.leave.name}" >
                                 <f:facet name="header">
                                     <h:outputText value="Nama Cuti"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leave.name}" />
                             </p:column>
-                            <p:column sortBy="startDate" >
+                            <p:column sortBy="#{data.startDate}" >
                                 <f:facet name="header">
                                     <h:outputText value="Start Date"/>
                                 </f:facet>
@@ -86,7 +86,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="endDate" >
+                            <p:column sortBy="#{data.endDate}" >
                                 <f:facet name="header">
                                     <h:outputText value="End Date"/>
                                 </f:facet>
@@ -94,7 +94,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="balance" >
+                            <p:column sortBy="#{data.balance}" >
                                 <f:facet name="header">
                                     <h:outputText value="Balance"/>
                                 </f:facet>
@@ -102,14 +102,14 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{leaveDistributionViewController.doSelectEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{leaveDistributionViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{leaveDistributionViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                 action="#{leaveDistributionViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{leaveDistributionViewController.selected}" />
                                 </p:commandButton>
                                 -
@@ -136,7 +136,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -156,12 +156,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{leaveDistributionViewController.doDelete()}" update="formId"
-                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="Detil Leave Distribution" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>

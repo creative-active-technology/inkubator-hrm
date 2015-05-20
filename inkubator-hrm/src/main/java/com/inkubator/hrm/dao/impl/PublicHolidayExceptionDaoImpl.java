@@ -32,11 +32,7 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
     @Override
     public List<PublicHolidayException> getByParam(PublicHolidayExceptionSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchPublicHolidayExceptionByParam(parameter, criteria);
-        criteria.setFetchMode("publicHoliday", FetchMode.JOIN);
-        criteria.setFetchMode("publicHoliday.leaveScheme", FetchMode.JOIN);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        doSearchPublicHolidayExceptionByParam(parameter, criteria);        
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -52,18 +48,19 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
 
     private void doSearchPublicHolidayExceptionByParam(PublicHolidayExceptionSearchParameter parameter, Criteria criteria) {
         
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("publicHoliday", "publicHoliday", JoinType.INNER_JOIN);
+        criteria.createAlias("publicHoliday.leaveScheme", "leaveScheme", JoinType.INNER_JOIN);
+        
         if (parameter.getEmpDataName()!= null) {
-            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
-            criteria.createAlias("e.bioData", "b", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.or(Restrictions.like("b.firstName", parameter.getEmpDataName(), MatchMode.ANYWHERE),
-                    Restrictions.like("b.lastName", parameter.getEmpDataName(), MatchMode.ANYWHERE)));
-            criteria.add(Restrictions.isNotNull("e.nik"));
+            criteria.add(Restrictions.or(Restrictions.like("bioData.firstName", parameter.getEmpDataName(), MatchMode.ANYWHERE),
+                    Restrictions.like("bioData.lastName", parameter.getEmpDataName(), MatchMode.ANYWHERE)));
+            criteria.add(Restrictions.isNotNull("empData.nik"));
         }
         
         if (parameter.getPublicHolidayName()!= null) {
-            criteria.createAlias("publicHoliday", "p", JoinType.INNER_JOIN);
-            criteria.createAlias("p.leaveScheme", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", parameter.getPublicHolidayName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("leaveScheme.name", parameter.getPublicHolidayName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

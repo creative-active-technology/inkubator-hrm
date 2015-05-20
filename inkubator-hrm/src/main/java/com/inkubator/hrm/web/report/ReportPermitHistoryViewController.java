@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * @author rizkykojek
+ * @author Taufik Hidayat
  */
 @ManagedBean(name = "reportPermitHistoryViewController")
 @ViewScoped
@@ -35,8 +35,8 @@ public class ReportPermitHistoryViewController extends BaseController {
 
     private PermitImplementationReportSearchParameter searchParameter;
     private LazyDataModel<PermitImplementation> lazyDataModel;
-    @ManagedProperty(value = "#{leaveImplementationService}")
-    private PermitImplementationService leaveImplementationService;
+    @ManagedProperty(value = "#{permitImplementationService}")
+    private PermitImplementationService permitImplementationService;
     private PermitImplementation selectedPermitImplementation;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
@@ -65,7 +65,7 @@ public class ReportPermitHistoryViewController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        leaveImplementationService = null;
+    	permitImplementationService = null;
         searchParameter = null;
         lazyDataModel = null;
         selectedPermitImplementation = null;
@@ -120,7 +120,7 @@ public class ReportPermitHistoryViewController extends BaseController {
 
     public LazyDataModel<PermitImplementation> getLazyDataModel() {
         if (lazyDataModel == null) {
-            lazyDataModel = new PermitImplementationReportSearchLazyDataModel(searchParameter, activityNumbers, empData, leaveImplementationService);
+            lazyDataModel = new PermitImplementationReportSearchLazyDataModel(searchParameter, activityNumbers, empData, permitImplementationService);
         }
         return lazyDataModel;
     }
@@ -130,14 +130,14 @@ public class ReportPermitHistoryViewController extends BaseController {
     }
 
     public PermitImplementationService getPermitImplementationService() {
-        return leaveImplementationService;
-    }
+		return permitImplementationService;
+	}
 
-    public void setPermitImplementationService(PermitImplementationService leaveImplementationService) {
-        this.leaveImplementationService = leaveImplementationService;
-    }
+	public void setPermitImplementationService(PermitImplementationService permitImplementationService) {
+		this.permitImplementationService = permitImplementationService;
+	}
 
-    public ApprovalActivityService getApprovalActivityService() {
+	public ApprovalActivityService getApprovalActivityService() {
         return approvalActivityService;
     }
 
@@ -187,7 +187,7 @@ public class ReportPermitHistoryViewController extends BaseController {
 
     public void doDetail() {
         try {
-            selectedPermitImplementation = this.leaveImplementationService.getEntityByPkWithDetail(selectedPermitImplementation.getId());
+            selectedPermitImplementation = this.permitImplementationService.getEntityByPkWithDetail(selectedPermitImplementation.getId());
             approvalActivity = this.approvalActivityService.getEntityByActivityNumberLastSequence(selectedPermitImplementation.getNumberFilling());
             approvalActivity.setApprovedBy(HrmUserInfoUtil.getRealNameByUserName(approvalActivity.getApprovedBy()));
         } catch (Exception ex) {
@@ -197,7 +197,7 @@ public class ReportPermitHistoryViewController extends BaseController {
 
     public void listReportHistory() {
         try {
-            listPermitImplementations = leaveImplementationService.getReportHistoryByParam(searchParameter, activityNumbers, empData);
+            listPermitImplementations = permitImplementationService.getReportHistoryByParam(searchParameter, activityNumbers, empData);
             for (PermitImplementation l : listPermitImplementations) {
                 ReportPermitHistoryModel reportPermitHistoryModel = new ReportPermitHistoryModel();
                 reportPermitHistoryModel.setEndDate(l.getEndDate());

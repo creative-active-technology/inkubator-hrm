@@ -128,9 +128,9 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     public List<LeaveImplementation> getReportByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, activityNumbers, empDataId, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

@@ -17,18 +17,7 @@
             <ui:define name="center">
                 <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
                 <h:form id="empDataFormId" >
-                    <div id="box_bg" style="margin: 10px">
-                        <!--<p:panel style="margin: 10px">-->
-                        <!--                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                                                    <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
-                                                    <h:panelGroup layout="block">
-                                                        <h:panelGrid>
-                                                            <p:outputLabel value="Pencarian Bio Data" styleClass="header_big" />
-                                                            <p:outputLabel value="Biodata dari Apliaksi" styleClass="header_small_no_bold" />
-                                                        </h:panelGrid>
-                                                    </h:panelGroup>
-                                                </h:panelGrid>
-                                                <p:separator/>-->
+                    <div id="box_bg" style="margin: 10px">             
                         <h:panelGrid columns="4">
                             <p:outputLabel value="#{appmsg['global.name']}" styleClass="header_big" />
                             <p:outputLabel value=":" styleClass="header_big" />
@@ -37,16 +26,13 @@
                         </h:panelGrid>
                         <p:focus for="cariId" />
                         <p:dataTable value="#{empBioSearchController.biodataToShow}" var="listBiodata" rowIndexVar="no" style="margin-top: 10px;margin-bottom: 10px" id="listBioId">
-                            <!--                            <f:facet name="header">  
-                                                            <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
-                                                        </f:facet>-->
+                           
                             <p:column style="text-align: center;width: 25px;max-width: 25px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}." />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-
                             <p:column> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}" />

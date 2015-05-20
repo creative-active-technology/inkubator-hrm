@@ -150,6 +150,7 @@ public class EmpDataFormController extends BaseController {
                 BioData bioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioOrEmpId.substring(1)));
                 empDataModel.setBioDataName(bioData.getFirstName() + " " + bioData.getLastName());
                 empDataModel.setBirthDate(bioData.getDateOfBirth());
+                empDataModel.setBioDataId(bioData.getId());
                 isEdit = Boolean.FALSE;
             } else {
                 isEdit = Boolean.FALSE;
@@ -222,7 +223,9 @@ public class EmpDataFormController extends BaseController {
     }
 
     public void doChangeDepartement() {
+      
         try {
+
             List<Jabatan> jabatanas = jabatanService.getByDepartementId(empDataModel.getDepartementId());
             mapJabatans = new HashMap();
             for (Jabatan jabatan : jabatanas) {

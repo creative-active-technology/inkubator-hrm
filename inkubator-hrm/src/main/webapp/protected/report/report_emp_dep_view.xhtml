@@ -29,11 +29,9 @@
 
                     <h:form id="formReportEmpDepartmentJabatanViewId">
                         <p:focus context="formReportEmpDepartmentJabatanViewId"/>
-                        <p:toolbar  style="margin-top: 10px">
-                            <p:toolbarGroup align="left">
-                                <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                         	<p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                                     <p:row>
-                                        <p:column>
+                                        <p:column style="width: 13%;background-color: #e1f0f0!important">
                                             <p:outputLabel value="#{appmsg['department.department']}" title="#{appmsg['department.department']}" styleClass="label_hrm" />
                                         </p:column>
                                         <p:column>
@@ -47,7 +45,7 @@
                                         </p:column>
                                     </p:row>
                                     <p:row>
-                                        <p:column>
+                                        <p:column style="width: 13%;background-color: #e1f0f0!important">
                                             <p:outputLabel value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" title="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" styleClass="label_hrm" />
                                         </p:column>
                                         <p:column>
@@ -59,13 +57,12 @@
                                                         itemLabel="#{golJab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                         removeLabel="#{appmsg['global.remove']}"/>
                                         </p:column>
-                                        <p:column>
-                                            <p:commandButton id="btnSearchId" style="margin-left:20px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportEmpDepartmentJabatanViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
-                                        </p:column>
                                     </p:row>
-                                </p:panelGrid>
-                            </p:toolbarGroup>
+                     	</p:panelGrid>
+                        <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportEmpDepartmentJabatanViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+						<p:separator/>
 
+						<p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
@@ -74,8 +71,8 @@
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmpDepartmentJabatanViewController.doClose()}" icon="ui-icon-home"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
-                        </p:toolbar>
-
+						</p:toolbar>
+						
                         <p:dataTable  id="tableReportId" var="empData"  value="#{reportEmpDepartmentJabatanViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -89,13 +86,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="department.departmentName"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{empData.department.departmentName}"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['department.department']} / #{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.jabatanByJabatanId.department.departmentName} #{empData.jabatanByJabatanId.name}"/>
                             </p:column>
-                            <p:column sortBy="nik"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{empData.nik}"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
@@ -107,7 +104,7 @@
                                                             </f:facet>
                                                             <h:outputLabel value= "#{empData.bioData.fullName}"/>
                                                         </p:column>-->
-                            <p:column sortBy="joinDate"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{empData.joinDate}"  style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.join_date']}"/>
                                 </f:facet>

@@ -591,7 +591,7 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
                                              update=":panelDialogBioAddressDetailId" 
-                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailBioAddress.show()">                        
                                          <!--<f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />-->
                             </p:commandButton>
                         </h:panelGrid>
@@ -600,7 +600,7 @@
                 </div>
 
                 <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
 
                         <p:row>

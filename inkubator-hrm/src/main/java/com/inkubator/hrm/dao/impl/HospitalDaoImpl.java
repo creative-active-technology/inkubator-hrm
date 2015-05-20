@@ -11,6 +11,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +32,7 @@ public class HospitalDaoImpl extends IDAOImpl<Hospital> implements HospitalDao {
     public List<Hospital> getByParam(HospitalSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchHospitalByParam(parameter, criteria);
-        criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.createAlias("city", "city", JoinType.INNER_JOIN);
         criteria.setFetchMode("city.province", FetchMode.JOIN);
         criteria.setFetchMode("city.province.country", FetchMode.JOIN);
         criteria.addOrder(orderable);

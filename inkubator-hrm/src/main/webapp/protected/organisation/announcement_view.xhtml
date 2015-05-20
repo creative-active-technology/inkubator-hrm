@@ -66,13 +66,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="subject" style="width: 30%">
+                            <p:column sortBy="#{data.subject}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['announcement.title_announcement']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.subject}" />
                             </p:column>
-                            <p:column sortBy="timeModel" style="width: 15%">
+                            <p:column sortBy="#{data.timeModel}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['announcement.show']}"/>
                                 </f:facet>
@@ -80,7 +80,7 @@
                                 	<f:converter converterId="announcementTimeModelConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="periodeStartDate" style="width: 10%">
+                            <p:column sortBy="#{data.periodeStartDate}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -88,7 +88,7 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="periodeEndDate" style="width: 10%">
+                            <p:column sortBy="#{data.periodeEndDate}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -96,7 +96,7 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="status" style="width: 15%">
+                            <p:column sortBy="#{data.status}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
@@ -112,7 +112,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogDeleteId" 
-                                				 action="#{announcementViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogDelete.show()">
+                                				 action="#{announcementViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{announcementViewController.selected}" />
                                 </p:commandButton> 
                             </p:column> 
@@ -131,7 +131,7 @@
                     </h:form>
                 </div>
                 
-                <p:dialog widgetVar="dialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,8 +151,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{announcementViewController.doDelete()}" update="formId,:formId:growlId"
-                                         oncomplete="dialogDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

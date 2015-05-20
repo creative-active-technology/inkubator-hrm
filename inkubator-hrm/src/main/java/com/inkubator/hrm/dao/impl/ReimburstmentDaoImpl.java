@@ -40,8 +40,8 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
     public List<Reimbursment> getAllDataWithDetail(ReimbursmentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReimbursmentByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("reimbursmentSchema", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -75,16 +75,16 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
 
     private void doSearchReimbursmentByParam(ReimbursmentSearchParameter searchParameter, Criteria criteria) {
 
-        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getEmpData() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));

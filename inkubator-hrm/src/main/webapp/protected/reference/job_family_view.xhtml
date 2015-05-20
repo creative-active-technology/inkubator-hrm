@@ -73,13 +73,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="klasifikasiKerjaCode"  style="width: 38%">
+                            <p:column sortBy="#{klasifikasiKerjaData.code}"  style="width: 38%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{klasifikasiKerjaData.code}"/>
                             </p:column>  
-                            <p:column sortBy="klasifikasiKerjaName"  style="width: 49%">
+                            <p:column sortBy="#{klasifikasiKerjaData.name}"  style="width: 49%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -94,7 +94,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{klasifikasiKerjaViewController.doDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmKlasifikasiKerja.show()">
+                                                 action="#{klasifikasiKerjaViewController.doDelete()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmKlasifikasiKerja').show()">
                                     <f:setPropertyActionListener value="#{klasifikasiKerjaData}" target="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja}" />
                                 </p:commandButton>
                                 -
@@ -121,7 +121,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmKlasifikasiKerja" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmKlasifikasiKerja" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -141,12 +141,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{klasifikasiKerjaViewController.doDelete()}" update="formKlasifikasiKerjaViewId,:growlKlasifikasiKerjaViewlId"
-                                         oncomplete="dialogConfirmKlasifikasiKerja.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmKlasifikasiKerja.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmKlasifikasiKerja').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmKlasifikasiKerja').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailKlasifikasiKerja" header="#{appmsg['klasifikasiKerja.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_code']}" styleClass="label_hrm"/></p:column>

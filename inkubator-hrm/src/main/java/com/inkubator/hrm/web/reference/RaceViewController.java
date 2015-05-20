@@ -129,7 +129,7 @@ public class RaceViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 375);
+        options.put("contentHeight", 385);
         RequestContext.getCurrentInstance().openDialog("race_form", options, params);
     }
 

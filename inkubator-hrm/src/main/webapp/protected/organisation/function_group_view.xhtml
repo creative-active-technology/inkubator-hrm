@@ -72,25 +72,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="pangkat.pangkatName"  style="width: 12%">
+                            <p:column sortBy="#{golonganJabatanData.pangkat.pangkatName}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.pangkat.pangkatName}"/>
                             </p:column>
-                            <p:column sortBy="code"  style="width: 5%">
+                            <p:column sortBy="#{golonganJabatanData.code}"  style="width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.code}"/>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 7%">
+                            <p:column sortBy="#{golonganJabatanData.currency.name}"  style="width: 7%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.paySalaryGrade.currency.name}"/>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
+                            <p:column sortBy="#{golonganJabatanData.paySalaryGrade.minSalary}"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
@@ -98,7 +98,7 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
+                            <p:column sortBy="#{golonganJabatanData.paySalaryGrade.mediumSalary}"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
@@ -106,7 +106,7 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 9%">
+                            <p:column sortBy="#{golonganJabatanData.paySalaryGrade.maxSalary}"  style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>
@@ -114,28 +114,14 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 8%">
+                            <p:column sortBy="#{golonganJabatanData.pointMid}"  style="width: 8%">
                                 <f:facet name="header">  
                                     <h:outputText value="Min - Med - Max"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{golonganJabatanData.pointMin} - #{golonganJabatanData.pointMid} - #{golonganJabatanData.pointMax}">
                                 </h:outputLabel>
                             </p:column>
-<!--                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functionGroup.pointMed']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.pointMid}">
-                                </h:outputLabel>
-                            </p:column>
-                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['functionGroup.pointMax']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{golonganJabatanData.pointMax}">
-                                </h:outputLabel>
-                            </p:column>-->
-                            <p:column sortBy="paySalaryGrade"  style="width: 6%">
+                            <p:column sortBy="#{golonganJabatanData.ratioCompact}"  style="width: 6%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functionGroup.rasio']}"/>
                                 </f:facet>
@@ -143,15 +129,9 @@
                                 </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">
-<!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{golonganJabatanViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailFunctionGroup.show()">                        
-                                    <f:setPropertyActionListener value="#{golonganJabatanData}" target="#{golonganJabatanViewController.selectedGolJabatan}" />
-                                </p:commandButton>
-                                - -->
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{golonganJabatanViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmFunctionGroup.show()">
+                                				 action="#{golonganJabatanViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmFunctionGroup').show()">
                                     <f:setPropertyActionListener value="#{golonganJabatanData}" target="#{golonganJabatanViewController.selectedGolJabatan}" />
                                 </p:commandButton>
                                 -
@@ -176,7 +156,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmFunctionGroup" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmFunctionGroup" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -196,12 +176,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{golonganJabatanViewController.doDelete()}" update="formFunctionGroupViewId,:growlFunctionGroupViewlId"
-                                         oncomplete="dialogConfirmFunctionGroup.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmFunctionGroup.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmFunctionGroup').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmFunctionGroup').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailFunctionGroup" header="#{appmsg['functiongroup.detail_dialog']}" styleClass="header_small_no_bold" width="600" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['functiongroup.function_group_code']}" styleClass="label_hrm"/></p:column>

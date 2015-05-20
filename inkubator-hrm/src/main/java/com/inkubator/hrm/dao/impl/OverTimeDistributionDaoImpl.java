@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "overTimeDistributionDao")
 @Lazy
-public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> implements OverTimeDistributionDao{
+public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> implements OverTimeDistributionDao {
 
     @Override
     public Class<OverTimeDistribution> getEntityClass() {
@@ -41,9 +41,9 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
     public List<OverTimeDistribution> getByParamWithDetail(OverTimeDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
+        //criteria.setFetchMode("empData", FetchMode.JOIN);
+        //criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        //criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -76,30 +76,31 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
         return criteria.list();
     }
-    
+
     private void doSearch(OverTimeDistributionSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getEmpData()!= null) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
+        if (searchParameter.getEmpData() != null) {
+
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
-        if (searchParameter.getNik()!= null) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+        if (searchParameter.getNik() != null) {            
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getWtOverTime())) {
-            criteria.createAlias("wtOverTime", "ot", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ot.name", searchParameter.getWtOverTime(), MatchMode.START));
+            
+            criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getWtOverTime(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
+
     @Override
     public void saveBatch(List<OverTimeDistribution> data) {
-         int counter = 0;
+        int counter = 0;
         for (OverTimeDistribution overTimeDistribution : data) {
             getCurrentSession().save(overTimeDistribution);
             counter++;
@@ -117,5 +118,5 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         criteria.add(Restrictions.eq("id", object));
         return (OverTimeDistribution) criteria.uniqueResult();
     }
-    
+
 }

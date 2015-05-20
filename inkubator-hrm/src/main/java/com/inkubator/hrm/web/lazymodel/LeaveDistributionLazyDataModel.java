@@ -43,7 +43,7 @@ public class LeaveDistributionLazyDataModel extends LazyDataModel<LeaveDistribut
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("bio.firstName");
+                    order = Order.desc("bioData.firstName");
                 }
                 leaveDistributionList = service.getByParamWithDetail(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalLeaveDistributionByParam(searchParameter)));

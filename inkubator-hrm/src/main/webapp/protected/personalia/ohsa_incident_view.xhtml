@@ -74,27 +74,27 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="ohsaCategory.name" style="width: 30%">
+                            <p:column sortBy="#{ohsaIncidentData.ohsaCategory.name}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['travelZone.travelZone_category']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ohsaIncidentData.ohsaCategory.name}"/>
                             </p:column>
-                            <p:column sortBy="subject" style="text-align: center;width: 20%">
+                            <p:column sortBy="#{ohsaIncidentData.subject}" style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.subject']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ohsaIncidentData.subject}">                                   
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="location" style="text-align: center;width: 15%">
+                            <p:column sortBy="#{ohsaIncidentData.location}" style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.location']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ohsaIncidentData.location}">
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="totalEmpInvolves" style="text-align: center;width: 15%">
+                            <p:column style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['ohsa.emp_involved']}"/>
                                 </f:facet>
@@ -110,7 +110,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{ohsaIncidentViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOrganization.show()">
+                                				 action="#{ohsaIncidentViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmOrganization').show()">
                                     <f:setPropertyActionListener value="#{ohsaIncidentData}" target="#{ohsaIncidentViewController.selectedOhsaIncident}" />
                                 </p:commandButton>
                                 -
@@ -134,7 +134,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmOrganization" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmOrganization" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -154,8 +154,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentViewController.doDelete()}" update="formOrganizationViewId,:growlOrganizationViewId"
-                                         oncomplete="dialogConfirmOrganization.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOrganization.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmOrganization').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmOrganization').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

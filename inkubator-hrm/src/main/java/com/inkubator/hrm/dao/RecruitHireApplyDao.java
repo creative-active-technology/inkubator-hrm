@@ -17,12 +17,16 @@ public interface RecruitHireApplyDao extends IDAO<RecruitHireApply> {
     public List<RecruitHireApply> getByParam(RecruitHireApplySearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalRecruitHireApplyByParam(RecruitHireApplySearchParameter searchParameter);
-    
+
     public List<RecruitReqHistoryViewModel> getRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable);
-        
+
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter);
-    
+
     public Long getTotalDataByReqHireCode(String reqHireCode);
-    
+
     public RecruitHireApply getEntityWithDetailByPk(Long recruitHireApplyId);
+
+    public Long getCurrentMaxId();
+
+    public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber);
 }

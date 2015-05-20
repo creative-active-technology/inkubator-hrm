@@ -19,6 +19,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -42,6 +43,10 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         doSearchBioDataByParam(parameter, criteria);
         criteria.setFetchMode("religion", FetchMode.JOIN);
         criteria.setFetchMode("maritalStatus", FetchMode.JOIN);
+        
+        criteria.createAlias("religion", "religion", JoinType.INNER_JOIN);
+        criteria.createAlias("maritalStatus", "maritalStatus", JoinType.INNER_JOIN);
+        
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -58,10 +63,11 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
     private void doSearchBioDataByParam(BioDataSearchParameter parameter, Criteria criteria) {
         if (parameter.getName() != null) {
 //            criteria.add(Restrictions.like("firstName", parameter.getParameter(), MatchMode.ANYWHERE));
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("firstName", parameter.getName(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("lastName", parameter.getName(), MatchMode.ANYWHERE));
-            criteria.add(disjunction);
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("firstName", parameter.getName(), MatchMode.ANYWHERE));
+//            disjunction.add(Restrictions.like("lastName", parameter.getName(), MatchMode.ANYWHERE));
+//            criteria.add(disjunction);
+            criteria.add(Restrictions.ilike("combineName", parameter.getName().toLowerCase(),MatchMode.ANYWHERE));
         }
 
         if (parameter.getEmailAddress() != null) {

@@ -211,7 +211,7 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogCompanyBankAccountConfirmId" 
-                                                         action="#{companyDetailController.doSelectCompanyBankAccount()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCompanyBankAccount.show()">
+                                                         action="#{companyDetailController.doSelectCompanyBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCompanyBankAccount').show()">
                                             <f:setPropertyActionListener value="#{bankData}" target="#{companyDetailController.selectedCompanyBankAccount}" />
                                         </p:commandButton>
                                         -
@@ -277,7 +277,7 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogFinancialPartnerConfirmId" 
-                                                         action="#{companyDetailController.doSelectFinancialPartner()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmFinancialPartner.show()">
+                                                         action="#{companyDetailController.doSelectFinancialPartner()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmFinancialPartner').show()">
                                             <f:setPropertyActionListener value="#{financialPartnerData}" target="#{companyDetailController.selectedFinancialPartner}" />
                                         </p:commandButton>
                                         -
@@ -324,7 +324,7 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogCompanyCommisioner" 
-                                                         action="#{companyDetailController.doSelectCompanyCommisioner()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCompanyCommisioner.show()">
+                                                         action="#{companyDetailController.doSelectCompanyCommisioner()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCompanyCommisioner').show()">
                                             <f:setPropertyActionListener value="#{data}" target="#{companyDetailController.selectedCompanyCommisioner}" />
                                         </p:commandButton>
                                         -
@@ -379,7 +379,7 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogCompanyOwnership" 
-                                                         action="#{companyDetailController.doSelectCompanyOwnership()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCompanyOwnership.show()">
+                                                         action="#{companyDetailController.doSelectCompanyOwnership()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCompanyOwnership').show()">
                                             <f:setPropertyActionListener value="#{data}" target="#{companyDetailController.selectedCompanyOwnership}" />
                                         </p:commandButton>
                                         -
@@ -410,7 +410,7 @@
                 </h:form>
 
                 <!-- START DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmCompanyBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCompanyBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -430,12 +430,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyDetailController.doDeleteCompanyBankAccount()}" update="formCompanyDetailId:tabView:tableBankId,:growlCompanyDetailId"
-                                         oncomplete="dialogConfirmCompanyBankAccount.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyBankAccount.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCompanyBankAccount').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCompanyBankAccount').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
 
-                <p:dialog widgetVar="dialogConfirmFinancialPartner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmFinancialPartner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -449,18 +449,18 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogFinancialPartnerConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['global.account_number']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['organization.contract_no']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{companyDetailController.selectedFinancialPartner.accountNumber}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyDetailController.doDeleteFinancialPartner()}" update="formCompanyDetailId:tabView:tableFinancialPartnerId,:growlCompanyDetailId"
-                                         oncomplete="dialogConfirmFinancialPartner.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmFinancialPartner.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmFinancialPartner').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmFinancialPartner').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
-                <p:dialog widgetVar="dialogConfirmCompanyCommisioner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCompanyCommisioner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -474,18 +474,18 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogCompanyCommisioner"  columns="3">
-                            <p:outputLabel value="#{appmsg['global.account_number']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{companyDetailController.selectedCompanyCommisioner.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyDetailController.doDeleteCompanyCommisioner()}" update="formCompanyDetailId:tabView:tableCommisioner,:growlCompanyDetailId"
-                                         oncomplete="dialogConfirmCompanyCommisioner.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyCommisioner.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCompanyCommisioner').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCompanyCommisioner').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
-                <p:dialog widgetVar="dialogConfirmCompanyOwnership" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCompanyOwnership" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -499,14 +499,14 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogCompanyOwnership"  columns="3">
-                            <p:outputLabel value="#{appmsg['global.account_number']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{companyDetailController.selectedCompanyOwnership.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyDetailController.doDeleteCompanyOwnership()}" update="formCompanyDetailId:tabView:tableOwnership,:growlCompanyDetailId"
-                                         oncomplete="dialogConfirmCompanyOwnership.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyOwnership.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCompanyOwnership').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCompanyOwnership').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <!-- END DIALOG -->

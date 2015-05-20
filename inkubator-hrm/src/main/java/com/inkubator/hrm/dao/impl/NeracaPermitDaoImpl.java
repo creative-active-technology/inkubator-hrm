@@ -45,7 +45,7 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
         criteria.setFetchMode("permitDistribution.permitClassification", FetchMode.JOIN);
         doSearch(searchParameter, criteria);
 //        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
-        criteria.createAlias("ld.permitClassification", "permitClassification", JoinType.INNER_JOIN);
+        
         criteria.addOrder(Order.asc("permitClassification.name"));
         criteria.addOrder(order);
 //        criteria.addOrder(Order.asc("ed.nik"));
@@ -73,22 +73,25 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
     }
 
     private void doSearch(NeracaPermitSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("permitDistribution", "ld", JoinType.INNER_JOIN);
-        criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("permitDistribution", "permitDistribution", JoinType.INNER_JOIN);
+        criteria.createAlias("permitDistribution.permitClassification", "permitClassification", JoinType.INNER_JOIN);
+        criteria.createAlias("permitDistribution.empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("permitDistribution.empData.jabatanByJabatanId","jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        
         if (searchParameter.getEmpData() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getPermit())) {
-            criteria.createAlias("ld.permit", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", searchParameter.getPermit(), MatchMode.START));
+            criteria.createAlias("permitDistribution.permit", "permit", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("permit.name", searchParameter.getPermit(), MatchMode.START));
         }
         if (searchParameter.getNik() != null) {
             
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

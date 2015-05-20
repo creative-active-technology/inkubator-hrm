@@ -64,8 +64,8 @@ public class CostCenterDaoImpl extends IDAOImpl<CostCenter> implements CostCente
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
     
-    private void doSearchCostCenterByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {
-        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+    private void doSearchCostCenterByParam(CostCenterSearchParameter searchParameter, Criteria criteria) {        
+        criteria.createAlias("costCenter", "costCenter", JoinType.LEFT_OUTER_JOIN);
         if (searchParameter.getName()!=null) {
         	criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         } 

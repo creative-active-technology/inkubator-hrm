@@ -84,19 +84,19 @@
                                     <f:selectItems value="#{systemScoringDetailController.dataToShow}"/>
                                 </p:selectOneMenu>
                             </p:column>
-                            <p:column sortBy="labelMask" style="width: 10%">
+                            <p:column sortBy="#{data.labelMask}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['systemScoring.label_mask']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.labelMask}" />
                             </p:column>
-                            <p:column sortBy="value" style="width: 30%">
+                            <p:column sortBy="#{data.value}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['systemScoring.value']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.value}" />
                             </p:column>
-                            <p:column sortBy="description" style="width: 30%">
+                            <p:column sortBy="#{data.description}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.description']}"/>
                                 </f:facet>
@@ -105,7 +105,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId"
-                                                                 action="#{systemScoringDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                                 action="#{systemScoringDetailController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{systemScoringDetailController.selectedSystemScoringIndex}" />
                                 </p:commandButton>
                                 -
@@ -138,7 +138,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -158,8 +158,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{systemScoringDetailController.doDelete()}" update="formId"
-                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
