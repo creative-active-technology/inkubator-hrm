@@ -79,10 +79,9 @@
                                          <h:panelGrid style="margin-bottom: 3px" columns="2">
                                              <p:outputLabel value="#{appmsg['report.salary_per_month_in_million']}"  styleClass="header_big"  />                                             
                                          </h:panelGrid>
-                                         <p:barChart id="chartSalaryPerMonth" orientation="vertical" value="#{reportPayrollHistoryDetailController.cartModelSalaryEveryMonth}" legendPosition="ne"  
-                                                     stacked="false"  animate="false"
-                                                     showDatatip="true"  legendCols="1" max="1000" min="0" 
-                                                     style="height:380px;font-size: 11px"/> 
+                                         <p:chart type="bar" id="chartSalaryPerMonth" style="height:380px;font-size: 11px" 
+                                                  model="#{reportPayrollHistoryDetailController.cartModelSalaryEveryMonth}" />
+
 
                                      </p:panel>
                                  </p:column>
@@ -95,10 +94,8 @@
                                          <h:panelGrid style="margin-bottom: 3px" columns="2">
                                              <p:outputLabel value="#{appmsg['report.salary_distribution_per_dep_in_million']}"  styleClass="header_big"  />                                             
                                          </h:panelGrid>
-                                         <p:barChart id="chartSalaryPerDep" orientation="horizontal" value="#{reportPayrollHistoryDetailController.cartModelSalaryDistributionPerDep}" legendPosition="ne"  
-                                                     stacked="false" seriesColors="003366"   animate="false"
-                                                     showDatatip="true"  legendCols="6" max="300" min="0" 
-                                                     style="height:380px;font-size: 11px"/> 
+                                         <p:chart type="bar" id="chartSalaryPerDep" style="height:380px;font-size: 11px"
+                                                  model="#{reportPayrollHistoryDetailController.cartModelSalaryDistributionPerDep}"  />
 
                                      </p:panel>
                                  </p:column>
@@ -107,9 +104,8 @@
                                         <h:panelGrid style="margin-bottom: 3px">
                                             <p:outputLabel value="#{appmsg['report.bank_transfer_in_percent']}" styleClass="header_big" />                                    
                                         </h:panelGrid>
-
-                                        <p:pieChart id="pieBank" value="#{reportPayrollHistoryDetailController.bankTransferPieModel}" legendPosition="e" fill="true" showDataLabels="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"
-                                                    style="height:380px;font-size: 11px" sliceMargin="4" diameter="240" />  
+                                        <p:chart type="pie" id="pieBank" style="height:380px;font-size: 11px"
+                                                  model="#{reportPayrollHistoryDetailController.bankTransferPieModel}" />
                                     </p:panel>
                                 </p:column>
                              </p:row>

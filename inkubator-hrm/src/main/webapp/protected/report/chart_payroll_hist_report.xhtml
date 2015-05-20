@@ -52,10 +52,8 @@
                                          <h:panelGrid style="margin-bottom: 3px" columns="2">
                                              <p:outputLabel value="#{appmsg['report.salary_per_month_in_million']}"  styleClass="header_big"  />                                             
                                          </h:panelGrid>
-                                         <p:barChart id="chartSalaryPerMonth" orientation="vertical" value="#{chartPayrollHistoryReportController.cartModelSalaryEveryMonth}" legendPosition="ne"  
-                                                     stacked="false"   animate="false"
-                                                     showDatatip="true"  legendCols="1" max="1200" min="0" 
-                                                     style="height:380px;font-size: 11px" /> 
+                                          <p:chart type="line" id="chartSalaryPerMonth" style="height:380px;font-size: 11px" 
+                                                  model="#{chartPayrollHistoryReportController.cartModelSalaryEveryMonth}" />
 
                                       </p:scrollPanel>
                                  </p:column>

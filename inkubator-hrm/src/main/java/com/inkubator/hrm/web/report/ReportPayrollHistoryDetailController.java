@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.web.report;
 
-
 import com.inkubator.hrm.service.LogListOfTransferService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.web.model.BankTransferDistributionReportModel;
@@ -28,10 +27,13 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
-
 
 /**
  *
@@ -45,83 +47,116 @@ public class ReportPayrollHistoryDetailController extends BaseController {
     private LogMonthEndPayrollService logMonthEndPayrollService;
     @ManagedProperty(value = "#{logListOfTransferService}")
     private LogListOfTransferService logListOfTransferService;
-    private PayrollHistoryReportModel selectedPayrollHistoryReportModel;    
-    private CartesianChartModel cartModelSalaryEveryMonth;
+    private PayrollHistoryReportModel selectedPayrollHistoryReportModel;
+    private BarChartModel cartModelSalaryEveryMonth;
     private List<PayrollHistoryReportModel> payrollHistoryReportModelList = new ArrayList<>();
-    private CartesianChartModel cartModelSalaryDistributionPerDep;
+    private HorizontalBarChartModel cartModelSalaryDistributionPerDep;
     private List<SalaryPerDepartmentReportModel> listSalaryPerDep;
     private PieChartModel bankTransferPieModel;
     private List<BankTransferDistributionReportModel> listBankTransferDistribution;
     private Long totalBankTransfer;
     private Long periodeId;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
         try {
-            super.initialization(); 
-            
+            super.initialization();
+
             //Get selected periodeId
             periodeId = Long.valueOf(FacesUtil.getRequestParameter("execution").substring(1));
-            SimpleDateFormat  dateFormat = new SimpleDateFormat("MMMM yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
             
+            //Initialize cartModelSalaryEveryMonth
+            cartModelSalaryEveryMonth = new BarChartModel();
+            cartModelSalaryEveryMonth.setStacked(Boolean.FALSE);
+            cartModelSalaryEveryMonth.setAnimate(Boolean.TRUE);
+            cartModelSalaryEveryMonth.setShowDatatip(Boolean.TRUE);
+            cartModelSalaryEveryMonth.setLegendPosition("ne");
+            cartModelSalaryEveryMonth.setLegendCols(1);
+            Axis xAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.X);
+            Axis yAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.Y);
+            xAxisCartModelSalaryEveryMonth.setLabel("Month");
+            yAxisCartModelSalaryEveryMonth.setLabel("Salary");
+            yAxisCartModelSalaryEveryMonth.setMin(0);
+            yAxisCartModelSalaryEveryMonth.setMax(1000);
+            
+            //Initialize cartModelSalaryDistributionPerDep
+            cartModelSalaryDistributionPerDep = new HorizontalBarChartModel();
+            cartModelSalaryDistributionPerDep.setStacked(Boolean.FALSE);
+            cartModelSalaryDistributionPerDep.setLegendPosition("ne");
+            cartModelSalaryDistributionPerDep.setSeriesColors("003366");
+            cartModelSalaryDistributionPerDep.setAnimate(Boolean.TRUE);
+            cartModelSalaryDistributionPerDep.setShowDatatip(Boolean.TRUE);
+            cartModelSalaryDistributionPerDep.setLegendCols(6);
+            Axis xAxis = cartModelSalaryDistributionPerDep.getAxis(AxisType.X);
+            Axis yAxis = cartModelSalaryDistributionPerDep.getAxis(AxisType.Y);
+            xAxis.setLabel("Salary");
+            yAxis.setLabel("Department");
+            xAxis.setMin(0);
+            xAxis.setMax(300);
+            
+            //Initialize bankTransferPieModel
+            bankTransferPieModel = new PieChartModel();
+            bankTransferPieModel.setFill(Boolean.TRUE);
+            bankTransferPieModel.setLegendPosition("e");
+            bankTransferPieModel.setShowDataLabels(Boolean.TRUE);
+            bankTransferPieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
+            bankTransferPieModel.setSliceMargin(4);
+            bankTransferPieModel.setDiameter(240);
+
             //Get List payrollHistoryReportModel
             payrollHistoryReportModelList = logMonthEndPayrollService.getDataForPayrollHistoryReport();
-            cartModelSalaryEveryMonth = new CartesianChartModel();
-            
+
             ChartSeries chartSeriesPayrollPerMonth = new ChartSeries();
             chartSeriesPayrollPerMonth.setLabel("Gaji Perbulan (Dalam Jutaan Rupiah)");
-            
+
             //fill data from payrollModel
-            for(PayrollHistoryReportModel payrollModel : payrollHistoryReportModelList){
-                chartSeriesPayrollPerMonth.set(dateFormat.format(payrollModel.getTglAwalPeriode()), payrollModel.getNominal().doubleValue()/1000000);         
+            for (PayrollHistoryReportModel payrollModel : payrollHistoryReportModelList) {
+                chartSeriesPayrollPerMonth.set(dateFormat.format(payrollModel.getTglAwalPeriode()), payrollModel.getNominal().doubleValue() / 1000000);
             }
-            
+
             cartModelSalaryEveryMonth.addSeries(chartSeriesPayrollPerMonth);
             selectedPayrollHistoryReportModel = logMonthEndPayrollService.getDataPayrollHistoryReportModelByPeriodeId(periodeId);
-            
+
             //Get Salary Distribution per Department of selected periodeId
             listSalaryPerDep = logMonthEndPayrollService.getSalaryPerDepartmentPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
-            cartModelSalaryDistributionPerDep = new CartesianChartModel();            
 
             ChartSeries chartSeries = new ChartSeries();
             chartSeries.setLabel("Distribusi Gaji Per Departemen (Dalam Jutaan Rupiah)");
-            
+
             //fill data salary distribution
-            for(SalaryPerDepartmentReportModel salaryPerDep : listSalaryPerDep){           
-                chartSeries.set(salaryPerDep.getDepartmentName(), salaryPerDep.getNominal().doubleValue()/1000000);            
+            for (SalaryPerDepartmentReportModel salaryPerDep : listSalaryPerDep) {
+                chartSeries.set(salaryPerDep.getDepartmentName(), salaryPerDep.getNominal().doubleValue() / 1000000);
             }
-            
+
             cartModelSalaryDistributionPerDep.addSeries(chartSeries);
-            
-            bankTransferPieModel = new PieChartModel();
-            
+
             //Get list bank transfer Distribution of selected periodeId
             listBankTransferDistribution = logListOfTransferService.getBankTransferDistributionByPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
-            
+
             //Get total transfer from whole Bank of selected periodeId, this is for count  the percentage of total transfer from each bank
             totalBankTransfer = logListOfTransferService.getTotalBankTransferByPayrollHistoryReport(selectedPayrollHistoryReportModel.getPeriodeId());
-            
+
             // variable for percentage lower than 5%
             Double totalPercentageLainLain = 0.0;
-            
-            for(BankTransferDistributionReportModel bankTransferModel : listBankTransferDistribution){
-                
+
+            for (BankTransferDistributionReportModel bankTransferModel : listBankTransferDistribution) {
+
                 //count the percentage of each bank
-                Double bankPercentage = bankTransferModel.getTotalAccountNumber().doubleValue() / totalBankTransfer.doubleValue();                
-                
+                Double bankPercentage = bankTransferModel.getTotalAccountNumber().doubleValue() / totalBankTransfer.doubleValue();
+
                 //set to pie model if greater than 5%
-                if(bankPercentage >= 0.05){
+                if (bankPercentage >= 0.05) {
                     bankTransferPieModel.set(bankTransferModel.getBankName(), bankPercentage);
-                }else{
+                } else {
                     //accumulate to totalPercentageLainLain if lower than 5%
                     totalPercentageLainLain += bankPercentage;
-                }                
+                }
             }
-            
+
             bankTransferPieModel.set("Lain - Lain", totalPercentageLainLain);
-            
-            
+
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -134,17 +169,15 @@ public class ReportPayrollHistoryDetailController extends BaseController {
     public void setPayrollHistoryReportModelList(List<PayrollHistoryReportModel> payrollHistoryReportModelList) {
         this.payrollHistoryReportModelList = payrollHistoryReportModelList;
     }
-    
-    
-    public CartesianChartModel getCartModelSalaryEveryMonth() {
+
+    public BarChartModel getCartModelSalaryEveryMonth() {
         return cartModelSalaryEveryMonth;
     }
 
-    public void setCartModelSalaryEveryMonth(CartesianChartModel cartModelSalaryEveryMonth) {
+    public void setCartModelSalaryEveryMonth(BarChartModel cartModelSalaryEveryMonth) {
         this.cartModelSalaryEveryMonth = cartModelSalaryEveryMonth;
     }
-    
-    
+
     public LogListOfTransferService getLogListOfTransferService() {
         return logListOfTransferService;
     }
@@ -169,8 +202,6 @@ public class ReportPayrollHistoryDetailController extends BaseController {
         this.bankTransferPieModel = bankTransferPieModel;
     }
 
-    
-
     public List<BankTransferDistributionReportModel> getListBankTransferDistribution() {
         return listBankTransferDistribution;
     }
@@ -186,13 +217,12 @@ public class ReportPayrollHistoryDetailController extends BaseController {
     public void setTotalBankTransfer(Long totalBankTransfer) {
         this.totalBankTransfer = totalBankTransfer;
     }
-    
-    
-    public CartesianChartModel getCartModelSalaryDistributionPerDep() {
+
+    public HorizontalBarChartModel getCartModelSalaryDistributionPerDep() {
         return cartModelSalaryDistributionPerDep;
     }
 
-    public void setCartModelSalaryDistributionPerDep(CartesianChartModel cartModelSalaryDistributionPerDep) {
+    public void setCartModelSalaryDistributionPerDep(HorizontalBarChartModel cartModelSalaryDistributionPerDep) {
         this.cartModelSalaryDistributionPerDep = cartModelSalaryDistributionPerDep;
     }
 
@@ -219,7 +249,7 @@ public class ReportPayrollHistoryDetailController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         logMonthEndPayrollService = null;
-        selectedPayrollHistoryReportModel = null;       
+        selectedPayrollHistoryReportModel = null;
     }
 
 }
