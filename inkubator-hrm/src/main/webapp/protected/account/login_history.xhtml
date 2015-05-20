@@ -68,13 +68,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="hrmUser.userId"  style="width: 20%">
+                            <p:column sortBy="#{loginHistoryData.hrmUser.userId}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.user_id']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.hrmUser.userId}"/>
                             </p:column>
-                            <p:column sortBy="loginDate" style="width: 20%">
+                            <p:column sortBy="#{loginHistoryData.loginDate}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loginhistory.login_date']}"/>
                                 </f:facet>
@@ -82,7 +82,7 @@
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="logOutDate" style="width: 20%">
+                            <p:column sortBy="#{loginHistoryData.logOutDate}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loginhistory.logout_date']}"/>
                                 </f:facet>
@@ -90,19 +90,19 @@
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="ipAddress" style="width: 15%">
+                            <p:column sortBy="#{loginHistoryData.ipAddress}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loginhistory.ip_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.ipAddress}"/>
                             </p:column>
-                            <p:column sortBy="languange" style="text-align: center;width: 10%">
+                            <p:column sortBy="#{loginHistoryData.languange}" style="text-align: center;width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.language']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.languange}"/>
                             </p:column>
-                            <p:column sortBy="appName" style="text-align: center">
+                            <p:column sortBy="#{loginHistoryData.appName}" style="text-align: center;width :10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.app_name']}"/>
                                 </f:facet>

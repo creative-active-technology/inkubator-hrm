@@ -87,7 +87,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmRole.show()" action="#{roleViewController.onDelete()}" update=":deleteDialogRoleId">
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogHrmRole').show()" action="#{roleViewController.onDelete()}" update=":deleteDialogRoleId">
                                     <f:setPropertyActionListener value="#{roleViewData}" target="#{roleViewController.selectedHrmRole}" />
                                 </p:commandButton>
                                 -
@@ -110,7 +110,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogHrmRole" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogRoleId">
                         <div align="center">
@@ -131,14 +131,14 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{roleViewController.doDelete()}" update=":roleViewId,:roleViewGrowlId" id="yesId" title="#{appmsg['global.yes']}"
-                                             oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
+                                             oncomplete="PF('confirmDialogHrmRole').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHrmRole').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
                         </div>
                     </h:form>
                 </p:dialog>
                 <p:dialog widgetVar="detailDialogHrmRole" header="#{appmsg['role_view.detail_dialog']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['role_view.role_name']}" styleClass="label_hrm"/></p:column>

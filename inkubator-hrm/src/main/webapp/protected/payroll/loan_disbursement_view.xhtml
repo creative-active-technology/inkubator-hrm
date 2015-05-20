@@ -71,25 +71,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                             <p:column sortBy="empData.nik" style="width: 10%">
+                             <p:column sortBy="#{data.empData.nik}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['workschedule.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.empData.nik}" />
                             </p:column>                           
-                            <p:column sortBy="bioData.firstName" style="width: 13%">
+                            <p:column sortBy="#{data.bioData.firstName}" style="width: 13%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="loanSchema.name" style="width: 20%">
+                            <p:column sortBy="#{data.loanSchema.name}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanSchema.name}" />
                             </p:column>
-                            <p:column sortBy="nominalPrincipal" style="width: 10%;" >
+                            <p:column sortBy="#{data.nominalPrincipal}" style="width: 10%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -99,13 +99,13 @@
                                 </h:outputLabel>
                                 
                             </p:column>                            
-                            <p:column sortBy="termin" style="width: 7%;text-align: center" >
+                            <p:column sortBy="#{data.termin}" style="width: 7%;text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.termin']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.termin}" />                                
                             </p:column>
-                             <p:column sortBy="loanDate" style="width: 15%">
+                             <p:column sortBy="#{data.loanDate}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.submission_date']}"/>
                                 </f:facet>
@@ -113,7 +113,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="loanPaymentDate" style="width: 15%">
+                             <p:column sortBy="#{data.loanPaymentDate}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.disbursement_date']}"/>
                                 </f:facet>

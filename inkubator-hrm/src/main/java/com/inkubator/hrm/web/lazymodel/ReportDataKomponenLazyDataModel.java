@@ -61,7 +61,7 @@ public class ReportDataKomponenLazyDataModel extends LazyDataModel<ReportDataKom
             }
         } else {
             try {
-                listReportDataKomponenModel = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc("departmentName"));
+                listReportDataKomponenModel = logMonthEndPayrollService.getReportDataKomponenByParam(searchParameter, first, pageSize, Order.asc("department"));
                 jumlah = Integer.parseInt(String.valueOf(logMonthEndPayrollService.getTotalReportDataKomponenByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

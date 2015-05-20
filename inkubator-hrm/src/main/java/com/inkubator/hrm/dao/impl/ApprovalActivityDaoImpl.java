@@ -136,8 +136,9 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     @Override
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("approvalDefinition", "approvalDefinition", JoinType.INNER_JOIN);
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+//        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

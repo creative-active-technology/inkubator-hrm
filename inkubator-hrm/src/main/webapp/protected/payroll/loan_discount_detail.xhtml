@@ -80,7 +80,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="dueDate" style="width: 10%">
+                            <p:column sortBy="#{data.dueDate}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Tanggal Pembayaran"/>
                                 </f:facet>
@@ -88,7 +88,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="totalPayment" style="width: 10%">
+                            <p:column sortBy="#{data.totalPayment}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Angsuran"/>
                                 </f:facet>
@@ -96,7 +96,7 @@
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="remainingPrincipal" style="width: 10%">
+                            <p:column sortBy="#{data.remainingPrincipal}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="Sisa Hutang"/>
                                 </f:facet>

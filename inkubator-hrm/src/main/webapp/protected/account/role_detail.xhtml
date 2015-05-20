@@ -57,7 +57,7 @@
                             </f:facet>
                             <h:outputLabel value="#{no+1}." />
                         </p:column>  
-                        <p:column style="width: 30%" sortBy="hrmMenu.name">
+                        <p:column style="width: 30%" sortBy="#{menuRoleData.hrmMenu.name}">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['hrm_menu.menu_name']}"/>
                             </f:facet>

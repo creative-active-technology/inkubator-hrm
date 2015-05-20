@@ -38,9 +38,10 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     public List<Loan> getByParam(LoanSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -55,15 +56,17 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
-        
+                            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
 
         if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {        
-            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
+//            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", parameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+//            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+//            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
 
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
