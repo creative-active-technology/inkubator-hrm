@@ -153,12 +153,8 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                 + " WHERE lme.paySalaryCompId = 100 ");
         
         query.append(" GROUP BY lme.periodeId ");
-      
-        if (order.toString().contains("jumlahKaryawan") || order.toString().contains("nominal")) {
-            query.append(" ORDER BY ").append(order);
-        } else {
-            query.append(" ORDER BY lme.").append(order);
-        }
+        query.append(" ORDER BY ").append(order);
+        
         if (searchParameter != null) {
            
             List<PayrollHistoryReportModel> listResult = getCurrentSession().createQuery(query.toString())                   
@@ -695,6 +691,7 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
         }
         
         /* End Filtering for Reguler Payroll */      
+        query.append(" ORDER BY ").append(order);
         
         return getCurrentSession().createSQLQuery(query.toString())
                 .addScalar("id", LongType.INSTANCE)

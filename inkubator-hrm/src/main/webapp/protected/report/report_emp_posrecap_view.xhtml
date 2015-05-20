@@ -28,7 +28,6 @@
 
                         <p:separator/>
                          <h:form id="formReportEmpGroupWorkingViewId">
-                    	<p:focus context="formReportEmpGroupWorkingViewId"/>
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
                                      <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -93,26 +92,26 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId.name"  style="width: 30%">
+                            <p:column sortBy="#{empData.jabatanByJabatanId.name}"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.jabatanByJabatanId.code} #{empData.jabatanByJabatanId.name}" />                             
                             </p:column>
-                            <p:column sortBy="nik"  style="width: 20%">
+                            <p:column sortBy="#{empData.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.nik}  #{empData.bioData.firstName} #{empData.bioData.lastName}" />
                                 
                             </p:column>
-                            <p:column sortBy="employeeType.name"  style="width: 20%">
+                            <p:column sortBy="#{empData.employeeType.name}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['unregSalary.employeeStatus']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empData.employeeType.name}"/>
                             </p:column>
-                            <p:column sortBy="golonganJabatan.code"  style="width: 15%">
+                            <p:column sortBy="#{empData.golonganJabatan.code}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>

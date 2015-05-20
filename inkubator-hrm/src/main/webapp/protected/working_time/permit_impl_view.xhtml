@@ -72,25 +72,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="numberFilling"  style="width: 15%">
+                            <p:column sortBy="#{permitImplementationData.numberFilling}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitimplementation.filling_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.numberFilling}"/>
                             </p:column>
-                            <p:column sortBy="permit.name"  style="width: 20%">
+                            <p:column sortBy="#{permitImplementationData.permitClassification.name}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitClassification.permitClassification']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.permitClassification.name}"/>
                             </p:column>  
-                            <p:column sortBy="empData.bioData.firstName"  style="width: 20%">
+                            <p:column sortBy="#{permitImplementationData.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.empData.nikWithFullName}"/>
                             </p:column>
-                            <p:column sortBy="startDate"  style="width: 10%">
+                            <p:column sortBy="#{permitImplementationData.startDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -98,7 +98,7 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="endDate"  style="width: 10%">
+                            <p:column sortBy="#{permitImplementationData.endDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -106,7 +106,7 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="fillingDate"  style="width: 10%">
+                            <p:column sortBy="#{permitImplementationData.fillingDate}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitimplementation.filling_date']}"/>
                                 </f:facet>
@@ -127,7 +127,7 @@
                                 </p:commandButton> 
                                 <!-- <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{permitImplementationViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPermitImplementation.show()">
+                                				 action="#{permitImplementationViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="dialogConfirmPermitImplementation.show()">
                                     <f:setPropertyActionListener value="#{permitImplementationData}" target="#{permitImplementationViewController.selectedPermitImplementation}" />
                                 </p:commandButton> -->
                             </p:column>                        
@@ -145,7 +145,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmPermitImplementation" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmPermitImplementation" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -165,8 +165,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{permitImplementationViewController.doDelete()}" update="formPermitImplementationViewId,:growlPermitImplementationViewId"
-                                         oncomplete="dialogConfirmPermitImplementation.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPermitImplementation.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmPermitImplementation').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPermitImplementation').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

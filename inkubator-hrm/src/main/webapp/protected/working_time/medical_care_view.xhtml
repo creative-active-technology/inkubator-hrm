@@ -71,26 +71,28 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="requestDate"  style="width: 15%">
+                            <p:column sortBy="#{medicalCareData.requestDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['medicalcare.filling_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{medicalCareData.requestDate}"/>
+                                <h:outputLabel value= "#{medicalCareData.requestDate}">
+                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="empDataByEmpDataId.bioData.firstName"  style="width: 20%">
+                            <p:column sortBy="#{medicalCareData.bioData.firstName}"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{medicalCareData.empData.nikWithFullName}"/>
                             </p:column>
-                            <p:column sortBy="empDataByEmpDataId.jabatanByJabatanId.name"  style="width: 20%">
+                            <p:column sortBy="#{medicalCareData.jabatanByJabatanId.name}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{medicalCareData.empData.jabatanByJabatanId.name}"/>
                                 
                             </p:column>
-                            <p:column sortBy="startDate"  style="width: 10%">
+                            <p:column sortBy="#{medicalCareData.startDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -98,7 +100,7 @@
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="endDate"  style="width: 10%">
+                            <p:column sortBy="#{medicalCareData.endDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -120,7 +122,7 @@
                                 -
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{medicalCareViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMedicalCare.show()">
+                                                 action="#{medicalCareViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmMedicalCare').show()">
                                     <f:setPropertyActionListener value="#{medicalCareData}" target="#{medicalCareViewController.selectedMedicalCare}" />
                                 </p:commandButton> 
                             </p:column>                        
@@ -138,7 +140,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmMedicalCare" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmMedicalCare" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -158,8 +160,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{medicalCareViewController.doDelete()}" update="formMedicalCareViewId,:growlMedicalCareViewId"
-                                         oncomplete="dialogConfirmMedicalCare.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmMedicalCare.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmMedicalCare').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmMedicalCare').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

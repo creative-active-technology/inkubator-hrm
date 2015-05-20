@@ -37,10 +37,7 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
     @Override
     public List<PermitImplementation> getByParam(PermitImplementationSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(parameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+        doSearchByParam(parameter, criteria);        
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -55,16 +52,19 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
     }
 
     private void doSearchByParam(PermitImplementationSearchParameter parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter.getPermit())) {
-            criteria.createAlias("permitClassification", "permit", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("permit.name", parameter.getPermit(), MatchMode.ANYWHERE));
+    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+    	criteria.createAlias("permitClassification", "permitClassification", JoinType.INNER_JOIN);
+    	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+    	
+    	if (StringUtils.isNotEmpty(parameter.getPermit())) {            
+            criteria.add(Restrictions.like("permitClassification.name", parameter.getPermit(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-            criteria.createAlias("empData.bioData", "bio", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getEmployee())) {            
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bio.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(parameter.getNumberFilling())) {
             criteria.add(Restrictions.like("numberFilling", parameter.getNumberFilling(), MatchMode.ANYWHERE));
@@ -123,9 +123,9 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
     public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, activityNumbers, empDataId, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("permitClassification", "permitClassification", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

@@ -152,13 +152,13 @@
                             <p:column style="text-align: center;width: 10%">
                                 <p:selectBooleanButton value="#{data.isCorrectionIn}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                        offIcon="ui-icon-close" styleClass="label_button">
-                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionIn(data.id)}" update="tableId" onstart="statusDialog.show()" oncomplete="statusDialog.hide()"/>                       
+                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionIn(data.id)}" update="tableId" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"/>                       
                                 </p:selectBooleanButton>
                             </p:column>
                             <p:column style="text-align: center;width: 10%">
                                 <p:selectBooleanButton value="#{data.isCorrectionOut}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                        offIcon="ui-icon-close" styleClass="label_button">
-                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionOut(data.id)}" update="tableId" onstart="statusDialog.show()" oncomplete="statusDialog.hide()" />
+                                	<p:ajax listener="#{dataFingerRealizationDetailController.doCorrectionOut(data.id)}" update="tableId" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
                                 </p:selectBooleanButton>
                             </p:column>                        
                             <f:facet name="footer">

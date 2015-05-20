@@ -73,25 +73,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 20%">
+                            <p:column sortBy="#{leaveSchemeData.code}"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leavescheme.leave_scheme_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveSchemeData.code}"/>
                             </p:column>   
-                            <p:column sortBy="name"  style="width: 20%">
+                            <p:column sortBy="#{leaveSchemeData.name}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leavescheme.leave_scheme_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveSchemeData.name}"/>
                             </p:column>
-                            <p:column sortBy="leave.name"  style="text-align: center;width: 20%">
+                            <p:column sortBy="#{leaveSchemeData.leave.name}"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leavescheme.leave_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveSchemeData.leave.name}"/>
                             </p:column>   
-                            <p:column sortBy="totalDays"  style="text-align: center;width: 20%">
+                            <p:column sortBy="#{leaveSchemeData.totalDays}"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leavescheme.total_days']}"/>
                                 </f:facet>
@@ -101,13 +101,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 update=":panelDialogDetailId" style="font-size: 10px!important" 
-                                				 action="#{leaveSchemeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailLeaveScheme.show()">                        
+                                				 action="#{leaveSchemeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailLeaveScheme').show()">                        
                                     <f:setPropertyActionListener value="#{leaveSchemeData}" target="#{leaveSchemeViewController.selectedLeaveScheme}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{leaveSchemeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLeaveScheme.show()">
+                                				 action="#{leaveSchemeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmLeaveScheme').show()">
                                     <f:setPropertyActionListener value="#{leaveSchemeData}" target="#{leaveSchemeViewController.selectedLeaveScheme}" />
                                 </p:commandButton>
                                 -
@@ -131,7 +131,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmLeaveScheme" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmLeaveScheme" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,12 +151,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{leaveSchemeViewController.doDelete()}" update="formLeaveSchemeViewId,:growlLeaveSchemeViewlId"
-                                         oncomplete="dialogConfirmLeaveScheme.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLeaveScheme.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmLeaveScheme').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmLeaveScheme').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailLeaveScheme" header="#{appmsg['leavescheme.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['leavescheme.leave_scheme_code']}" styleClass="label_hrm"/></p:column>

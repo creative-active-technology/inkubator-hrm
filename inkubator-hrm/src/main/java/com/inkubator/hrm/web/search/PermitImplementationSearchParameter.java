@@ -28,7 +28,7 @@ public class PermitImplementationSearchParameter extends SearchParameter {
 	}
 
 	public String getPermit() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "leave")) {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "permit")) {
 			leave = getParameter();
         } else {
         	leave = null;

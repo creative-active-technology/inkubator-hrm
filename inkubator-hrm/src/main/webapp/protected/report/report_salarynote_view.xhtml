@@ -125,7 +125,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="periodStart" style="width: 15%">
+                            <p:column sortBy="#{data.periodStart}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['salaryCalculation.period']}"/>
                                 </f:facet>
@@ -137,19 +137,19 @@
                                 	<f:convertDateTime pattern="dd MMM yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="empName" style="width: 15%">
+                            <p:column sortBy="#{data.empName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empName}"/>
                             </p:column>
-                            <p:column sortBy="empGolJab" style="width: 10%">
+                            <p:column sortBy="#{data.empGolJab}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empGolJab}"/>
                             </p:column>
-                            <p:column sortBy="basicSalary" style="width: 8%">
+                            <p:column sortBy="#{data.basicSalary}" style="width: 8%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.basic_salary']}"/>
                                 </f:facet>
@@ -158,7 +158,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="income" style="width: 8%">
+                            <p:column sortBy="#{data.income}" style="width: 8%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.income']}"/>
                                 </f:facet>
@@ -167,7 +167,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="deduction" style="width: 8%">
+                            <p:column sortBy="#{data.deduction}" style="width: 8%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.deduction']}"/>
                                 </f:facet>
@@ -176,7 +176,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="tax" style="width: 8%">
+                            <p:column sortBy="#{data.tax}" style="width: 8%">
                                 <f:facet name="header">  
                                     <h:outputText value="PPh"/>
                                 </f:facet>
@@ -185,7 +185,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="takeHomePay" style="width: 10%">
+                            <p:column sortBy="#{data.takeHomePay}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.take_home_pay']}"/>
                                 </f:facet>

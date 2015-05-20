@@ -14,6 +14,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +35,7 @@ public class WtScheduleShiftDaoImpl extends IDAOImpl<WtScheduleShift> implements
     public List<WtScheduleShift> getByParam(Long workingGroupId, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchWtScheduleShiftByParam(workingGroupId, criteria);
-        criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
+        criteria.createAlias("wtWorkingHour", "wtWorkingHour", JoinType.INNER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

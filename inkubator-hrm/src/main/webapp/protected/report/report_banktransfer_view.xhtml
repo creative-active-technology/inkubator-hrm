@@ -121,43 +121,43 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="empName" style="width: 15%">
+                            <p:column sortBy="#{data.empName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empName}"/>
                             </p:column>
-                            <p:column sortBy="empJabatanName" style="width: 15%">
+                            <p:column sortBy="#{data.empJabatanName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empJabatanName}"/>
                             </p:column>   
-                            <p:column sortBy="empGolJabatan" style="width: 10%">
+                            <p:column sortBy="#{data.empGolJabatan}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empGolJabatan}"/>
                             </p:column>
-                            <p:column sortBy="bankName" style="width: 15%">
+                            <p:column sortBy="#{data.bankName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['bank.bank']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bankName}"/>
                             </p:column>
-                            <p:column sortBy="accountNumber" style="width: 10%">
+                            <p:column sortBy="#{data.accountNumber}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.account_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.accountNumber}"/>
                             </p:column>
-                            <p:column sortBy="accountName" style="width: 15%">
+                            <p:column sortBy="#{data.accountName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.account_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.accountName}"/>
                             </p:column>
-                            <p:column sortBy="transferNominal" style="width: 10%">
+                            <p:column sortBy="#{data.transferNominal}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>

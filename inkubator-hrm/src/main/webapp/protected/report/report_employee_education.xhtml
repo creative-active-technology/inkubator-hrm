@@ -95,33 +95,33 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="firstName" style="width: 20%">
+                            <p:column sortBy="#{data.firstName}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nik} #{data.firstName} #{data.lastName}" />
                             </p:column>
 
-                            <p:column sortBy="department" style="width: 20%">
+                            <p:column sortBy="#{data.department}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.department}" />
                             </p:column>
 
-                            <p:column sortBy="jabatan" style="width: 20%">
+                            <p:column sortBy="#{data.jabatan}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jabatan}" />
                             </p:column>
-                            <p:column sortBy="graduated" style="width: 20%">
+                            <p:column sortBy="#{data.graduated}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['biodata.Education_history']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.graduated} #{data.from}" />
                             </p:column>
-                            <p:column sortBy="graduatedYear" style="width: 10%">
+                            <p:column sortBy="#{data.graduatedYear}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.year']}"/>
                                 </f:facet>

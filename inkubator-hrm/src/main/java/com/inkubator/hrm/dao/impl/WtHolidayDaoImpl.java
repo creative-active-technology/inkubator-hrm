@@ -21,6 +21,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -42,7 +43,7 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchWtHolidayByParam(searchParameter, criteria);
         criteria.addOrder(order);
-        criteria.setFetchMode("religion", FetchMode.JOIN);
+        criteria.createAlias("religion", "religion", JoinType.LEFT_OUTER_JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
