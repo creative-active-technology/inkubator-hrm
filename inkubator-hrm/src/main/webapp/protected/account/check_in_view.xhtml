@@ -68,13 +68,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData"  style="width: 20%">
+                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}"/>
                             </p:column>
-                            <p:column sortBy="checkDate"  style="width: 20%">
+                            <p:column sortBy="#{data.checkDate}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['checkIn.check_date']}"/>
                                 </f:facet>
@@ -82,25 +82,25 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="checkInTime"  style="width: 15%">
+                            <p:column sortBy="#{data.checkInTime}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['checkIn.check_in']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.checkInTime}"/>
                             </p:column>
-                            <p:column sortBy="checkOutTime"  style="width: 15%">
+                            <p:column sortBy="#{data.checkOutTime}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['checkIn.check_out']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.checkOutTime}"/>
                             </p:column>
-                            <p:column sortBy="ipAddress"  style="width: 15%">
+                            <p:column sortBy="#{data.ipAddress}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['checkIn.ip_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.ipAddress}"/>
                             </p:column>
-                            <p:column sortBy="status"  style="width: 25%">
+                            <p:column sortBy="#{data.status}"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['checkIn.status']}"/>
                                 </f:facet>

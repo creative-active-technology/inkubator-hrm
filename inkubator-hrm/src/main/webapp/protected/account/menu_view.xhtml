@@ -107,7 +107,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{menuViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMenu.show()">
+                                                 action="#{menuViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmMenu').show()">
                                     <f:setPropertyActionListener value="#{menuData}" target="#{menuViewController.selectedMenu}" />
                                 </p:commandButton>
                                 -
@@ -131,7 +131,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmMenu" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmMenu" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,8 +151,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{menuViewController.doDelete()}" update="formMenuViewId,:growlMenuViewlId"
-                                         oncomplete="dialogConfirmMenu.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmMenu.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmMenu').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmMenu').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

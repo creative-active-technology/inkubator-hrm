@@ -176,7 +176,7 @@
                                         </p:commandButton>
                                         -
                                         <p:commandButton  icon="ui-icon-trash" title="Delete of Approval Process" label="Delete of Approval Process"  style="font-size: 9px!important"
-                                                          oncomplete="confirmDialogApprovalProcess.show();" onclick="statusDialogApprovalProcess.show();" update=":confirmDialogHrmApprovalProcessId" >
+                                                          oncomplete="PF('confirmDialogApprovalProcess').show();" onclick="PF('statusDialogApprovalProcess').show();" update=":confirmDialogHrmApprovalProcessId" >
                                             <f:setPropertyActionListener value="#{approvalProcess}" target="#{approvalProcessController.selectedProscessToApprove}" />
                                         </p:commandButton>
                                         -
@@ -197,7 +197,7 @@
 
                             </div>
                         </h:form>
-                        <p:dialog widgetVar="confirmDialogApprovalProcess" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogApprovalProcess.hide()"
+                        <p:dialog widgetVar="confirmDialogApprovalProcess" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="PF('statusDialogApprovalProcess').hide()"
                                   appendTo="@(body)" resizable="false" id="confirmDialogHrmApprovalProcessId" >
                             <h:form id="deleteDialogIdSpiProduct">
                                 <div align="center">
@@ -219,8 +219,8 @@
                                     <p:separator/>
                                     <p:commandButton value="#{appmsg['global.yes']}" action="#{approvalProcessController.doDelete()}"
                                                      id="yesId" update=":proscessToApproveTableId,:processToApprovalFormGrowlNoDelteId"
-                                                     oncomplete="confirmDialogApprovalProcess.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogApprovalProcess.hide()" icon="ui-icon-close" />
+                                                     oncomplete="PF('confirmDialogApprovalProcess').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogApprovalProcess').hide()" icon="ui-icon-close" />
 
                                 </div>
                             </h:form>
