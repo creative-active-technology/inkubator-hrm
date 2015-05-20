@@ -69,25 +69,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 15%">
+                            <p:column sortBy="#{data.code}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 24%">
+                            <p:column sortBy="#{data.name}" style="width: 24%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="nominalUnit" style="width: 24%">
+                            <p:column sortBy="#{data.maxNominal}" style="width: 24%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loanschema.max_nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.maxNominal}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="maxPaymentOfSalary" style="width: 24%">
+                            <p:column sortBy="#{data.maxPaymentOfSalary}" style="width: 24%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loanschema.max_payment_of_salary']}"/>
                                 </f:facet>
@@ -102,7 +102,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":confirmDeletePanel" 
-                                                                 action="#{loanSchemaViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="deleteDialog.show()">
+                                                                 action="#{loanSchemaViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('deleteDialog').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{loanSchemaViewController.selected}" />
                                 </p:commandButton>
                                 -
@@ -128,7 +128,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="deleteDialog" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="deleteDialog" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -148,8 +148,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{reimbursmentSchemaViewController.doDelete()}" update="formId"
-                                         oncomplete="deleteDialog.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="deleteDialog.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('deleteDialog').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('deleteDialog').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

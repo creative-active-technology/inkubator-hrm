@@ -91,7 +91,7 @@
                                                                 </h:outputLabel>
                                                             </div>
                                                         </p:column>-->
-                            <p:column sortBy="minSalary" style="width: 20%;text-align: center;">
+                            <p:column sortBy="#{data.minSalary}" style="width: 20%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
@@ -101,7 +101,7 @@
                                     </h:outputLabel>
                                 </div>
                             </p:column>
-                            <p:column sortBy="mediumSalary" style="width: 20%;text-align: center;">
+                            <p:column sortBy="#{data.mediumSalary}" style="width: 20%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
@@ -111,7 +111,7 @@
                                     </h:outputLabel>
                                 </div>
                             </p:column>
-                            <p:column sortBy="maxSalary" style="width: 20%;text-align: center;">
+                            <p:column sortBy="#{data.maxSalary}" style="width: 20%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>
@@ -121,7 +121,7 @@
                                     </h:outputLabel>
                                 </div>
                             </p:column>
-                            <p:column sortBy="currency" style="text-align: center; width: 15%">
+                            <p:column sortBy="#{data.currency.name}" style="text-align: center; width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['currency.currency']}"/>
                                 </f:facet>
@@ -132,7 +132,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{paySalaryGradeController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                 action="#{paySalaryGradeController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{paySalaryGradeController.selected}" />
                                 </p:commandButton>
                                 -
@@ -159,7 +159,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -179,8 +179,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryGradeController.doDelete()}" update="formId"
-                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
 

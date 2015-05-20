@@ -10,7 +10,7 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/master_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
                 Home
             </ui:define>
@@ -170,7 +170,7 @@
                                         </p:commandButton>
                                         -
                                         <p:commandButton  icon="ui-icon-trash" title="Delete" label="Delete"  style="font-size: 9px!important"
-                                                          oncomplete="confirmDialogHrmRole.show();" onclick="statusDialogHrmRole.show();" update=":confirmDialogHrmRoleId" >
+                                                          oncomplete="PF('confirmDialogHrmRole').show();" onclick="PF('statusDialogHrmRole').show();" update=":confirmDialogHrmRoleId" >
                                             <f:setPropertyActionListener value="#{roleData}" target="#{roleController.selectedHrmRole}" />
                                         </p:commandButton>
                                         -
@@ -192,7 +192,7 @@
 
                             </div>
                         </h:form>
-                        <p:dialog widgetVar="confirmDialogHrmRole" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="statusDialogHrmRole.hide()"
+                        <p:dialog widgetVar="confirmDialogHrmRole" header="Konfirmasi" modal="true" width="450" dynamic="true" onShow="PF('statusDialogHrmRole').hide()"
                                   appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" >
                             <h:form id="deleteDialogIdSpiProduct">
                                 <div align="center">
@@ -213,8 +213,8 @@
                                     </h:panelGrid>
                                     <p:separator/>
                                     <p:commandButton value="#{appmsg['global.yes']}" action="#{roleController.doDelete()}" update=":roleTableId" id="yesId"
-                                                     oncomplete="confirmDialogHrmRole.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmRole.hide()" icon="ui-icon-close" />
+                                                     oncomplete="PF('confirmDialogHrmRole').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                                    <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHrmRole').hide()" icon="ui-icon-close" />
 
                                 </div>
                             </h:form>

@@ -47,13 +47,23 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public List<Jabatan> getByParam(JabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        
+//        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+//        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+//        criteria.setFetchMode("department", FetchMode.JOIN);
+//        criteria.setFetchMode("unitKerja", FetchMode.JOIN);
+//        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+//        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
+        
+        criteria.createAlias("costCenter", "costCenter", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan.pangkat", "pangkat", JoinType.INNER_JOIN);
+        criteria.createAlias("department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("unitKerja", "unitKerja", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryGrade", "paySalaryGrade", JoinType.INNER_JOIN);
+        
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("costCenter", FetchMode.JOIN);
-        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
-        criteria.setFetchMode("department", FetchMode.JOIN);
-        criteria.setFetchMode("unitKerja", FetchMode.JOIN);
-        criteria.setFetchMode("jabatan", FetchMode.JOIN);
-        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -63,6 +73,21 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     @Override
     public Long getTotalJabatanByParam(JabatanSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.setFetchMode("unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
+        
+        criteria.createAlias("costCenter", "costCenter", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("golonganJabatan.pangkat", "pangkat", JoinType.INNER_JOIN);
+        criteria.createAlias("department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("unitKerja", "unitKerja", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryGrade", "paySalaryGrade", JoinType.INNER_JOIN);
+        
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -70,7 +95,9 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     private void doSearchByParam(JabatanSearchParameter parameter, Criteria criteria) {
     	/** automatically get relations of department, company 
          *  don't create alias for that entity, or will get error : duplicate association path */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+       // criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+    	criteria.add(Restrictions.eq("company.id", HrmUserInfoUtil.getCompanyId()));
         
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
@@ -79,24 +106,20 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
 
-        if (StringUtils.isNotEmpty(parameter.getCostCenterName())) {
-            criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("cc.name", parameter.getCostCenterName(), MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(parameter.getCostCenterName())) {            
+            criteria.add(Restrictions.like("costCenter.name", parameter.getCostCenterName(), MatchMode.ANYWHERE));
         }
 
         if (StringUtils.isNotEmpty(parameter.getDepartementName())) {
-            criteria.add(Restrictions.like("dd.departmentName", parameter.getDepartementName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("department.departmentName", parameter.getDepartementName(), MatchMode.ANYWHERE));
         }
-            criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
-        if (StringUtils.isNotEmpty(parameter.getJabatan())) {
             
-            criteria.createAlias("gj.pangkat", "pp", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("pp.pangkatName", parameter.getJabatan(), MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(parameter.getJabatan())) {          
+            criteria.add(Restrictions.like("pangkat.pangkatName", parameter.getJabatan(), MatchMode.ANYWHERE));
         }
 
-        if (StringUtils.isNotEmpty(parameter.getUnitKerjaName())) {
-            criteria.createAlias("unitKerja", "uk", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("uk.name", parameter.getUnitKerjaName(), MatchMode.ANYWHERE));
+        if (StringUtils.isNotEmpty(parameter.getUnitKerjaName())) {           
+            criteria.add(Restrictions.like("unitKerja.name", parameter.getUnitKerjaName(), MatchMode.ANYWHERE));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
@@ -106,8 +129,7 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
     public Jabatan getJabatanByLevelOne(Integer level) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 //        criteria.add(Restrictions.eq("levelJabatan", level));
-        // kasih restric terhadap company yang active......
-        System.out.println(" Hahhahaah");
+        // kasih restric terhadap company yang active......        
         criteria.add(Restrictions.isNull("jabatan"));
         return (Jabatan) criteria.uniqueResult();
     }

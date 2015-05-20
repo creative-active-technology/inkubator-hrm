@@ -40,7 +40,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-        criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
+        //criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
         return criteria.list();
     }
 
@@ -59,6 +59,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     }
 
     private void doSearchDepartmentByParam(DepartmentSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("costCenterDept", "costCenterDept", JoinType.INNER_JOIN);
         if (searchParameter.getName() != null) {
             criteria.add(Restrictions.like("departmentName", searchParameter.getName(), MatchMode.START));
         }

@@ -37,9 +37,9 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
     public List<ImplementationOfOverTime> getAllDataWithDetail(ImplementationOfOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
+        //criteria.setFetchMode("empData", FetchMode.JOIN);
+        //criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        //criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

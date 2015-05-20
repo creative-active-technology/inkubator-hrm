@@ -13,7 +13,7 @@ import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
  *
  * @author WebGenX
  */
-public interface RecruitHireApplyService extends IService<RecruitHireApply> {
+public interface RecruitHireApplyService extends IService<RecruitHireApply>, BaseApprovalService {
 
     public List<RecruitHireApply> getByParam(RecruitHireApplySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
@@ -25,5 +25,11 @@ public interface RecruitHireApplyService extends IService<RecruitHireApply> {
     
     public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
     
+    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception;
+
     public void updateRecruitHireWithApproval(RecruitHireApply recruitHireApply, String activityNumber) throws Exception;
+    
+    public Long getCurrentMaxId() throws Exception;
+    
+    public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber) throws Exception;
 }

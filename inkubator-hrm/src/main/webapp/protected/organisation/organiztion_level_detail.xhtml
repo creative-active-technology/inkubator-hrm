@@ -107,37 +107,37 @@
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
 
-                            <p:column sortBy="code" >
+                            <p:column sortBy="#{unitKerja.code}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unitkerja.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerja.code}" />
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="#{unitKerja.name}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unitkerja.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerja.name}" />
                             </p:column>
-                            <p:column sortBy="location" >
+                            <p:column sortBy="#{unitKerja.location}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerja.location}" />
                             </p:column>
-                            <p:column sortBy="city" >
+                            <p:column sortBy="#{unitKerja.city.cityName}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unitkerja.city']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerja.city.cityName}" />
                             </p:column>
-                            <p:column sortBy="phoneNumber" >
+                            <p:column sortBy="#{unitKerja.phoneNumber}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.phone_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{unitKerja.phoneNumber}" />
                             </p:column>
-                            <p:column sortBy="emailAddress" >
+                            <p:column sortBy="#{unitKerja.emailAddress}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.email_address']}"/>
                                 </f:facet>

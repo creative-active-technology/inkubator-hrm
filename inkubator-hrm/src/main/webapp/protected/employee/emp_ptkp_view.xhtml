@@ -73,19 +73,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" style="width: 14%;">
+                            <p:column sortBy="#{ptkpView.nik}" style="width: 14%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ptkpView.nik}"/>
                             </p:column>
-                           <p:column sortBy="bio.firstName" style="width: 18%;">
+                           <p:column sortBy="#{ptkpView.bioData.firstName}" style="width: 18%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{ptkpView.bioData.firstName} #{ptkpView.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="bio.gender" style="width: 11%;">
+                            <p:column sortBy="#{ptkpView.bioData.gender}" style="width: 11%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -93,7 +93,7 @@
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="ptkpStatus" style="width: 12%;">
+                             <p:column sortBy="#{ptkpView.ptkpStatus}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
@@ -101,13 +101,13 @@
                                      <f:converter converterId="mariedMessageConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="ptkpNumber" style="width: 14;">
+                             <p:column sortBy="#{ptkpView.ptkpNumber}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{ptkpView.ptkpNumberLabel}" />
                             </p:column>
-                            <p:column style="width: 15%;">
+                            <p:column style="width: 10%;" sortBy="#{ptkpView.taxFree.freeNominal}">
                                 <f:facet name="header">  
                                     <h:outputText value="Nominal"/>
                                 </f:facet>

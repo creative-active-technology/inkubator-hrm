@@ -171,14 +171,11 @@ public class EmpDataDetilController extends BaseController {
         if (formData != null) {
             return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId() + "&from=rotasi";
         }
-        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
+        return "/protected/employee/emp_background_view.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
-    public String doBack() {
-        if (formData != null) {
-            return "/protected/employee/emp_rotasi_view.htm?faces-redirect=true";
-        }
-        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
+    public String doBack() {        
+        return "/protected/employee/emp_background_view.htm?faces-redirect=true";
     }
 
     public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {

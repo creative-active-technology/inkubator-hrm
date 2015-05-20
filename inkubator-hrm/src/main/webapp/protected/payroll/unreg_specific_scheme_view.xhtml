@@ -66,25 +66,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 10%">
+                            <p:column sortBy="#{data.code}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 20%">
+                            <p:column sortBy="#{data.name}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
-                            <p:column sortBy="wtPeriode" style="width: 20%">
+                            <p:column sortBy="#{data.wtPeriode.bulan}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unregSalary.basePeriode']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.wtPeriode.bulan} #{data.wtPeriode.tahun}" />
                             </p:column>
-                            <p:column sortBy="salaryDate" style="width: 15%">
+                            <p:column sortBy="#{data.salaryDate}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['unregSalary.salary_date']}"/>
                                 </f:facet>

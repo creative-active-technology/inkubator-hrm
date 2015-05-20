@@ -67,20 +67,20 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="">
+                            <p:column sortBy="#{batchJobExecutionData.batchJobInstance.jobName}">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.batchJobInstance']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}"/>
                             </p:column>
-                            <p:column sortBy="status">
+                            <p:column sortBy="#{batchJobExecutionData.status}">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.status']}"/>
                                 </f:facet>
                                     <h:outputLabel value= "#{batchJobExecutionData.status}">
                                     </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="startTime" >
+                            <p:column sortBy="#{batchJobExecutionData.startTime}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.startTime']}"/>
                                 </f:facet>
@@ -88,7 +88,7 @@
                                 <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="endTime" >
+                            <p:column sortBy="#{batchJobExecutionData.endTime}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.endTime']}"/>
                                 </f:facet>
@@ -96,7 +96,7 @@
                                     <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="exitCode" >
+                            <p:column sortBy="#{batchJobExecutionData.exitCode}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.exitCode']}"/>
                                 </f:facet>

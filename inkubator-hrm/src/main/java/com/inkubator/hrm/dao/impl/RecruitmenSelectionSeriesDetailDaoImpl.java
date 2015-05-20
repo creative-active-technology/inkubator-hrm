@@ -93,4 +93,12 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("recruitSelectionType.id", id));
+        criteria.setFetchMode("recruitmenSelectionSeries", FetchMode.JOIN);
+        return criteria.list();
+    }
+
 }

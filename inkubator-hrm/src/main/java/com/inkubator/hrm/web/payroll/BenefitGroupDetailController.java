@@ -146,7 +146,7 @@ public class BenefitGroupDetailController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 550);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 330);
         RequestContext.getCurrentInstance().openDialog("benefit_group_rate", options, params);
     }
 

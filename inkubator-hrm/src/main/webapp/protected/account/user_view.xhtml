@@ -77,25 +77,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="userId" style="width: 150px" >
+                            <p:column sortBy="#{userViewData.userId}" style="width: 150px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['user_view.user_id']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{userViewData.userId}"/>
                             </p:column>
-                            <p:column sortBy="realName" >
+                            <p:column sortBy="#{userViewData.realName}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['user_view.user_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{userViewData.realName}"/>
                             </p:column>
-                            <p:column sortBy="emailAddress" >
+                            <p:column sortBy="#{userViewData.emailAddress}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['user_form.email_address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{userViewData.emailAddress}"/>
                             </p:column>
-                            <p:column sortBy="phoneNumber" >
+                            <p:column sortBy="#{userViewData.phoneNumber}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['user_form.phone_number']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{userViewController.onDelete()}" >
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogHrmUser').show()" action="#{userViewController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{userViewData}" target="#{userViewController.selectedHrmUser}" />
                                 </p:commandButton>
                                 -
@@ -136,7 +136,7 @@
                     </h:form>
                 <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogUserId">
                         <div align="center">
@@ -157,8 +157,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{userViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogHrmUser').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHrmUser').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

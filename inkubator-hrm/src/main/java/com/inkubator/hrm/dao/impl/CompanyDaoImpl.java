@@ -17,6 +17,7 @@ import com.inkubator.hrm.dao.CompanyDao;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.CompanySearchParameter;
+import org.hibernate.sql.JoinType;
 
 /**
  *
@@ -37,6 +38,10 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
         criteria.setFetchMode("city", FetchMode.JOIN);
         criteria.setFetchMode("city.province", FetchMode.JOIN);
         criteria.setFetchMode("city.province.country", FetchMode.JOIN);
+        
+        criteria.createAlias("city", "city", JoinType.INNER_JOIN);
+        criteria.createAlias("city.province", "province", JoinType.INNER_JOIN);
+        criteria.createAlias("city.province.country", "country", JoinType.INNER_JOIN);
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -56,7 +61,7 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getCountry())) {
-            criteria.createAlias("city.province.country", "country");
+            //criteria.createAlias("city.province.country", "country");
             criteria.add(Restrictions.like("country.countryName", parameter.getCountry(), MatchMode.ANYWHERE));
         }
 

@@ -68,22 +68,22 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 50%">
+                            <p:column sortBy="#{appraisalDetailData.name}"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{appraisalDetailData.name}"/>
                             </p:column> 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{appraisalDetailViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailAppraisalDetail.show()">                        
+                                                 action="#{appraisalDetailViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailAppraisalDetail').show()">                        
                                     <f:setPropertyActionListener value="#{appraisalDetailData}" target="#{appraisalDetailViewController.selectedAppraisalDetail}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{appraisalDetailViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmAppraisalDetail.show()">
+                                                 action="#{appraisalDetailViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmAppraisalDetail').show()">
                                     <f:setPropertyActionListener value="#{appraisalDetailData}" target="#{appraisalDetailViewController.selectedAppraisalDetail}" />
                                 </p:commandButton>
                                 -
@@ -111,7 +111,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmAppraisalDetail" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmAppraisalDetail" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -131,12 +131,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{appraisalDetailViewController.doDelete()}" update="formAppraisalDetailViewId,:growlAppraisalDetailViewlId"
-                                         oncomplete="dialogConfirmAppraisalDetail.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmAppraisalDetail.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmAppraisalDetail').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmAppraisalDetail').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailAppraisalDetail" header="#{appmsg['appraisalDetail.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">                                              
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['appraisalDetail.appraisalDetail_element']}" styleClass="label_hrm"/></p:column>

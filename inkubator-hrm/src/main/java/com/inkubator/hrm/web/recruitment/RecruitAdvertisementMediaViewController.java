@@ -92,7 +92,7 @@ public class RecruitAdvertisementMediaViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 530);
         RequestContext.getCurrentInstance().openDialog("recruitment_media_form", options, params);
     }
 

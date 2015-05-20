@@ -147,7 +147,7 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
         
     @Override
     public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
-       
+
        final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
                 + " DATE_FORMAT(lme.periodeStart, '%d %M %Y') AS tglAwalPeriodeInString, lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
                 + " WHERE lme.paySalaryCompId = 100 ");
@@ -688,8 +688,7 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                multipleFilterRegSalary = Boolean.TRUE;
             }      
                              
-        }
-        
+        }        
         /* End Filtering for Reguler Payroll */      
         query.append(" ORDER BY ").append(order);
         
