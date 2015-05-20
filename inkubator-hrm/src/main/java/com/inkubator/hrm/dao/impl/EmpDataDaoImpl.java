@@ -205,10 +205,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
         if (dataSearchParameter.getName() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
-            criteria.add(disjunction);
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
+//            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
+//            criteria.add(disjunction);
+              criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(),MatchMode.ANYWHERE));
         }
     }
 

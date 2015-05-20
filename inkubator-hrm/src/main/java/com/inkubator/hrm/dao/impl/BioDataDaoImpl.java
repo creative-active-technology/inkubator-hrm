@@ -58,10 +58,11 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
     private void doSearchBioDataByParam(BioDataSearchParameter parameter, Criteria criteria) {
         if (parameter.getName() != null) {
 //            criteria.add(Restrictions.like("firstName", parameter.getParameter(), MatchMode.ANYWHERE));
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("firstName", parameter.getName(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("lastName", parameter.getName(), MatchMode.ANYWHERE));
-            criteria.add(disjunction);
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("firstName", parameter.getName(), MatchMode.ANYWHERE));
+//            disjunction.add(Restrictions.like("lastName", parameter.getName(), MatchMode.ANYWHERE));
+//            criteria.add(disjunction);
+            criteria.add(Restrictions.ilike("combineName", parameter.getName().toLowerCase(),MatchMode.ANYWHERE));
         }
 
         if (parameter.getEmailAddress() != null) {
