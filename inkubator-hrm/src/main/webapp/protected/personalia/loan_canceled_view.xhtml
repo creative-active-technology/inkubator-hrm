@@ -71,19 +71,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>   
-                            <p:column sortBy="empData"  style="width: 20%">
+                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik} #{data.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="loanSchema"  style="width: 17%">
+                            <p:column sortBy="#{data.loanSchema.name}"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanSchema.name}"/>
                             </p:column>  
-                            <p:column sortBy="loanDate"  style="width: 15%">
+                            <p:column sortBy="#{data.loanDate}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.loan_date']}"/>
                                 </f:facet>
@@ -91,7 +91,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
+                            <p:column sortBy="#{data.nominalPrincipal}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -101,7 +101,7 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{loanCanceledViewController.doSelectEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanCanceledViewController.selectedLoan}" />
                                 </p:commandButton>
@@ -121,7 +121,7 @@
                     </h:form>
                 </div>
                 <p:dialog widgetVar="detail" header="#{appmsg['loanCanceled.loanCanceled_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.nik']}" styleClass="label_hrm"/></p:column>

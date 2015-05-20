@@ -160,11 +160,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         
+//        criteria.createAlias("jabatanByJabatanId", "bioData", JoinType.LEFT_OUTER_JOIN);
+        
         criteria.createAlias("taxFree", "taxFree", JoinType.INNER_JOIN);
 //        criteria.setFetchMode("bioData", FetchMode.JOIN);
         criteria.setFetchMode("bioData.city", FetchMode.JOIN);
         criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
-        criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+//        criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
 //        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
