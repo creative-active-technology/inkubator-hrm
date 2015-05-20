@@ -49,7 +49,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                 	<p:commandButton value="#{appmsg['global.synchronization']}" action="#{dataFingerRealizationViewController.doInitSyncDataFinger()}"  title="#{appmsg['global.synchronization']}" label="#{appmsg['global.synchronization']}" styleClass="label_button"
-                                					 onclick="statusDialog.show()" oncomplete="if (!args.validationFailed) {syncDataFingerWidget.show();} else {statusDialog.hide();}" update="tableId,:growlId,:syncDataFingerWidgetId">
+                                					 onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('syncDataFingerWidget').show();} else {PF('statusDialog').hide();}" update="tableId,:growlId,:syncDataFingerWidgetId">
                                     </p:commandButton>
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Finger_Realization"/>
@@ -139,7 +139,7 @@
                 
                 <h:outputStylesheet library="css" name="progress_bar.css" />
                 <p:dialog widgetVar="syncDataFingerWidget" id="syncDataFingerWidgetId" header="#{appmsg['global.process']} #{appmsg['global.synchronization']}" width="500" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="syncDataFingerForm">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="false" closable="false" focus="syncDataFingerForm">
 
                     <div align="center">
                         <h:form id="syncDataFingerForm">
@@ -155,10 +155,10 @@
                             </h:panelGrid>
                             <h:panelGrid columns="2" style="margin-bottom: 10px">
 								<p:commandButton value="#{appmsg['global.process']}"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" action="#{dataFingerRealizationViewController.doSyncDataFinger()}" update="syncDataFingerForm" />
-	                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="syncDataFingerWidget.hide();" immediate="true"/>
+	                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="PF('syncDataFingerWidget').hide();" immediate="true"/>
                             </h:panelGrid>
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{dataFingerRealizationViewController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{dataFingerRealizationViewController.onCompleteSyncDataFinger}" update=":growlId,:formViewId" oncomplete="if (!args.validationFailed) {syncDataFingerWidget.hide();}"/>
+                                <p:ajax event="complete" listener="#{dataFingerRealizationViewController.onCompleteSyncDataFinger}" update=":growlId,:formViewId" oncomplete="if (!args.validationFailed) {PF('syncDataFingerWidget').hide();}"/>
                             </p:progressBar>
                                                         
                         </h:form>
