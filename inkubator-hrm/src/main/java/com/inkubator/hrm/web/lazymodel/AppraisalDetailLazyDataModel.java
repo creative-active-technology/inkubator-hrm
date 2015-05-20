@@ -38,7 +38,7 @@ public class AppraisalDetailLazyDataModel extends LazyDataModel<AppraisalDetail>
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("name");
+	        	orderable = Order.desc("appraisalElement");
 	        }
 	        
 	        appraisalDetails = appraisalDetailService.getByParam(parameter, first, pageSize, orderable);

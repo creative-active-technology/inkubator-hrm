@@ -73,19 +73,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 15%">
+                            <p:column sortBy="#{travelZoneData.code}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelZoneData.code}"/>
                             </p:column>                              
-                            <p:column sortBy="name"  style="width: 35%">
+                            <p:column sortBy="#{travelZoneData.name}"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelZoneData.name}"/>
                             </p:column>
-                            <p:column sortBy="category"  style=" width: 22%">
+                            <p:column sortBy="#{travelZoneData.category}"  style=" width: 22%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['travelZone.travelZone_category']}"/>
                                 </f:facet>
@@ -93,7 +93,7 @@
                                     <f:converter converterId="zoneCategoryConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="distance"  style="width: 15%">
+                            <p:column sortBy="#{travelZoneData.distance}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['travelZone.travelZone_distance']}"/>
                                 </f:facet>
@@ -102,13 +102,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{travelZoneViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailTravelZone.show()">                        
+                                                 action="#{travelZoneViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTravelZone').show()">                        
                                     <f:setPropertyActionListener value="#{travelZoneData}" target="#{travelZoneViewController.selectedTravelZone}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{travelZoneViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmTravelZone.show()">
+                                                 action="#{travelZoneViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTravelZone').show()">
                                     <f:setPropertyActionListener value="#{travelZoneData}" target="#{travelZoneViewController.selectedTravelZone}" />
                                 </p:commandButton>
                                 -
@@ -136,7 +136,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmTravelZone" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmTravelZone" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -156,12 +156,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{travelZoneViewController.doDelete()}" update="formTravelZoneViewId,:growlTravelZoneViewlId"
-                                         oncomplete="dialogConfirmTravelZone.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTravelZone.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmTravelZone').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmTravelZone').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailTravelZone" header="#{appmsg['travelZone.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelZone.travelZone_code']}" styleClass="label_hrm"/></p:column>

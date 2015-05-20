@@ -92,7 +92,7 @@ public class RecruitAdvertisementCategoryViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 370);
+        options.put("contentHeight", 390);
         RequestContext.getCurrentInstance().openDialog("recruitment_category_form", options, params);
     }
 

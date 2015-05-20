@@ -73,25 +73,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 15%">
+                            <p:column sortBy="#{data.code}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_type.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="width: 27%">
+                            <p:column sortBy="#{data.name}"  style="width: 27%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_type.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}"/>
                             </p:column>
-                            <p:column sortBy="costCenter.name"  style="width: 30%">
+                            <p:column sortBy="#{data.costCenter.name}"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="COA"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.costCenter.name}"/>
                             </p:column>
-                            <p:column sortBy="daysOfAvailable"  style="width: 15%">
+                            <p:column sortBy="#{data.daysOfAvailable}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_type.available']}"/>
                                 </f:facet>
@@ -100,13 +100,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogDetail.show()">                        
+                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetail').show()">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsTypeViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogDeleteId" 
-                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogDelete.show()">
+                                				 action="#{rmbsTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsTypeViewController.selected}" />
                                 </p:commandButton>
                                 -
@@ -131,7 +131,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,13 +151,13 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{rmbsTypeViewController.doDelete()}" update="formId,:growlId"
-                                         oncomplete="dialogDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
                 <p:dialog widgetVar="dialogDetail" header="#{appmsg['rmbs_type.reimbursement_type_detail']}" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.code']}" styleClass="label_hrm"/></p:column>

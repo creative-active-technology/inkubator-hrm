@@ -83,7 +83,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
                                 	<p:commandButton value="#{appmsg['unregpayroll.payment_proses']}" action="#{unregPayrollDetailController.doInitPaymentProcess}"  title="#{appmsg['payroll.month_end_process']}" label="#{appmsg['payroll.month_end_process']}" styleClass="label_button"
-                                					 onclick="statusDialog.show()" oncomplete="if (!args.validationFailed) {paymentProcessWidget.show();} else {statusDialog.hide();}" update=":monthEndProcessForm,:growlId,:paymentProcessWidgetId">
+                                					 onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('paymentProcessWidget').show();} else {PF('statusDialog').hide();}" update=":monthEndProcessForm,:growlId,:paymentProcessWidgetId">
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" styleClass="label_button" action="#{unregPayrollDetailController.doClose()}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
@@ -174,7 +174,7 @@
                 
                 <h:outputStylesheet library="css" name="progress_bar.css" />
                 <p:dialog widgetVar="paymentProcessWidget" id="paymentProcessWidgetId" header="#{appmsg['unregpayroll.payment_proses']}" width="500" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="monthEndProcessForm">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="false" closable="false" focus="monthEndProcessForm">
                     <div align="center">
                         <h:form id="monthEndProcessForm">
 	                        <p:outputLabel value="#{appmsg['unregpayroll.widget_label']} :  "  styleClass="label_hrm"/>                          	
@@ -184,10 +184,10 @@
 	                            
 	                        <h:panelGrid columns="2" style="margin-bottom: 10px;margin-top: 10px;">
 								<p:commandButton value="#{appmsg['global.process']}"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" action="#{unregPayrollDetailController.doPaymentProcess()}" update="monthEndProcessForm" />
-		                        <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="paymentProcessWidget.hide();" immediate="true"/>
+		                        <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="PF('paymentProcessWidget').hide();" immediate="true"/>
 	                        </h:panelGrid>
 	                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{unregPayrollDetailController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-	                        	<p:ajax event="complete" listener="#{unregPayrollDetailController.onCompletePaymentProcess}" update=":growlId,:formId" oncomplete="if (!args.validationFailed) {paymentProcessWidget.hide();}"/>
+	                        	<p:ajax event="complete" listener="#{unregPayrollDetailController.onCompletePaymentProcess}" update=":growlId,:formId" oncomplete="if (!args.validationFailed) {PF('paymentProcessWidget').hide();}"/>
 	                        </p:progressBar>                                                        
                         </h:form>
                     </div>

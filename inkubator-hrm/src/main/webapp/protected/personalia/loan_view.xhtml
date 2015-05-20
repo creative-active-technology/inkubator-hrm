@@ -71,19 +71,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 35%">
+                            <p:column sortBy="#{loanData.bioData.firstName}"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loanData.empData.nik} #{loanData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="loanSchema.name"  style="width: 20%">
+                            <p:column sortBy="#{loanData.loanSchema.name}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{loanData.loanSchema.name}"/>
                             </p:column>  
-                            <p:column sortBy="nominalPrincipal"  style="width: 15%">
+                            <p:column sortBy="#{loanData.nominalPrincipal}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -91,7 +91,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="loanDate"  style="width: 15%">
+                            <p:column sortBy="#{loanData.loanDate}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.loan_date']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{loanViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLoan.show()">
+                                				 action="#{loanViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmLoan').show()">
                                     <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
                                 </p:commandButton>
                                 -
@@ -131,7 +131,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmLoan" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmLoan" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,8 +151,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{loanViewController.doDelete()}" update="formLoanViewId,:growlLoanViewlId"
-                                         oncomplete="dialogConfirmLoan.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmLoan.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmLoan').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmLoan').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

@@ -129,7 +129,7 @@ public class ProvinceViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 480);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 475);
         RequestContext.getCurrentInstance().openDialog("province_form", options, params);
     }
 

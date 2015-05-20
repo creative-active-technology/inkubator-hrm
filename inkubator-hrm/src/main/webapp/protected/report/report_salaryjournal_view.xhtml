@@ -58,7 +58,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}."/>
                             </p:column>
-                            <p:column sortBy="wtPeriode.fromPeriode" style="width: 30%">
+                            <p:column sortBy="#{data.payrollPeriod}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.payroll_period']}"/>
                                 </f:facet>
@@ -66,7 +66,7 @@
                                 	<f:convertDateTime pattern="MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="wtPeriode.payrollDate" style="width: 30%">
+                            <p:column sortBy="#{data.payrollDate}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.payroll_date']}"/>
                                 </f:facet>
@@ -74,7 +74,7 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="balance" style="width: 30%">
+                            <p:column sortBy="#{data.balance}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['payroll.balance']}"/>
                                 </f:facet>

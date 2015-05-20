@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlBioProjectFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formBioProjectFormId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['bioProject.form_bioProject']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['bioProject.bioProject_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioProject.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <h:outputLabel value="#{appmsg['bioProject.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="codeId" value="#{appmsg['bioProject.bioProject_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:focus for ="codeId">
+                                    <p:inputText id="codeId" title="#{appmsg['bioProject.bioProject_code']}" value="#{bioProjectFormController.bioProjectModel.code}" 
+                                                 required="true" requiredMessage="#{appmsg['bioProject.bioProject_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="nameId" value="#{appmsg['bioProject.bioProject_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="nameId" title="#{appmsg['bioProject.bioProject_name']}" value="#{bioProjectFormController.bioProjectModel.name}" 
+                                             required="true" requiredMessage="#{appmsg['bioProject.bioProject_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="companyId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="companyId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" value="#{bioProjectFormController.bioProjectModel.companyName}" 
+                                             required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                               
+
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="companyId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="positionId" value="#{appmsg['bioProject.bioProject_position']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="positionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputText id="positionId" title="#{appmsg['bioProject.bioProject_position']}" value="#{bioProjectFormController.bioProjectModel.position}" 
+                                             required="true" requiredMessage="#{appmsg['bioProject.bioProject_position_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="positionId"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="startId" value="#{appmsg['bioProject.bioProject_start']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="startId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:calendar id="startId" pattern="dd MMMM yyyy" value="#{bioProjectFormController.bioProjectModel.startDate}" style="width: 150px;margin-right: 3px" 
+                                            required="true" requiredMessage="#{appmsg['bioProject.bioProject_start_should_not_be_empty']}" navigator="true">
+                                    <f:validator validatorId="dateBetweenValidator"  />
+                                    <f:attribute name="endTime" value="#{endId}"/>
+                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['bioProject.bioProject_dateValidator']}"/>
+                                </p:calendar>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="startId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="endId" value="#{appmsg['bioProject.bioProject_end']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="endId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+
+                                <p:calendar id="endId" pattern="dd MMMM yyyy" binding="#{endId}" value="#{bioProjectFormController.bioProjectModel.endDate}" style="width: 150px;margin-right: 3px" 
+                                            required="true" requiredMessage="#{appmsg['bioProject.bioProject_end_should_not_be_empty']}" navigator="true" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="endId"/>
+                            </p:column>
+                        </p:row>          
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{bioProjectFormController.bioProjectModel.description}" 
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 29%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 1%;" >
+                                <p:outputLabel  for="counter" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>
+                        
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBioProjectFormId,:growlBioProjectFormlId"
+                                         action="#{bioProjectFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioProjectFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formBioProjectFormId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

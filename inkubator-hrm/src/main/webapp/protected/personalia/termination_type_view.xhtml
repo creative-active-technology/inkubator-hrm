@@ -73,13 +73,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 37%">
+                            <p:column sortBy="#{terminationTypeData.code}"  style="width: 37%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['terminationType.terminationType_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{terminationTypeData.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="width: 50%">
+                            <p:column sortBy="#{terminationTypeData.name}"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['terminationType.terminationType_name']}"/>
                                 </f:facet>
@@ -88,13 +88,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{terminationTypeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailTerminationType.show()">                        
+                                				 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTerminationType').show()">                        
                                     <f:setPropertyActionListener value="#{terminationTypeData}" target="#{terminationTypeViewController.selectedTerminationType}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{terminationTypeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmTerminationType.show()">
+                                				 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTerminationType').show()">
                                     <f:setPropertyActionListener value="#{terminationTypeData}" target="#{terminationTypeViewController.selectedTerminationType}" />
                                 </p:commandButton>
                                 -
@@ -122,7 +122,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmTerminationType" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmTerminationType" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -142,12 +142,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{terminationTypeViewController.doDelete()}" update="formTerminationTypeViewId,:growlTerminationTypeViewlId"
-                                         oncomplete="dialogConfirmTerminationType.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTerminationType.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmTerminationType').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmTerminationType').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailTerminationType" header="#{appmsg['terminationType.detail_dialog']}" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['terminationType.terminationType_code']}" styleClass="label_hrm"/></p:column>

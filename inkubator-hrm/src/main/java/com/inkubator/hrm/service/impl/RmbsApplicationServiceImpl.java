@@ -594,7 +594,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         Date now = formatter.parse(formatter.format(new Date()));
         Date deadline = new DateTime(now).minusDays(rmbsSchema.getSubmissionDeadline()).toDate();	        
     	if(entity.getApplicationDate().before(deadline)){
-    		throw new BussinessException("rmbs_application.error_request_date_exceed");
+    		//throw new BussinessException("rmbs_application.error_request_date_exceed");
     	} 
     	//check nominal limit should not exceed	
     	RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(new RmbsSchemaListOfTypeId(entity.getRmbsType().getId(), rmbsSchema.getId()));

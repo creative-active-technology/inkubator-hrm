@@ -41,7 +41,8 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-        criteria.setFetchMode("orgTypeOfSpec", FetchMode.JOIN);
+        criteria.setFetchMode("orgTypeOfSpec", FetchMode.JOIN);        
+        criteria.createAlias("orgTypeOfSpec", "orgTypeOfSpec", JoinType.INNER_JOIN);
         return criteria.list();
     }
 

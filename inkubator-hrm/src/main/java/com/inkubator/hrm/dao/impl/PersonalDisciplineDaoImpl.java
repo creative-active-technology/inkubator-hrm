@@ -38,9 +38,9 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
     public List<PersonalDiscipline> getAllDataWithAllRelation(PersonalDisciplineSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPersonalDisciplineByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -65,17 +65,17 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
     }
     
     private void doSearchPersonalDisciplineByParam(PersonalDisciplineSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-        criteria.createAlias("admonitionType", "at", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("admonitionType", "admonitionType", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getAdmonitionType())) {
-            criteria.add(Restrictions.like("at.name", searchParameter.getAdmonitionType(), MatchMode.START));
+            criteria.add(Restrictions.like("admonitionType.name", searchParameter.getAdmonitionType(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

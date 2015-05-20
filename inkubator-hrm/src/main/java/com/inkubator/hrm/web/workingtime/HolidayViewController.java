@@ -115,7 +115,7 @@ public class HolidayViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 360);
+        options.put("contentHeight", 380);
         
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
     }
@@ -126,7 +126,7 @@ public class HolidayViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 360);
+        options.put("contentHeight", 380);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selecWtHoliday.getId()));

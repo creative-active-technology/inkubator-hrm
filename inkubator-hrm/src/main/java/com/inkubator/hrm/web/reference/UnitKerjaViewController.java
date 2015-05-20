@@ -115,7 +115,7 @@ public class UnitKerjaViewController  extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 330);
+        options.put("contentHeight", 490);
         //options.put("closable", false);
         //options.put("height", "auto");
         //options.put("contentHeight", 340);
@@ -128,7 +128,7 @@ public class UnitKerjaViewController  extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 330);
+        options.put("contentHeight", 490);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selectedUnitKerja.getId()));

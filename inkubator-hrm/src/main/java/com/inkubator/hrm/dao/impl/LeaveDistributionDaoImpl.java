@@ -40,9 +40,9 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     public List<LeaveDistribution> getByParamWithDetail(LeaveDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("leave", FetchMode.JOIN);
+        //criteria.setFetchMode("empData", FetchMode.JOIN);
+        //criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        //criteria.setFetchMode("leave", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -57,22 +57,21 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
     }
 
     private void doSearch(LeaveDistributionSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-        criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
+        
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
-            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.START));
+            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.START));
         }
         if (searchParameter.getNik() != null) {
-//            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

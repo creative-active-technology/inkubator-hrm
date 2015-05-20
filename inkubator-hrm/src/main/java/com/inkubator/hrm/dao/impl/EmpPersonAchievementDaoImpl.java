@@ -38,8 +38,11 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
     public List<EmpPersonAchievement> getAllDataWithEmployee(EmpPersonAchievementSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchEmpPersonAchievementByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        //criteria.setFetchMode("empData", FetchMode.JOIN);
+        //criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -49,6 +52,9 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
     @Override
     public Long getTotalEmpPersonAchievementByParam(EmpPersonAchievementSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        
         doSearchEmpPersonAchievementByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -66,12 +72,12 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         if (searchParameter.getAchievementName() != null) {
             criteria.add(Restrictions.like("achievementName", searchParameter.getAchievementName(), MatchMode.START));
         }
-        criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
+        //criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
+        //criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bd.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bd.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));

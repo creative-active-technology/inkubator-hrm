@@ -72,7 +72,7 @@
 	                            	<p:selectOneMenu id="numberApplicationId" styleClass="isitext_hrm" required="true" value="#{rmbsCancelationFormController.model.approvalActivityId}" style="width:290px;">
 		                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                               	<f:selectItems value="#{rmbsCancelationFormController.listActivity.entrySet()}" var="activity" itemValue="#{activity.key}" itemLabel="#{activity.value}"/>
-		                               	<p:ajax listener="#{rmbsCancelationFormController.onChangeNumberApplication()}" update="detailInfoGrid" onstart="statusDialog.show()" oncomplete="statusDialog.hide()"/>
+		                               	<p:ajax listener="#{rmbsCancelationFormController.onChangeNumberApplication()}" update="detailInfoGrid" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"/>
 		                          	</p:selectOneMenu> 
 	                                <p:message for="numberApplicationId"/>
 	                            </p:column>

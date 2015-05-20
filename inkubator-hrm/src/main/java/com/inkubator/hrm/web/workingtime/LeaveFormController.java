@@ -330,7 +330,7 @@ public class LeaveFormController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 1100);
-        options.put("contentHeight", 400);
+        options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("appr_def_popup_form", options, params);
     }
     

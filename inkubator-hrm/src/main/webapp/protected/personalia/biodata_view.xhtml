@@ -77,13 +77,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="firstName" style="width: 20%">
+                            <p:column sortBy="#{biodataView.firstName}" style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.fullname']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.firstName} #{biodataView.lastName}"/>
                             </p:column>
-                            <p:column sortBy="realName" style="width: 10%">
+                            <p:column sortBy="#{biodataView.dateOfBirth}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.age']}"/>
                                 </f:facet>
@@ -91,7 +91,7 @@
                                     <f:converter converterId="ageByDateConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="gender" style="width: 10%">
+                            <p:column sortBy="#{biodataView.gender}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -99,19 +99,19 @@
                                     <f:converter converterId="genderConverter" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="religion" style="width: 12%">
+                            <p:column sortBy="#{biodataView.religion.name}" style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['religion.religion']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{biodataView.religion.name}"/>
                             </p:column>
-                             <p:column sortBy="maritalStatus" style="width: 13%">
+                             <p:column sortBy="#{biodataView.maritalStatus.name}" style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{biodataView.maritalStatus.name}"/>
                             </p:column>
-                            <p:column sortBy="personalEmail" style="width: 15%">
+                            <p:column sortBy="#{biodataView.personalEmail}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodata.email_address']}"/>
                                 </f:facet>
@@ -124,7 +124,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogUserId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHrmUser.show()" action="#{bioDataViewController.onDelete()}" >
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogHrmUser').show()" action="#{bioDataViewController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
                                 </p:commandButton>
                                 -
@@ -153,7 +153,7 @@
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogHrmUser" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogUserId">
                         <div align="center">
@@ -174,8 +174,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataViewController.doDelete()}" update=":userViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogHrmUser.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHrmUser.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogHrmUser').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHrmUser').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

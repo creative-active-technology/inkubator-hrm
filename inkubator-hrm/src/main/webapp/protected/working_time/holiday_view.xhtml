@@ -71,7 +71,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="holidayDate" style="width: 150px" >
+                            <p:column sortBy="#{holidayViewData.holidayDate}" style="width: 150px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['holiday.holiday_date']}"/>
                                 </f:facet>
@@ -79,25 +79,25 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="holidayName">
+                            <p:column sortBy="#{holidayViewData.holidayName}">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['holiday.name_of_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.holidayName}"/>
                             </p:column>
-                            <p:column sortBy="religion">
+                            <p:column sortBy="#{holidayViewData.religion.name}">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['holiday.religious_holiday']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.religion.name}"/>
                             </p:column>
-                            <p:column sortBy="isEveryYear" style="text-align: center">
+                            <p:column sortBy="#{holidayViewData.isEveryYear}" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['holiday.every_year']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{holidayViewData.isEveryYearAsLabel}"/>
                             </p:column>
-                            <p:column sortBy="isColectiveLeave" style="text-align: center">
+                            <p:column sortBy="#{holidayViewData.isColectiveLeave}" style="text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['holiday.public_leave']}"/>
                                 </f:facet>
@@ -106,13 +106,13 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" update=":detailPanel"
-                                                  onclick="statusDialog.show()"  oncomplete="detailDialogHoliday.show()"
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('detailDialogHoliday').show()"
                                                   action="#{holidayViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" 
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogHoliday.show()" action="#{holidayViewController.onDelete()}" update=":deleteDialogRoleId">
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogHoliday').show()" action="#{holidayViewController.onDelete()}" update=":deleteDialogRoleId">
                                     <f:setPropertyActionListener value="#{holidayViewData}" target="#{holidayViewController.selecWtHoliday}" />
                                 </p:commandButton>
                                 -
@@ -134,13 +134,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogHoliday" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogHoliday" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHolidayId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogRoleId">
                         <div align="center">
@@ -161,14 +158,14 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{holidayViewController.doDelete()}" update=":holidayViewId,:holidayViewGrowlId" id="yesId" title="#{appmsg['global.yes']}"
-                                             oncomplete="confirmDialogHoliday.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogHoliday.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
+                                             oncomplete="PF('confirmDialogHoliday').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogHoliday').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  />
 
                         </div>
                     </h:form>
                 </p:dialog>
                 <p:dialog widgetVar="detailDialogHoliday" header="Detil Hari Libur" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['holiday.holiday_date']}" styleClass="label_hrm"/></p:column>

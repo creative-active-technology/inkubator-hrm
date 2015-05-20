@@ -84,25 +84,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 17%" >
+                            <p:column sortBy="#{jabatanViewData.code}" style="width: 17%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabat.jabatan_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.code}"/>
                             </p:column>
-                            <p:column sortBy="name" style="width: 24%">
+                            <p:column sortBy="#{jabatanViewData.name}" style="width: 24%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.name}"/>
                             </p:column>
-                            <p:column sortBy="jabatan" style="width: 23%">
+                            <p:column sortBy="#{jabatanViewData.jabatan.name}" style="width: 23%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment_boss']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jabatanViewData.jabatan.name}"/>
                             </p:column>
-                            <p:column sortBy="department" style="width: 23%">
+                            <p:column sortBy="#{jabatanViewData.department.departmentName}" style="width: 23%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan_deparment']}"/>
                                 </f:facet>
@@ -116,7 +116,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogJobTitleId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogJobTitle.show()" action="#{jabatanViewController.onDelete()}" >
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogJobTitle').show()" action="#{jabatanViewController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{jabatanViewData}" target="#{jabatanViewController.selectedJabatan}" />
                                 </p:commandButton>
                                 -
@@ -141,7 +141,7 @@
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogJobTitle" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogJobTitle" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogJobTitleId">
                         <div align="center">
@@ -162,8 +162,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanViewController.doDelete()}" update=":jobTitleViewId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogJobTitle.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobTitle.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogJobTitle').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogJobTitle').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

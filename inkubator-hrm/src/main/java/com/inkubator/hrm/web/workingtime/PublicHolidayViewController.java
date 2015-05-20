@@ -30,7 +30,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
- * @author rizkykojek
+ * @author Taufik Hidayat
  */
 @ManagedBean(name = "publicHolidayViewController")
 @ViewScoped
@@ -160,7 +160,7 @@ public class PublicHolidayViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 400);
+        options.put("contentHeight", 420);
         RequestContext.getCurrentInstance().openDialog("public_holiday_form", options, params);
     }
 

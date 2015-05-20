@@ -249,7 +249,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>                   
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.edit']}" 
+                            <p:commandButton value="#{appmsg['global.edit']}" rendered="#{!recruitHireApplyDetailController.isApprovedOrRejected}"
                                              action="#{recruitHireApplyDetailController.doEdit()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.edit']}"
                                              icon="ui-icon-folder-open"

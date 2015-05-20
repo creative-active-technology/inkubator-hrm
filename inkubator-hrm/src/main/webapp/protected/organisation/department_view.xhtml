@@ -69,19 +69,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="departmentCode" style="width: 27%">
+                            <p:column sortBy="#{departmentData.departmentCode}" style="width: 27%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentCode}" />
                             </p:column>
-                            <p:column sortBy="departmentName" style="width: 30%">
+                            <p:column sortBy="#{departmentData.departmentName}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['department.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{departmentData.departmentName}" />
                             </p:column>
-                            <p:column style="width: 30%">
+                            <p:column sortBy="#{departmentData.costCenterDept.name}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.costcenter2']}"/>
                                 </f:facet>
@@ -89,14 +89,14 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
 <!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detailDepartment.show()" update=":detailPanel"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="detailDepartment.show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{departmentController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{departmentData}" target="#{departmentController.selectedDepartment}" />
                                 </p:commandButton>-->
                                  
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{departmentController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDepartment.show()">
+                                                                 action="#{departmentController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDepartment').show()">
                                     <f:setPropertyActionListener value="#{departmentData}" target="#{departmentController.selectedDepartment}" />
                                 </p:commandButton>
                                 -
@@ -123,7 +123,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDepartment" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDepartment" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -143,12 +143,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{departmentController.doDelete()}" update="formDepartmentId"
-                                         oncomplete="dialogConfirmDepartment.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDepartment.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDepartment').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDepartment').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="detailDepartment" header="#{appmsg['department.detail_department']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>

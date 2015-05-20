@@ -72,19 +72,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="businessTravelNo"  style="width: 15%">
+                            <p:column sortBy="#{businessTravelData.businessTravelNo}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.business_travel_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.businessTravelNo}"/>
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 37%">
+                            <p:column sortBy="#{businessTravelData.bioData.firstName}"  style="width: 37%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.empData.nik} #{businessTravelData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="destination"  style="width: 30%">
+                            <p:column sortBy="#{businessTravelData.destination}"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                 </f:facet>
@@ -94,7 +94,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                             	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
                                 				 style="font-size: 10px!important" update=":formPrintId" 
-                                				 action="#{businessTravelViewController.doBeforePrint()}"  onclick="statusDialog.show()"  oncomplete="dialogPrint.show()">                        
+                                				 action="#{businessTravelViewController.doBeforePrint()}"  onclick="PF('statusDialog').show()"  oncomplete="PF('dialogPrint').show()">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
                                 -
@@ -105,7 +105,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{businessTravelViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBusinessTravel.show()">
+                                				 action="#{businessTravelViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBusinessTravel').show()">
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
                                 -
@@ -128,7 +128,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmBusinessTravel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBusinessTravel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -148,11 +148,11 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{businessTravelViewController.doDelete()}" update="formBusinessTravelViewId,:growlBusinessTravelViewlId"
-                                         oncomplete="dialogConfirmBusinessTravel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBusinessTravel.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBusinessTravel').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBusinessTravel').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogPrint" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogPrint" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" position="left,top" draggable="false" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="formPrintId">
 	                    <div align="left">

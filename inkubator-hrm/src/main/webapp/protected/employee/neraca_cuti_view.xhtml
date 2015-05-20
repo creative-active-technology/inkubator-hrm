@@ -67,7 +67,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="createdOn" style="width: 12%">
+                            <p:column sortBy="#{data.createdOn}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.date']}"/>
                                 </f:facet>
@@ -75,43 +75,43 @@
                                     <f:convertDateTime pattern="dd MMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="ed.nik" style="width: 12%">
+                            <p:column sortBy="#{data.empData.nik}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="bio.firstName" style="width: 30%">
+                            <p:column sortBy="#{data.bioData.firstName}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.empData.bioData.firstName} #{data.leaveDistribution.empData.bioData.lastName}" />
                             </p:column>
-                            <p:column sortBy="leaveDistribution" style="width: 30%">
+                            <p:column sortBy="#{data.jabatanByJabatanId.name}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="Jabatan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.empData.jabatanByJabatanId.name}" />
                             </p:column>
-                            <p:column sortBy="l.name" style="width: 25%">
+                            <p:column sortBy="#{data.leave.name}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['leavebalance.leave_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.leaveDistribution.leave.name}" />
                             </p:column>
-                            <p:column sortBy="debet" style="width: 12%">
+                            <p:column sortBy="#{data.debet}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['leavebalance.debet']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.debet}" />
                             </p:column>
-                            <p:column sortBy="kredit" style="width: 12%">
+                            <p:column sortBy="#{data.kredit}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['leavebalance.kredit']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.kredit}" />
                             </p:column>
-                            <p:column sortBy="saldo" style="width: 12%">
+                            <p:column sortBy="#{data.leaveDistribution.balance}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.balance']}"/>
                                 </f:facet>
@@ -119,7 +119,7 @@
                             </p:column>
 <!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="statusDialog.show()"  oncomplete="detail.show()" update=":detailPanel"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
                                                  style="font-size: 10px!important" action="#{neracaCutiViewController.doSelectEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{neracaCutiViewController.selected}" />
                                 </p:commandButton>
@@ -143,7 +143,7 @@
                 </p:dialog>
                 
                 <p:dialog widgetVar="detail" header="#{appmsg['leavebalance.detail_of_leavebalance']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>

@@ -69,19 +69,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="loanNumber" style="width: 10%">
+                            <p:column  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanNumber}"/>
                             </p:column>
-                            <p:column sortBy="loanNewTypeName" style="width: 10%">
+                            <p:column sortBy="#{data.loanNewTypeName}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanNewTypeName}"/>
                             </p:column>
-                             <p:column style="width: 10%">
+                            <p:column  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
@@ -90,13 +90,13 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column style="width: 12%" sortBy="empName">
+                            <p:column sortBy="#{data.empName}" style="width: 12%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.apply_by']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empNik}  #{data.empName}"/>
                             </p:column>
-                            <p:column sortBy="applicationDate" style="width: 10%">
+                            <p:column style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_application.request_date']}"/>
                                 </f:facet>
@@ -104,7 +104,7 @@
                                     <f:convertDateTime pattern="dd MMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column style="width: 11%" sortBy="approverName">
+                            <p:column style="width: 11%" sortBy="#{data.approverName}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvalactivity.approved_by']}"/>
                                 </f:facet>
@@ -112,7 +112,7 @@
                                 	
                                 </h:outputLabel>
                             </p:column>
-                           <p:column sortBy="approvalDate" style="width: 10%">
+                           <p:column  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.approvedDate']}"/>
                                 </f:facet>
@@ -120,7 +120,7 @@
                                     <f:convertDateTime pattern="dd MMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column style="width: 12%" sortBy="approvalStatus">
+                            <p:column style="width: 12%" sortBy="#{data.approvalStatus}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
@@ -129,7 +129,7 @@
                                 </h:outputLabel>
                             </p:column> 
                             
-                            <p:column style="width: 12%" sortBy="disbursementStatus">
+                            <p:column style="width: 12%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.disbursement_status']}"/>
                                 </f:facet>

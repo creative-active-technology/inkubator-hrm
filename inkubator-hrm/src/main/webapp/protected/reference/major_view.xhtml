@@ -68,7 +68,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 70%">
+                            <p:column sortBy="#{majorData.majorName}"  style="width: 70%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -77,13 +77,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{majorViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailMajor.show()">                        
+                                				 action="#{majorViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailMajor').show()">                        
                                     <f:setPropertyActionListener value="#{majorData}" target="#{majorViewController.selectedMajor}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{majorViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmMajor.show()">
+                                				 action="#{majorViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmMajor').show()">
                                     <f:setPropertyActionListener value="#{majorData}" target="#{majorViewController.selectedMajor}" />
                                 </p:commandButton>
                                 -
@@ -105,13 +105,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmMajor" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmMajor" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -131,12 +128,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{majorViewController.doDelete()}" update="formMajorViewId,:growlMajorViewlId"
-                                         oncomplete="dialogConfirmMajor.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmMajor.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmMajor').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmMajor').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailMajor" header="#{appmsg['major.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['major.major_name']}" styleClass="label_hrm"/></p:column>

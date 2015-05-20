@@ -69,13 +69,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 20%">
+                            <p:column sortBy="#{costCenterData.code}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{costCenterData.code}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 25%">
+                            <p:column sortBy="#{costCenterData.name}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.name']}"/>
                                 </f:facet>
@@ -87,13 +87,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{costCenterData.level}" />
                             </p:column>-->
-                            <p:column sortBy="costCenter" style="width: 17%">
+                            <p:column sortBy="#{costCenterData.costCenter.name}" style="width: 17%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.parentId']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{costCenterData.costCenter.name}" />
                             </p:column>
-                            <p:column sortBy="costCenter" style="width: 25%">
+                            <p:column sortBy="#{costCenterData.balance}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.balance']}"/>
                                 </f:facet>
@@ -110,7 +110,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{costCenterController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCostCenter.show()">
+                                                                 action="#{costCenterController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCostCenter').show()">
                                     <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
                                 </p:commandButton>
                                 -
@@ -137,7 +137,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmCostCenter" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCostCenter" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -157,12 +157,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{costCenterController.doDelete()}" update="formCostCenterId"
-                                         oncomplete="dialogConfirmCostCenter.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCostCenter.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCostCenter').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCostCenter').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="detailCostCenter" header="#{appmsg['costcenter.detail_cost_center']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>

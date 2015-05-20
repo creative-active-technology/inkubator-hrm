@@ -70,19 +70,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="subjectTitle" style="text-align: center;width: 30%">
+                            <p:column sortBy="#{companyPolicyData.subjectTitle}" style="text-align: center;width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.subject']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{companyPolicyData.subjectTitle}"/>
                             </p:column>
-                            <p:column sortBy="effectiveDate" style="text-align: center;width: 20%">
+                            <p:column sortBy="#{companyPolicyData.effectiveDate}" style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.effective_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{companyPolicyData.effectiveDate}"/>
                             </p:column>
-                            <p:column sortBy="department.departmentName" style="text-align: center;width: 30%">
+                            <p:column sortBy="#{companyPolicyData.department.departmentName}" style="text-align: center;width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
@@ -98,7 +98,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{companyPolicyViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmCompanyPolicy.show()">
+                                				 action="#{companyPolicyViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmCompanyPolicy').show()">
                                     <f:setPropertyActionListener value="#{companyPolicyData}" target="#{companyPolicyViewController.selectedCompanyPolicy}" />
                                 </p:commandButton>
                                 -
@@ -121,7 +121,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmCompanyPolicy" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmCompanyPolicy" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -144,8 +144,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyPolicyViewController.doDelete()}" update="formCompanyPolicyViewId,:growlCompanyPolicyViewId"
-                                         oncomplete="dialogConfirmCompanyPolicy.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmCompanyPolicy.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmCompanyPolicy').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCompanyPolicy').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

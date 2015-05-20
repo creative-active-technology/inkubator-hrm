@@ -70,13 +70,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="bio.firstName" style="width: 25%">
+                            <p:column sortBy="#{data.bioData.firstName}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nikWithFullName}" />
                             </p:column>
-                            <p:column sortBy="effectiveDate" style="width: 20%">
+                            <p:column sortBy="#{data.effectiveDate}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.effective_date']}"/>
                                 </f:facet>
@@ -84,13 +84,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="tt.name" style="width: 20%">
+                            <p:column sortBy="#{data.terminationType.name}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.termination_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.terminationType.name}" />
                             </p:column>
-                            <p:column sortBy="code" style="width: 20%">
+                            <p:column sortBy="#{data.code}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['terminate.code_termination']}"/>
                                 </f:facet>
@@ -99,13 +99,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":detailPanel" 
-                                                         action="#{terminationViewController.doSelectEntityWithAllRelation()}" onclick="statusDialog.show()"  oncomplete="detail.show()">                        
+                                                         action="#{terminationViewController.doSelectEntityWithAllRelation()}" onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{terminationViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":confirmDeletePanel" 
-                                                                 action="#{terminationViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="deleteDialog.show()">
+                                                                 action="#{terminationViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('deleteDialog').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{terminationViewController.selected}" />
                                 </p:commandButton>
                                 -
@@ -132,7 +132,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="deleteDialog" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="deleteDialog" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -152,12 +152,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{terminationViewController.doDelete()}" update="formId"
-                                         oncomplete="deleteDialog.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="deleteDialog.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('deleteDialog').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('deleteDialog').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="#{appmsg['termination.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>
