@@ -38,9 +38,9 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
     public List<Termination> getAllDataWithAllRelation(TerminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchTerminationByParam(searchParameter, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("terminationType", FetchMode.JOIN);
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("terminationType", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -73,21 +73,21 @@ public class TerminationDaoImpl extends IDAOImpl<Termination> implements Termina
 
     private void doSearchTerminationByParam(TerminationSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("ed.bioData", "bioData", JoinType.INNER_JOIN);
 
-        criteria.createAlias("terminationType", "tt", JoinType.INNER_JOIN);
+        criteria.createAlias("terminationType", "terminationType", JoinType.INNER_JOIN);
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("ed.nik", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getTerminationType())) {
-            criteria.add(Restrictions.like("tt.name", searchParameter.getTerminationType(), MatchMode.START));
+            criteria.add(Restrictions.like("terminationType.name", searchParameter.getTerminationType(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

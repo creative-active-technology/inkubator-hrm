@@ -73,13 +73,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="width: 37%">
+                            <p:column sortBy="#{travelTypeData.code}"  style="width: 37%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelTypeData.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="width: 50%">
+                            <p:column sortBy="#{travelTypeData.name}"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -88,13 +88,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{travelTypeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailTravelType.show()">                        
+                                				 action="#{travelTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTravelType').show()">                        
                                     <f:setPropertyActionListener value="#{travelTypeData}" target="#{travelTypeViewController.selectedTravelType}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{travelTypeViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmTravelType.show()">
+                                				 action="#{travelTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTravelType').show()">
                                     <f:setPropertyActionListener value="#{travelTypeData}" target="#{travelTypeViewController.selectedTravelType}" />
                                 </p:commandButton>
                                 -
@@ -122,7 +122,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmTravelType" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmTravelType" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -142,12 +142,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{travelTypeViewController.doDelete()}" update="formTravelTypeViewId,:growlTravelTypeViewlId"
-                                         oncomplete="dialogConfirmTravelType.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTravelType.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmTravelType').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmTravelType').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailTravelType" header="#{appmsg['travelType.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelType.travelType_code']}" styleClass="label_hrm"/></p:column>

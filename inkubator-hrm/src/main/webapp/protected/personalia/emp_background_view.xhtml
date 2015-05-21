@@ -78,19 +78,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="nik" style="width: 10%;">
+                            <p:column sortBy="#{empViewData.nik}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.nik}"/>
                             </p:column>
-                            <p:column sortBy="bioData" style="width: 20%;">
+                            <p:column sortBy="#{empViewData.bioData.firstName}" style="width: 20%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.firstName} #{empViewData.bioData.lastName}"/>
                             </p:column>
-                            <p:column sortBy="joinDate" style="width: 15%;" >
+                            <p:column sortBy="#{empViewData.joinDate}" style="width: 15%;" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.join_data']}"/>
                                 </f:facet>
@@ -98,13 +98,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 10%" >
+                            <p:column sortBy="#{empViewData.jabatanByJabatanId.code}" style="width: 10%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_code']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.code}"/>
                             </p:column>
-                            <p:column sortBy="jabatanByJabatanId" style="width: 25%;">
+                            <p:column sortBy="#{empViewData.jabatanByJabatanId.name}" style="width: 25%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['placement.jabatan_name']}"/>
                                 </f:facet>
@@ -243,7 +243,7 @@
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogEmpData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogEmpData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogEmpDataId">
                         <div align="center">
@@ -264,8 +264,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataViewController.doDelete()}" update=":userViewId,:empDataGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogEmpData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogEmpData.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogEmpData').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogEmpData').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

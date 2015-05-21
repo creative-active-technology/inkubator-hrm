@@ -129,7 +129,7 @@ public class AppraisalDetailViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 500);
         options.put("contentHeight", 400);
-        RequestContext.getCurrentInstance().openDialog("model_component_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("appraisal_detail_form", options, params);
     }
 
     @Override

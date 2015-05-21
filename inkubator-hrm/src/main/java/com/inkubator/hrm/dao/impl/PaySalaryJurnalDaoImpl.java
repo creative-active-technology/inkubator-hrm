@@ -12,6 +12,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,7 @@ public class PaySalaryJurnalDaoImpl extends IDAOImpl<PaySalaryJurnal> implements
     public List<PaySalaryJurnal> getByParam(PaySalaryJurnalSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPaySalaryJurnalByParam(parameter, criteria);
-        criteria.setFetchMode("costCenter", FetchMode.JOIN);
+        criteria.createAlias("costCenter", "costCenter", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

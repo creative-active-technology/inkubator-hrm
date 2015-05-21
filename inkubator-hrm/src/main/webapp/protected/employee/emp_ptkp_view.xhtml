@@ -93,7 +93,7 @@
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="#{ptkpView.ptkpStatus}" style="width: 12%;">
+                             <p:column sortBy="#{ptkpView.ptkpStatus}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
@@ -101,13 +101,13 @@
                                      <f:converter converterId="mariedMessageConverter" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{ptkpView.ptkpNumber}" style="width: 14;">
+                             <p:column sortBy="#{ptkpView.ptkpNumber}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{ptkpView.ptkpNumberLabel}" />
                             </p:column>
-                            <p:column style="width: 15%;">
+                            <p:column style="width: 10%;" sortBy="#{ptkpView.taxFree.freeNominal}">
                                 <f:facet name="header">  
                                     <h:outputText value="Nominal"/>
                                 </f:facet>

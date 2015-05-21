@@ -280,5 +280,11 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id) throws Exception {
         return recruitmenSelectionSeriesDetailDao.getEntityByPk(id);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id) throws Exception {
+        return recruitmenSelectionSeriesDetailDao.getEntityBySelectionTypeId(id);
+    }
     
 }

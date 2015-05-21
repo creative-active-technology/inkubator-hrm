@@ -26,70 +26,69 @@ import org.springframework.stereotype.Repository;
 @Repository(value = "payTempAttendanceStatusDao")
 @Lazy
 public class PayTempAttendanceStatusDaoImpl extends
-		IDAOImpl<PayTempAttendanceStatus> implements PayTempAttendanceStatusDao {
+        IDAOImpl<PayTempAttendanceStatus> implements PayTempAttendanceStatusDao {
 
+    @Override
+    public Class<PayTempAttendanceStatus> getEntityClass() {
+        return PayTempAttendanceStatus.class;
+    }
 
-	@Override
-	public Class<PayTempAttendanceStatus> getEntityClass() {
-		return PayTempAttendanceStatus.class;
-	}
-        
-       @Override
+    @Override
     public List<PayTempAttendanceStatus> getAllByNik(String nik) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("empData", "emp");     
+        criteria.createAlias("empData", "emp");
         criteria.add(Restrictions.eq("emp.nik", nik));
         return criteria.list();
 
     }
-    
+
     @Override
     public List<PayTempAttendanceStatus> getByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model, int firstResult, int maxResults, Order order) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria, model);
-        
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.wtGroupWorking", FetchMode.JOIN);
-        
+
+//        criteria.setFetchMode("empData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+//        criteria.setFetchMode("empData.wtGroupWorking", FetchMode.JOIN);
+        criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
+        criteria.createAlias("e.bioData", "b", JoinType.INNER_JOIN);
+        criteria.createAlias("e.wtGroupWorking", "w", JoinType.INNER_JOIN);
+
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
     }
-    
-    
-    private void doSearchByParam(PayTempAttendanceSearchParameter parameter, Criteria criteria, PayTempAttendanceStatusModel model) {       
-        if(null != parameter.getNIK()){ 
-            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("e.nik", parameter.getNIK(), MatchMode.ANYWHERE));            
+
+    private void doSearchByParam(PayTempAttendanceSearchParameter parameter, Criteria criteria, PayTempAttendanceStatusModel model) {
+        if (null != parameter.getNIK()) {
+//            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("e.nik", parameter.getNIK(), MatchMode.ANYWHERE));
         }
-        if(null != parameter.getName()){           
-            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
-            criteria.createAlias("e.bioData", "b", JoinType.INNER_JOIN);
-            
+        if (null != parameter.getName()) {
+//            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
+//            criteria.createAlias("e.bioData", "b", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("b.firstName", parameter.getName(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("b.lastName", parameter.getName(), MatchMode.ANYWHERE));
-            criteria.add(disjunction);   
+            criteria.add(disjunction);
         }
-        if(null != parameter.getWorkGroup()){ 
-            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
-            criteria.createAlias("e.wtGroupWorking", "w", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("w.name", parameter.getWorkGroup(), MatchMode.ANYWHERE));            
+        if (null != parameter.getWorkGroup()) {
+//            criteria.createAlias("empData", "e", JoinType.INNER_JOIN);
+//            criteria.createAlias("e.wtGroupWorking", "w", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("w.name", parameter.getWorkGroup(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
 
-
     @Override
     public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel payTempAttendanceStatusModel) {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
-         doSearchByParam(parameter, criteria, payTempAttendanceStatusModel);
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(parameter, criteria, payTempAttendanceStatusModel);
 //         criteria.setFetchMode("empData", FetchMode.JOIN);
 //         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 //         criteria.setFetchMode("empData.wtGroupWorking", FetchMode.JOIN);
-         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
 }

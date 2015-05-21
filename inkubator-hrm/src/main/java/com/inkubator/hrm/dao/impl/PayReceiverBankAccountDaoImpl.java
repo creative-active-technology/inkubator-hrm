@@ -57,7 +57,8 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         }
 
         hqlQuery.append("GROUP BY ep.id ");
-        hqlQuery.append("ORDER BY ep.nik");
+//        hqlQuery.append("ORDER BY ep.nik");
+        hqlQuery.append("ORDER BY " + order);
 
         if (searchParameter.getEmpName() != null) {
             return getCurrentSession().createQuery(hqlQuery.toString())

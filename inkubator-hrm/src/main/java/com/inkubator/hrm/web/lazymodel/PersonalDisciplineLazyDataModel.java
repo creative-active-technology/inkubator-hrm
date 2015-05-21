@@ -40,7 +40,7 @@ public class PersonalDisciplineLazyDataModel extends LazyDataModel<PersonalDisci
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("bio.firstName");
+                    order = Order.desc("bioData.firstName");
                 }
                 personalDisciplineList = service.getAllDataWithAllRelation(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalPersonalDisciplineByParam(searchParameter)));

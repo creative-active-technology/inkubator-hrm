@@ -25,6 +25,8 @@ public interface RecruitHireApplyService extends IService<RecruitHireApply>, Bas
     
     public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
     
+    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception;
+
     public void updateRecruitHireWithApproval(RecruitHireApply recruitHireApply, String activityNumber) throws Exception;
     
     public Long getCurrentMaxId() throws Exception;

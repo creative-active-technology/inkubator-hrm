@@ -51,7 +51,7 @@
                                 <h:outputLabel value="#{batchJobExecutionDetail.batchJobExecution.batchJobInstance.jobName}"/>
                             </p:column>
                             
-                            <p:column sortBy="exitMessage" >
+                            <p:column sortBy="#{batchJobExecutionDetail.exitMessage}" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.exitMessage']}"/>
                                 </f:facet>

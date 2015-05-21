@@ -38,7 +38,7 @@ public class OhsaIncidentDaoImpl extends IDAOImpl<OhsaIncident> implements OhsaI
     @Override
     public List<OhsaIncident> getByParam(OhsaIncidentSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-	criteria.setFetchMode("ohsaCategory", FetchMode.JOIN);               
+//	criteria.setFetchMode("ohsaCategory", FetchMode.JOIN);               
         doSearchByParam(parameter, criteria);
         
         criteria.addOrder(orderable);
@@ -57,8 +57,8 @@ public class OhsaIncidentDaoImpl extends IDAOImpl<OhsaIncident> implements OhsaI
     
     private void doSearchByParam(OhsaIncidentSearchParameter parameter, Criteria criteria) {
         
-        if (StringUtils.isNotEmpty(parameter.getKategori())) {
              criteria.createAlias("ohsaCategory", "ohsaCategory", JoinType.INNER_JOIN);
+        if (StringUtils.isNotEmpty(parameter.getKategori())) {
             criteria.add(Restrictions.like("ohsaCategory.name", parameter.getKategori(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getSubjek())) {        	

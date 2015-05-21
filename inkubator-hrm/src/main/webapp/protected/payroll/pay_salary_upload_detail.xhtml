@@ -97,19 +97,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData.nik" style="width: 20%">
+                            <p:column sortBy="#{payTempUploadData.empData.nik}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{payTempUploadData.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="empData.bioData.firstName" style="width: 40%">
+                            <p:column sortBy="#{payTempUploadData.bioData.firstName}" style="width: 40%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{payTempUploadData.empData.bioData.fullName}" />
                             </p:column>
-                            <p:column sortBy="nominalValue" style="width: 20%">
+                            <p:column sortBy="#{payTempUploadData.nominalValue}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
@@ -122,7 +122,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{paySalaryUploadDetailController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPayTempUploadData.show()">
+                                				 action="#{paySalaryUploadDetailController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmPayTempUploadData').show()">
                                     <f:setPropertyActionListener value="#{payTempUploadData}" target="#{paySalaryUploadDetailController.selectedPayTempUploadData}" />
                                 </p:commandButton>
                                 -
@@ -155,7 +155,7 @@
                 </div>
                 
                 
-                <p:dialog widgetVar="dialogConfirmPayTempUploadData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmPayTempUploadData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -174,13 +174,13 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryUploadDetailController.doDeleteData()}" update="formPaySalaryUploadDetailId,growlPaySalaryUploadDetailId"
-                                         oncomplete="dialogConfirmPayTempUploadData.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPayTempUploadData.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmPayTempUploadData').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPayTempUploadData').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
                 
-                <p:dialog widgetVar="dialogReuse" header="#{appmsg['global.reuse']}" modal="true" width="600" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogReuse" header="#{appmsg['global.reuse']}" modal="true" width="600" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">

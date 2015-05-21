@@ -18,6 +18,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -48,7 +49,7 @@ public class LoanTypeDaoImpl extends IDAOImpl<LoanType> implements LoanTypeDao {
     public List<LoanType> getByParam(LoanTypeSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchLoanTypeByParam(parameter, criteria);
-        criteria.setFetchMode("currency", FetchMode.JOIN);
+        criteria.createAlias("currency", "currency", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

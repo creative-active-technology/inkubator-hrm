@@ -95,19 +95,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="empData.nik" style="width: 20%">
+                            <p:column sortBy="#{data.empData.nik}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="bioData.firstName" style="width: 40%">
+                            <p:column sortBy="#{data.bioData.firstName}" style="width: 40%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.fullName}" />
                             </p:column>
-                            <p:column sortBy="nominal" style="width: 20%">
+                            <p:column sortBy="#{data.nominal}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
@@ -118,7 +118,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{unregSpecificSchemeExceptionController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirm.show()">
+                                				 action="#{unregSpecificSchemeExceptionController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirm').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{unregSpecificSchemeExceptionController.selected}" />
                                 </p:commandButton>
                                 -
@@ -148,7 +148,7 @@
                     </h:form>
                 </div>
                 
-                <p:dialog widgetVar="dialogConfirm" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirm" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -168,8 +168,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{unregSpecificSchemeExceptionController.doDelete()}" update=":formId,:formId:growlId"
-                                         oncomplete="dialogConfirm.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirm.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirm').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirm').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

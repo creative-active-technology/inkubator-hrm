@@ -38,10 +38,12 @@ public class BatchJobExecutionDaoImpl extends IDAOImpl<BatchJobExecution> implem
     @Override
     public List<BatchJobExecution> getByParam(BatchJobExecutionSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("batchJobInstance", "batchJobInstance", JoinType.INNER_JOIN);
+        
         if(parameter.getJobName() != null){
 
-            criteria.createAlias("batchJobInstance", "bj", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("bj.jobName", parameter.getJobName(), MatchMode.ANYWHERE));
+//            criteria.createAlias("batchJobInstance", "bj", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("batchJobInstance.jobName", parameter.getJobName(), MatchMode.ANYWHERE));
         }
         if(parameter.getStatus() != null){
             criteria.add(Restrictions.like("BatchJobExecution", parameter.getStatus()));
@@ -49,7 +51,7 @@ public class BatchJobExecutionDaoImpl extends IDAOImpl<BatchJobExecution> implem
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-        criteria.setFetchMode("batchJobInstance", FetchMode.JOIN);
+        //criteria.setFetchMode("batchJobInstance", FetchMode.JOIN);
         return criteria.list();
     } 
 
