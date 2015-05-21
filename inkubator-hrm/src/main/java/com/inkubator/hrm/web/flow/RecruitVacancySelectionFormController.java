@@ -5,12 +5,15 @@
  */
 package com.inkubator.hrm.web.flow;
 
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitSelectionTypeService;
 import com.inkubator.hrm.service.RecruitmenSelectionSeriesDetailService;
+import com.inkubator.hrm.web.lazymodel.RecruitVacancyEmployeeLazyDataModel;
 import com.inkubator.hrm.web.model.RecruitVacancySelectionDetailModel;
 import com.inkubator.hrm.web.model.RecruitVacancySelectionModel;
 import com.inkubator.webcore.WebCoreConstant;
@@ -23,6 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.faces.application.FacesMessage;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -51,6 +55,8 @@ public class RecruitVacancySelectionFormController implements Serializable {
     private RecruitHireApplyService recruitHireApplyService;
     @Autowired
     private RecruitmenSelectionSeriesDetailService recruitmenSelectionSeriesDetailService;
+    @Autowired
+    private EmpDataService empDataService;
 
     /*
      * Insert value for dropdown recruit vacancy selection and recruit hire apply   
@@ -77,10 +83,8 @@ public class RecruitVacancySelectionFormController implements Serializable {
     }
     
     public void updateDetailLabelRekrutment(RequestContext context) throws Exception {
-        String tipeKaryawan = "";
         RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
         Long recruitHireApplyId = recruitVacancySelectionModel.getRecruitHireApplyId();
-        System.out.println(recruitHireApplyId + " hohohohohoho");
         RecruitHireApply recruitHireApply = recruitHireApplyService.getEntityByPkWithDetail(recruitHireApplyId);
         recruitVacancySelectionModel.setJobTitleName(recruitHireApply.getJabatan().getName());
         recruitVacancySelectionModel.setEffectiveDate(recruitHireApply.getEfectiveDate());
@@ -93,18 +97,19 @@ public class RecruitVacancySelectionFormController implements Serializable {
         List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getEntityBySelectionTypeId(recruitVacancySelectionModel.getRecruitSelectionTypeId());
         List<RecruitVacancySelectionDetailModel> listVacancySelectionDetailToShow = new ArrayList<>();
         RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();
+        LazyDataModel<EmpData> lazyDataModel = new RecruitVacancyEmployeeLazyDataModel(recruitVacancySelectionModel.getNikOrName(), empDataService);
         for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : listVacancySelectionDetail) {
+            
             recruitVacancySelectionDetailModel.setRecruitSelectionSeriesName(recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getName());
+            recruitVacancySelectionDetailModel.setLazyDataModel(lazyDataModel);
             listVacancySelectionDetailToShow.add(recruitVacancySelectionDetailModel);
         }
+        recruitVacancySelectionModel.setLazyDataModel(lazyDataModel);
         recruitVacancySelectionModel.setListVacancySelectionDetail(listVacancySelectionDetailToShow);
     }
     
-    public void saveRecruitmentDetail(RequestContext context) throws Exception {
-        System.out.println("hahahihihuhuhehehoho");
-    }
     
-    public void doAdd(){
+    public void getDataPenyeleksi(RequestContext context) throws Exception{
         System.out.println("hohohoho");
     }
     

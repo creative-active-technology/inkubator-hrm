@@ -878,4 +878,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception {
         return empDataDao.getTotalKaryawanByJabatanId(jabatanId);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return empDataDao.getByParam(nikOrNameSearchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalEmpDataByParam(String nikOrNameSearchParameter) throws Exception {
+        return empDataDao.getTotalEmpDataByParam(nikOrNameSearchParameter);
+    }
 }

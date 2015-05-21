@@ -5,11 +5,14 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitVacancySelection;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -33,6 +36,8 @@ public class RecruitVacancySelectionModel implements Serializable {
     private String place;
     private BigDecimal basicCost;
     private BigDecimal individualCost;
+    private LazyDataModel<EmpData> lazyDataModel;
+    private String nikOrName;
 
     public String getCode() {
         return code;
@@ -160,6 +165,22 @@ public class RecruitVacancySelectionModel implements Serializable {
 
     public void setIndividualCost(BigDecimal individualCost) {
         this.individualCost = individualCost;
+    }
+
+    public LazyDataModel<EmpData> getLazyDataModel() {
+        return lazyDataModel;
+    }
+
+    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+        this.lazyDataModel = lazyDataModel;
+    }
+
+    public String getNikOrName() {
+        return nikOrName;
+    }
+
+    public void setNikOrName(String nikOrName) {
+        this.nikOrName = nikOrName;
     }
 
     
