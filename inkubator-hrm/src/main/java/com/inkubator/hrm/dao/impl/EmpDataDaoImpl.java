@@ -158,7 +158,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         doSearchEmpDataByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         
 //        criteria.createAlias("jabatanByJabatanId", "bioData", JoinType.LEFT_OUTER_JOIN);
         
