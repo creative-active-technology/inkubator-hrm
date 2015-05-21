@@ -23,6 +23,7 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     private Date recruitVacancySelectionDate;
     private Date startDate;
     private Date endDate;
+    
 
     public String getRecruitSelectionSeriesName() {
         return recruitSelectionSeriesName;
