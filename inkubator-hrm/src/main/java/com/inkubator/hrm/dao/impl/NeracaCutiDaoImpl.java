@@ -50,9 +50,9 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         doSearch(searchParameter, criteria);
 //        criteria.createAlias("ld.empData", "empData", JoinType.INNER_JOIN);
 //        criteria.createAlias("ld.leave", "leave", JoinType.INNER_JOIN);
-        criteria.addOrder(Order.asc("l.name"));
+        criteria.addOrder(Order.asc("leave.name"));
         criteria.addOrder(order);
-        criteria.addOrder(Order.asc("ed.nik"));
+        criteria.addOrder(Order.asc("empData.nik"));
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -77,23 +77,24 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
     }
     
     private void doSearch(NeracaCutiSearchParameter searchParameter, Criteria criteria) {
-        criteria.createAlias("leaveDistribution", "ld", JoinType.INNER_JOIN);
-        criteria.createAlias("ld.empData", "ed", JoinType.INNER_JOIN);
-        criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
-        criteria.createAlias("ld.leave", "l", JoinType.INNER_JOIN);
+        criteria.createAlias("leaveDistribution", "leaveDistribution", JoinType.INNER_JOIN);
+        criteria.createAlias("leaveDistribution.empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("leaveDistribution.empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("leaveDistribution.leave", "leave", JoinType.INNER_JOIN);
         if (searchParameter.getEmpData()!= null) {
 
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
             
-            criteria.add(Restrictions.like("l.name", searchParameter.getLeave(), MatchMode.START));
+            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.START));
         }
         if (searchParameter.getNik()!= null) {
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

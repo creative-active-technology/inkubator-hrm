@@ -147,7 +147,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 
                                 <p:commandButton  icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  style="font-size: 10px!important" update=":deleteDialogJobDeskripsiId"
-                                                  onclick="statusDialog.show()"  oncomplete="confirmDialogJobDeskripsi.show()" action="#{jabatanDeskripsInputController.onDelete()}" >
+                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('confirmDialogJobDeskripsi').show()" action="#{jabatanDeskripsInputController.onDelete()}" >
                                     <f:setPropertyActionListener value="#{listJobDeskrpsi}" target="#{jabatanDeskripsInputController.selectedJabatanDeskripsi}" />
                                 </p:commandButton>
                                 -
@@ -169,7 +169,7 @@
 
                     </h:form>
                 </div>
-                <p:dialog widgetVar="confirmDialogJobDeskripsi" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="confirmDialogJobDeskripsi" header="#{appmsg['global.header_confirmation']}" modal="true" width="500" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" id="confirmDialogJobTitleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogJobDeskripsiId">
                         <div align="center">
@@ -190,8 +190,8 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanDeskripsInputController.doDelete()}" update=":jobTitleViewId:jobDesTableId,:userViewGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="confirmDialogJobDeskripsi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="confirmDialogJobDeskripsi.hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+                                             oncomplete="PF('confirmDialogJobDeskripsi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogJobDeskripsi').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
 
                         </div>
                     </h:form>

@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -84,6 +85,7 @@ public class UnitKerjaDaoImpl extends IDAOImpl<UnitKerja> implements UnitKerjaDa
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchUnitKerjaByParam(searchParameter, criteria);
         criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.createAlias("city", "city", JoinType.INNER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

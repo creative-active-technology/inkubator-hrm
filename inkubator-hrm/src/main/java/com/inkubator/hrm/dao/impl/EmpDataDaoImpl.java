@@ -170,7 +170,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          *  don't create alias for that entity, or will get error : duplicate association path */        
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        
+        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
         if (dataSearchParameter.getJabatanKode() != null) {
             criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
@@ -182,12 +182,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (dataSearchParameter.getNIK() != null) {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
-        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         if (dataSearchParameter.getName() != null) {
 
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
     }

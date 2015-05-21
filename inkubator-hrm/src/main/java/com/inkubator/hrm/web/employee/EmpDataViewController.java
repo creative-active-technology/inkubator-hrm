@@ -59,7 +59,7 @@ public class EmpDataViewController extends BaseController {
         return empDataSearchParameter;
     }
 
-    public void setEmpDataSearchParameter(EmpDataSearchParameter empDataSearchParameter) {
+        public void setEmpDataSearchParameter(EmpDataSearchParameter empDataSearchParameter) {
         this.empDataSearchParameter = empDataSearchParameter;
     }
 

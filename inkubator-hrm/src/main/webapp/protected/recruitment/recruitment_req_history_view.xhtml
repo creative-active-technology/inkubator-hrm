@@ -69,13 +69,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="recHireCode"  style="width: 12%">
+                            <p:column sortBy="#{data.recHireCode}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['mppRecruitmentHist.formulir_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.recHireCode}"/>
                             </p:column>  
-                            <p:column sortBy="efectiveDate"  style="width: 12%">
+                            <p:column sortBy="#{data.efectiveDate}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['mppRecruitmentHist.effective_date']}"/>
                                 </f:facet>
@@ -83,28 +83,28 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanName"  style="width: 20%">
+                            <p:column sortBy="#{data.jabatanName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.jabatanCode} #{data.jabatanName}"/>
                             </p:column> 
                             
-                             <p:column sortBy="totalReq"  style="width: 10%">
+                             <p:column sortBy="#{data.totalReq}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['mppRecruitmentHist.request']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{data.totalReq}"/>
                             </p:column> 
                             
-                             <p:column sortBy="requestBy"  style="width: 17%">
+                             <p:column sortBy="#{data.nameRequester}"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.apply_by']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{data.nikRequester}  #{data.nameRequester}"/>
                             </p:column> 
                             
-                             <p:column style="width: 13%" sortBy="approvalStatus">
+                             <p:column style="width: 13%" sortBy="#{data.approvalStatus}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>

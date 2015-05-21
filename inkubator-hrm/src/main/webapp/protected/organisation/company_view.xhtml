@@ -71,13 +71,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name" style="width: 30%">
+                            <p:column sortBy="#{organizationData.name}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['organization.organization_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{organizationData.name}"/>
                             </p:column>
-                            <p:column sortBy="level" style="text-align: center;width: 20%">
+                            <p:column sortBy="#{organizationData.level}" style="text-align: center;width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.level']}"/>
                                 </f:facet>
@@ -85,14 +85,14 @@
                                     <f:converter converterId="companyConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="level" style="text-align: center;width: 15%">
+                            <p:column sortBy="#{organizationData.city.cityName}" style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.location']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{organizationData.city.cityName}">
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="country.name" style="text-align: center;width: 15%">
+                            <p:column sortBy="#{organizationData.country.countryName}" style="text-align: center;width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['country.country']}"/>
                                 </f:facet>
@@ -108,7 +108,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{companyViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOrganization.show()">
+                                				 action="#{companyViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmOrganization').show()">
                                     <f:setPropertyActionListener value="#{organizationData}" target="#{companyViewController.selectedCompany}" />
                                 </p:commandButton>
                                 -
@@ -131,7 +131,7 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog widgetVar="dialogConfirmOrganization" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmOrganization" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -151,8 +151,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{companyViewController.doDelete()}" update="formOrganizationViewId,:growlOrganizationViewId"
-                                         oncomplete="dialogConfirmOrganization.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOrganization.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmOrganization').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmOrganization').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>
