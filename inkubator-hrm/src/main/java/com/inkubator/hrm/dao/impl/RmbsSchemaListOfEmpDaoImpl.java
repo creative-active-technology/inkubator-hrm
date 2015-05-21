@@ -86,9 +86,9 @@ public class RmbsSchemaListOfEmpDaoImpl extends IDAOImpl<RmbsSchemaListOfEmp> im
     			whereQuery.append("AND ");
     		}
     		whereQuery.append("(");
-    		whereQuery.append("bioData.firstName LIKE :firstName ");
-    		whereQuery.append("OR ");
-    		whereQuery.append("bioData.lastName LIKE :lastName ");
+    		whereQuery.append("ltrim(concat(concat(first_name, ' '), last_name)) LIKE :firstName ");
+//    		whereQuery.append("OR ");
+//    		whereQuery.append("bioData.lastName LIKE :lastName ");
     		whereQuery.append(")");
         }
     	
