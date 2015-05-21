@@ -1,1 +1,4 @@
-function handleCheckInOut(a){PF("socketNotificationGrowl").show([a])};
+function handleCheckInOut(facesmessage) {
+	facesmessage.severity = 'info';
+	PF("socketNotificationGrowl").show([facesmessage])
+};

@@ -1613,5 +1613,35 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+    
+    @Override
+    public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmpDataByParam(nikOrNameSearchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);        
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalEmpDataByParam(String nikOrNameSearchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmpDataByParam(nikOrNameSearchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchEmpDataByParam(String nikOrNameSearchParameter, Criteria criteria) {
+
+        if (nikOrNameSearchParameter != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("nik", nikOrNameSearchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", nikOrNameSearchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", nikOrNameSearchParameter, MatchMode.START));
+            criteria.add(disjunction);
+        }
+    }
 
 }
