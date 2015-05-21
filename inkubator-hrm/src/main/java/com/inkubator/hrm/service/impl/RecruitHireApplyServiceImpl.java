@@ -91,7 +91,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
     @Autowired
     private EmployeeTypeDao employeeTypeDao;
-    
+
     @Autowired
     private RecruitMppPeriodDao recruitMppPeriodDao;
 
@@ -523,12 +523,12 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             EmployeeType employeeType = employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId());
             Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatan().getId());
             RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-            
+
             entity.setCurrency(currency);
             entity.setEmployeeType(employeeType);
             entity.setJabatan(jabatan);
             entity.setRecruitMppPeriod(recruitMppPeriod);
-                    
+
             //Set codefication at field reqHireCode
             TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.RECRUITMENT_REQUEST_KODE);
             Long currentMaxRecruitHireApplyId = recruitHireApplyDao.getCurrentMaxId();
@@ -540,7 +540,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
             List<RecruitHireApplyDetail> listDetail = new ArrayList<>(entity.getRecruitHireApplyDetails());
 
-            entity = recruitHireApplyDao.saveData(entity);            
+            entity = recruitHireApplyDao.saveData(entity);
             for (RecruitHireApplyDetail detail : listDetail) {
                 OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntiyByPK(detail.getOrgTypeOfSpecList().getId());
                 detail.setOrgTypeOfSpecList(orgTypeOfSpecList);
@@ -548,7 +548,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 detail.setRecruitHireApply(entity);
                 detail.setCreatedBy(createdBy);
                 detail.setCreatedOn(createdOn);
-                recruitHireApplyDetailDao.save(detail);                
+                recruitHireApplyDetailDao.save(detail);
             }
         }
 
@@ -568,12 +568,12 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
             String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
             Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-            
+
             Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
             EmployeeType employeeType = employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId());
             Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatan().getId());
             RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-            
+
             entity.setCurrency(currency);
             entity.setEmployeeType(employeeType);
             entity.setJabatan(jabatan);
@@ -591,7 +591,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             List<RecruitHireApplyDetail> listDetail = new ArrayList<>(entity.getRecruitHireApplyDetails());
 
             entity = recruitHireApplyDao.saveData(entity);
-            
+
             for (RecruitHireApplyDetail detail : listDetail) {
                 OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntiyByPK(detail.getOrgTypeOfSpecList().getId());
                 detail.setOrgTypeOfSpecList(orgTypeOfSpecList);
@@ -599,7 +599,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 detail.setRecruitHireApply(entity);
                 detail.setCreatedBy(createdBy);
                 detail.setCreatedOn(createdOn);
-                recruitHireApplyDetailDao.save(detail);               
+                recruitHireApplyDetailDao.save(detail);
             }
         }
     }
@@ -615,8 +615,8 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(jsonPendingData);
         RecruitHireApply recruitHireApply = gson.fromJson(jsonObject, RecruitHireApply.class);
-        
-        JsonArray arrayDetailRecruitmentRequest = jsonObject.getAsJsonArray("listDetailRecruitHireApply");        
+
+        JsonArray arrayDetailRecruitmentRequest = jsonObject.getAsJsonArray("listDetailRecruitHireApply");
         HashSet<RecruitHireApplyDetail> setRecruitHireApplyDetail = new HashSet<RecruitHireApplyDetail>();
         if (null != arrayDetailRecruitmentRequest) {
             for (int i = 0; i < arrayDetailRecruitmentRequest.size(); i++) {
@@ -624,7 +624,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 setRecruitHireApplyDetail.add(detail);
             }
         }
-        
+
         recruitHireApply.setRecruitHireApplyDetails(setRecruitHireApplyDetail);
         return recruitHireApply;
     }
@@ -634,13 +634,17 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     public Long getCurrentMaxId() throws Exception {
         return this.recruitHireApplyDao.getCurrentMaxId();
     }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception {
+        return recruitHireApplyDao.getEntityWithDetailByPk(id);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber) throws Exception {
         return this.recruitHireApplyDao.getEntityWithDetailByActivityNumber(activityNumber);
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception {
-        return recruitHireApplyDao.getEntityWithDetailByPk(id);
+
     }
 }
