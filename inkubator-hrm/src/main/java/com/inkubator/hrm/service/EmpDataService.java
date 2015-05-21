@@ -36,11 +36,11 @@ import org.hibernate.criterion.Order;
  */
 public interface EmpDataService extends IService<EmpData> {
 
-    public Map<String, Long> getTotalByGender() throws Exception;
+    public Map<String, Long> getTotalByGender(Long companyId) throws Exception;
 
-    public Map<String, Long> getTotalByAge() throws Exception;
+    public Map<String, Long> getTotalByAge(Long companyId) throws Exception;
 
-    public Map<String, Long> getTotalByDepartment() throws Exception;
+    public Map<String, Long> getTotalByDepartment(Long companyId) throws Exception;
 
     public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
