@@ -158,7 +158,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         doSearchEmpDataByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         
 //        criteria.createAlias("jabatanByJabatanId", "bioData", JoinType.LEFT_OUTER_JOIN);
         
@@ -1211,8 +1211,27 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             query.append(") ");
         }
         
-        query.append(" ORDER BY ").append(order.getPropertyName()).append(" ");
-        System.out.println("query : " + query.toString());
+        query.append(" ORDER BY ");
+        
+        if(StringUtils.equals("nik", order.getPropertyName())){
+            query.append("empData.nik ");
+        }else if(StringUtils.equals("firstName", order.getPropertyName())){
+            query.append("bioData.first_name ");
+        }else if(StringUtils.equals("tglMulaiBekerja", order.getPropertyName())){
+            query.append("empData.join_date ");
+        }else if(StringUtils.equals("golJabatan", order.getPropertyName())){
+            query.append("golonganJabatan.code ");
+        }else if(StringUtils.equals("jabatan", order.getPropertyName())){
+            query.append("jabatan.name ");
+        }else if(StringUtils.equals("usiaKaryawan", order.getPropertyName())){
+            query.append("umur(bioData.date_of_birth , NOW()) ");
+        }
+        
+        query.append(order.isAscending() ? " ASC " : " DESC ");
+        
+        //Limit query based on paging parameter
+        query.append("LIMIT ").append(firstResult).append(",").append(maxResults).append(" ");
+       
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(ReportEmpPensionPreparationModel.class))
                 .list();
@@ -1305,7 +1324,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         query.append(" ) AS jumlahRow ");
-        System.out.println("query (total) : " + query.toString());
+        
         return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
 
@@ -1593,6 +1612,36 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    @Override
+    public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmpDataByParam(nikOrNameSearchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);        
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalEmpDataByParam(String nikOrNameSearchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmpDataByParam(nikOrNameSearchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchEmpDataByParam(String nikOrNameSearchParameter, Criteria criteria) {
+
+        if (nikOrNameSearchParameter != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("nik", nikOrNameSearchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", nikOrNameSearchParameter, MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", nikOrNameSearchParameter, MatchMode.START));
+            criteria.add(disjunction);
+        }
     }
 
 }

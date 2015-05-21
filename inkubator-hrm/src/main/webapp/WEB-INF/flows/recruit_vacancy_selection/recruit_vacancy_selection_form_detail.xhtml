@@ -156,10 +156,10 @@
                                 <f:facet name="header">
                                     <h:outputText value="Penyeleksi"/>
                                 </f:facet>
-                                <p:commandButton value="#{appmsg['global.add']}" actionListener="#{recruitVacancySelectionFormController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                    <p:ajax event="dialogReturn" listener="#{recruitVacancySelectionFormController.onDialogReturn}" />
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()" style="font-size: 10px!important" action="dataPenyeleksi">                        
+                                    <!--<f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />-->
                                 </p:commandButton>
-                                <!--<p:message for="penyeleksi"/>-->
                             </p:column>
                             <p:column style="width: 15%">
                                 <f:facet name="header">
@@ -196,6 +196,49 @@
                         </div>
                     </div>
                 </h:form>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="penyeleksiDialog" header="#{appmsg['savingType.savingType_detail']}" width="700" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <h:panelGrid columns="4">
+                            <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
+                            <p:outputLabel value=":" styleClass="header_big" />
+                            <p:inputText id="searchId" style="width: 450px" value="#{userEmployeeSearchController.param}"/>
+                            <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
+                                             ajax="true" action="testButton" />
+                            <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="testButton" />
+                        </h:panelGrid>
+                        <p:focus for="searchId" />
+                        <p:dataTable  id="tableEmpDataId" var="empData"  value="#{recruitVacancySelectionModel.listVacancySelectionDetail.get(0).lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}" />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+
+                            <p:column sortBy="#{empData.nik}"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="NIK" />
+                                </f:facet>
+                                <p:outputLabel value=" #{empData.nik}" />
+                            </p:column> 
+                            
+                            <p:column style="text-align: center" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.action']}" />
+                                </f:facet>
+                                <p:commandButton value="#{appmsg['global.select']}"  style="font-size: 11px!important" action="#{userEmployeeSearchController.doSelect(empData)}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>

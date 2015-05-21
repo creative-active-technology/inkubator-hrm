@@ -19,9 +19,15 @@
             <evaluate expression="recruitVacancySelectionFormController.getRecruitVacancySelectionDetail(flowRequestContext)" /> 
         </on-render>
     	<transition on="save" to="save_recruitment_detail"/>
+        <transition on="testButton" to="test_button"/>
+        
     </view-state>
     
     <action-state id="save_recruitment_detail">
         <evaluate expression="recruitVacancySelectionFormController.saveRecruitmentDetail(flowRequestContext)"/>
+    </action-state >
+    
+    <action-state id="test_button">
+        <evaluate expression="recruitVacancySelectionFormController.getDataPenyeleksi(flowRequestContext)"/>
     </action-state >
 </flow>
