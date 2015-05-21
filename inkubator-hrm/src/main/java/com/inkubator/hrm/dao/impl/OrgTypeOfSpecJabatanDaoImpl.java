@@ -15,6 +15,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +38,10 @@ public class OrgTypeOfSpecJabatanDaoImpl extends IDAOImpl<OrgTypeOfSpecJabatan> 
         criteria.add(Restrictions.eq("jabatan.id", id));
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.setFetchMode("orgTypeOfSpecList", FetchMode.JOIN);
+        
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("orgTypeOfSpecList", "orgTypeOfSpecList", JoinType.INNER_JOIN);
+        
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

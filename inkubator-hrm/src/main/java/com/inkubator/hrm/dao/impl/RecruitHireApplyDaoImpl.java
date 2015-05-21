@@ -142,13 +142,15 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
         
          if (StringUtils.isNotEmpty(parameter.getUserId())) {
             whereQuery.append("AND (approvalActivity.request_by = :userId AND approvalActivity.approval_status IN (").append(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)
-                        .append(",").append(HRMConstant.APPROVAL_STATUS_APPROVED)                        
+                        .append(",").append(HRMConstant.APPROVAL_STATUS_APPROVED)    
+                        .append(",").append(HRMConstant.APPROVAL_STATUS_REJECTED)
                         .append(")) ");                 
                         
         } else {
-        	//view for administrator(can view all employee)        	
+        	//view for administrator(can view all employee requester)        	
                 whereQuery.append("AND approvalActivity.approval_status IN ( ").append(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)
-                        .append(",").append(HRMConstant.APPROVAL_STATUS_APPROVED)                        
+                        .append(",").append(HRMConstant.APPROVAL_STATUS_APPROVED)   
+                        .append(",").append(HRMConstant.APPROVAL_STATUS_REJECTED)
                         .append(")");
         }       
 
@@ -183,6 +185,30 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
         criteria.add(Restrictions.eq("id", recruitHireApplyId));
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+        return (RecruitHireApply) criteria.uniqueResult();
+    }
+    
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", activityNumber));
+        
+//        criteria.createAlias("employeeType", "employeeType", JoinType.INNER_JOIN);
+//        criteria.createAlias("currency", "currency", JoinType.INNER_JOIN);
+//        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+//        criteria.createAlias("recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("currency", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+        
         return (RecruitHireApply) criteria.uniqueResult();
     }
 }

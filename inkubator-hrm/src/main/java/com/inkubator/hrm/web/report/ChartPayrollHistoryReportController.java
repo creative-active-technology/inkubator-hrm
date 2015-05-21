@@ -19,9 +19,13 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
 /**
@@ -32,7 +36,7 @@ import org.primefaces.model.chart.LineChartSeries;
 @ViewScoped
 public class ChartPayrollHistoryReportController extends BaseController {
 
-    private CartesianChartModel cartModelSalaryEveryMonth;
+    private LineChartModel cartModelSalaryEveryMonth;
     private List<PayrollHistoryReportModel> payrollHistoryReportModelList = new ArrayList<>();
     @ManagedProperty(value = "#{logMonthEndPayrollService}")
     private LogMonthEndPayrollService logMonthEndPayrollService;   
@@ -49,7 +53,22 @@ public class ChartPayrollHistoryReportController extends BaseController {
             dateFormat = new SimpleDateFormat("MMMM yyyy");
             reportParameter = new ReportPayrollHistorySearchParameter();
             payrollHistoryReportModelList = logMonthEndPayrollService.getDataForPayrollHistoryReport();
-            cartModelSalaryEveryMonth = new CartesianChartModel();
+            
+            //Initalize cartModelSalaryEveryMonth
+            cartModelSalaryEveryMonth = new LineChartModel();
+            cartModelSalaryEveryMonth.setLegendPosition("ne");
+            cartModelSalaryEveryMonth.setStacked(Boolean.FALSE);
+            cartModelSalaryEveryMonth.setAnimate(Boolean.TRUE);
+            cartModelSalaryEveryMonth.setShowDatatip(Boolean.TRUE);
+            cartModelSalaryEveryMonth.setLegendCols(1);
+            Axis xAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.X);
+            Axis yAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.Y);
+            xAxisCartModelSalaryEveryMonth.setLabel("Month");
+            yAxisCartModelSalaryEveryMonth.setLabel("Salary");
+            yAxisCartModelSalaryEveryMonth.setMin(0);
+            yAxisCartModelSalaryEveryMonth.setMax(1200);
+            
+            
             
  
             LineChartSeries lineChartSeriesPayrollPerMonth = new LineChartSeries();
@@ -126,11 +145,11 @@ public class ChartPayrollHistoryReportController extends BaseController {
         this.endDate = endDate;
     }
     
-    public CartesianChartModel getCartModelSalaryEveryMonth() {
+    public LineChartModel getCartModelSalaryEveryMonth() {
         return cartModelSalaryEveryMonth;
     }
 
-    public void setCartModelSalaryEveryMonth(CartesianChartModel cartModelSalaryEveryMonth) {
+    public void setCartModelSalaryEveryMonth(LineChartModel cartModelSalaryEveryMonth) {
         this.cartModelSalaryEveryMonth = cartModelSalaryEveryMonth;
     }
 

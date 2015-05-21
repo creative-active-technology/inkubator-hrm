@@ -73,13 +73,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: left;width: 37%">
+                            <p:column sortBy="#{diseaseData.code}"  style="text-align: left;width: 37%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{diseaseData.code}"/>
                             </p:column>  
-                            <p:column sortBy="name"  style="text-align: left;width: 50%">
+                            <p:column sortBy="#{diseaseData.name}"  style="text-align: left;width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -88,13 +88,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{diseaseViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailDisease.show()">                        
+                                				 action="#{diseaseViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailDisease').show()">                        
                                     <f:setPropertyActionListener value="#{diseaseData}" target="#{diseaseViewController.selectedDisease}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{diseaseViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDisease.show()">
+                                				 action="#{diseaseViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDisease').show()">
                                     <f:setPropertyActionListener value="#{diseaseData}" target="#{diseaseViewController.selectedDisease}" />
                                 </p:commandButton>
                                 -
@@ -116,13 +116,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmDisease" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDisease" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -142,12 +139,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{diseaseViewController.doDelete()}" update="formDiseaseViewId,:growlDiseaseViewlId"
-                                         oncomplete="dialogConfirmDisease.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDisease.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDisease').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDisease').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailDisease" header="#{appmsg['disease.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['disease.disease_code']}" styleClass="label_hrm"/></p:column>

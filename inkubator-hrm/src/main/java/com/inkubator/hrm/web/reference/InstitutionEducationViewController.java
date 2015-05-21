@@ -129,7 +129,7 @@ public class InstitutionEducationViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 470);
-        options.put("contentHeight", 560);
+        options.put("contentHeight", 615);
         RequestContext.getCurrentInstance().openDialog("inst_edu_form", options, params);
     }
 

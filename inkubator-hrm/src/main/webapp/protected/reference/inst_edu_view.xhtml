@@ -40,7 +40,6 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_code']}" itemValue="institutionEducationCode"/>
                                         <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_name']}" itemValue="institutionEducationName"/>
-                                        <f:selectItem itemLabel="#{appmsg['institutionEducation.city_name']}" itemValue="cityName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{institutionEducationViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{institutionEducationViewController.doSearch()}" update="tableInstitutionEducationId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -74,13 +73,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>                            
-                            <p:column sortBy="institutionEducationCode"  style="width: 22%;">
+                            <p:column sortBy="#{institutionEducationData.institutionEducationCode}"  style="width: 22%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['institutionEducation.institution_code']}" style="text-align: center;"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{institutionEducationData.institutionEducationCode}"/>
                             </p:column>  
-                            <p:column sortBy="institutionEducationName"  style="width: 65%; ">
+                            <p:column sortBy="#{institutionEducationData.institutionEducationName}"  style="width: 65%; ">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['institutionEducation.institution_name']}" style=""/>
                                 </f:facet>
@@ -89,13 +88,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{institutionEducationViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailInstitutionEducation.show()">                        
+                                                 action="#{institutionEducationViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailInstitutionEducation').show()">                        
                                     <f:setPropertyActionListener value="#{institutionEducationData}" target="#{institutionEducationViewController.selectedInstitutionEducation}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{institutionEducationViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmInstitutionEducation.show()">
+                                                 action="#{institutionEducationViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmInstitutionEducation').show()">
                                     <f:setPropertyActionListener value="#{institutionEducationData}" target="#{institutionEducationViewController.selectedInstitutionEducation}" />
                                 </p:commandButton>
                                 -
@@ -117,13 +116,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmInstitutionEducation" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmInstitutionEducation" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -143,12 +139,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{institutionEducationViewController.doDelete()}" update="formInstitutionEducationViewId,:growlInstitutionEducationViewlId"
-                                         oncomplete="dialogConfirmInstitutionEducation.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmInstitutionEducation.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmInstitutionEducation').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmInstitutionEducation').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailInstitutionEducation" header="#{appmsg['institutionEducation.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         
                         <p:row>

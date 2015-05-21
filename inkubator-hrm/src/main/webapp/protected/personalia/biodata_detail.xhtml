@@ -228,19 +228,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="year"  style="width: 25%;">
+                                    <p:column sortBy="#{bioMedicalHistoryData.year}"  style="width: 25%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_year']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioMedicalHistoryData.year}"/>
                                     </p:column>  
-                                    <p:column sortBy="disease"  style="width: 35%">
+                                    <p:column sortBy="#{bioMedicalHistoryData.disease}"  style="width: 35%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioMedicalHistoryData.disease}"/>
                                     </p:column>  
-                                    <p:column sortBy="status"  style="width: 25%">
+                                    <p:column sortBy="#{bioMedicalHistoryData.status}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_status']}"/>
                                         </f:facet>
@@ -252,13 +252,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioMedicalHistoryDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioMedicalHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioMedicalHistory.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioMedicalHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioMedicalHistory').show()">                        
                                             <f:setPropertyActionListener value="#{bioMedicalHistoryData}" target="#{bioDataDetilController.selectedBioMedicalHistory}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioMedicalHistoryConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioMedicalHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioMedicalHistory.show()">
+                                                         action="#{bioDataDetilController.doSelectBioMedicalHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioMedicalHistory').show()">
                                             <f:setPropertyActionListener value="#{bioMedicalHistoryData}" target="#{bioDataDetilController.selectedBioMedicalHistory}" />
                                         </p:commandButton>
                                         -
@@ -291,7 +291,7 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column style="width: 26%">
+                                    <p:column sortBy="#{bioAddressesData.type}" style="width: 26%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.type']}"/>
                                         </f:facet>
@@ -299,13 +299,13 @@
                                             <f:converter converterId="bioAddressTypeConverter" />
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column style="width: 30%;">
+                                    <p:column sortBy="#{bioAddressesData.addressDetail}" style="width: 30%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.address']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioAddressesData.addressDetail}"/>
                                     </p:column>
-                                    <p:column style="width: 26%;">
+                                    <p:column sortBy="#{bioAddressesData.city.cityName}" style="width: 26%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['city.city']}"/>
                                         </f:facet>
@@ -320,13 +320,13 @@
                                         -
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioAddressDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioAddress').show()">                        
                                             <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioAddressConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioAddress.show()">
+                                                         action="#{bioDataDetilController.doSelectBioAddress()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioAddress').show()">
                                             <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
                                         </p:commandButton>
                                         -
@@ -357,19 +357,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="yearIn"  style="width: 25%">
+                                    <p:column sortBy="#{bioEmploymentHistoryData.yearIn}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEmploymentHistoryData.yearIn}"/> s/d <h:outputLabel value= "#{bioEmploymentHistoryData.yearOut}"/>
                                     </p:column>  
-                                    <p:column sortBy="companyName"  style="width: 35%">
+                                    <p:column sortBy="#{bioEmploymentHistoryData.companyName}"  style="width: 35%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEmploymentHistoryData.companyName}"/>
                                     </p:column>  
-                                    <p:column sortBy="city.cityName"  style="width: 25%">
+                                    <p:column sortBy="#{bioEmploymentHistoryData.city.cityName}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}"/>
                                         </f:facet>
@@ -379,13 +379,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioEmploymentHistory.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioEmploymentHistory').show()">                        
                                             <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioEmploymentHistory.show()">
+                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioEmploymentHistory').show()">
                                             <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
                                         </p:commandButton>
                                         -
@@ -418,31 +418,31 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column style="width: 10%">
+                                    <p:column sortBy="#{bioEducationData.yearOut}" style="width: 10%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.year_out']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEducationData.yearOut}" />
                                     </p:column>
-                                    <p:column style="width: 15%">
+                                    <p:column sortBy="#{bioEducationData.certificateNumber}" style="width: 15%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.certificate_number']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEducationData.certificateNumber}" />
                                     </p:column>
-                                    <p:column style="width: 30%">
+                                    <p:column sortBy="#{bioEducationData.institutionEducation}" style="width: 30%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.institution_level']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEducationData.institutionEducation}" />
                                     </p:column>
-                                    <p:column style="width: 18%">
+                                    <p:column sortBy="#{bioEducationData.city}" style="width: 18%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['institutionEducation.city_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioEducationData.city}" />
                                     </p:column>
-                                    <p:column style="width:12%">
+                                    <p:column sortBy="#{bioEducationData.score}" style="width:12%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['educationhistory.score']}"/>
                                         </f:facet>
@@ -452,13 +452,13 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioEducationDetailId" 
-                                                         action="#{bioDataDetilController.doDetailBioEduHistory()}" onclick="statusDialog.show()"  oncomplete="dialogDetailEducation.show()">                        
+                                                         action="#{bioDataDetilController.doDetailBioEduHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailEducation').show()">                        
                                             <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedBioEducationHistoryViewController}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioEduHistory()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDelete.show()">
+                                                         action="#{bioDataDetilController.doSelectBioEduHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                             <f:setPropertyActionListener value="#{bioEducationData}" target="#{bioDataDetilController.selectedBioEducationHistoryViewController}" />
                                         </p:commandButton>
                                         -
@@ -490,13 +490,13 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 43%">
+                                    <p:column sortBy="#{peopleInterestData.name}" style="width: 43%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['interest.interest_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{peopleInterestData.name}" />
                                     </p:column>
-                                    <p:column sortBy="name" style="width: 42%">
+                                    <p:column sortBy="#{peopleInterestData.interestType.name}" style="width: 42%">
                                         <f:facet name="header">
                                             <h:outputText value="#{appmsg['interesttype.interesttype']}"/>
                                         </f:facet>
@@ -507,13 +507,13 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioMinatDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioPeopleInterest()}" onclick="statusDialog.show()"  oncomplete="dialogDetailMinat.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioPeopleInterest()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailMinat').show()">                        
                                             <f:setPropertyActionListener value="#{peopleInterestData}" target="#{bioDataDetilController.selectedPeopleInterest}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmMinatId" 
-                                                         action="#{bioDataDetilController.doSelectBioPeopleInterest()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDeleteMinat.show()">
+                                                         action="#{bioDataDetilController.doSelectBioPeopleInterest()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDeleteMinat').show()">
                                             <f:setPropertyActionListener value="#{peopleInterestData}" target="#{bioDataDetilController.selectedPeopleInterest}" />
                                         </p:commandButton>
                                         -
@@ -545,19 +545,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="name"  style="width: 40%">
+                                    <p:column sortBy="#{bioFamilyRelationshipData.name}"  style="width: 40%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioFamilyRelationshipData.name}"/>
                                     </p:column>  
-                                    <p:column sortBy="familyRelation.relasiName"  style="width: 25%">
+                                    <p:column sortBy="#{bioFamilyRelationshipData.familyRelation.relasiName}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioFamilyRelationshipData.familyRelation.relasiName}"/>
                                     </p:column>  
-                                    <p:column sortBy="occupation"  style="width: 20%">
+                                    <p:column sortBy="#{bioFamilyRelationshipData.occupation}"  style="width: 20%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation']}"/>
                                         </f:facet>
@@ -567,13 +567,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioFamilyRelationshipDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioFamilyRelationship()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioFamilyRelationship.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioFamilyRelationship()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioFamilyRelationship').show()">                        
                                             <f:setPropertyActionListener value="#{bioFamilyRelationshipData}" target="#{bioDataDetilController.selectedBioFamilyRelationship}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioFamilyRelationshipConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioFamilyRelationship()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioFamilyRelationship.show()">
+                                                         action="#{bioDataDetilController.doSelectBioFamilyRelationship()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioFamilyRelationship').show()">
                                             <f:setPropertyActionListener value="#{bioFamilyRelationshipData}" target="#{bioDataDetilController.selectedBioFamilyRelationship}" />
                                         </p:commandButton>
                                         -
@@ -634,13 +634,13 @@
                                         -
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioDocumentDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioDocument.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioDocument').show()">                        
                                             <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioDocument.show()">
+                                                         action="#{bioDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioDocument').show()">
                                             <f:setPropertyActionListener value="#{bioDocumentData}" target="#{bioDataDetilController.selectedBioDocument}" />
                                         </p:commandButton>
                                         -
@@ -672,19 +672,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="name"  style="width: 35%">
+                                    <p:column sortBy="#{bioBankAccountData.ownerName}"  style="width: 35%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioBankAccount.bioBankAccount_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioBankAccountData.ownerName}"/>
                                     </p:column>  
-                                    <p:column sortBy="bank.bankName"  style="width: 25%">
+                                    <p:column sortBy="#{bioBankAccountData.bank.bankName}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioBankAccount.bioBankAccount_bank']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioBankAccountData.bank.bankName}"/>
                                     </p:column>  
-                                    <p:column sortBy="accountNumber"  style="width: 25%">
+                                    <p:column sortBy="#{bioBankAccountData.accountNumber}"  style="width: 25%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioBankAccount.bioBankAccount_number']}"/>
                                         </f:facet>
@@ -694,13 +694,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioBankAccountDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioBankAccount.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioBankAccount').show()">                        
                                             <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{bioDataDetilController.selectedBioBankAccount}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioBankAccountConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioBankAccount.show()">
+                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioBankAccount').show()">
                                             <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{bioDataDetilController.selectedBioBankAccount}" />
                                         </p:commandButton>
                                         -
@@ -732,25 +732,25 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="type"  style="width: 15%">
+                                    <p:column sortBy="#{bioIdCardData.type}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioIdCardData.type}"/>
                                     </p:column>  
-                                    <p:column sortBy="cardNumber"  style="width: 40%">
+                                    <p:column sortBy="#{bioIdCardData.cardNumber}"  style="width: 40%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_number']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioIdCardData.cardNumber}"/>
                                     </p:column>  
-                                    <p:column sortBy="issuedDate"  style="width: 15%">
+                                    <p:column sortBy="#{bioIdCardData.issuedDate}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_issued']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioIdCardData.issuedDate}" />
                                     </p:column> 
-                                    <p:column sortBy="validDate"  style="width: 15%">
+                                    <p:column sortBy="#{bioIdCardData.validDate}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_valid']}"/>
                                         </f:facet>
@@ -760,13 +760,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioIdCardDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioIdCard()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioIdCard.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioIdCard()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioIdCard').show()">                        
                                             <f:setPropertyActionListener value="#{bioIdCardData}" target="#{bioDataDetilController.selectedBioIdCard}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioIdCardConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioIdCard()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioIdCard.show()">
+                                                         action="#{bioDataDetilController.doSelectBioIdCard()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioIdCard').show()">
                                             <f:setPropertyActionListener value="#{bioIdCardData}" target="#{bioDataDetilController.selectedBioIdCard}" />
                                         </p:commandButton>
                                         -
@@ -799,19 +799,19 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="noPolicy"  style="width: 20%">
+                                    <p:column sortBy="#{bioInsuranceData.noPolicy}"  style="width: 20%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioInsurance.bioInsurance_noPolicy']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioInsuranceData.noPolicy}"/>
                                     </p:column>  
-                                    <p:column sortBy="instance"  style="width: 35%">
+                                    <p:column sortBy="#{bioInsuranceData.instance}"  style="width: 35%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioInsurance.bioInsurance_instance']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioInsuranceData.instance}"/>
                                     </p:column>  
-                                    <p:column sortBy="facility"  style="width: 30%">
+                                    <p:column sortBy="#{bioInsuranceData.facility}"  style="width: 30%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioInsurance.bioInsurance_facility']}"/>
                                         </f:facet>
@@ -821,13 +821,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioInsuranceDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioInsurance.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioInsurance').show()">                        
                                             <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioInsuranceConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioInsurance.show()">
+                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioInsurance').show()">
                                             <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
                                         </p:commandButton>
                                         -
@@ -880,13 +880,13 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioContactDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="statusDialog.show()"  oncomplete="dialogDetailContact.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailContact').show()">                        
                                             <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmContactId" 
-                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmDeleteContact.show()">
+                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDeleteContact').show()">
                                             <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataDetilController.seleBioEmergencyContact}" />
                                         </p:commandButton>
                                         -
@@ -935,13 +935,13 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioKeahlianId" 
-                                                         action="#{bioDataDetilController.doSelectBioKeahlian()}" onclick="statusDialog.show()"  oncomplete="dialogDetailKeahlian.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioKeahlian()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailKeahlian').show()">                        
                                             <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataDetilController.selectedBioKeahlian}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogKeahlianConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmKeahlian.show()">
+                                                         action="#{bioDataDetilController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmKeahlian').show()">
                                             <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataDetilController.selectedBioKeahlian}" />
                                         </p:commandButton>
                                         -
@@ -988,13 +988,13 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioSpesifikasiId" 
-                                                         action="#{bioDataDetilController.doSelectBioSpesifikasiAbility()}" onclick="statusDialog.show()"  oncomplete="dialogDetailSpesifikasi.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioSpesifikasiAbility()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailSpesifikasi').show()">                        
                                             <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataDetilController.selectedDioSpesifikasiAbility}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogSpesifikasiConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioSpesifikasiAbility()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmSpesifikasi.show()">
+                                                         action="#{bioDataDetilController.doSelectBioSpesifikasiAbility()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmSpesifikasi').show()">
                                             <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataDetilController.selectedDioSpesifikasiAbility}" />
                                         </p:commandButton>
                                         -
@@ -1025,13 +1025,13 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="yearIn"  style="width: 15%">
+                                    <p:column sortBy="#{bioProjectData.code}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioProject.bioProject_code']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioProjectData.code}"/>
                                     </p:column>  
-                                    <p:column sortBy="companyName"  style="width: 70%">
+                                    <p:column sortBy="#{bioProjectData.name}"  style="width: 70%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioProject.bioProject_name']}"/>
                                         </f:facet>
@@ -1041,13 +1041,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioProjectDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioProject.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioProject').show()">                        
                                             <f:setPropertyActionListener value="#{bioProjectData}" target="#{bioDataDetilController.selectedBioProject}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioProjectConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioProject.show()">
+                                                         action="#{bioDataDetilController.doSelectBioProject()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioProject').show()">
                                             <f:setPropertyActionListener value="#{bioProjectData}" target="#{bioDataDetilController.selectedBioProject}" />
                                         </p:commandButton>
                                         -
@@ -1080,7 +1080,7 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{businessTravelHistoryData.startDate}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['businesstravel.since']}"/>
                                         </f:facet>
@@ -1088,7 +1088,7 @@
                                             <f:convertDateTime pattern="dd MMMM yyyy" />
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="endDate"  style="width: 15%">
+                                    <p:column sortBy="#{businessTravelHistoryData.endDate}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.until']}"/>
                                         </f:facet>
@@ -1096,19 +1096,19 @@
                                             <f:convertDateTime pattern="dd MMMM yyyy" />
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="destination"  style="width: 15%">
+                                    <p:column sortBy="#{businessTravelHistoryData.destination}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{businessTravelHistoryData.destination}" />                                            
                                     </p:column>
-                                    <p:column sortBy="travelType.name"  style="width: 17%">
+                                    <p:column sortBy="#{businessTravelHistoryData.travelType.name}"  style="width: 17%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['businesstravel.travel_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{businessTravelHistoryData.travelType.name}" />                                            
                                     </p:column>
-                                    <p:column sortBy="totalAmount"  style="width: 15%">
+                                    <p:column sortBy="#{businessTravelHistoryData.totalAmount}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['businesstravel.total_amount']}"/>
                                         </f:facet>
@@ -1116,7 +1116,7 @@
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column sortBy="description"  style="width: 20%">
+                                    <p:column sortBy="#{businessTravelHistoryData.description}"  style="width: 20%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.description']}"/>
                                         </f:facet>
@@ -1137,7 +1137,7 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{leaveImplemetationHistoryData.startDate}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['publicHoliday.publicHoliday_start']}"/>
                                         </f:facet>
@@ -1145,7 +1145,7 @@
                                             <f:convertDateTime pattern="dd MMMM yyyy" />
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="endDate"  style="width: 15%">
+                                    <p:column sortBy="#{leaveImplemetationHistoryData.endDate}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.end_date']}"/>
                                         </f:facet>
@@ -1153,19 +1153,19 @@
                                             <f:convertDateTime pattern="dd MMMM yyyy" />
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="leave.name"  style="width: 15%">
+                                    <p:column sortBy="#{leaveImplemetationHistoryData.leave.name}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['leavebalance.leave_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{leaveImplemetationHistoryData.leave.name}" />                                            
                                     </p:column>
-                                    <p:column sortBy="approvedBy"  style="width: 17%">
+                                    <p:column sortBy="#{leaveImplemetationHistoryData.approvedBy}"  style="width: 17%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['appraisalElement.appraisalElement_operator']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{leaveImplemetationHistoryData.approvedBy}" />                                            
                                     </p:column>
-                                    <p:column sortBy="temporaryActing.nikWithFullName"  style="width: 17%">
+                                    <p:column sortBy="#{leaveImplemetationHistoryData.temporaryActing.bioData.firstName}"  style="width: 17%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['leave.replacement_officer']}"/>
                                         </f:facet>
@@ -1186,7 +1186,7 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="namaSertifikasi"  style="width: 22%;">
+                                    <p:column sortBy="#{bioSertifikasiData.namaSertifikasi}"  style="width: 22%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['employeeCertification.certification_name']}"/>
                                         </f:facet>
@@ -1194,7 +1194,7 @@
 
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="nomorDokumen"  style="width: 15%">
+                                    <p:column sortBy="#{bioSertifikasiData.nomorDokumen}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['employeeCertification.certification_doc_number']}"/>
                                         </f:facet>
@@ -1202,13 +1202,13 @@
 
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="educationNonFormal.name"  style="width: 15%">
+                                    <p:column sortBy="#{bioSertifikasiData.educationNonFormal.name}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['employeeCertification.certification_issuer']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{bioSertifikasiData.educationNonFormal.name}" />                                            
                                     </p:column>
-                                    <p:column sortBy="occupationType.occupationTypeName"  style="width: 17%">
+                                    <p:column sortBy="#{bioSertifikasiData.occupationType.occupationTypeName}"  style="width: 17%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['employeeCertification.major']}"/>
                                         </f:facet>
@@ -1228,13 +1228,13 @@
                                         -
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioSertifikasiDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioSertifikasi.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioSertifikasi').show()">                        
                                             <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{bioDataDetilController.selectedBioSertifikasi}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioSertifikasiConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmBioSertifikasi.show()">
+                                                         action="#{bioDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioSertifikasi').show()">
                                             <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{bioDataDetilController.selectedBioSertifikasi}" />
                                         </p:commandButton>
                                         -
@@ -1266,14 +1266,14 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{potensi.labelPotensi}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['biodata.potential_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{potensi.labelPotensi}">
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="endDate"  style="width: 15%">
+                                    <p:column sortBy="#{potensi.klasifikasi}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['biodata.classification']}"/>
                                         </f:facet>
@@ -1281,7 +1281,7 @@
                                             <f:converter converterId="classificationConverter" />
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column sortBy="endDate"  style="width: 15%">
+                                    <p:column sortBy="#{potensi.potensiPoint}"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['biodata.potential_point']}"/>
                                         </f:facet>
@@ -1294,13 +1294,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogPotensi" 
-                                                         action="#{bioDataDetilController.doSelectBioPotensiSwot()}" onclick="statusDialog.show()"  oncomplete="dialogPotensi.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioPotensiSwot()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogPotensi').show()">                        
                                             <f:setPropertyActionListener value="#{potensi}" target="#{bioDataDetilController.selectedBioPotensiSwot}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogPotensiDelete" 
-                                                         action="#{bioDataDetilController.doSelectBioPotensiSwot()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPotensi.show()">
+                                                         action="#{bioDataDetilController.doSelectBioPotensiSwot()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmPotensi').show()">
                                             <f:setPropertyActionListener value="#{potensi}" target="#{bioDataDetilController.selectedBioPotensiSwot}" />
                                         </p:commandButton>
                                         -
@@ -1331,35 +1331,35 @@
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="relasiName"  style="width: 15%;">
+                                    <p:column sortBy="#{relasiPerusahaan.relasiName}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['companyRelation.relation_name']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{relasiPerusahaan.relasiName}">
                                         </h:outputLabel>
                                     </p:column>  
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{relasiPerusahaan.relasiCompany}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['companyRelation.relation_company']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{relasiPerusahaan.relasiCompany}">
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{relasiPerusahaan.relasiJabatan}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['companyRelation.jabatan']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{relasiPerusahaan.relasiJabatan}">
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{relasiPerusahaan.relasiEmail}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['master_layout.email_address']}"/>
                                         </f:facet>
                                         <h:outputLabel value= "#{relasiPerusahaan.relasiEmail}">
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                    <p:column sortBy="#{relasiPerusahaan.relasiPhoneNumber}"  style="width: 15%;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.phone']}"/>
                                         </f:facet>
@@ -1371,13 +1371,13 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogRelasi" 
-                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="statusDialog.show()"  oncomplete="detailRelasi.show()">                        
+                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="PF('statusDialog').show()"  oncomplete="PF('detailRelasi').show()">                        
                                             <f:setPropertyActionListener value="#{relasiPerusahaan}" target="#{bioDataDetilController.selectedBioRelasiPerusahaan}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogRelasiDelete" 
-                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmRelasi.show()">
+                                                         action="#{bioDataDetilController.doSelectBioRelasiPerusahaan()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmRelasi').show()">
                                             <f:setPropertyActionListener value="#{relasiPerusahaan}" target="#{bioDataDetilController.selectedBioRelasiPerusahaan}" />
                                         </p:commandButton>
                                         -
@@ -1411,7 +1411,7 @@
 
                         <!-- START BIO RELASI DIALOG -->
                 <p:dialog widgetVar="detailRelasi" header="#{appmsg['companyRelation.company_relation_detail']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogRelasi" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['companyRelation.relation_name']}" styleClass="label_hrm"/></p:column>
@@ -1461,7 +1461,7 @@
                         </f:facet>
                     </p:panelGrid>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmRelasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmRelasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1481,13 +1481,13 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioRelasiPerusahaan()}" update="formBioDetailFormId:tabView:tableRelasiPerusahaanId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmRelasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPotensi.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmRelasi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPotensi').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <!-- END BIO RELASI DIALOG -->
                 <!-- START Bio Address DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioAddress" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioAddress" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1507,12 +1507,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioAddress()}" update="formBioDetailFormId:tabView:tableBioAdressId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioAddress.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioAddress.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioAddress').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioAddress').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.type']}" styleClass="label_hrm"/></p:column>
@@ -1562,7 +1562,7 @@
                 <!-- END Bio Address DIALOG -->
 
                 <!-- START Bio Document DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioDocument" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioDocument" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1582,12 +1582,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioDocument()}" update="formBioDetailFormId:tabView:tableBioDocumentId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioDocument.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioDocument.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioDocument').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioDocument').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioDocument" header="#{appmsg['biodocument.detail_document']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioDocumentDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['biodocument.document_name']}" styleClass="label_hrm"/></p:column>
@@ -1624,7 +1624,7 @@
                 <!-- END Bio Document DIALOG -->
 
                 <!-- START Bio EducationHistory DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1644,12 +1644,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioEduHistory()}" update="formBioDetailFormId"
-                                         oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailEducation" header="#{appmsg['educationhistory.detail_education']}" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioEducationDetailId" style="width:100%;margin:5px;">
 
                         <p:row>
@@ -1713,7 +1713,7 @@
                 <!-- END Bio EducationHistory DIALOG --> 
 
                 <!-- START Bio Minat DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmDeleteMinat" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDeleteMinat" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1733,12 +1733,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioPeopleInterest()}" update="formBioDetailFormId:tabView:tableMinatId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmDeleteMinat.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDeleteMinat.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDeleteMinat').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDeleteMinat').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailMinat" header="#{appmsg['interest.people_interest_detail']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioMinatDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['interest.interest_name']}" styleClass="label_hrm"/></p:column>
@@ -1759,7 +1759,7 @@
                 <!-- END Bio Minat DIALOG --> 
 
                 <!-- START Bio Insurance DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioInsurance" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioInsurance" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1779,12 +1779,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioInsurance()}" update="formBioDetailFormId:tabView:tableBioInsuranceId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioInsurance.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioInsurance.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioInsurance').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioInsurance').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioInsurance" header="#{appmsg['bioInsurance.bioInsurance']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioInsuranceDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioInsurance.bioInsurance_noPolicy']}" styleClass="label_hrm"/></p:column>
@@ -1813,7 +1813,7 @@
 
                 <!--Bio Contact-->
                 <p:dialog widgetVar="dialogDetailContact" header="Contact Detail" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioContactDetailId" style="width:100%;margin:5px;">
 
                         <p:row>
@@ -1843,7 +1843,7 @@
                         </f:facet>
                     </p:panelGrid>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDeleteContact" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDeleteContact" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1863,14 +1863,14 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioContact()}" update="formBioDetailFormId:tabView:tableContactId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmDeleteContact.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDeleteContact.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmDeleteContact').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDeleteContact').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <!--End. Bio Contact-->
 
                 <!-- START Bio MedicalHistory DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioMedicalHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioMedicalHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1890,12 +1890,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioMedicalHistory()}" update="formBioDetailFormId:tabView:tableBioMedicalHistoryId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioMedicalHistory.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioMedicalHistory.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioMedicalHistory').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioMedicalHistory').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioMedicalHistory" header="#{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioMedicalHistoryDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_year']}" styleClass="label_hrm"/></p:column>
@@ -1927,7 +1927,7 @@
                 <!-- END Bio MedicalHistory DIALOG -->
 
                 <!-- START Bio EmploymentHistory DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioEmploymentHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioEmploymentHistory" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -1947,12 +1947,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioEmploymentHistory()}" update="formBioDetailFormId:tabView:tableBioEmploymentHistoryId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioEmploymentHistory.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioEmploymentHistory.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioEmploymentHistory').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioEmploymentHistory').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioEmploymentHistory" header="#{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioEmploymentHistoryDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}" styleClass="label_hrm"/></p:column>
@@ -1988,7 +1988,7 @@
                 <!-- END Bio EmploymentHistory DIALOG -->
 
                 <!-- START Bio FamilyRelationship DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioFamilyRelationship" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioFamilyRelationship" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2008,12 +2008,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioFamilyRelationship()}" update="formBioDetailFormId:tabView:tableBioFamilyRelationshipId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioFamilyRelationship.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioFamilyRelationship.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioFamilyRelationship').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioFamilyRelationship').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioFamilyRelationship" header="#{appmsg['bioFamilyRelationship.bioFamilyRelationship']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioFamilyRelationshipDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}" styleClass="label_hrm"/></p:column>
@@ -2066,7 +2066,7 @@
                 <!-- END Bio FamilyRelationship DIALOG -->
 
                 <!-- START Bio BankAccount DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioBankAccount" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2086,12 +2086,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioBankAccount()}" update="formBioDetailFormId:tabView:tableBioBankAccountId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioBankAccount.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioBankAccount.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioBankAccount').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioBankAccount').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioBankAccount" header="#{appmsg['bioBankAccount.bioBankAccount']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioBankAccountDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioBankAccount.bioBankAccount_name']}" styleClass="label_hrm"/></p:column>
@@ -2162,7 +2162,7 @@
                 <!-- END Bio BankAccount DIALOG -->
 
                 <!-- START Bio IdCard DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioIdCard" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioIdCard" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2182,12 +2182,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioIdCard()}" update="formBioDetailFormId:tabView:tableBioIdCardId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioIdCard.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioIdCard.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioIdCard').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioIdCard').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioIdCard" header="#{appmsg['bioIdCard.bioIdCard']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioIdCardDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioIdCard.bioIdCard_type']}" styleClass="label_hrm"/></p:column>
@@ -2222,7 +2222,7 @@
                 <!-- END Bio IdCard DIALOG -->
 
                 <!-- START Bio Keahlian DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmKeahlian" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmKeahlian" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2242,12 +2242,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioKeahlian()}" update="formBioDetailFormId:tabView:tableKeahlianId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmKeahlian.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmKeahlian.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmKeahlian').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmKeahlian').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailKeahlian" header="Keahlian" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioKeahlianId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Nama Keahlian" styleClass="label_hrm"/></p:column>
@@ -2272,7 +2272,7 @@
                 <!-- END Bio Keahlian DIALOG -->
 
                 <!-- START Bio Spesifikasi Ability DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmSpesifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmSpesifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2292,12 +2292,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioSpesifikasiAbility()}" update="formBioDetailFormId:tabView:tableSpecAbilityId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmSpesifikasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmSpesifikasi.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmSpesifikasi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmSpesifikasi').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailSpesifikasi" header="#{appmsg['specAbility.ability']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioSpesifikasiId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['specAbility.name']}" styleClass="label_hrm"/></p:column>
@@ -2320,7 +2320,7 @@
                 <!-- END Bio Spesifikasi Ability DIALOG -->
 
                 <!-- START Bio Project DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioProject" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioProject" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2340,12 +2340,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioProject()}" update="formBioDetailFormId:tabView:tableBioProjectId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioProject.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioProject.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioProject').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioProject').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioProject" header="#{appmsg['bioProject.bioProject']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioProjectDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioProject.bioProject_code']}" styleClass="label_hrm"/></p:column>
@@ -2385,7 +2385,7 @@
                 <!-- END Bio Project DIALOG -->
 
                 <!-- START Bio Sertifikasi DIALOG --> 
-                <p:dialog widgetVar="dialogConfirmBioSertifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmBioSertifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2405,12 +2405,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioSertifikasi()}" update="formBioDetailFormId:tabView:tableBioSertifikasiId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmBioSertifikasi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmBioDocument.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmBioSertifikasi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioSertifikasi').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioSertifikasi" header="#{appmsg['employeeCertification.certification']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioSertifikasiDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['employeeCertification.certification_name']}" styleClass="label_hrm"/></p:column>
@@ -2454,7 +2454,7 @@
                 </p:dialog>
                 <!-- END Bio Sertifikasi DIALOG -->
                 <p:dialog widgetVar="dialogPotensi" header="Biodata Potensi SWOT" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogPotensi" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.potential_name']}" styleClass="label_hrm"/></p:column>
@@ -2480,7 +2480,7 @@
                         </f:facet>
                     </p:panelGrid>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmPotensi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmPotensi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -2500,8 +2500,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioPotensi()}" update="formBioDetailFormId:tabView:tablePotensiId,:growlBioDetailFormId"
-                                         oncomplete="dialogConfirmPotensi.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPotensi.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmPotensi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPotensi').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

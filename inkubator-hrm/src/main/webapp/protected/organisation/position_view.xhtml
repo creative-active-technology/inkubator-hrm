@@ -66,25 +66,19 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['position.list_of_position']}"/>
                             </f:facet>
-<!--                            <p:column sortBy="level" style="text-align: center;width: 5%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.level']}"/>
-                                </f:facet>
-                                <h:outputLabel value="#{pangkatData.level}" />
-                            </p:column>-->
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="pangkatCode"  style="width: 42%">
+                            <p:column sortBy="#{pangkatData.pangkatCode}"  style="width: 42%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{pangkatData.pangkatCode}"/>
                             </p:column>
-                            <p:column sortBy="pangkatName"  style="width: 45%">
+                            <p:column sortBy="#{pangkatData.pangkatName}"  style="width: 45%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['position.position_name']}"/>
                                 </f:facet>
@@ -93,13 +87,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{pangkatViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPosition.show()">                        
+                                				 action="#{pangkatViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailPosition').show()">                        
                                     <f:setPropertyActionListener value="#{pangkatData}" target="#{pangkatViewController.selectedPangkat}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{pangkatViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPosition.show()">
+                                				 action="#{pangkatViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmPosition').show()">
                                     <f:setPropertyActionListener value="#{pangkatData}" target="#{pangkatViewController.selectedPangkat}" />
                                 </p:commandButton>
                                 -
@@ -124,7 +118,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmPosition" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmPosition" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -144,12 +138,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{pangkatViewController.doDelete()}" update="formPositionViewId,:growlPositionViewlId"
-                                         oncomplete="dialogConfirmPosition.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmPosition.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmPosition').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPosition').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailPosition" header="#{appmsg['position.detail_dialog']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
 <!--                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.level']}" styleClass="label_hrm"/></p:column>

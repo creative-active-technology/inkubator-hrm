@@ -72,19 +72,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="name"  style="width: 31%">
+                            <p:column sortBy="#{specAbilityData.name}"  style="width: 31%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.specification_ability']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.name}"/>
                             </p:column>
-                            <p:column sortBy="optionAbility"  style="width: 31%">
+                            <p:column sortBy="#{specAbilityData.optionAbility}"  style="width: 31%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.option']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.optionAbility}"/>
                             </p:column>
-                            <p:column sortBy="scaleValue"  style="width: 25%">
+                            <p:column sortBy="#{specAbilityData.scaleValue}"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['specificationability.scale_value']}"/>
                                 </f:facet>
@@ -93,13 +93,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailSpecAbilityLevel.show()">                        
+                                				 action="#{specAbilityViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailSpecAbilityLevel').show()">                        
                                     <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecAbi}" />
                                 </p:commandButton>
                                 <h:outputLabel value= "-" rendered="#{specAbilityData.isEdit}"/>
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 rendered="#{specAbilityData.isEdit}" action="#{specAbilityViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmSpecAbilityLevel.show()">
+                                				 rendered="#{specAbilityData.isEdit}" action="#{specAbilityViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmSpecAbilityLevel').show()">
                                     <f:setPropertyActionListener value="#{specAbilityData}" target="#{specAbilityViewController.selectedSpecAbi}" />
                                 </p:commandButton>
                                 <h:outputLabel rendered="#{specAbilityData.isEdit}" value= "-"/>
@@ -120,13 +120,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
                     <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="dialogConfirmSpecAbilityLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmSpecAbilityLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -146,12 +143,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{specAbilityViewController.doDelete()}" update="formSpecAbilityViewId,:growlSpecAbilityViewlId"
-                                         oncomplete="dialogConfirmSpecAbilityLevel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmSpecAbilityLevel.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmSpecAbilityLevel').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmSpecAbilityLevel').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailSpecAbilityLevel" header="#{appmsg['specificationability.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:40%"><p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/></p:column>

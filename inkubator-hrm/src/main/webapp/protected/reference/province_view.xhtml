@@ -40,7 +40,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['province.province_code']}" itemValue="provinceCode"/>
                                         <f:selectItem itemLabel="#{appmsg['province.province_name']}" itemValue="provinceName"/>
-                                        <f:selectItem itemLabel="#{appmsg['province.country_name']}" itemValue="countryName"/>
+                                        <!-- <f:selectItem itemLabel="#{appmsg['province.country_name']}" itemValue="countryName"/> -->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{provinceViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{provinceViewController.doSearch()}" update="tableProvinceId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -80,28 +80,28 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{provinceData.country.countryName}"/>
                             </p:column>-->
-                            <p:column sortBy="provinceCode"  style="width: 27%">
+                            <p:column sortBy="#{provinceData.provinceCode}"  style="width: 27%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['province.province_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{provinceData.provinceCode}"/>
                             </p:column>  
-                            <p:column sortBy="provinceName"  style="width: 60%">
+                            <p:column sortBy="#{provinceData.provinceName}"  style="width: 60%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['province.province_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{provinceData.provinceName}"/>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{provinceViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailProvince.show()">                        
+                                                 action="#{provinceViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailProvince').show()">                        
                                     <f:setPropertyActionListener value="#{provinceData}" target="#{provinceViewController.selectedProvince}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                  style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                 action="#{provinceViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmProvince.show()">
+                                                 action="#{provinceViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmProvince').show()">
                                     <f:setPropertyActionListener value="#{provinceData}" target="#{provinceViewController.selectedProvince}" />
                                 </p:commandButton>
                                 -
@@ -123,13 +123,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmProvince" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmProvince" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -149,12 +146,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{provinceViewController.doDelete()}" update="formProvinceViewId,:growlProvinceViewlId"
-                                         oncomplete="dialogConfirmProvince.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmProvince.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmProvince').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmProvince').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailProvince" header="#{appmsg['province.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['province.country_name']}" styleClass="label_hrm"/></p:column>

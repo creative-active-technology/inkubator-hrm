@@ -149,7 +149,7 @@
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{jabatanSpesifikasiDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="facultyConverter" id="picklistFaculty"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
-                                                    itemLabel="#{role.facultyName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
                                         <p:message for="picklistFaculty" />
                                     </p:column>
@@ -178,19 +178,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="specificationAbility.name" style="width: 35%">
+                            <p:column sortBy="#{jobSpekData.specificationAbility.name}" style="width: 35%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jobspec.jobspec_specification']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jobSpekData.specificationAbility.name}" />
                             </p:column>
-                            <p:column sortBy="optionAbility" style="width: 35%">
+                            <p:column sortBy="#{jobSpekData.optionAbility}" style="width: 35%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{jobSpekData.optionAbility}" />
                             </p:column>
-                            <p:column sortBy="value" style="width: 15%">
+                            <p:column sortBy="#{jobSpekData.value}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
                                 </f:facet>
@@ -199,14 +199,14 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{jabatanSpesifikasiDetailController.doDetail()}" oncomplete="detailJobSpek.show()" update=":detailPanel" onclick="statusDialog.show()">
+                                                  action="#{jabatanSpesifikasiDetailController.doDetail()}" oncomplete="PF('detailJobSpek').show()" update=":detailPanel" onclick="PF('statusDialog').show()">
                                     <f:setPropertyActionListener value="#{jobSpekData}" target="#{jabatanSpesifikasiDetailController.selectedJobSpec}" />
                                     <p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" />
                                 </p:commandButton> 
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}" update=":deleteDialogJobDeskripsiId"
                                                  style="font-size: 10px!important" 
-                                                 action="#{jabatanSpesifikasiDetailController.onDelete()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmJobSpec.show()">
+                                                 action="#{jabatanSpesifikasiDetailController.onDelete()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmJobSpec').show()">
                                     <f:setPropertyActionListener value="#{jobSpekData}" target="#{jabatanSpesifikasiDetailController.selectedJobSpec}" />
                                 </p:commandButton>
                                 -
@@ -230,7 +230,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmJobSpec" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <h:form id="deleteDialogJobDeskripsiId">
                         <div align="center">
@@ -251,13 +251,13 @@
                             </h:panelGrid>
                             <p:separator/>
                             <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanSpesifikasiDetailController.doDelete()}" update=":jobTitleViewId:tableJobSpekId,:userViewGrowlId"
-                                             oncomplete="dialogConfirmJobSpec.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmJobSpec.hide()" icon="ui-icon-close" />                     	
+                                             oncomplete="PF('dialogConfirmJobSpec').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmJobSpec').hide()" icon="ui-icon-close" />                     	
                         </div>
                     </h:form>
                 </p:dialog>
                 <p:dialog widgetVar="detailJobSpek" header="#{appmsg['jobspek.detail_jobspek']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
 
                         <p:row>

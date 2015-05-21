@@ -71,31 +71,31 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column style="width: 15%">
+                            <p:column sortBy="#{data.employeeName}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.employeeName}"/>
                             </p:column>
-                            <p:column sortBy="applicationCode" style="width: 10%">
+                            <p:column sortBy="#{data.applicationCode}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_cancelation.request_no']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.applicationCode}"/>
                             </p:column>
-                            <p:column sortBy="cancelationCode" style="width: 10%">
+                            <p:column sortBy="#{data.cancelationCode}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.cancelationCode}"/>
                             </p:column>
-                            <p:column sortBy="rmbsTypeName" style="width: 10%">
+                            <p:column sortBy="#{data.rmbsTypeName}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.rmbsTypeName}"/>
                             </p:column>
-                            <p:column sortBy="nominal" style="width: 10%">
+                            <p:column sortBy="#{data.nominal}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
@@ -104,7 +104,7 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="applicationDate" style="width: 10%">
+                            <p:column sortBy="#{data.applicationDate}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_application.request_date']}"/>
                                 </f:facet>
@@ -112,7 +112,7 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="cancelationDate" style="width: 10%">
+                            <p:column sortBy="#{data.cancelationDate}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_date']}"/>
                                 </f:facet>
@@ -120,7 +120,7 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="reason" style="width: 20%">
+                            <p:column sortBy="#{data.reason}" style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_cancelation.cancelation_reason']}"/>
                                 </f:facet>

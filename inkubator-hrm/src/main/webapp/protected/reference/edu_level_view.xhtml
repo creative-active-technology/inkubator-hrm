@@ -70,7 +70,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="level"  style="width: 7%">
+                            <p:column sortBy="#{educationLevelData.level}"  style="width: 7%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['educationlevel.level']}"/>
                                 </f:facet>
@@ -78,13 +78,13 @@
                                     <f:converter converterId="romanovConverter" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="code"  style="width: 30%">
+                            <p:column sortBy="#{educationLevelData.code}"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{educationLevelData.code}"/>
                             </p:column>
-                            <p:column sortBy="name"  style="width: 50%">
+                            <p:column sortBy="#{educationLevelData.name}"  style="width: 50%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -94,13 +94,13 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
 <!--                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{educationLevelViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailEducationLevel.show()">                        
+                                				 action="#{educationLevelViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailEducationLevel.show()">                        
                                     <f:setPropertyActionListener value="#{educationLevelData}" target="#{educationLevelViewController.selectedEducationLevel}" />
                                 </p:commandButton>
                                 - -->
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 		    	 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                		    	 action="#{educationLevelViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmEducationLevel.show()">
+                                		    	 action="#{educationLevelViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmEducationLevel').show()">
                                     <f:setPropertyActionListener value="#{educationLevelData}" target="#{educationLevelViewController.selectedEducationLevel}" />
                                 </p:commandButton>
                                 -
@@ -122,13 +122,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-<!--                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                        </p:dialog>-->
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmEducationLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmEducationLevel" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -148,12 +145,12 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{educationLevelViewController.doDelete()}" update="formEducationLevelViewId,:growlEducationLevelViewlId"
-                                         oncomplete="dialogConfirmEducationLevel.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmEducationLevel.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmEducationLevel').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmEducationLevel').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailEducationLevel" header="#{appmsg['educationlevel.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationlevel.name']}" styleClass="label_hrm"/></p:column>

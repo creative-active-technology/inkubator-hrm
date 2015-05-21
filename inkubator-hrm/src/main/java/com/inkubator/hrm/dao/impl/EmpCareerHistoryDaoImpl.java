@@ -80,8 +80,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
     @Override
     public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("bioData", FetchMode.JOIN);
-        criteria.setFetchMode("jabatan", FetchMode.JOIN);       
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);     
         doSearchEmpRotasiByParamReport(searchParameter, criteria);
         
         DetachedCriteria maxTglPengangkatanQuery = DetachedCriteria.forClass(getEntityClass());

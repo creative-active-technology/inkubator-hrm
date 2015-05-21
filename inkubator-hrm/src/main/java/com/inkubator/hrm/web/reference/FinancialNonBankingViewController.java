@@ -99,7 +99,7 @@ public class FinancialNonBankingViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 400);
+        options.put("contentHeight", 410);
         RequestContext.getCurrentInstance().openDialog("fin_non_bank_form", options, params);
     }
     

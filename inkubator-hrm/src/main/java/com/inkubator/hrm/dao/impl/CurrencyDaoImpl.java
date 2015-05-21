@@ -15,6 +15,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -35,7 +36,7 @@ public class CurrencyDaoImpl extends IDAOImpl<Currency> implements CurrencyDao {
     public List<Currency> getByParam(CurrencySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchCurrencyByParam(searchParameter, criteria);
-        criteria.setFetchMode("country", FetchMode.JOIN);
+        criteria.createAlias("country", "country", JoinType.INNER_JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);

@@ -91,7 +91,7 @@ public class SavingTypeViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 460);
+        options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("saving_type_form", options, params);
     }
     

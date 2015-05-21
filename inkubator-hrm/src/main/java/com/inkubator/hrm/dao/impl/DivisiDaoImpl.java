@@ -17,6 +17,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +41,8 @@ public class DivisiDaoImpl extends IDAOImpl<Divisi> implements DivisiDao{
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-        criteria.setFetchMode("department", FetchMode.JOIN);
+        //criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.createAlias("department", "department", JoinType.INNER_JOIN);
         return criteria.list();
     }
 

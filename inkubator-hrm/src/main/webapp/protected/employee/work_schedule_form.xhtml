@@ -167,7 +167,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
                                              action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"

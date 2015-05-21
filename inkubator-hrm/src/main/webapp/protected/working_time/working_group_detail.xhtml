@@ -134,13 +134,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="wtWorkingHour" style="width: 100px" >
+                            <p:column sortBy="#{workingGroupData.wtWorkingHour.name}" style="width: 100px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.working_hour_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{workingGroupData.wtWorkingHour.name}"/>
                             </p:column>
-                            <p:column sortBy="scheduleDate" style="width: 100px" >
+                            <p:column sortBy="#{workingGroupData.scheduleDate}" style="width: 100px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.working_hour_date_of_employment']}"/>
                                 </f:facet>
@@ -148,7 +148,7 @@
                                     <f:convertDateTime pattern="EEEE, dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="wtWorkingHour" style="text-align: center;width: 10%">
+                            <p:column sortBy="#{workingGroupData.wtWorkingHour.workingHourBegin}" style="text-align: center;width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workinghour.working_hour']}"/>
                                 </f:facet>

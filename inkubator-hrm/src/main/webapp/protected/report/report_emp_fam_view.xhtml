@@ -69,25 +69,25 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bioData.listEmpData.get(0).nik}"/>
                             </p:column>-->
-                            <p:column sortBy="bioData.firstName"  style="width: 15%">
+                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bioData.fullName}"/>
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.familyRelation.relasiName}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_relation']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.familyRelation.relasiName}"/>
                             </p:column>
-                            <p:column sortBy="bioData.firstName"  style="width: 15%">
+                            <p:column sortBy="#{data.name}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}"/>
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.dateOfBirth}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.birth_date']}"/>
                                 </f:facet>
@@ -95,7 +95,7 @@
                                     <f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.gender}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -103,19 +103,19 @@
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.educationLevel.name}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_education']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.educationLevel.name}" />
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.occupation}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_occupation']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.occupation}" />
                             </p:column>
-                            <p:column sortBy="familyRelation.relasiName"  style="width: 15%">
+                            <p:column sortBy="#{data.dependents}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
@@ -138,9 +138,6 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

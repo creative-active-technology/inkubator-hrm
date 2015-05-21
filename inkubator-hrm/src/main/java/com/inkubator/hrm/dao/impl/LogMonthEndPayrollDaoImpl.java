@@ -147,19 +147,14 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
         
     @Override
     public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
-       System.out.println(order.toString() + " order");
+
        final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
                 + " DATE_FORMAT(lme.periodeStart, '%d %M %Y') AS tglAwalPeriodeInString, lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
                 + " WHERE lme.paySalaryCompId = 100 ");
         
         query.append(" GROUP BY lme.periodeId ");
-      
+        query.append(" ORDER BY ").append(order);
         
-        if (order.toString().contains("jumlahKaryawan") || order.toString().contains("nominal") || order.toString().contains("tglAwalPeriode")) {
-            query.append(" ORDER BY ").append(order);
-        } else {
-            query.append(" ORDER BY lme.").append(order);
-        }
         if (searchParameter != null) {
            
             List<PayrollHistoryReportModel> listResult = getCurrentSession().createQuery(query.toString())                   
@@ -398,7 +393,6 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 
     @Override
     public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        System.out.println(order.toString() + " order");
         /*
         Mekanismenya, select data komponen baik yang reguler maupun non reguler, lalu di gabung dengan union.
         Data komponen Reguler dari table log_month_end_payroll, dan Unreguler dari table log_unreg_payroll
@@ -694,14 +688,9 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                multipleFilterRegSalary = Boolean.TRUE;
             }      
                              
-        }
-        /* Order */
-//        if(order.toString().contains("")){
-//        
-//        }
-        query.append(" ORDER BY " + order);
-        
+        }        
         /* End Filtering for Reguler Payroll */      
+        query.append(" ORDER BY ").append(order);
         
         return getCurrentSession().createSQLQuery(query.toString())
                 .addScalar("id", LongType.INSTANCE)

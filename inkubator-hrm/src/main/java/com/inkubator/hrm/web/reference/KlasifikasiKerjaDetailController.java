@@ -53,6 +53,14 @@ public class KlasifikasiKerjaDetailController extends BaseController {
         klasifikasiKerjaService = null;
         selectedKlasifikasiKerja = null;
     }
+    
+    public String doBack() {
+        return "/protected/reference/job_family_view.htm?faces-redirect=true";
+    }
+    
+    public String doEdit() {
+    	return "/protected/reference/job_family_form.htm?faces-redirect=true&execution=e" + selectedKlasifikasiKerja.getId();
+    }
 
     public KlasifikasiKerjaService getKlasifikasiKerjaService() {
         return klasifikasiKerjaService;

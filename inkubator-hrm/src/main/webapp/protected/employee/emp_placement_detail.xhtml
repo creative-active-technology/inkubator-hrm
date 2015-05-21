@@ -469,6 +469,114 @@
                                 </p:dataTable> 
                             </p:tab>  
                             
+                            <p:tab id="businessTravelId" title="#{appmsg['biodata.business_travel_history']}">  
+                                <p:dataTable  id="tableBusinessTravelHistoryId" var="businessTravelHistoryData"  value="#{empDataDetilController.businessTravelList}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['businesstravel.list_of_businessTravelHistory']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['businesstravel.since']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.startDate}">
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="endDate"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.until']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{businessTravelHistoryData.endDate}">
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="destination"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['businesstravel.destination']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.destination}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="travelType.name"  style="width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['businesstravel.travel_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.travelType.name}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="totalAmount"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['businesstravel.total_amount']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.totalAmount}" >
+                                            <f:convertNumber pattern="###,###" type="currency"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                    <p:column sortBy="description"  style="width: 20%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{businessTravelHistoryData.description}" />                                       
+                                    </p:column>                                    
+                                </p:dataTable>                               
+                            </p:tab> 
+                            
+                            <p:tab id="leaveImplemetationId" title="#{appmsg['leaveimplementation.leave_history']}">  
+                                <p:dataTable  id="tableLeaveImplementationHistoryId" var="leaveImplemetationHistoryData"  value="#{empDataDetilController.leaveImplementations}" lazy="false" paginator="false"
+                                              style="margin-top: 10px;margin-bottom: 10px"
+                                              rowIndexVar="no">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['leaveimplementation.list_of_leave_implementation']}"/>
+                                    </f:facet> 
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.number']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="startDate"  style="width: 15%;">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['publicHoliday.publicHoliday_start']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{leaveImplemetationHistoryData.startDate}">
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="endDate"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.end_date']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{leaveImplemetationHistoryData.endDate}">
+                                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                                        </h:outputLabel>
+                                    </p:column>  
+                                    <p:column sortBy="leave.name"  style="width: 15%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['leavebalance.leave_type']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{leaveImplemetationHistoryData.leave.name}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="approvedBy"  style="width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['appraisalElement.appraisalElement_operator']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{leaveImplemetationHistoryData.approvedBy}" />                                            
+                                    </p:column>
+                                    <p:column sortBy="temporaryActing.nikWithFullName"  style="width: 17%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['leave.replacement_officer']}"/>
+                                        </f:facet>
+                                        <h:outputLabel value= "#{leaveImplemetationHistoryData.temporaryActing.nik} #{leaveImplemetationHistoryData.temporaryActing.bioData.firstName} #{leaveImplemetationHistoryData.temporaryActing.bioData.lastName}" />                                            
+                                    </p:column>                                                                        
+                                </p:dataTable>                               
+                            </p:tab> 
+                            
                             <p:tab id="documentId" title="#{appmsg['placement.riwayat_penilaian']}">  
                                 <p:outputLabel value="Available on Version 1.2" styleClass="header_big" style="position:relative;color:red;right:-400px !important;font-style:italic"/>
                             </p:tab>  
@@ -483,7 +591,7 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
                                              update=":panelDialogBioAddressDetailId" 
-                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="statusDialog.show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailBioAddress.show()">                        
                                          <!--<f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />-->
                             </p:commandButton>
                         </h:panelGrid>
@@ -492,7 +600,7 @@
                 </div>
 
                 <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
 
                         <p:row>

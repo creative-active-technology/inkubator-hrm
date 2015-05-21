@@ -121,8 +121,8 @@ public class HRMConstant {
     /* END */
 
     /* Constant for BIO Family Relation Module */
-    public static final Integer BIOFAMILY_DEPENDENTS_YES = 0;
-    public static final Integer BIOFAMILY_DEPENDENTS_NO = 1;
+    public static final Integer BIOFAMILY_DEPENDENTS_YES = 1;
+    public static final Integer BIOFAMILY_DEPENDENTS_NO = 0;
     /* END */
 
     /* Constant for BIO Bank Account Module */
@@ -374,6 +374,7 @@ public class HRMConstant {
     public static final String ANNOUNCEMENT_KODE = "ANNO";
     public static final String LOAN_CANCELLATION_KODE = "LCAN";
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
+    public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
 
     public static final String APP_NAME = "Web Destop App";
 
