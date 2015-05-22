@@ -5,9 +5,12 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitVacancySelection;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -23,6 +26,7 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     private Date recruitVacancySelectionDate;
     private Date startDate;
     private Date endDate;
+    private LazyDataModel<EmpData> lazyDataModel;
 
     public String getRecruitSelectionSeriesName() {
         return recruitSelectionSeriesName;
@@ -87,6 +91,16 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    public LazyDataModel<EmpData> getLazyDataModel() {
+        return lazyDataModel;
+    }
+
+    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+        this.lazyDataModel = lazyDataModel;
+    }
+
+    
 
     
 }
