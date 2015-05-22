@@ -64,6 +64,11 @@
                                              required="true" requiredMessage="#{appmsg['bioProject.bioProject_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
 
                             </p:column>
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:message for="nameId"/>
+                                </p:column>
+                            </p:row>
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
@@ -75,7 +80,7 @@
                             <p:column  style="width: 70%">
                                 <p:inputText id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" value="#{bioProjectFormController.bioProjectModel.companyName}" 
                                              required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
-                                               
+
 
 
                             </p:column>
@@ -103,7 +108,7 @@
                                 <p:message for="positionId"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="startId" value="#{appmsg['bioProject.bioProject_start']}" styleClass="label_hrm"/>
@@ -174,7 +179,7 @@
                                 <p:message for="descriptionId"/>
                             </p:column>
                         </p:row>
-                        
+
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
