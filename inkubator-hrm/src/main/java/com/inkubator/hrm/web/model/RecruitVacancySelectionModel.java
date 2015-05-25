@@ -32,12 +32,16 @@ public class RecruitVacancySelectionModel implements Serializable {
     private Date effectiveDate;
     private String recruitHireApplyName;
     private List<RecruitVacancySelectionDetailModel> listVacancySelectionDetail;
+    private List<RecruitVacancySelectionDetailModel> newListVacancySelectionDetail;
     private Date time;
     private String place;
     private BigDecimal basicCost;
     private BigDecimal individualCost;
     private LazyDataModel<EmpData> lazyDataModel;
+    private List<EmpData> listEmpData;
+    private List<EmpData> selectedListEmpData;
     private String nikOrName;
+    private RecruitVacancySelectionDetailModel selectedVacSelectionDetailModel;
 
     public String getCode() {
         return code;
@@ -181,6 +185,38 @@ public class RecruitVacancySelectionModel implements Serializable {
 
     public void setNikOrName(String nikOrName) {
         this.nikOrName = nikOrName;
+    }
+
+    public List<EmpData> getListEmpData() {
+        return listEmpData;
+    }
+
+    public void setListEmpData(List<EmpData> listEmpData) {
+        this.listEmpData = listEmpData;
+    }
+
+    public List<EmpData> getSelectedListEmpData() {
+        return selectedListEmpData;
+    }
+
+    public void setSelectedListEmpData(List<EmpData> selectedListEmpData) {
+        this.selectedListEmpData = selectedListEmpData;
+    }
+
+    public RecruitVacancySelectionDetailModel getSelectedVacSelectionDetailModel() {
+        return selectedVacSelectionDetailModel;
+    }
+
+    public void setSelectedVacSelectionDetailModel(RecruitVacancySelectionDetailModel selectedVacSelectionDetailModel) {
+        this.selectedVacSelectionDetailModel = selectedVacSelectionDetailModel;
+    }
+
+    public List<RecruitVacancySelectionDetailModel> getNewListVacancySelectionDetail() {
+        return newListVacancySelectionDetail;
+    }
+
+    public void setNewListVacancySelectionDetail(List<RecruitVacancySelectionDetailModel> newListVacancySelectionDetail) {
+        this.newListVacancySelectionDetail = newListVacancySelectionDetail;
     }
 
     
