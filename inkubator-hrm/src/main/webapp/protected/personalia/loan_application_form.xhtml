@@ -444,7 +444,7 @@
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loan.loan_approver']}"  for="minimumInstallment" styleClass="label_hrm" />
                                 </p:column>
-                                <p:column style="width: 80%">
+                                <p:column style="width: 40%">
                                     <h:panelGrid columns="1" style="margin-left: -10px;">
                                         <p:dataTable  id="tableApproverId" var="approverData"  value="#{loanApplicationFormController.model.listApprover}" lazy="false" paginator="#{loanApplicationFormController.model.ispaginatorLoanApprover}" pageLinks="7"
                                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"

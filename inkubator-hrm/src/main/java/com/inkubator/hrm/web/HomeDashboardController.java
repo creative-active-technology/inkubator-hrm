@@ -7,17 +7,21 @@ package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -69,14 +73,14 @@ public class HomeDashboardController extends BaseController {
             /**
              * calculate employee distribution based on GENDER
              */
-            Map<String, Long> employeesByGender = empDataService.getTotalByGender();
+            Map<String, Long> employeesByGender = empDataService.getTotalByGender(HrmUserInfoUtil.getCompanyId());
             totalFemale = employeesByGender.get("male");
             totalMale = employeesByGender.get("female");
             lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
             /**
              * calculate employee distribution based on DEPARTMENT
              */
-            Map<String, Long> employeesByDepartment = empDataService.getTotalByDepartment();
+            Map<String, Long> employeesByDepartment = empDataService.getTotalByDepartment(HrmUserInfoUtil.getCompanyId());
             int i = 0;
             for (Map.Entry<String, Long> entry : employeesByDepartment.entrySet()) {
 
@@ -105,7 +109,7 @@ public class HomeDashboardController extends BaseController {
             /**
              * calculate employee distribution based on AGE
              */
-            Map<String, Long> employeesByAge = empDataService.getTotalByAge();
+            Map<String, Long> employeesByAge = empDataService.getTotalByAge(HrmUserInfoUtil.getCompanyId());
             pieModel.set("< 26", employeesByAge.get("lessThan26"));
             pieModel.set("25-30", employeesByAge.get("between26And30"));
             pieModel.set("31-35", employeesByAge.get("between31And35"));

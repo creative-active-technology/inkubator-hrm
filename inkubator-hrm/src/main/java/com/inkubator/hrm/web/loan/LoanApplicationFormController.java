@@ -330,14 +330,19 @@ public class LoanApplicationFormController extends BaseController {
             for (LoanNewSchemaListOfType loanNewSchemaListOfType : listOfTypes) {
                 mapLoanNewType.put(loanNewSchemaListOfType.getLoanNewType().getLoanTypeName(), loanNewSchemaListOfType.getId());
             }
-
-            List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
-
+            
+            List<ApprovalDefinitionLoan> listApprovalDefinitionLoans = approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
+            //if loan Schema has not had approval definition, show Error Message
+            if(listApprovalDefinitionLoans.isEmpty()){
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.loan_new_schema_doesnt_have_approval_def", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return;
+            }
+            
+            List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());            
             List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef, model.getEmpData().getId());
             model.setListApprover(listApprover);
 
-            if (!model.getListLoanNewApplicationInstallments().isEmpty()) {
-                //model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
+            if (!model.getListLoanNewApplicationInstallments().isEmpty()) {                
                 doCalculateInstallmentSchedule();
             }
 

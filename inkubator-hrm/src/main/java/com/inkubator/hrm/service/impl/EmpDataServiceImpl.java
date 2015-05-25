@@ -380,9 +380,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
-    @Cacheable(value = "totalEmployeeByGender")
+    @Cacheable(value = "totalEmployeeByGender", key = "#companyId")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Map<String, Long> getTotalByGender() throws Exception {
+    public Map<String, Long> getTotalByGender(Long companyId) throws Exception {
         Long male = empDataDao.getTotalByGender(HRMConstant.GLOBAL_MALE);
         Long female = empDataDao.getTotalByGender(HRMConstant.GLOBAL_FEMALE);
 
@@ -395,9 +395,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
-    @Cacheable(value = "totalEmployeeByAge")
+    @Cacheable(value = "totalEmployeeByAge", key = "#companyId")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Map<String, Long> getTotalByAge() throws Exception {
+    public Map<String, Long> getTotalByAge(Long companyId) throws Exception {
         Date now = new Date();
         Date startDate = new Date();
         Date endDate = new Date();
@@ -437,9 +437,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     }
 
     @Override
-    @Cacheable(value = "totalEmployeeByDepartment")
+    @Cacheable(value = "totalEmployeeByDepartment", key = "#companyId")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Map<String, Long> getTotalByDepartment() throws Exception {
+    public Map<String, Long> getTotalByDepartment(Long companyId) throws Exception {
         List<Department> departments = departmentDao.getAllData();
         Map<String, Long> results = new HashMap<String, Long>();
         for (Department department : departments) {

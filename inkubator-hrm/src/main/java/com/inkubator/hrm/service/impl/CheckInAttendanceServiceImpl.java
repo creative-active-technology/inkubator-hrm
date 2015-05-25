@@ -4,6 +4,24 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.faces.application.FacesMessage;
+
+import org.hibernate.criterion.Order;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -17,21 +35,6 @@ import com.inkubator.hrm.service.CheckInAttendanceService;
 import com.inkubator.hrm.web.search.CheckInAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javax.faces.application.FacesMessage;
-import org.hibernate.criterion.Order;
-import org.primefaces.push.PushContext;
-import org.primefaces.push.PushContextFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -78,9 +81,8 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         String waktuCheckIn = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(entity.getCheckInTime());
         String infoMessages = entity.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkin_success_socket") + " : " + waktuCheckIn + "=== Status :" + entity.getNote() + " ===";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Check In/Out", infoMessages);
-        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
-        pushContext.push(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
-
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
     }
 
     @Override
@@ -95,8 +97,8 @@ public class CheckInAttendanceServiceImpl extends IServiceImpl implements CheckI
         String waktuCheckOut = new SimpleDateFormat("EEEE, dd-MMMM-yyyy hh:mm:ss").format(attendance.getCheckOutTime());
         String infoMessages = attendance.getEmpData().getBioData().getFullName() + " " + messages.getString("ceckinout.checkout_success_socket") + " : " + waktuCheckOut + "=== Status :" + attendance.getNote() + " ===";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Check In/Out", infoMessages);
-        PushContext pushContext = PushContextFactory.getDefault().getPushContext();
-        pushContext.push(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish(HRMConstant.CHECK_IN_OUT_CHANEL_SOCKET, facesMessage);
     }
 
     @Override
