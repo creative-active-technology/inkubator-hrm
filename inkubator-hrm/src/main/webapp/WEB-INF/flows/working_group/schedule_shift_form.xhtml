@@ -120,7 +120,7 @@
                         <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataToShow}" 
                                       id="tableOverTimeId" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
-                            <p:column style="text-align: center;max-width: 25px" >
+                            <p:column style="text-align: center;width:  25px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
@@ -135,7 +135,7 @@
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column  >
+                            <p:column  style="width: 300px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>
@@ -159,7 +159,7 @@
                             </p:column>
 
 
-                            <p:column  >
+                            <p:column  style="width: 300px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>

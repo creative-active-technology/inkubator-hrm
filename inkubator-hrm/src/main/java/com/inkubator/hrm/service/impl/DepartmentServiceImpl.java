@@ -437,23 +437,28 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public DefaultDiagramModel createDiagramModel(long companyId) throws Exception {
         Department department = this.departmentDao.getByLevelOneAndCompany("ORG", companyId);
         DefaultDiagramModel ddm = new DefaultDiagramModel();
-        return doCreate(department, ddm);
+        Element master = new Element();
+        int x = 40;
+        int y = 6;
+
+        master.setData(department.getDepartmentName());
+        master.setX(x + "em");
+        master.setY(y + "em");
+        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+        master.setDraggable(true);
+        ddm.addElement(master);
+        return doCreate(department, ddm, master);
     }
 
-    private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel) {
+    private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel, Element element) {
         System.out.println(" kepanggil beeberapa akalai " + department.getDepartmentName());
         StraightConnector connector = new StraightConnector();
         connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
         List<Department> data = new ArrayList<>(department.getDepartments());
-
         diagramModel.setMaxConnections(-1);
         int x = 40;
         int y = 6;
-        Element master = new Element(department.getDepartmentName(), x + "em", y + "em");
-        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
-        master.setDraggable(true);
-        diagramModel.addElement(master);
         int jarak = 0;
         for (Department data1 : data) {
 //            if (data1.getOrgLevel().equals("ORG")) {
@@ -478,9 +483,9 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             System.out.println(" jarakanya " + (jarak));
             jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
             diagramModel.addElement(child);
-            diagramModel.connect(new Connection(master.getEndPoints().get(0), child.getEndPoints().get(0), connector));
+            diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));
             if (data1.getDepartments() != null) {
-                doCreate(data1, diagramModel);
+                doCreate(data1, diagramModel,element);
             }
         }
 
