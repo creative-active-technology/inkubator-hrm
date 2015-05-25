@@ -93,11 +93,17 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
                             </p:column>
-                            <p:column sortBy="#{approvalDefinitionData.approverType}">
+                            <p:column sortBy="#{approvalDefinitionData.approverType}" style="width: 190px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+                            </p:column>
+                            <p:column sortBy="#{approvalDefinitionData.specificName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Detil Persetujuan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{approvalDefinitionData.specificName}"/>
                             </p:column>
                             <p:column sortBy="#{approvalDefinitionData.sequence}"  style="text-align: center">
                                 <f:facet name="header">  

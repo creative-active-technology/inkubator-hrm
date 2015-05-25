@@ -36,6 +36,13 @@
                         <div style="margin-top: 10px;margin-bottom: 5px">
                             <h:form id="pilihanBahasaForm" >
                                 <h:inputHidden value="#{loginController.selectedLanguage}"/>
+                                <h:panelGrid style="float: left;margin-left: 20px">
+                                    <p:lightBox iframe="true" style="margin-top: 5px;" width="1200px">
+                                        <h:outputLink value="http://www.primefaces.org" title="OPTIMA HR Overview">
+                                            <h:outputText value="Optima-HR Overview"  style="font-size: 18px; font-weight: bold;color: #066"/>
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                </h:panelGrid>
                                 <h:panelGrid columns="4" style="float: right;margin-right: 15px">
                                     <h:outputLabel style="margin-right: 5px;" styleClass="label_hrm"
                                                    value="#{appmsg['loginform.pilihan_bahasa']} :"/>
@@ -85,8 +92,8 @@
                                                          update="loginForm" validateClient="true"
                                                          style="width: 85px" />
                                         <p:commandLink id="resetPasswordId" value="#{appmsg['loginform.lupa_password']}" styleClass="isitext_hrm"
-                                                       style="margin-left: 10px;text-decoration: none" oncomplete="dialogReset.show();"/>
-                                    </h:panelGroup>
+                                                       style="margin-left: 10px;text-decoration: none" oncomplete="PF('dialogReset').show();"/>
+                                    </h:panelGroup>                                    
                                     <p:defaultCommand target="loginId" />
                                     <p:watermark for="j_username" value="#{appmsg['loginform.water_mark_user']}" />
                                     <p:watermark for="j_password" value="#{appmsg['loginform.water_mark_password']}" />
@@ -175,7 +182,7 @@
             if (args.validationFailed || !args.emailIsExist) {
                 jQuery('#dialogResetId').effect("shake", {times: 3}, 75);
             } else {
-                dialogReset.hide();
+                PF('dialogReset').hide();
             }
         }
     </script>
