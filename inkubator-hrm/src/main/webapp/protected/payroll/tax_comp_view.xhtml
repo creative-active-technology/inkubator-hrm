@@ -83,7 +83,7 @@
 <!--                                - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{taxComponentViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmTaxComponent.show()">
+                                				 action="#{taxComponentViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="dialogConfirmTaxComponent.show()">
                                     <f:setPropertyActionListener value="#{taxComponentData}" target="#{taxComponentViewController.selectedTaxComponent}" />
                                 </p:commandButton>
                                 -
@@ -111,7 +111,7 @@
                     </h:form>
                 </div>
 
-                <p:dialog widgetVar="dialogConfirmTaxComponent" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmTaxComponent" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -131,8 +131,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{taxComponentViewController.doDelete()}" update="formTaxComponentViewId,:growlTaxComponentViewlId"
-                                         oncomplete="dialogConfirmTaxComponent.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTaxComponent.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmTaxComponent').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmTaxComponent').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogDetailTaxComponent" header="#{appmsg['taxComponent.detail_dialog']}" styleClass="header_small_no_bold" width="700" modal="true" resizable="false" hideEffect="puff" 

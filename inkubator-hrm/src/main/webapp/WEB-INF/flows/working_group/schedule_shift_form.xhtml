@@ -120,7 +120,7 @@
                         <p:dataTable  var="dataShiftModel"  value="#{groupWorkingModel.dataToShow}" 
                                       id="tableOverTimeId" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
-                            <p:column style="text-align: center;max-width: 25px" >
+                            <p:column style="text-align: center;width:  25px" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
@@ -135,7 +135,7 @@
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column  >
+                            <p:column  style="width: 300px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>
@@ -159,7 +159,7 @@
                             </p:column>
 
 
-                            <p:column  >
+                            <p:column  style="width: 300px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.schedule_shift']}"/>
                                 </f:facet>
@@ -187,26 +187,26 @@
                         </div>
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" disabled="#{groupWorkingModel.isDisable}" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
                                              action="save" styleClass="isitext_hrm" update="addDataShiftId,:errorDuplicateId" 
                                              style="margin-right: 5px" label="Lanjut" id="buttonSaveId"
                                              icon="ui-icon-disk" title="Lanjut"/>
 
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-arrow-1-w" title="#{appmsg['global.back']}" oncomplete="backConfirmation.show()" onclick="statusDialog.show()"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-arrow-1-w" title="#{appmsg['global.back']}" oncomplete="PF('backConfirmation').show()" onclick="PF('statusDialog').show()"
                                              styleClass="label_button" immediate="true"/>
                         </div>
 
                     </h:form>
-                    <p:dialog id="backDialogId" appendTo="@(body)" draggable="true" modal="true" resizable="false" hideEffect="clip" showEffect="clip"  onShow="statusDialog.hide()"
+                    <p:dialog id="backDialogId" appendTo="@(body)" draggable="true" modal="true" resizable="false" hideEffect="clip" showEffect="clip"  onShow="PF('statusDialog').hide()"
                               header="#{appmsg['global.header_confirmation']}" widgetVar="backConfirmation" dynamic="true">
                         <h:form id="backFormId">
                             <div align="center">
                                 <p><h:outputLabel value="#{appmsg['global.confirmation1']}" style="color: #cc0000!important" styleClass="label_hrm"/> </p>
                                 <p><h:outputLabel value="#{appmsg['global.confirmation2']}" style="color: #cc0000!important" styleClass="label_hrm"/> </p>   
                                 <p:separator/>
-                                <p:commandButton id="confirm" value="Yes" oncomplete="confirmationSave.hide()" title="Yes" action="back"
+                                <p:commandButton id="confirm" value="Yes" oncomplete="PF('backConfirmation').hide()" title="Yes" action="back"
                                                  style="margin-right:5px" />  
-                                <p:commandButton id="decline" value="No" onclick="backConfirmation.hide();" type="button" title="No" />   
+                                <p:commandButton id="decline" value="No" onclick="PF('backConfirmation').hide();" type="button" title="No" />   
                             </div>
                         </h:form>
                     </p:dialog>

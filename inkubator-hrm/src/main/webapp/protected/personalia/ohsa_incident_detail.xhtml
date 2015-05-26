@@ -112,7 +112,7 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogOhsaEmpInvolveConfirmId" 
-                                                         action="#{ohsaIncidentDetailController.doSelectOhsaEmpInvolve()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOhsaEmpInvolve.show()">
+                                                         action="#{ohsaIncidentDetailController.doSelectOhsaEmpInvolve()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmOhsaEmpInvolve').show()">
                                             <f:setPropertyActionListener value="#{empInvolveData}" target="#{ohsaIncidentDetailController.selectedOhsaEmpInvolve}" />
                                         </p:commandButton>
 <!--                                        -
@@ -178,7 +178,7 @@
                                         -
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogOhsaIncidentDocConfirmId" 
-                                                         action="#{ohsaIncidentDetailController.doSelectOhsaIncidentDocument()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmOhsaIncidentDoc.show()">
+                                                         action="#{ohsaIncidentDetailController.doSelectOhsaIncidentDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmOhsaIncidentDoc').show()">
                                             <f:setPropertyActionListener value="#{ohsaIncidentDocData}" target="#{ohsaIncidentDetailController.selectedOhsaIncidentDocument}" />
                                         </p:commandButton>
 <!--                                        -
@@ -210,7 +210,7 @@
                 
                 <!-- START DIALOG --> 
 <!--                dialogConfirmCompanyBankAccount-->
-                <p:dialog widgetVar="dialogConfirmOhsaEmpInvolve" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmOhsaEmpInvolve" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -232,12 +232,12 @@
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentDetailController.doDeleteOhsaEmpInvolve()}" 
                                          update="formOhsaIncidentDetailId:tabView:tableEmpInvolveId,:growlOhsaIncidentDetailId"
-                                         oncomplete="dialogConfirmOhsaEmpInvolve.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOhsaEmpInvolve.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmOhsaEmpInvolve').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmOhsaEmpInvolve').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 
-                <p:dialog widgetVar="dialogConfirmOhsaIncidentDoc" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmOhsaIncidentDoc" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -258,8 +258,8 @@
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentDetailController.doDeleteOhsaIncidentDocument()}" 
                                          update="formOhsaIncidentDetailId:tabView:tableOhsaIncidentDocumentId,:growlOhsaIncidentDetailId"
-                                         oncomplete="dialogConfirmOhsaIncidentDoc.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmOhsaIncidentDoc.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmOhsaIncidentDoc').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmOhsaIncidentDoc').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                 <!-- END DIALOG -->
