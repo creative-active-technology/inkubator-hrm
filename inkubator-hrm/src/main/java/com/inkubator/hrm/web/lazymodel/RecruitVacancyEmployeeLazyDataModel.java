@@ -44,7 +44,7 @@ public class RecruitVacancyEmployeeLazyDataModel extends LazyDataModel<EmpData> 
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("nik");
                 }
                 empDatadatas = empDataService.getByParam(nikOrNameSearchParameter, first, pageSize, order);
                 jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalEmpDataByParam(nikOrNameSearchParameter)));

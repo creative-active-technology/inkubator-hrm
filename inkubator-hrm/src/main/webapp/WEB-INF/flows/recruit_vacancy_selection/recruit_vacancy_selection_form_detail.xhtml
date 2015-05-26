@@ -16,171 +16,185 @@
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
-                <h:form id="formId" >
-                    <div id="box_bg" style="margin: 10px">
-                        <!--<p:panel style="margin: 10px">-->
-                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
-                            <h:panelGroup layout="block">
-                                <h:panelGrid>
-                                    <p:outputLabel value="Recruit Vacancy Selection" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_header']}" styleClass="header_small_no_bold" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:panelGrid>
-                        <p:separator/>
 
-                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="code" value="#{recruitVacancySelectionModel.code}"  styleClass="label_hrm" />
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px">-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Recruit Vacancy Selection" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
 
-                                </p:column>
-                            </p:row>
+                    <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Kode" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="code" value="#{recruitVacancySelectionModel.code}"  styleClass="label_hrm" />
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Recruit Vacancy Selection Date" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="recruitVacancySelectionDate" value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"  styleClass="label_hrm" >
-                                        <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                    </p:outputLabel>
+                            </p:column>
+                        </p:row>
 
-                                </p:column>
-                            </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Recruit Vacancy Selection Date" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="recruitVacancySelectionDate" value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"  styleClass="label_hrm" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Rekrutment" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="recruit" value="#{recruitVacancySelectionModel.recruitHireApplyName}"  styleClass="label_hrm" />
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Rekrutment" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="recruit" value="#{recruitVacancySelectionModel.recruitHireApplyName}"  styleClass="label_hrm" />
 
-                                </p:column>
-                            </p:row>
+                            </p:column>
+                        </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jabatan" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="jobTitleName" value="#{recruitVacancySelectionModel.jobTitleName}"  styleClass="label_hrm" />
-                                </p:column>
-                            </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Jabatan" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="jobTitleName" value="#{recruitVacancySelectionModel.jobTitleName}"  styleClass="label_hrm" />
+                            </p:column>
+                        </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Staff" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="staff" value="#{recruitVacancySelectionModel.staffName}"  styleClass="label_hrm" />
-                                </p:column>
-                            </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Staff" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="staff" value="#{recruitVacancySelectionModel.staffName}"  styleClass="label_hrm" />
+                            </p:column>
+                        </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Efektif Date" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="effectiveDate" value="#{recruitVacancySelectionModel.effectiveDate}"  styleClass="label_hrm" >
-                                        <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                    </p:outputLabel>
-                                </p:column>
-                            </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Efektif Date" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="effectiveDate" value="#{recruitVacancySelectionModel.effectiveDate}"  styleClass="label_hrm" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
 
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Ekstra Fee"  for="extraFee" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:outputLabel id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}"  styleClass="label_hrm" >
-                                    </p:outputLabel>
-                                </p:column>
-                            </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                <p:outputLabel  value="Ekstra Fee"  for="extraFee" styleClass="label_hrm" />
+                            </p:column>
+                            <p:column style="width: 80%">
+                                <p:outputLabel id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}"  styleClass="label_hrm" >
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
 
-                        </p:panelGrid>
-
-                        <p:dataTable  id="tableVacancySelectionSeries" var="data"  value="#{recruitVacancySelectionModel.listVacancySelectionDetail}" lazy="false" paginator="false"
-                                      style="margin-top: 10px;margin-bottom: 10px"
-                                      rowIndexVar="no">
-                            <f:facet name="header">  
-                                <h:outputText value="#{appmsg['educationhistory.list_of_education_history']}"/>
-                            </f:facet>
-                            <p:column style="text-align: center;width: 3%">
+                    </p:panelGrid>
+                    <h:form id="formId" >
+                        <h:panelGrid>
+                            <p:dataTable  id="tableVacancySelectionSeries" var="data"  value="#{recruitVacancySelectionModel.listVacancySelectionDetail}" lazy="false" paginator="false"
+                                          style="margin-top: 10px;margin-bottom: 10px"
+                                          rowIndexVar="no">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                    <h:outputText value="#{appmsg['educationhistory.list_of_education_history']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{no+1}." />
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['educationhistory.certificate_number']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.recruitSelectionSeriesName}" />
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.start_date']}"/>
-                                </f:facet>
-                                <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.start_date']}" value="#{data.startDate}"
-                                             required="true" navigator="true">
-                                </p:calendar>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.end_date']}"/>
-                                </f:facet>
-                                <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.end_date']}" value="#{data.endDate}"
-                                             required="true" navigator="true">
-                                </p:calendar>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="Time"/>
-                                </f:facet>
-                                <pe:timePicker id="startTime" value="#{data.time}" mode="spinner" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_end']}"/>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="Tempat"/>
-                                </f:facet>
-                                <p:inputText id="place" title="Place" value="#{data.place}" 
-                                             required="true" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                <p:message for="place"/>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="Penyeleksi"/>
-                                </f:facet>
-                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()" style="font-size: 10px!important" action="dataPenyeleksi">                        
-                                    <!--<f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />-->
-                                </p:commandButton>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="Biaya Pokok"/>
-                                </f:facet>
-                                <pe:inputNumber id="basicCost" title="Place" value="#{data.basicCost}" 
-                                                required="true" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                <p:message for="basicCost"/>
-                            </p:column>
-                            <p:column style="width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="Tempat"/>
-                                </f:facet>
-                                <pe:inputNumber id="individualCost" title="Biaya Per Individu" value="#{data.individualCost}" 
-                                                required="true" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                <p:message for="individualCost"/>
-                            </p:column>
+                                <p:column style="text-align: center;width: 3%">
+                                    <f:facet name="header">  
+                                        <h:outputText value="#{appmsg['global.number']}"/>
+                                    </f:facet>
+                                    <h:outputLabel value="#{no+1}." />
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{appmsg['educationhistory.certificate_number']}"/>
+                                    </f:facet>
+                                    <h:outputLabel value= "#{data.recruitSelectionSeriesName}" />
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{appmsg['global.start_date']}"/>
+                                    </f:facet>
+                                    <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.start_date']}" value="#{data.startDate}"
+                                                 required="false" navigator="true">
+                                    </p:calendar>
 
-                        </p:dataTable>
-                        <p:focus context="formId" />
+                                    <p:message for="startDate"/>
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{appmsg['global.end_date']}"/>
+                                    </f:facet>
+                                    <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.end_date']}" value="#{data.endDate}"
+                                                 required="false" navigator="true">
+                                    </p:calendar>
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Time"/>
+                                    </f:facet>
+                                    <pe:timePicker id="startTime" value="#{data.time}" mode="spinner" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_end']}"/>
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Tempat"/>
+                                    </f:facet>
+                                    <p:inputText id="place" title="Place" value="#{data.place}" 
+                                                 required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
+                                    <p:message for="place"/>
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Penyeleksi"/>
+                                    </f:facet>
+<!--                                    <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                     onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()" style="font-size: 10px!important" action="saveListEmployee">                        
+                                        <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
+                                    </p:commandButton>-->
+                                    <p:commandButton value="#{appmsg['global.save']}" ajax="true"
+                                                     styleClass="label_button" 
+                                                     style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                                     icon="ui-icon-disk"
+                                                     immediate="true" update=":formDetail, updateName"
+                                                     onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()"
+                                                     id="buttonSave" title="#{appmsg['global.save']}">
+                                        <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
+                                        <!--<p:ajax event="dialogReturn" listener="#{recruitVacancySelectionFormController.onDialogReturn}"  update="tableVacancySelectionSeries"/>-->
+                                    </p:commandButton>
+                                    #{data.listEmpData} #{data.recruitSelectionSeriesName}
+                                    <h:outputLabel id="updateName" value= "#{data.recruitSelectionSeriesName}" />
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Biaya Pokok"/>
+                                    </f:facet>
+                                    <pe:inputNumber id="basicCost" title="Place" value="#{data.basicCost}" 
+                                                    required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
+                                    <p:message for="basicCost"/>
+                                </p:column>
+                                <p:column style="width: 15%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Tempat"/>
+                                    </f:facet>
+                                    <pe:inputNumber id="individualCost" title="Biaya Per Individu" value="#{data.individualCost}" 
+                                                    required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
+                                    <p:message for="individualCost"/>
+                                </p:column>
 
+                            </p:dataTable>
+                            <p:focus context="formId" />
+                        </h:panelGrid>
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
@@ -194,55 +208,61 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
-                    </div>
-                </h:form>
+
+                    </h:form>
+                </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="penyeleksiDialog" header="#{appmsg['savingType.savingType_detail']}" width="700" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog id="penyeleksiDialogId" widgetVar="penyeleksiDialog" header="#{appmsg['savingType.savingType_detail']}" width="700" height="400" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
-                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-                        <h:panelGrid columns="4">
-                            <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
-                            <p:outputLabel value=":" styleClass="header_big" />
-                            <p:inputText id="searchId" style="width: 450px" value="#{userEmployeeSearchController.param}"/>
-                            <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
-                                             ajax="true" action="testButton" />
-                            <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="testButton" />
-                        </h:panelGrid>
-                        <p:focus for="searchId" />
-                        <p:dataTable  id="tableEmpDataId" var="empData"  value="#{recruitVacancySelectionModel.listVacancySelectionDetail.get(0).lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
-                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-                                      rowIndexVar="no">
-                            <p:column style="text-align: center;width: 25px;max-width: 25px">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.number']}" />
-                                </f:facet>
-                                <h:outputLabel value="#{no+1}." />
-                            </p:column>
 
-                            <p:column sortBy="#{empData.nik}"> 
-                                <f:facet name="header">  
-                                    <h:outputText value="NIK" />
-                                </f:facet>
-                                <p:outputLabel value=" #{empData.nik}" />
-                            </p:column> 
-                            
-                            <p:column style="text-align: center" > 
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.action']}" />
-                                </f:facet>
-                                <p:commandButton value="#{appmsg['global.select']}"  style="font-size: 11px!important" action="#{userEmployeeSearchController.doSelect(empData)}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </p:panelGrid>
+                    <h:form id="formDetail">
+                        <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
+                                <p:outputLabel value=":" styleClass="header_big" />
+                                <p:inputText id="searchId" style="width: 450px" value="#{recruitVacancySelectionModel.nikOrName}"/>
+                                <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="save" />
+                            </h:panelGrid>
+                            <p:focus for="searchId" />
+                            <p:dataTable id="checkboxDT" var="data" value="#{recruitVacancySelectionModel.listEmpData}" selection="#{recruitVacancySelectionModel.selectedListEmpData}" rowKey="#{data.id}" style="margin-bottom:0">
+
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+
+                                <p:column sortBy="#{data.nik}"> 
+                                    <f:facet name="header">  
+                                        <h:outputText value="NIK" />
+                                    </f:facet>
+                                    <p:outputLabel value=" #{data.nik}" />
+                                </p:column> 
+
+                            </p:dataTable>
+
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"
+                                             action="saveListEmployee" styleClass="label_button" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
+                                             oncomplete="handleUpdateRequest(args)"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+
+                        </p:panelGrid>
+                    </h:form>
                 </p:dialog>
+                <script type="text/javascript">
+                    function handleUpdateRequest(args) {
+                        if (args.listEmpExist) {
+                            jQuery('#penyeleksiDialogId').effect("shake", {times: 3}, 75);
+                        } else {
+                            PF('penyeleksiDialog').hide();
+                        }
+                    }
+                </script>
             </ui:define>
-
         </ui:composition>
 
     </h:body>
+
 </html>
 
