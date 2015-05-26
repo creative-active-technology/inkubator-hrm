@@ -98,6 +98,7 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.createAlias("company", "co", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("orgLevel", orgLevel));
         criteria.add(Restrictions.eq("co.id", companyId));
+
         return (Department) criteria.uniqueResult();
 
     }
@@ -131,5 +132,15 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
         criteria.add(Restrictions.not(Restrictions.like("departmentCode", "ROOT", MatchMode.START)));
         return criteria.list();
 
+    }
+
+    @Override
+    public List<Department> getByOrgLevelAndCompany(String orgLevel, long companyId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("company", "co", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("co.id", companyId));
+        criteria.add(Restrictions.eq("orgLevel", orgLevel));
+        criteria.addOrder(Order.asc("departmentName"));
+        return criteria.list();
     }
 }
