@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.entity.UnregDepartement;
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
@@ -435,6 +436,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public DefaultDiagramModel createDiagramModel(long companyId) throws Exception {
+       
         DefaultDiagramModel ddm = new DefaultDiagramModel();
         Department department = this.departmentDao.getByLevelOneAndCompany("ORG", companyId);
         List<Department> depLevelDep = this.departmentDao.getByOrgLevelAndCompany("DEP", companyId);
@@ -463,7 +465,10 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 //            depLevelDeV.addAll(dep.getDepartments());
             Element child = new Element(dep.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
             child.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
-            child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+            if (!dep.getDepartments().isEmpty()) {
+                child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+            }
+
             jarak = jarak + dep.getDepartmentName().length() / 2 + 7;
             ddm.addElement(child);
             ddm.connect(new Connection(master.getEndPoints().get(0), child.getEndPoints().get(0), connector));
@@ -472,20 +477,27 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             for (Department depLevelDeV1 : dep.getDepartments()) {
                 Element chElement = new Element(depLevelDeV1.getDepartmentName(), (jarak1 + 2) + "em", (y + 25) + "em");
                 jarak1 = jarak1 + (depLevelDeV1.getDepartmentName().length() / 2) + 2;
-                System.out.println(" jarakkna " + jarak1);
+
                 chElement.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
-                  chElement.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+                if (!depLevelDeV1.getDepartments().isEmpty()) {
+                    chElement.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+                }
+
                 ddm.addElement(chElement);
                 if (depLevelDeV1.getDepartment() == dep) {
                     ddm.connect(new Connection(child.getEndPoints().get(1), chElement.getEndPoints().get(0), connector));
                 }
                 for (Department depLevelDeV2 : depLevelDeV1.getDepartments()) {
+                    System.out.println(" hehheheh" + depLevelDeV2);
                     Element chElement2 = new Element(depLevelDeV2.getDepartmentName(), (jarak2 + 2) + "em", (y + 35) + "em");
                     jarak2 = jarak2 + (depLevelDeV2.getDepartmentName().length() / 2) + 2;
-                    System.out.println(" jarakkna " + jarak1);
-                    chElement.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
-                    ddm.addElement(chElement);
-                    if (depLevelDeV2.getDepartment() == dep) {
+                    System.out.println(" jarakkna " + jarak2);
+                    chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+                    if (!depLevelDeV2.getDepartments().isEmpty()) {
+                        chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+                    }
+                    ddm.addElement(chElement2);
+                    if (depLevelDeV2.getDepartment() == depLevelDeV1) {
                         ddm.connect(new Connection(chElement.getEndPoints().get(1), chElement2.getEndPoints().get(0), connector));
                     }
                 }

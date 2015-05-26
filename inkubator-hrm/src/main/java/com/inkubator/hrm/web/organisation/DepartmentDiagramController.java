@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.organisation;
 
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.logging.Level;
@@ -42,6 +43,10 @@ public class DepartmentDiagramController extends BaseController {
         try {
             super.initialization();
             String param = FacesUtil.getRequestParameter("execution");
+           if(param==null){
+               param="e"+HrmUserInfoUtil.getCompanyId().toString();
+           }
+               
             model = departmentService.createDiagramModel( Long.parseLong(param.substring(1)));
             model.setMaxConnections(-1);
 
