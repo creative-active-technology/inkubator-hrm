@@ -72,7 +72,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
-                                	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="statusDialog.show()"  oncomplete="dialogReuse.show()"
+                                	<p:commandButton value="#{appmsg['global.reuse']}" title="#{appmsg['global.reuse']}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogReuse').show()"
                                 				   	 action="#{paySalaryUploadDetailController.doSelectPrevPayrollPeriode()}" update=":panelReuseId"/>
                                     <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{paySalaryUploadDetailController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{paySalaryUploadDetailController.onDialogReturn}"  update="formPaySalaryUploadDetailId,:growlPaySalaryUploadDetailId"/>
@@ -199,8 +199,8 @@
 	                    </h:panelGrid>
                         <p:separator style="margin-top:20px;"/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{paySalaryUploadDetailController.doReuse()}" update="formPaySalaryUploadDetailId,growlPaySalaryUploadDetailId"
-                                         oncomplete="dialogReuse.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogReuse.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogReuse').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogReuse').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
                                 

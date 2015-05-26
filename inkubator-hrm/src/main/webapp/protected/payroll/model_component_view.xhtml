@@ -88,7 +88,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{modelComponentViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailModelComponent.show()">                        
+                                                 action="#{modelComponentViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailModelComponent').show()">                        
                                     <f:setPropertyActionListener value="#{modelComponentData}" target="#{modelComponentViewController.selectedModelComponent}" />
                                 </p:commandButton>
                                 - 
