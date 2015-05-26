@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.SavingType;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class SearchEmployeeCandidateLazyDataModel extends LazyDataModel<EmpData> {
+public class SearchEmployeeCandidateLazyDataModel extends LazyDataModel<SearchEmployeeCandidateViewModel> {
 
     private static final Logger LOGGER = Logger.getLogger(SearchEmployeeCandidateLazyDataModel.class);
     
@@ -34,21 +35,23 @@ public class SearchEmployeeCandidateLazyDataModel extends LazyDataModel<EmpData>
     private final List<Integer> listJoinDate;
     private final Double gpa;
     private final Long educationLevelId;
-    private List<EmpData> empDataList = new ArrayList<>();
+    private final String gender;
+    private List<SearchEmployeeCandidateViewModel> empDataList = new ArrayList<>();
     private Integer jumlahData;
 
-    public SearchEmployeeCandidateLazyDataModel(EmpDataService service, List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId) {
+    public SearchEmployeeCandidateLazyDataModel(EmpDataService service, List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) {
         this.service = service;
         this.listJabatanId = listJabatanId;
         this.listReligionId = listReligionId;       
         this.listAge = listAge;
         this.listJoinDate = listJoinDate;
         this.gpa = gpa;
+        this.gender = gender;
         this.educationLevelId = educationLevelId;        
     }
     
     @Override
-    public List<EmpData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<SearchEmployeeCandidateViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
         try {
@@ -58,8 +61,8 @@ public class SearchEmployeeCandidateLazyDataModel extends LazyDataModel<EmpData>
             } else {
                 order = Order.desc("nik");
             }
-            empDataList = service.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, first, pageSize, order);
-            jumlahData = Integer.parseInt(String.valueOf(service.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId)));
+            empDataList = service.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId,gender, first, pageSize, order);
+            jumlahData = Integer.parseInt(String.valueOf(service.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -72,14 +75,14 @@ public class SearchEmployeeCandidateLazyDataModel extends LazyDataModel<EmpData>
     }
 
     @Override
-    public Object getRowKey(EmpData empData) {
-        return empData.getId();
+    public Object getRowKey(SearchEmployeeCandidateViewModel empData) {
+        return empData.getEmpDataId();
     }
 
     @Override
-    public EmpData getRowData(String id) {
-        for (EmpData empData : empDataList) {
-            if (id.equals(String.valueOf(empData.getId()))) {
+    public SearchEmployeeCandidateViewModel getRowData(String id) {
+        for (SearchEmployeeCandidateViewModel empData : empDataList) {
+            if (id.equals(String.valueOf(empData.getEmpDataId()))) {
                 return empData;
             }
         }

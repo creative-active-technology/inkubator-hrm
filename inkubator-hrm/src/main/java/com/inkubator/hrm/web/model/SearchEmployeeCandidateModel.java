@@ -23,39 +23,21 @@ import org.primefaces.model.LazyDataModel;
  */
 public class SearchEmployeeCandidateModel implements Serializable{
     private Long id;
-//    private String name;
-//    private String lastName;
-//    private String codeJabatan;
-//    private String nikFrom;
-//    private String nikUntil;
-    private EmpData selectedEmpData;
+    private SearchEmployeeCandidateViewModel selectedEmpCandidate;
     private int ageFrom;
     private int ageUntil;
     private int workingPeriodFrom;
     private int workingPeriodEnd;
-//    private int fromJoin;
-//    private int untilJoin;
     private String gender;
-//    private String firstName;
-//    private String empTypeName;
     private String jabatans;
     private String religions;
-//    private String golonganJabatans;
-//    private String tipeKaryawan;
-//    private String employeeTypeView;
-//    private String[] employeeTypeName;
-//    private String[] employeeTypeNameView;
-//    private Double age;
-//    private Date joinDate;
     private DualListModel<Jabatan> dualListModelJabatan = new DualListModel<>();
     private DualListModel<Religion> dualListModelReligion = new DualListModel<>();
     private Map<String, Long> mapEducation = new TreeMap<>();
     private Long educationLevelType;
     private Double gpa;
     private Double gpaScale = 4.0;
-//    private List<String> listEmployeeType = new ArrayList<String>();
-//    private List<EmpData> listEmpData = new ArrayList<EmpData>();
-    private LazyDataModel<EmpData> lazyDataModel;
+    private LazyDataModel<SearchEmployeeCandidateViewModel> lazyDataModel;
     
     public Long getId() {
         return id;
@@ -81,21 +63,23 @@ public class SearchEmployeeCandidateModel implements Serializable{
         this.dualListModelReligion = dualListModelReligion;
     }  
 
-    public LazyDataModel<EmpData> getLazyDataModel() {
+    public LazyDataModel<SearchEmployeeCandidateViewModel> getLazyDataModel() {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<SearchEmployeeCandidateViewModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public EmpData getSelectedEmpData() {
-        return selectedEmpData;
+    public SearchEmployeeCandidateViewModel getSelectedEmpCandidate() {
+        return selectedEmpCandidate;
     }
 
-    public void setSelectedEmpData(EmpData selectedEmpData) {
-        this.selectedEmpData = selectedEmpData;
+    public void setSelectedEmpCandidate(SearchEmployeeCandidateViewModel selectedEmpCandidate) {
+        this.selectedEmpCandidate = selectedEmpCandidate;
     }
+
+    
 
     public int getWorkingPeriodFrom() {
         return workingPeriodFrom;

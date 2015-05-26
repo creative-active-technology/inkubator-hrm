@@ -53,30 +53,30 @@
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="100"/>
                                     </p:spinner>
-                                        
+                                    &nbsp;#{appmsg['global.until']}&nbsp;
                                         <p:spinner id="untilWp" value="#{searchEmployeeCandidateModel.workingPeriodEnd}" min="0" max="100" required="true" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                         <f:validateLongRange minimum="1" maximum="100"/>
                                         </p:spinner>
-
+                                   &nbsp; #{appmsg['global.year']} &nbsp;
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['biodata.age']}" style="font-weight: bold"/>
+                                        <p:outputLabel for="from"  value="#{appmsg['biodata.age']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:spinner id="from" value="#{searchEmployeeCandidateModel.ageFrom}" min="0" max="100" required="false" size="2" 
                                                    validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                             <f:validateLongRange minimum="17" maximum="55"/>
                                         </p:spinner>
-                                        #{appmsg['global.until']}
+                                        &nbsp;#{appmsg['global.until']}&nbsp;
                                         <p:spinner id="until" value="#{searchEmployeeCandidateModel.ageUntil}" min="0" max="100" required="false" size="2" 
                                                    validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                             <f:validateLongRange minimum="17" maximum="55"/>
                                         </p:spinner>
-                                        #{appmsg['global.year']}
+                                       &nbsp; #{appmsg['global.year']} &nbsp;
                                     </p:column>
                                 </div>
                             </p:row>
@@ -97,11 +97,11 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
+                                        <p:outputLabel for="religionId"  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;" colspan="2">
                                         <p:pickList value="#{searchEmployeeCandidateModel.dualListModelReligion}" var="religion" itemValue="#{religion}" converter="religionConverter" id="religionId"
-                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
                                                     itemLabel="#{religion.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                     removeLabel="#{appmsg['global.remove']}"/>
                                         <p:message for="religionId" />
@@ -139,9 +139,13 @@
                             </p:row>
                         </p:panelGrid>
                         <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
-                                         action="next" styleClass="isitext_hrm"
+                                         action="next" styleClass="isitext_hrm" update="jobTitleViewId"
                                          style="margin-right: 5px" label="#{appmsg['global.search']}"
                                          icon="ui-icon-search" title="#{appmsg['global.search']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleViewId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" style="margin-right: 5px" >  
+                            <p:resetInput target="jobTitleViewId" />  
+                        </p:commandButton>
                         <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="close_back" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                         <div style="clear: both"/>
                     </h:form>
