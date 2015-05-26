@@ -129,8 +129,8 @@
                                     <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.start_date']}" value="#{data.startDate}"
                                                  required="false" navigator="true">
                                     </p:calendar>
-                                    
-                                <p:message for="startDate"/>
+
+                                    <p:message for="startDate"/>
                                 </p:column>
                                 <p:column style="width: 15%">
                                     <f:facet name="header">
@@ -166,12 +166,14 @@
                                                      styleClass="label_button" 
                                                      style="margin-right: 5px" label="#{appmsg['global.save']}"
                                                      icon="ui-icon-disk"
-                                                     immediate="true"
+                                                     immediate="true" update=":formDetail, updateName"
                                                      onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()"
                                                      id="buttonSave" title="#{appmsg['global.save']}">
                                         <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
+                                        <!--<p:ajax event="dialogReturn" listener="#{recruitVacancySelectionFormController.onDialogReturn}"  update="tableVacancySelectionSeries"/>-->
                                     </p:commandButton>
-                                    #{data.listEmpData}
+                                    #{data.listEmpData} #{data.recruitSelectionSeriesName}
+                                    <h:outputLabel id="updateName" value= "#{data.recruitSelectionSeriesName}" />
                                 </p:column>
                                 <p:column style="width: 15%">
                                     <f:facet name="header">
@@ -193,20 +195,20 @@
                             </p:dataTable>
                             <p:focus context="formId" />
                         </h:panelGrid>
-                    <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-                    <div style="margin-bottom: 5px">
-                        <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
-                                         action="save" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="Lanjut"
-                                         icon="ui-icon-search" title="Lanjut"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                            <p:resetInput target="formId" />  
-                        </p:commandButton>
-                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
-                                         styleClass="label_button"/>
-                    </div>
-                    
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
+                                             action="save" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="Lanjut"
+                                             icon="ui-icon-search" title="Lanjut"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+
                     </h:form>
                 </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
@@ -215,7 +217,8 @@
                 <p:dialog id="penyeleksiDialogId" widgetVar="penyeleksiDialog" header="#{appmsg['savingType.savingType_detail']}" width="700" height="400" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
 
-                    <h:form><p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                    <h:form id="formDetail">
+                        <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                             <h:panelGrid columns="4">
                                 <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
                                 <p:outputLabel value=":" styleClass="header_big" />
@@ -240,26 +243,26 @@
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true"
                                              action="saveListEmployee" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk" update=":formId:tableVacancySelectionSeries"
+                                             icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
                                              oncomplete="handleUpdateRequest(args)"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
 
                         </p:panelGrid>
                     </h:form>
                 </p:dialog>
+                <script type="text/javascript">
+                    function handleUpdateRequest(args) {
+                        if (args.listEmpExist) {
+                            jQuery('#penyeleksiDialogId').effect("shake", {times: 3}, 75);
+                        } else {
+                            PF('penyeleksiDialog').hide();
+                        }
+                    }
+                </script>
             </ui:define>
-
         </ui:composition>
 
     </h:body>
-    <script type="text/javascript">
-        function handleUpdateRequest(args) {
-            if (!args.listEmpExist) {
-                jQuery('#penyeleksiDialogId').effect("shake", {times: 3}, 75);
-            } else {
-                PF('penyeleksiDialog').hide();
-            }
-        }
-    </script>
+
 </html>
 

@@ -87,10 +87,10 @@ public class RecruitVacancySelectionFormController implements Serializable {
         RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
         Long recruitHireApplyId = recruitVacancySelectionModel.getRecruitHireApplyId();
         RecruitHireApply recruitHireApply = recruitHireApplyService.getEntityByPkWithDetail(recruitHireApplyId);
-//        recruitVacancySelectionModel.setJobTitleName(recruitHireApply.getJabatan().getName());
-//        recruitVacancySelectionModel.setEffectiveDate(recruitHireApply.getEfectiveDate());
-//        recruitVacancySelectionModel.setStaffName(recruitHireApply.getEmployeeType().getName());
-//        recruitVacancySelectionModel.setRecruitHireApplyName(recruitHireApply.getReason());
+        recruitVacancySelectionModel.setJobTitleName(recruitHireApply.getJabatan().getName());
+        recruitVacancySelectionModel.setEffectiveDate(recruitHireApply.getEfectiveDate());
+        recruitVacancySelectionModel.setStaffName(recruitHireApply.getEmployeeType().getName());
+        recruitVacancySelectionModel.setRecruitHireApplyName(recruitHireApply.getReason());
     }
     
     public void getRecruitVacancySelectionDetail(RequestContext context) throws Exception{
@@ -119,11 +119,17 @@ public class RecruitVacancySelectionFormController implements Serializable {
         System.out.println("step 2 sebelum selected");
         System.out.println(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getRecruitSelectionSeriesName());
         System.out.println("step 3 sesudah selected");
+        List<RecruitVacancySelectionDetailModel> newData = new ArrayList<RecruitVacancySelectionDetailModel>();
         for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel.getListVacancySelectionDetail()) {
             if(data.getRecruitSelectionSeriesName().equals(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getRecruitSelectionSeriesName())){
                 data.setListEmpData(recruitVacancySelectionModel.getSelectedListEmpData());
+                data.setRecruitSelectionSeriesName("update selection series");
+                System.out.println("aaa");
+                newData.add(data);
             }
         }
+        recruitVacancySelectionModel.setListVacancySelectionDetail(newData);
+        context.getFlowScope().put("recruitVacancySelectionModel", recruitVacancySelectionModel);
         System.out.println("step akhir");
         System.out.println(recruitVacancySelectionModel.getListVacancySelectionDetail());
         if(recruitVacancySelectionModel.getSelectedListEmpData().isEmpty()){
