@@ -12,6 +12,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -39,15 +40,15 @@ public class DepartmentDiagramController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-     
+
         try {
             super.initialization();
             String param = FacesUtil.getRequestParameter("execution");
-           if(param==null){
-               param="e"+HrmUserInfoUtil.getCompanyId().toString();
-           }
-               
-            model = departmentService.createDiagramModel( Long.parseLong(param.substring(1)));
+            if (param == null) {
+                param = "e" + HrmUserInfoUtil.getCompanyId().toString();
+            }
+
+            model = departmentService.createDiagramModel(Long.parseLong(param.substring(1)));
             model.setMaxConnections(-1);
 
         } catch (Exception ex) {
@@ -55,7 +56,6 @@ public class DepartmentDiagramController extends BaseController {
         }
     }
 
-  
     public DiagramModel getModel() {
         return model;
     }
@@ -64,7 +64,14 @@ public class DepartmentDiagramController extends BaseController {
         this.departmentService = departmentService;
     }
 
-     public String doBack() {
+    public String doBack() {
         return "/protected/organisation/organiztion_level.htm?faces-redirect=true";
     }
+
+    @PreDestroy
+    private void cleanAndExit() {
+        model = null;
+        departmentService = null;
+    }
+    
 }
