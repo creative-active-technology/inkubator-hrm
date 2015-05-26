@@ -58,7 +58,7 @@
         <h:inputHidden value="#{homeController.bahasa}" />
         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
         <h:form>
-            <p:idleMonitor timeout="1740000" onidle="infoSession.show()"/>
+            <p:idleMonitor timeout="1740000" onidle="PF('infoSession').show()"/>
             <p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="5500" />
             <p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
 
@@ -80,7 +80,7 @@
 
         </h:form>
 
-        <p:dialog widgetVar="calendarDialog" modal="true" resizable="false"  onShow="statusDialog.hide();"
+        <p:dialog widgetVar="calendarDialog" modal="true" resizable="false"  onShow="PF('statusDialog').hide();"
                   appendTo="@(body)" header="Kalender" dynamic="true" width="500" closeOnEscape="true" >
             <h:form id="caledarFormId">
                 <p:schedule value="#{calendarController.lazyScheduleModel}" ignoreTimezone="false"
@@ -90,7 +90,7 @@
         <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
         </p:dialog>
-        <p:dialog widgetVar="dialogUserInfo" modal="true" resizable="false" hideEffect="puff" showEffect="clip" onShow="statusDialog.hide();handleViewTabUserInfo(0);" 
+        <p:dialog widgetVar="dialogUserInfo" modal="true" resizable="false" hideEffect="puff" showEffect="clip" onShow="PF('statusDialog').hide();handleViewTabUserInfo(0);" 
                   appendTo="@(body)" header="#{appmsg['master_layout.user_configuration']}" dynamic="true" width="500" >
             <h:panelGrid columns="2" style="margin-top: 10px;margin-left: 6px">
                 <p:graphicImage library="images" name="user.png" width="44" height="44" cache="true"  />
@@ -241,13 +241,13 @@
                                            
                                        
                                     </h:outputLink>-->
-                                    <p:commandLink id="userId" onclick="statusDialog.show()" oncomplete="dialogUserInfo.show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
+                                    <p:commandLink id="userId" onclick="PF('statusDialog').show()" oncomplete="PF('dialogUserInfo').show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
                                         <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
                                     <h:commandLink id="calculatorId" title="Calculator">
                                         <p:graphicImage library="images" name="calculator_ico.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
-                                    <p:commandLink id="calendarId" title="Calendar" onclick="statusDialog.show()" oncomplete="calendarDialog.show()" ajax="true" update=":caledarFormId" >
+                                    <p:commandLink id="calendarId" title="Calendar" onclick="PF('statusDialog').show()" oncomplete="PF('calendarDialog').show()" ajax="true" update=":caledarFormId" >
                                         <p:graphicImage library="images" name="calendar_ico.png" width="22" height="22"  cache="true"/> 
                                     </p:commandLink>
                                     <h:commandLink id="helpId" title="Need Help Clik Me">
@@ -787,7 +787,7 @@
             }
             function handleDoUpdateUserInfo(args) {
                 if (args.isUpdateSucceed) {
-                    dialogUserInfo.hide();
+                    PF('dialogUserInfo').hide();
                 }
             }
             function start() {

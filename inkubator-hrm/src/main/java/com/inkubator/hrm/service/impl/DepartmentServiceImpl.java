@@ -484,8 +484,11 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
             diagramModel.addElement(child);
             diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));
+//           
+        }
+        for (Department data1 : data) {
             if (data1.getDepartments() != null) {
-                doCreate(data1, diagramModel,element);
+                doCreate(data1, diagramModel, element);
             }
         }
 
