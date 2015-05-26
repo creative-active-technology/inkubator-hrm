@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.entity.UnregDepartement;
 import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
@@ -435,23 +436,91 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public DefaultDiagramModel createDiagramModel(long companyId) throws Exception {
-        Department department = this.departmentDao.getByLevelOneAndCompany("ORG", companyId);
+       
         DefaultDiagramModel ddm = new DefaultDiagramModel();
-        Element master = new Element();
-        int x = 40;
-        int y = 6;
+        Department department = this.departmentDao.getByLevelOneAndCompany("ORG", companyId);
+        List<Department> depLevelDep = this.departmentDao.getByOrgLevelAndCompany("DEP", companyId);
+//        List<Department> depLevelDeV = new ArrayList<>();
+//        List<Element> data1 = new ArrayList<>();
 
+        StraightConnector connector = new StraightConnector();
+        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
+        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+
+        int jarak = 0;
+        int x = 40;
+        int y = 5;
+        int jarak1 = 0;
+        int jarak2 = 0;
+        Element master = new Element();
         master.setData(department.getDepartmentName());
         master.setX(x + "em");
         master.setY(y + "em");
-        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+
         master.setDraggable(true);
+        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
         ddm.addElement(master);
-        return doCreate(department, ddm, master);
+        for (Department dep : depLevelDep) {
+
+//            depLevelDeV.addAll(dep.getDepartments());
+            Element child = new Element(dep.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
+            child.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+            if (!dep.getDepartments().isEmpty()) {
+                child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+            }
+
+            jarak = jarak + dep.getDepartmentName().length() / 2 + 7;
+            ddm.addElement(child);
+            ddm.connect(new Connection(master.getEndPoints().get(0), child.getEndPoints().get(0), connector));
+//            data1.add(child);
+
+            for (Department depLevelDeV1 : dep.getDepartments()) {
+                Element chElement = new Element(depLevelDeV1.getDepartmentName(), (jarak1 + 2) + "em", (y + 25) + "em");
+                jarak1 = jarak1 + (depLevelDeV1.getDepartmentName().length() / 2) + 2;
+
+                chElement.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+                if (!depLevelDeV1.getDepartments().isEmpty()) {
+                    chElement.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+                }
+
+                ddm.addElement(chElement);
+                if (depLevelDeV1.getDepartment() == dep) {
+                    ddm.connect(new Connection(child.getEndPoints().get(1), chElement.getEndPoints().get(0), connector));
+                }
+                for (Department depLevelDeV2 : depLevelDeV1.getDepartments()) {
+                    System.out.println(" hehheheh" + depLevelDeV2);
+                    Element chElement2 = new Element(depLevelDeV2.getDepartmentName(), (jarak2 + 2) + "em", (y + 35) + "em");
+                    jarak2 = jarak2 + (depLevelDeV2.getDepartmentName().length() / 2) + 2;
+                    System.out.println(" jarakkna " + jarak2);
+                    chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+                    if (!depLevelDeV2.getDepartments().isEmpty()) {
+                        chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+                    }
+                    ddm.addElement(chElement2);
+                    if (depLevelDeV2.getDepartment() == depLevelDeV1) {
+                        ddm.connect(new Connection(chElement.getEndPoints().get(1), chElement2.getEndPoints().get(0), connector));
+                    }
+                }
+            }
+//            depLevelDeV = new ArrayList<>();
+        }
+//        jarak = 0;
+//        for (Department depLevelDeV1 : depLevelDeV) {
+//            Element chElement = new Element(depLevelDeV1.getDepartmentName(), (jarak + 7) + "em", (y + 25) + "em");
+//            jarak = jarak + depLevelDeV1.getDepartmentName().length() / 2 + 7;
+//            chElement.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+//            ddm.addElement(chElement);
+//            ddm.connect(new Connection(data1.get(0).getEndPoints().get(1), chElement.getEndPoints().get(0), connector));
+//        }
+//        for (Element data11 : data1) {
+//            ddm.connect(new Connection(master.getEndPoints().get(0), data11.getEndPoints().get(0), connector));
+//        }
+//        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+        return ddm;
     }
 
-    private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel, Element element) {
-        System.out.println(" kepanggil beeberapa akalai " + department.getDepartmentName());
+    private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel, Element element, int jarak) {
+//        System.out.println(" kepanggil beeberapa akalai " + department.getDepartmentName());
         StraightConnector connector = new StraightConnector();
         connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
@@ -459,35 +528,47 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         diagramModel.setMaxConnections(-1);
         int x = 40;
         int y = 6;
-        int jarak = 0;
+
+//        System.out.println(" tekeksusus");
+        Element child = null;
         for (Department data1 : data) {
-//            if (data1.getOrgLevel().equals("ORG")) {
-//                y = 1 * y;
-//            }
-//            if (data1.getOrgLevel().equals("DEP")) {
-//                y = 2 * y;
-//            }
-//            if (data1.getOrgLevel().equals("DEV")) {
-//                y = 3 * y;
-//            }
+//            System.out.println(" nili organisan leel ua " + data1.getOrgLevel());
+            if (data1.getOrgLevel().equals("DEP")) {
+
+                child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
+                jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
+            }
+            if (data1.getOrgLevel().equals("DEV")) {
+                System.out.println(" Jaral unutk dev  " + jarak + 5);
+                child = new Element(data1.getDepartmentName(), (jarak + 5) + "em", (y + 20) + "em");
+                jarak = jarak + (data1.getDepartmentName().length()) + 10;
+            }
 //            if (data1.getOrgLevel().equals("DIR")) {
-//                y = 4 * y;
+//                child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 30) + "em");
+//                jarak = jarak + data1.getDepartmentName().length() / 2 + 20;
 //            }
 //            if (data1.getOrgLevel().equals("SKR")) {
-//                y = 5 * y;
+//                child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 40) + "em");
+//                jarak = jarak + data1.getDepartmentName().length() / 2 + 25;
 //            }
-            Element child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
-            System.out.println(" Nama departemetn " + data1.getDepartmentName());
+
             child.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
             child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
-            System.out.println(" jarakanya " + (jarak));
-            jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
+//            System.out.println(" jarakanya " + (jarak));
+
             diagramModel.addElement(child);
-            diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));
+//            diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));
             if (data1.getDepartments() != null) {
-                doCreate(data1, diagramModel,element);
+
+                doCreate(data1, diagramModel, child, jarak);
             }
         }
+//        for (Department data1 : data) {
+//            if (data1.getDepartments() != null) {
+//                jarak = 0;
+//                doCreate(data1, diagramModel, child, jarak);
+//            }
+//        }
 
         return diagramModel;
     }

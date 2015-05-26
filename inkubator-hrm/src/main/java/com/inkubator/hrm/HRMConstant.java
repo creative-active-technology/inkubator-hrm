@@ -416,7 +416,7 @@ public class HRMConstant {
      * Constant for ORGANISASI LEVEL */
     public static final String ORGANISASI = "ORG";
     public static final String DEPARTMENT = "DEP";
-    public static final String DIVISI = "DIV";
+    public static final String DIVISI = "DEV";
     public static final String DIREKTORAT = "DIR";
     public static final String SEKRETARIAT = "SKR";
     public static final String COMPANY_ACTIVE = "COMPANY_ACTIVE";

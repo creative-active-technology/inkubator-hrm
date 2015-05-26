@@ -34,4 +34,6 @@ public interface DepartmentDao extends IDAO<Department> {
 
     public List<Department> getAllWithSpecificCompany();
 
+    public List<Department> getByOrgLevelAndCompany(String orgLevel, long companyId);
+
 }

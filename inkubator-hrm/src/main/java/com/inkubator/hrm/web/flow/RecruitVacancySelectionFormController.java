@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.flow;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitSelectionType;
@@ -96,21 +97,59 @@ public class RecruitVacancySelectionFormController implements Serializable {
         RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
         List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getEntityBySelectionTypeId(recruitVacancySelectionModel.getRecruitSelectionTypeId());
         List<RecruitVacancySelectionDetailModel> listVacancySelectionDetailToShow = new ArrayList<>();
-        RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();
+        RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel;
         LazyDataModel<EmpData> lazyDataModel = new RecruitVacancyEmployeeLazyDataModel(recruitVacancySelectionModel.getNikOrName(), empDataService);
         for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : listVacancySelectionDetail) {
-            
+            recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();
             recruitVacancySelectionDetailModel.setRecruitSelectionSeriesName(recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getName());
-            recruitVacancySelectionDetailModel.setLazyDataModel(lazyDataModel);
+//            recruitVacancySelectionDetailModel.setLazyDataModel(lazyDataModel);
             listVacancySelectionDetailToShow.add(recruitVacancySelectionDetailModel);
         }
-        recruitVacancySelectionModel.setLazyDataModel(lazyDataModel);
+        List<EmpData> listEmpData = empDataService.getAllData();
+        recruitVacancySelectionModel.setListEmpData(listEmpData);
+//        recruitVacancySelectionModel.setLazyDataModel(lazyDataModel);
         recruitVacancySelectionModel.setListVacancySelectionDetail(listVacancySelectionDetailToShow);
     }
     
+    public void saveListEmployee(RequestContext context) throws Exception{
+        org.primefaces.context.RequestContext contextPrime = FacesUtil.getRequestContext();
+        System.out.println("step 1");
+        Boolean listEmpExist = Boolean.FALSE;
+        RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
+        System.out.println("step 2 sebelum selected");
+        System.out.println(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getRecruitSelectionSeriesName());
+        System.out.println("step 3 sesudah selected");
+        List<RecruitVacancySelectionDetailModel> newData = new ArrayList<RecruitVacancySelectionDetailModel>();
+        for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel.getListVacancySelectionDetail()) {
+            if(data.getRecruitSelectionSeriesName().equals(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getRecruitSelectionSeriesName())){
+                data.setListEmpData(recruitVacancySelectionModel.getSelectedListEmpData());
+                data.setRecruitSelectionSeriesName("update selection series");
+                System.out.println("aaa");
+                newData.add(data);
+            }
+        }
+        recruitVacancySelectionModel.setListVacancySelectionDetail(newData);
+        context.getFlowScope().put("recruitVacancySelectionModel", recruitVacancySelectionModel);
+        System.out.println("step akhir");
+        System.out.println(recruitVacancySelectionModel.getListVacancySelectionDetail());
+        if(recruitVacancySelectionModel.getSelectedListEmpData().isEmpty()){
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "error.email_not_registered",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }else{
+            listEmpExist = Boolean.TRUE;
+        }
+        contextPrime.addCallbackParam("listEmpExist", listEmpExist);
+    }
     
-    public void getDataPenyeleksi(RequestContext context) throws Exception{
-        System.out.println("hohohoho");
+
+    public void saveRecruitmentDetail(RequestContext context) throws Exception{
+        RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
+        for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel.getListVacancySelectionDetail()) {
+            System.out.println(data.getBasicCost() + " 1");
+            System.out.println(data.getStartDate() + " 2");
+            System.out.println(data.getEndDate() + " 3");
+            System.out.println(data.getListEmpData() + " 4");
+        }
     }
     
     public void onDialogReturn(SelectEvent event) {
