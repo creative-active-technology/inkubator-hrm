@@ -219,7 +219,7 @@
                                              icon="ui-icon-refresh" styleClass="isitext_hrm" style="margin-right: 5px" disabled="#{recruitMppApplyFormController.isUpdate}"  >  
                                 <p:resetInput target="formRecruitMppId" />  
                             </p:commandButton>
-                             <p:commandButton value="#{appmsg['global.back']}" ajax="true" 
+                            <p:commandButton value="#{appmsg['global.back']}" immediate="true"
                                              action="#{recruitMppApplyFormController.doBack()}" styleClass="isitext_hrm"
                                              style="margin-right: 5px" label="#{appmsg['global.back']}"
                                              icon="ui-icon-home" title="#{appmsg['global.back']}"/>
