@@ -1649,8 +1649,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, int firstResult, int maxResults, Order order) {
         StringBuffer selectQuery = new StringBuffer(
-                "SELECT empData "
-                + "FROM EmpData as empData "
+                
+               "FROM EmpData as empData "
                 + "INNER JOIN empData.jabatanByJabatanId as jabatan "
                 + "LEFT OUTER JOIN empData.bioData as bioData "
 //                + "INNER JOIN bioData.educationHistories as educationHistories "
@@ -1760,7 +1760,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId) {
         
         StringBuffer selectQuery = new StringBuffer(
-                "SELECT empData "
+                " SELECT COUNT(*) "
                 + "FROM EmpData as empData "
                 + "INNER JOIN empData.jabatanByJabatanId as jabatan "
                 + "LEFT OUTER JOIN empData.bioData as bioData "
@@ -1781,6 +1781,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //        if (!unitKerjas.isEmpty()) {
 //            selectQuery.append("AND unitKerja.id IN (:unitKerjas) ");
 //        }
+        
+        //selectQuery.append(" ) AS jumlahRow ");
 
         Query hbm = getCurrentSession().createQuery(selectQuery.toString());
 //                .setParameter("listJabatanId", listJabatanId)
@@ -1799,6 +1801,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         System.out.println("Query Total : " + hbm.getQueryString());
         
         return Long.valueOf(hbm.uniqueResult().toString());
+         //Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString())
 
 //        final org.hibernate.type.Type[] typeJoinDate = new org.hibernate.type.Type[listJoinDate.size()];
 //        Arrays.fill(typeJoinDate, org.hibernate.type.StandardBasicTypes.INTEGER);

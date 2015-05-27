@@ -133,9 +133,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.getBioData().getFirstName();
         empData.getBioData().getLastName();
         empData.getJabatanByJabatanId().getName();
-        if(empData.getGolonganJabatan() != null){
-        	empData.getGolonganJabatan().getPangkat().getPangkatCode();
-        }        
+        if (empData.getGolonganJabatan() != null) {
+            empData.getGolonganJabatan().getPangkat().getPangkatCode();
+        }
         if (empData.getWtGroupWorking() != null) {
             empData.getWtGroupWorking().getCode();
         }
@@ -670,7 +670,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK";
         if (empData.getPtkpStatus() == Boolean.TRUE) {
             ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
-        }else{
+        } else {
             ptkpNumber = 0;
         }
 
@@ -829,13 +829,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik,  int firstResult, int maxResults, Order order) throws Exception {
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik, int firstResult, int maxResults, Order order) throws Exception {
         Long[] deptId = new Long[department.size()];
         int i = 0;
         for (Department dept : department) {
             deptId[i] = dept.getId();
         }
-        
+
         return empDataDao.getAllDataByParamWithDetail(department, golJab, empTypeName, listAge, listJoinDate, listNik, firstResult, maxResults, order);
     }
 
@@ -863,16 +863,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(empTypeId, golJabId, unitKerjaId);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataByAnnouncementId(Long announcementId) {
-		Announcement announcement =  announcementDao.getEntiyByPK(announcementId);
-		Long companyId = announcement.getCompany().getId();
-		List<Long> empTypes = Lambda.extract(announcement.getAnnouncementEmpTypes(), Lambda.on(AnnouncementEmpType.class).getEmployeeType().getId());
-		List<Long> golJabs = Lambda.extract(announcement.getAnnouncementGoljabs(), Lambda.on(AnnouncementGoljab.class).getGolonganJabatan().getId());
-		List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
-		return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId,empTypes,golJabs,unitKerjas);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByAnnouncementId(Long announcementId) {
+        Announcement announcement = announcementDao.getEntiyByPK(announcementId);
+        Long companyId = announcement.getCompany().getId();
+        List<Long> empTypes = Lambda.extract(announcement.getAnnouncementEmpTypes(), Lambda.on(AnnouncementEmpType.class).getEmployeeType().getId());
+        List<Long> golJabs = Lambda.extract(announcement.getAnnouncementGoljabs(), Lambda.on(AnnouncementGoljab.class).getGolonganJabatan().getId());
+        List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
+        return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId, empTypes, golJabs, unitKerjas);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
@@ -903,11 +903,22 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 //    public Long getTotalEmpCandidateByParamWithDetail(List<Jabatan> listJabatan, List<Religion> listReligion, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId) throws Exception {
 //        return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatan, listReligion, listAge, listJoinDate, gpa, educationLevelId);
 //    }
-
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, int firstResult, int maxResults, Order order) throws Exception {
-        return this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, firstResult, maxResults, order);
+        List<EmpData> listEmpData = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, firstResult, maxResults, order);
+        System.out.println("size : " + listEmpData.size());
+        for (EmpData empData : listEmpData) {
+            System.out.println("nik : " + empData.getNik());
+            if (null != empData.getBioData()) {
+                System.out.println("nama : " + empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
+                if (null != empData.getBioData().getReligion()) {
+                    System.out.println("Agama : " + empData.getBioData().getReligion().getName() );
+                }
+            }
+
+        }
+        return listEmpData;
     }
 
     @Override
