@@ -22,10 +22,12 @@ public interface BioDataService extends IService<BioData> {
     public List<BioData> getByParam(BioDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalByParam(BioDataSearchParameter parameter) throws Exception;
-    
+
     public List<BioData> getEntityByPKWithDetail(long id) throws Exception;
 
     public List<BioData> getByName(String name) throws Exception;
 
-	public StreamedContent generateCV(long id) throws Exception;
+    public StreamedContent generateCV(long id) throws Exception;
+
+    
 }
