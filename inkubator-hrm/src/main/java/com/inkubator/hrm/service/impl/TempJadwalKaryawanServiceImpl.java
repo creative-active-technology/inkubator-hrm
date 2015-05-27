@@ -316,7 +316,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-
+            System.out.println(" Tanggal nya "+jadwalKaryawan.getTanggalWaktuKerja());
             this.tempJadwalKaryawanDao.saveOrUpdateAndMerge(jadwalKaryawan);
             i++;
         }

@@ -10,6 +10,7 @@ import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.diagram.DefaultDiagramModel;
 
 /**
  *
@@ -34,8 +35,10 @@ public interface DepartmentService extends IService<Department> {
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception;
 
     public void saveOrganisasiLevel(Department department) throws Exception;
-    
+
     public Department getDepartementWithUnitKerja(Long departementId) throws Exception;
-    
+
     public void updateOrganisasiLevel(Department department) throws Exception;
+
+    public DefaultDiagramModel createDiagramModel(long companyId) throws Exception;
 }

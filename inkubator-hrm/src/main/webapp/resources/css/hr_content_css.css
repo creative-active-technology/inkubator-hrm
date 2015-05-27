@@ -1340,3 +1340,20 @@ td.even {
 .ui-notificationbar {
 	height: 10px;
 }
+
+.ui-diagram-element {
+    width: auto;
+    height: 4em;
+    line-height: 5em;
+    text-align: center;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 1em;
+    border: 1px solid #404A4E;
+    background-color: #98cad5;
+    color: #142b30;
+    font-size: 13px;
+    padding-left: 7px;
+    padding-right: 7px;
+    /*padding-bottom: 20px;*/
+   
+}

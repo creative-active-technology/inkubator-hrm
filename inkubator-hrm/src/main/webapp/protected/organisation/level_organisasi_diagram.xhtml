@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+               
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['org_level.organization_level']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['org_level.organization_level_data_from_organization']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <p:growl id="growlJabatan" showDetail="true" showSummary="true" globalOnly="true"/>
+                    <h:form id="skema_jabatan_id">
+                        <div style="margin-top: 15px;margin-left: 0px;margin-right: 10px;margin-bottom: 15px">
+                            <p:diagram value="#{departmentDiagramController.model}" style="height:600px" styleClass="ui-widget-content" />
+                        </div>
+                        <p:separator/>
+                        <h:panelGrid columns="1" style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSchemaController.doBack()}" styleClass="label_button" immediate="true"/>
+                        </h:panelGrid>
+                    </h:form>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

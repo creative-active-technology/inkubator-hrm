@@ -194,7 +194,7 @@
 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update="tableDetailRecruitMppApply,:panelDialogMppApplyDetailConfirmId" 
-                                                         action="#{recruitMppApplyFormController.doSelectRecruitMppApplyDetail(data)}"  onclick="statusDialog.show()"  oncomplete="dialogConfirmMppApplyDetail.show()">
+                                                         action="#{recruitMppApplyFormController.doSelectRecruitMppApplyDetail(data)}"  onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmMppApplyDetail').show()">
                                             <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyFormController.selectedRecruitMppApplyDetail}" />
                                         </p:commandButton>
                                         -
@@ -228,7 +228,7 @@
                     
                     
                 </h:form>
-                 <p:dialog widgetVar="dialogConfirmMppApplyDetail" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                 <p:dialog widgetVar="dialogConfirmMppApplyDetail" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -248,8 +248,8 @@
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitMppApplyFormController.doDeleteRecruitMppApplyDetail()}" update="formRecruitMppId:tableDetailRecruitMppApply,:growlId"
-                                         oncomplete="dialogConfirmMppApplyDetail.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmMppApplyDetail.hide()" icon="ui-icon-close" />                     	
+                                         oncomplete="PF('dialogConfirmMppApplyDetail').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmMppApplyDetail').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
             </ui:define>

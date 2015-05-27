@@ -100,7 +100,7 @@ public class LoanNewTypeViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 550);
-        options.put("contentHeight", 475);
+        options.put("contentHeight", 500);
         RequestContext.getCurrentInstance().openDialog("loan_new_type_form", options, params);
     }
 

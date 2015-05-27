@@ -42,7 +42,7 @@
                                 <p:ajax listener="#{departmentHirarkiViewController.doChangeCompany()}" update="tree" process="@this" partialSubmit="true"/>
                             </p:selectOneMenu>
                         </h:panelGrid>
-                    
+
                         <div style="margin-bottom: 7px" align="left">
                             <p:treeTable id="tree" value="#{departmentHirarkiViewController.root}" style="width: 100%" var="dep" 
                                          selection="#{departmentHirarkiViewController.selectedNode}"  selectionMode="single" >
@@ -55,12 +55,13 @@
                         </div>
                         <p:outputLabel value=" #{appmsg['org_level.click']}"  style="margin-top: 10px"/>
                         <p:separator style="margin-top: 10px"/>
-                        <h:panelGrid columns="1" style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentHirarkiViewController.doClose()}" styleClass="label_button" immediate="true"/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px">
+                            <p:commandButton value="Diagram"  icon="ui-icon-image"  title="Diagram" action="#{departmentHirarkiViewController.doCreateDiagaram()}" styleClass="label_button" immediate="true"/>
+                            <p:commandButton value="#{appmsg['global.close']}"  icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{departmentHirarkiViewController.doClose()}" styleClass="label_button" immediate="true"/>
                         </h:panelGrid>
                     </h:form>
                 </div>
-             
+
             </ui:define>
 
         </ui:composition>

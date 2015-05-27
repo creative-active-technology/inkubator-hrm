@@ -30,6 +30,12 @@ import java.util.Set;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.diagram.Connection;
+import org.primefaces.model.diagram.DefaultDiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.connector.StraightConnector;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
+import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -300,7 +306,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             department.setCreatedBy(UserInfoUtil.getUserName());
             department.setCreatedOn(new Date());
             departmentDao.save(department);
-         
+
             Department d = new Department();
             d.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             d.setCompany(company);
@@ -329,7 +335,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     public TreeNode cretaeNodeBreakEndPoint(String param) throws Exception {
         TreeNode root;
         Department endPointDepartment = departmentDao.getEntiyByPK(Long.parseLong(param.substring(1)));
-     
+
         List<Department> data = new ArrayList<>();
         data.add(endPointDepartment);
         gerParent(endPointDepartment, data);
@@ -386,7 +392,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         Department department = this.departmentDao.getEntiyByPK(departementId);
         List<UnitKerja> dataToShow = new ArrayList<>();
         for (DepartementUnitLocation location : this.departementUnitLocationDao.getByDepartementId(departementId)) {
-          location.getUnitKerja().getCity().getCityName();
+            location.getUnitKerja().getCity().getCityName();
             dataToShow.add(location.getUnitKerja());
         }
         department.setListUnit(dataToShow);
@@ -400,7 +406,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 30)
     public void updateOrganisasiLevel(Department department) throws Exception {
         long totalDuplicates = departmentDao.getTotalByCodeAndNotId(department.getDepartmentCode(), department.getId());
-    
+
         if (totalDuplicates > 0) {
             throw new BussinessException("department.error_duplicate_department_name");
         }
@@ -424,6 +430,66 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
             this.departementUnitLocationDao.save(depLoc);
         }
 
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public DefaultDiagramModel createDiagramModel(long companyId) throws Exception {
+        Department department = this.departmentDao.getByLevelOneAndCompany("ORG", companyId);
+        DefaultDiagramModel ddm = new DefaultDiagramModel();
+        Element master = new Element();
+        int x = 40;
+        int y = 6;
+
+        master.setData(department.getDepartmentName());
+        master.setX(x + "em");
+        master.setY(y + "em");
+        master.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+        master.setDraggable(true);
+        ddm.addElement(master);
+        return doCreate(department, ddm, master);
+    }
+
+    private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel, Element element) {
+        System.out.println(" kepanggil beeberapa akalai " + department.getDepartmentName());
+        StraightConnector connector = new StraightConnector();
+        connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
+        connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+        List<Department> data = new ArrayList<>(department.getDepartments());
+        diagramModel.setMaxConnections(-1);
+        int x = 40;
+        int y = 6;
+        int jarak = 0;
+        for (Department data1 : data) {
+//            if (data1.getOrgLevel().equals("ORG")) {
+//                y = 1 * y;
+//            }
+//            if (data1.getOrgLevel().equals("DEP")) {
+//                y = 2 * y;
+//            }
+//            if (data1.getOrgLevel().equals("DEV")) {
+//                y = 3 * y;
+//            }
+//            if (data1.getOrgLevel().equals("DIR")) {
+//                y = 4 * y;
+//            }
+//            if (data1.getOrgLevel().equals("SKR")) {
+//                y = 5 * y;
+//            }
+            Element child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
+            System.out.println(" Nama departemetn " + data1.getDepartmentName());
+            child.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
+            child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
+            System.out.println(" jarakanya " + (jarak));
+            jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
+            diagramModel.addElement(child);
+            diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));
+            if (data1.getDepartments() != null) {
+                doCreate(data1, diagramModel,element);
+            }
+        }
+
+        return diagramModel;
     }
 
 }

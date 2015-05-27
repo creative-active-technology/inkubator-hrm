@@ -83,7 +83,7 @@ public class DepartmentHirarkiViewController extends BaseController {
                     createNodes(dep, node);
                 }
             }
-            
+
         } else {
             List<Department> data1 = departmentService.listChildGetByParentId(department.getId());
             for (Department dep2 : data1) {
@@ -93,7 +93,7 @@ public class DepartmentHirarkiViewController extends BaseController {
                     createNodes(dep2, node);
                 }
             }
-          
+
         }
         return root;
     }
@@ -163,4 +163,8 @@ public class DepartmentHirarkiViewController extends BaseController {
         this.companyName = companyName;
     }
 
+    public String doCreateDiagaram() {
+        System.out.println(" hahhahaah");
+        return "/protected/organisation/level_organisasi_diagram.htm?faces-redirect=true&execution=e" + selectedOrganisasi;
+    }
 }
