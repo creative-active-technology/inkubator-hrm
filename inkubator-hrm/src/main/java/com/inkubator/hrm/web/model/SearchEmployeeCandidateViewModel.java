@@ -17,6 +17,8 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
     private Long idReligion;
     private String religionName;
     private String kriteria;
+    private Long lastEducationLevelId;
+    private String lastEducationLevelName;
 
     public Long getEmpDataId() {
         return empDataId;
@@ -88,6 +90,22 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
 
     public void setKriteria(String kriteria) {
         this.kriteria = kriteria;
+    }
+
+    public Long getLastEducationLevelId() {
+        return lastEducationLevelId;
+    }
+
+    public void setLastEducationLevelId(Long lastEducationLevelId) {
+        this.lastEducationLevelId = lastEducationLevelId;
+    }
+
+    public String getLastEducationLevelName() {
+        return lastEducationLevelName;
+    }
+
+    public void setLastEducationLevelName(String lastEducationLevelName) {
+        this.lastEducationLevelName = lastEducationLevelName;
     }
     
    

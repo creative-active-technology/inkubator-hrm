@@ -1652,7 +1652,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge,
             List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) {
 
-
+        
         StringBuffer selectQuery = new StringBuffer(
                 "SELECT empData.id AS empDataId, empData.nik AS nik, "
                 + " bioData.firstName AS firstName, bioData.lastName AS lastName, "
@@ -1660,9 +1660,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " religion.id AS idReligion, religion.name AS religionName "
                 + " FROM EmpData as empData "
                 + " INNER JOIN empData.jabatanByJabatanId AS jabatan "
+                + " INNER JOIN jabatan.department AS department "  
+                + " INNER JOIN department.company AS company "
                 + " LEFT OUTER JOIN empData.bioData AS  bioData "
                 + " INNER JOIN bioData.religion AS  religion "
-                + " WHERE :educationLevelId in ( "
+                + " WHERE company.id = :companyId  "
+                + " AND :educationLevelId in ( "
                 + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
                 + " INNER JOIN bioEdu.biodata bioDataInner "
                 + " WHERE bioDataInner.id = bioData.id ) "
@@ -1702,7 +1705,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         Query hbm = getCurrentSession().createQuery(selectQuery.toString())
                 .setParameter("gpa", gpa)
-                .setParameter("educationLevelId", educationLevelId);
+                .setParameter("educationLevelId", educationLevelId)
+                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());
 
         if (!listJabatanId.isEmpty()) {
             hbm.setParameterList("listJabatanId", listJabatanId);
@@ -1733,9 +1737,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 " SELECT COUNT(*) "
                 + " FROM EmpData as empData "
                 + " INNER JOIN empData.jabatanByJabatanId as jabatan  "
-                + " LEFT OUTER JOIN empData.bioData as bioData "
-                + " INNER JOIN bioData.religion as religion "
-                + " WHERE :educationLevelId in ( "
+                + " INNER JOIN jabatan.department AS department "  
+                + " INNER JOIN department.company AS company "
+                + " LEFT OUTER JOIN empData.bioData AS  bioData "
+                + " INNER JOIN bioData.religion AS  religion "
+                + " WHERE company.id = :companyId  "
+                + " AND :educationLevelId in ( "
                 + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
                 + " INNER JOIN bioEdu.biodata bioDataInner "
                 + " WHERE bioDataInner.id = bioData.id ) "
@@ -1775,7 +1782,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         Query hbm = getCurrentSession().createQuery(selectQuery.toString())
                 .setParameter("gpa", gpa)
-                .setParameter("educationLevelId", educationLevelId);       
+                .setParameter("educationLevelId", educationLevelId)
+                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());     
         
         if (!listJabatanId.isEmpty()) {
             hbm.setParameterList("listJabatanId", listJabatanId);

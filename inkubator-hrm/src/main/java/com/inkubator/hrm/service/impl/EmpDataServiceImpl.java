@@ -35,6 +35,7 @@ import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
@@ -121,6 +122,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private AnnouncementDao announcementDao;
     @Autowired
     private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -904,6 +907,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId,  String gender, int firstResult, int maxResults, Order order) throws Exception {
         List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender, firstResult, maxResults, order);
+        EducationLevel educationLevel = educationLevelDao.getEntiyByPK(educationLevelId);
         
         // Set Detail Position Criteria of each Data 
         for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
@@ -915,6 +919,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
                 kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription()  +  (isNotLastRecord ? ", " : "");
             }
             searchEmployeeCandidateViewModel.setKriteria(kriteria);
+            searchEmployeeCandidateViewModel.setLastEducationLevelName(educationLevel.getName());
             
         }
 
