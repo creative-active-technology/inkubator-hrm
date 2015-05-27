@@ -36,6 +36,8 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -1643,5 +1645,222 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(disjunction);
         }
     }
+
+    @Override
+    public List<EmpData> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, int firstResult, int maxResults, Order order) {
+        StringBuffer selectQuery = new StringBuffer(
+                "SELECT empData "
+                + "FROM EmpData as empData "
+                + "INNER JOIN empData.jabatanByJabatanId as jabatan "
+                + "LEFT OUTER JOIN empData.bioData as bioData "
+//                + "INNER JOIN bioData.educationHistories as educationHistories "
+//                + "INNER JOIN educationHistories.educationLevel as educationLevel "
+                + " INNER JOIN bioData.religion as religion "
+//                + "INNER JOIN empData.golonganJabatan as golonganJabatan "
+                + " WHERE umur(bioData.dateOfBirth , NOW()) in (:listAge) "
+//                + "AND status != :status ");
+                + " ");
+        
+//        Boolean isFilter = !listJabatanId.isEmpty() || !listReligionId.isEmpty();
+//        if(isFilter){
+//             selectQuery.append("AND jabatan.id IN (:employeeTypes) ");
+//        }
+        if (!listJabatanId.isEmpty()) {
+            selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
+        }
+        if (!listReligionId.isEmpty()) {
+            selectQuery.append("AND religion.id IN (:listReligionId) ");
+        }
+//        if (!unitKerjas.isEmpty()) {
+//            selectQuery.append("AND unitKerja.id IN (:unitKerjas) ");
+//        }
+
+        Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+//                .setParameter("listJabatanId", listJabatanId)
+//                .setParameter("listReligionId", listReligionId)
+//                .setParameter("listAge", listAge);                
+        if (!listJabatanId.isEmpty()) {
+            hbm.setParameterList("listJabatanId", listJabatanId);
+        }
+        if (!listReligionId.isEmpty()) {
+            hbm.setParameterList("listReligionId", listReligionId);
+        }
+        if (!listAge.isEmpty()) {
+            hbm.setParameterList("listAge", listAge);
+        }
+        System.out.println("Query : " + hbm.getQueryString());
+        return hbm.setMaxResults(maxResults).setFirstResult(firstResult).list();
+//        final org.hibernate.type.Type[] typeJoinDate = new org.hibernate.type.Type[listJoinDate.size()];
+//        Arrays.fill(typeJoinDate, org.hibernate.type.StandardBasicTypes.INTEGER);
+//        final org.hibernate.type.Type[] typeAge = new org.hibernate.type.Type[listAge.size()];
+//        Arrays.fill(typeAge, org.hibernate.type.StandardBasicTypes.INTEGER);
+//
+//        final StringBuilder joinDateList = new StringBuilder();
+//        final StringBuilder ageList = new StringBuilder();
+//
+//        for (int i = 0; i < listJoinDate.size(); i++) {
+//            if (i > 0) {
+//                joinDateList.append(",");
+//            }
+//            joinDateList.append("?");
+//        }
+//        for (int i = 0; i < listAge.size(); i++) {
+//            if (i > 0) {
+//                ageList.append(",");
+//            }
+//            ageList.append("?");
+//        }
+//        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        /**
+//         * automatically get relations of jabatanByJabatanId, department,
+//         * company don't create alias for that entity, or will get error :
+//         * duplicate association path
+//         */
+//        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+//        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+//
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData.educationHistories", "educationHistories", JoinType.INNER_JOIN);
+//        criteria.createAlias("educationHistories.educationLevel", "educationLevel", JoinType.INNER_JOIN);
+//        criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);     
+//        
+//        //criteria.add(Restrictions.eq("religion", educationLevelId));
+//        
+//        if (!listJabatanId.isEmpty()) {
+//            criteria.add(Restrictions.in("jabatanByJabatanGajiId.id", listJabatanId));
+//        }
+//        
+////        if (educationLevelId != null) {
+////            //Restrictions.
+////            criteria.add(Restrictions.in("educationLevel.id", educationLevelId));
+////        }
+//        
+//        if (!listReligionId.isEmpty()) {
+//            criteria.add(Restrictions.in("religion.id", listReligionId));
+//        }
+//
+//        if (listJoinDate.get(0) != 0) {
+//            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.join_date)), '%Y')+0 in (" + joinDateList.toString() + ")", listJoinDate.toArray(), typeJoinDate));
+//
+//        }
+//        if (listAge.get(0) != 0) {
+//            
+//            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata1_.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+//                    //criteria.add(Restrictions.sqlRestriction(" umur(bioData.date_of_birth , NOW()) in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+//        }
+//        
+//        criteria.addOrder(order);
+//        criteria.setFirstResult(firstResult);
+//        criteria.setMaxResults(maxResults);
+//        System.out.println("Query  : " + criteria.toString());
+//        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId) {
+        
+        StringBuffer selectQuery = new StringBuffer(
+                "SELECT empData "
+                + "FROM EmpData as empData "
+                + "INNER JOIN empData.jabatanByJabatanId as jabatan "
+                + "LEFT OUTER JOIN empData.bioData as bioData "
+//                + "INNER JOIN bioData.educationHistories as educationHistories "
+//                + "INNER JOIN educationHistories.educationLevel as educationLevel "
+                + " INNER JOIN bioData.religion as religion "
+//                + "INNER JOIN empData.golonganJabatan as golonganJabatan "
+                + " WHERE umur(bioData.dateOfBirth , NOW()) in (:listAge) "
+//                + "AND status != :status ");
+                + " ");
+        
+         if (!listJabatanId.isEmpty()) {
+            selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
+        }
+        if (!listReligionId.isEmpty()) {
+            selectQuery.append("AND religion.id IN (:listReligionId) ");
+        }
+//        if (!unitKerjas.isEmpty()) {
+//            selectQuery.append("AND unitKerja.id IN (:unitKerjas) ");
+//        }
+
+        Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+//                .setParameter("listJabatanId", listJabatanId)
+//                .setParameter("listReligionId", listReligionId)
+//                .setParameter("listAge", listAge);                
+        if (!listJabatanId.isEmpty()) {
+            hbm.setParameterList("listJabatanId", listJabatanId);
+        }
+        if (!listReligionId.isEmpty()) {
+            hbm.setParameterList("listReligionId", listReligionId);
+        }
+        if (!listAge.isEmpty()) {
+            hbm.setParameterList("listAge", listAge);
+        }
+        
+        System.out.println("Query Total : " + hbm.getQueryString());
+        
+        return Long.valueOf(hbm.uniqueResult().toString());
+
+//        final org.hibernate.type.Type[] typeJoinDate = new org.hibernate.type.Type[listJoinDate.size()];
+//        Arrays.fill(typeJoinDate, org.hibernate.type.StandardBasicTypes.INTEGER);
+//        final org.hibernate.type.Type[] typeAge = new org.hibernate.type.Type[listAge.size()];
+//        Arrays.fill(typeAge, org.hibernate.type.StandardBasicTypes.INTEGER);
+//
+//        final StringBuilder joinDateList = new StringBuilder();
+//        final StringBuilder ageList = new StringBuilder();
+//
+//        for (int i = 0; i < listJoinDate.size(); i++) {
+//            if (i > 0) {
+//                joinDateList.append(",");
+//            }
+//            joinDateList.append("?");
+//        }
+//        for (int i = 0; i < listAge.size(); i++) {
+//            if (i > 0) {
+//                ageList.append(",");
+//            }
+//            ageList.append("?");
+//        }
+//        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        /**
+//         * automatically get relations of jabatanByJabatanId, department,
+//         * company don't create alias for that entity, or will get error :
+//         * duplicate association path
+//         */
+//        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+//        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+//
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData.educationHistories", "educationHistories", JoinType.INNER_JOIN);
+//        criteria.createAlias("educationHistories.educationLevel", "educationLevel", JoinType.INNER_JOIN);
+//        criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);     
+//        
+//        criteria.add(Restrictions.eq("religion", educationLevelId));
+//        
+//        if (!listJabatanId.isEmpty()) {
+//            criteria.add(Restrictions.in("jabatanByJabatanGajiId.id", listJabatanId));
+//        }
+//        
+////        if (educationLevelId != null) {
+////            //Restrictions.
+////            criteria.add(Restrictions.in("educationLevel.id", educationLevelId));
+////        }
+//        
+//        if (!listReligionId.isEmpty()) {
+//            criteria.add(Restrictions.in("religion.id", listReligionId));
+//        }
+//
+//        if (listJoinDate.get(0) != 0) {
+//            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.join_date)), '%Y')+0 in (" + joinDateList.toString() + ")", listJoinDate.toArray(), typeJoinDate));
+//
+//        }
+//        if (listAge.get(0) != 0) {
+//            //criteria.add(Restrictions.sqlRestriction(" umur(bioData.date_of_birth , NOW()) in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+//            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata_1.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+//        }
+//        System.out.println("Query Total : " + criteria.toString());
+//         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+   
 
 }

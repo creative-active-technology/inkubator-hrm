@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['empCandidateSearch.search_employee_candidate_result']}" styleClass="header_big" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <o:form id="formId">
+<!--                        <p:panelGrid id="panelList" style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.departments}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.golonganJabatans}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['reimbursment.employee_type']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.tipeKaryawan}" />
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['searchEmployee.lifespan']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.from} s/d #{searchEmployeeModel.until}" />
+                                    #{appmsg['global.year']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['employeeSearch.work_time_length']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.fromJoin} s/d #{searchEmployeeModel.untilJoin}" />
+                                    #{appmsg['global.year']}
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.nik']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 85%">
+                                    <p:outputLabel  value="#{searchEmployeeModel.nikFrom} #{appmsg['global.until']} #{searchEmployeeModel.nikUntil}" />
+
+                                </p:column>
+                            </p:row>
+
+
+                        </p:panelGrid>-->
+
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Search_Employee"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.search']}"  icon="ui-icon-search"  title="#{appmsg['global.search']}"  immediate="true" action="back"
+                                                     styleClass="label_button"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable  var="data"  value="#{searchEmployeeCandidateModel.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}" />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.nik}" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.nik}" />
+                            </p:column>
+                            <p:column sortBy="#{data.bioData.firstName}" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
+                            </p:column> 
+                            <p:column sortBy="#{data.religion.name}" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['religion.religion']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{data.religion.name}" />                               
+                            </p:column>
+                            <p:column sortBy="#{data.religion.name}" > 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['empCandidateSearch.last_education_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.religion.name}" />
+                            </p:column> 
+                            <p:column sortBy="#{data.jabatanByJabatanGajiId.name}"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.jabatanByJabatanGajiId.name}" />
+                            </p:column>
+                            
+                            <p:column style="text-align: center;"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.action']}"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.personal_information']}" label="#{appmsg['global.personal_information']}"
+                                                 style="font-size: 10px!important" action="personalInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeCandidateModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-collapsed" title="#{appmsg['global.employee_information']}" label="#{appmsg['global.employee_information']}"
+                                                 style="font-size: 10px!important" action="employeeInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeCandidateModel.selectedEmpData}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.background_information']}" label="#{appmsg['global.background_information']}"
+                                                 style="font-size: 10px!important" action="employeeBackgroundInfo">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeCandidateModel.selectedEmpData}" />
+                                </p:commandButton>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{searchEmployeeCandidateModel.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet> 
+                        </p:dataTable>  
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:separator />
+                        <div style="clear: both"/>
+
+
+                    </o:form>
+
+                    <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                        <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                    </p:dialog>
+
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

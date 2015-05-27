@@ -10,6 +10,8 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
@@ -142,5 +144,9 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getAllDataByAnnouncementId(Long announcementId);
 
     public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception;
+    
+    public List<EmpData> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, int firstResult, int maxResults, Order order) throws Exception;    
+    
+    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId) throws Exception;
 
 }
