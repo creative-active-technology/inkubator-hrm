@@ -191,6 +191,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_REVISED = 7;
     public static final Integer APPROVAL_STATUS_DRAFT = 8;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
+    public static final String EMP_CORRECTION_ATTENDANCE = "EMP_CORRECTION_ATTENDANCE";
     /* END */
 
 
@@ -375,6 +376,7 @@ public class HRMConstant {
     public static final String LOAN_CANCELLATION_KODE = "LCAN";
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
+    public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
 
     public static final String APP_NAME = "Web Destop App";
 

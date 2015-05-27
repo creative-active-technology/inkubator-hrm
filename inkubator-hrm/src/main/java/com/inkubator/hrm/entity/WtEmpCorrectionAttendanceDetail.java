@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,42 +19,41 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "temp_process_read_finger", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames= {"emp_data_id", "schedule_date", "schedule_in", "schedule_out"}))
-public class TempProcessReadFinger implements Serializable {
+@Table(name = "wt_emp_correction_attendance_detail", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames= {"emp_correction_attendance_id", "attendance_date"}))
+public class WtEmpCorrectionAttendanceDetail implements Serializable {
 
     private Long id;
     private Integer version;
     
-    private EmpData empData;
+    private WtEmpCorrectionAttendance wtEmpCorrectionAttendance;
     private Long workingHourId;
     private String workingHourName;
-    private Date scheduleDate;
     private Date scheduleIn;
     private Date scheduleOut;
-    private Date fingerIn;
-    private Date fingerOut;
-    private Date webCheckIn;
-    private Date webCheckOut;
-    private Boolean isCorrectionIn;
-    private Boolean isCorrectionOut;
-    private Integer marginIn;
-    private Integer marginOut;
+    private Date attendanceDate;
+    private Date attendanceIn;
+    private Date attendanceOut;
+    private Date correctionIn;
+    private Date correctionOut;
+    private String description;    
     
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
 
-    public TempProcessReadFinger() {
+    public WtEmpCorrectionAttendanceDetail() {
 
     }
 
-    public TempProcessReadFinger(Long id) {
+    public WtEmpCorrectionAttendanceDetail(Long id) {
         this.id = id;
     }
 
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "wt_emp_correction_attendance_detail_seq_gen")
+    @SequenceGenerator(name = "wt_emp_correction_attendance_detail_seq_gen", sequenceName = "WT_EMP_CORRECTION_ATTENDANCE_DETAIL_SEQ")
     public Long getId() {
         return this.id;
     }
@@ -68,18 +70,19 @@ public class TempProcessReadFinger implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
-    }
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emp_data_id", nullable = false)
-	public EmpData getEmpData() {
-		return empData;
+    }    
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emp_correction_attendance_id", nullable = false)
+	public WtEmpCorrectionAttendance getWtEmpCorrectionAttendance() {
+		return wtEmpCorrectionAttendance;
 	}
 
-	public void setEmpData(EmpData empData) {
-		this.empData = empData;
+	public void setWtEmpCorrectionAttendance(
+			WtEmpCorrectionAttendance wtEmpCorrectionAttendance) {
+		this.wtEmpCorrectionAttendance = wtEmpCorrectionAttendance;
 	}
-		
+
 	@Column(name = "working_hour_id", nullable = false)
 	public Long getWorkingHourId() {
 		return workingHourId;
@@ -96,16 +99,6 @@ public class TempProcessReadFinger implements Serializable {
 
 	public void setWorkingHourName(String workingHourName) {
 		this.workingHourName = workingHourName;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "schedule_date", length = 19, nullable = false)
-	public Date getScheduleDate() {
-		return scheduleDate;
-	}
-	
-	public void setScheduleDate(Date scheduleDate) {
-		this.scheduleDate = scheduleDate;
 	}
 
 	@Temporal(TemporalType.TIME)
@@ -128,80 +121,63 @@ public class TempProcessReadFinger implements Serializable {
 		this.scheduleOut = scheduleOut;
 	}
 
-	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_in", length = 8)
-	public Date getFingerIn() {
-		return fingerIn;
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "attendance_date", length = 19, nullable = false)
+	public Date getAttendanceDate() {
+		return attendanceDate;
 	}
 
-	public void setFingerIn(Date fingerIn) {
-		this.fingerIn = fingerIn;
-	}
-
-	@Temporal(TemporalType.TIME)
-    @Column(name = "finger_out", length = 8)
-	public Date getFingerOut() {
-		return fingerOut;
-	}
-
-	public void setFingerOut(Date fingerOut) {
-		this.fingerOut = fingerOut;
+	public void setAttendanceDate(Date attendanceDate) {
+		this.attendanceDate = attendanceDate;
 	}
 		
 	@Temporal(TemporalType.TIME)
-    @Column(name = "web_check_in", length = 8)
-	public Date getWebCheckIn() {
-		return webCheckIn;
+    @Column(name = "attendance_in", length = 19, nullable = false)
+	public Date getAttendanceIn() {
+		return attendanceIn;
 	}
 
-	public void setWebCheckIn(Date webCheckIn) {
-		this.webCheckIn = webCheckIn;
+	public void setAttendanceIn(Date attendanceIn) {
+		this.attendanceIn = attendanceIn;
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "web_check_out", length = 8)
-	public Date getWebCheckOut() {
-		return webCheckOut;
+    @Column(name = "attendance_out", length = 19, nullable = false)
+	public Date getAttendanceOut() {
+		return attendanceOut;
 	}
 
-	public void setWebCheckOut(Date webCheckOut) {
-		this.webCheckOut = webCheckOut;
+	public void setAttendanceOut(Date attendanceOut) {
+		this.attendanceOut = attendanceOut;
 	}
 
-	@Column(name = "is_correction_in")
-	public Boolean getIsCorrectionIn() {
-		return isCorrectionIn;
+	@Temporal(TemporalType.TIME)
+    @Column(name = "correction_in", length = 19)
+	public Date getCorrectionIn() {
+		return correctionIn;
 	}
 
-	public void setIsCorrectionIn(Boolean isCorrectionIn) {
-		this.isCorrectionIn = isCorrectionIn;
+	public void setCorrectionIn(Date correctionIn) {
+		this.correctionIn = correctionIn;
 	}
 
-	@Column(name = "is_correction_out")
-	public Boolean getIsCorrectionOut() {
-		return isCorrectionOut;
+	@Temporal(TemporalType.TIME)
+    @Column(name = "correction_out", length = 19)
+	public Date getCorrectionOut() {
+		return correctionOut;
 	}
 
-	public void setIsCorrectionOut(Boolean isCorrectionOut) {
-		this.isCorrectionOut = isCorrectionOut;
-	}
-
-	@Column(name = "margin_in")
-	public Integer getMarginIn() {
-		return marginIn;
-	}
+	public void setCorrectionOut(Date correctionOut) {
+		this.correctionOut = correctionOut;
+	}	
 	
-	public void setMarginIn(Integer marginIn) {
-		this.marginIn = marginIn;
+	@Column(name = "description", length = 65535, columnDefinition = "Text")
+	public String getDescription() {
+		return description;
 	}
 
-	@Column(name = "margin_out")
-	public Integer getMarginOut() {
-		return marginOut;
-	}
-
-	public void setMarginOut(Integer marginOut) {
-		this.marginOut = marginOut;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Column(name = "created_by", length = 45)
@@ -209,7 +185,7 @@ public class TempProcessReadFinger implements Serializable {
         return this.createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 

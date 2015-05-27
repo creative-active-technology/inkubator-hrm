@@ -147,4 +147,12 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 		return (TempProcessReadFinger) criteria.uniqueResult();
 	}
 
+	@Override
+	public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataId, Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.between("scheduleDate", startDate, endDate));
+		return criteria.list();
+	}
+
 }
