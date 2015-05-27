@@ -29,12 +29,14 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <p:growl id="growlJabatan" showDetail="true" showSummary="true" globalOnly="true"/>
                     <h:form id="skema_jabatan_id">
+                        <p:scrollPanel mode="native">
                         <div style="margin-top: 15px;margin-left: 0px;margin-right: 10px;margin-bottom: 15px">
-                            <p:diagram value="#{departmentDiagramController.model}" style="height:600px" styleClass="ui-widget-content" />
+                            <p:diagram value="#{departmentDiagramController.model}" style="height:800px;width: 100%" />
                         </div>
+                        </p:scrollPanel>
                         <p:separator/>
                         <h:panelGrid columns="1" style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSchemaController.doBack()}" styleClass="label_button" immediate="true"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{departmentDiagramController.doBack()}" styleClass="label_button" immediate="true"/>
                         </h:panelGrid>
                     </h:form>
                 </div>
