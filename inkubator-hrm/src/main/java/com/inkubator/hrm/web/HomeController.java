@@ -74,7 +74,6 @@ public class HomeController extends BaseController {
          */
         try {
             Long empDataId = HrmUserInfoUtil.getEmpId();
-            System.out.println(" id nyayaya "+empDataId);
             Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
             isRenderAnnouncement = announcementLog != null;
