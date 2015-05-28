@@ -190,7 +190,7 @@
 									styleClass="label_button" style="margin-right: 5px"
 									label="#{appmsg['global.search']}" icon="ui-icon-disk"
 									immediate="true" update=":formDetail, tooltipEmployeeListId"
-									onclick="PF('statusDialog').show()"
+									action="doGetListEmployee" onclick="PF('statusDialog').show()" 
 									oncomplete="PF('penyeleksiDialog').show()"
 									id="employeeSearchButtonId" title="#{appmsg['global.search']}">
 									<f:setPropertyActionListener value="#{data}"
@@ -198,7 +198,7 @@
 								</p:commandButton>
 								<pe:tooltip for="employeeSearchButtonId"
 									id="tooltipEmployeeListId" showEffect="slideToggle"
-									style="margin-left: 200px;" hideEffect="slideToggle"
+									hideEffect="slideToggle"
 									showDelay="1" myPosition="top center"
 									atPosition="bottom center">
 									<p:dataList value="#{data.listEmpData}" var="empData"
@@ -243,6 +243,13 @@
 							partialSubmit="true" action="save" styleClass="isitext_hrm"
 							style="margin-right: 5px" label="#{appmsg['global.save']}"
 							icon="ui-icon-search" title="#{appmsg['global.save']}" />
+						<p:commandButton value="#{appmsg['global.save']}" ajax="true"
+							action="testPopUp" styleClass="label_button"
+							style="margin-right: 5px" label="#{appmsg['global.save']}"
+							icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
+							oncomplete="handleUpdateRequest(args)" id="buttonSave"
+							title="#{appmsg['global.save']}">
+						</p:commandButton>
 						<p:commandButton value="#{appmsg['global.reset']}"
 							title="#{appmsg['global.reset']}" process="@this" update="formId"
 							action="#{systemLetterReferenceFormController.doReset()}"
@@ -306,10 +313,8 @@
 									value="#{recruitVacancySelectionModel.selectedEmpData[data]}"
 									styleClass="label_button" onLabel="#{appmsg['global.yes']}"
 									offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check"
-									offIcon="ui-icon-close" >
-										<p:ajax event="click" listener="#{recruitVacancySelectionFormController.doSelectEmployee(flowRequestContext, empData)}"/>
-										
-									</p:selectBooleanButton>
+									offIcon="ui-icon-close">
+								</p:selectBooleanButton>
 							</p:column>
 
 
