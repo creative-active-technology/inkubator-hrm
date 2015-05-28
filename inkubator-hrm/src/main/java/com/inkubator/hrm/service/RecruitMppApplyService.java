@@ -17,7 +17,7 @@ import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public interface RecruitMppApplyService extends IService<RecruitMppApply> {
+public interface RecruitMppApplyService extends IService<RecruitMppApply>, BaseApprovalService{
 
     public List<RecruitMppApply> getByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 

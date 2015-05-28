@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class RecruitMppApplyViewModel implements Serializable {
 
-    private Long recruitMppApplyId;
+    private BigInteger recruitMppApplyId;
     private String recruitMppApplyCode;
     private String recruitMppApplyName;
     private Date applyDate;
@@ -25,11 +25,11 @@ public class RecruitMppApplyViewModel implements Serializable {
     private Integer approvalStatus;
     private String jsonData;
 
-    public Long getRecruitMppApplyId() {
+    public BigInteger getRecruitMppApplyId() {
         return recruitMppApplyId;
     }
 
-    public void setRecruitMppApplyId(Long recruitMppApplyId) {
+    public void setRecruitMppApplyId(BigInteger recruitMppApplyId) {
         this.recruitMppApplyId = recruitMppApplyId;
     }
 
