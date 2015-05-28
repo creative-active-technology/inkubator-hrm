@@ -126,6 +126,7 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	 */
 	public void getRecruitVacancySelectionDetail(RequestContext context)
 			throws Exception {
+		System.out.println("getRecruitVacancySelectionDetail");
 		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
 				.getFlowScope().get("recruitVacancySelectionModel");
 		List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService
@@ -155,6 +156,7 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	public void saveListEmployee(RequestContext context) throws Exception {
 		org.primefaces.context.RequestContext contextPrime = FacesUtil
 				.getRequestContext();
+		System.out.println("asddddddddddddddddddddddddddddddddd");
 		Boolean listEmpExist = Boolean.FALSE;
 		String employeeName = "";
 		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
@@ -192,6 +194,10 @@ public class RecruitVacancySelectionFormController implements Serializable {
 		
 	}
 
+	public void doGetListEmployee(RequestContext context) throws Exception{
+		System.out.println("get list employee");
+	}
+	
 	public void saveRecruitmentDetail(RequestContext context) throws Exception {
 		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
 				.getFlowScope().get("recruitVacancySelectionModel");
