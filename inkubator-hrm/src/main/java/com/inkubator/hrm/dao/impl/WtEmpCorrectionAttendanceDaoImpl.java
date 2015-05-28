@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtEmpCorrectionAttendanceDao;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
+import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
 
 /**
 *
@@ -50,7 +51,7 @@ public class WtEmpCorrectionAttendanceDaoImpl extends IDAOImpl<WtEmpCorrectionAt
 	}
 
 	@Override
-	public List<WtEmpCorrectionAttendance> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
+	public List<WtEmpCorrectionAttendance> getByParam(EmpCorrectionAttendanceSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
@@ -60,22 +61,25 @@ public class WtEmpCorrectionAttendanceDaoImpl extends IDAOImpl<WtEmpCorrectionAt
 	}
 
 	@Override
-	public Long getTotalByParam(String parameter) {        
+	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter) {        
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	private void doSearchByParam(String parameter, Criteria criteria) {
+	private void doSearchByParam(EmpCorrectionAttendanceSearchParameter parameter, Criteria criteria) {
 		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         
-        if (StringUtils.isEmpty(parameter)) {
+        if (StringUtils.isNotEmpty(parameter.getEmployee())) {
         	Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("empData.nik", parameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.firstName", parameter, MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.lastName", parameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
+        }
+        if(parameter.getEmpDataId() != null){
+        	criteria.add(Restrictions.eq("empData.id", parameter.getEmpDataId()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

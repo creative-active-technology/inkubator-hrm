@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
+import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
 
 /**
 *
@@ -17,8 +18,8 @@ public interface WtEmpCorrectionAttendanceDao extends IDAO<WtEmpCorrectionAttend
 
 	public WtEmpCorrectionAttendance getEntityByPkWithDetail(Long id);
 	
-	public List<WtEmpCorrectionAttendance> getByParam(String parameter, int firstResult, int maxResult, Order orderable);
+	public List<WtEmpCorrectionAttendance> getByParam(EmpCorrectionAttendanceSearchParameter parameter, int firstResult, int maxResult, Order orderable);
 	
-	public Long getTotalByParam(String parameter);
+	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter);
 	
 }

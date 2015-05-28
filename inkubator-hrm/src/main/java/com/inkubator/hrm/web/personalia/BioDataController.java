@@ -58,50 +58,50 @@ public class BioDataController extends BaseController {
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
     private BioData selectedBioData;
-    
+
     //Start BioFamilyRelationship
     private List<BioFamilyRelationship> bioFamilyRelationships;
     @ManagedProperty(value = "#{bioFamilyRelationshipService}")
     private BioFamilyRelationshipService bioFamilyRelationshipService;
     private BioFamilyRelationship selectedBioFamilyRelationship;
     //End BioFamilyRelationship
-    
+
     //Start BioAddress
     private List<BioAddress> bioAddresses;
     @ManagedProperty(value = "#{bioAddressService}")
     private BioAddressService bioAddressService;
     private BioAddress selectedBioAddress;
      //End BioAddress
-    
+
     //Start. bio bank
     private BioIdCard selectedBioIdCard;
     private List<BioIdCard> bioIdCards;
     @ManagedProperty(value = "#{bioIdCardService}")
     private BioIdCardService bioIdCardService;
     //End. bio bank
-    
+
     //Start. bio Emergency Contact
     @ManagedProperty(value = "#{bioEmergencyContactService}")
     private BioEmergencyContactService bioEmergencyContactService;
     private List<BioEmergencyContact> dataBioEmergencyContacs;
     private BioEmergencyContact selectedBioEmergencyContact;
     //End. bio Emergency Contact
-    
+
     //Start. Bio Relasi Perusahaan
     @ManagedProperty(value = "#{bioRelasiPerusahaanService}")
     private BioRelasiPerusahaanService bioRelasiPerusahaanService;
     private List<BioRelasiPerusahaan> listBioRelasiPerusaan;
     private BioRelasiPerusahaan selectedBioRelasiPerusahaan;
     //End. Bio RelasiPerusahaan
-    
+
     //Start Bio Education History 
-     private BioEducationHistory selectedEduHistory;
+    private BioEducationHistory selectedEduHistory;
     private BioEducationHistoryViewModel selectedBioEducationHistoryViewModel;
     private List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel;
     @ManagedProperty(value = "#{bioEducationHistoryService}")
     private BioEducationHistoryService educationHistoryService;
     //End Bio Education History
-    
+
     //Start. BioKeahlian
     private BioKeahlian selectedBioKeahlian;
     @ManagedProperty(value = "#{bioKeahlianService}")
@@ -115,7 +115,7 @@ public class BioDataController extends BaseController {
     private BioSpesifikasiAbilityService bioSpesifikasiAbilityService;
     private List<BioSpesifikasiAbility> listBioSpesifikasiAbility;
     //End. BioSpesifikasiAbility
-    
+
     //Start BioPeopleInterest / minat
     private BioPeopleInterest selectedPeopleInterest;
     private List<BioPeopleInterest> listPeopleInterest;
@@ -138,6 +138,7 @@ public class BioDataController extends BaseController {
             listBioEducationHistoryViewModel = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
             listBioKeahlian = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
             listBioSpesifikasiAbility = bioSpesifikasiAbilityService.getAllDataByBiodataId(selectedBioData.getId());
+            listPeopleInterest = peopleInterestService.getAllDataByBioDataId(selectedBioData.getId());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -170,7 +171,7 @@ public class BioDataController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 800);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 560);
 
         Map<String, List<String>> params = new HashMap<>();
         List<String> bioAddressId = new ArrayList<>();
@@ -277,7 +278,7 @@ public class BioDataController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     /**
      * START Bio IdCard method
      */
@@ -348,7 +349,6 @@ public class BioDataController extends BaseController {
     /**
      * END Bio IdCard method
      */
-    
     /**
      * START Bio Relasi Perusahaan
      */
@@ -404,8 +404,8 @@ public class BioDataController extends BaseController {
         options.put("contentHeight", 520);
         RequestContext.getCurrentInstance().openDialog("bio_relasi_perusahaan", options, params);
     }
-    
-     public void onDialogReturnBioRelasiPerusahaan(SelectEvent event) {
+
+    public void onDialogReturnBioRelasiPerusahaan(SelectEvent event) {
         try {
             listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
             super.onDialogReturn(event);
@@ -417,8 +417,7 @@ public class BioDataController extends BaseController {
     /**
      * END Bio Relasi Perusahaan
      */
-     
-      /**
+    /**
      * START Bio Education History method
      */
     public void doSelectBioEduHistory() {
@@ -464,8 +463,7 @@ public class BioDataController extends BaseController {
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("bio_edu_hist_form", options, dataToSend);
     }
-    
-    
+
     public void onDialogBioEducationHistoryReturn(SelectEvent event) {
         try {
             listBioEducationHistoryViewModel = educationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
@@ -476,11 +474,10 @@ public class BioDataController extends BaseController {
         }
 
     }
-    
-     /**
+
+    /**
      * END Bio Education History method
      */
-
     public void doDeleteBioEduHistory() {
         try {
             this.educationHistoryService.delete(selectedEduHistory);
@@ -498,7 +495,6 @@ public class BioDataController extends BaseController {
     /**
      * END Bio Education History method
      */
-    
     /**
      * START Bio Keahlian method
      */
@@ -569,8 +565,7 @@ public class BioDataController extends BaseController {
     /**
      * END Bio Keahlian method
      */
-    
-     /**
+    /**
      * START Bio Spesifikasi Ability method
      */
     public void doSelectBioSpesifikasiAbility() {
@@ -640,8 +635,7 @@ public class BioDataController extends BaseController {
     /**
      * END Bio Spesifikasi Ability method
      */
-    
-     /**
+    /**
      * START Bio People Interest method
      */
     public void doSelectBioPeopleInterest() {
@@ -697,7 +691,6 @@ public class BioDataController extends BaseController {
     /**
      * END BioPeople Interest method
      */
-
     public List<BioEmergencyContact> getDataBioEmergencyContacs() {
         return dataBioEmergencyContacs;
     }
@@ -805,8 +798,8 @@ public class BioDataController extends BaseController {
     public void setBioKeahlianService(BioKeahlianService bioKeahlianService) {
         this.bioKeahlianService = bioKeahlianService;
     }
-    
-     public void setBioDataService(BioDataService bioDataService) {
+
+    public void setBioDataService(BioDataService bioDataService) {
         this.bioDataService = bioDataService;
     }
 
@@ -849,7 +842,20 @@ public class BioDataController extends BaseController {
     public void setPeopleInterestService(BioPeopleInterestService peopleInterestService) {
         this.peopleInterestService = peopleInterestService;
     }
-     
-    
+
+    public String doOtherData() {
+        return "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
+
+    }
+
+    public String doDemployeeDetail() {
+        long id = HrmUserInfoUtil.getEmpId();
+        return "/protected/employee/emp_placement_detail.htm?faces-redirect=true&execution=e" + id;
+    }
+
+    public String doBackGround() {
+        long id = HrmUserInfoUtil.getEmpId();
+        return "/protected/personalia/emp_background_detail.htm?faces-redirect=true&execution=e" + id;
+    }
 
 }

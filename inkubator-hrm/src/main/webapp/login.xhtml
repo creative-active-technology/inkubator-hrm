@@ -37,11 +37,12 @@
                             <h:form id="pilihanBahasaForm" >
                                 <h:inputHidden value="#{loginController.selectedLanguage}"/>
                                 <h:panelGrid style="float: left;margin-left: 20px">
-                                    <p:lightBox iframe="true" style="margin-top: 5px;" width="1200px">
-                                        <h:outputLink value="http://www.primefaces.org" title="OPTIMA HR Overview">
-                                            <h:outputText value="Optima-HR Overview"  style="font-size: 18px; font-weight: bold;color: #066"/>
-                                        </h:outputLink>
-                                    </p:lightBox>
+                                    <!--<p:lightBox iframe="true" style="margin-top: 5px;" width="1200px">-->
+                                                                            <h:outputLink value="${request.contextPath}/over_view.htm" title="OPTIMA HR Overview">
+                                                                                <h:outputText value="Optima-HR Overview"  style="font-size: 18px; font-weight: bold;color: #066"/>
+                                                                            </h:outputLink>
+                                    <!--</p:lightBox>-->
+                                    <!--<p:commandButton id="movieBtn" value="Dynamic" type="button" />-->
                                 </h:panelGrid>
                                 <h:panelGrid columns="4" style="float: right;margin-right: 15px">
                                     <h:outputLabel style="margin-right: 5px;" styleClass="label_hrm"
@@ -55,6 +56,11 @@
                                 </h:panelGrid>
                                 <div style="clear: both"/>
                                 <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: 5px"/>
+<!--                                <p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:820px" my="center bottom" >
+                                    <p:media value="./resources/media/OptimaHR for hr solution.mp4" width="800" height="600">
+                                        <f:param name="autoPlay" value="false" />
+                                    </p:media>
+                                </p:overlayPanel>-->
                             </h:form>
                         </div>
                         <h:panelGrid style="float: right">
@@ -133,7 +139,9 @@
                                 <br/>
                                 <br/>
                             </div>
+
                         </h:form>
+
                         <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: -7px"/>
                         <div style="float: left;margin-left: 20px;margin-top: -5px" >
                             <h:outputLabel value="#{appmsg['loginform.copyright']}" styleClass="footer_hrm"/>   
