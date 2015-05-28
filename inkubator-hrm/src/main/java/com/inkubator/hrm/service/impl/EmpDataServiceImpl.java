@@ -902,6 +902,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getTotalEmpDataByParam(nikOrNameSearchParameter);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public String getBioDataNameByEmpDataId(Long id) throws Exception {
+		return empDataDao.getBioDataNameByEmpDataId(id);
+	}
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)

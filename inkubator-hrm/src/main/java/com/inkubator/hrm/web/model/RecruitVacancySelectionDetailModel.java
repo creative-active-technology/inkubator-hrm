@@ -27,6 +27,7 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     private Date startDate;
     private Date endDate;
     private List<EmpData> listEmpData;
+    private List<Long> listEmployeeId;
 
     public String getRecruitSelectionSeriesName() {
         return recruitSelectionSeriesName;
@@ -99,6 +100,14 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     public void setListEmpData(List<EmpData> listEmpData) {
         this.listEmpData = listEmpData;
     }
+
+	public List<Long> getListEmployeeId() {
+		return listEmployeeId;
+	}
+
+	public void setListEmployeeId(List<Long> listEmployeeId) {
+		this.listEmployeeId = listEmployeeId;
+	}
 
 
     

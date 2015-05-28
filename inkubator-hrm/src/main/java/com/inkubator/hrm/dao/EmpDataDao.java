@@ -163,4 +163,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);    
     
+    /* get name only */
+    public String getBioDataNameByEmpDataId(Long id);
 }

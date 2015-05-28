@@ -44,7 +44,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Recruit Vacancy Selection Date"  for="recruitVacancySelectionDate" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Tanggal"  for="recruitVacancySelectionDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:calendar  id="recruitVacancySelectionDate" size="32" pattern="dd MMMM yyyy" label="#{appmsg['reimbursement.claim_date']}" value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"
@@ -56,15 +56,15 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Rekrutment"  for="nameId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="Rekrutment"  for="rekrutment" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="nameId" value="#{recruitVacancySelectionModel.recruitHireApplyId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="rekrutment" value="#{recruitVacancySelectionModel.recruitHireApplyId}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitVacancySelectionModel.dropDownRecruitHireApply}"/>
                                         <p:ajax listener="#{recruitVacancySelectionFormController.updateDetailLabelRekrutment(flowRequestContext)}" update="jobTitleName, effectiveDate, staff"/>
                                     </p:selectOneMenu>
-                                    <p:message for="nameId"/>
+                                    <p:message for="rekrutment"/>
                                 </p:column>
                             </p:row>
                             

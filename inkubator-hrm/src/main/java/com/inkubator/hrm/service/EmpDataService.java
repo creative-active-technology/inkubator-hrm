@@ -27,6 +27,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -146,8 +147,11 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception;
     
+    
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) throws Exception;    
     
     public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception;
+    
+    public String getBioDataNameByEmpDataId(Long id) throws Exception;
 
 }
