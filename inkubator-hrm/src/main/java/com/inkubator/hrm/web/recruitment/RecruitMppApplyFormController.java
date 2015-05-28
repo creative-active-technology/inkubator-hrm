@@ -311,7 +311,7 @@ public class RecruitMppApplyFormController extends BaseController {
         }
     }
 
-    public String doBack() {
+    public String doBack() {       
         cleanAndExit();
         return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
     }

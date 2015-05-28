@@ -23,6 +23,7 @@ import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 
 /**
  *
@@ -47,6 +48,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	private LeaveImplementationService leaveImplementationService;
 	@Autowired
 	private AnnouncementService announcementService;
+	@Autowired
+	private WtEmpCorrectionAttendanceService wtEmpCorrectionAttendanceService;
 	
 	
 	@Override
@@ -96,6 +99,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 						case HRMConstant.ANNOUNCEMENT:
 							announcementService.approved(approvalActivity.getId(), null, null);
 							break;
+						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+							wtEmpCorrectionAttendanceService.approved(approvalActivity.getId(), null, null);
+							break;
 						default:
 							break;
 					}
@@ -126,6 +132,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							break;
 						case HRMConstant.ANNOUNCEMENT:
 							announcementService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+							wtEmpCorrectionAttendanceService.diverted(approvalActivity.getId());
 							break;
 						default:
 							break;

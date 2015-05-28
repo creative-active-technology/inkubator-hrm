@@ -84,8 +84,8 @@
 
                                 <p:column  style="width: 80%"> 
                                     <h:panelGrid columns="2"  style="margin-left: -10px;">
-                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyFileName}" />
-                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" disabled="#{recruitMppApplyDetailController.mppApplyFile == null}" icon="ui-icon-arrowthick-1-s">
+                                        <p:outputLabel value="#{recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyFileName eq null ? '-' : recruitMppApplyDetailController.recruitMppApplyModel.recruitMppApplyFileName}" style="margin-right: 5px" />
+                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" rendered="#{recruitMppApplyDetailController.mppApplyFile != null}" icon="ui-icon-arrowthick-1-s">
                                             <p:fileDownload value="#{recruitMppApplyDetailController.recruitMppApplyFile}" />                                    
                                         </p:commandButton>
                                     </h:panelGrid>

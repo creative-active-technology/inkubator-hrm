@@ -583,6 +583,13 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	
 	private RmbsApplication entityBindingAndValidation(RmbsApplication entity) throws Exception{
 		
+		//initial
+		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+		RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(entity.getRmbsType().getId());
+		Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
+		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();		
+		
 		// check duplicate code
 		Long totalDuplicates = rmbsApplicationDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0) {
@@ -591,24 +598,16 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		//check submission date, based on rmbsSchema
 		RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(entity.getEmpData().getId()).get(0).getRmbsSchema();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");      
-        Date now = formatter.parse(formatter.format(new Date()));
-        Date deadline = new DateTime(now).minusDays(rmbsSchema.getSubmissionDeadline()).toDate();	        
+        Date currentWhenCreated = formatter.parse(formatter.format(createdOn));
+        Date deadline = new DateTime(currentWhenCreated).minusDays(rmbsSchema.getSubmissionDeadline()).toDate();	        
     	if(entity.getApplicationDate().before(deadline)){
-    		//throw new BussinessException("rmbs_application.error_request_date_exceed");
+    		throw new BussinessException("rmbs_application.error_request_date_exceed");
     	} 
     	//check nominal limit should not exceed	
     	RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(new RmbsSchemaListOfTypeId(entity.getRmbsType().getId(), rmbsSchema.getId()));
 		if(entity.getNominal().doubleValue() > rmbsSchemaListOfType.getLimitPerClaim()){
     		throw new BussinessException("rmbs_application.error_nominal_exceed");
-    	}		
-		
-		
-		//initial
-		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-		RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(entity.getRmbsType().getId());
-		Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
-		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();        
+    	}				        
         
         //set data        
         entity.setEmpData(empData);

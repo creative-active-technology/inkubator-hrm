@@ -111,7 +111,7 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1}"
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.approvalStatus eq 1 || data.approvalStatus eq 2}"
                                                  action="#{recruitMppApplyViewController.doSelectDataToDelete(data)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
                                 </p:commandButton>

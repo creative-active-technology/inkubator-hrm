@@ -23,6 +23,7 @@ public class TempProcessReadFinger implements Serializable {
     private Integer version;
     
     private EmpData empData;
+    private Long workingHourId;
     private String workingHourName;
     private Date scheduleDate;
     private Date scheduleIn;
@@ -77,6 +78,15 @@ public class TempProcessReadFinger implements Serializable {
 
 	public void setEmpData(EmpData empData) {
 		this.empData = empData;
+	}
+		
+	@Column(name = "working_hour_id", nullable = false)
+	public Long getWorkingHourId() {
+		return workingHourId;
+	}
+
+	public void setWorkingHourId(Long workingHourId) {
+		this.workingHourId = workingHourId;
 	}
 
 	@Column(name = "working_hour_name", nullable = false)

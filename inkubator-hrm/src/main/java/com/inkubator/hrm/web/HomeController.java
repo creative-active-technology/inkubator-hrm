@@ -73,7 +73,8 @@ public class HomeController extends BaseController {
          * do checking announcement web view
          */
         try {
-            Long empDataId = HrmUserInfoUtil.getEmpData().getId();
+            Long empDataId = HrmUserInfoUtil.getEmpId();
+            System.out.println(" id nyayaya "+empDataId);
             Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
             announcementLog = announcementLogService.getEntityWebView(empDataId, planExecutionDate);
             isRenderAnnouncement = announcementLog != null;

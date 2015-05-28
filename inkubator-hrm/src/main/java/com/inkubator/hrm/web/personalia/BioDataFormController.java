@@ -261,19 +261,20 @@ public class BioDataFormController extends BaseController {
     public String doSave() {
         String paramRedirect = null;
         try {
+            System.out.println(" proses1");
             BioData bioData = getEntityFromView(bioDataModel);
             if (isEdit) {
                 bioDataService.update(bioData);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                paramRedirect="/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + bioData.getId();
+                paramRedirect = "/protected/personalia/biodata_detail.htm?faces-redirect=true&execution=e" + bioData.getId();
             } else {
                 bioDataService.save(bioData);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                paramRedirect="/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=c" + bioData.getId();
+                paramRedirect = "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=c" + bioData.getId();
             }
-
+            
             if (fotoFile != null) {
                 facesIO.transferFile(fotoFile);
                 File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);

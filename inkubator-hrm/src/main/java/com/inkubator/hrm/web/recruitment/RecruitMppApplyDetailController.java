@@ -193,6 +193,7 @@ public class RecruitMppApplyDetailController extends BaseController {
         model.setRecruitMppApplyName(entity.getRecruitMppApplyName());
         model.setReason(entity.getReason());
         model.setUploadPath(entity.getAttachmentDocPath());
+        model.setRecruitMppApplyFileName(entity.getRecruitMppApplyName());
 
         return model;
     }

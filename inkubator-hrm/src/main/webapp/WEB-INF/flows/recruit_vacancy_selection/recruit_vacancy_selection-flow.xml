@@ -23,6 +23,11 @@
         <transition on="dataPenyeleksi" to="data_penyeleksi" />
     </view-state>
     
+    <view-state id="back_to_detail_with_value" view="recruit_vacancy_selection_form_detail.xhtml">
+    	<transition on="save" to="save_recruitment_detail"/>
+        <transition on="saveListEmployee" to="save_list_employee" />
+    </view-state>
+    
     <action-state id="save_recruitment_detail">
         <evaluate expression="recruitVacancySelectionFormController.saveRecruitmentDetail(flowRequestContext)"/>
     </action-state >
@@ -30,6 +35,7 @@
     <action-state id="save_list_employee">
         <!--<on-entry>-->
         <evaluate expression="recruitVacancySelectionFormController.saveListEmployee(flowRequestContext)"/>
+        <transition to="back_to_detail_with_value" />
         <!--</on-entry>-->
     </action-state>
 </flow>
