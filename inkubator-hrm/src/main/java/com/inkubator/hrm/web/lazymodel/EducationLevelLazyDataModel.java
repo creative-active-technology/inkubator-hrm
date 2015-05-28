@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.EducationLevelService;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 
 /**
 *
@@ -19,14 +20,14 @@ import com.inkubator.hrm.service.EducationLevelService;
 */
 public class EducationLevelLazyDataModel extends LazyDataModel<EducationLevel> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(EducationLevelLazyDataModel.class);
-    private final String parameter;
+    private static final Logger LOGGER = Logger.getLogger(EducationLevelLazyDataModel.class);
+    private final EducationLevelSearchParameter searchParameter;
     private final EducationLevelService educationLevelService;
     private List<EducationLevel> educationLevels = new ArrayList<>();
     private Integer total;
 
-    public EducationLevelLazyDataModel(String parameter, EducationLevelService educationLevelService) {
-        this.parameter = parameter;
+    public EducationLevelLazyDataModel(EducationLevelSearchParameter searchParameter, EducationLevelService educationLevelService) {
+        this.searchParameter = searchParameter;
         this.educationLevelService = educationLevelService;
     }
 
@@ -41,8 +42,8 @@ public class EducationLevelLazyDataModel extends LazyDataModel<EducationLevel> i
 	        	orderable = Order.asc("level");
 	        }
 	        
-	        educationLevels = educationLevelService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(educationLevelService.getTotalByParam(parameter)));            
+	        educationLevels = educationLevelService.getByParam(searchParameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(educationLevelService.getTotalByParam(searchParameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {

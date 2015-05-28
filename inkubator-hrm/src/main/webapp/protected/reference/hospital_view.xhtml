@@ -73,7 +73,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>                            
-                            <p:column sortBy="code"  style="width: 22%;">
+                            <p:column sortBy="code"  style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}" style="text-align: center;"/>
                                 </f:facet>
@@ -85,7 +85,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{hospitalData.name}"/>
                             </p:column>
-                            <p:column sortBy="phone"  style="width: 10%; ">
+                            <p:column sortBy="phone"  style="width: 15%; ">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hospital.hospital_phone']}" style=""/>
                                 </f:facet>
@@ -97,13 +97,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{hospitalData.address}"/>
                             </p:column>
-                            <p:column sortBy="city"  style="width: 10%; ">
+                            <p:column sortBy="city"  style="width: 15%; ">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['hospital.city_name']}" style=""/>
                                 </f:facet>
                                 <h:outputLabel value= "#{hospitalData.city.cityName}"/>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
                                                  action="#{hospitalViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailHospital.show()">                        

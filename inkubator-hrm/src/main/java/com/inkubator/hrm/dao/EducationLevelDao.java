@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 
 /**
 *
@@ -13,9 +14,9 @@ import com.inkubator.hrm.entity.EducationLevel;
 */
 public interface EducationLevelDao extends IDAO<EducationLevel> {
 
-	public List<EducationLevel> getByParam(String parameter, int firstResult, int maxResults, Order orderable);
+	public List<EducationLevel> getByParam(EducationLevelSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalByParam(String parameter);
+	public Long getTotalByParam(EducationLevelSearchParameter searchParameter);
 	
 	public Long getTotalByNameAndNotId(String name, Long id);
 	

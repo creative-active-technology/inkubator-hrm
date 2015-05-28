@@ -75,13 +75,13 @@
                             </p:column>
                             <p:column sortBy="klasifikasiKerjaCode"  style="width: 38%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['klasifikasiKerja.klasifikasiKerja_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{klasifikasiKerjaData.code}"/>
                             </p:column>  
                             <p:column sortBy="klasifikasiKerjaName"  style="width: 49%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['klasifikasiKerja.klasifikasiKerja_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{klasifikasiKerjaData.name}"/>
                             </p:column>    
@@ -146,20 +146,20 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmKlasifikasiKerja.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailKlasifikasiKerja" header="#{appmsg['klasifikasiKerja.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailKlasifikasiKerja" header="#{appmsg['klasifikasiKerja.detail_dialog']}" styleClass="header_small_no_bold" width="500" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.code}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:65%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%"><p:outputLabel value="#{appmsg['klasifikasiKerja.klasifikasiKerja_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:65%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.description}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:65%;"><p:outputLabel value="#{klasifikasiKerjaViewController.selectedKlasifikasiKerja.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
