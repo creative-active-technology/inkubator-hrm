@@ -5,9 +5,12 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -22,9 +25,11 @@ public class RecruitMppApplyModel implements Serializable {
     private String reason;
     private String recruitMppApplyFileName;
     private String uploadPath;
-    private Long mppPeriodId;    
+    private Long mppPeriodId;
     private RecruitMppPeriod selectedRecruitMppPeriod;
     private Integer approvalStatus;
+    private EmpData empDataApplier;
+    private List<RecruitMppApplyDetail> listMppDetail;
 
     public Long getId() {
         return id;
@@ -106,7 +111,21 @@ public class RecruitMppApplyModel implements Serializable {
         this.approvalStatus = approvalStatus;
     }
 
+    public List<RecruitMppApplyDetail> getListMppDetail() {
+        return listMppDetail;
+    }
+
+    public void setListMppDetail(List<RecruitMppApplyDetail> listMppDetail) {
+        this.listMppDetail = listMppDetail;
+    }
+
+    public EmpData getEmpDataApplier() {
+        return empDataApplier;
+    }
+
+    public void setEmpDataApplier(EmpData empDataApplier) {
+        this.empDataApplier = empDataApplier;
+    }
     
-   
     
 }

@@ -35,12 +35,14 @@ import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
 import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
@@ -55,7 +57,10 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
@@ -68,6 +73,7 @@ import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
+import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
@@ -114,6 +120,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private BioEducationHistoryDao bioEducationHistoryDao;
     @Autowired
     private AnnouncementDao announcementDao;
+    @Autowired
+    private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -132,9 +142,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.getBioData().getFirstName();
         empData.getBioData().getLastName();
         empData.getJabatanByJabatanId().getName();
-        if(empData.getGolonganJabatan() != null){
-        	empData.getGolonganJabatan().getPangkat().getPangkatCode();
-        }        
+        if (empData.getGolonganJabatan() != null) {
+            empData.getGolonganJabatan().getPangkat().getPangkatCode();
+        }
         if (empData.getWtGroupWorking() != null) {
             empData.getWtGroupWorking().getCode();
         }
@@ -670,7 +680,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         status = (empData.getPtkpStatus() == Boolean.TRUE) ? "K" : "TK";
         if (empData.getPtkpStatus() == Boolean.TRUE) {
             ptkpNumber = (empData.getPtkpNumber() > 3) ? 3 : empData.getPtkpNumber();
-        }else{
+        } else {
             ptkpNumber = 0;
         }
 
@@ -829,13 +839,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik,  int firstResult, int maxResults, Order order) throws Exception {
+    public List<EmpData> getAllDataByParamWithDetail(List<Department> department, List<GolonganJabatan> golJab, String[] empTypeName, List<Integer> listAge, List<Integer> listJoinDate, List<String> listNik, int firstResult, int maxResults, Order order) throws Exception {
         Long[] deptId = new Long[department.size()];
         int i = 0;
         for (Department dept : department) {
             deptId[i] = dept.getId();
         }
-        
+
         return empDataDao.getAllDataByParamWithDetail(department, golJab, empTypeName, listAge, listJoinDate, listNik, firstResult, maxResults, order);
     }
 
@@ -863,16 +873,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getTotalDataByEmployeeTypeOrGolonganJabatanOrUnitKerja(empTypeId, golJabId, unitKerjaId);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataByAnnouncementId(Long announcementId) {
-		Announcement announcement =  announcementDao.getEntiyByPK(announcementId);
-		Long companyId = announcement.getCompany().getId();
-		List<Long> empTypes = Lambda.extract(announcement.getAnnouncementEmpTypes(), Lambda.on(AnnouncementEmpType.class).getEmployeeType().getId());
-		List<Long> golJabs = Lambda.extract(announcement.getAnnouncementGoljabs(), Lambda.on(AnnouncementGoljab.class).getGolonganJabatan().getId());
-		List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
-		return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId,empTypes,golJabs,unitKerjas);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByAnnouncementId(Long announcementId) {
+        Announcement announcement = announcementDao.getEntiyByPK(announcementId);
+        Long companyId = announcement.getCompany().getId();
+        List<Long> empTypes = Lambda.extract(announcement.getAnnouncementEmpTypes(), Lambda.on(AnnouncementEmpType.class).getEmployeeType().getId());
+        List<Long> golJabs = Lambda.extract(announcement.getAnnouncementGoljabs(), Lambda.on(AnnouncementGoljab.class).getGolonganJabatan().getId());
+        List<Long> unitKerjas = Lambda.extract(announcement.getAnnouncementUnits(), Lambda.on(AnnouncementUnit.class).getUnitKerja().getId());
+        return empDataDao.getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(companyId, empTypes, golJabs, unitKerjas);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
@@ -897,4 +907,33 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public String getBioDataNameByEmpDataId(Long id) throws Exception {
 		return empDataDao.getBioDataNameByEmpDataId(id);
 	}
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId,  String gender, int firstResult, int maxResults, Order order) throws Exception {
+        List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender, firstResult, maxResults, order);
+        EducationLevel educationLevel = educationLevelDao.getEntiyByPK(educationLevelId);
+        
+        // Set Detail Position Criteria of each Data 
+        for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
+            List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan());
+            String kriteria = StringsUtils.EMPTY;
+            
+            for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : listKlasifikasiKerjaJabatans) {
+                Boolean isNotLastRecord = listKlasifikasiKerjaJabatans.indexOf(klasifikasiKerjaJabatan) < listKlasifikasiKerjaJabatans.size() - 1;
+                kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription()  +  (isNotLastRecord ? ", " : "");
+            }
+            searchEmployeeCandidateViewModel.setKriteria(kriteria);
+            searchEmployeeCandidateViewModel.setLastEducationLevelName(educationLevel.getName());
+            
+        }
+
+        return listSearchEmployeeCandidateViewModels;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception {
+        return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender);
+    }
 }

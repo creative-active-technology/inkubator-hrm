@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd" start-state="start">
+    
+    <on-start>
+        <evaluate expression="searchEmployeeCandidateViewController.initSearchEmployeeCandidateFormFlow(flowRequestContext)" result="flowScope.searchEmployeeCandidateModel"/> 
+    </on-start>
+    
+    <view-state id="start" view="search_employee_candidate_view.xhtml">
+        <transition on="next" to="result" >
+        </transition>
+        
+        <transition on="close_back" to="end"/>
+    </view-state>
+    
+    <view-state id="result" view="search_employee_candidate_result.xhtml">
+        <on-render>
+            <evaluate expression="searchEmployeeCandidateViewController.doSearchByParam(flowRequestContext)" /> 
+        </on-render>
+        <transition on="back" to="start"/>
+        <transition on="personalInfo" to="personal"/>
+        <transition on="employeeInfo" to="employee"/>
+        <transition on="employeeBackgroundInfo" to="employeeBackground"/>
+    </view-state>
+    <end-state id="personal" view="externalRedirect:contextRelative:/protected/personalia/biodata_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
+    <end-state id="employee" view="externalRedirect:contextRelative:/protected/employee/emp_placement_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
+    <end-state id="employeeBackground" view="externalRedirect:contextRelative:/protected/employee/emp_background_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/home.htm" />
+</flow>

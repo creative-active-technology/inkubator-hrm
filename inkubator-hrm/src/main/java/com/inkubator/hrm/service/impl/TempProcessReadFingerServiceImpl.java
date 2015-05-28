@@ -362,6 +362,7 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		TempProcessReadFinger tempProcessReadFinger = new TempProcessReadFinger();
 		tempProcessReadFinger.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		tempProcessReadFinger.setEmpData(empData);
+		tempProcessReadFinger.setWorkingHourId(jadwalKaryawan.getWtWorkingHour().getId());
 		tempProcessReadFinger.setWorkingHourName(jadwalKaryawan.getWtWorkingHour().getName());
 		tempProcessReadFinger.setScheduleDate(jadwalKaryawan.getTanggalWaktuKerja());
 		tempProcessReadFinger.setScheduleIn(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
@@ -508,6 +509,12 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) throws Exception {
 		tempProcessReadFingerDao.deleteByScheduleDateAndIsNotCorrection(fromPeriode, untilPeriode);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataId, Date startDate, Date endDate) throws Exception {
+		return tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empDataId, startDate, endDate);
 	}
 
 }

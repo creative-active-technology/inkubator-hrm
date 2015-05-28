@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="user_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['emp_correction_attendance.form_header']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['emp_correction_attendance.form_desc_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid id="searchPanelId" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="requestCodeId" value="#{appmsg['emp_correction_attendance.code_correction_attendance']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="requestCodeId" title="#{appmsg['emp_correction_attendance.code_correction_attendance']}" value="#{empCorrectionAttendanceFormController.model.requestCode}" 
+                                                 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="requestCodeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{empCorrectionAttendanceFormController.model.empData}"
+                                                    completeMethod="#{empCorrectionAttendanceFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                    required="true" readonly="#{not (empCorrectionAttendanceFormController.isAdministator and not empCorrectionAttendanceFormController.isRevised)}">
+                                        <p:ajax event="itemSelect" listener="#{empCorrectionAttendanceFormController.onChangeEmployee()}" update="workingGroupNameId"/>
+                                    </p:autoComplete>
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="workingGroupNameId" value="#{appmsg['workinggroup.working_group']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="workingGroupNameId" title="#{appmsg['workinggroup.working_group']}" value="#{empCorrectionAttendanceFormController.model.workingGroupName}" 
+                                                 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="workingGroupNameId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="startDateId" value="#{appmsg['emp_correction_attendance.working_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="startDateId" required="true" pattern="dd-MMMM-yyyy" value="#{empCorrectionAttendanceFormController.model.startDate}" 
+                                    			mindate="#{empCorrectionAttendanceFormController.model.period.fromPeriode}" maxdate="#{empCorrectionAttendanceFormController.model.period.untilPeriode}"/>
+                                    <p:outputLabel value="&nbsp;&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;&nbsp;" styleClass="label_hrm"/>
+                                    <p:calendar id="endDateId" required="true" pattern="dd-MMMM-yyyy" value="#{empCorrectionAttendanceFormController.model.endDate}" label="#{appmsg['emp_correction_attendance.working_date']}"
+                                    			mindate="#{empCorrectionAttendanceFormController.model.period.fromPeriode}" maxdate="#{empCorrectionAttendanceFormController.model.period.untilPeriode}"/>
+                                    <p:message for="startDateId"/>
+                                    <p:message for="endDateId" />
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important"/>
+                                <p:column  style="width: 80%">
+                                     <p:commandButton id="buttonSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" 
+                                     				  action="#{empCorrectionAttendanceFormController.doSearchSchedule()}" update="searchPanelId,tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row> 
+                        </p:panelGrid>	                                            
+                        <p:dataTable  id="tableId" var="data"  value="#{empCorrectionAttendanceFormController.model.listDetail}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no" editable="true">     
+                                      
+                            <p:ajax event="rowEdit" listener="#{empCorrectionAttendanceFormController.onRowEdit}" />
+                            
+                            <p:columnGroup type="header">
+                            	<p:row>
+					                <p:column rowspan="2" headerText="#{appmsg['global.number']}" style="width: 3%"/>
+					                <p:column rowspan="2" headerText="#{appmsg['global.date']}" style="width: 10%"/>
+					                <p:column rowspan="2" headerText="#{appmsg['global.name']}" style="width: 15%"/>
+					                <p:column colspan="2" headerText="#{appmsg['global.schedule']}" />
+					                <p:column colspan="2" headerText="#{appmsg['workingTime.attendance']}" />
+					                <p:column colspan="2" headerText="#{appmsg['emp_correction_attendance.correction']}" />
+					                <p:column rowspan="2" headerText="#{appmsg['global.description']}" style="width: 15%"/>
+					                <p:column rowspan="2" headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" />
+					            </p:row>
+					            <p:row>
+					            	<p:column headerText="#{appmsg['global.in']}" style="width: 5%"/>
+					            	<p:column headerText="#{appmsg['global.out']}" style="width: 5%"/>
+					            	<p:column headerText="#{appmsg['global.in']}" style="width: 5%"/>
+					            	<p:column headerText="#{appmsg['global.out']}" style="width: 5%"/>
+					            	<p:column headerText="#{appmsg['global.in']}" style="width: 5%"/>
+					            	<p:column headerText="#{appmsg['global.out']}" style="width: 5%"/>
+					            </p:row>
+                            </p:columnGroup>
+                                                                           
+                            <p:column style="text-align: center;">
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column>
+                                <h:outputLabel value= "#{data.attendanceDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>   
+                            <p:column>
+                                <p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.workingHour.name}"/>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:selectOneMenu value="#{data.workingHour.id}" style="width:100%">
+		                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+		                                    <f:selectItems value="#{empCorrectionAttendanceFormController.model.listWorkingHours}" var="workingHour"  itemValue="#{workingHour.id}" itemLabel="#{workingHour.name}"/>
+		                                </p:selectOneMenu>
+	                                </f:facet>
+                                </p:cellEditor>
+                            </p:column>  
+                            <p:column style="text-align: center;">
+                                <h:outputLabel value="#{data.workingHour.workingHourBegin}">
+                                	<f:convertDateTime pattern="HH:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="text-align: center;">
+                                <h:outputLabel value="#{data.workingHour.workingHourEnd}">
+                                	<f:convertDateTime pattern="HH:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="text-align: center;">
+                                <h:outputLabel value="#{data.attendanceIn}">
+                                	<f:convertDateTime pattern="HH:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="text-align: center;">
+                                <h:outputLabel value="#{data.attendanceOut}">
+                                	<f:convertDateTime pattern="HH:mm" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="text-align: center;">
+                                <p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value="#{data.correctionIn}">
+		                                	<f:convertDateTime pattern="HH:mm" />
+		                                </h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<pe:timePicker value="#{data.correctionIn}" mode="spinner"/>
+	                                </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column style="text-align: center;">
+                                <p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value="#{data.correctionOut}">
+		                                	<f:convertDateTime pattern="HH:mm" />
+		                                </h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<pe:timePicker value="#{data.correctionOut}" mode="spinner"/>
+	                                </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column>
+                            	<p:cellEditor>
+	                                <f:facet name="output"><h:outputLabel value= "#{data.description}"/></f:facet>
+	                                <f:facet name="input">
+	                                	<p:inputText value="#{data.description}" style="width:100%"></p:inputText>
+	                                </f:facet>
+                                </p:cellEditor>
+                            </p:column> 
+                            <p:column>
+                                <p:rowEditor/>
+                            </p:column>                                                      
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,buttonSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                                                
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.apply']}" ajax="true" update="formId,:growlId" rendered="#{not empCorrectionAttendanceFormController.isRevised}"
+                                             action="#{empCorrectionAttendanceFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.apply']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.apply']}"/>
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formId,:growlId" rendered="#{empCorrectionAttendanceFormController.isRevised}"
+                                             action="#{empCorrectionAttendanceFormController.doRevised()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{empCorrectionAttendanceFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empCorrectionAttendanceFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

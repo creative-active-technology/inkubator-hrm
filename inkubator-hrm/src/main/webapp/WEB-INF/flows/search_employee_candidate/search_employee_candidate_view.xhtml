@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['empCandidateSearch.emp_candidate_search_form']}" styleClass="header_big" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="jobTitleViewId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <div align="left">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['empCandidateSearch.candidate_position']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;" colspan="2">
+                                        <p:pickList value="#{searchEmployeeCandidateModel.dualListModelJabatan}" var="jabatan" itemValue="#{jabatan}" converter="jabatanConverter" id="jabatanId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['jabatan.jabatan']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{jabatan.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="jabatanId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="fromWp" value="#{appmsg['empCandidateSearch.working_period']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="fromWp" value="#{searchEmployeeCandidateModel.workingPeriodFrom}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                    </p:spinner>
+                                    &nbsp;#{appmsg['global.until']}&nbsp;
+                                        <p:spinner id="untilWp" value="#{searchEmployeeCandidateModel.workingPeriodEnd}" min="0" max="100" required="true" size="2" 
+                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <f:validateLongRange minimum="1" maximum="100"/>
+                                        </p:spinner>
+                                   &nbsp; #{appmsg['global.year']} &nbsp;
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <div align="left">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel for="from"  value="#{appmsg['biodata.age']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;" colspan="2">
+                                        <p:spinner id="from" value="#{searchEmployeeCandidateModel.ageFrom}" min="0" max="100" required="false" size="2" 
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="17" maximum="55"/>
+                                        </p:spinner>
+                                        &nbsp;#{appmsg['global.until']}&nbsp;
+                                        <p:spinner id="until" value="#{searchEmployeeCandidateModel.ageUntil}" min="0" max="100" required="false" size="2" 
+                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                            <f:validateLongRange minimum="17" maximum="55"/>
+                                        </p:spinner>
+                                       &nbsp; #{appmsg['global.year']} &nbsp;
+                                    </p:column>
+                                </div>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="genderId" value="#{appmsg['global.gender']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="genderId" required="true" style="width: 120px" value="#{searchEmployeeCandidateModel.gender}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.all']}" itemValue="Any"/>
+                                        <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="Male"/>
+                                        <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="Female"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="genderId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel for="religionId"  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;" colspan="2">
+                                        <p:pickList value="#{searchEmployeeCandidateModel.dualListModelReligion}" var="religion" itemValue="#{religion}" converter="religionConverter" id="religionId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{religion.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="religionId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="educationId" value="#{appmsg['global.education']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="educationId" required="true" value="#{searchEmployeeCandidateModel.educationLevelType}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{searchEmployeeCandidateModel.mapEducation}" />
+                                    </p:selectOneMenu>
+                                    <p:message for="educationId"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="ipkId" value="#{appmsg['mppRecruitmentHist.ipk']}" styleClass="label_hrm"/>
+                                    
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <pe:inputNumber  id="ipkId" required="true" label="#{appmsg['mppRecruitmentHist.ipk']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpa}" />                             
+                                    &nbsp;&nbsp;
+                                    <p:outputLabel value=" #{appmsg['global.scale']} " style="margin-left: -10px"/>
+                                    &nbsp;&nbsp;
+                                    <pe:inputNumber id="scaleId" required="true" label="#{appmsg['global.scale']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpaScale}" 
+                                                    style="margin-left: -10px;width: 50%"/>
+                                    <p:message for="ipkId"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
+                                         action="next" styleClass="isitext_hrm" update="jobTitleViewId"
+                                         style="margin-right: 5px" label="#{appmsg['global.search']}"
+                                         icon="ui-icon-search" title="#{appmsg['global.search']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleViewId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" style="margin-right: 5px" >  
+                            <p:resetInput target="jobTitleViewId" />  
+                        </p:commandButton>
+                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="close_back" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -44,6 +44,7 @@ public class RecruitMppApply  implements java.io.Serializable {
      private Date updatedOn;
      private Long totalDetailJabatan;
      private String approvalActivityNumber;
+     private Integer applicationStatus;
      private Set<RecruitMppApplyDetail> recruitMppApplyDetails = new HashSet<RecruitMppApplyDetail>(0);
 
     public RecruitMppApply() {
@@ -219,7 +220,14 @@ public class RecruitMppApply  implements java.io.Serializable {
     }
 
 
-    
+    @Column(name = "application_status")
+    public Integer getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(Integer applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 
 }
 

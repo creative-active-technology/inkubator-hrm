@@ -90,7 +90,7 @@ public class RecruitmentRequestApprovalFormController extends BaseController {
     private Map<String, List<OrgTypeOfSpecList>> mapTypeList = new HashMap<>();
     private RecruitHireApplyModel model;
     private List<String> name = new ArrayList<>();    
-    private String activityNumber;
+    private String idApprovalActivity;
     private ApprovalActivity selectedApprovalActivity;
     private Boolean isWaitingApproval;
     private String comment;
@@ -102,13 +102,13 @@ public class RecruitmentRequestApprovalFormController extends BaseController {
 
             model = new RecruitHireApplyModel();           
 
-            activityNumber = FacesUtil.getRequestParameter("execution").substring(1);            
+            idApprovalActivity = FacesUtil.getRequestParameter("execution").substring(1);            
 
             //if activityNumber is not empty, it means to edit existing Recruitment Request Data
-            if (StringUtils.isNotBlank(activityNumber)) {
+            if (StringUtils.isNotBlank(idApprovalActivity)) {
                 dataForRenders = orgTypeOfSpecListService.getAllBySpectJabatan();
                 name = orgTypeOfSpecListService.getOrgTypeSpecName();
-                selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(activityNumber));
+                selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(idApprovalActivity));
                 
                 if (null != selectedApprovalActivity) {
                     isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
@@ -134,7 +134,7 @@ public class RecruitmentRequestApprovalFormController extends BaseController {
         orgTypeOfSpecListService = null;        
         dataForRenders = null;
         name = null;
-        activityNumber = null;
+        idApprovalActivity = null;
         selectedApprovalActivity = null;
         isWaitingApproval = null;
         model = null;
@@ -298,14 +298,15 @@ public class RecruitmentRequestApprovalFormController extends BaseController {
         this.hrmUserService = hrmUserService;
     }
 
-    public String getActivityNumber() {
-        return activityNumber;
+    public String getIdApprovalActivity() {
+        return idApprovalActivity;
     }
 
-    public void setActivityNumber(String activityNumber) {
-        this.activityNumber = activityNumber;
+    public void setIdApprovalActivity(String idApprovalActivity) {
+        this.idApprovalActivity = idApprovalActivity;
     }
 
+   
     public ApprovalActivity getSelectedApprovalActivity() {
         return selectedApprovalActivity;
     }
