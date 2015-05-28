@@ -36,6 +36,7 @@ import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -464,9 +465,21 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	}
 
 	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public WtEmpCorrectionAttendance getEntityByPkWithDetail(Long id) {
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtEmpCorrectionAttendance getEntityByPkWithDetail(Long id) throws Exception {
 		return wtEmpCorrectionAttendanceDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<WtEmpCorrectionAttendance> getByParam(EmpCorrectionAttendanceSearchParameter parameter, int firstResult, int maxResult, Order orderable) throws Exception {
+		return wtEmpCorrectionAttendanceDao.getByParam(parameter, firstResult, maxResult, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter) throws Exception {
+		return wtEmpCorrectionAttendanceDao.getTotalByParam(parameter);
 	}
 
 }
