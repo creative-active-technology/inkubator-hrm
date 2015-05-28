@@ -77,7 +77,7 @@ public class HrmUserInfoUtil extends UserInfoUtil {
         }
         return Boolean.FALSE;
     }
-    
+
     public static EmpData getEmpData() {
         HrmUserService hrmUserService = (HrmUserService) ServiceWebUtil.getService("hrmUserService");
         String hrmUserName = getUserName();
@@ -88,7 +88,7 @@ public class HrmUserInfoUtil extends UserInfoUtil {
         }
         return null;
     }
-    
+
     public static String getRealNameByUserName(String hrmUserName) {
         HrmUserService hrmUserService = (HrmUserService) ServiceWebUtil.getService("hrmUserService");
         try {
@@ -98,10 +98,16 @@ public class HrmUserInfoUtil extends UserInfoUtil {
         }
         return null;
     }
-    
-    public static Long getCompanyId(){
+
+    public static Long getCompanyId() {
         return (Long) FacesUtil.getSessionAttribute(HRMConstant.COMPANY_ACTIVE);
     }
+
+    public static Long getEmpId() {
+        return (Long) FacesUtil.getSessionAttribute(HRMConstant.EMP_DATA_ID);
+    }
+
+    public static Long getBioDataId() {
+        return (Long) FacesUtil.getSessionAttribute(HRMConstant.BIODATA_ID);
+    }
 }
-
-
