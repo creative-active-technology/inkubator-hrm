@@ -41,11 +41,13 @@ public class ReimbursmentSchemaViewController extends BaseController{
     private ReimbursmentSchemaSearchParameter searchParameter;
     private LazyDataModel<ReimbursmentSchema> lazy;
     private ReimbursmentSchema selected;
+    private Boolean isNominalUnitOrNot;
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        isNominalUnitOrNot = Boolean.TRUE;
         searchParameter = new ReimbursmentSchemaSearchParameter();
     }
     
@@ -68,6 +70,15 @@ public class ReimbursmentSchemaViewController extends BaseController{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+    
+    public void isNominalOrNot(){
+        if(searchParameter.getKeyParam().equals("nominalUnit")){
+           isNominalUnitOrNot = Boolean.TRUE;
+        }else{
+            isNominalUnitOrNot = Boolean.FALSE;
+        }
+        
     }
     
     public void doSelectEntityWithAllRelation() {
@@ -165,4 +176,14 @@ public class ReimbursmentSchemaViewController extends BaseController{
     public void setSelected(ReimbursmentSchema selected) {
         this.selected = selected;
     }
+
+    public Boolean getIsNominalUnitOrNot() {
+        return isNominalUnitOrNot;
+    }
+
+    public void setIsNominalUnitOrNot(Boolean isNominalUnitOrNot) {
+        this.isNominalUnitOrNot = isNominalUnitOrNot;
+    }
+    
+    
 }

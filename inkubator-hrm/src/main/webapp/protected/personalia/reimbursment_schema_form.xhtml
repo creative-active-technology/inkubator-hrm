@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['global.code']}"  for="code" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.reimbursement_schema_code']}"  for="code" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="code" value="#{reimbursmentSchemaFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
@@ -46,7 +46,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['global.name']}"  for="name" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['reimbursment.reimbursement_schema_name']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="name" value="#{reimbursmentSchemaFormController.model.name}" 
@@ -97,7 +97,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.quantity']}"  for="quantity" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="quantity" disabled="#{reimbursmentSchemaFormController.isUnit}" value="#{reimbursmentSchemaFormController.model.quantity}" required="true" size="2" 
+                                    <p:spinner id="quantity" value="#{reimbursmentSchemaFormController.model.quantity}" required="true" size="2" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                     </p:spinner>
                                     <p:outputLabel  value=" #{appmsg['reimbursment.unit']}" />
@@ -110,7 +110,7 @@
                                     <p:outputLabel  value="#{appmsg['jabatan.cost_center']}"  for="costCenterId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="costCenterId" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="costCenterId" value="#{reimbursmentSchemaFormController.model.costCenter}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{reimbursmentSchemaFormController.dropDownCostCenter}"/>
                                     </p:selectOneMenu>
@@ -124,7 +124,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.basic_value']}"  for="basicValue" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneRadio id="basicValue" disabled="#{reimbursmentSchemaFormController.isNominal}" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                    <p:selectOneRadio id="basicValue" styleClass="isitext_hrm" required="true" value="#{reimbursmentSchemaFormController.model.basicValue}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.nominal']}" itemValue="0" />
                                         <f:selectItem itemLabel="#{appmsg['reimbursment.salary']}" itemValue="1" />
@@ -141,7 +141,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
-                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{reimbursmentSchemaFormController.isNominalLimit}"/>
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="nominalUnit"/>
                                 </p:column>
                             </p:row>
@@ -152,7 +152,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.ratio_salary']}"  for="ratioSalary" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:spinner id="ratioSalary" value="#{reimbursmentSchemaFormController.model.ratioSalary}" min="0" max="11" required="true" size="2" disabled="#{reimbursmentSchemaFormController.isRatioSalary}"
+                                    <p:spinner id="ratioSalary" value="#{reimbursmentSchemaFormController.model.ratioSalary}" min="0" max="11" required="true" size="2" 
                                            validatorMessage="#{appmsg['reimbursmentschema.must_greater_than_zero_and_not_bigger_than_']}">
                                         <f:validateLongRange minimum="1" maximum="5"/>
                                     </p:spinner>     
@@ -166,7 +166,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.payroll_component']}"  for="payrollComponent" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectBooleanCheckbox id="payrollComponent" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
+                                    <p:selectBooleanCheckbox id="payrollComponent" value="#{reimbursmentSchemaFormController.model.payrolComponent}" />
                                     <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
                                     <p:message for="payrollComponent"/>
                                 </p:column>
@@ -177,7 +177,7 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.is_attach_dokument']}"  for="isAttachDocument" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectBooleanCheckbox id="isAttachDocument" disabled="#{reimbursmentSchemaFormController.isNominal}" value="#{reimbursmentSchemaFormController.model.isAttachDocument}" />
+                                    <p:selectBooleanCheckbox id="isAttachDocument" value="#{reimbursmentSchemaFormController.model.isAttachDocument}" />
                                     <p:outputLabel value=" #{appmsg['global.yes']}" styleClass="label_hrm" style="margin-bottom: 3px;"/>
                                     <p:message for="isAttachDocument"/>
                                 </p:column>
