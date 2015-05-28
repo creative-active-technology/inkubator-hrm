@@ -94,6 +94,14 @@ public class ApprovalRemoteCommand {
                 	}
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+                	if(isWaitingApproval){
+                		infoMessages = messages.getString("emp_correction_attendance.submission_of_correction_attendance") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	} else if(isWaitingRevised){
+                		infoMessages = messages.getString("emp_correction_attendance.submission_of_correction_attendance") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                	}
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 default:
                     break;
             }

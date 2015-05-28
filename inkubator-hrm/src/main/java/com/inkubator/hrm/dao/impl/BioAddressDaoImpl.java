@@ -31,6 +31,7 @@ public class BioAddressDaoImpl extends IDAOImpl<BioAddress> implements BioAddres
 		criteria.add(Restrictions.eq("bioData.id", bioDataId));
 		criteria.setFetchMode("city", FetchMode.JOIN);
 		criteria.setFetchMode("city.province", FetchMode.JOIN);
+                criteria.setFetchMode("city.province.country", FetchMode.JOIN);
 		return criteria.list();
 	}
 

@@ -191,6 +191,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_REVISED = 7;
     public static final Integer APPROVAL_STATUS_DRAFT = 8;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
+    public static final String EMP_CORRECTION_ATTENDANCE = "EMP_CORRECTION_ATTENDANCE";
     /* END */
 
 
@@ -375,6 +376,7 @@ public class HRMConstant {
     public static final String LOAN_CANCELLATION_KODE = "LCAN";
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
+    public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -421,5 +423,15 @@ public class HRMConstant {
     public static final String SEKRETARIAT = "SKR";
     public static final String COMPANY_ACTIVE = "COMPANY_ACTIVE";
     public static final String SUPER_ADMIN = "SUPER ADMIN";
+    public static final String BIODATA_ID = "BIODATA_ID";
+    public static final String EMP_DATA_ID = "EMP_DATA_ID";
+    /* END */
+    
+    /* 
+     * Constant for Emp Correction Attendance Module */
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED = 0;
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED = 1;
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_CANCELLED = 2;
+    /* END */
 
 }

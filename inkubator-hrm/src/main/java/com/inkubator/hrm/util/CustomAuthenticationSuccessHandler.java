@@ -8,6 +8,7 @@ package com.inkubator.hrm.util;
 import com.inkubator.common.util.DateFormatter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.service.HrmUserService;
@@ -42,6 +43,9 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
             try {
                 FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(authentication.getName()));
+                EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(authentication.getName()).getEmpData();
+                FacesUtil.setSessionAttribute(HRMConstant.BIODATA_ID, data.getBioData().getId());
+                FacesUtil.setSessionAttribute(HRMConstant.EMP_DATA_ID, data.getId());
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
