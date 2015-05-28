@@ -171,7 +171,7 @@ public class BioDataController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 800);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 560);
 
         Map<String, List<String>> params = new HashMap<>();
         List<String> bioAddressId = new ArrayList<>();
