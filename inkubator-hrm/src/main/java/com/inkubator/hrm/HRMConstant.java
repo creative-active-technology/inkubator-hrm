@@ -423,5 +423,13 @@ public class HRMConstant {
     public static final String SEKRETARIAT = "SKR";
     public static final String COMPANY_ACTIVE = "COMPANY_ACTIVE";
     public static final String SUPER_ADMIN = "SUPER ADMIN";
+    /* END */
+    
+    /* 
+     * Constant for Emp Correction Attendance Module */
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED = 0;
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED = 1;
+    public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_CANCELLED = 2;
+    /* END */
 
 }

@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.workingtime;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +30,7 @@ import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.entity.WtWorkingHour;
+import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
@@ -230,13 +232,14 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
 
     private void getModelFromJson(String json) {
         try {
-            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
             WtEmpCorrectionAttendance entity = gson.fromJson(json, WtEmpCorrectionAttendance.class);
             model.setRequestCode(entity.getRequestCode());
             model.setRequestDate(entity.getRequestDate());
             model.setStartDate(entity.getStartDate());
             model.setEndDate(entity.getEndDate());
             model.setEmpData(empDataService.getByEmpIdWithDetail(entity.getEmpData().getId()));
+            model.setWorkingGroupName(model.getEmpData().getWtGroupWorking().getName());
 
             List<EmpCorrectionAttendanceDetailModel> listDetail =  new ArrayList<EmpCorrectionAttendanceDetailModel>();
             JsonObject jsonObject = gson.fromJson(json, JsonObject.class);

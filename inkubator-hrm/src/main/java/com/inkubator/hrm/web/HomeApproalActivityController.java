@@ -126,6 +126,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.ANNOUNCEMENT:
                     redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+                    redirect = "/protected/working_time/emp_correction_attendance_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }
@@ -173,6 +176,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.RECRUITMENT_REQUEST:
                     redirect = "/protected/recruitment/recruitment_req_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.EMP_CORRECTION_ATTENDANCE:                    
+                    redirect = "/protected/working_time/emp_correction_attendance_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

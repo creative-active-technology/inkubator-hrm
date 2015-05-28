@@ -36,6 +36,7 @@ public class WtEmpCorrectionAttendance implements Serializable {
     private Date requestDate;
     private String requestCode;  
     private String approvalActivityNumber;
+    private Integer approvalStatus;
     
     private String createdBy;
     private String updatedBy;
@@ -130,6 +131,15 @@ public class WtEmpCorrectionAttendance implements Serializable {
     public void setApprovalActivityNumber(String approvalActivityNumber) {
         this.approvalActivityNumber = approvalActivityNumber;
     }
+
+    @Column(name = "approval_status", nullable = false)
+	public Integer getApprovalStatus() {
+		return approvalStatus;
+	}
+
+	public void setApprovalStatus(Integer approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
 
 	@Column(name = "created_by", length = 45)
     public String getCreatedBy() {

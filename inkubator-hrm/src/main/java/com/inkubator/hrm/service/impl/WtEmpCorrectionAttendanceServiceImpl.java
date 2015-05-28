@@ -32,6 +32,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
+import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.hrm.util.KodefikasiUtil;
@@ -281,9 +282,11 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
              * kalau status akhir sudah di approved dan tidak ada next approval,
              * berarti langsung insert ke database
              */                        
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
     		WtEmpCorrectionAttendance entity = gson.fromJson(appActivity.getPendingData(), WtEmpCorrectionAttendance.class); 
     		entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+    		entity.setApprovalStatus(HRMConstant.EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED); //set approval status approved
+    		
     		JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
             List<WtEmpCorrectionAttendanceDetail> listDetail = gson.fromJson(jsonObject.get("listDetail").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());            
             
@@ -300,7 +303,23 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	public void rejected(long approvalActivityId, String comment) throws Exception {
 		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di rejected dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */                        
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+    		WtEmpCorrectionAttendance entity = gson.fromJson(appActivity.getPendingData(), WtEmpCorrectionAttendance.class); 
+    		entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+    		entity.setApprovalStatus(HRMConstant.EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED); //set approval status rejected
+    		
+    		JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
+            List<WtEmpCorrectionAttendanceDetail> listDetail = gson.fromJson(jsonObject.get("listDetail").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());            
+            
+            /** saving to DB */
+            this.save(entity, listDetail, Boolean.TRUE);
+        }
+        
         //if there is no error, then sending the email notification
         sendingEmailApprovalNotif(appActivity);
 	}
@@ -315,9 +334,11 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
              * kalau status akhir sudah di approved dan tidak ada next approval,
              * berarti langsung insert ke database
              */                        
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
     		WtEmpCorrectionAttendance entity = gson.fromJson(appActivity.getPendingData(), WtEmpCorrectionAttendance.class); 
     		entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+    		entity.setApprovalStatus(HRMConstant.EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED); //set approval status approved
+    		
     		JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
             List<WtEmpCorrectionAttendanceDetail> listDetail = gson.fromJson(jsonObject.get("listDetail").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());            
             
@@ -338,6 +359,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveWithApproval(WtEmpCorrectionAttendance entity, List<WtEmpCorrectionAttendanceDetail> listDetail) throws Exception {
 		
+		entity.setApprovalStatus(HRMConstant.EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED); //set approval status approved		
 		return this.save(entity, listDetail, Boolean.FALSE);
 	}
 
@@ -433,7 +455,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	
 	private String convertToJsonData(WtEmpCorrectionAttendance entity, List<WtEmpCorrectionAttendanceDetail> listDetail) throws IOException{ 
 		//parsing object to json 
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
         jsonObject.addProperty("listDetail", gson.toJson(listDetail));
