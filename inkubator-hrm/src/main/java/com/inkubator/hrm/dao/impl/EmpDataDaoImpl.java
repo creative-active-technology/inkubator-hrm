@@ -1644,4 +1644,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
     }
 
+	@Override
+	public String getBioDataNameByEmpDataId(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
+	}
+
 }

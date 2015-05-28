@@ -1,268 +1,352 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:f="http://java.sun.com/jsf/core">
-    <h:head>
-        <title>IGNORED</title>
-    </h:head>
-    <h:body>
-        <ui:composition template="/templates/master_layout_full.xhtml">
-            <ui:define name="windowTitle">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>IGNORED</title>
+</h:head>
+<h:body>
+	<ui:composition template="/templates/master_layout_full.xhtml">
+		<ui:define name="windowTitle">
                 Home
             </ui:define>
-            <ui:define name="center">
-                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+		<ui:define name="center">
+			<p:growl id="growlId" showDetail="true" showSummary="true"
+				globalOnly="true" life="5000" />
 
-                <div id="box_bg" style="margin: 10px">
-                    <!--<p:panel style="margin: 10px">-->
-                    <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="Recruit Vacancy Selection" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_header']}" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator/>
+			<div id="box_bg" style="margin: 10px">
+				<!--<p:panel style="margin: 10px">-->
+				<h:panelGrid style="margin-bottom: 5px" columns="2">
+					<p:graphicImage library="images" name="skema_penggantian.png"
+						height="36" width="36" />
+					<h:panelGroup layout="block">
+						<h:panelGrid>
+							<p:outputLabel value="Recruit Vacancy Selection"
+								styleClass="header_big" />
+							<p:outputLabel
+								value="#{appmsg['systemLetterRef.system_letter_reference_header']}"
+								styleClass="header_small_no_bold" />
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:panelGrid>
+				<p:separator />
 
-                    <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Kode" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="code" value="#{recruitVacancySelectionModel.code}"  styleClass="label_hrm" />
+				<p:panelGrid
+					style="width: 100%;margin-bottom: 20px;margin-top: 20px"
+					styleClass="grid_border3">
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Kode" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="code"
+								value="#{recruitVacancySelectionModel.code}"
+								styleClass="label_hrm" />
 
-                            </p:column>
-                        </p:row>
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Recruit Vacancy Selection Date" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="recruitVacancySelectionDate" value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"  styleClass="label_hrm" >
-                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                </p:outputLabel>
-                            </p:column>
-                        </p:row>
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Tanggal" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="recruitVacancySelectionDate"
+								value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"
+								styleClass="label_hrm">
+								<f:convertDateTime pattern="dd-MMMM-yyyy" />
+							</p:outputLabel>
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Rekrutment" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="recruit" value="#{recruitVacancySelectionModel.recruitHireApplyName}"  styleClass="label_hrm" />
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Rekrutment" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="recruit"
+								value="#{recruitVacancySelectionModel.recruitHireApplyName}"
+								styleClass="label_hrm" />
 
-                            </p:column>
-                        </p:row>
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Jabatan" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="jobTitleName" value="#{recruitVacancySelectionModel.jobTitleName}"  styleClass="label_hrm" />
-                            </p:column>
-                        </p:row>
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Jabatan" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="jobTitleName"
+								value="#{recruitVacancySelectionModel.jobTitleName}"
+								styleClass="label_hrm" />
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Staff" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="staff" value="#{recruitVacancySelectionModel.staffName}"  styleClass="label_hrm" />
-                            </p:column>
-                        </p:row>
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Staff" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="staff"
+								value="#{recruitVacancySelectionModel.staffName}"
+								styleClass="label_hrm" />
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Efektif Date" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="effectiveDate" value="#{recruitVacancySelectionModel.effectiveDate}"  styleClass="label_hrm" >
-                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                                </p:outputLabel>
-                            </p:column>
-                        </p:row>
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Efektif Date" styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="effectiveDate"
+								value="#{recruitVacancySelectionModel.effectiveDate}"
+								styleClass="label_hrm">
+								<f:convertDateTime pattern="dd-MMMM-yyyy" />
+							</p:outputLabel>
+						</p:column>
+					</p:row>
 
-                        <p:row>
-                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                <p:outputLabel  value="Ekstra Fee"  for="extraFee" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 80%">
-                                <p:outputLabel id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}"  styleClass="label_hrm" >
-                                </p:outputLabel>
-                            </p:column>
-                        </p:row>
+					<p:row>
+						<p:column style="width: 20%;background-color: #e1f0f0!important">
+							<p:outputLabel value="Ekstra Fee" for="extraFee"
+								styleClass="label_hrm" />
+						</p:column>
+						<p:column style="width: 80%">
+							<p:outputLabel id="extraFee"
+								value="#{recruitVacancySelectionModel.extraBudget}"
+								styleClass="label_hrm">
+							</p:outputLabel>
+						</p:column>
+					</p:row>
 
-                    </p:panelGrid>
-                    <h:form id="formId" >
-                        <h:panelGrid>
-                            <p:dataTable  id="tableVacancySelectionSeries" var="data"  value="#{recruitVacancySelectionModel.listVacancySelectionDetail}" lazy="false" paginator="false"
-                                          style="margin-top: 10px;margin-bottom: 10px"
-                                          rowIndexVar="no">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['educationhistory.list_of_education_history']}"/>
-                                </f:facet>
-                                <p:column style="text-align: center;width: 3%">
-                                    <f:facet name="header">  
-                                        <h:outputText value="#{appmsg['global.number']}"/>
-                                    </f:facet>
-                                    <h:outputLabel value="#{no+1}." />
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{appmsg['educationhistory.certificate_number']}"/>
-                                    </f:facet>
-                                    <h:outputLabel value= "#{data.recruitSelectionSeriesName}" />
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{appmsg['global.start_date']}"/>
-                                    </f:facet>
-                                    <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.start_date']}" value="#{data.startDate}"
-                                                 required="false" navigator="true">
-                                    </p:calendar>
+				</p:panelGrid>
+				<h:form id="formId">
+					<h:panelGrid>
+						<p:dataTable id="tableVacancySelectionSeries" var="data"
+							value="#{recruitVacancySelectionModel.listVacancySelectionDetail}"
+							lazy="false" paginator="false"
+							style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+							<f:facet name="header">
+								<h:outputText value="Daftar Seleksi" />
+							</f:facet>
+							<p:column style="text-align: center;width: 3%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.number']}" />
+								</f:facet>
+								<h:outputLabel value="#{no+1}." />
+							</p:column>
+							<p:column style="width: 12%">
+								<f:facet name="header">
+									<h:outputText value="Tipe Seleksi" />
+								</f:facet>
+								<h:outputLabel value="#{data.recruitSelectionSeriesName}" />
+							</p:column>
+							<p:column style="width: 9%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.start_date']}" />
+								</f:facet>
+								<p:calendar id="startDate" size="13" pattern="dd MMMM yyyy"
+									label="#{appmsg['global.start_date']}"
+									value="#{data.startDate}" required="false" navigator="true">
+								</p:calendar>
 
-                                    <p:message for="startDate"/>
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="#{appmsg['global.end_date']}"/>
-                                    </f:facet>
-                                    <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['global.end_date']}" value="#{data.endDate}"
-                                                 required="false" navigator="true">
-                                    </p:calendar>
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Time"/>
-                                    </f:facet>
-                                    <pe:timePicker id="startTime" value="#{data.time}" mode="spinner" styleClass="isitext_hrm" requiredMessage="#{appmsg['workinghour.error_empty_breaktime_end']}"/>
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Tempat"/>
-                                    </f:facet>
-                                    <p:inputText id="place" title="Place" value="#{data.place}" 
-                                                 required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                    <p:message for="place"/>
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Penyeleksi"/>
-                                    </f:facet>
-<!--                                    <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                     onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()" style="font-size: 10px!important" action="saveListEmployee">                        
-                                        <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
-                                    </p:commandButton>-->
-                                    <p:commandButton value="#{appmsg['global.save']}" ajax="true"
-                                                     styleClass="label_button" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                                     icon="ui-icon-disk"
-                                                     immediate="true" update=":formDetail, updateName"
-                                                     onclick="PF('statusDialog').show()"  oncomplete="PF('penyeleksiDialog').show()"
-                                                     id="buttonSave" title="#{appmsg['global.save']}">
-                                        <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
-                                        <!--<p:ajax event="dialogReturn" listener="#{recruitVacancySelectionFormController.onDialogReturn}"  update="tableVacancySelectionSeries"/>-->
-                                    </p:commandButton>
-                                    #{data.listEmpData} #{data.recruitSelectionSeriesName}
-                                    <h:outputLabel id="updateName" value= "#{data.recruitSelectionSeriesName}" />
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Biaya Pokok"/>
-                                    </f:facet>
-                                    <pe:inputNumber id="basicCost" title="Place" value="#{data.basicCost}" 
-                                                    required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                    <p:message for="basicCost"/>
-                                </p:column>
-                                <p:column style="width: 15%">
-                                    <f:facet name="header">
-                                        <h:outputText value="Tempat"/>
-                                    </f:facet>
-                                    <pe:inputNumber id="individualCost" title="Biaya Per Individu" value="#{data.individualCost}" 
-                                                    required="false" requiredMessage="Place" maxlength="45" styleClass="isitext_hrm" style="width:120px;" />
-                                    <p:message for="individualCost"/>
-                                </p:column>
+								<p:message for="startDate" />
+							</p:column>
+							<p:column style="width: 9%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.end_date']}" />
+								</f:facet>
+								<p:calendar id="endDate" size="13" pattern="dd MMMM yyyy"
+									label="#{appmsg['global.end_date']}" value="#{data.endDate}"
+									required="false" navigator="true">
+								</p:calendar>
+							</p:column>
+							<p:column style="width: 7%; text-align: center;">
+								<f:facet name="header">
+									<h:outputText value="Waktu" />
+								</f:facet>
+								<pe:timePicker id="startTime" value="#{data.time}"
+									mode="spinner" styleClass="isitext_hrm"
+									requiredMessage="#{appmsg['workinghour.error_empty_breaktime_end']}" />
+							</p:column>
+							<p:column style="width: 12%">
+								<f:facet name="header">
+									<h:outputText value="Tempat" />
+								</f:facet>
+								<p:inputText id="place" title="Place" value="#{data.place}"
+									required="false" requiredMessage="Place" maxlength="45"
+									styleClass="isitext_hrm" style="width:120px;" />
+								<p:message for="place" />
+							</p:column>
+							<p:column style="width: 12%; text-align: center;">
+								<f:facet name="header">
+									<h:outputText value="Penyeleksi" />
+								</f:facet>
+								<p:commandButton value="#{appmsg['global.search']}" ajax="true"
+									styleClass="label_button" style="margin-right: 5px"
+									label="#{appmsg['global.search']}" icon="ui-icon-disk"
+									immediate="true" update=":formDetail, tooltipEmployeeListId"
+									onclick="PF('statusDialog').show()"
+									oncomplete="PF('penyeleksiDialog').show()"
+									id="employeeSearchButtonId" title="#{appmsg['global.search']}">
+									<f:setPropertyActionListener value="#{data}"
+										target="#{recruitVacancySelectionModel.selectedVacSelectionDetailModel}" />
+								</p:commandButton>
+								<pe:tooltip for="employeeSearchButtonId"
+									id="tooltipEmployeeListId" showEffect="slideToggle"
+									style="margin-left: 200px;" hideEffect="slideToggle"
+									showDelay="1" myPosition="top center"
+									atPosition="bottom center">
+									<p:dataList value="#{data.listEmpData}" var="empData"
+										type="ordered" style="width: 200px;">
+										<f:facet name="header">
+									            List Penyeleksi
+									        </f:facet>
+									        #{empData.bioData.firstName} #{empData.bioData.lastName}
+									    </p:dataList>
+								</pe:tooltip>
+								<br />
+								<h:outputLabel id="updateName"
+									value="Sorot tombol untuk melihat list penyeleksi" />
+							</p:column>
+							<p:column style="width: 12%">
+								<f:facet name="header">
+									<h:outputText value="Biaya Pokok" />
+								</f:facet>
+								<pe:inputNumber id="basicCost" title="Place"
+									value="#{data.basicCost}" required="false"
+									requiredMessage="Place" maxlength="15" styleClass="isitext_hrm"
+									style="width:10px;" />
+								<p:message for="basicCost" />
+							</p:column>
+							<p:column style="width: 12%">
+								<f:facet name="header">
+									<h:outputText value="Tempat" />
+								</f:facet>
+								<pe:inputNumber id="individualCost" title="Biaya Per Individu"
+									value="#{data.individualCost}" required="false"
+									requiredMessage="Place" maxlength="5" styleClass="isitext_hrm"
+									style="width:10px;" />
+								<p:message for="individualCost" />
+							</p:column>
 
-                            </p:dataTable>
-                            <p:focus context="formId" />
-                        </h:panelGrid>
-                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-                        <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
-                                             action="save" styleClass="isitext_hrm"
-                                             style="margin-right: 5px" label="Lanjut"
-                                             icon="ui-icon-search" title="Lanjut"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="formId" />  
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
-                                             styleClass="label_button"/>
-                        </div>
+						</p:dataTable>
+						<p:focus context="formId" />
+					</h:panelGrid>
+					<p:separator style="margin-top: 10px;margin-bottom: 10px" />
+					<div style="margin-bottom: 5px">
+						<p:commandButton value="#{appmsg['global.save']}" ajax="true"
+							partialSubmit="true" action="save" styleClass="isitext_hrm"
+							style="margin-right: 5px" label="#{appmsg['global.save']}"
+							icon="ui-icon-search" title="#{appmsg['global.save']}" />
+						<p:commandButton value="#{appmsg['global.reset']}"
+							title="#{appmsg['global.reset']}" process="@this" update="formId"
+							action="#{systemLetterReferenceFormController.doReset()}"
+							icon="ui-icon-refresh" styleClass="isitext_hrm"
+							style="margin-right: 5px">
+							<p:resetInput target="formId" />
+						</p:commandButton>
+						<p:commandButton value="#{appmsg['global.back']}"
+							icon="ui-icon-contact" title="#{appmsg['global.back']}"
+							immediate="true"
+							action="#{systemLetterReferenceFormController.doBack()}"
+							styleClass="label_button" />
+					</div>
 
-                    </h:form>
-                </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
-                <p:dialog id="penyeleksiDialogId" widgetVar="penyeleksiDialog" header="#{appmsg['savingType.savingType_detail']}" width="700" height="400" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+				</h:form>
+			</div>
+			<p:dialog modal="true" widgetVar="statusDialog"
+				header="#{appmsg['global.waiting']}" draggable="false"
+				closable="false" resizable="false">
+				<div align="center">
+					<h:graphicImage library="images" name="waiting.gif" />
+				</div>
+			</p:dialog>
+			<p:dialog id="penyeleksiDialogId" widgetVar="penyeleksiDialog"
+				header="#{appmsg['savingType.savingType_detail']}" width="700"
+				height="400" modal="true" resizable="false" hideEffect="puff"
+				styleClass="header_small_no_bold" showEffect="clip"
+				onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
 
-                    <h:form id="formDetail">
-                        <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-                            <h:panelGrid columns="4">
-                                <p:outputLabel value="NIK / #{appmsg['global.name']}" styleClass="header_big" />
-                                <p:outputLabel value=":" styleClass="header_big" />
-                                <p:inputText id="searchId" style="width: 450px" value="#{recruitVacancySelectionModel.nikOrName}"/>
-                                <p:commandButton value="#{appmsg['global.search']}" icon="ui-icon-search" action="save" />
-                            </h:panelGrid>
-                            <p:focus for="searchId" />
-                            <p:dataTable id="checkboxDT" var="data" value="#{recruitVacancySelectionModel.listEmpData}" selection="#{recruitVacancySelectionModel.selectedListEmpData}" rowKey="#{data.id}" style="margin-bottom:0">
+				<h:form id="formDetail">
+					<p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+						<h:panelGrid columns="4">
+							<p:outputLabel value="NIK / #{appmsg['global.name']}"
+								styleClass="header_big" />
+							<p:outputLabel value=":" styleClass="header_big" />
+							<p:inputText id="searchId" style="width: 450px"
+								value="#{recruitVacancySelectionModel.nikOrNameSearchParameter}" />
+							<p:commandButton value="#{appmsg['global.search']}"
+								icon="ui-icon-search" action="save" />
+						</h:panelGrid>
+						<p:focus for="searchId" />
+						<p:dataTable var="data"
+							value="#{recruitVacancySelectionModel.lazyDataModel}" lazy="true"
+							paginator="true" pageLinks="7"
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+							id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31"
+							style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 
-                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+							<p:column sortBy="#{data.nik}" style="width: 15%">
+								<f:facet name="header">
+									<h:outputText value="NIK" />
+								</f:facet>
+								<p:outputLabel value=" #{data.nik}" />
+							</p:column>
+							<p:column style="width: 5%">
+								<f:facet name="header">
+									<h:outputText value=" " />
+								</f:facet>
+								<p:selectBooleanButton
+									value="#{recruitVacancySelectionModel.selectedEmpData[data]}"
+									styleClass="label_button" onLabel="#{appmsg['global.yes']}"
+									offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" >
+										<p:ajax event="click" listener="#{recruitVacancySelectionFormController.doSelectEmployee(flowRequestContext, empData)}"/>
+										
+									</p:selectBooleanButton>
+							</p:column>
 
 
-                                <p:column sortBy="#{data.nik}"> 
-                                    <f:facet name="header">  
-                                        <h:outputText value="NIK" />
-                                    </f:facet>
-                                    <p:outputLabel value=" #{data.nik}" />
-                                </p:column> 
 
-                            </p:dataTable>
+						</p:dataTable>
 
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"
-                                             action="saveListEmployee" styleClass="label_button" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
-                                             oncomplete="handleUpdateRequest(args)"
-                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+						<p:commandButton value="#{appmsg['global.save']}" ajax="true"
+							action="saveListEmployee" styleClass="label_button"
+							style="margin-right: 5px" label="#{appmsg['global.save']}"
+							icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
+							oncomplete="handleUpdateRequest(args)" id="buttonSave"
+							title="#{appmsg['global.save']}">
+						</p:commandButton>
 
-                        </p:panelGrid>
-                    </h:form>
-                </p:dialog>
-                <script type="text/javascript">
-                    function handleUpdateRequest(args) {
-                        if (args.listEmpExist) {
-                            jQuery('#penyeleksiDialogId').effect("shake", {times: 3}, 75);
-                        } else {
-                            PF('penyeleksiDialog').hide();
-                        }
-                    }
-                </script>
-            </ui:define>
-        </ui:composition>
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
+			<script type="text/javascript">
+				function handleUpdateRequest(args) {
+					if (args.listEmpExist) {
+						jQuery('#penyeleksiDialogId').effect("shake", {
+							times : 3
+						}, 75);
+					} else {
+						PF('penyeleksiDialog').hide();
+					}
+				}
+			</script>
+			<style type="text/css">
+.ui-tooltip {
+	width: 1000px !important;
+}
+</style>
+		</ui:define>
+	</ui:composition>
 
-    </h:body>
+</h:body>
 
 </html>
 

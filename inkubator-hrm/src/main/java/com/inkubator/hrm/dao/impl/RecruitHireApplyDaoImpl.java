@@ -185,6 +185,7 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
         criteria.add(Restrictions.eq("id", recruitHireApplyId));
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
         return (RecruitHireApply) criteria.uniqueResult();
     }
     
