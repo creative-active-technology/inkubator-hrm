@@ -102,11 +102,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {				
 		ApprovalActivity appActivity = null;
 		
-		/** cek apakah masih terdapat approval activity yang pending */
-		if(approvalActivityDao.isStillHaveWaitingStatus(listAppDef, requestByEmployee)){
-			throw new BussinessException("approval.error_still_have_waiting_status");
-		}
-		
 		/** Lakukan proses pengecekan approval process hanya jika user yg input bukan ADMINISTRATOR_ROLE dan memiliki list approval definition */
                 /** Direvisi,  untuk sekarang walaupun yang input admin, tetap dia akan input pakai account user yang bersangkutan, jadi filter condition : !UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) di hapus
                  * tgl revisi : jum'at 9 april 2015 
