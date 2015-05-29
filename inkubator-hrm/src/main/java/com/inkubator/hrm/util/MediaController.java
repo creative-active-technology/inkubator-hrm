@@ -33,7 +33,8 @@ public class MediaController extends BaseController {
 
         if (!context.getRenderResponse()) {
             InputStream is = facesIO.getInputStreamFromName("over_view.mp4");
-            streamedContent = new DefaultStreamedContent(is, "video/mp4", "over_view.mp4");
+            streamedContent = new DefaultStreamedContent(is,"video/mp4", "over_view.mp4");
+            
         }
         return streamedContent;
     }
