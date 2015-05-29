@@ -31,8 +31,10 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     /** get Total */
     public Long getTotalByParam(ApprovalActivitySearchParameter searchParameter);
     
-    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy);
+    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy, Long typeSpecific);
 
+    public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy);
+    
     public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs);
 
     public Boolean isStillHaveWaitingStatus(Long appDefId);

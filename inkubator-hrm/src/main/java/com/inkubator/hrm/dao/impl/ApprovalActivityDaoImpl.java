@@ -250,6 +250,34 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
 
         return isStillHaveWaitingStatus;
     }
+    
+    @Override
+	public Boolean isStillHaveWaitingStatus(List<ApprovalDefinition> appDefs, String requestBy, Long typeSpecific) {
+    	//get approval definition ids
+        List<Long> ids = new ArrayList<Long>();
+        for (ApprovalDefinition appDef : appDefs) {
+            if (appDef.getId() != null) {
+                ids.add(appDef.getId());
+            }
+        }
+
+        boolean isStillHaveWaitingStatus = false;
+        if (!ids.isEmpty()) {
+            Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+            
+            Disjunction disjStatus = Restrictions.disjunction();
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+            disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+            criteria.add(disjStatus);
+            
+            criteria.add(Restrictions.eq("typeSpecific", typeSpecific));
+            criteria.add(Restrictions.eq("requestBy", requestBy));
+            criteria.add(Restrictions.in("approvalDefinition.id", ids));
+            isStillHaveWaitingStatus = criteria.list().size() > 0;
+        }
+
+        return isStillHaveWaitingStatus;
+	}
 
     @Override
     public Boolean isStillHaveWaitingStatus(Long appDefId) {
@@ -382,4 +410,5 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
         return criteria.list();
     }
+	
 }

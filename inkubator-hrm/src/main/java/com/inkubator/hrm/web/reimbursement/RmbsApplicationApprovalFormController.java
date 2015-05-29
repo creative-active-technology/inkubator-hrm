@@ -60,7 +60,8 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     private Boolean isApprover;
     private Boolean isRequester;
     private Boolean isHaveAttachment;
-    private ApprovalActivity selectedApprovalActivity;
+    private ApprovalActivity currentActivity;
+    private ApprovalActivity askingRevisedActivity;
     private BigDecimal totalRequestThisMoth;
     
     @ManagedProperty(value = "#{approvalActivityService}")
@@ -87,15 +88,17 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             
             /** initial data for approval activity tracking */
             String id = FacesUtil.getRequestParameter("execution");
-            selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
-            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
-            isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
-            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
-            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());            
+            currentActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
+                    currentActivity.getSequence() - 1);
+            isWaitingApproval = currentActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
+            isWaitingRevised = currentActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
+            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), currentActivity.getApprovedBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), currentActivity.getRequestBy());            
             
             /** start binding data that needed (from json) to object */
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            rmbsApplication = gson.fromJson(selectedApprovalActivity.getPendingData(), RmbsApplication.class);      
+            rmbsApplication = gson.fromJson(currentActivity.getPendingData(), RmbsApplication.class);      
             
             //relational object
             EmpData empData = empDataService.getByEmpIdWithDetail(rmbsApplication.getEmpData().getId());
@@ -112,7 +115,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
             
 	        //attachment file
-            JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);            
+            JsonObject jsonObject = gson.fromJson(currentActivity.getPendingData(), JsonObject.class);            
 	    	JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
 	    	isHaveAttachment = !elReimbursementFileName.isJsonNull();
             
@@ -126,7 +129,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     public void cleanAndExit() {
     	rmbsApplication = null;
         isWaitingRevised = null;
-        selectedApprovalActivity = null;
+        currentActivity = null;
         approvalActivityService = null;
         comment = null;
         isWaitingApproval = null;
@@ -148,12 +151,12 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     }
 
     public String doRevised() {
-    	return "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true&activity=e" + selectedApprovalActivity.getId();
+    	return "/protected/reimbursement/rmbs_application_form.htm?faces-redirect=true&activity=e" + currentActivity.getId();
     }
     
     public String doAskingRevised() {
         try {
-        	rmbsApplicationService.askingRevised(selectedApprovalActivity.getId(), comment);
+        	rmbsApplicationService.askingRevised(currentActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.process_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
@@ -167,7 +170,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
     
     public String doApproved() {
         try {
-        	rmbsApplicationService.approved(selectedApprovalActivity.getId(), null, comment);
+        	rmbsApplicationService.approved(currentActivity.getId(), null, comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
@@ -181,7 +184,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
 
     public String doRejected() {
         try {
-        	rmbsApplicationService.rejected(selectedApprovalActivity.getId(), comment);
+        	rmbsApplicationService.rejected(currentActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/reimbursement/rmbs_application_undisbursed_view.htm?faces-redirect=true";
@@ -241,13 +244,20 @@ public class RmbsApplicationApprovalFormController extends BaseController {
 		this.isRequester = isRequester;
 	}
 
-	public ApprovalActivity getSelectedApprovalActivity() {
-		return selectedApprovalActivity;
+	public ApprovalActivity getCurrentActivity() {
+		return currentActivity;
 	}
 
-	public void setSelectedApprovalActivity(
-			ApprovalActivity selectedApprovalActivity) {
-		this.selectedApprovalActivity = selectedApprovalActivity;
+	public void setCurrentActivity(ApprovalActivity currentActivity) {
+		this.currentActivity = currentActivity;
+	}
+
+	public ApprovalActivity getAskingRevisedActivity() {
+		return askingRevisedActivity;
+	}
+
+	public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+		this.askingRevisedActivity = askingRevisedActivity;
 	}
 
 	public ApprovalActivityService getApprovalActivityService() {
