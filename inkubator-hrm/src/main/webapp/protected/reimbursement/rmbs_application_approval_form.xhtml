@@ -182,6 +182,22 @@
 	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{rmbsApplicationApprovalFormController.comment}" 
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsApplicationApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.requesting_revised_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{rmbsApplicationApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{rmbsApplicationApprovalFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
 	                        </p:row>	                        	                              
 	                 	</p:panelGrid>
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
