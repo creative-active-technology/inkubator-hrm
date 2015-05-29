@@ -289,6 +289,7 @@
         <extension>xml</extension>
         <mime-type>text/xml</mime-type>
     </mime-mapping>
+    
     <error-page>
         <error-code>403</error-code>
         <location>/error/error.htm</location>
