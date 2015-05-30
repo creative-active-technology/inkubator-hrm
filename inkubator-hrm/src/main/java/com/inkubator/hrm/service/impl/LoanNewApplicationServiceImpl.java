@@ -419,6 +419,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public void rejected(long approvalActivityId, String comment) throws Exception {
         Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println("isEndOfApprovalProcess" + result.get("isEndOfApprovalProcess"));
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di reject dan tidak ada next approval,

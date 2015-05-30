@@ -50,6 +50,7 @@ public class LoanNewApprovalFormController extends BaseController {
     private Boolean isApprover;
     private Boolean isRequester;
     private ApprovalActivity selectedApprovalActivity;
+    private ApprovalActivity askingRevisedActivity;
     @ManagedProperty(value = "#{loanNewApplicationService}")
     private LoanNewApplicationService loanNewApplicationService;
     @ManagedProperty(value = "#{approvalActivityService}")
@@ -64,6 +65,8 @@ public class LoanNewApprovalFormController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(selectedApprovalActivity.getActivityNumber(),
+                        selectedApprovalActivity.getSequence() - 1);
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
             isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;            
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
@@ -86,6 +89,7 @@ public class LoanNewApprovalFormController extends BaseController {
         listLoanInstallment = null;
         loanNewApplicationService = null;
         selectedApprovalActivity = null;
+        askingRevisedActivity = null;
         approvalActivityService = null;
         comment = null;
         empDataService = null;
@@ -245,5 +249,15 @@ public class LoanNewApprovalFormController extends BaseController {
         }
         return null;
     }
+
+    public ApprovalActivity getAskingRevisedActivity() {
+        return askingRevisedActivity;
+    }
+
+    public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+        this.askingRevisedActivity = askingRevisedActivity;
+    }
+    
+    
 
 }
