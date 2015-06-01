@@ -188,27 +188,30 @@ public class LoanApplicationFormController extends BaseController {
     }
 
     public String doRevised() {
-        LoanNewApplication loanNewApplication = getEntityFromModel(model);
-        String path = StringUtils.EMPTY;
+        if (this.isValidForm()) {
+            LoanNewApplication loanNewApplication = getEntityFromModel(model);
+            String path = StringUtils.EMPTY;
 
-        try {
-            String message = loanNewApplicationService.saveWithRevised(loanNewApplication, currentActivity.getId(), currentActivity.getActivityNumber());
-            System.out.println("akhir  proses revisi, message : " + message);
-            if (StringUtils.equals(message, "success_need_approval")) {
-                path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            try {
+                String message = loanNewApplicationService.saveWithRevised(loanNewApplication, currentActivity.getId(), currentActivity.getActivityNumber());
+                System.out.println("akhir  proses revisi, message : " + message);
+                if (StringUtils.equals(message, "success_need_approval")) {
+                    path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
-            } else {
-                path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                } else {
+                    path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                }
+                return path;
+
+            } catch (BussinessException ex) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
             }
-            return path;
-
-        } catch (BussinessException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
         }
+
         return null;
     }
 
@@ -238,9 +241,13 @@ public class LoanApplicationFormController extends BaseController {
                 return Boolean.FALSE;
             }
 
+            // Check whether minInstallment nominal is lower than minimum installment of selected loan new type, if true throw exception message
+            // (must be filter by minimum nominal, because nominal in list installment schedule is not always flat,
+            // sometimes it could be greater or lower each month, depending on interest type (floating/flat)) 
             List<LoanNewApplicationInstallment> listLoanInstallments = model.getListLoanNewApplicationInstallments();
-            Long maxInstallmentFromInstallmentList = Lambda.selectMax(listLoanInstallments, Lambda.on(LoanNewApplicationInstallment.class).getTotalPayment());
-            if( maxInstallmentFromInstallmentList < model.getMinimumInstallment().longValue()){
+            LoanNewApplicationInstallment installmentMin = Lambda.selectMin(listLoanInstallments, Lambda.on(LoanNewApplicationInstallment.class).getTotalPayment());
+            Long minInstallmentFromInstallmentList = installmentMin.getTotalPayment().longValue();
+            if (minInstallmentFromInstallmentList < model.getMinimumInstallment().longValue()) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.loan_isntallment_shoud_not_lower_than_minimum", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return Boolean.FALSE;
             }

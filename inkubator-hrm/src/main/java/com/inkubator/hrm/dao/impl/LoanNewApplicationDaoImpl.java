@@ -149,7 +149,7 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
                         "INNER JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
                         "INNER JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id  " +
                         "INNER JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
-                        "INNER JOIN hrm.emp_data AS empDataApprover ON requester.emp_data_id = empDataApprover.id  " +
+                        "INNER JOIN hrm.emp_data AS empDataApprover ON approver.emp_data_id = empDataApprover.id  " +
                         "INNER JOIN hrm.bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
                         "INNER JOIN hrm.loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
                         "LEFT JOIN hrm.loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +

@@ -51,7 +51,8 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
     private Boolean isWaitingRevised;
     private Boolean isApprover;
     private Boolean isRequester;
-    private ApprovalActivity selectedApprovalActivity;
+    private ApprovalActivity currentActivity;
+    private ApprovalActivity askingRevisedActivity;
     
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;    
@@ -68,16 +69,18 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
             
             /** initial data for approval activity tracking */
             String id = FacesUtil.getRequestParameter("execution");
-            selectedApprovalActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
-            isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
-            isWaitingRevised = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
-            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
-            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());            
+            currentActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
+                    currentActivity.getSequence() - 1);
+            isWaitingApproval = currentActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
+            isWaitingRevised = currentActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED;
+            isApprover = StringUtils.equals(UserInfoUtil.getUserName(), currentActivity.getApprovedBy());
+            isRequester = StringUtils.equals(UserInfoUtil.getUserName(), currentActivity.getRequestBy());            
             
             /** start binding data that needed (from json) to object */
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-            empCorrectionAttendance = gson.fromJson(selectedApprovalActivity.getPendingData(), WtEmpCorrectionAttendance.class);      
-            JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);
+            empCorrectionAttendance = gson.fromJson(currentActivity.getPendingData(), WtEmpCorrectionAttendance.class);      
+            JsonObject jsonObject = gson.fromJson(currentActivity.getPendingData(), JsonObject.class);
             listDetail = gson.fromJson(jsonObject.get("listDetail").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
             
             //relational object
@@ -92,7 +95,8 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
     @PreDestroy
     public void cleanAndExit() {
         isWaitingRevised = null;
-        selectedApprovalActivity = null;
+        currentActivity = null;
+        askingRevisedActivity = null;
         approvalActivityService = null;
         comment = null;
         isWaitingApproval = null;
@@ -108,12 +112,12 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
     }
 
     public String doRevised() {
-    	return "/protected/working_time/emp_correction_attendance_form.htm?faces-redirect=true&activity=e" + selectedApprovalActivity.getId();
+    	return "/protected/working_time/emp_correction_attendance_form.htm?faces-redirect=true&activity=e" + currentActivity.getId();
     }
     
     public String doAskingRevised() {
         try {
-        	wtEmpCorrectionAttendanceService.askingRevised(selectedApprovalActivity.getId(), comment);
+        	wtEmpCorrectionAttendanceService.askingRevised(currentActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.process_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/working_time/emp_correction_attendance_view.htm?faces-redirect=true";
@@ -127,7 +131,7 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
     
     public String doApproved() {
         try {
-        	wtEmpCorrectionAttendanceService.approved(selectedApprovalActivity.getId(), null, comment);
+        	wtEmpCorrectionAttendanceService.approved(currentActivity.getId(), null, comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/working_time/emp_correction_attendance_view.htm?faces-redirect=true";
@@ -141,7 +145,7 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
 
     public String doRejected() {
         try {
-        	wtEmpCorrectionAttendanceService.rejected(selectedApprovalActivity.getId(), comment);
+        	wtEmpCorrectionAttendanceService.rejected(currentActivity.getId(), comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.rejected_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/working_time/emp_correction_attendance_view.htm?faces-redirect=true";
@@ -209,12 +213,20 @@ public class EmpCorrectionAttendanceApprovalFormController extends BaseControlle
 		this.isRequester = isRequester;
 	}
 
-	public ApprovalActivity getSelectedApprovalActivity() {
-		return selectedApprovalActivity;
+	public ApprovalActivity getCurrentActivity() {
+		return currentActivity;
 	}
 
-	public void setSelectedApprovalActivity(ApprovalActivity selectedApprovalActivity) {
-		this.selectedApprovalActivity = selectedApprovalActivity;
+	public void setCurrentActivity(ApprovalActivity currentActivity) {
+		this.currentActivity = currentActivity;
+	}
+
+	public ApprovalActivity getAskingRevisedActivity() {
+		return askingRevisedActivity;
+	}
+
+	public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+		this.askingRevisedActivity = askingRevisedActivity;
 	}
 
 	public ApprovalActivityService getApprovalActivityService() {
