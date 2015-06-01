@@ -9,7 +9,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
+import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
@@ -108,4 +111,15 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         criteria.add(Restrictions.ge("untilPeriode", date));
         return (WtPeriode) criteria.uniqueResult();
 	}
+
+    @Override
+    public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return new ArrayList<WtPeriodEmpViewModel>();
+    }
+
+    @Override
+    public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
+        return 0l;
+    }
 }
