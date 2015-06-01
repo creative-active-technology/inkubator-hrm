@@ -249,8 +249,8 @@
                                         </f:facet>
                                         <h:outputLabel value= "#{bioAddressesData.city.cityName}"/>
                                     </p:column>
-                                    <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
-                                        <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}"  
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
+                                        <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}" value="Google Map" 
                                                          style="font-size: 10px!important" action="#{bioDataDetilController.doUpdateBioAddressMap()}">
                                             <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataDetilController.selectedBioAddress}" />
                                             <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBioDetailFormId"/>

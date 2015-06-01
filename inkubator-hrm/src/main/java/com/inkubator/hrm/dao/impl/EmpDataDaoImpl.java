@@ -36,18 +36,15 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.Religion;
+import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
-import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
-import com.inkubator.hrm.web.model.SearchEmployeeCandidateModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
@@ -460,6 +457,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
+        DetachedCriteria listEmp = DetachedCriteria.forClass(LeaveDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("leave", "lv", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("lv.id", model.getLeaveSchemeId()));
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -468,18 +469,19 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          */
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
-
-        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+       
+//        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.isNull("lv.empData"));
-            disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
-            criteria.add(disjunction);
-        }
+//        if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.isNull("lv.empData"));
+//            disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
+//            criteria.add(disjunction);
+//        }
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -1652,7 +1654,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge,
             List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) {
 
-        
         StringBuffer selectQuery = new StringBuffer(
                 "SELECT empData.id AS empDataId, empData.nik AS nik, "
                 + " bioData.firstName AS firstName, bioData.lastName AS lastName, "
@@ -1660,7 +1661,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " religion.id AS idReligion, religion.name AS religionName "
                 + " FROM EmpData as empData "
                 + " INNER JOIN empData.jabatanByJabatanId AS jabatan "
-                + " INNER JOIN jabatan.department AS department "  
+                + " INNER JOIN jabatan.department AS department "
                 + " INNER JOIN department.company AS company "
                 + " LEFT OUTER JOIN empData.bioData AS  bioData "
                 + " INNER JOIN bioData.religion AS  religion "
@@ -1672,7 +1673,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " AND  (SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
                 + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
                 + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
-        
+
         //Filter by gender
         if (!StringUtils.equals("Any", gender)) {
             if (StringUtils.equals("Male", gender)) {
@@ -1681,26 +1682,26 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 selectQuery.append("AND bioData.gender = 0 ");
             }
         }
-        
+
         //filter by ages range
         if (!listAge.isEmpty()) {
             selectQuery.append("AND umur(bioData.dateOfBirth , NOW()) in (:listAge) ");
         }
-        
+
         //filter by jabatan range
         if (!listJabatanId.isEmpty()) {
             selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
         }
-        
+
         //filter by religion range
         if (!listReligionId.isEmpty()) {
             selectQuery.append("AND religion.id IN (:listReligionId) ");
         }
-        
+
         //filter by joinDate (convert to total working in years) range
         if (listJoinDate.get(0) != 0) {
             selectQuery.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.joinDate)), '%Y')+0 in ( :listJoinDate ) ");
-          
+
         }
 
         Query hbm = getCurrentSession().createQuery(selectQuery.toString())
@@ -1717,11 +1718,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (!listAge.isEmpty()) {
             hbm.setParameterList("listAge", listAge);
         }
-        
+
         if (!listJoinDate.isEmpty() && listJoinDate.get(0) != 0) {
             hbm.setParameterList("listJoinDate", listJoinDate);
         }
-
 
         return hbm.setMaxResults(maxResults)
                 .setFirstResult(firstResult)
@@ -1737,7 +1737,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 " SELECT COUNT(*) "
                 + " FROM EmpData as empData "
                 + " INNER JOIN empData.jabatanByJabatanId as jabatan  "
-                + " INNER JOIN jabatan.department AS department "  
+                + " INNER JOIN jabatan.department AS department "
                 + " INNER JOIN department.company AS company "
                 + " LEFT OUTER JOIN empData.bioData AS  bioData "
                 + " INNER JOIN bioData.religion AS  religion "
@@ -1749,7 +1749,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " AND  (SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
                 + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
                 + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
-        
+
         //Filter by gender
         if (!StringUtils.equals("Any", gender)) {
             if (StringUtils.equals("Male", gender)) {
@@ -1758,33 +1758,33 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 selectQuery.append("AND bioData.gender = 0 ");
             }
         }
-        
+
         //filter by ages range
         if (!listAge.isEmpty()) {
             selectQuery.append("AND umur(bioData.dateOfBirth , NOW()) in (:listAge) ");
         }
-        
+
         //filter by jabatan range
         if (!listJabatanId.isEmpty()) {
             selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
         }
-        
+
         //filter by religion range
         if (!listReligionId.isEmpty()) {
             selectQuery.append("AND religion.id IN (:listReligionId) ");
         }
-        
+
         //filter by joinDate (convert to total working in years) range
         if (listJoinDate.get(0) != 0) {
             selectQuery.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.joinDate)), '%Y')+0 in ( :listJoinDate ) ");
-          
+
         }
 
         Query hbm = getCurrentSession().createQuery(selectQuery.toString())
                 .setParameter("gpa", gpa)
                 .setParameter("educationLevelId", educationLevelId)
-                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());     
-        
+                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());
+
         if (!listJabatanId.isEmpty()) {
             hbm.setParameterList("listJabatanId", listJabatanId);
         }
@@ -1794,19 +1794,19 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (!listAge.isEmpty()) {
             hbm.setParameterList("listAge", listAge);
         }
-        
+
         if (!listJoinDate.isEmpty() && listJoinDate.get(0) != 0) {
             hbm.setParameterList("listJoinDate", listJoinDate);
         }
 
-        return Long.valueOf(hbm.uniqueResult().toString());        
+        return Long.valueOf(hbm.uniqueResult().toString());
     }
 
     @Override
-	public String getBioDataNameByEmpDataId(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    public String getBioDataNameByEmpDataId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
-	}
+    }
 }

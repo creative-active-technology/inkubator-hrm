@@ -150,16 +150,16 @@
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.code}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;">
                                 <p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.measurement}" styleClass="label_hrm">
                                     <f:converter converterId="measurementConverter"/>
                                 </p:outputLabel>

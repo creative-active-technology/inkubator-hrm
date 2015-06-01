@@ -419,6 +419,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public void rejected(long approvalActivityId, String comment) throws Exception {
         Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println("isEndOfApprovalProcess" + result.get("isEndOfApprovalProcess"));
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di reject dan tidak ada next approval,
@@ -504,8 +505,9 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
 
-        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
+       // HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        ApprovalActivity approvalActivity = this.checkApprovalIfAny(entity.getEmpData(), isBypassApprovalChecking);
+        //ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
        
         if (approvalActivity == null) {
 
@@ -527,6 +529,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         return result;
     }
+    
+    private ApprovalActivity checkApprovalIfAny(EmpData empData, Boolean isBypassApprovalChecking) throws Exception{
+		/** check approval process if any,
+		 *  return null if no need approval process */
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        LoanNewSchema loanNewSchema = loanNewSchemaListOfEmpDao.getEntityByEmpDataId(empData.getId()).getLoanNewSchema();
+        //RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empData.getId()).get(0).getRmbsSchema();
+        List<ApprovalDefinition> appDefs = Lambda.extract(loanNewSchema.getApprovalDefinitionLoanSchemas(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+        
+        return isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
+	}
 
     private String getJsonPendingData(LoanNewApplication entity) throws IOException {
 
@@ -551,26 +564,33 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         //Get All pending request of employee
         List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId());
+        //approvalActivityDao.is
 
         //filter only activity that comes from LOAN 
         listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.LOAN)));
 
         //grouping list by ActivityNumber
-        Group<ApprovalActivity> groupPendingActivity = Lambda.group(listPendingRequest, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
+        //Group<ApprovalActivity> groupPendingActivity = Lambda.group(listPendingRequest, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
 
         //iterate each group list element
-        for (String key : groupPendingActivity.keySet()) {
-            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
-
-            // Get activity with highest sequence from each grouped list activities
-            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
-
-            //if previous loan approval activity with same loanNewType and still in approval process found,  return Exception Message
-            if (approvalActivityWithHighestSequence.getTypeSpecific() == loanNewSchemaId) {
+//        for (String key : groupPendingActivity.keySet()) {
+//            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
+//
+//            // Get activity with highest sequence from each grouped list activities
+//            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
+//
+//            //if previous loan approval activity with same loanNewType and still in approval process found,  return Exception Message
+//            if (approvalActivityWithHighestSequence.getTypeSpecific() == loanNewTypeId) {
+//                return "loan.error_loan_with_same_type_found";
+//            }
+//        }
+        
+        for(ApprovalActivity pendingApprovalActivity : listPendingRequest){
+            if (pendingApprovalActivity.getTypeSpecific() == loanNewTypeId) {
                 return "loan.error_loan_with_same_type_found";
             }
         }
-
+        
         
         //Check whether employee still have outstanding loan with same loanType
         List<LoanNewApplication> listPreviosUnpaidLoanWithSameLoanTypeId = loanNewApplicationDao.getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(empData.getId(), loanNewTypeId);
@@ -582,23 +602,34 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         /* Begin Calculate Total loan of exisiting loan application and previous loan of selected employee*/
         Double totalLoanByUser = loanPrincipal;
-
-        //iterate each group list element
-        for (String key : groupPendingActivity.keySet()) {
-            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
-
-            // Get activity with highest sequence from each grouped list activities
-            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
+        
+        for(ApprovalActivity pendingApprovalActivity : listPendingRequest){
             
             //calculate only from different activity number
-            if (!StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
-                String pendingData = approvalActivityWithHighestSequence.getPendingData();
+            if (!StringUtils.equals(activityNumber, pendingApprovalActivity.getActivityNumber())) {
+                String pendingData = pendingApprovalActivity.getPendingData();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
                 LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
                 totalLoanByUser += loanNewApplication.getNominalPrincipal();
             }
-
         }
+
+        //iterate each group list element
+//        for (String key : groupPendingActivity.keySet()) {
+//            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
+//
+//            // Get activity with highest sequence from each grouped list activities
+//            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
+//            
+//            //calculate only from different activity number
+//            if (!StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
+//                String pendingData = approvalActivityWithHighestSequence.getPendingData();
+//                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+//                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
+//                totalLoanByUser += loanNewApplication.getNominalPrincipal();
+//            }
+//
+//        }
 
         if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {
             for (LoanNewApplication prevLoan : listPreviosUnpaidLoanWithSameLoanTypeId) {

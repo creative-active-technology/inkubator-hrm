@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -16,17 +17,23 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.WtEmpCorrectionAttendanceDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TransactionCodefication;
@@ -36,6 +43,7 @@ import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -54,6 +62,8 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	private HrmUserDao hrmUserDao;
 	@Autowired
 	private ApprovalActivityDao approvalActivityDao;
+	@Autowired
+	private ApprovalDefinitionDao approvalDefinitionDao;
 	@Autowired
 	private EmpDataDao empDataDao;
 	
@@ -358,7 +368,17 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveWithApproval(WtEmpCorrectionAttendance entity, List<WtEmpCorrectionAttendanceDetail> listDetail) throws Exception {
-		
+		/** check jika ada permintaan koreksi yang masih diproses approval, 
+		 *  hanya boleh mengajukan permintaan koreksi jika tidak ada approval yang pending */
+		HrmUser hrmUser = hrmUserDao.getByEmpDataId(entity.getEmpData().getId());
+		//Get All pending request of employee
+        List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId()); 
+        //filter only activity that comes from EMP_CORRECTION_ATTENDANCE
+        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.EMP_CORRECTION_ATTENDANCE)));
+        if(!listPendingRequest.isEmpty()){
+        	throw new BussinessException("emp_correction_attendance.error_still_have_waiting_status");
+        }
+        
 		entity.setApprovalStatus(HRMConstant.EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED); //set approval status approved		
 		return this.save(entity, listDetail, Boolean.FALSE);
 	}
@@ -412,8 +432,8 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 		return message; 		
 	}
 	
-	private WtEmpCorrectionAttendance entityBindingAndValidation(WtEmpCorrectionAttendance entity, List<WtEmpCorrectionAttendanceDetail> listDetail) throws Exception {
-		
+	private WtEmpCorrectionAttendance entityBindingAndValidation(WtEmpCorrectionAttendance entity, List<WtEmpCorrectionAttendanceDetail> listDetail) throws Exception {			
+        
 		//initial
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
@@ -464,9 +484,21 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	}
 
 	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public WtEmpCorrectionAttendance getEntityByPkWithDetail(Long id) {
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtEmpCorrectionAttendance getEntityByPkWithDetail(Long id) throws Exception {
 		return wtEmpCorrectionAttendanceDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<WtEmpCorrectionAttendance> getByParam(EmpCorrectionAttendanceSearchParameter parameter, int firstResult, int maxResult, Order orderable) throws Exception {
+		return wtEmpCorrectionAttendanceDao.getByParam(parameter, firstResult, maxResult, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter) throws Exception {
+		return wtEmpCorrectionAttendanceDao.getTotalByParam(parameter);
 	}
 
 }

@@ -78,6 +78,22 @@
 	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{empCorrectionAttendanceApprovalFormController.comment}" 
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{empCorrectionAttendanceApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.requesting_revised_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{empCorrectionAttendanceApprovalFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{empCorrectionAttendanceApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{empCorrectionAttendanceApprovalFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
 	                        </p:row>	                        	                              
 	                 	</p:panelGrid>
 	                 	<p:dataTable  id="tableId" var="data"  value="#{empCorrectionAttendanceApprovalFormController.listDetail}" lazy="true" paginator="true" pageLinks="7"

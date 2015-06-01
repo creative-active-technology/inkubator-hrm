@@ -76,7 +76,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
             int i = 0;
             for (GolonganJabatan golonganJabatan : golonganJabatanList) {
                 golonganJabatanDropDown.put(golonganJabatan.getCode() + " - " + golonganJabatan.getPangkat().getPangkatName(), golonganJabatan.getId());
-                
+
                 i++;
             }
             MapUtil.sortByValue(golonganJabatanDropDown);
@@ -186,8 +186,10 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     }
 
     public void doSearchEmployee() throws Exception {
-        selecedLeave=leaveService.getEntiyByPK(model.getLeaveSchemeId());
+        selecedLeave = leaveService.getEntiyByPK(model.getLeaveSchemeId());
+        source = new ArrayList<>();
         source = empDataService.getEmployeelBySearchEmployeeLeave(model);
+        dualListModel=new DualListModel<>();
         dualListModel.setSource(source);
     }
 
@@ -200,7 +202,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -209,7 +211,7 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     }
 
     public void doReset() {
-        selecedLeave=new Leave();
+        selecedLeave = new Leave();
         model.setDepartmentLikeOrEqual(null);
         model.setLeaveSchemeId(null);
         model.setDepartmentLikeOrEqual(3);
@@ -229,8 +231,8 @@ public class LeaveDistributionSchemeFormController extends BaseController {
     public void setSelecedLeave(Leave selecedLeave) {
         this.selecedLeave = selecedLeave;
     }
-    
-    public String doBack(){
+
+    public String doBack() {
         return "/protected/employee/leave_distribution_view.htm?faces-redirect=true";
     }
 

@@ -132,7 +132,7 @@ public class WtEmpCorrectionAttendanceDetail implements Serializable {
 	}
 		
 	@Temporal(TemporalType.TIME)
-    @Column(name = "attendance_in", length = 19, nullable = false)
+    @Column(name = "attendance_in", length = 19)
 	public Date getAttendanceIn() {
 		return attendanceIn;
 	}
@@ -142,7 +142,7 @@ public class WtEmpCorrectionAttendanceDetail implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIME)
-    @Column(name = "attendance_out", length = 19, nullable = false)
+    @Column(name = "attendance_out", length = 19)
 	public Date getAttendanceOut() {
 		return attendanceOut;
 	}
