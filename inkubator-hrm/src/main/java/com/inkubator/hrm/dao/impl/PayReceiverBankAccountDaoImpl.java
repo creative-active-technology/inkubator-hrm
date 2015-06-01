@@ -57,7 +57,8 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         }
 
         hqlQuery.append("GROUP BY ep.id ");
-        hqlQuery.append("ORDER BY ep.nik");
+//        hqlQuery.append("ORDER BY ep.nik");
+        hqlQuery.append("ORDER BY " + order);
 
         if (searchParameter.getEmpName() != null) {
             return getCurrentSession().createQuery(hqlQuery.toString())
@@ -102,7 +103,7 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
     @Override
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) {
 
-        final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM hrm.emp_data ep");
+       final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM hrm.emp_data ep");
         nativeQuery.append(" JOIN hrm.bio_data bi on ep.bio_data_id=bi.id");
         nativeQuery.append(" JOIN hrm.bio_bank_account ba on ba.bio_data_id=bi.id");
         nativeQuery.append(" JOIN hrm.golongan_jabatan go on ep.gol_jab_id=go.id");

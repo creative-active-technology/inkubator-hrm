@@ -73,7 +73,7 @@
                             </p:column>
                              <p:column sortBy="empData.nik" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['workschedule.nik']}"/>
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.empData.nik}" />
                             </p:column>                           
@@ -122,7 +122,7 @@
                                 </h:outputLabel>
                             </p:column>
                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                <p:commandButton  icon="ui-icon-circle-check" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{loanDisbursementViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanDisbursementViewController.selected}" />
                                     <p:ajax event="dialogReturn" listener="#{loanDisbursementViewController.onDialogReturn}" update="tableId, :growlLoanViewlId" />

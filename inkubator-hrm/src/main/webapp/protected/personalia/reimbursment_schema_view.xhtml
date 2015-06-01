@@ -38,8 +38,11 @@
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                         <f:selectItem itemLabel="Nominal Unit" itemValue="nominalUnit"/>
+
+                                        <p:ajax update="formId" listener="#{reimbursmentSchemaViewController.isNominalOrNot}"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{reimbursmentSchemaViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:inputText id="searchTextId" value="#{reimbursmentSchemaViewController.searchParameter.parameter}" rendered="#{not reimbursmentSchemaViewController.isNominalUnitOrNot}" style="width: 250px" styleClass="label_button"/>
+                                    <pe:inputNumber id="searchId" value="#{reimbursmentSchemaViewController.searchParameter.parameter}" rendered="#{reimbursmentSchemaViewController.isNominalUnitOrNot}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reimbursmentSchemaViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -52,7 +55,7 @@
                                         <!--<p:ajax event="dialogReturn" listener="#{reimbursmentSchemaViewController.onDialogReturn}"  update="tableId, growlId"/>-->
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reimbursmentSchemaViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -96,14 +99,14 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                         style="font-size: 10px!important" 
-                                                         action="#{reimbursmentSchemaViewController.doDetail()}">                        
+                                                 style="font-size: 10px!important" 
+                                                 action="#{reimbursmentSchemaViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{reimbursmentSchemaViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":confirmDeletePanel" 
-                                                                 action="#{reimbursmentSchemaViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="deleteDialog.show()">
+                                                 style="font-size: 10px!important" update=":confirmDeletePanel" 
+                                                 action="#{reimbursmentSchemaViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="deleteDialog.show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{reimbursmentSchemaViewController.selected}" />
                                 </p:commandButton>
                                 -

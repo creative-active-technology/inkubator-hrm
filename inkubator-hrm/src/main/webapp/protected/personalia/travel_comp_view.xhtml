@@ -75,13 +75,13 @@
                             </p:column>
                             <p:column sortBy="code"  style="text-align: left;width: 37%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                    <h:outputText value="#{appmsg['travelComponent.travelComponent_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelComponentData.code}"/>
                             </p:column>                              
                             <p:column sortBy="name"  style="text-align: left;width: 50%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['travelComponent.travelComponent_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{travelComponentData.name}"/>
                             </p:column>
@@ -146,20 +146,20 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmTravelComponent.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailTravelComponent" header="#{appmsg['travelComponent.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailTravelComponent" header="#{appmsg['travelComponent.detail_dialog']}" styleClass="header_small_no_bold" width="550" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travel_component_code_2']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.code}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travel_component_name_2']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;">
                                 <p:outputLabel value="#{travelComponentViewController.selectedTravelComponent.measurement}" styleClass="label_hrm">
                                     <f:converter converterId="measurementConverter"/>
                                 </p:outputLabel>

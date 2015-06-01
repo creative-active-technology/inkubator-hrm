@@ -21,6 +21,7 @@ import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.JabatanEdukasi;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 
@@ -279,14 +280,14 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EducationLevel> getByParam(String parameter, int firstResult, int maxResults, Order orderable) throws Exception {
-        return this.educationLevelDao.getByParam(parameter, firstResult, maxResults, orderable);
+    public List<EducationLevel> getByParam(EducationLevelSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return this.educationLevelDao.getByParam(searchParameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParam(String parameter) throws Exception {
-        return this.educationLevelDao.getTotalByParam(parameter);
+    public Long getTotalByParam(EducationLevelSearchParameter searchParameter) throws Exception {
+        return this.educationLevelDao.getTotalByParam(searchParameter);
     }
 
     @Override
@@ -334,7 +335,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
             empDataMatrixModel = new EmpDataMatrixModel();
             totalMale = bioEducationHistoryDao.getTotalByGenderMaleAndEducationLevel(educationLevel.getId());
             totalFemale = bioEducationHistoryDao.getTotalByGenderFemaleAndEducationLevel(educationLevel.getId());
-            System.out.println(totalMale + " - total");
+         
             listEducationShow.add(educationLevel.getName());
             listEducationShow.add(String.valueOf(totalFemale));
             listEducationShow.add(String.valueOf(totalMale));

@@ -22,8 +22,8 @@
                             <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Loan Discount Detail" styleClass="header_big" />
-                                    <p:outputLabel value="Loan Discount Detail dari Penggajian" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loanDiscount.loan_discount_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loanDiscount.loan_discount_detail_from_payroll']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -31,7 +31,7 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
                             <p:row>
                                 <p:column style="width: 10%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="NIK / Nama Karyawan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.nik_or_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 30%">
                                     <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.nik} #{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.bioData.fullName}"/>
@@ -39,7 +39,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 10%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Jabatan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 30%">
                                     <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.loan.empData.jabatanByJabatanId.name}"/>
@@ -47,7 +47,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width:10%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Potongan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['loan.loanDiscount']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 30%">
                                     <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.totalPayment}">
@@ -57,7 +57,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width:10%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Durasi" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['loan.duration']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 30%">
                                     <p:outputLabel value="#{loanDiscountDetailController.selectedLoanPaymentDetail.bayarKe} / #{loanDiscountDetailController.selectedLoanPaymentDetail.loan.termin}"/>
@@ -76,13 +76,13 @@
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Angsuran Ke"/>
+                                    <h:outputText value="#{appmsg['loanDiscount.loan_installment_to']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
                             <p:column sortBy="dueDate" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Tanggal Pembayaran"/>
+                                    <h:outputText value="#{appmsg['loan.payment_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.dueDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -90,7 +90,7 @@
                             </p:column>
                             <p:column sortBy="totalPayment" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Angsuran"/>
+                                    <h:outputText value="#{appmsg['loan.installment']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.totalPayment}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
@@ -98,7 +98,7 @@
                             </p:column>
                             <p:column sortBy="remainingPrincipal" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Sisa Hutang"/>
+                                    <h:outputText value="#{appmsg['loanDiscount.loan_remaining_loan_amount']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.remainingPrincipal}" >
                                     <f:convertNumber pattern="###,###" type="currency" />

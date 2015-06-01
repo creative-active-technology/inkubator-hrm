@@ -83,13 +83,13 @@
                             </p:column>
                             <p:column sortBy="name" style="width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="Golongan Jabatan"/>
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empGolJabatan}" />
                             </p:column>
                             <p:column sortBy="name" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="PTKP"/>
+                                    <h:outputText value="#{appmsg['ptkp.ptkp_menu']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.ptkp}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
@@ -97,7 +97,7 @@
                             </p:column>
                             <p:column sortBy="name" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="Biaya Jabatan"/>
+                                    <h:outputText value="#{appmsg['position.position_cost']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.biayaJabatan}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
@@ -105,7 +105,7 @@
                             </p:column>
                             <p:column sortBy="name" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="PPH"/>
+                                    <h:outputText value="#{appmsg['taxComponent.income_tax']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.pph}" >
                                     <f:convertNumber pattern="###,###" type="currency" />

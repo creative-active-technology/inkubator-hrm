@@ -99,7 +99,7 @@
                             </p:column>
                             <p:column style="width: 80%">
                                 <p:selectOneMenu id="provinceIdA" value="#{institutionEducationFormController.institutionEducationModel.provinceId}" required="true" valueChangeListener="#{institutionEducationFormController.provinceChanged}"
-                                                 style="width: 200px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledProvince}">
+                                                 style="width: 200px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{institutionEducationFormController.provinces}"  />
                                     <p:ajax update="cityIdA, cityId" event="change" />

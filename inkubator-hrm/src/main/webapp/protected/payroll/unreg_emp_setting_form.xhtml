@@ -127,7 +127,7 @@
 
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.edit']}" actionListener="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update=":growlId">
+                            <p:commandButton value="#{appmsg['global.save']}" action="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.save']}" label="#{appmsg['global.save']}" styleClass="label_button" icon="ui-icon-document" ajax="false" update=":growlId">
                                 <!--<p:ajax event="dialogReturn" listener="#{UnregSalaryEmpSettingFormController.onDialogReturn}" update=":growlId"/>-->
                             </p:commandButton>
                             <!--<p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>-->

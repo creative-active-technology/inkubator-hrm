@@ -164,28 +164,28 @@
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelZone.travelZone_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.code}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelZone.travelZone_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelZone.travelZone_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelZone.travelZone_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelZone.travelZone_category']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelZone.travelZone_category']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;">
                                 <p:outputLabel value="#{travelZoneViewController.selectedTravelZone.category}" styleClass="label_hrm">
                                     <f:converter converterId="zoneCategoryConverter"/>
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['travelZone.travelZone_distance']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.distance} KM" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['travelZone.travelZone_distance']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.distance} KM" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.description}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:45%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:55%;"><p:outputLabel value="#{travelZoneViewController.selectedTravelZone.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
