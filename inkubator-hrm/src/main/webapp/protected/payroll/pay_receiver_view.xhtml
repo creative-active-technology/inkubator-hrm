@@ -75,19 +75,19 @@
                                 </f:facet>
                                 <p:outputLabel value= "#{data.nik}" />
                             </p:column>
-                            <p:column sortBy="name" >
+                            <p:column sortBy="firstName" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.firstName} #{data.lastName}" />
                             </p:column>
-                            <p:column style="width: 15%">
+                            <p:column style="width: 15%" sortBy="golJab">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{data.golJab}" />
                             </p:column>
-                            <p:column >
+                            <p:column  sortBy="joinDate">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['transferAccount.TMB']}"/>
                                 </f:facet>
@@ -95,7 +95,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column >
+                            <p:column sortBy="totalAccount">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['transferAccount.accountTotal']}"/>
                                 </f:facet>
