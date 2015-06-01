@@ -44,10 +44,10 @@ public class ReimbursmentSchemaSearchParameter extends SearchParameter{
     }
 
     public BigDecimal getNominalUnit() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("nominalUnit")&& getParameter()!=null) {
-                nominalUnit = new BigDecimal(getParameter());
-            }
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "nominalUnit") && StringUtils.isNotEmpty(getParameter())) {
+            nominalUnit = new BigDecimal(getParameter());
+        } else{
+            nominalUnit = null;
         }
         return nominalUnit;
     }
@@ -55,6 +55,4 @@ public class ReimbursmentSchemaSearchParameter extends SearchParameter{
     public void setNominalUnit(BigDecimal nominalUnit) {
         this.nominalUnit = nominalUnit;
     }
-    
-    
 }

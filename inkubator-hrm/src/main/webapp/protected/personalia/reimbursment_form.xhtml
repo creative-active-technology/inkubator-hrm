@@ -71,7 +71,7 @@
                                     <p:outputLabel for="reimbursmentSchemaId" value="#{appmsg['reimbursementschema.reimbursement_schema']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="reimbursmentSchemaId" value="#{reimbursmentFormController.model.reimbursmentSchemaId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="reimbursmentSchemaId" value="#{reimbursmentFormController.model.reimbursmentSchemaId}" style="width: 265px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{reimbursmentFormController.dropDownReimbursmentSchema}"/>
                                         <p:ajax update="quantity" process="@this" listener="#{reimbursmentFormController.doChangeQuantityOrNominal()}"/>

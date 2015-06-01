@@ -74,18 +74,14 @@ public class ReimbursmentSchemaDaoImpl extends IDAOImpl<ReimbursmentSchema> impl
     }
 
     private void doSearchReimbursmentByParam(ReimbursmentSchemaSearchParameter searchParameter, Criteria criteria) {
-        BigDecimal bg = new BigDecimal("0");
-        Integer resNominalUnit = 0;
-        if (searchParameter.getNominalUnit() != null) {
-            resNominalUnit = searchParameter.getNominalUnit().compareTo(bg);
-        }
+        System.out.println(searchParameter.getNominalUnit() + " dao");
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         }
         if (searchParameter.getName() != null) {
             criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
         }
-        if (searchParameter.getNominalUnit() != null && resNominalUnit != 0) {
+        if (searchParameter.getNominalUnit() != null) {
             criteria.add(Restrictions.eq("nominalUnit", searchParameter.getNominalUnit()));
         }
         criteria.add(Restrictions.isNotNull("id"));
