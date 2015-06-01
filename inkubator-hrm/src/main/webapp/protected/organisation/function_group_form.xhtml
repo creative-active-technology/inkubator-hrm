@@ -21,7 +21,7 @@
                         <p:graphicImage library="images" name="function_group.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['functiongroup.function_group_form']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['functiongroup.function_group_data_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -110,23 +110,23 @@
                                 <h:outputLabel for="pointMin" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <h:outputLabel value="Min " styleClass="label_hrm"/>
+                                <h:outputLabel value="Min " styleClass="label_hrm"/> 
                                 <pe:inputNumber decimalPlaces="0" id="pointMin" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMin}" 
-                                                required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
+                                                required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_min_must_be_filled']}" styleClass="isitext_hrm" style="width:450px!important;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMed}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
                                 </pe:inputNumber>
                                 <h:outputLabel value="Med " styleClass="label_hrm"/>
                                 <pe:inputNumber decimalPlaces="0" id="pointMed" binding="#{pointMed}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
-                                                required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
+                                                required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_med_must_be_filled']}" styleClass="isitext_hrm" style="width:45px;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMax}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
                                 </pe:inputNumber>
-                                <h:outputLabel value="Max " styleClass="label_hrm"/>
+                                <h:outputLabel value="Max " styleClass="label_hrm"/> 
                                 <pe:inputNumber decimalPlaces="0" id="pointMax" binding="#{pointMax}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 
-                                                required="true" maxlength="4" styleClass="isitext_hrm" style="width:45px;" >
+                                                required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_max_must_be_filled']}" styleClass="isitext_hrm" style="width:45px;" >
                                 </pe:inputNumber>
                             </p:column>
                         </p:row>
@@ -169,6 +169,11 @@
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>
+                <style>
+                	.pe-inputNumber{
+                		width: 45px!important;
+                	}
+                </style>
             </ui:define>
 
         </ui:composition>
