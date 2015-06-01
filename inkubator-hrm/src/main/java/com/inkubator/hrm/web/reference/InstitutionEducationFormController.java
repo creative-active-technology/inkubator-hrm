@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
 import com.inkubator.hrm.entity.EducationLevel;
@@ -17,6 +18,8 @@ import com.inkubator.hrm.web.model.InstitutionEducationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -32,6 +36,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -69,7 +74,7 @@ public class InstitutionEducationFormController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            String param = FacesUtil.getRequestParameter("param");
+            String param = FacesUtil.getRequestParameter("execution");
             institutionEducationModel = new InstitutionEducationModel();
             isUpdate = Boolean.FALSE;
             disabledCity = Boolean.TRUE;
@@ -90,9 +95,9 @@ public class InstitutionEducationFormController extends BaseController {
             MapUtil.sortByValue(dropDownEducationLevel);
             MapUtil.sortByValue(countrys);
 
-            if (StringUtils.isNumeric(param)) {
+            if (StringUtils.isNotEmpty(param)) {
                 try {
-                    InstitutionEducation institutionEducation = institutionEducationService.getInstitutionEducationByIdWithDetail(Long.parseLong(param));
+                    InstitutionEducation institutionEducation = institutionEducationService.getInstitutionEducationByIdWithDetail(Long.parseLong(param.substring(1)));
                     if (institutionEducation != null) {
                         institutionEducationModel.setId(institutionEducation.getId());
                         institutionEducationModel.setInstitutionEducationCode(institutionEducation.getInstitutionEducationCode());
@@ -224,7 +229,7 @@ public class InstitutionEducationFormController extends BaseController {
         this.disabledCity = disabledCity;
     }
 
-    public void doSave() {
+    /*public void doSave() {
         InstitutionEducation institutionEducation = getEntityFromViewModel(institutionEducationModel);
         try {
             if (isUpdate) {
@@ -240,8 +245,28 @@ public class InstitutionEducationFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    }
+    }*/
 
+    public String doSave() {
+        try {
+        	InstitutionEducation institutionEducation = getEntityFromViewModel(institutionEducationModel);
+            if (isUpdate) {
+            	institutionEducationService.update(institutionEducation);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+            	institutionEducationService.save(institutionEducation);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+
+            return "/protected/reference/inst_edu_view.htm?faces-redirect=true";
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
+    }
+    
     private InstitutionEducation getEntityFromViewModel(InstitutionEducationModel institutionEducationModel) {
         InstitutionEducation institutionEducation = new InstitutionEducation();
         if (institutionEducationModel.getId() != null) {
@@ -377,6 +402,8 @@ public class InstitutionEducationFormController extends BaseController {
             }
             institutionEducationModel.setCityId(institutionEducation.getCity().getId());
         }else{
+        	disabledProvince = Boolean.TRUE;
+        	disabledCity = Boolean.TRUE;
             institutionEducationModel.setAddress(null);
             institutionEducationModel.setCityId(null);
             institutionEducationModel.setCountryId(null);
