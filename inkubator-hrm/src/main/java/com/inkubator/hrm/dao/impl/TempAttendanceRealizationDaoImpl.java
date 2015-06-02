@@ -70,4 +70,28 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         criteria.add(Restrictions.isNotNull("id"));
 
     }
+
+    @Override
+    public Long getTotalEmpLeav() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalEmpPermit() {
+       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+    }
+
+    @Override
+    public Long gettotalEmpOnDuty() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+    }
+
+    @Override
+    public Long gettotalEmpOnSick() {
+         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+    }
 }

@@ -16,9 +16,10 @@ public class RealizationAttendanceModel implements Serializable{
     
     private Date stardDate;
     private Date endDate;
-    private Integer totalCuti;
-    private Integer totalIzin;
-    private Integer totalInDuty;
+    private long totalCuti;
+    private long totalIzin;
+    private long totalOnDuty;
+    private long totalSick;
 
     public Date getStardDate() {
         return stardDate;
@@ -36,28 +37,36 @@ public class RealizationAttendanceModel implements Serializable{
         this.endDate = endDate;
     }
 
-    public Integer getTotalCuti() {
+    public long getTotalCuti() {
         return totalCuti;
     }
 
-    public void setTotalCuti(Integer totalCuti) {
+    public void setTotalCuti(long totalCuti) {
         this.totalCuti = totalCuti;
     }
 
-    public Integer getTotalIzin() {
+    public long getTotalIzin() {
         return totalIzin;
     }
 
-    public void setTotalIzin(Integer totalIzin) {
+    public void setTotalIzin(long totalIzin) {
         this.totalIzin = totalIzin;
     }
 
-    public Integer getTotalInDuty() {
-        return totalInDuty;
+    public long getTotalOnDuty() {
+        return totalOnDuty;
     }
 
-    public void setTotalInDuty(Integer totalInDuty) {
-        this.totalInDuty = totalInDuty;
+    public void setTotalOnDuty(long totalOnDuty) {
+        this.totalOnDuty = totalOnDuty;
+    }
+
+    public long getTotalSick() {
+        return totalSick;
+    }
+
+    public void setTotalSick(long totalSick) {
+        this.totalSick = totalSick;
     }
     
     

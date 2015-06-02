@@ -4,7 +4,6 @@ import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -16,8 +15,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 
 /**
@@ -30,6 +30,8 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
     @Autowired
     private TempAttendanceRealizationDao tempAttendanceRealizationDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -234,6 +236,31 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public RealizationAttendanceModel getStatisticEmpAttendaceRealization() throws Exception {
+        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+
+        RealizationAttendanceModel attendanceModel = new RealizationAttendanceModel();
+        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav());
+        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
+        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
+        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
+        return attendanceModel;
+
+    }
+
+    @Override
+    public Long getTotalEmpLeav() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalEmpPermit() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long gettotalEmpOnDuty() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

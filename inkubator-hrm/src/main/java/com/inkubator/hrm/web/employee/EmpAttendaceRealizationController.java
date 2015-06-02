@@ -9,12 +9,16 @@ import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.webcore.controller.BaseController;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author deni.fahri
  */
+@ManagedBean(name = "empAttendaceRealizationController")
+@ViewScoped
 public class EmpAttendaceRealizationController extends BaseController {
 
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
@@ -24,6 +28,24 @@ public class EmpAttendaceRealizationController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
+        try {
+            super.initialization();
+            attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
+        } catch (Exception ex) {
+          LOGGER.error(ex, ex);
+        }
     }
+
+    public RealizationAttendanceModel getAttendanceModel() {
+        return attendanceModel;
+    }
+
+    public void setAttendanceModel(RealizationAttendanceModel attendanceModel) {
+        this.attendanceModel = attendanceModel;
+    }
+
+    public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
+        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
+    }
+
 }

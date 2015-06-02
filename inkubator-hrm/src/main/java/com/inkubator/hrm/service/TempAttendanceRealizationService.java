@@ -18,4 +18,10 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public Long getTotalTempAttendanceRealizationByParam(TempAttendanceRealizationSearchParameter searchParameter) throws Exception;
 
     public RealizationAttendanceModel getStatisticEmpAttendaceRealization() throws Exception;
+
+    public Long getTotalEmpLeav() throws Exception;
+
+    public Long getTotalEmpPermit() throws Exception;
+
+    public Long gettotalEmpOnDuty() throws Exception;
 }
