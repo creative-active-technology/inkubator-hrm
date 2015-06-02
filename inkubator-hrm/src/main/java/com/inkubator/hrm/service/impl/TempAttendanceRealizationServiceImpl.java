@@ -18,6 +18,7 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 
 /**
  *
@@ -227,6 +228,12 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
     @Override
     public List<TempAttendanceRealization> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RealizationAttendanceModel getStatisticEmpAttendaceRealization() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
