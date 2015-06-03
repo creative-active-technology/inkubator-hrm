@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -24,6 +25,7 @@ public class EmpAttendaceRealizationController extends BaseController {
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
     private TempAttendanceRealizationService tempAttendanceRealizationService;
     private RealizationAttendanceModel attendanceModel;
+    private TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter;
 
     @PostConstruct
     @Override
@@ -31,6 +33,7 @@ public class EmpAttendaceRealizationController extends BaseController {
         try {
             super.initialization();
             attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
+            tempAttendanceRealizationSearchParameter=new TempAttendanceRealizationSearchParameter();
         } catch (Exception ex) {
           LOGGER.error(ex, ex);
         }
@@ -46,6 +49,14 @@ public class EmpAttendaceRealizationController extends BaseController {
 
     public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
         this.tempAttendanceRealizationService = tempAttendanceRealizationService;
+    }
+
+    public TempAttendanceRealizationSearchParameter getTempAttendanceRealizationSearchParameter() {
+        return tempAttendanceRealizationSearchParameter;
+    }
+
+    public void setTempAttendanceRealizationSearchParameter(TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter) {
+        this.tempAttendanceRealizationSearchParameter = tempAttendanceRealizationSearchParameter;
     }
 
 }
