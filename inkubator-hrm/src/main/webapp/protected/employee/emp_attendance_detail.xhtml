@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detil Realisasi Kehadiran Karyawan" styleClass="header_big" />
+                                <p:outputLabel value="Detil Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlBioDetailFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formBioDetailFormId" >
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
+                            <p:row>
+                                <p:column style="width: 13%;vertical-align: middle!important" >
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}" height="178" width="150" style="border:  2px solid #003366 !important; border-radius: 5px !important;margin-top: 10px" cache="false" >
+                                        <f:param name="id" value="#{empAttendaceDetilRealizationController.empDataId}"/>
+                                    </p:graphicImage>
+                                </p:column>
+
+                                <p:column style="width: 87%;vertical-align: middle !important" >
+                                    <p:panelGrid style="width: 100%;margin-top: 10px;" styleClass="grid_border4">
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['placement.nik']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value=" #{empAttendaceDetilRealizationController.empData.nik}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['global.name']}" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.empData.bioData.firstName} #{empAttendaceDetilRealizationController.empData.bioData.lastName}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Jabatan" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.empData.jabatanByJabatanId.code}" />
+                                                -
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.empData.jabatanByJabatanId.name}" />
+                                            </p:column>
+                                        </p:row>
+
+
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="Periode Proses" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:outputLabel id="codeId" value="#{empAttendaceDetilRealizationController.attendanceModel.stardDate}">
+                                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                                </p:outputLabel>
+                                                -
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.endDate}">
+                                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                                </p:outputLabel>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row >
+                                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                                <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
+                                            </p:column>
+                                            <p:column  style="width: 75%">
+                                                <p:outputLabel id="name" value="#{empAttendaceDetilRealizationController.attendanceModel.totalCuti} #{appmsg['global.people_only']}"  />
+                                            </p:column>
+                                        </p:row> 
+                                        <p:row>
+                                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                                <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
+                                            </p:column>
+                                            <p:column  style="width: 75%">
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalIzin} #{appmsg['global.people_only']}" />
+                                            </p:column>
+                                        </p:row> 
+                                        <p:row>
+                                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                                <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
+                                            </p:column>
+                                            <p:column  style="width: 75%">
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalSick} #{appmsg['global.people_only']}"/>
+                                            </p:column>
+                                        </p:row> 
+                                        <p:row>
+                                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                                <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
+                                            </p:column>
+                                            <p:column  style="width: 75%">
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalOnDuty} #{appmsg['global.people_only']}"/>
+                                            </p:column>
+                                        </p:row> 
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:separator/>
+                        <!--                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
+                                                    <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{empAttendaceDetilRealizationController.doEdit()}" styleClass="label_button"/>
+                                                    <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empAttendaceDetilRealizationController.doBack()}" styleClass="label_button"/>
+                                                    <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
+                                                                     update=":panelDialogBioAddressDetailId" 
+                                                                     action="#{empAttendaceDetilRealizationController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                                                 <f:setPropertyActionListener target="#{empAttendaceDetilRealizationController.id}" value="#{empAttendaceDetilRealizationController.empData.bioData.id}" />
+                                                    </p:commandButton>
+                                                </h:panelGrid>-->
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import org.hibernate.FetchMode;
 import org.hibernate.sql.JoinType;
 
 /**
@@ -34,6 +35,9 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return criteria.list();
     }
 
@@ -79,7 +83,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Long getTotalEmpPermit() {
-       Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         return (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
     }
 
@@ -91,7 +95,41 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Long gettotalEmpOnSick() {
-         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalEmpLeav(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalEmpPermit(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+    }
+
+    @Override
+    public Long gettotalEmpOnDuty(long empId
+    ) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+    }
+
+    @Override
+    public Long gettotalEmpOnSick(long empId
+    ) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
         return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
     }
 }

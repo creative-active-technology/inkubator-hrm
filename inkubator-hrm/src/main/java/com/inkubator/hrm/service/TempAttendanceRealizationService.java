@@ -4,6 +4,7 @@ import com.inkubator.hrm.entity.TempAttendanceRealization;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
@@ -24,4 +25,6 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public Long getTotalEmpPermit() throws Exception;
 
     public Long gettotalEmpOnDuty() throws Exception;
+
+    public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception;
 }

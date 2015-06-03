@@ -18,6 +18,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 
 /**
@@ -262,5 +263,32 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     @Override
     public Long gettotalEmpOnDuty() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+//    @Override
+//    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
+////        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+//        DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+////        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+////        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+////        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav(empId));
+////        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit(empId));
+////        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty(empId));
+////        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
+//        return attendanceModel;
+//    }
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
+        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+        DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav(empId));
+        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit(empId));
+        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty(empId));
+        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
+        return attendanceModel;
     }
 }

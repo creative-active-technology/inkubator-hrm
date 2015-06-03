@@ -5,13 +5,15 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
-import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationLazyDataModel;
+import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -22,40 +24,46 @@ import org.primefaces.model.LazyDataModel;
  *
  * @author deni.fahri
  */
-@ManagedBean(name = "empAttendaceRealizationController")
+@ManagedBean(name = "empAttendaceDetilRealizationController")
 @ViewScoped
-public class EmpAttendaceRealizationController extends BaseController {
+public class EmpAttendaceDetilRealizationController extends BaseController {
 
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
     private TempAttendanceRealizationService tempAttendanceRealizationService;
-    private RealizationAttendanceModel attendanceModel;
+    private DetilRealizationAttendanceModel attendanceModel;
     private TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter;
     private LazyDataModel<TempAttendanceRealization> tempAttendanceRealizationsLazyModel;
     private TempAttendanceRealization selectedTempAttendanceRealization;
+    private Long empDataId;
+    private EmpData empData;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
-            attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
-            tempAttendanceRealizationSearchParameter = new TempAttendanceRealizationSearchParameter();
+            String empId = FacesUtil.getRequestParameter("execution");
+            empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
+            System.out.println(" nanananan " + empData.getBioData().getFullName());
+            empDataId = empData.getBioData().getId();
+            System.out.println(" nilianana  "+empDataId);
+            attendanceModel=tempAttendanceRealizationService.getStatisticEmpAttendaceDetil(empDataId);
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
     }
 
-    public RealizationAttendanceModel getAttendanceModel() {
+    public DetilRealizationAttendanceModel getAttendanceModel() {
         return attendanceModel;
     }
 
-    public void setAttendanceModel(RealizationAttendanceModel attendanceModel) {
+    public void setAttendanceModel(DetilRealizationAttendanceModel attendanceModel) {
         this.attendanceModel = attendanceModel;
     }
 
-    public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
-        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
-    }
+   
 
     public TempAttendanceRealizationSearchParameter getTempAttendanceRealizationSearchParameter() {
         return tempAttendanceRealizationSearchParameter;
@@ -63,13 +71,6 @@ public class EmpAttendaceRealizationController extends BaseController {
 
     public void setTempAttendanceRealizationSearchParameter(TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter) {
         this.tempAttendanceRealizationSearchParameter = tempAttendanceRealizationSearchParameter;
-    }
-
-    public LazyDataModel<TempAttendanceRealization> getTempAttendanceRealizationsLazyModel() {
-        if (tempAttendanceRealizationsLazyModel == null) {
-            tempAttendanceRealizationsLazyModel = new TempAttendanceRealizationLazyDataModel(tempAttendanceRealizationSearchParameter, tempAttendanceRealizationService);
-        }
-        return tempAttendanceRealizationsLazyModel;
     }
 
     public void setTempAttendanceRealizationsLazyModel(LazyDataModel<TempAttendanceRealization> tempAttendanceRealizationsLazyModel) {
@@ -86,11 +87,36 @@ public class EmpAttendaceRealizationController extends BaseController {
 
     public String doDetail() {
 
-        return "/protected/employee/emp_attendance_detail.htm?faces-redirect=true&execution=e" + selectedTempAttendanceRealization.getEmpData().getId();
+        return "/protected/employee/emp_attendance_detail.htm?faces-redirect=true&activity=e" + selectedTempAttendanceRealization.getEmpData().getBioData().getId();
     }
 
     public void doSearch() {
         tempAttendanceRealizationsLazyModel = null;
     }
 
+    public Long getEmpDataId() {
+        return empDataId;
+    }
+
+    public void setEmpDataId(Long empDataId) {
+        this.empDataId = empDataId;
+    }
+
+    public EmpData getEmpData() {
+        return empData;
+    }
+
+    public void setEmpData(EmpData empData) {
+        this.empData = empData;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
+        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
+    }
+
+    
 }

@@ -24,4 +24,12 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
 
     public Long gettotalEmpOnSick();
 
+    public Long getTotalEmpLeav(long empId);
+
+    public Long getTotalEmpPermit(long empId);
+
+    public Long gettotalEmpOnDuty(long empId);
+
+    public Long gettotalEmpOnSick(long empId);
+
 }
