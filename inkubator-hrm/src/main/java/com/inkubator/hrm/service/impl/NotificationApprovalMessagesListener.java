@@ -202,6 +202,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             break;
+                        case HRMConstant.PERMIT:
+                            System.out.println("permit");
+                            break;
 
                         default:
                             break;
@@ -306,6 +309,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
+                        case HRMConstant.PERMIT:
+                            System.out.println("permit");
+                            break;
 
                         default:
                             break;
@@ -397,6 +403,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                        case HRMConstant.PERMIT:
+                            System.out.println("permit");
                             break;
 
                         default:

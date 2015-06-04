@@ -14,6 +14,7 @@ public class BioMedicalHistoryModel implements Serializable {
     private String disease;
     private String description;
     private Integer status;
+    private Long diseasesId;
 
     public Long getId() {
         return id;
@@ -65,4 +66,13 @@ public class BioMedicalHistoryModel implements Serializable {
         this.description = description;
     }
 
+	public Long getDiseasesId() {
+		return diseasesId;
+	}
+
+	public void setDiseasesId(Long diseasesId) {
+		this.diseasesId = diseasesId;
+	}
+
+    
 }

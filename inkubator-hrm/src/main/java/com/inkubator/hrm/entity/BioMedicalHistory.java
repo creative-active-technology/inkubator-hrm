@@ -3,6 +3,7 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,24 +28,28 @@ public class BioMedicalHistory  implements java.io.Serializable {
      private long id;
      private Integer version;
      private BioData bioData;
+     private Disease disease;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
      private Integer year;
-     private String disease;
+//     private String disease;
      private String description;
      private Integer status;
 
     public BioMedicalHistory() {
     }
 
-	
+	public BioMedicalHistory(Long id){
+		
+	}
+    
     public BioMedicalHistory(long id, BioData bioData) {
         this.id = id;
         this.bioData = bioData;
     }
-    public BioMedicalHistory(long id, BioData bioData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer year, String disease, String description, Integer status) {
+    public BioMedicalHistory(long id, BioData bioData, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Integer year, Disease disease, String description, Integer status) {
        this.id = id;
        this.bioData = bioData;
        this.createdBy = createdBy;
@@ -139,13 +144,13 @@ public class BioMedicalHistory  implements java.io.Serializable {
         this.year = year;
     }
 
-    
-    @Column(name="disease", length=60)
-    public String getDisease() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "disease_id", nullable = true)
+    public Disease getDisease() {
         return this.disease;
     }
     
-    public void setDisease(String disease) {
+    public void setDisease(Disease disease) {
         this.disease = disease;
     }
 

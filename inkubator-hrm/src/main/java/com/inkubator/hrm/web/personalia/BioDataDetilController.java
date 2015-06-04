@@ -1335,7 +1335,7 @@ public class BioDataDetilController extends BaseController {
      */
     public void doSelectBioMedicalHistory() {
         try {
-            selectedBioMedicalHistory = bioMedicalHistoryService.getEntiyByPK(selectedBioMedicalHistory.getId());
+            selectedBioMedicalHistory = bioMedicalHistoryService.getEntityByPkWithDetail(selectedBioMedicalHistory.getId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

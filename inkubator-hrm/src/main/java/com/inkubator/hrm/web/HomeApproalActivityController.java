@@ -90,7 +90,7 @@ public class HomeApproalActivityController extends BaseController {
 
     public String doDetailRequestHistory() {
         String redirect = "";
-        
+        System.out.println(selectedApprovalActivity.getId() + " selected yeuh");
         try {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
             switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
@@ -118,6 +118,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/ot_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    break;
+                case HRMConstant.PERMIT:
+                    redirect = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
                 default:
                     break;
@@ -155,6 +158,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.OVERTIME:
                     redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.PERMIT:
+                    redirect = "/protected/working_time/permit_impl_approval.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;
