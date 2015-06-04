@@ -14,5 +14,7 @@ import com.inkubator.hrm.entity.BioMedicalHistory;
 public interface BioMedicalHistoryDao extends IDAO<BioMedicalHistory> {
 
     public List<BioMedicalHistory> getAllDataByBioDataId(Long bioDataId);
+    
+    public BioMedicalHistory getEntityByPkWithDetail(Long id);
 
 }

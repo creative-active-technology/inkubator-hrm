@@ -238,7 +238,7 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioMedicalHistoryData.disease}"/>
+                                        <h:outputLabel value= "#{bioMedicalHistoryData.disease.name }"/>
                                     </p:column>  
                                     <p:column sortBy="status"  style="width: 25%">
                                         <f:facet name="header">  
@@ -1749,7 +1749,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_status']}" styleClass="label_hrm"/></p:column>

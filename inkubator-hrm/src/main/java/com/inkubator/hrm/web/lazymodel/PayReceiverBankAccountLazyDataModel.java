@@ -33,7 +33,7 @@ public class PayReceiverBankAccountLazyDataModel extends LazyDataModel<PayReceiv
     @Override
     public List<PayReceiverBankAccountModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");
-
+        System.out.println(" sort file by "+sortField);
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
@@ -52,7 +52,7 @@ public class PayReceiverBankAccountLazyDataModel extends LazyDataModel<PayReceiv
             }
         } else {
             try {
-                bankAccountModels = payReceiverBankAccountService.getByParam(payReceiverBankAccountSearchParameter, first, pageSize, Order.asc("name"));
+                bankAccountModels = payReceiverBankAccountService.getByParam(payReceiverBankAccountSearchParameter, first, pageSize, Order.asc("firstName"));
                 total = Integer.parseInt(String.valueOf(payReceiverBankAccountService.getTotalByParam(payReceiverBankAccountSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
