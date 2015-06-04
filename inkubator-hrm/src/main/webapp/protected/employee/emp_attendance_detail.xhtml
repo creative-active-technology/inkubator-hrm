@@ -118,16 +118,46 @@
                             </p:row>
                         </p:panelGrid>
 
-                        <p:separator/>
-                        <!--                        <h:panelGrid columns="3" style="margin-bottom: 5px;float: left">
-                                                    <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{empAttendaceDetilRealizationController.doEdit()}" styleClass="label_button"/>
-                                                    <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empAttendaceDetilRealizationController.doBack()}" styleClass="label_button"/>
-                                                    <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
-                                                                     update=":panelDialogBioAddressDetailId" 
-                                                                     action="#{empAttendaceDetilRealizationController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailBioAddress.show()">                        
-                                                                 <f:setPropertyActionListener target="#{empAttendaceDetilRealizationController.id}" value="#{empAttendaceDetilRealizationController.empData.bioData.id}" />
-                                                    </p:commandButton>
-                                                </h:panelGrid>-->
+                        <p:dataTable value="#{empAttendaceDetilRealizationController.attendanceModel.dataToShow}" var="fingetRealization" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
+                            </f:facet>
+                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="No." />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column  style="width:120px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Hari" />
+                                </f:facet>
+                                <p:outputLabel value="#{fingetRealization.asentDate}" >
+                                    <f:convertDateTime pattern="EEEE"/>
+                                </p:outputLabel>
+                            </p:column> 
+                            <p:column  style="width:120px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal" />
+                                </f:facet>
+                                <p:outputLabel value="#{fingetRealization.asentDate}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  style="width:120px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Realisasi" />
+                                </f:facet>
+                                <p:outputLabel value=" #{fingetRealization.realisasiStatus}"  />
+                            </p:column>
+                            <p:column  style="width:120px"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Status Kehadiran" />
+                                </f:facet>
+                                <p:outputLabel value=" #{fingetRealization.realisasiAttendace}"  />
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>                      
                         <div style="clear: both"/>
                     </h:form>
                 </div>

@@ -22,7 +22,7 @@ public class DetilRealizationAttendanceModel implements Serializable {
     private long totalIzin;
     private long totalOnDuty;
     private long totalSick;
-    private List<TempProcessReadFinger> dataToShow;
+    private List<DetilAttendateRelaization> dataToShow;
 
     public Date getStardDate() {
         return stardDate;
@@ -72,13 +72,15 @@ public class DetilRealizationAttendanceModel implements Serializable {
         this.totalSick = totalSick;
     }
 
-    public List<TempProcessReadFinger> getDataToShow() {
+    public List<DetilAttendateRelaization> getDataToShow() {
         return dataToShow;
     }
 
-    public void setDataToShow(List<TempProcessReadFinger> dataToShow) {
+    public void setDataToShow(List<DetilAttendateRelaization> dataToShow) {
         this.dataToShow = dataToShow;
     }
+
+   
     
     
 

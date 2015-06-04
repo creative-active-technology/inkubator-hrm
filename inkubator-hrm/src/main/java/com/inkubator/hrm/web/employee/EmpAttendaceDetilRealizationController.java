@@ -49,7 +49,7 @@ public class EmpAttendaceDetilRealizationController extends BaseController {
             System.out.println(" nanananan " + empData.getBioData().getFullName());
             empDataId = empData.getBioData().getId();
             System.out.println(" nilianana  "+empDataId);
-            attendanceModel=tempAttendanceRealizationService.getStatisticEmpAttendaceDetil(empDataId);
+            attendanceModel=tempAttendanceRealizationService.getStatisticEmpAttendaceDetil(empData.getId());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }

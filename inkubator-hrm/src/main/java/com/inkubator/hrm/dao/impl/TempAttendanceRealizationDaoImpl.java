@@ -101,6 +101,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Long getTotalEmpLeav(long empId) {
+        System.out.println("No id nya "+empId);
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
