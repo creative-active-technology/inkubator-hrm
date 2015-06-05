@@ -7,7 +7,6 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationLazyDataModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;

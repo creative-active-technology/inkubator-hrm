@@ -48,8 +48,8 @@ public class EmpAttendaceDetilRealizationController extends BaseController {
             empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
             System.out.println(" nanananan " + empData.getBioData().getFullName());
             empDataId = empData.getBioData().getId();
-            System.out.println(" nilianana  "+empDataId);
-            attendanceModel=tempAttendanceRealizationService.getStatisticEmpAttendaceDetil(empData.getId());
+            System.out.println(" nilianana  " + empDataId);
+            attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceDetil(empData.getId());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -62,8 +62,6 @@ public class EmpAttendaceDetilRealizationController extends BaseController {
     public void setAttendanceModel(DetilRealizationAttendanceModel attendanceModel) {
         this.attendanceModel = attendanceModel;
     }
-
-   
 
     public TempAttendanceRealizationSearchParameter getTempAttendanceRealizationSearchParameter() {
         return tempAttendanceRealizationSearchParameter;
@@ -118,5 +116,8 @@ public class EmpAttendaceDetilRealizationController extends BaseController {
         this.tempAttendanceRealizationService = tempAttendanceRealizationService;
     }
 
-    
+    public String doBack() {
+        return "/protected/employee/emp_attendance_realization.htm?faces-redirect=true";
+        
+    }
 }

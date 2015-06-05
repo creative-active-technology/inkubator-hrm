@@ -16,9 +16,11 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PermitImplementationDao;
+import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -174,5 +176,15 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("permit", FetchMode.JOIN);
         return criteria.list();
+    }
+
+    @Override
+    public PermitImplementation getByEmpStardDateEndDate(long empId, Date doDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
+        return (PermitImplementation) criteria.uniqueResult();
     }
 }

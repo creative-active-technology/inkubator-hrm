@@ -119,9 +119,9 @@
                         </p:panelGrid>
 
                         <p:dataTable value="#{empAttendaceDetilRealizationController.attendanceModel.dataToShow}" var="fingetRealization" rowIndexVar="no" style="margin-top: 20px;margin-bottom: 15px">
-                            <f:facet name="header">  
+<!--                            <f:facet name="header">  
                                 <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
-                            </f:facet>
+                            </f:facet>-->
                             <p:column style="text-align: center;width: 20px;max-width: 20px">
                                 <f:facet name="header">  
                                     <h:outputText value="No." />
@@ -144,20 +144,38 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy"/>
                                 </p:outputLabel>
                             </p:column>
-                            <p:column  style="width:120px"> 
+                            <p:column  style="width:120px" rendered="#{fingetRealization.isAttendaceKnowing}"> 
                                 <f:facet name="header">  
                                     <h:outputText value="Realisasi" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiStatus}"  />
                             </p:column>
-                            <p:column  style="width:120px"> 
+                            <p:column  style="width:120px" rendered="#{fingetRealization.isAttendaceKnowing}">
                                 <f:facet name="header">  
                                     <h:outputText value="Status Kehadiran" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiAttendace}"  />
                             </p:column>
+                            <p:column  style="width:120px" rendered="#{!fingetRealization.isAttendaceKnowing}"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Realisasi" />
+                                </f:facet>
+                                <p:outputLabel value=" #{fingetRealization.realisasiStatus}"  style="color: red;font-weight: bold"/>
+                            </p:column>
+                            <p:column  style="width:120px" rendered="#{!fingetRealization.isAttendaceKnowing}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Status Kehadiran" />
+                                </f:facet>
+                                <p:outputLabel value=" #{fingetRealization.realisasiAttendace}" style="color: red; font-weight: bold" />
+                            </p:column>
                         </p:dataTable>
                         <p:separator/>                      
+
+
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empAttendaceDetilRealizationController.doBack()}" styleClass="label_button"/>
+
+                        </h:panelGrid>
                         <div style="clear: both"/>
                     </h:form>
                 </div>

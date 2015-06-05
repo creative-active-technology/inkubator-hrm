@@ -5,9 +5,11 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -34,7 +36,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
 
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
-    
-  
+
+    public PermitImplementation getByEmpStardDateEndDate(long empId, Date doDate);
 
 }
