@@ -578,7 +578,7 @@ public class EmpDataDetilController extends BaseController {
     ////////////////////bio medical history method//////////////////////////////
     public void doSelectBioMedicalHistory() {
         try {
-            selectedBioMedicalHistory = bioMedicalHistoryService.getEntiyByPK(selectedBioMedicalHistory.getId());
+            selectedBioMedicalHistory = bioMedicalHistoryService.getEntityByPkWithDetail(selectedBioMedicalHistory.getId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

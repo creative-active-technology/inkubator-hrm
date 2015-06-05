@@ -129,7 +129,7 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioMedicalHistoryData.disease}"/>
+                                        <h:outputLabel value= "#{bioMedicalHistoryData.disease.name }"/>
                                     </p:column>  
                                     <p:column sortBy="status"  style="width: 25%">
                                         <f:facet name="header">  
@@ -554,7 +554,7 @@
                         <h:panelGrid id="panelDialogBioMedicalHistoryConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataDetilController.doDeleteBioMedicalHistory()}" update="formBioDetailFormId:tabView:tableBioMedicalHistoryId,:growlBioDetailFormId"
@@ -571,7 +571,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioMedicalHistory.disease.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_status']}" styleClass="label_hrm"/></p:column>
