@@ -4,7 +4,6 @@ import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -16,8 +15,24 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.dao.LeaveImplementationDao;
+import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
+import com.inkubator.hrm.dao.TempProcessReadFingerDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.TempProcessReadFinger;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.util.ResourceBundleUtil;
+import com.inkubator.hrm.web.model.DetilAttendateRelaization;
+import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
+import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import java.util.ArrayList;
 
 /**
  *
@@ -29,6 +44,18 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
     @Autowired
     private TempAttendanceRealizationDao tempAttendanceRealizationDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
+    @Autowired
+    private TempProcessReadFingerDao tempProcessReadFingerDao;
+    @Autowired
+    private TempJadwalKaryawanDao tempJadwalKaryawanDao;
+    @Autowired
+    private LeaveImplementationDao leaveImplementationDao;
+    @Autowired
+    private LeaveImplementationDateDao leaveImplementationDateDao;
+    @Autowired
+    private BusinessTravelDao businessTravelDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -228,5 +255,117 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     @Override
     public List<TempAttendanceRealization> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RealizationAttendanceModel getStatisticEmpAttendaceRealization() throws Exception {
+        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+
+        RealizationAttendanceModel attendanceModel = new RealizationAttendanceModel();
+        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav());
+        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
+        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
+        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
+        return attendanceModel;
+
+    }
+
+    @Override
+    public Long getTotalEmpLeav() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long getTotalEmpPermit() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long gettotalEmpOnDuty() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+//    @Override
+//    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+//    public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
+////        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+//        DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+////        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+////        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+////        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav(empId));
+////        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit(empId));
+////        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty(empId));
+////        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
+//        return attendanceModel;
+//    }
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
+        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+        DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+//        Perhatia dua data yang di perbandingkan harus sama soring ascrnding atau descending 
+        List<TempJadwalKaryawan> dataToCalculate = tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+//        List<TempProcessReadFinger> presentAteendace = tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<DetilAttendateRelaization> dataToShow = new ArrayList<>();
+        for (TempJadwalKaryawan tempJadwal : dataToCalculate) {
+//            System.out.println("kayarannna " + empId);
+//            System.out.println("jadwalnya " + tempJadwal.getTanggalWaktuKerja());
+            TempProcessReadFinger finger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empId, tempJadwal.getTanggalWaktuKerja());
+            DetilAttendateRelaization attendateRelaization = new DetilAttendateRelaization();
+            if (finger != null) {
+
+                attendateRelaization.setAsentDate(finger.getScheduleDate());
+                attendateRelaization.setRealisasiStatus(finger.getWorkingHourName());
+                attendateRelaization.setRealisasiAttendace(tempJadwal.getWtWorkingHour().getAttendanceStatus().getStatusKehadrian());
+
+            }
+            LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
+
+            if (leaveImplementation != null) {
+                long leavId = leaveImplementation.getId();
+                LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
+                attendateRelaization.setAsentDate(leaveImplementationDate.getActualDate());
+                attendateRelaization.setRealisasiStatus(leaveImplementationDate.getLeaveImplementation().getLeave().getName() + " no." + leaveImplementationDate.getLeaveImplementation().getNumberFilling());
+                attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
+            } else if (businessTravel != null) {
+                attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to")+" " +businessTravel.getDestination());
+                attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+            } else {
+                if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
+                    attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                    attendateRelaization.setRealisasiStatus(tempJadwal.getWtWorkingHour().getName());
+                    attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("menu.holiday"));
+                }
+            }
+
+            dataToShow.add(attendateRelaization);
+            attendanceModel.setDataToShow(dataToShow);
+//            Date temp1 = tempJadwal.getTanggalWaktuKerja();
+//            Date temp2;
+//            System.out.println(" tanggalalgla nya 1" + temp1);
+//
+//            if (i <= sizePresentDay) {
+//                temp2 = presentAteendace.get(i).getScheduleDate();
+//                System.out.println(" tanggalalgla nya 2" + temp2);
+//                if (temp1.equals(temp2)) {
+//                    System.out.println("tanggal nya samaaaa");
+//                }
+//            }
+//            i++;
+        }
+
+        attendanceModel.setStardDate(wtPeriode.getFromPeriode());
+        attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
+        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav(empId));
+        attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit(empId));
+        attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty(empId));
+        attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
+//        attendanceModel.setDataToShow(tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, attendanceModel.getStardDate(), attendanceModel.getEndDate()));
+        return attendanceModel;
     }
 }

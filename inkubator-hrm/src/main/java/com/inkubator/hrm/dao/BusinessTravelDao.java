@@ -7,6 +7,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -29,5 +30,7 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
         
         public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+        
+        public BusinessTravel getByEmpIdAndDate(long empId, Date doDate);
 
 }

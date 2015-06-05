@@ -16,18 +16,20 @@ import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
  */
 public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
-	public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<TempProcessReadFinger> getByParam(Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalByParam(Long empDataId) throws Exception;
+    public Long getTotalByParam(Long empDataId) throws Exception;
 
-	public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+    public List<DataFingerRealizationModel> getDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
 
-	public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter);
+    public Long getTotalDataFingerRealizationByParam(DataFingerRealizationSearchParameter searchParameter);
 
-	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode);
-	
-	public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(Long empDataId, Date scheduleDate, Date scheduleIn, Date scheduleOut);
+    public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode);
 
-	public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataId, Date startDate, Date endDate);
-	
+    public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(Long empDataId, Date scheduleDate, Date scheduleIn, Date scheduleOut);
+
+    public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataId, Date startDate, Date endDate);
+
+    public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDate(Long empDataId, Date scheduleDate);
+
 }

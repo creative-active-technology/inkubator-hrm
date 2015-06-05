@@ -5,6 +5,7 @@ import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -102,6 +103,11 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         
         return (MedicalCare) criteria.uniqueResult();
+    }
+
+    @Override
+    public MedicalCare getByEmpIdAndDate(long empId, Date doDate) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

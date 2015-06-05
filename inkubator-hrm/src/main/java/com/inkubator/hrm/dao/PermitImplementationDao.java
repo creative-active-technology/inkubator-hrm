@@ -34,5 +34,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
 
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+    
+  
 
 }

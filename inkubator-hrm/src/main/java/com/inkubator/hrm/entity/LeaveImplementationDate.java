@@ -64,7 +64,7 @@ public class LeaveImplementationDate implements java.io.Serializable {
         this.version = version;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "actual_date", length = 19, nullable =  false)
 	public Date getActualDate() {
 		return actualDate;
