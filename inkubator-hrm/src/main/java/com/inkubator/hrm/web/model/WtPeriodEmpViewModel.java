@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -9,52 +10,54 @@ import java.util.Date;
  */
 public class WtPeriodEmpViewModel implements Serializable {
 
-    private Long wtPeriodId;
-    private Long totalEmpData;
-    private Long totalWorkingGroup;
-    private Date startPeriod;
-    private Date endPeriod;
+    private BigInteger wtPeriodId;
+    private BigInteger totalEmpData;
+    private BigInteger totalWorkingGroup;
+    private Date fromPeriode;
+    private Date untilPeriode;
     private String status;
 
-    public Long getWtPeriodId() {
+    public BigInteger getWtPeriodId() {
         return wtPeriodId;
     }
 
-    public void setWtPeriodId(Long wtPeriodId) {
+    public void setWtPeriodId(BigInteger wtPeriodId) {
         this.wtPeriodId = wtPeriodId;
     }
 
-    public Long getTotalEmpData() {
+    public BigInteger getTotalEmpData() {
         return totalEmpData;
     }
 
-    public void setTotalEmpData(Long totalEmpData) {
+    public void setTotalEmpData(BigInteger totalEmpData) {
         this.totalEmpData = totalEmpData;
     }
 
-    public Long getTotalWorkingGroup() {
+    public BigInteger getTotalWorkingGroup() {
         return totalWorkingGroup;
     }
 
-    public void setTotalWorkingGroup(Long totalWorkingGroup) {
+    public void setTotalWorkingGroup(BigInteger totalWorkingGroup) {
         this.totalWorkingGroup = totalWorkingGroup;
     }
 
-    public Date getStartPeriod() {
-        return startPeriod;
+    public Date getFromPeriode() {
+        return fromPeriode;
     }
 
-    public void setStartPeriod(Date startPeriod) {
-        this.startPeriod = startPeriod;
+    public void setFromPeriode(Date fromPeriode) {
+        this.fromPeriode = fromPeriode;
     }
 
-    public Date getEndPeriod() {
-        return endPeriod;
+    public Date getUntilPeriode() {
+        return untilPeriode;
     }
 
-    public void setEndPeriod(Date endPeriod) {
-        this.endPeriod = endPeriod;
+    public void setUntilPeriode(Date untilPeriode) {
+        this.untilPeriode = untilPeriode;
     }
+
+    
 
     public String getStatus() {
         return status;

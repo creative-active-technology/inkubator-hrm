@@ -9,6 +9,8 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
+import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 
 import java.util.List;
@@ -241,5 +243,23 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
 	public WtPeriode getEntityByMonthAndYear(Integer month, String year) throws Exception {		// 
 		return wtPeriodeDao.getEntityByMonthAndYear(month, year);
 	}
+        
+        @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return wtPeriodeDao.getListWtPeriodEmpByParam(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) throws Exception {
+        return wtPeriodeDao.getTotalListWtPeriodEmpByParam(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId) throws Exception {
+        return wtPeriodeDao.getWtPeriodEmpByWtPeriodId(wtPeriodId);
+    }
 
 }
