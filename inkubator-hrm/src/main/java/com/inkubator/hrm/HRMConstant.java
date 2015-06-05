@@ -370,4 +370,8 @@ public class HRMConstant {
     public static final Integer KLASIFIKASI_OPPORTUNITIES = 2;
     public static final Integer KLASIFIKASI_THREATS = 3;
     
+     //Constant For WT Period Status
+    public static final String WT_PERIOD_STATUS_ACTIVE = "Active";
+    public static final String WT_PERIOD_STATUS_VOID = "Void";
+    
 }
