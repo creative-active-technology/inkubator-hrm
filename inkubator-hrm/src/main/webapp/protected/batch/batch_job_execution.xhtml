@@ -68,47 +68,49 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-<!--                            <p:column sortBy="jobExecutionId"  style="width: 20%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['batchJobExecution.jobExecutionId']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{batchJobExecutionData.jobExecutionId}"/>
-                            </p:column>-->
-<!--                            <p:column sortBy="version" style="width: 20%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['batchJobExecution.version']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{batchJobExecutionData.version}">
-                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
-                                </h:outputLabel>
-                            </p:column>-->
+                            <!--                            <p:column sortBy="jobExecutionId"  style="width: 20%">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="#{appmsg['batchJobExecution.jobExecutionId']}"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{batchJobExecutionData.jobExecutionId}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="version" style="width: 20%">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{appmsg['batchJobExecution.version']}"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{batchJobExecutionData.version}">
+                                                                <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                                            </h:outputLabel>
+                                                        </p:column>-->
                             <p:column sortBy="">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.batchJobInstance']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}"/>
+                                <p:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}">
+                                    <f:converter converterId="batchJobConverter"/>
+                                </p:outputLabel>
                             </p:column>
                             <p:column sortBy="status">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.status']}"/>
                                 </f:facet>
-                                    <h:outputLabel value= "#{batchJobExecutionData.status}">
-                                    </h:outputLabel>
+                                <h:outputLabel value= "#{batchJobExecutionData.status}">
+                                </h:outputLabel>
                             </p:column>
-<!--                            <p:column sortBy="createTime" style="text-align: center;width: 15%">
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['batchJobExecution.createTime']}"/>
-                                </f:facet>
-                                    <h:outputLabel value= "#{batchJobExecutionData.createTime}">
-                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
-                                    </h:outputLabel>>
-                            </p:column>-->
+                            <!--                            <p:column sortBy="createTime" style="text-align: center;width: 15%">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{appmsg['batchJobExecution.createTime']}"/>
+                                                            </f:facet>
+                                                                <h:outputLabel value= "#{batchJobExecutionData.createTime}">
+                                                                <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                                                </h:outputLabel>>
+                                                        </p:column>-->
                             <p:column sortBy="startTime" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.startTime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{batchJobExecutionData.startTime}">
-                                <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="endTime" >
@@ -125,18 +127,21 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{batchJobExecutionData.exitCode}"/>
                             </p:column>
-                            <p:column sortBy="exitMessage" >
+                            <p:column sortBy="exitMessage" style="text-align: center" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.exitMessage']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{batchJobExecutionData.exitMessage}"/>
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{batchJobExecutionController.doDetail()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{batchJobExecutionData}" target="#{batchJobExecutionController.selectedBatchJobExecution}" />
+                                </p:commandButton>
                             </p:column>
-<!--                            <p:column sortBy="lastUpdated" >
-                                <f:facet name="header">
-                                    <h:outputText value="#{appmsg['batchJobExecution.lastUpdated']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{batchJobExecutionData.lastUpdated}"/>
-                            </p:column>-->
+                            <!--                            <p:column sortBy="lastUpdated" >
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{appmsg['batchJobExecution.lastUpdated']}"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{batchJobExecutionData.lastUpdated}"/>
+                                                        </p:column>-->
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{batchJobExecutionController.lazyDataBatchJobExecution.rowCount}"/>
