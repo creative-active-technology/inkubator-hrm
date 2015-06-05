@@ -15,4 +15,5 @@ public interface BioMedicalHistoryService extends IService<BioMedicalHistory> {
 
 	public List<BioMedicalHistory> getAllDataByBioDataId(Long bioDataId) throws Exception;
 
+	public BioMedicalHistory getEntityByPkWithDetail(Long id) throws Exception;
 }
