@@ -98,9 +98,15 @@
                                 </h:outputLabel>
                                 <h:outputLabel value= "#{data.XSalary}"></h:outputLabel>
                             </p:column>
-                            <p:column sortBy="nominal" style="width: 20%">
+                            <p:column sortBy="quantity" style="width: 7%;text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['businesstravel.quantity']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.quantity}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="nominal" style="width: 13%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nominal}" ><f:convertNumber pattern="###,###" type="currency"/></h:outputLabel>
                             </p:column>
