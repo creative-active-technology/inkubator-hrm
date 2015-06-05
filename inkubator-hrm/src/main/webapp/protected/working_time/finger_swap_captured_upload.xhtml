@@ -98,7 +98,7 @@
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formUploadId,:growlUploadFormId"
-                                         action="#{fingerSwapCapturedUploadFileController.doSave()}" styleClass="isitext_hrm" onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('statusDialog').hide()};"
+                                         action="#{fingerSwapCapturedUploadFileController.doSave()}" styleClass="isitext_hrm" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide();"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formUploadId" 

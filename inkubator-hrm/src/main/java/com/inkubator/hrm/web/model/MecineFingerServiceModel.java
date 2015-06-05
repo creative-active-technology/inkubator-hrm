@@ -23,6 +23,7 @@ public class MecineFingerServiceModel implements Serializable{
     private Integer host2;
     private Integer host3;
     private Integer host4;
+    private Integer port;
     private Integer serviceData;
     private Integer protocolData;
     private String employeeBaseId;
@@ -100,7 +101,15 @@ public class MecineFingerServiceModel implements Serializable{
         this.host4 = host4;
     }
 
-    public Integer getServiceData() {
+    public Integer getPort() {
+		return port;
+	}
+
+	public void setPort(Integer port) {
+		this.port = port;
+	}
+
+	public Integer getServiceData() {
         return serviceData;
     }
 
