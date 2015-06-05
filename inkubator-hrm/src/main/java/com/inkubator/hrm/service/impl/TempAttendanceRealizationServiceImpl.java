@@ -19,12 +19,16 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.MedicalCareDao;
+import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -56,9 +60,14 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     private LeaveImplementationDateDao leaveImplementationDateDao;
     @Autowired
     private BusinessTravelDao businessTravelDao;
+    @Autowired
+    private MedicalCareDao medicalCareDao;
+    @Autowired
+    private PermitImplementationDao permitImplementationDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+
     public void delete(TempAttendanceRealization tempAttendanceRealization) throws Exception {
         tempAttendanceRealizationDao.delete(tempAttendanceRealization);
     }
@@ -315,31 +324,54 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //            System.out.println("jadwalnya " + tempJadwal.getTanggalWaktuKerja());
             TempProcessReadFinger finger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empId, tempJadwal.getTanggalWaktuKerja());
             DetilAttendateRelaization attendateRelaization = new DetilAttendateRelaization();
+
+            LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            MedicalCare medicalCare = medicalCareDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            PermitImplementation permitImplementation = permitImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
+
             if (finger != null) {
 
                 attendateRelaization.setAsentDate(finger.getScheduleDate());
                 attendateRelaization.setRealisasiStatus(finger.getWorkingHourName());
                 attendateRelaization.setRealisasiAttendace(tempJadwal.getWtWorkingHour().getAttendanceStatus().getStatusKehadrian());
-
-            }
-            LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
-            BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
-
-            if (leaveImplementation != null) {
-                long leavId = leaveImplementation.getId();
-                LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
-                attendateRelaization.setAsentDate(leaveImplementationDate.getActualDate());
-                attendateRelaization.setRealisasiStatus(leaveImplementationDate.getLeaveImplementation().getLeave().getName() + " no." + leaveImplementationDate.getLeaveImplementation().getNumberFilling());
-                attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
-            } else if (businessTravel != null) {
-                attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
-                attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to")+" " +businessTravel.getDestination());
-                attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+                attendateRelaization.setIsAttendaceKnowing(true);
             } else {
-                if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
+                if (leaveImplementation != null) {
+                    long leavId = leaveImplementation.getId();
+                    LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
+                    attendateRelaization.setAsentDate(leaveImplementationDate.getActualDate());
+                    attendateRelaization.setRealisasiStatus(leaveImplementationDate.getLeaveImplementation().getLeave().getName() + " no." + leaveImplementationDate.getLeaveImplementation().getNumberFilling());
+                    attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (businessTravel != null) {
                     attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
-                    attendateRelaization.setRealisasiStatus(tempJadwal.getWtWorkingHour().getName());
-                    attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("menu.holiday"));
+                    attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to") + " " + businessTravel.getDestination());
+                    attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (medicalCare != null) {
+                    attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                    attendateRelaization.setRealisasiStatus(medicalCare.getDisease().getName());
+                    attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("global.sick"));
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (permitImplementation != null) {
+                    attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                    attendateRelaization.setRealisasiStatus(permitImplementation.getPermitClassification().getName());
+                    attendateRelaization.setRealisasiAttendace(permitImplementation.getPermitClassification().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else {
+                    if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
+                        attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                        attendateRelaization.setRealisasiStatus(tempJadwal.getWtWorkingHour().getName());
+                        attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("menu.holiday"));
+                        attendateRelaization.setIsAttendaceKnowing(true);
+                    } else {
+                        attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                        attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.unknow"));
+                        attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("global.unknow"));
+                        attendateRelaization.setIsAttendaceKnowing(false);
+                    }
+
                 }
             }
 
