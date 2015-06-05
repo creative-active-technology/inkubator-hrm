@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -30,6 +31,15 @@ public class FingerMatchEmpDaoImpl extends IDAOImpl<FingerMatchEmp> implements F
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("nik", nik));
 		return criteria.list();
+	}
+
+	@Override
+	public FingerMatchEmp getEntityByNikAndMachineId(String nik, Long machineId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("empData.nik", nik));
+		criteria.add(Restrictions.eq("mecineFinger.id", machineId));
+		return (FingerMatchEmp) criteria.uniqueResult();
 	}
 
 	

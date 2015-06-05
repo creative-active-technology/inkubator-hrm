@@ -7,6 +7,8 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.FingerSwapCaptured;
+import com.inkubator.hrm.web.model.FingerSwapCapturedViewModel;
+import com.inkubator.hrm.web.search.FingerSwapCapturedSearchParameter;
 
 /**
  *
@@ -15,4 +17,8 @@ import com.inkubator.hrm.entity.FingerSwapCaptured;
 public interface FingerSwapCapturedDao extends IDAO<FingerSwapCaptured> {
 
 	public List<FingerSwapCaptured> getAllDataByFingerIndexIdAndSwapDatetimeLogBetween(List<String> fingerIndexIds, Date startDate, Date endDate, Order order);
+
+	public List<FingerSwapCapturedViewModel> getAllDataByParam(FingerSwapCapturedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalByParam(FingerSwapCapturedSearchParameter parameter);
 }
