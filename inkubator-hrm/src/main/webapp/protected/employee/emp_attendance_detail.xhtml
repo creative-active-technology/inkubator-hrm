@@ -86,7 +86,7 @@
                                                 <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
-                                                <p:outputLabel id="name" value="#{empAttendaceDetilRealizationController.attendanceModel.totalCuti} #{appmsg['global.people_only']}"  />
+                                                <p:outputLabel id="name" value="#{empAttendaceDetilRealizationController.attendanceModel.totalCuti} #{appmsg['admonitionType.admonitionType_day']}"  />
                                             </p:column>
                                         </p:row> 
                                         <p:row>
@@ -94,7 +94,7 @@
                                                 <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
-                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalIzin} #{appmsg['global.people_only']}" />
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalIzin} #{appmsg['admonitionType.admonitionType_day']}" />
                                             </p:column>
                                         </p:row> 
                                         <p:row>
@@ -102,7 +102,7 @@
                                                 <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
-                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalSick} #{appmsg['global.people_only']}"/>
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalSick} #{appmsg['admonitionType.admonitionType_day']}"/>
                                             </p:column>
                                         </p:row> 
                                         <p:row>
@@ -110,7 +110,7 @@
                                                 <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
-                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalOnDuty} #{appmsg['global.people_only']}"/>
+                                                <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalOnDuty} #{appmsg['admonitionType.admonitionType_day']}"/>
                                             </p:column>
                                         </p:row> 
                                     </p:panelGrid>
@@ -122,7 +122,7 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['role_view.header1']}" style="text-align: left" styleClass="label_hrm"/> 
                             </f:facet>
-                            <p:column style="text-align: center;width: 25px;max-width: 25px">
+                            <p:column style="text-align: center;width: 20px;max-width: 20px">
                                 <f:facet name="header">  
                                     <h:outputText value="No." />
                                 </f:facet>

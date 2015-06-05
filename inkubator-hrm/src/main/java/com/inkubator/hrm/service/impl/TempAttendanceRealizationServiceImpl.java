@@ -19,12 +19,14 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -56,6 +58,8 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     private LeaveImplementationDateDao leaveImplementationDateDao;
     @Autowired
     private BusinessTravelDao businessTravelDao;
+    @Autowired
+    private MedicalCareDao medicalCareDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -324,7 +328,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
             }
             LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
             BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
-
+            MedicalCare medicalCare = medicalCareDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
             if (leaveImplementation != null) {
                 long leavId = leaveImplementation.getId();
                 LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
@@ -333,8 +337,12 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
                 attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
             } else if (businessTravel != null) {
                 attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
-                attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to")+" " +businessTravel.getDestination());
+                attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to") + " " + businessTravel.getDestination());
                 attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+            } else if (medicalCare != null) {
+                attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                attendateRelaization.setRealisasiStatus(medicalCare.getDisease().getName());
+                attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("global.sick"));
             } else {
                 if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
                     attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());

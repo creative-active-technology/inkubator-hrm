@@ -3,11 +3,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
-import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -35,7 +33,7 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     @Override
     public List<MedicalCare> getByParam(MedicalCareSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchMedicalCareByParam(parameter, criteria);        
+        doSearchMedicalCareByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -50,10 +48,10 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
     }
 
     private void doSearchMedicalCareByParam(MedicalCareSearchParameter parameter, Criteria criteria) {
-    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        
+
         if (parameter.getEmployeeName() != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployeeName(), MatchMode.ANYWHERE));
@@ -61,7 +59,7 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployeeName(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
-        
+
         if (parameter.getJabatan() != null) {
             criteria.add(Restrictions.like("jabatanByJabatanId.name", parameter.getJabatan(), MatchMode.ANYWHERE));
         }
@@ -101,13 +99,18 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        
+
         return (MedicalCare) criteria.uniqueResult();
     }
 
     @Override
     public MedicalCare getByEmpIdAndDate(long empId, Date doDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
+        return (MedicalCare) criteria.uniqueResult();
     }
 
 }
