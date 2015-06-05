@@ -71,7 +71,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['batchJobExecution.batchJobInstance']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}"/>
+                                <p:outputLabel value="#{batchJobExecutionData.batchJobInstance.jobName}">
+                                    <f:converter converterId="batchJobConverter"/>
+                                </p:outputLabel>
                             </p:column>
                             <p:column sortBy="#{batchJobExecutionData.status}">
                                 <f:facet name="header">
