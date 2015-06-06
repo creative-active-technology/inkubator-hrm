@@ -14,7 +14,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RecruitReqHistorySearchParameter extends SearchParameter {
     private String formCode;
-    private String jabatanName;   
+    private String jabatanName;  
+    private String userId;
 
     public String getFormCode() {
          if (StringUtils.equalsIgnoreCase(getKeyParam(), "formCode")) {
@@ -41,6 +42,21 @@ public class RecruitReqHistorySearchParameter extends SearchParameter {
     public void setJabatanName(String jabatanName) {
         this.jabatanName = jabatanName;
     }
+
+    public String getUserId() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "userId")) {
+            userId = getParameter();
+        } else {
+            userId = null;
+        }            
+       
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    
     
     
 }

@@ -23,4 +23,6 @@ public interface RecruitHireApplyDao extends IDAO<RecruitHireApply> {
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter);
     
     public Long getTotalDataByReqHireCode(String reqHireCode);
+    
+    public RecruitHireApply getEntityWithDetailByPk(Long recruitHireApplyId);
 }

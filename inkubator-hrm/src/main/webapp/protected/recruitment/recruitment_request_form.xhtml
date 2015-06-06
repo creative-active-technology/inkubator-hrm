@@ -181,12 +181,15 @@
                                 <p:row>
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
                                         <p:outputLabel for="ipkMinId" value="#{appmsg['mppRecruitmentHist.ipk']}" styleClass="label_hrm"/>
+                                         <p:outputLabel value="(#{appmsg['mppRecruitmentHist.scale_4']})" styleClass="label_hrm" style="margin-left: 5px"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber id="ipkMinId" label="#{appmsg['mppRecruitmentHist.ipk']}" value="#{recruitHireApplyFormController.model.gpaMin}"/>
-                                         <p:outputLabel value="#{appmsg['global.to']}" style="margin-left: -10px"/>
-                                         <pe:inputNumber id="ipkMaxId" label="#{appmsg['mppRecruitmentHist.ipk']}" value="#{recruitHireApplyFormController.model.gpaMax}" style="margin-left: -10px"/>
-                                        <p:outputLabel value="#{appmsg['mppRecruitmentHist.scale_4']}"  style="margin-left: 5px"/>
+                                        <pe:inputNumber  id="ipkMinId" label="#{appmsg['mppRecruitmentHist.ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMin}" style="width:50px"/>
+                                        &nbsp;&nbsp;
+                                         <p:outputLabel value=" #{appmsg['global.to']} " style="margin-left: -10px"/>
+                                         &nbsp;&nbsp;
+                                         <pe:inputNumber id="ipkMaxId" label="#{appmsg['mppRecruitmentHist.ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMax}" style="margin-left: -10px;width:50px"/>
+                                       
                                         <p:message for="ipkMinId"/>
                                         <p:message for="ipkMaxId"/>
                                     </p:column>
@@ -195,8 +198,8 @@
                                     <p:column style="width: 15%;background-color: #e1f0f0!important">
                                         <p:outputLabel for="kerjaId" value="#{appmsg['mppRecruitmentHist.work_experience']}" styleClass="label_hrm"/>
                                     </p:column>
-                                    <p:column  style="width: 80%">
-                                        <pe:inputNumber id="kerjaId" value="#{recruitHireApplyFormController.model.yearExperience}" />
+                                    <p:column  style="width: 80%">                                        
+                                        <p:spinner min="0"  max="100" id="kerjaId"  size="3" value="#{recruitHireApplyFormController.model.yearExperience}"/>
                                         <p:outputLabel value="#{appmsg['global.year']}"  style="margin-left: 5px"/>
                                         <p:message for="kerjaId"/>
                                     </p:column>
@@ -205,19 +208,18 @@
                         </p:fieldset>
                         <p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
-                                <c:forEach   var="ordinate2" id="repeat" begin="0" end="#{recruitHireApplyFormController.dataForRenders.size()-1}"  >
+                                <c:forEach   var="dataRender" items="#{recruitHireApplyFormController.dataForRenders}" id="repeat" begin="0" end="#{recruitHireApplyFormController.dataForRenders.size()-1}" varStatus="loop"  >                                
                                     <p:row>
                                         <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                            <p:outputLabel  value="#{recruitHireApplyFormController.name.get(ordinate2)}" styleClass="label_hrm"/>
+                                            <p:outputLabel  value="#{recruitHireApplyFormController.name.get(loop.index)}" styleClass="label_hrm"/>
                                         </p:column>
                                         <p:column  style="width: 80%">
-                                            <p:pickList value="#{recruitHireApplyFormController.dataForRenders.get(ordinate2)}" var="orgTypeOfSpecList" itemValue="#{orgTypeOfSpecList}" converter="orgTipeListConverter" 
+                                            <p:pickList value="#{dataRender}" var="orgTypeOfSpecList" itemValue="#{orgTypeOfSpecList}" converter="orgTipeListConverter" 
                                                         required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['org_level.work_location']}" styleClass="isitext_hrm"
                                                         itemLabel="#{orgTypeOfSpecList.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                         removeLabel="#{appmsg['global.remove']}"/>
                                         </p:column>
-
-                                    </p:row>
+                                    </p:row>                          
                                 </c:forEach>
 
                             </p:panelGrid>
@@ -229,7 +231,8 @@
                                         <p:outputLabel  value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.applyBy}" styleClass="text_hrm"/>
+                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.empDataApplier.nik} - #{recruitHireApplyFormController.model.empDataApplier.bioData.fullName}" 
+                                            styleClass="text_hrm" />                                       
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -237,7 +240,7 @@
                                         <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.jabatanPengaju}" styleClass="text_hrm"/>
+                                        <p:outputLabel  value="#{recruitHireApplyFormController.model.empDataApplier.jabatanByJabatanId.code} - #{recruitHireApplyFormController.model.empDataApplier.jabatanByJabatanId.name}" styleClass="text_hrm"/>
                                     </p:column>
                                 </p:row>
 
@@ -246,12 +249,12 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>                   
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true"
-                                             action="#{recruitHireApplyFormController.doSave()}" styleClass="label_button" update="selectionTipeFormId"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true" update="selectionTipeFormId"
+                                             action="#{recruitHireApplyFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="selectionTipeFormId"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" rendered="#{!recruitHireApplyFormController.isEdit}" update="selectionTipeFormId"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="selectionTipeFormId" />  
                             </p:commandButton>

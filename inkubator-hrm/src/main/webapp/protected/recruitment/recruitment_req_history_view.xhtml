@@ -83,11 +83,11 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="jabatanName"  style="width: 18%">
+                            <p:column sortBy="jabatanName"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jabatanName}"/>
+                                <h:outputLabel value= "#{data.jabatanCode} #{data.jabatanName}"/>
                             </p:column> 
                             
                              <p:column sortBy="totalReq"  style="width: 10%">
@@ -101,10 +101,10 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.apply_by']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{data.requestBy}"/>
+                                 <h:outputLabel value= "#{data.nikRequester}  #{data.nameRequester}"/>
                             </p:column> 
                             
-                             <p:column style="width: 15%" sortBy="approvalStatus">
+                             <p:column style="width: 13%" sortBy="approvalStatus">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
@@ -125,7 +125,7 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{recruitmentReqHistoryViewController.doEdit()}" >
+                                                  action="#{recruitmentReqHistoryViewController.doEdit()}" disabled="#{data.approvalStatus eq 1}" >
                                    <f:setPropertyActionListener value="#{data}" target="#{recruitmentReqHistoryViewController.selected}" />                                  
                                 </p:commandButton> 
                             </p:column> 
