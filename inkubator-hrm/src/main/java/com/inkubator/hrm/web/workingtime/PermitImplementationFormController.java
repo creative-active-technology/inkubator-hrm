@@ -178,28 +178,25 @@ public class PermitImplementationFormController extends BaseController {
         PermitImplementation permitImplementation = getEntityFromViewModel(model);
 
         try {
-            String path = "";
+            String message = "";
 
             if (isUpdate) {
                 permitImplementationService.update(permitImplementation, documentFile);
-                path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-                permitImplementationService.save(permitImplementation, documentFile);
-//                if (StringUtils.equals(message, "success_need_approval")) {
-//                    path = "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
-//                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
-//                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                } else {
-                path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
+            	message = permitImplementationService.save(permitImplementation, documentFile, false);
+                if (StringUtils.equals(message, "success_need_approval")) {
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                } else {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                }
+                }
             }
-
-            return path;
+            cleanAndExit();
+            return "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -257,7 +254,9 @@ public class PermitImplementationFormController extends BaseController {
 
     public void onChangeEmployee() {
         try {
+        	System.out.println(model.getEmpData().getId() + " employee");
             List<PermitDistribution> permitDistributions = permitDistributionService.getAllDataByEmpIdFetchPermit(model.getEmpData().getId());
+            System.out.println(permitDistributions.size() + " size permit by employee");
             //filter list hanya untuk permit yang isActive = true
             permitDistributions = Lambda.select(permitDistributions, Lambda.having(Lambda.on(PermitDistribution.class).getPermitClassification().getIsActive(), Matchers.equalTo(true)));
             permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());

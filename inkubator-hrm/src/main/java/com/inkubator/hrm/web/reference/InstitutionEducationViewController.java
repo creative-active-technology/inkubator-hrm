@@ -111,17 +111,24 @@ public class InstitutionEducationViewController extends BaseController {
         }
     }
 
-    public void doAdd() {
-        showDialog(null);
+//    public void doAdd() {
+//        showDialog(null);
+//    }
+    public String doAdd(){    
+    	return "/protected/reference/inst_edu_form.htm?faces-redirect=true";
     }
 
-    public void doUpdate() {
+    public String doUpdate(){
+    	return "/protected/reference/inst_edu_form.htm?faces-redirect=true&execution=e" + selectedInstitutionEducation.getId();
+    }
+    
+    /*public void doUpdate() {
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selectedInstitutionEducation.getId()));
         dataToSend.put("param", values);
         showDialog(dataToSend);
-    }
+    }*/
 
     private void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();

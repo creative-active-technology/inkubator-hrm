@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">    
+                    <!--<p:panel style="margin: 10px" >-->                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="data_log_interface.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['data_log_interface.view']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['data_log_interface.view_desc']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formId">
+                    	<p:panelGrid id="panelSearchId" style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['data_log_interface.absent_period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:calendar id="startDateId" pattern="dd-MMMM-yyyy" size="15"
+                                            	value="#{fingerSwapCapturedViewController.searchParameter.startPeriod}"/>
+                                    <p:outputLabel  value="&nbsp;&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;&nbsp;" />
+                                    <p:calendar id="endDateId" pattern="dd-MMMM-yyyy" size="15"
+                                            	value="#{fingerSwapCapturedViewController.searchParameter.endPeriod}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.employee']}" styleClass="label_hrm" />
+                                </p:column>
+                            	<p:column>
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                                value="#{fingerSwapCapturedViewController.searchParameter.empData}"
+                                                completeMethod="#{fingerSwapCapturedViewController.doAutoCompleteEmployee}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                styleClass="isitext_hrm" size="46">
+                                    </p:autoComplete>
+                            	</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['data_log_interface.fingerprint_machine']}" styleClass="label_hrm" />
+                                </p:column>
+                            	<p:column>
+                                    <p:selectOneMenu id="machineFingerId" styleClass="isitext_hrm" value="#{fingerSwapCapturedViewController.searchParameter.machineFingerId}" style="width:300px;">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{fingerSwapCapturedViewController.listMecineFinger}" var="machineFinger" itemValue="#{machineFinger.id}" itemLabel="#{machineFinger.name}"/>	                                    
+	                                </p:selectOneMenu>
+                            	</p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{fingerSwapCapturedViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>                                    
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="4" >
+                                	<p:commandButton value="#{appmsg['global.upload']}" actionListener="#{fingerSwapCapturedViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{fingerSwapCapturedViewController.onDialogReturn}"  update="formId,:growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.download']}" actionListener="#{fingerSwapCapturedViewController.doDownload()}" title="#{appmsg['global.download']}" label="#{appmsg['global.download']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{fingerSwapCapturedViewController.onDialogReturn}"  update="formId,:growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Log_Interface"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{fingerSwapCapturedViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable  id="tableId" var="data"  value="#{fingerSwapCapturedViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['data_log_interface.log_history_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>   
+                            <p:column sortBy="#{data.nik}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nik}"/>
+                            </p:column> 
+                            <p:column sortBy="#{data.employeeName}"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.employeeName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.machineFingerName}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['data_log_interface.machine_id']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.machineFingerName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.fingerSwapDate}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.date']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.fingerSwapDate}">
+                                	<f:convertDateTime  pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.time']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.fingerSwapDate}">
+                                	<f:convertDateTime  pattern="HH:mm"/>
+                                </h:outputLabel>
+                            </p:column>                                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{fingerSwapCapturedViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

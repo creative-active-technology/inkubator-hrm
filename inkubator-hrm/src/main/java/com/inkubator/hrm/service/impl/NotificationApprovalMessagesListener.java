@@ -92,6 +92,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             toSend.add("guntur@incubatechnology.com");
             toSend.add("rizal2_dhfr@yahoo.com");
             toSentCC.add("rizkykojek@gmail.com");
+            toSentCC.add("denisya16@gmail.com");
             toSentCC.add("ai.jubaedah@incubatechnology.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
@@ -202,6 +203,17 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             break;
+                        case HRMConstant.PERMIT:
+                        	vtm.setSubject("Permohonan Izin");
+                            vtm.setTemplatePath("email_permit_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("permitClassification", jsonObject.get("permitClassification").getAsString());
+                            break;
 
                         default:
                             break;
@@ -306,6 +318,18 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
+                        case HRMConstant.PERMIT:
+                        	vtm.setSubject("Permohonan Izin");
+                            vtm.setTemplatePath("email_permit_approved_and_rejected_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("permitClassification", jsonObject.get("permitClassification").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
 
                         default:
                             break;
@@ -397,6 +421,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                        case HRMConstant.PERMIT:
+                        	vtm.setSubject("Permohonan Izin");
+                            vtm.setTemplatePath("email_permit_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
+                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
                             break;
 
                         default:

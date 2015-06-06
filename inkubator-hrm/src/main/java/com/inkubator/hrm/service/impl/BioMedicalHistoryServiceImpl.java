@@ -1,16 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.BioDataDao;
-import com.inkubator.hrm.dao.BioMedicalHistoryDao;
-import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.BioMedicalHistory;
-import com.inkubator.hrm.service.BioMedicalHistoryService;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.BioMedicalHistoryDao;
+import com.inkubator.hrm.dao.DiseaseDao;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioMedicalHistory;
+import com.inkubator.hrm.service.BioMedicalHistoryService;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -31,6 +33,8 @@ public class BioMedicalHistoryServiceImpl extends IServiceImpl implements BioMed
     private BioMedicalHistoryDao bioMedicalHistoryDao;
     @Autowired
     private BioDataDao bioDataDao;
+    @Autowired
+    private DiseaseDao diseaseDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -202,6 +206,7 @@ public class BioMedicalHistoryServiceImpl extends IServiceImpl implements BioMed
 
         bioMedicalHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         bioMedicalHistory.setBioData(biodata);
+        bioMedicalHistory.setDisease(diseaseDao.getEntiyByPK(bioMedicalHistory.getDisease().getId()));
         bioMedicalHistory.setCreatedBy(UserInfoUtil.getUserName());
         bioMedicalHistory.setCreatedOn(new Date());
         bioMedicalHistoryDao.save(bioMedicalHistory);
@@ -238,7 +243,7 @@ public class BioMedicalHistoryServiceImpl extends IServiceImpl implements BioMed
         BioMedicalHistory bioMedicalHistory = bioMedicalHistoryDao.getEntiyByPK(b.getId());
         bioMedicalHistory.setBioData(biodata);
         bioMedicalHistory.setYear(b.getYear());
-        bioMedicalHistory.setDisease(b.getDisease());
+        bioMedicalHistory.setDisease(diseaseDao.getEntiyByPK(b.getDisease().getId()));
         bioMedicalHistory.setStatus(b.getStatus());
         bioMedicalHistory.setDescription(b.getDescription());
         bioMedicalHistory.setUpdatedBy(UserInfoUtil.getUserName());
@@ -258,5 +263,11 @@ public class BioMedicalHistoryServiceImpl extends IServiceImpl implements BioMed
         return bioMedicalHistoryDao.getAllDataByBioDataId(bioDataId);
 
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public BioMedicalHistory getEntityByPkWithDetail(Long id) throws Exception {
+		return bioMedicalHistoryDao.getEntityByPkWithDetail(id);
+	}
 
 }

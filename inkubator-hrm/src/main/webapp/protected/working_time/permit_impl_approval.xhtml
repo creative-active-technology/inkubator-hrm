@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>               
+                <h:form id="formId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="task_ico.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation_approval_form']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['permitimplementation.permit_implementation_data_from_working_time']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['permitimplementation.filling_number']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.numberFilling}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.empData.bioData.firstName} #{permitImplApprovalFormController.selectedPermitImplementation.empData.bioData.lastName}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['permitClassification.permitClassification']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.permitClassification.name}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.startDate}">
+                                        	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                        </p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.endDate}">
+                                        	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                        </p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['permitimplementation.filling_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{permitImplApprovalFormController.selectedPermitImplementation.fillingDate}">
+                                        	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                        </p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{implementationOfOverTimeApprovalFormController.isWaitingApproval}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%" colspan="3">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{permitImplApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>
+	                 	</p:panelGrid>                            
+                            
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                    	<h:panelGroup rendered="#{implementationOfOverTimeApprovalFormController.isWaitingApproval}">
+		                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{permitImplApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isApprover}" update=":growlId"/>
+							 	<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{permitImplApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isApprover}" update=":growlId"/>
+<!-- 	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{permitImplApprovalFormController.doCancelled()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isRequester}" update=":growlId"/> -->
+	                        </h:panelGroup>
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{implementationOfOverTimeApprovalFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

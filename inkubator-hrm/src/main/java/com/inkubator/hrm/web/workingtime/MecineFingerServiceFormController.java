@@ -40,6 +40,7 @@ public class MecineFingerServiceFormController extends BaseController {
             mecineFinger = mecineFingerService.getMecineFingerAndDetaiUploadByFK(Long.parseLong(param.substring(1)));
             mecineFingerServiceModel = new MecineFingerServiceModel();
             mecineFingerServiceModel.setId(mecineFinger.getId());
+            mecineFingerServiceModel.setPort(Integer.parseInt(mecineFinger.getServicePort()));
             if (mecineFinger.getServiceHost() != null) {
                 String hostIp = mecineFinger.getServiceHost();
                 String[] partIp = hostIp.replace(".", "-").split("-");

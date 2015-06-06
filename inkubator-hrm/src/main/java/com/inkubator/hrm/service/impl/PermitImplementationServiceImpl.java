@@ -1,5 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,13 +14,15 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.model.DefaultUploadedFile;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.MessageCreator;
@@ -25,13 +31,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
@@ -39,21 +42,20 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+//import com.inkubator.hrm.dao.PermitImplementationDateDao;
+import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
-//import com.inkubator.hrm.dao.PermitImplementationDateDao;
-import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+//import com.inkubator.hrm.entity.PermitImplementationDate;
+import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.PermitImplementation;
-//import com.inkubator.hrm.entity.PermitImplementationDate;
-import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
@@ -61,8 +63,6 @@ import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.io.File;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -409,59 +409,86 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-//        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
-//        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-//        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
-//            /**
-//             * kalau status akhir sudah di approved dan tidak ada next approval,
-//             * berarti langsung insert ke database
-//             */
-//            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//            String pendingData = appActivity.getPendingData();
-//            JsonObject jsonObject = gson.fromJson(pendingData, JsonObject.class);
-//
-//            if (jsonObject.get("isCancellationProcess") != null) {
-//                Long permitImplementationId = jsonObject.get("id").getAsLong();
-//                List<PermitImplementationDate> cancellationDates = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<PermitImplementationDate>>() {
-//                }.getType());
-//                List<PermitImplementationDate> actualDates = gson.fromJson(jsonObject.get("actualDates"), new TypeToken<List<PermitImplementationDate>>() {
-//                }.getType());
-//                String cancellationDescription = jsonObject.get("cancellationDescription").getAsString();
-//                this.cancellationProcess(permitImplementationId, actualDates, cancellationDates, cancellationDescription);
-//
-//            } else {
-//                PermitImplementation permitImplementation = gson.fromJson(pendingData, PermitImplementation.class);
-//                permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
-//                this.save(permitImplementation, true);
-//            }
-//        }
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+        	
+        	//parsing from json to entity
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            PermitImplementation permitImplementation = gson.fromJson(pendingData, PermitImplementation.class);
+            permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber()); //set approval activity number, for history approval purpose 
+
+            //convert to UploadedFile before saving
+            UploadedFile uploadedFile = null;
+            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
+            if (!permitImplementationFile.isJsonNull()) {
+                String reimbursmentFilePath = permitImplementationFile.getAsString();
+                File file = new File(reimbursmentFilePath);
+                DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                int ret = input.read();
+                while (ret != -1) {
+                    os.write(ret);
+                    ret = input.read();
+                }
+                os.flush();
+
+                uploadedFile = new DefaultUploadedFile(fileItem);
+            }
+            this.save(permitImplementation, uploadedFile, true);
+        }
 //
 //        //if there is no error, then sending the email notification
-//        sendingEmailApprovalNotif(appActivity);
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
-//        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
-//        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-//        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
-//            /**
-//             * kalau status akhir sudah di reject dan tidak ada next approval,
-//             * kalau bukan cancellation berarti langsung insert ke database
-//             */
-//            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//            String pendingData = appActivity.getPendingData();
-//            JsonObject jsonObject = gson.fromJson(pendingData, JsonObject.class);
-//            if (jsonObject.get("isCancellationProcess") == null) {
-//                PermitImplementation permitImplementation = gson.fromJson(pendingData, PermitImplementation.class);
-//                permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
-//                this.save(permitImplementation, true);
-//            }
-//        }
-//
-//        //if there is no error, then sending the email notification
-//        sendingEmailApprovalNotif(appActivity);
+        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di reject dan tidak ada next approval,
+             * kalau bukan cancellation berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            JsonObject jsonObject = gson.fromJson(pendingData, JsonObject.class);
+            if (jsonObject.get("isCancellationProcess") == null) {
+                PermitImplementation permitImplementation = gson.fromJson(pendingData, PermitImplementation.class);
+                permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
+                //convert to UploadedFile before saving
+                UploadedFile uploadedFile = null;
+                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
+                if (!permitImplementationFile.isJsonNull()) {
+                    String reimbursmentFilePath = permitImplementationFile.getAsString();
+                    File file = new File(reimbursmentFilePath);
+                    DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
+                    InputStream input = new FileInputStream(file);
+                    OutputStream os = fileItem.getOutputStream();
+                    int ret = input.read();
+                    while (ret != -1) {
+                        os.write(ret);
+                        ret = input.read();
+                    }
+                    os.flush();
+
+                    uploadedFile = new DefaultUploadedFile(fileItem);
+                }
+
+                this.save(permitImplementation, uploadedFile, true);
+            }
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
@@ -500,58 +527,44 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Override
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-//        //initialization
-//        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-//
-//        //get all sendCC email address on status approve OR reject
-//        List<String> ccEmailAddresses = new ArrayList<String>();
-//        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
-//            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
-//        }
-//
-//        //parsing object data to json, for email purpose
-//        PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
-//        Permit permit = permitDao.getEntiyByPK(permitImplementation.getPermit().getId());
-//        String cancellationDate = StringUtils.EMPTY;
-//        JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
-//        if (jsonObject.get("isCancellationProcess") != null) {
-//            List<PermitImplementationDate> cancellations = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<PermitImplementationDate>>() {
-//            }.getType());
-//            StringBuffer sb = new StringBuffer();
-//            for (PermitImplementationDate li : cancellations) {
-//                if (sb.length() != 0) {
-//                    sb.append(", ");
-//                }
-//                sb.append(dateFormat.format(li.getActualDate()));
-//            }
-//            cancellationDate = sb.toString();
-//        }
-//
-//        final JSONObject jsonObj = new JSONObject();
-//        try {
-//            jsonObj.put("approvalActivityId", appActivity.getId());
-//            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-//            jsonObj.put("locale", appActivity.getLocale());
-//            jsonObj.put("proposeDate", dateFormat.format(permitImplementation.getCreatedOn()));
-//            jsonObj.put("permitName", permit.getName());
-//            jsonObj.put("startDate", dateFormat.format(permitImplementation.getStartDate()));
-//            jsonObj.put("endDate", dateFormat.format(permitImplementation.getEndDate()));
-//            jsonObj.put("fillingDate", dateFormat.format(permitImplementation.getFillingDate()));
-//            jsonObj.put("materialJobsAbandoned", permitImplementation.getMaterialJobsAbandoned());
-//            jsonObj.put("cancellationDate", cancellationDate);
-//
-//        } catch (JSONException e) {
-//            LOGGER.error("Error when create json Object ", e);
-//        }
-//
-//        //send messaging, to trigger sending email
-//        super.jmsTemplateApproval.send(new MessageCreator() {
-//            @Override
-//            public Message createMessage(Session session) throws JMSException {
-//                return session.createTextMessage(jsonObj.toString());
-//            }
-//        });
+        //initialization
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+
+        //parsing object data to json, for email purpose
+        PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
+        PermitClassification permitClassification = permitDao.getEntiyByPK(permitImplementation.getPermitClassification().getId());
+        String cancellationDate = StringUtils.EMPTY;
+        JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
+
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(permitImplementation.getCreatedOn()));
+            jsonObj.put("startDate", dateFormat.format(permitImplementation.getStartDate()));
+            jsonObj.put("endDate", dateFormat.format(permitImplementation.getEndDate()));
+            jsonObj.put("fillingDate", dateFormat.format(permitImplementation.getFillingDate()));
+            jsonObj.put("permitClassification", permitClassification.getName());
+
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
     }
 
     @Override
@@ -859,5 +872,76 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     public void update(PermitImplementation t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception{
+            String message = "";
+			// check duplicate number filling
+            long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+            if (totalDuplicates > 0) {
+                throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+            }
+
+            EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+            PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+            PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+
+            // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+            Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
+            if (actualPermit > permitDistribution.getBalance()) {
+                throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+            }
+
+            
+            
+            HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+            
+            String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+            if(approvalActivity == null){
+            	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                entity.setEmpData(empData);
+                entity.setPermitClassification(permit);
+                if (documentFile != null) {
+                    String uploadPath = getUploadPath(entity.getId(), documentFile);
+                    facesIO.transferFile(documentFile);
+                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                    file.renameTo(new File(uploadPath));
+                    entity.setUploadPath(uploadPath);
+                }
+
+                permitImplementationDao.save(entity);
+                message = "save_without_approval";
+            }else{
+            	String uploadPath = null;
+            	if (documentFile != null) {
+                    uploadPath = getUploadPath(entity.getId(), documentFile);
+                    facesIO.transferFile(documentFile);
+                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                    file.renameTo(new File(uploadPath));
+                    entity.setUploadPath(uploadPath);
+                }
+            	
+            	entity.setCreatedBy(createdBy);
+            	entity.setCreatedOn(createdOn);
+            	JsonParser parser = new JsonParser();
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+                JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+                jsonObject.addProperty("permitImplementationFile", uploadPath);
+                //save to approval activity
+                approvalActivity.setPendingData(gson.toJson(jsonObject));
+                approvalActivityDao.save(approvalActivity);
+
+                //sending email notification
+                this.sendingEmailApprovalNotif(approvalActivity);
+                message = "success_need_approval";
+            }
+            
+
+            this.creditPermitBalance(permitDistribution, actualPermit);
+            return message;
+	}
     
 }

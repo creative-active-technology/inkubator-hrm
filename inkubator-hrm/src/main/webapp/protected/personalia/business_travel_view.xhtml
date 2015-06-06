@@ -78,13 +78,21 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.businessTravelNo}"/>
                             </p:column>   
-                            <p:column sortBy="empData.nik"  style="width: 37%">
+                            <p:column sortBy="empData.nik"  style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.empData.nik} #{businessTravelData.empData.bioData.fullName}"/>
                             </p:column> 
-                            <p:column sortBy="destination"  style="width: 30%">
+                            <p:column sortBy="businessTravelNo"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{businessTravelData.proposeDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column sortBy="destination"  style="width: 23%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                 </f:facet>

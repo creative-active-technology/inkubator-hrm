@@ -31,6 +31,8 @@ public class BatchJobExecutionController extends BaseController{
     private BatchJobExecutionService batchJobExecutionService;
     private BatchJobExecutionSearchParameter batchJobExecutionSearchParameter;
     private LazyDataModel<BatchJobExecution> lazyDataBatchJobExecution;
+    private BatchJobExecution selectedBatchJobExecution;
+    private Long jobExecutionId;
     private PieChartModel pieModel;
     
     @PostConstruct
@@ -45,13 +47,14 @@ public class BatchJobExecutionController extends BaseController{
         batchJobExecutionService = null;
         batchJobExecutionSearchParameter = null;
         lazyDataBatchJobExecution = null;
+        selectedBatchJobExecution = null;
         pieModel = null;
     }
     
     public void setBatchJobExecutionService(BatchJobExecutionService batchJobExecutionService){
         this.batchJobExecutionService = batchJobExecutionService;
     }
-    
+
     public BatchJobExecutionSearchParameter getBatchJobExecutionSearchParameter(){
         return batchJobExecutionSearchParameter;
     }
@@ -71,7 +74,13 @@ public class BatchJobExecutionController extends BaseController{
         this.lazyDataBatchJobExecution = lazyDataBatchJobExecution;
     }
     
-    
+    public BatchJobExecution getSelectedBatchJobExecution() {
+        return selectedBatchJobExecution;
+    }
+
+    public void setSelectedBatchJobExecution(BatchJobExecution selectedBatchJobExecution) {
+        this.selectedBatchJobExecution = selectedBatchJobExecution;
+    }
     
     public PieChartModel getPieModel(){
         return pieModel;
@@ -79,5 +88,9 @@ public class BatchJobExecutionController extends BaseController{
     
     public void doSearch(){
         lazyDataBatchJobExecution = null;
+    }
+    
+    public String doDetail(){
+        return "/protected/batch/batch_job_execution_detail.htm?faces-redirect=true&execution=e" + selectedBatchJobExecution.getJobExecutionId();
     }
 }

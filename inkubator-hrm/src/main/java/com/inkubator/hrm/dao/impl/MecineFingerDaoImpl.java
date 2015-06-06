@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -80,10 +82,18 @@ public class MecineFingerDaoImpl extends IDAOImpl<MecineFinger> implements Mecin
         getCurrentSession().flush();
     }
 
-    public Long getByCode(String code) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.like("code", code, MatchMode.ANYWHERE));
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }
+	@Override
+	public MecineFinger getEntityByCode(String code) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("code", code));
+		return (MecineFinger) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<MecineFinger> getAllDataByMachineMethod(Integer machineMethod) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("mecineMethode", machineMethod));
+		return criteria.list();
+	}
 
 }
