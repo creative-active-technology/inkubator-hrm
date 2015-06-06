@@ -72,4 +72,12 @@ public class PermitClassificationDaoImpl extends IDAOImpl<PermitClassification> 
         return (PermitClassification) criteria.uniqueResult();
     }
 
+	@Override
+	public List<PermitClassification> getAllDataByIsActiveAndOnePerEmployee(Boolean isActive, Boolean onePerEmployee) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("isActive", isActive));
+		criteria.add(Restrictions.eq("onePerEmployee", onePerEmployee));
+		return criteria.list();
+	}
+
 }
