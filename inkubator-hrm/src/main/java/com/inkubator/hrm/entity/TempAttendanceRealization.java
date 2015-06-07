@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Jun 1, 2015 12:34:00 PM by Hibernate Tools 4.3.1
+// Generated Jun 3, 2015 4:03:54 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -26,12 +26,14 @@ public class TempAttendanceRealization  implements java.io.Serializable {
      private long id;
      private EmpData empData;
      private WtGroupWorking wtGroupWorking;
+     private WtPeriode wtPeriod;
      private Integer attendanceDaysSchedule;
      private Integer attendanceDaysPresent;
      private Integer leave;
      private Integer permit;
      private Integer sick;
      private Integer duty;
+     private Float overtime;
      private Date createdOn;
      private String createdBy;
 
@@ -137,7 +139,15 @@ public class TempAttendanceRealization  implements java.io.Serializable {
     public void setSick(Integer sick) {
         this.sick = sick;
     }
-
+    
+     @Column(name="overtime", precision=12, scale=0)
+    public Float getOvertime() {
+        return this.overtime;
+    }
+    
+    public void setOvertime(Float overtime) {
+        this.overtime = overtime;
+    }
     
     @Column(name="duty")
     public Integer getDuty() {
@@ -168,7 +178,15 @@ public class TempAttendanceRealization  implements java.io.Serializable {
         this.createdBy = createdBy;
     }
 
+     @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="wt_period_id")
+    public WtPeriode getWtPeriod() {
+        return wtPeriod;
+    }
 
+    public void setWtPeriod(WtPeriode wtPeriod) {
+        this.wtPeriod = wtPeriod;
+    }
 
 
 }

@@ -4,10 +4,14 @@ package com.inkubator.hrm.entity;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +41,7 @@ public class WtPeriode implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Set<TempAttendanceRealization> tempAttendanceRealizations = new HashSet<TempAttendanceRealization>(0);
 
     public WtPeriode() {
     }
@@ -198,6 +203,15 @@ public class WtPeriode implements java.io.Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="wtPeriod")
+    public Set<TempAttendanceRealization> getTempAttendanceRealizations() {
+        return this.tempAttendanceRealizations;
+    }
+    
+    public void setTempAttendanceRealizations(Set<TempAttendanceRealization> tempAttendanceRealizations) {
+        this.tempAttendanceRealizations = tempAttendanceRealizations;
     }
 
 }

@@ -44,6 +44,7 @@ public class WtGroupWorking implements java.io.Serializable {
     private Set<WtScheduleShift> wtScheduleShifts = new HashSet<WtScheduleShift>(0);
     private Integer typeSequeace;
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
+    private Set<TempAttendanceRealization> tempAttendanceRealizations = new HashSet<TempAttendanceRealization>(0);
 
     public WtGroupWorking() {
     }
@@ -249,5 +250,14 @@ public class WtGroupWorking implements java.io.Serializable {
 
     public void setEmpDatas(Set<EmpData> empDatas) {
         this.empDatas = empDatas;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="wtGroupWorking")
+    public Set<TempAttendanceRealization> getTempAttendanceRealizations() {
+        return this.tempAttendanceRealizations;
+    }
+    
+    public void setTempAttendanceRealizations(Set<TempAttendanceRealization> tempAttendanceRealizations) {
+        this.tempAttendanceRealizations = tempAttendanceRealizations;
     }
 }

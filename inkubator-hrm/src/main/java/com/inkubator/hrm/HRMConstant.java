@@ -433,5 +433,8 @@ public class HRMConstant {
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED = 1;
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_CANCELLED = 2;
     /* END */
-
+    
+     //Constant For WT Period Status
+    public static final String WT_PERIOD_STATUS_ACTIVE = "Active";
+    public static final String WT_PERIOD_STATUS_VOID = "Void";
 }
