@@ -1,87 +1,78 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.inkubator.hrm.web.lazymodel;
 
-import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.service.PayTempKalkulasiService;
-import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.io.Serializable;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
  *
- * @author Ahmad Mudzakkir Amal
+ * @author WebGenX
  */
-public class TempAttendanceRealizationLazyDataModel extends LazyDataModel<TempAttendanceRealizationViewModel> implements Serializable{
+public class TempAttendanceRealizationLazyDataModel extends LazyDataModel<TempAttendanceRealization> implements Serializable {
+
     private static final Logger LOGGER = Logger.getLogger(TempAttendanceRealizationLazyDataModel.class);
-    private Long wtPeriodId;    
-    private final TempAttendanceRealizationService service;
-    private List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = new ArrayList<>();
-    private Integer jumlahData;
+    private final TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter;
+    private final TempAttendanceRealizationService tempAttendanceRealizationService;
+    private List<TempAttendanceRealization> tempAttendanceRealizations = new ArrayList<>();
+    private Integer totalData;
 
-    public TempAttendanceRealizationLazyDataModel(TempAttendanceRealizationService service, Long wtPeriodId) {
-        this.wtPeriodId = wtPeriodId;
-        this.service = service;
-        
+    public TempAttendanceRealizationLazyDataModel(TempAttendanceRealizationSearchParameter searchParameter, TempAttendanceRealizationService tempAttendanceRealizationService) {
+        this.tempAttendanceRealizationSearchParameter = searchParameter;
+        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
     }
-    
-    @Override
-    public List<TempAttendanceRealizationViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        LOGGER.info("Step Load Lazy data Model");
 
+    @Override
+    public List<TempAttendanceRealization> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        LOGGER.info("Step Load Lazy data Model");
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+                    tempAttendanceRealizations = tempAttendanceRealizationService.getByParam(tempAttendanceRealizationSearchParameter, first, pageSize, Order.asc(sortField));
+                    totalData = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalTempAttendanceRealizationByParam(tempAttendanceRealizationSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+                    tempAttendanceRealizations = tempAttendanceRealizationService.getByParam(tempAttendanceRealizationSearchParameter, first, pageSize, Order.desc(sortField));
+                    totalData = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalTempAttendanceRealizationByParam(tempAttendanceRealizationSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc("bioData.firstName"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+// Change default type order if u want change from id to other entity variable
+                tempAttendanceRealizations = tempAttendanceRealizationService.getByParam(tempAttendanceRealizationSearchParameter, first, pageSize, Order.desc("id"));
+                totalData = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalTempAttendanceRealizationByParam(tempAttendanceRealizationSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
         }
         LOGGER.info("Success Load Lazy data Model");
-
         setPageSize(pageSize);
-        setRowCount(jumlahData);
-        return listTempAttendanceRealizationViewModel;
-    }
-    
-    @Override
-    public Object getRowKey(TempAttendanceRealizationViewModel tempAttendanceRealizationViewModel) {
-        return tempAttendanceRealizationViewModel.getId();
+        setRowCount(totalData);
+        return tempAttendanceRealizations;
     }
 
     @Override
-    public TempAttendanceRealizationViewModel getRowData(String id) {
-        for (TempAttendanceRealizationViewModel tempAttendanceRealizationViewModel : listTempAttendanceRealizationViewModel) {
-            if (id.equals(String.valueOf(tempAttendanceRealizationViewModel.getId()))) {
-                return tempAttendanceRealizationViewModel;
+    public Object getRowKey(TempAttendanceRealization tempAttendanceRealization) {
+        return tempAttendanceRealization.getId();
+    }
+
+    @Override
+    public TempAttendanceRealization getRowData(String id) {
+        for (TempAttendanceRealization tempAttendanceRealization : tempAttendanceRealizations) {
+            if (id.equals(String.valueOf(tempAttendanceRealization.getId()))) {
+                return tempAttendanceRealization;
             }
         }
         return null;
@@ -95,5 +86,4 @@ public class TempAttendanceRealizationLazyDataModel extends LazyDataModel<TempAt
             super.setRowIndex(rowIndex % getPageSize());
         }
     }
-    
 }

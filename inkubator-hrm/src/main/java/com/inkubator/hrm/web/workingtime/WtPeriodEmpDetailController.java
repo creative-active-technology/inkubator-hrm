@@ -34,9 +34,10 @@ import com.inkubator.hrm.service.LogAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.web.lazymodel.LogAttendanceRealizationLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.LogAttendanceRealizationVmLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationVmLazyDataModel;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
@@ -202,9 +203,9 @@ public class WtPeriodEmpDetailController extends BaseController {
             
             //if period absen status is Active, get from TempAttendanceRealization, otherwise get from LogAttendanceRealization
             if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_ACTIVE)){
-                lazyDataModel = new TempAttendanceRealizationLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
             }else  if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_VOID)){
-                lazyDataModel = new LogAttendanceRealizationLazyDataModel(logAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logAttendanceRealizationService, model.getWtPeriodId().longValue());
             }
             
         }
