@@ -22,7 +22,7 @@ import com.inkubator.hrm.entity.FingerMatchEmp;
 import com.inkubator.hrm.entity.FingerSwapCaptured;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.FingerSwapCapturedService;
-import com.inkubator.hrm.web.model.FingerSwapCapturedUploadFileModel;
+import com.inkubator.hrm.web.model.FingerSwapCapturedBatchModel;
 import com.inkubator.hrm.web.model.FingerSwapCapturedViewModel;
 import com.inkubator.hrm.web.search.FingerSwapCapturedSearchParameter;
 
@@ -247,11 +247,12 @@ public class FingerSwapCapturedServiceImpl extends IServiceImpl implements Finge
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-	public void executeBatchFileUpload(FingerSwapCapturedUploadFileModel model) throws Exception {
+	public void executeBatchProcess(FingerSwapCapturedBatchModel model) throws Exception {
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date dateTime = dateFormat.parse(model.getDateTime());
-			FingerMatchEmp fingerMatchEmp = fingerMatchEmpDao.getEntityByNikAndMachineId(model.getNik(), model.getMachineId());		
+			FingerMatchEmp fingerMatchEmp = fingerMatchEmpDao.getEntityByNikAndMachineId(model.getNik(), model.getMachineId());	
+			/** hanya diproses employee yang memiliki fingerIndexId */
 			if(fingerMatchEmp != null) {				
 				FingerSwapCaptured fingerSwapCaptured =  new FingerSwapCaptured();
 				fingerSwapCaptured.setFingerIndexId(fingerMatchEmp.getFingerIndexId());
