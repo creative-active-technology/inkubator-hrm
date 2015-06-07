@@ -19,6 +19,10 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.web.lazymodel.WtPeriodEmpLazyDataModel;
+import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
+import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 //import com.inkubator.hrm.entity.RmbsType;
 //import com.inkubator.hrm.service.RmbsTypeService;
 //import com.inkubator.hrm.web.lazymodel.RmbsTypeLazyDataModel;
@@ -35,57 +39,34 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ViewScoped
 public class WtPeriodEmpViewController extends BaseController {
 
-    //private RmbsTypeSearchParameter parameter;
-    //private LazyDataModel<RmbsType> lazyData;
-    //private RmbsType selected;
-    //@ManagedProperty(value = "#{rmbsTypeService}")
-    //private RmbsTypeService rmbsTypeService;
+    private WtPeriodeEmpSearchParameter parameter;
+    private LazyDataModel<WtPeriodEmpViewModel> lazyData;
+    private WtPeriodEmpViewModel selected;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-       // parameter = new RmbsTypeSearchParameter();
+        parameter = new WtPeriodeEmpSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-//    	rmbsTypeService = null;
-//        parameter = null;
-//        lazyData = null;
-//        selected = null;
+    	wtPeriodeService = null;
+        parameter = null;
+        lazyData = null;
+        selected = null;
     }
 
     public void doSearch() {
-        //lazyData = null;
+        lazyData = null;
     }
 
-    public void doSelectEntity() {
-//        try {
-//            selected = this.rmbsTypeService.getEntityByPkWithDetail(selected.getId());
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
+    public String doDetail() {
+return "/protected/working_time/wt_period_emp_detail.htm?faces-redirect=true&execution=e" + selected.getWtPeriodId().longValue();
     }
-
-    public void doDelete() {
-//        try {
-//        	rmbsTypeService.delete(selected);
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//
-//        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//            LOGGER.error("Error ", ex);
-//        } catch (Exception ex) {
-//            LOGGER.error("Error ", ex);
-//        }
-    }
-
-    public void doAdd() {
-        showDialog(null);
-    }
-
-
 
     private void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
@@ -104,40 +85,36 @@ public class WtPeriodEmpViewController extends BaseController {
         super.onDialogReturn(event);
     }
 
-//	public RmbsTypeSearchParameter getParameter() {
-//		return parameter;
-//	}
-//
-//	public void setParameter(RmbsTypeSearchParameter parameter) {
-//		this.parameter = parameter;
-//	}
-//
-//	public LazyDataModel<RmbsType> getLazyData() {
-//		if(lazyData == null) {
-//			lazyData = new RmbsTypeLazyDataModel(parameter, rmbsTypeService);
-//		}
-//		return lazyData;
-//	}
+	public LazyDataModel<WtPeriodEmpViewModel> getLazyData() {
+		if(lazyData == null) {
+			lazyData = new WtPeriodEmpLazyDataModel(parameter, wtPeriodeService);
+		}
+		return lazyData;
+	}
 
-//	public void setLazyData(LazyDataModel<RmbsType> lazyData) {
-//		this.lazyData = lazyData;
-//	}
-//
-//	public RmbsType getSelected() {
-//		return selected;
-//	}
-//
-//	public void setSelected(RmbsType selected) {
-//		this.selected = selected;
-//	}
-//
-//	public RmbsTypeService getRmbsTypeService() {
-//		return rmbsTypeService;
-//	}
-//
-//	public void setRmbsTypeService(RmbsTypeService rmbsTypeService) {
-//		this.rmbsTypeService = rmbsTypeService;
-//	}
+	public void setLazyData(LazyDataModel<WtPeriodEmpViewModel> lazyData) {
+		this.lazyData = lazyData;
+	}
+
+	public WtPeriodEmpViewModel getSelected() {
+		return selected;
+	}
+
+	public void setSelected(WtPeriodEmpViewModel selected) {
+		this.selected = selected;
+	}
+
+    public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+        this.wtPeriodeService = wtPeriodeService;
+    }
+
+    public WtPeriodeEmpSearchParameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(WtPeriodeEmpSearchParameter parameter) {
+        this.parameter = parameter;
+    }
     
     
 }
