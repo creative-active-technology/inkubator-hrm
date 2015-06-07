@@ -6,7 +6,6 @@
 package com.inkubator.hrm.web.lazymodel;
 
 import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.service.LogAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
@@ -25,14 +24,14 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class LogAttendanceRealizationLazyDataModel extends LazyDataModel<TempAttendanceRealizationViewModel> implements Serializable{
-    private static final Logger LOGGER = Logger.getLogger(LogAttendanceRealizationLazyDataModel.class);
+public class TempAttendanceRealizationVmLazyDataModel extends LazyDataModel<TempAttendanceRealizationViewModel> implements Serializable{
+    private static final Logger LOGGER = Logger.getLogger(TempAttendanceRealizationVmLazyDataModel.class);
     private Long wtPeriodId;    
-    private final LogAttendanceRealizationService service;
+    private final TempAttendanceRealizationService service;
     private List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = new ArrayList<>();
     private Integer jumlahData;
 
-    public LogAttendanceRealizationLazyDataModel(LogAttendanceRealizationService service, Long wtPeriodId) {
+    public TempAttendanceRealizationVmLazyDataModel(TempAttendanceRealizationService service, Long wtPeriodId) {
         this.wtPeriodId = wtPeriodId;
         this.service = service;
         
@@ -60,7 +59,7 @@ public class LogAttendanceRealizationLazyDataModel extends LazyDataModel<TempAtt
             }
         } else {
             try {
-                listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc("logAttendanceRealization.empName"));
+                listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc("bioData.firstName"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
