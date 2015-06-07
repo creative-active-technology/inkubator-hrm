@@ -57,22 +57,20 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="diseaseId" value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="diseasesId" value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="diseaseId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="diseasesId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <p:autoComplete id="diseaseId" title="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" 
+                                <!-- <p:autoComplete id="diseaseId" title="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}" 
                                                 value="#{bioMedicalHistoryFormController.bioMedicalHistoryModel.disease}"
                                                 completeMethod="#{bioMedicalHistoryFormController.completeDisease}" scrollHeight="100"
-                                                required="true" requiredMessage="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="diseaseId"/>
+                                                required="true" requiredMessage="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete> -->
+								<p:selectOneMenu id="diseasesId" value="#{bioMedicalHistoryFormController.bioMedicalHistoryModel.diseasesId}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{bioMedicalHistoryFormController.dropDownDiseases}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>

@@ -50,8 +50,8 @@
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export_excel']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableInstitutionEducationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_InstitutionEducation"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{institutionEducationViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{institutionEducationViewController.onDialogReturn}"  update="tableInstitutionEducationId,:growlInstitutionEducationViewlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{institutionEducationViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!-- <p:ajax event="dialogReturn" listener="#{institutionEducationViewController.onDialogReturn}"  update="tableInstitutionEducationId,:growlInstitutionEducationViewlId"/> -->
                                     </p:commandButton>
                                     
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{institutionEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>

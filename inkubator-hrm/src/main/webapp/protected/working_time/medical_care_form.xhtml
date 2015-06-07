@@ -161,7 +161,7 @@
                                     <p:outputLabel for="attachmentId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{medicalCareFormController.handingFileUpload}"
+                                    <p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{medicalCareFormController.handingFileUpload}"
                                                   mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                                   dragDropSupport="true" multiple="false" update="fileNameId,:growlMedicalCareFormId"
                                                   allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
