@@ -957,7 +957,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         
         final StringBuilder query = new StringBuilder("SELECT e.NIK AS nik, b.first_name AS firstName, b.last_name AS lastName, "
                         + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
-                        + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, " 
+                        + " DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 AS age, " 
                         + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
                         + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e " 
                         + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  " 
@@ -1017,14 +1017,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             
             query.append(") ");               
         }
-        
+        System.out.println("hehe 1");
         if(!listEmpAges.isEmpty()){
             if(multipleFilter){ 
-                query.append(" AND umur(b.date_of_birth , NOW()) IN( ");
+                query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 IN( ");
             }else{
-                query.append("umur(b.date_of_birth , NOW()) IN( ");
+                query.append(" DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 IN( ");
             }
-            
             //karena pakai native query, isi List harus di parsing satu per satu
             int size = listEmpAges.size();            
             for(int i = 0; i<size ; i++){
@@ -1035,10 +1034,34 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                     query.append(String.valueOf(listEmpAges.get(i)));
                 }
             }
-            
-            query.append(") ");                   
+            System.out.println("hehe "+query.toString());
+            query.append(") ");
+
+
         }
       
+        query.append(" ORDER BY ");
+
+        if (StringUtils.equals("nik", order.getPropertyName())) {
+            query.append("e.nik ");
+        } else if (StringUtils.equals("firstName", order.getPropertyName())) {
+            query.append("b.first_name ");
+        } else if (StringUtils.equals("tglMulaiBekerja", order.getPropertyName())) {
+            query.append("e.join_date ");
+        } else if (StringUtils.equals("golJabatan", order.getPropertyName())) {
+            query.append("g.code ");
+        } else if (StringUtils.equals("jabatan", order.getPropertyName())) {
+            query.append("j.name ");
+        } else if (StringUtils.equals("usiaKaryawan", order.getPropertyName())) {
+            query.append("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 ");
+        }
+
+        query.append(order.isAscending() ? " ASC " : " DESC ");
+        
+        //Limit query based on paging parameter
+        query.append("LIMIT ").append(firstResult).append(",").append(maxResults).append(" ");
+        System.out.println(query.toString());
+        
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(ReportEmpPensionPreparationModel.class))
                 .list();
@@ -1050,7 +1073,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         
         final StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM (SELECT e.NIK AS nik, b.first_name AS firstName, b.last_name AS lastName, "
                         + " e.join_date AS tglMulaiBekerja, g.code AS golJabatan, b.date_of_birth AS tglLahir, "
-                        + " umur(b.date_of_birth , NOW()) AS usiaKaryawan, " 
+                        + " DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 AS age, " 
                         + " j.name AS jabatan, d.department_name AS departmentName, d.id AS departmentId, "
                         + " s.id AS empTypeId , s.name AS statusKaryawan FROM emp_data e " 
                         + " INNER JOIN golongan_jabatan g ON e.gol_jab_id = g.id  " 
@@ -1111,9 +1134,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         
         if(!listEmpAges.isEmpty()){
             if(multipleFilter){  
-                query.append(" AND umur(b.date_of_birth , NOW()) IN( ");
+                query.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 IN( ");
             }else{
-                query.append("umur(b.date_of_birth , NOW()) IN( ");
+                query.append("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(b.date_of_birth)), '%Y')+0 IN( ");
             }
             
             //karena pakai native query, isi List harus di parsing satu per satu
