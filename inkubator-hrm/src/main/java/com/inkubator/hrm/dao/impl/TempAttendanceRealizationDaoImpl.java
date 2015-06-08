@@ -187,6 +187,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
           Query hbm = getCurrentSession().createQuery(query.toString())
                         .setParameter("wtPeriodId", wtPeriodId);
         return Long.valueOf(hbm.uniqueResult().toString());
+    }
 
     @Override
     public Long totalDayPresent() {
