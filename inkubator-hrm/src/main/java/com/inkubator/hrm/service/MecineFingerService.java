@@ -12,8 +12,10 @@ import com.inkubator.hrm.web.model.FingerUploadModel;
 import com.inkubator.hrm.web.model.MecineFingerQueryModel;
 import com.inkubator.hrm.web.model.MecineFingerServiceModel;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
+
 import java.util.List;
 import java.util.Set;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -33,4 +35,6 @@ public interface MecineFingerService extends IService<MecineFinger> {
     public void saveMesineService(MecineFingerServiceModel serviceModel) throws Exception;
 
     public void saveMesineQuery(MecineFingerQueryModel serviceModel) throws Exception;
+    
+    public List<MecineFinger> getAllDataByMachineMethod(Integer machineMethod) throws Exception;
 }

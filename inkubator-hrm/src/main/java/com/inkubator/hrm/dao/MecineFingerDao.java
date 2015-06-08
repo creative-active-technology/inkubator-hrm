@@ -24,8 +24,9 @@ public interface MecineFingerDao extends IDAO<MecineFinger> {
     public MecineFinger getMecineFingerAndDetaiUploadByFK(long id);
 
     public void saveAndMerge(MecineFinger finger);
-
-    public Long getByCode(String code);
-
-    public Long getTotalByCodeAndNotId(String name, Long id);
+    
+    public MecineFinger getEntityByCode(String code);
+    
+    public List<MecineFinger> getAllDataByMachineMethod(Integer machineMethod);
+    
 }

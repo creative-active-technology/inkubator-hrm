@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
@@ -36,18 +41,21 @@ import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.DetilAttendateRelaization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import java.util.ArrayList;
+
 
 /**
  *
- * @author WebGenX
+ * @author Ahmad Mudzakkir Amal
  */
 @Service(value = "tempAttendanceRealizationService")
 @Lazy
 public class TempAttendanceRealizationServiceImpl extends IServiceImpl implements TempAttendanceRealizationService {
-
+    
     @Autowired
     private TempAttendanceRealizationDao tempAttendanceRealizationDao;
+    
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
     @Autowired
@@ -402,5 +410,17 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
 //        attendanceModel.setDataToShow(tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, attendanceModel.getStardDate(), attendanceModel.getEndDate()));
         return attendanceModel;
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
+        return tempAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
+        return tempAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
     }
 }

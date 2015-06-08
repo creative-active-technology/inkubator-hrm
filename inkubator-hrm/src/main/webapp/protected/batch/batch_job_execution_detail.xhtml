@@ -48,7 +48,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="Job Name"/>
                                 </f:facet>
-                                <h:outputLabel value="#{batchJobExecutionDetail.batchJobExecution.batchJobInstance.jobName}"/>
+                                <p:outputLabel value="#{batchJobExecutionDetail.batchJobExecution.batchJobInstance.jobName}">
+                                    <f:converter converterId="batchJobConverter"/>
+                                </p:outputLabel>
                             </p:column>
                             
                             <p:column sortBy="#{batchJobExecutionDetail.exitMessage}" >

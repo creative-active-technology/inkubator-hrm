@@ -93,6 +93,7 @@ public class EmpData implements java.io.Serializable {
     private Set<PayTempOvertime> payTempOvertimes = new HashSet<PayTempOvertime>(0);
     private Set<OhsaEmpInvolve> ohsaEmpInvolves = new HashSet<OhsaEmpInvolve>(0);
     private Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps = new HashSet<RmbsSchemaListOfEmp>(0);
+    private Set<TempAttendanceRealization> tempAttendanceRealizations = new HashSet<TempAttendanceRealization>(0);
     public EmpData() {
     }
 
@@ -657,5 +658,12 @@ public class EmpData implements java.io.Serializable {
         this.ptkpNumberLabel = ptkpNumberLabel;
     }
     
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+    public Set<TempAttendanceRealization> getTempAttendanceRealizations() {
+        return this.tempAttendanceRealizations;
+    }
     
+    public void setTempAttendanceRealizations(Set<TempAttendanceRealization> tempAttendanceRealizations) {
+        this.tempAttendanceRealizations = tempAttendanceRealizations;
+    }
 }

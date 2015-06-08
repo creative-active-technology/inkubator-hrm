@@ -9,16 +9,20 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
+import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -108,4 +112,57 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         criteria.add(Restrictions.ge("untilPeriode", date));
         return (WtPeriode) criteria.uniqueResult();
 	}
+        
+        @Override
+    public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        final StringBuilder query = new StringBuilder("select wtPeriode.id AS wtPeriodId, ");
+        query.append(" wtPeriode.from_periode AS fromPeriode,");
+        query.append(" wtPeriode.until_periode AS untilPeriode,");
+        query.append(" COUNT(empData.nik) AS totalEmpData,");
+        query.append(" COUNT(DISTINCT (empData.shift_group_id)) AS totalWorkingGroup,");
+        query.append(" wtPeriode.absen as status ");
+        query.append(" FROM wt_periode wtPeriode ");
+        query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");
+        query.append(" GROUP BY  wtPeriode.id ");
+        query.append(" LIMIT  " + firstResult + "," + maxResults);
+
+        return getCurrentSession().createSQLQuery(query.toString())
+                //                    .setParameterList("idDept", departementId)
+                //                    .setParameterList("idEdu", educationId)
+                // .setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(WtPeriodEmpViewModel.class))
+                .list();
+    }
+
+    @Override
+    public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT wtPeriode.id AS wtPeriodId, ");
+        query.append(" wtPeriode.from_periode AS fromPeriode,");
+        query.append(" wtPeriode.until_periode AS untilPeriode,");
+        query.append(" COUNT(empData.nik) AS totalEmpData,");
+        query.append(" COUNT(DISTINCT (empData.shift_group_id)) AS totalWorkingGroup,");
+        query.append(" wtPeriode.absen as status ");
+        query.append(" FROM wt_periode wtPeriode ");
+        query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");
+        query.append(" GROUP BY  wtPeriode.id) as jumlahRow ");
+
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
+    }
+
+    @Override
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId) {
+        final StringBuilder query = new StringBuilder("select wtPeriode.id AS wtPeriodId, ");
+        query.append(" wtPeriode.from_periode AS fromPeriode,");
+        query.append(" wtPeriode.until_periode AS untilPeriode,");
+        query.append(" COUNT(empData.nik) AS totalEmpData,");
+        query.append(" COUNT(DISTINCT (empData.shift_group_id)) AS totalWorkingGroup,");
+        query.append(" wtPeriode.absen as status ");
+        query.append(" FROM wt_periode wtPeriode ");
+        query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");       
+        query.append(" WHERE  wtPeriode.id = " + wtPeriodId);
+        Query hbm = getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(WtPeriodEmpViewModel.class));
+        return (WtPeriodEmpViewModel)hbm.uniqueResult();
+    }
 }
