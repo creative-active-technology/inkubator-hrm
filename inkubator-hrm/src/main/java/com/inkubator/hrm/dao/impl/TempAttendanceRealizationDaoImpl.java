@@ -109,7 +109,6 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Long getTotalEmpLeav(long empId) {
-        System.out.println("No id nya "+empId);
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
@@ -188,5 +187,16 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
           Query hbm = getCurrentSession().createQuery(query.toString())
                         .setParameter("wtPeriodId", wtPeriodId);
         return Long.valueOf(hbm.uniqueResult().toString());
+
+    @Override
+    public Long totalDayPresent() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("attendanceDaysPresent")).uniqueResult();
+    }
+
+    @Override
+    public Long totalDaySchedule() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("attendanceDaysSchedule")).uniqueResult();
     }
 }

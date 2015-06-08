@@ -43,4 +43,8 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
 
+    public Long totalDayPresent();
+
+    public Long totalDaySchedule();
+
 }
