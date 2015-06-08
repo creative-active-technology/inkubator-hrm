@@ -5,6 +5,7 @@ import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -62,7 +63,7 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
             criteria.add(disjunction);
 
         }
-        
+
         if (parameter.getJabatan() != null) {
             criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
             criteria.createAlias("ed.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -105,7 +106,17 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        
+
+        return (MedicalCare) criteria.uniqueResult();
+    }
+
+    @Override
+    public MedicalCare getByEmpIdAndDate(long empId, Date doDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
         return (MedicalCare) criteria.uniqueResult();
     }
 

@@ -20,6 +20,7 @@ import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -29,13 +30,13 @@ import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 @Lazy
 public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements BusinessTravelDao {
 
-	@Override
-	public Class<BusinessTravel> getEntityClass() {
-		return BusinessTravel.class;
-		
-	}
-	
-	@Override
+    @Override
+    public Class<BusinessTravel> getEntityClass() {
+        return BusinessTravel.class;
+
+    }
+
+    @Override
     public List<BusinessTravel> getByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
@@ -55,8 +56,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     }
 
     private void doSearchByParam(BusinessTravelSearchParameter parameter, Criteria criteria) {
-    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-    	
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+
         if (StringUtils.isNotEmpty(parameter.getBusinessTravelNumber())) {
             criteria.add(Restrictions.like("businessTravelNo", parameter.getBusinessTravelNumber(), MatchMode.ANYWHERE));
         }
@@ -64,8 +65,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
             criteria.add(Restrictions.like("destination", parameter.getDestination(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-        	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-        	
+            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
@@ -75,31 +76,31 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
         criteria.add(Restrictions.isNotNull("id"));
     }
 
-	@Override
-	public BusinessTravel getEntityByPkWithDetail(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("id", id));
-		criteria.setFetchMode("empData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.golonganJabatan", FetchMode.JOIN);
-		criteria.setFetchMode("empData.golonganJabatan.pangkat", FetchMode.JOIN);
-		criteria.setFetchMode("travelZone", FetchMode.JOIN);
-		criteria.setFetchMode("travelType", FetchMode.JOIN);
-		return (BusinessTravel) criteria.uniqueResult();
-	}
-	
-	@Override
-	public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
-		criteria.setFetchMode("empData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-		criteria.setFetchMode("travelZone", FetchMode.JOIN);
-		criteria.setFetchMode("travelType", FetchMode.JOIN);
-		return (BusinessTravel) criteria.uniqueResult();
-	}
-	
-	@Override
+    @Override
+    public BusinessTravel getEntityByPkWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("empData.golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("travelZone", FetchMode.JOIN);
+        criteria.setFetchMode("travelType", FetchMode.JOIN);
+        return (BusinessTravel) criteria.uniqueResult();
+    }
+
+    @Override
+    public BusinessTravel getEntityByBusinessTravelNoWithDetail(String businessTravelNo) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("travelZone", FetchMode.JOIN);
+        criteria.setFetchMode("travelType", FetchMode.JOIN);
+        return (BusinessTravel) criteria.uniqueResult();
+    }
+
+    @Override
     public Long getTotalByBusinessTravelNo(String businessTravelNo) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("businessTravelNo", businessTravelNo));
@@ -114,24 +115,34 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
-		criteria.setFetchMode("empData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-		criteria.setFetchMode("travelZone", FetchMode.JOIN);
-		criteria.setFetchMode("travelType", FetchMode.JOIN);
-		return (BusinessTravel) criteria.uniqueResult();
-	}
-        
-        @Override
-        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+    @Override
+    public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
         criteria.setFetchMode("empData", FetchMode.JOIN);
-         criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("travelZone", FetchMode.JOIN);
-	criteria.setFetchMode("travelType", FetchMode.JOIN);
+        criteria.setFetchMode("travelType", FetchMode.JOIN);
+        return (BusinessTravel) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("travelZone", FetchMode.JOIN);
+        criteria.setFetchMode("travelType", FetchMode.JOIN);
         return criteria.list();
+    }
+
+    @Override
+    public BusinessTravel getByEmpIdAndDate(long empId, Date doDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
+        return (BusinessTravel) criteria.uniqueResult();
     }
 }
