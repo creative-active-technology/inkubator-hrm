@@ -256,4 +256,10 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
         return wtPeriodeDao.getTotalListWtPeriodEmpByParam(searchParameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId) throws Exception {
+        return wtPeriodeDao.getWtPeriodEmpByWtPeriodId(wtPeriodId);
+    }
+
 }

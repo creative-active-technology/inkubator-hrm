@@ -36,4 +36,6 @@ public interface WtPeriodeService extends IService<WtPeriode> {
     public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
     
     public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) throws Exception;
+    
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId) throws Exception;
 }
