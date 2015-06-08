@@ -189,7 +189,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
-    }
+    
 
     @Override
     public Long totalDayPresent() {
