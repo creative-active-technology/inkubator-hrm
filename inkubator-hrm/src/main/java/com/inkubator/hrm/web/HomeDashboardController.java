@@ -7,9 +7,11 @@ package com.inkubator.hrm.web;
 
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
+import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.webcore.controller.BaseController;
 
 import java.util.ArrayList;
@@ -58,14 +60,19 @@ public class HomeDashboardController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
+    @ManagedProperty(value = "#{tempAttendanceRealizationService}")
+    private TempAttendanceRealizationService tempAttendanceRealizationService;
+    private RealizationAttendanceModel attendanceModel;
+    private Double totalPersent;
 
     @PostConstruct
     @Override
+
     public void initialization() {
         super.initialization();
 
         distribusiKaryawanPerDepartment = new CartesianChartModel();
-        barChartDistribusiByDept=new BarChartModel();
+        barChartDistribusiByDept = new BarChartModel();
         pieModel = new PieChartModel();
         totalMale = new Long(0);
         totalFemale = new Long(0);
@@ -97,7 +104,7 @@ public class HomeDashboardController extends BaseController {
                 deptSeries.setLabel(entry.getKey());
                 deptSeries.set("Department", entry.getValue());
                 barChartDistribusiByDept.addSeries(deptSeries);
-                
+
             }
             barChartDistribusiByDept.setLegendPosition("ne");
             barChartDistribusiByDept.setStacked(false);
@@ -122,7 +129,11 @@ public class HomeDashboardController extends BaseController {
             pieModel.setDiameter(120);
             pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
-
+            System.out.println(" Service nya " + tempAttendanceRealizationService);
+            attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
+            double totalPresent = Double.parseDouble(String.valueOf(attendanceModel.getTotaldayPresent()));
+            double totalSchedule = Double.parseDouble(String.valueOf(attendanceModel.getTotaldaySchedule()));
+            totalPersent = (totalPresent / totalSchedule);
         } catch (Exception e) {
             LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
         }
@@ -379,5 +390,24 @@ public class HomeDashboardController extends BaseController {
         this.barChartDistribusiByDept = barChartDistribusiByDept;
     }
 
-    
+    public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
+        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
+    }
+
+    public RealizationAttendanceModel getAttendanceModel() {
+        return attendanceModel;
+    }
+
+    public void setAttendanceModel(RealizationAttendanceModel attendanceModel) {
+        this.attendanceModel = attendanceModel;
+    }
+
+    public Double getTotalPersent() {
+        return totalPersent;
+    }
+
+    public void setTotalPersent(Double totalPersent) {
+        this.totalPersent = totalPersent;
+    }
+
 }

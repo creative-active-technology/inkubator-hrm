@@ -278,6 +278,8 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
         attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
+        attendanceModel.setTotaldayPresent(tempAttendanceRealizationDao.totalDayPresent());
+        attendanceModel.setTotaldaySchedule(tempAttendanceRealizationDao.totalDaySchedule());
         return attendanceModel;
 
     }
@@ -315,6 +317,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
         WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
         DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+
 //        Perhatia dua data yang di perbandingkan harus sama soring ascrnding atau descending 
         List<TempJadwalKaryawan> dataToCalculate = tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
 //        List<TempProcessReadFinger> presentAteendace = tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
