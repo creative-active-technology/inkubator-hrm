@@ -136,7 +136,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
-        if (dataSearchParameter.getJabatanKode() != null) {
+        System.out.println(dataSearchParameter.getName() + " hehe");
+    	if (dataSearchParameter.getJabatanKode() != null) {
             criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
