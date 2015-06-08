@@ -7,7 +7,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.FingerSwapCaptured;
-import com.inkubator.hrm.web.model.FingerSwapCapturedUploadFileModel;
+import com.inkubator.hrm.web.model.FingerSwapCapturedBatchModel;
 import com.inkubator.hrm.web.model.FingerSwapCapturedViewModel;
 import com.inkubator.hrm.web.search.FingerSwapCapturedSearchParameter;
 
@@ -21,6 +21,6 @@ public interface FingerSwapCapturedService extends IService<FingerSwapCaptured> 
 
 	public Long getTotalByParam(FingerSwapCapturedSearchParameter parameter) throws Exception;
 	
-	public void executeBatchFileUpload(FingerSwapCapturedUploadFileModel model) throws Exception;
+	public void executeBatchProcess(FingerSwapCapturedBatchModel model) throws Exception;
 	
 }

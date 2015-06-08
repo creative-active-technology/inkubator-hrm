@@ -296,6 +296,7 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
         String hostIp = String.valueOf(serviceModel.getHost1()+"."+serviceModel.getHost2()+"."+serviceModel.getHost3()+"."+serviceModel.getHost4());
         mecineFinger.setServiceHost(hostIp);
+        mecineFinger.setServicePort(String.valueOf(serviceModel.getPort()));
         mecineFinger.setServiceType(serviceModel.getServiceData());
         mecineFinger.setServiceOpenProtocol(serviceModel.getProtocolData());
         mecineFinger.setServiceOpenProtocolPassword(serviceModel.getOpenProtocolPassword());

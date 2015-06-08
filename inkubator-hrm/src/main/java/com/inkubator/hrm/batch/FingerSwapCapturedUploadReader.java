@@ -15,19 +15,19 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
-import com.inkubator.hrm.web.model.FingerSwapCapturedUploadFileModel;
+import com.inkubator.hrm.web.model.FingerSwapCapturedBatchModel;
 
 /**
  *
  * @author rizkykojek
  */
-public class FingerSwapCapturedUploadReader implements ItemReader<FingerSwapCapturedUploadFileModel> {
+public class FingerSwapCapturedUploadReader implements ItemReader<FingerSwapCapturedBatchModel> {
 
 	private String createdBy;
 	private Long machineId;
 	private final String extension;
-	private FlatFileItemReader<FingerSwapCapturedUploadFileModel> csvFileReader;
-	private PoiItemReader<FingerSwapCapturedUploadFileModel> excelFileReader;
+	private FlatFileItemReader<FingerSwapCapturedBatchModel> csvFileReader;
+	private PoiItemReader<FingerSwapCapturedBatchModel> excelFileReader;
 	
 	public FingerSwapCapturedUploadReader(String filePath){
            
@@ -46,13 +46,13 @@ public class FingerSwapCapturedUploadReader implements ItemReader<FingerSwapCapt
 		
 		//split by separated coma
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer(DelimitedLineTokenizer.DELIMITER_COMMA);
-		lineTokenizer.setNames(new String[]{"Nik","MachineCode","FingerDate"});
+		lineTokenizer.setNames(new String[]{"Nik","DateTime"});
 		
 		//mapped to an object
-		BeanWrapperFieldSetMapper<FingerSwapCapturedUploadFileModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
-		beanWrapperFieldSetMapper.setTargetType(FingerSwapCapturedUploadFileModel.class);
+		BeanWrapperFieldSetMapper<FingerSwapCapturedBatchModel> beanWrapperFieldSetMapper = new BeanWrapperFieldSetMapper<>();
+		beanWrapperFieldSetMapper.setTargetType(FingerSwapCapturedBatchModel.class);
 		
-		DefaultLineMapper<FingerSwapCapturedUploadFileModel> lineMapper =  new DefaultLineMapper<>();
+		DefaultLineMapper<FingerSwapCapturedBatchModel> lineMapper =  new DefaultLineMapper<>();
 		lineMapper.setLineTokenizer(lineTokenizer);
 		lineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);		
 		
@@ -71,8 +71,8 @@ public class FingerSwapCapturedUploadReader implements ItemReader<FingerSwapCapt
 		
 		try {
 			//mapped to an object
-			BeanPropertyRowMapper<FingerSwapCapturedUploadFileModel> rowMapper = new BeanPropertyRowMapper<>();
-			rowMapper.setTargetType(FingerSwapCapturedUploadFileModel.class);		
+			BeanPropertyRowMapper<FingerSwapCapturedBatchModel> rowMapper = new BeanPropertyRowMapper<>();
+			rowMapper.setTargetType(FingerSwapCapturedBatchModel.class);		
 			rowMapper.afterPropertiesSet();		
 		
 			//initial poiItemReader
@@ -91,8 +91,8 @@ public class FingerSwapCapturedUploadReader implements ItemReader<FingerSwapCapt
 	}
 	
 	@Override
-	public FingerSwapCapturedUploadFileModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-		FingerSwapCapturedUploadFileModel model = null;
+	public FingerSwapCapturedBatchModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+		FingerSwapCapturedBatchModel model = null;
 		if(StringUtils.equals(extension, "csv")){
 			model = csvFileReader.read();	
 		}else {

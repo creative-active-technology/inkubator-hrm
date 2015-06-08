@@ -1,5 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,12 +17,12 @@ import javax.jms.Session;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.model.DefaultUploadedFile;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.MessageCreator;
@@ -27,14 +31,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
@@ -42,22 +42,20 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+//import com.inkubator.hrm.dao.PermitImplementationDateDao;
+import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
-//import com.inkubator.hrm.dao.PermitImplementationDateDao;
-import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+//import com.inkubator.hrm.entity.PermitImplementationDate;
+import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.PermitImplementation;
-//import com.inkubator.hrm.entity.PermitImplementationDate;
-import com.inkubator.hrm.entity.NeracaPermit;
-import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
@@ -65,14 +63,6 @@ import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.primefaces.model.DefaultUploadedFile;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -455,7 +445,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
 //
 //        //if there is no error, then sending the email notification
-//        sendingEmailApprovalNotif(appActivity);
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
@@ -498,7 +488,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
 
         //if there is no error, then sending the email notification
-//        sendingEmailApprovalNotif(appActivity);
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override
@@ -549,6 +539,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
         //parsing object data to json, for email purpose
         PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
+        PermitClassification permitClassification = permitDao.getEntiyByPK(permitImplementation.getPermitClassification().getId());
         String cancellationDate = StringUtils.EMPTY;
         JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
 
@@ -561,7 +552,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             jsonObj.put("startDate", dateFormat.format(permitImplementation.getStartDate()));
             jsonObj.put("endDate", dateFormat.format(permitImplementation.getEndDate()));
             jsonObj.put("fillingDate", dateFormat.format(permitImplementation.getFillingDate()));
-            jsonObj.put("cancellationDate", cancellationDate);
+            jsonObj.put("permitClassification", permitClassification.getName());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
@@ -934,7 +925,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 }
             	
             	entity.setCreatedBy(createdBy);
-            	entity.setCreatedBy(createdBy);
+            	entity.setCreatedOn(createdOn);
             	JsonParser parser = new JsonParser();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
                 JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
@@ -944,7 +935,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 approvalActivityDao.save(approvalActivity);
 
                 //sending email notification
-//                this.sendingEmailApprovalNotif(approvalActivity);
+                this.sendingEmailApprovalNotif(approvalActivity);
                 message = "success_need_approval";
             }
             

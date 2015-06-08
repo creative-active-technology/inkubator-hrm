@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlDownloadFormId" globalOnly="true" showDetail="true"/>
+                <h:form id="formDownloadId">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="data_log_interface.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['data_log_interface.download_data_log']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['data_log_interface.view_desc']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>                    
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">                       
+                        <p:row>
+                            <p:column style="width: 30%">
+                                <p:outputLabel for="machineId" value="#{appmsg['data_log_interface.fingerprint_machine']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="machineId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                <p:selectOneMenu id="machineId" required="true" styleClass="isitext_hrm" value="#{fingerSwapCapturedDownloadController.machineId}" style="width:200px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{fingerSwapCapturedDownloadController.listMachineFinger}" var="machineFinger" itemValue="#{machineFinger.id}" itemLabel="#{machineFinger.name}"/>	                                    
+	                           	</p:selectOneMenu> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="machineId"/>
+                            </p:column>
+                        </p:row>                       
+                    </p:panelGrid>
+                    <p:focus context="formDownloadId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formDownloadId,:growlDownloadFormId"
+                                         action="#{fingerSwapCapturedDownloadController.doSave()}" styleClass="isitext_hrm" onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('statusDialog').hide()};"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formDownloadId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formDownloadId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

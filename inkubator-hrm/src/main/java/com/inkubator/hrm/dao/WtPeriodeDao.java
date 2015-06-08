@@ -41,5 +41,7 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order);
     
     public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter);
+    
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId);
 
 }
