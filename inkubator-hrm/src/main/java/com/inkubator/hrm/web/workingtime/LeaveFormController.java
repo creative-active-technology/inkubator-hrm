@@ -290,15 +290,15 @@ public class LeaveFormController extends BaseController {
         if (model.getIsAllowedMinus() == Boolean.FALSE) {
             model.setMaxAllowedMinus(null);
         }
-    }
+    }    
     
+    /** Start Approval Definition form */
     public void onChangeName(){
     	if(!appDefs.isEmpty()) {
     		Lambda.forEach(appDefs).setSpecificName(model.getName());
     	}
     }
     
-    /** Start Approval Definition form */
     public void doDeleteAppDef() {
     	appDefs.remove(selectedAppDef);
     }
@@ -309,7 +309,8 @@ public class LeaveFormController extends BaseController {
         appDefName.add(HRMConstant.LEAVE);
         dataToSend.put("appDefName", appDefName);
         List<String> specificName = new ArrayList<>();
-        specificName.add(model.getName());
+        String name = StringUtils.isEmpty(model.getName()) ? StringUtils.EMPTY : model.getName();
+        specificName.add(name);
         dataToSend.put("specificName", specificName);
     	this.showDialogAppDef(dataToSend);
     }
