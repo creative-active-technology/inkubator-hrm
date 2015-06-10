@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "leave_implementation_date", catalog = "hrm"
+@Table(name = "leave_implementation_date", catalog = "hrm_payroll"
 )
 public class LeaveImplementationDate implements java.io.Serializable {
 

@@ -40,6 +40,7 @@ public class MecineFinger implements java.io.Serializable {
     private Boolean inOutStatus;
     private String matchBase;
     private String serviceHost;
+    private String servicePort;
     private Integer serviceType;
     private Integer serviceOpenProtocol;
     private String serviceOpenProtocolPassword;
@@ -195,6 +196,15 @@ public class MecineFinger implements java.io.Serializable {
     public void setServiceHost(String serviceHost) {
         this.serviceHost = serviceHost;
     }
+    
+    @Column(name = "service_port", length = 45)
+    public String getServicePort() {
+		return servicePort;
+	}
+
+	public void setServicePort(String servicePort) {
+		this.servicePort = servicePort;
+	}
 
     @Column(name = "service_type")
     public Integer getServiceType() {

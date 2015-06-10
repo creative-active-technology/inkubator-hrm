@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "temp_process_read_finger", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = {"emp_data_id", "schedule_date", "schedule_in", "schedule_out"}))
@@ -41,6 +42,7 @@ public class TempProcessReadFinger implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Long totalMarginInMarginOut;
 
     public TempProcessReadFinger() {
 
@@ -240,6 +242,15 @@ public class TempProcessReadFinger implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    @Formula(value ="margin_in+margin_out")
+    public Long getTotalMarginInMarginOut() {
+        return totalMarginInMarginOut;
+    }
+
+    public void setTotalMarginInMarginOut(Long totalMarginInMarginOut) {
+        this.totalMarginInMarginOut = totalMarginInMarginOut;
     }
 
 }

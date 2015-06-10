@@ -92,9 +92,20 @@ public class FingerSwapCapturedViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 600);
         options.put("contentHeight", 320);
-        RequestContext.getCurrentInstance().openDialog("finger_swap_captured_file", options, dataToSend);
+        RequestContext.getCurrentInstance().openDialog("finger_swap_captured_upload", options, dataToSend);
 	}	
 
+	public void doDownload(){
+		Map<String, List<String>> dataToSend = new HashMap<>();
+		Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 450);
+        options.put("contentHeight", 200);
+        RequestContext.getCurrentInstance().openDialog("finger_swap_captured_download", options, dataToSend);
+	}
+	
 	public FingerSwapCapturedSearchParameter getSearchParameter() {
 		return searchParameter;
 	}

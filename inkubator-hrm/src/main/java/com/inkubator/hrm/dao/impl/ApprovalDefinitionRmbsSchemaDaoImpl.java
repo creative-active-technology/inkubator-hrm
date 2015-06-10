@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -30,8 +32,9 @@ public class ApprovalDefinitionRmbsSchemaDaoImpl extends IDAOImpl<ApprovalDefini
 	public List<ApprovalDefinitionRmbsSchema> getAllDataByRmbsSchemaId(Long rmbsSchemaId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("rmbsSchema", FetchMode.JOIN);
-        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        criteria.createAlias("approvalDefinition", "approvalDefinition", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("rmbsSchema.id", rmbsSchemaId));
+        criteria.addOrder(Order.asc("approvalDefinition.sequence"));
         return criteria.list();
 		
 	}

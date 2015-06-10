@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.PermitImplementation;
 //import com.inkubator.hrm.entity.PermitImplementationDate;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -45,5 +46,8 @@ public interface PermitImplementationService extends IService<PermitImplementati
     public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception;
 
     public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception;
+    
+    public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception;
+
 
 }

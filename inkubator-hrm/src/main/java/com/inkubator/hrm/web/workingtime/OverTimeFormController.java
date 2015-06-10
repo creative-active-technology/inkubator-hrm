@@ -5,12 +5,29 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -19,19 +36,6 @@ import com.inkubator.hrm.web.model.OverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -210,12 +214,14 @@ public class OverTimeFormController extends BaseController {
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-
-    public void onChangeName(){
-    	Lambda.forEach(appDefs).setSpecificName(overTimeModel.getName());
-    }
     
     /** Start Approval Definition form */
+    public void onChangeName(){
+    	if(!appDefs.isEmpty()) {
+    		Lambda.forEach(appDefs).setSpecificName(overTimeModel.getName());
+    	}
+    }
+    
     public void doDeleteAppDef() {
     	appDefs.remove(selectedAppDef);
     }
@@ -226,7 +232,8 @@ public class OverTimeFormController extends BaseController {
         appDefName.add(HRMConstant.OVERTIME);
         dataToSend.put("appDefName", appDefName);
         List<String> specificName = new ArrayList<>();
-        specificName.add(overTimeModel.getName());
+        String name = StringUtils.isEmpty(overTimeModel.getName()) ? StringUtils.EMPTY : overTimeModel.getName();
+        specificName.add(name);
         dataToSend.put("specificName", specificName);
     	this.showDialogAppDef(dataToSend);
     }
