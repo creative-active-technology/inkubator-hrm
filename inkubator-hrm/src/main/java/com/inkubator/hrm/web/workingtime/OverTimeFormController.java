@@ -5,12 +5,27 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -19,19 +34,6 @@ import com.inkubator.hrm.web.model.OverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -86,7 +88,7 @@ public class OverTimeFormController extends BaseController {
                 overTimeModel.setOverTimeCalculation(wtOverTime.getOverTimeCalculation());
                 overTimeModel.setStartTimeFactor(wtOverTime.getStartTimeFactor());
                 overTimeModel.setValuePrice(wtOverTime.getValuePrice());
-                Set<ApprovalDefinitionOT> approvalDefinitionOTs = wtOverTime.getApprovalDefinitionOTs();
+                List<ApprovalDefinitionOT> approvalDefinitionOTs = Lambda.sort(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition().getSequence());
                     for(ApprovalDefinitionOT appDefOverTime : approvalDefinitionOTs){
                     	appDefs.add(appDefOverTime.getApprovalDefinition());
                     }
