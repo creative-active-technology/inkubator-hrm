@@ -189,8 +189,6 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
-    
-
     @Override
     public Long totalDayPresent() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -201,5 +199,21 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     public Long totalDaySchedule() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         return (Long) criteria.setProjection(Projections.sum("attendanceDaysSchedule")).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalOverTime(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (Long) criteria.setProjection(Projections.sum("overtime")).uniqueResult();
+    }
+
+    @Override
+    public TempAttendanceRealization getByEmp(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (TempAttendanceRealization) criteria.uniqueResult();
     }
 }

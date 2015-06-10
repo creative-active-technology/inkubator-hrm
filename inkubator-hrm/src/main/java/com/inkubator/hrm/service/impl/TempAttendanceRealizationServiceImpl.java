@@ -439,53 +439,56 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         List<WorkingTimeDeviation> dataToShow = new ArrayList<>();
         List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults);
         for (EmpData emp : getAllEmmp) {
-            System.out.println("++================TESTS+++++++++");
-
             Long totalDeviation = tempProcessReadFingerDao.getTotalTimeDeviation(emp.getId());
-            System.out.println("Total " + totalDeviation);
             WorkingTimeDeviation deviation = new WorkingTimeDeviation();
-            deviation.setTotalDeviation(totalDeviation);
+//            deviation.setTotalDeviation(totalDeviation);
             deviation.setEmpId(emp.getId());
-            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
-            if (totalDeviation != null) {
-                if (totalDeviation < 0) {
-                    long totalAbsolut = -1 * totalDeviation;
-                    if (totalAbsolut >= 60) {
-                        long jam = totalAbsolut / 60;
-                        long minute = totalAbsolut % 60;
-                        deviation.setMinuteDefect(minute);
-                        deviation.setHourDefect(jam);
-                    } else {
-                        deviation.setExtraHour(Long.valueOf("0"));
-                        deviation.setExtraMinute(totalDeviation);
-                    }
-//                    Date date = new Date(totalDeviation * (-1));
-//                    deviation.setDateDefect(date);
-//                    deviation.setHourDefect(totalDeviation / 60);
-//                    deviation.setMinuteDefect(totalDeviation * (-1));
-                } else {
-//                    Date date = new Date(totalDeviation);
-//                    deviation.setDateDefect(date);
-                    Long time = totalDeviation * 60 * 1000;
-                    Date date = new Date(time);
-                    if (totalDeviation >= 60) {
-                        long jam = totalDeviation / 60;
-                        long minute = totalDeviation % 60;
-                        deviation.setExtraMinute(minute);
-                        deviation.setExtraHour(jam);
-
-                    } else {
-                        deviation.setExtraHour(Long.valueOf("0"));
-                        deviation.setExtraMinute(totalDeviation);
-                    }
-
-                }
-
-                System.out.println(" totak deviasinya    " + totalDeviation);
+            TempAttendanceRealization attendanceRealization = tempAttendanceRealizationDao.getByEmp(emp.getId());
+            if (attendanceRealization != null) {
+                deviation.setTotalOverTime(attendanceRealization.getOvertime());
+                deviation.setAttendaceRealization(attendanceRealization.getAttendanceDaysPresent() + "/" + attendanceRealization.getAttendanceDaysSchedule());
             }
 
+//            Long totalOverTime = tempAttendanceRealizationDao.getTotalOverTime(emp.getId());
+//            deviation.setTotalOverTime(totalOverTime);
+            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
+            if (totalDeviation != null) {
+                deviation.setTotalDeviation(totalDeviation);
+//                if (totalDeviation < 0) {
+//                    long totalAbsolut = -1 * totalDeviation;
+//                    if (totalAbsolut >= 60) {
+//                        long jam = totalAbsolut / 60;
+//                        long minute = totalAbsolut % 60;
+//                        deviation.setMinuteDefect(minute);
+//                        deviation.setHourDefect(jam);
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+////                    Date date = new Date(totalDeviation * (-1));
+////                    deviation.setDateDefect(date);
+////                    deviation.setHourDefect(totalDeviation / 60);
+////                    deviation.setMinuteDefect(totalDeviation * (-1));
+//                } else {
+////                    Date date = new Date(totalDeviation);
+////                    deviation.setDateDefect(date);
+//                    Long time = totalDeviation * 60 * 1000;
+//                    Date date = new Date(time);
+//                    if (totalDeviation >= 60) {
+//                        long jam = totalDeviation / 60;
+//                        long minute = totalDeviation % 60;
+//                        deviation.setExtraMinute(minute);
+//                        deviation.setExtraHour(jam);
+//
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+
+            }
             deviation.setOverTime(null);
             dataToShow.add(deviation);
+
         }
         return dataToShow;
     }

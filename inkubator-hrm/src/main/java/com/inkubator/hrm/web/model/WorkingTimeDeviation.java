@@ -27,6 +27,7 @@ public class WorkingTimeDeviation implements Serializable {
     private Date dateDefect;
     private Date overTime;
     private Long totalDeviation;
+    public Long totalOverTime;
 
     public Long getEmpId() {
         return empId;
@@ -126,7 +127,7 @@ public class WorkingTimeDeviation implements Serializable {
 
     @Override
     public String toString() {
-     
+
         return "WorkingTimeDeviation{" + "empId=" + empId + ", empRealName=" + empRealName + ", attendaceRealization=" + attendaceRealization + ", extraHour=" + extraHour + ", extraMinute=" + extraMinute + ", hourDefect=" + hourDefect + ", minuteDefect=" + minuteDefect + ", overTimeHour=" + overTimeHour + ", overTimeMinute=" + overTimeMinute + ", extraDate=" + extraDate + ", dateDefect=" + dateDefect + ", overTime=" + overTime + '}';
     }
 
@@ -138,6 +139,12 @@ public class WorkingTimeDeviation implements Serializable {
         this.totalDeviation = totalDeviation;
     }
 
-    
-    
+    public Long getTotalOverTime() {
+        return totalOverTime;
+    }
+
+    public void setTotalOverTime(Long totalOverTime) {
+        this.totalOverTime = totalOverTime;
+    }
+
 }

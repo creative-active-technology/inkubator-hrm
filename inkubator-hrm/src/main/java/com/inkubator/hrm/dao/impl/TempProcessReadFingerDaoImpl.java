@@ -172,4 +172,6 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 
     }
 
+   
+
 }

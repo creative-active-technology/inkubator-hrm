@@ -112,7 +112,7 @@
 
                         <p:dataTable  var="timeRealization"  value="#{workingTimeDeviationController.workingTimeDeviationLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                      id="tableEmpDataId" rows="200" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['employeerotation.list_employee_work_schedule']}" styleClass="label_hrm"/>
@@ -123,38 +123,49 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{timeRealization.empRealName}" style="width: 30%">
+                            <p:column sortBy="#{timeRealization.empRealName}" style="width: 40%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                    <h:outputText value="Nama"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{timeRealization.empRealName}"/>
                             </p:column>
-                            <p:column  style="width: 40%"> 
-                                <f:facet name="header">  
-                                    <h:outputText value="Kelebihan Jam"/>
+                            <p:column  style="width: 40%">
+                                <f:facet name="Kehadiran">  
+                                    <h:outputText value="Nama"/>
                                 </f:facet>
-                                <p:outputLabel value="#{timeRealization.extraHour}"/>
+                                <h:outputLabel value= "#{timeRealization.attendaceRealization}"/>
                             </p:column>
-                            <p:column  style="width: 40%"> 
+                            <p:column  style="width: 30%"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Kelebihan Menit"/>
+                                    <h:outputText value="Kelebihan Jam Kerja"/>
                                 </f:facet>
-                                <p:outputLabel value="#{timeRealization.extraMinute}"/>
-                            </p:column>
-                            <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
-                                <f:facet name="header">  
-                                    <h:outputText value="Kekurangan Jam"/>
-                                </f:facet>
-                                <p:outputLabel value="#{timeRealization.hourDefect}">
+                                <p:outputLabel value="#{timeRealization.totalDeviation}">
+                                    <f:converter converterId="minuteDeviationHumanReaderPositif" />
                                 </p:outputLabel>
                             </p:column>
-                              <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
+                            <p:column  style="width: 30%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Kekurangan Jam Kerja"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.totalDeviation}">
+                                    <f:converter converterId="minuteDeviationHumanReaderNegative" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 30%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Lembur"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.totalOverTime}">
+                                    <f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </p:outputLabel>
+                            </p:column>
+<!--                              <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="Kekurangan Menit"/>
                                 </f:facet>
                                   <p:outputLabel value="#{timeRealization.minuteDefect}">
                                 </p:outputLabel>
-                            </p:column>
+                            </p:column>-->
 <!--                            <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
@@ -162,48 +173,48 @@
                                 <p:outputLabel value="#{timeRealization.extraMinute}">
                                 </p:outputLabel>
                             </p:column>-->
-                            <p:column  style="width: 40%"> 
-                                <f:facet name="header">  
-                                    <h:outputText value="Total"/>
-                                </f:facet>
-                                <p:outputLabel value="#{timeRealization.totalDeviation}"/>
-                            </p:column>
-<!--                            <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.code}" style="width: 20%">
-                                <f:facet name="header">  
-                                    <h:outputText value="No. Jabatan"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.code}"/>
-                            </p:column>
-                            <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.name}" style="width: 40%">
-                                <f:facet name="header">  
-                                    <h:outputText value="Nama Jabatan"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.name}"/>
-                            </p:column>
-                            <p:column sortBy="#{timeRealization.leave}" style="width: 15%;text-align: center">
-                                <f:facet name="header">  
-                                    <h:outputText value="Cuti"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.leave}"/>
-                            </p:column>
-                            <p:column sortBy="#{timeRealization.permit}" style="width: 15%;text-align: center">
-                                <f:facet name="header">  
-                                    <h:outputText value="Izin"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.permit}"/>
-                            </p:column>-->
-<!--                            <p:column sortBy="#{timeRealization.sick}" style="width: 15%;text-align: center">
-                                <f:facet name="header">  
-                                    <h:outputText value="Sakit"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.sick}"/>
-                            </p:column>-->
-<!--                            <p:column sortBy="#{timeRealization.duty}" style="width: 15%;text-align: center">
-                                <f:facet name="header">  
-                                    <h:outputText value="Dinas"/>
-                                </f:facet>
-                                <p:outputLabel value= "#{timeRealization.duty}"/>
-                            </p:column>-->
+                            <!--                            <p:column  style="width: 40%"> 
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Total"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value="#{timeRealization.totalDeviation}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.code}" style="width: 20%">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="No. Jabatan"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.code}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.name}" style="width: 40%">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Nama Jabatan"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.name}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.leave}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Cuti"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.leave}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.permit}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Izin"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.permit}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.sick}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Sakit"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.sick}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.duty}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Dinas"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.duty}"/>
+                                                        </p:column>-->
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
