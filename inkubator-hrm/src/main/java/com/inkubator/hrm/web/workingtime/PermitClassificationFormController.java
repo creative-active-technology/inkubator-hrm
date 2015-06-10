@@ -1,27 +1,11 @@
 package com.inkubator.hrm.web.workingtime;
 
-import ch.lambdaj.Lambda;
-import com.google.gson.Gson;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
-import com.inkubator.hrm.entity.PermitClassification;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.PermitClassificationService;
-import com.inkubator.hrm.service.AttendanceStatusService;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.model.PermitClassificationModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -29,8 +13,27 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
+import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.PermitClassification;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.AttendanceStatusService;
+import com.inkubator.hrm.service.PermitClassificationService;
+import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.web.model.PermitClassificationModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -100,7 +103,7 @@ public class PermitClassificationFormController extends BaseController {
                         hidden = Boolean.TRUE;
                     }
                     
-                    Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
+                    List<ApprovalDefinitionPermit> setAppDefPermits = Lambda.sort(permitClassification.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition().getSequence());
                     for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
                     	appDefs.add(appDefPermit.getApprovalDefinition());
                     }

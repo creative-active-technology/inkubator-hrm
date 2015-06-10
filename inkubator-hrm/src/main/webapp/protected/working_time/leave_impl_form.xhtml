@@ -69,7 +69,7 @@
 	                            	<p:selectOneMenu id="leaveId" styleClass="isitext_hrm" required="true"  value="#{leaveImplementationFormController.model.leaveId}" style="width:295px;">
 	                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItems value="#{leaveImplementationFormController.leaves}" var="leave" itemLabel="#{leave.name}" itemValue="#{leave.id}"/>
-	                                    <p:ajax listener="#{leaveImplementationFormController.onChangeLeave()}" update="latestLeaveDateId,remainingLeaveId"/>
+	                                    <p:ajax listener="#{leaveImplementationFormController.onChangeLeave()}" update="latestLeaveDateId,remainingLeaveId,totalWorkingDaysId"/>
 	                                </p:selectOneMenu>
 	                                <p:message for="leaveId"/>
 	                            </p:column>
