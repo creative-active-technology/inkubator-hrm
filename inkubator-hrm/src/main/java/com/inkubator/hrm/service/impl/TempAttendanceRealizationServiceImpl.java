@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
@@ -17,14 +22,20 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.MedicalCareDao;
+import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -32,11 +43,13 @@ import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.DetilAttendateRelaization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import java.util.ArrayList;
 
 /**
  *
- * @author WebGenX
+ * @author Ahmad Mudzakkir Amal
  */
 @Service(value = "tempAttendanceRealizationService")
 @Lazy
@@ -56,9 +69,16 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     private LeaveImplementationDateDao leaveImplementationDateDao;
     @Autowired
     private BusinessTravelDao businessTravelDao;
+    @Autowired
+    private MedicalCareDao medicalCareDao;
+    @Autowired
+    private PermitImplementationDao permitImplementationDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+
     public void delete(TempAttendanceRealization tempAttendanceRealization) throws Exception {
         tempAttendanceRealizationDao.delete(tempAttendanceRealization);
     }
@@ -269,6 +289,8 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
         attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
+        attendanceModel.setTotaldayPresent(tempAttendanceRealizationDao.totalDayPresent());
+        attendanceModel.setTotaldaySchedule(tempAttendanceRealizationDao.totalDaySchedule());
         return attendanceModel;
 
     }
@@ -306,6 +328,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
         WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
         DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+
 //        Perhatia dua data yang di perbandingkan harus sama soring ascrnding atau descending 
         List<TempJadwalKaryawan> dataToCalculate = tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
 //        List<TempProcessReadFinger> presentAteendace = tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
@@ -315,31 +338,54 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //            System.out.println("jadwalnya " + tempJadwal.getTanggalWaktuKerja());
             TempProcessReadFinger finger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empId, tempJadwal.getTanggalWaktuKerja());
             DetilAttendateRelaization attendateRelaization = new DetilAttendateRelaization();
+
+            LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            MedicalCare medicalCare = medicalCareDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
+            PermitImplementation permitImplementation = permitImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
+
             if (finger != null) {
 
                 attendateRelaization.setAsentDate(finger.getScheduleDate());
                 attendateRelaization.setRealisasiStatus(finger.getWorkingHourName());
                 attendateRelaization.setRealisasiAttendace(tempJadwal.getWtWorkingHour().getAttendanceStatus().getStatusKehadrian());
-
-            }
-            LeaveImplementation leaveImplementation = leaveImplementationDao.getByEmpStardDateEndDate(empId, tempJadwal.getTanggalWaktuKerja());
-            BusinessTravel businessTravel = businessTravelDao.getByEmpIdAndDate(empId, tempJadwal.getTanggalWaktuKerja());
-
-            if (leaveImplementation != null) {
-                long leavId = leaveImplementation.getId();
-                LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
-                attendateRelaization.setAsentDate(leaveImplementationDate.getActualDate());
-                attendateRelaization.setRealisasiStatus(leaveImplementationDate.getLeaveImplementation().getLeave().getName() + " no." + leaveImplementationDate.getLeaveImplementation().getNumberFilling());
-                attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
-            } else if (businessTravel != null) {
-                attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
-                attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to")+" " +businessTravel.getDestination());
-                attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+                attendateRelaization.setIsAttendaceKnowing(true);
             } else {
-                if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
+                if (leaveImplementation != null) {
+                    long leavId = leaveImplementation.getId();
+                    LeaveImplementationDate leaveImplementationDate = leaveImplementationDateDao.getByLeavIdDateAndIsTrue(leavId, tempJadwal.getTanggalWaktuKerja(), false);
+                    attendateRelaization.setAsentDate(leaveImplementationDate.getActualDate());
+                    attendateRelaization.setRealisasiStatus(leaveImplementationDate.getLeaveImplementation().getLeave().getName() + " no." + leaveImplementationDate.getLeaveImplementation().getNumberFilling());
+                    attendateRelaization.setRealisasiAttendace(leaveImplementationDate.getLeaveImplementation().getLeave().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (businessTravel != null) {
                     attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
-                    attendateRelaization.setRealisasiStatus(tempJadwal.getWtWorkingHour().getName());
-                    attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("menu.holiday"));
+                    attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.travel_to") + " " + businessTravel.getDestination());
+                    attendateRelaization.setRealisasiAttendace(businessTravel.getTravelType().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (medicalCare != null) {
+                    attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                    attendateRelaization.setRealisasiStatus(medicalCare.getDisease().getName());
+                    attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("global.sick"));
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else if (permitImplementation != null) {
+                    attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                    attendateRelaization.setRealisasiStatus(permitImplementation.getPermitClassification().getName());
+                    attendateRelaization.setRealisasiAttendace(permitImplementation.getPermitClassification().getAttendanceStatus().getStatusKehadrian());
+                    attendateRelaization.setIsAttendaceKnowing(true);
+                } else {
+                    if (tempJadwal.getWtWorkingHour().getCode().equals("OFF")) {
+                        attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                        attendateRelaization.setRealisasiStatus(tempJadwal.getWtWorkingHour().getName());
+                        attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("menu.holiday"));
+                        attendateRelaization.setIsAttendaceKnowing(true);
+                    } else {
+                        attendateRelaization.setAsentDate(tempJadwal.getTanggalWaktuKerja());
+                        attendateRelaization.setRealisasiStatus(ResourceBundleUtil.getAsString("global.unknow"));
+                        attendateRelaization.setRealisasiAttendace(ResourceBundleUtil.getAsString("global.unknow"));
+                        attendateRelaization.setIsAttendaceKnowing(false);
+                    }
+
                 }
             }
 
@@ -357,6 +403,11 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //                }
 //            }
 //            i++;
+            System.out.println(" Waktu kerjanya adalaha :" + tempJadwal.getTanggalWaktuKerja());
+            if (tempJadwal.getTanggalWaktuKerja().equals(new Date())) {
+                break;
+            }
+
         }
 
         attendanceModel.setStardDate(wtPeriode.getFromPeriode());
@@ -367,5 +418,81 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick(empId));
 //        attendanceModel.setDataToShow(tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, attendanceModel.getStardDate(), attendanceModel.getEndDate()));
         return attendanceModel;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
+        return tempAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
+        return tempAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception {
+//        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+        List<WorkingTimeDeviation> dataToShow = new ArrayList<>();
+        List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults);
+        for (EmpData emp : getAllEmmp) {
+            System.out.println("++================TESTS+++++++++");
+
+            Long totalDeviation = tempProcessReadFingerDao.getTotalTimeDeviation(emp.getId());
+            System.out.println("Total " + totalDeviation);
+            WorkingTimeDeviation deviation = new WorkingTimeDeviation();
+            deviation.setTotalDeviation(totalDeviation);
+            deviation.setEmpId(emp.getId());
+            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
+            if (totalDeviation != null) {
+                if (totalDeviation < 0) {
+                    long totalAbsolut = -1 * totalDeviation;
+                    if (totalAbsolut >= 60) {
+                        long jam = totalAbsolut / 60;
+                        long minute = totalAbsolut % 60;
+                        deviation.setMinuteDefect(minute);
+                        deviation.setHourDefect(jam);
+                    } else {
+                        deviation.setExtraHour(Long.valueOf("0"));
+                        deviation.setExtraMinute(totalDeviation);
+                    }
+//                    Date date = new Date(totalDeviation * (-1));
+//                    deviation.setDateDefect(date);
+//                    deviation.setHourDefect(totalDeviation / 60);
+//                    deviation.setMinuteDefect(totalDeviation * (-1));
+                } else {
+//                    Date date = new Date(totalDeviation);
+//                    deviation.setDateDefect(date);
+                    Long time = totalDeviation * 60 * 1000;
+                    Date date = new Date(time);
+                    if (totalDeviation >= 60) {
+                        long jam = totalDeviation / 60;
+                        long minute = totalDeviation % 60;
+                        deviation.setExtraMinute(minute);
+                        deviation.setExtraHour(jam);
+
+                    } else {
+                        deviation.setExtraHour(Long.valueOf("0"));
+                        deviation.setExtraMinute(totalDeviation);
+                    }
+
+                }
+
+                System.out.println(" totak deviasinya    " + totalDeviation);
+            }
+
+            deviation.setOverTime(null);
+            dataToShow.add(deviation);
+        }
+        return dataToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception {
+        return empDataDao.getTotalNotTerminatePaging(parameter);
     }
 }

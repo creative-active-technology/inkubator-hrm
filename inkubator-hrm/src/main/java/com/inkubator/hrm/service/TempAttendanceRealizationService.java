@@ -1,16 +1,18 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
-import java.util.List;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import java.util.List;
 
 /**
  *
- * @author WebGenX
+ * @author Ahmad Mudzakkir Amal
  */
 public interface TempAttendanceRealizationService extends IService<TempAttendanceRealization> {
 
@@ -27,4 +29,13 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public Long gettotalEmpOnDuty() throws Exception;
 
     public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception;
+
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
+
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception;
+
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;
+
 }

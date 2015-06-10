@@ -7,6 +7,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
+import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 
 import java.util.Date;
@@ -35,5 +37,11 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode);
     
     public WtPeriode getEntityByDateBetween(Date date);
+    
+    public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter);
+    
+    public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId);
 
 }

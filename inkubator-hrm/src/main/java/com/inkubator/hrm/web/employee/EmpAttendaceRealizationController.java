@@ -7,11 +7,12 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationLazyDataModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -40,6 +41,11 @@ public class EmpAttendaceRealizationController extends BaseController {
             super.initialization();
             attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
             tempAttendanceRealizationSearchParameter = new TempAttendanceRealizationSearchParameter();
+            List<WorkingTimeDeviation> deviations=tempAttendanceRealizationService.getWorkingHourDeviation(tempAttendanceRealizationSearchParameter, 0, 10, null);
+            
+            for (WorkingTimeDeviation deviation : deviations) {
+                System.out.println(deviation);
+            }
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }

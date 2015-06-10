@@ -21,10 +21,12 @@ import com.inkubator.hrm.web.model.MecineFingerQueryModel;
 import com.inkubator.hrm.web.model.MecineFingerServiceModel;
 import com.inkubator.hrm.web.search.MecineFingerSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -68,7 +70,7 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(MecineFinger entity) throws Exception {
         // check duplicate name
-        long totalDuplicates = mecineFingerDao.getByCode(entity.getCode());
+        long totalDuplicates = mecineFingerDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("mecinefinger.error_duplicate_mecinefinger_code");
         }
@@ -195,8 +197,9 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<MecineFinger> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return mecineFingerDao.getAllData();
     }
 
     @Override
@@ -293,6 +296,7 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
         String hostIp = String.valueOf(serviceModel.getHost1()+"."+serviceModel.getHost2()+"."+serviceModel.getHost3()+"."+serviceModel.getHost4());
         mecineFinger.setServiceHost(hostIp);
+        mecineFinger.setServicePort(String.valueOf(serviceModel.getPort()));
         mecineFinger.setServiceType(serviceModel.getServiceData());
         mecineFinger.setServiceOpenProtocol(serviceModel.getProtocolData());
         mecineFinger.setServiceOpenProtocolPassword(serviceModel.getOpenProtocolPassword());
@@ -319,4 +323,10 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         mecineFinger.setUpdatedOn(new Date());
         mecineFingerDao.update(mecineFinger);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<MecineFinger> getAllDataByMachineMethod(Integer machineMethod) throws Exception {
+		return mecineFingerDao.getAllDataByMachineMethod(machineMethod);
+	}
 }

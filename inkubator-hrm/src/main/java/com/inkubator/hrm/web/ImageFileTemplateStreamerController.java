@@ -68,6 +68,46 @@ public class ImageFileTemplateStreamerController extends BaseController {
         
         return streamedContent;
     }
+	
+	public StreamedContent getFingerSwapCapturedUploadFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String extension = context.getExternalContext().getRequestParameterMap().get("extension");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        
+        if (!context.getRenderResponse() && extension != null) {
+            try {
+            	String fileName = StringUtils.EMPTY;
+                StringBuffer path = new StringBuffer();
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/finger_swap/"));
+                switch (extension) {
+					case "csv":
+						path.append("/finger_swap_captured_upload.csv");
+						fileName = "finger_swap_captured_template.csv";
+						break;
+					case "xls":
+						path.append("/finger_swap_captured_upload.xls");
+						fileName = "finger_swap_captured_template.xls";
+						break;
+					case "xlsx":
+						path.append("/finger_swap_captured_upload.xlsx");
+						fileName = "finger_swap_captured_template.xlsx";
+						break;
+					default:
+						path.append("/finger_swap_captured_upload.csv");
+						fileName = "finger_swap_captured_template.csv";
+						break;
+				}
+                
+                InputStream is = facesIO.getInputStreamFromURL(path.toString());
+                streamedContent = new DefaultStreamedContent(is, null, fileName);
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        }
+        
+        return streamedContent;
+    }
         
     public StreamedContent getPayTempAttendanceUploadFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();

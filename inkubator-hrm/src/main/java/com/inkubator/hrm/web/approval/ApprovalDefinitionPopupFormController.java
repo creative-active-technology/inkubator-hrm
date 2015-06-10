@@ -244,7 +244,10 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         } else if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_POSITION)) {
             onBehalfApproverTypeIndividual = Boolean.TRUE;
             onBehalfApproverTypePosition = Boolean.FALSE;
-        }
+        } else {
+        	onBehalfApproverTypeIndividual = Boolean.TRUE;
+        	onBehalfApproverTypePosition = Boolean.TRUE;
+       	}
         approvalDefinitionModel.setHrmUserByOnBehalfIndividual(null);
         approvalDefinitionModel.setJabatanByOnBehalfPosition(null);
 
@@ -252,6 +255,10 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
 
     public void onAllowOnBehalfChange() {
         onBehalf = approvalDefinitionModel.getAllowOnBehalf();
+        if(onBehalf!=null && onBehalf){
+        	approvalDefinitionModel.setOnBehalfType(null);
+        	this.onBehalfAppoverChange();
+        }
     }
 
     public void autoApproveOnDelay() {

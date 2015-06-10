@@ -17,6 +17,7 @@ public class DetilAttendateRelaization implements Serializable {
     private Date asentDate;
     private String realisasiStatus;
     private String realisasiAttendace;
+    private Boolean isAttendaceKnowing;
 
     public Date getAsentDate() {
         return asentDate;
@@ -41,6 +42,14 @@ public class DetilAttendateRelaization implements Serializable {
     public void setRealisasiAttendace(String realisasiAttendace) {
         this.realisasiAttendace = realisasiAttendace;
     }
-    
+
+    public Boolean getIsAttendaceKnowing() {
+        return isAttendaceKnowing;
+    }
+
+    public void setIsAttendaceKnowing(Boolean isAttendaceKnowing) {
+        this.isAttendaceKnowing = isAttendaceKnowing;
+    }
+
     
 }

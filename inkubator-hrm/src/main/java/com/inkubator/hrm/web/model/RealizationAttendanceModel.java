@@ -20,6 +20,9 @@ public class RealizationAttendanceModel implements Serializable{
     private long totalIzin;
     private long totalOnDuty;
     private long totalSick;
+    private long totaldayPresent;
+    private long totaldaySchedule;
+    
 
     public Date getStardDate() {
         return stardDate;
@@ -67,6 +70,22 @@ public class RealizationAttendanceModel implements Serializable{
 
     public void setTotalSick(long totalSick) {
         this.totalSick = totalSick;
+    }
+
+    public long getTotaldayPresent() {
+        return totaldayPresent;
+    }
+
+    public void setTotaldayPresent(long totaldayPresent) {
+        this.totaldayPresent = totaldayPresent;
+    }
+
+    public long getTotaldaySchedule() {
+        return totaldaySchedule;
+    }
+
+    public void setTotaldaySchedule(long totaldaySchedule) {
+        this.totaldaySchedule = totaldaySchedule;
     }
     
     
