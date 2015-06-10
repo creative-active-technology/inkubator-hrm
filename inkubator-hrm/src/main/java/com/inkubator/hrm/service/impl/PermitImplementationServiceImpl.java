@@ -61,7 +61,9 @@ import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+
 import java.io.File;
+
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -860,4 +862,74 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    @Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception{
+            String message = "";
+			// check duplicate number filling
+            long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+            if (totalDuplicates > 0) {
+                throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+            }
+
+            EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+            PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+            PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+
+            // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+            Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
+            if (actualPermit > permitDistribution.getBalance()) {
+                throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+            }
+
+            
+            
+            HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+            
+            String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+            if(approvalActivity == null){
+            	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                entity.setEmpData(empData);
+                entity.setPermitClassification(permit);
+                if (documentFile != null) {
+                    String uploadPath = getUploadPath(entity.getId(), documentFile);
+                    facesIO.transferFile(documentFile);
+                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                    file.renameTo(new File(uploadPath));
+                    entity.setUploadPath(uploadPath);
+                }
+
+                permitImplementationDao.save(entity);
+                message = "save_without_approval";
+            }else{
+            	String uploadPath = null;
+            	if (documentFile != null) {
+                    uploadPath = getUploadPath(entity.getId(), documentFile);
+                    facesIO.transferFile(documentFile);
+                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                    file.renameTo(new File(uploadPath));
+                    entity.setUploadPath(uploadPath);
+                }
+            	
+            	entity.setCreatedBy(createdBy);
+            	entity.setCreatedBy(createdBy);
+            	JsonParser parser = new JsonParser();
+                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+                JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+                jsonObject.addProperty("permitImplementationFile", uploadPath);
+                //save to approval activity
+                approvalActivity.setPendingData(gson.toJson(jsonObject));
+                approvalActivityDao.save(approvalActivity);
+
+                //sending email notification
+//                this.sendingEmailApprovalNotif(approvalActivity);
+                message = "success_need_approval";
+            }
+            
+
+            this.creditPermitBalance(permitDistribution, actualPermit);
+            return message;
+	}
 }
