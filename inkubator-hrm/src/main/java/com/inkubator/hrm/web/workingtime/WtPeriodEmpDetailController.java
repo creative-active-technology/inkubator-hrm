@@ -63,8 +63,8 @@ public class WtPeriodEmpDetailController extends BaseController {
     private LogAttendanceRealizationService logAttendanceRealizationService;  
     @ManagedProperty(value = "#{jobLauncherAsync}")
     private JobLauncher jobLauncherAsync;
-    @ManagedProperty(value = "#{jobPayEmployeeCalculation}")
-    private Job jobPayEmployeeCalculation;
+    @ManagedProperty(value = "#{jobTempAttendanceRealizationCalculation}")
+    private Job jobTempAttendanceRealizationCalculation;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
     
@@ -120,63 +120,57 @@ public class WtPeriodEmpDetailController extends BaseController {
         lazyDataModel = null;
     }
 
-    public void doSelectEntity() {
-//        try {
-//            selected = this.payTempKalkulasiService.getEntityByPkWithDetail(selected.getId());
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-    }
+
 
     public void doCalculateWorkingTime() {
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
     	 *  please see onComplete method that will set jobExecution == null */
-//    	if(jobExecution == null){ 
-//	        try {	        	
-//	            //long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
-//	            long sleepVariable = tempAttendanceRealizationService.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(model.getWtPeriodId().longValue())* 3;
-//	            JobParameters jobParameters = new JobParametersBuilder()	                    
-//	                    .addDate("payrollCalculationDate", payrollCalculationDate)
-//	                    .addDate("startPeriodDate", wtPeriodePayroll.getFromPeriode())
-//	                    .addDate("endPeriodDate", wtPeriodePayroll.getUntilPeriode())
-//		                .addString("createdBy", UserInfoUtil.getUserName())
-//		                .addDate("createdOn", new Date()).toJobParameters();
-//	            jobExecution = jobLauncherAsync.run(jobPayEmployeeCalculation, jobParameters);
-//	            
-//	            int i = 0;
-//	            while(true){
-//	            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
-//		            	if(i <= 85){
-//		            		setProgress(i++);
-//		            	}
-//		                try {
-//		                    Thread.sleep(sleepVariable);
-//		                } catch (InterruptedException e) {}	
-//	            	} else {
-//	            		setProgress(100);
-//	            		break;
-//	            	}
-//	            }
-//	            
-//	        } catch (Exception ex) {
-//	            LOGGER.error("Error ", ex);
-//	        }
-//    	}
+    	if(jobExecution == null){ 
+	        try {	        	
+	            
+	            long sleepVariable = tempAttendanceRealizationService.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(model.getWtPeriodId().longValue())* 3;
+	            JobParameters jobParameters = new JobParametersBuilder()	                    
+	                    .addDate("periodUntillDate", model.getUntilPeriode())
+	                    .addString("createdBy", UserInfoUtil.getUserName())
+	                    .addDate("createdOn", new Date())
+	                    .addLong("wtPeriodId", model.getWtPeriodId().longValue())
+	                    .toJobParameters();	                    
+	            jobExecution = jobLauncherAsync.run(jobTempAttendanceRealizationCalculation, jobParameters);
+	            
+	            int i = 0;
+	            while(true){
+	            	if(jobExecution.getStatus() == BatchStatus.STARTED || jobExecution.getStatus() == BatchStatus.STARTING) {
+		            	if(i <= 85){
+		            		setProgress(i++);
+		            	}
+		                try {
+		                    Thread.sleep(sleepVariable);
+		                } catch (InterruptedException e) {}	
+	            	} else {
+	            		setProgress(100);
+	            		break;
+	            	}
+	            }
+	            
+	        } catch (Exception ex) {
+	            LOGGER.error("Error ", ex);
+	        }
+    	}
     }
     
     public void onCompleteCalculateWorkingTime() {
-//    	if(jobExecution != null) {
-//	    	setProgress(0);
-//	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-//	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "salaryCalculation.calculation_process_succesfully",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//	    	} else {
-//	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.calculation_process_failed",
-//                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//	    		FacesContext.getCurrentInstance().validationFailed();
-//	    	}
-//	    	jobExecution = null;
-//    	}
+    	if(jobExecution != null) {
+	    	setProgress(0);
+	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "workingTime.attendance_realization_calc_process_succesfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    	} else {
+	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_process_failed",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    		FacesContext.getCurrentInstance().validationFailed();
+	    	}
+	    	jobExecution = null;
+    	}
     }
     
     public void doInitCalculatePayroll(){
@@ -245,17 +239,16 @@ public class WtPeriodEmpDetailController extends BaseController {
 		this.jobExecution = jobExecution;
 	}
 
-	public Job getJobPayEmployeeCalculation() {
-        return jobPayEmployeeCalculation;
-    }
+	
+    public Job getJobTempAttendanceRealizationCalculation() {
+		return jobTempAttendanceRealizationCalculation;
+	}
 
-    public void setJobPayEmployeeCalculation(Job jobPayEmployeeCalculation) {
-        this.jobPayEmployeeCalculation = jobPayEmployeeCalculation;
-    }
+	public void setJobTempAttendanceRealizationCalculation(Job jobTempAttendanceRealizationCalculation) {
+		this.jobTempAttendanceRealizationCalculation = jobTempAttendanceRealizationCalculation;
+	}
 
-   
-
-    public WtPeriodeService getWtPeriodeService() {
+	public WtPeriodeService getWtPeriodeService() {
         return wtPeriodeService;
     }
 
