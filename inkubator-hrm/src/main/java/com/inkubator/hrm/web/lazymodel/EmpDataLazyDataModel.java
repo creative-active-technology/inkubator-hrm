@@ -55,7 +55,7 @@ public class EmpDataLazyDataModel extends LazyDataModel<EmpData> implements Seri
             }
         } else {
             try {
-                empDatadatas = empDataService.getByParam(empDataSearchParameter, first, pageSize, Order.asc("ptkpStatus"));
+                empDatadatas = empDataService.getByParam(empDataSearchParameter, first, pageSize, Order.asc("nik"));
                 jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalEmpDataByParam(empDataSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

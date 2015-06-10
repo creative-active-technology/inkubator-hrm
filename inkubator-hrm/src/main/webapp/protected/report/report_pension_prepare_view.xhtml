@@ -33,11 +33,11 @@
                                      <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['global.date']}" style="font-weight: bold"/>
                                     </p:column>
-<!--                                     <p:column style="text-align: left;">
+                                    <p:column style="text-align: left;">
                                          <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportEmpPosRecapitulationViewController.reportDate}"  readonly="false" >
                                     
                                         </p:calendar>
-                                    </p:column> -->
+                                    </p:column>
                              </p:row>
                             <p:row>
                         
@@ -141,9 +141,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitClassification.permitClassification_from_begin']}"/>
                                 </f:facet>
-                                <!-- <h:outputLabel value= "#{empData.tglMulaiBekerja}" >
+                                <h:outputLabel value= "#{empData.tglMulaiBekerja}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </h:outputLabel> -->
+                                </h:outputLabel>
                             </p:column>
                            
                             
@@ -165,12 +165,11 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.age']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{empData.tglLahir}" >
+                                <h:outputLabel value= "#{empData.tglLahir}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
-                                </h:outputLabel> 
+                                </h:outputLabel>
                                 <h:outputLabel value="   ( " />  
-                                <h:outputLabel value="#{empData.usiaKaryawan}" >
-                                </h:outputLabel> 
+                                <h:outputLabel value="#{empData.usiaKaryawan}" /> 
                                 <h:outputLabel value="  " /> 
                                 <h:outputText value="#{appmsg['global.yearAge']}"/>
                                 <h:outputLabel value=" )" /> 

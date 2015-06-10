@@ -279,9 +279,6 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         } else if (StringUtils.equalsIgnoreCase(apporverType, HRMConstant.APPROVAL_TYPE_POSITION)) {
             onBehalfApproverTypeIndividual = Boolean.TRUE;
             onBehalfApproverTypePosition = Boolean.FALSE;
-        } else {
-            onBehalfApproverTypeIndividual = Boolean.TRUE;
-            onBehalfApproverTypePosition = Boolean.TRUE;
         }
         approvalDefinitionModel.setHrmUserByOnBehalfIndividual(null);
         approvalDefinitionModel.setJabatanByOnBehalfPosition(null);
@@ -290,10 +287,6 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
     
     public void onAllowOnBehalfChange() {
         onBehalf = approvalDefinitionModel.getAllowOnBehalf();
-        if(onBehalf!=null && onBehalf){
-        	approvalDefinitionModel.setOnBehalfType(null);
-            this.onBehalfAppoverChange();
-        }
     }
     
     public void autoApproveOnDelay() {
@@ -354,31 +347,5 @@ public class ApprovalDefinitionPopupFormController extends BaseController {
         approvalDefinition.setSmsNotification(approvalDefinitionModel.getSmsNotification());
         approvalDefinition.setSpecificName(approvalDefinitionModel.getSpecificName());
         return approvalDefinition;
-    }
-    
-    public void doReset(){
-    	approvalDefinitionModel.setAutoApproveOnDelay(Boolean.TRUE);
-        approvalDefinitionModel.setEscalateOnDelay(Boolean.FALSE);
-        approvalDefinitionModel.setSmsNotification(Boolean.FALSE);
-        approvalDefinitionModel.setSequence(1);
-        approvalDefinitionModel.setMinApprover(1);
-        approvalDefinitionModel.setMinRejector(1);
-        approvalDefinitionModel.setDelayTime(1);
-        approvalDefinitionModel.setProcessType(null);
-        approvalDefinitionModel.setApproverType(null);
-        approvalDefinitionModel.setHrmUserByApproverIndividual(null);
-        approvalDefinitionModel.setJabatanByApproverPosition(null);
-        approvalDefinitionModel.setOnBehalfType(null);
-        approvalDefinitionModel.setHrmUserByOnBehalfIndividual(null);
-        approvalDefinitionModel.setJabatanByOnBehalfPosition(null);
-        approvalDefinitionModel.setAllowOnBehalf(Boolean.FALSE);
-        onBehalf = Boolean.TRUE;
-        onProcess = Boolean.TRUE;
-        approverTypeIndividual = Boolean.TRUE;
-        approverTypePosition = Boolean.TRUE;
-        onBehalfApproverTypeIndividual = Boolean.TRUE;
-        onBehalfApproverTypePosition = Boolean.TRUE;
-        onAutoApprove = Boolean.TRUE;
-        
     }
 }
