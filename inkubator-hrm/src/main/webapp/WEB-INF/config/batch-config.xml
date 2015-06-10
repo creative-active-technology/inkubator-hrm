@@ -229,6 +229,15 @@
         </batch:listeners>
     </batch:job>
     
+    <!-- Job Calculation of Emp Attendance Realization  -->
+     <batch:job id="jobTempAttendanceRealizationCalculation">
+        <batch:step id="stepJobTempAttendanceRealizationCalculation_1">
+            <batch:tasklet>                
+                <batch:chunk reader="customTempAttendanceRealizationCalculationItemReader" processor="customTempAttendanceRealizationCalculationItemProcessor"
+                 writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
     
             
     <!-- ALL batch listeners -->
@@ -711,6 +720,22 @@
         <property name="itemSqlParameterSourceProvider">
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
+    </bean>
+    
+     <!-- reader, processor, and writer for temp attendance realization calculation -->	
+    <bean id="customTempAttendanceRealizationCalculationItemReader" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationReader" scope="step" destroy-method="destroy" lazy-init="true">
+    	<constructor-arg name="empDataService" ref="empDataService"/>
+        <constructor-arg name="periodUntillDate"  value="#{jobParameters['periodUntillDate']}"></constructor-arg>      
+    </bean>	
+    <bean id="customTempAttendanceRealizationCalculationItemProcessor" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationProcessor" scope="step" lazy-init="true">
+    	<constructor-arg name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>
+    	<property name="wtPeriodId" value="#{jobParameters['wtPeriodId']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customTempAttendanceRealizationCalculationItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="tempAttendanceRealizationService" />      
+        <property name="targetMethod" value="executeBatchFileUpload" />        
     </bean>
     
 </beans>

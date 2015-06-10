@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -24,5 +25,7 @@ public interface MedicalCareDao extends IDAO<MedicalCare> {
     public List<MedicalCare> getAllDataWithDetail();
     
     public MedicalCare getEntityWithNameAndNik(Long id);
+    
+    public List<MedicalCare> getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
 }
