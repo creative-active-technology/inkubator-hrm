@@ -36,9 +36,13 @@
                         PF('bar').show();
                     }
                 </script>
+<!--                     <h:outputScript name="layout.js" library="js" />
+    <h:outputStylesheet name="font-icon-layout.css" library="css" />
+    <h:outputStylesheet name="sentinel-layout.css" library="css" />
+    <h:outputStylesheet name="core-layout.css" library="css" /> -->
         <!--<ui:insert name="jsInclude"/>-->
     </h:head>
-    <h:body>
+    <h:body class="fontRegular">
         <p:socket onMessage="handleApproval" channel="/notificationsApproval" />
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
         <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />     
@@ -739,8 +743,8 @@
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">
                                         <h:panelGrid >
-                                            <p:outputLabel value="PT BPR BHAKTI DAYA PRIMA" styleClass="header_hrm" style="font-size: 28px !important;color: #cff !important;font-family: Palatino Linotype!important"/>
-                                            <p:outputLabel value="Jl Perintis Kemerdekaan 23/24, Sleman - Yogyakarta" styleClass="header_hrm" style="font-size: 15px !important;padding-top: -5px!important;color: #036 !important;font-family: Lucida Grande!important"/>
+                                            <p:outputLabel value="PT BPR BHAKTI DAYA PRIMA" styleClass="header_hrm" style="font-size: 28px !important;color: #cff !important;"/>
+                                            <p:outputLabel value="Jl Perintis Kemerdekaan 23/24, Sleman - Yogyakarta" styleClass="header_hrm" style="font-size: 15px !important;padding-top: -5px!important;color: #036 !important;"/>
                                         </h:panelGrid>
                                     </div>
                                 </div>
