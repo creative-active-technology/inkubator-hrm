@@ -12,7 +12,7 @@
                              authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
         <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
         <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <!--<security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE','ADMINISTRATOR_ROLE')"/>-->
+        <security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE')"/>
         <security:intercept-url pattern="/protected/approval/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/batch/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/employee/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
