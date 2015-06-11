@@ -33,6 +33,7 @@ public class RoleDetailController extends BaseController {
     public void initialization() {
         try {
             String param = FacesUtil.getRequestParameter("execution");
+            System.out.println(param.substring(1) + " paramnya");
             hrmRole = hrmRoleService.getEntityByPkWithMenus(Long.parseLong(param.substring(1)));
         } catch (Exception ex) {
            LOGGER.error("Error", ex);
