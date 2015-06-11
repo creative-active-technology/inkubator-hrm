@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:head>
+        <title>Error Informations</title>
+        <link rel="stylesheet" href="${request.contextPath}/resources/css/error.css" type="text/css" media="screen" />
+        <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
+    </h:head>
+    <h:body>
+        <div  id="box_error_500">
+            <p:button href="/" value="Go to Login Page" icon="ui-icon-locked" title="Go to Login Page" style="font-size: 12px"/>
+        </div>
+        <div style="margin: 20px;font-size: 13px" align="center">
+            <p:outputLabel value="Detail Error, please report it to your administrator. Capture and Send" style="font-weight: bold"/>
+            <h:panelGrid columns="2" style="color: #ff3333">		
+                <h:outputText value="Date/time:" /> <h:outputText value="#{of:formatDate(now, 'yyyy-MM-dd HH:mm:ss')}" />
+                <h:outputText value="User agent" /> <h:outputText value="#{header['user-agent']}" />
+                <h:outputText value="User IP" /> <h:outputText value="#{empty header['x-forwarded-for'] ? request.remoteAddr : fn:split(header['x-forwarded-for'], ',')[0]}" />
+                <h:outputText value="Request URI:" /> <a href="#{requestScope['javax.servlet.error.request_uri']}">#{requestScope['javax.servlet.error.request_uri']}</a>
+                <h:outputText value="Ajax request" /> <h:outputText value="#{facesContext.partialViewContext.ajaxRequest ? 'Yes' : 'No'}" />
+                <h:outputText value="Status code" /> <h:outputText value="#{requestScope['javax.servlet.error.status_code']}" />
+                <h:outputText value="Exception type" /> <h:outputText value="#{requestScope['javax.servlet.error.exception_type']}" />
+                <h:outputText value="Exception message" /> <h:outputText value="#{requestScope['javax.servlet.error.message']}" />
+                <h:outputText value="Stack trace" /> <pre><code>#{of:printStackTrace(requestScope['javax.servlet.error.exception'])}</code></pre>
+            </h:panelGrid>
+        </div>
+    </h:body>
+</html>
+
