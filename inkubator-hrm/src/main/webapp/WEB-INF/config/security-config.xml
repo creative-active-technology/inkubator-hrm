@@ -11,53 +11,63 @@
         <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin"
                              authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
         <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE','ROLE_USER_HRM','BASIC_USER','SUPERVISOR_FINANCE_ROLE')"/>
-        <security:intercept-url pattern="/protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE','ROLE_USER_HRM','BASIC_USER','SUPERVISOR_FINANCE_ROLE')"/>
-        <security:session-management>
-            <security:concurrency-control max-sessions="2" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
-        </security:session-management>
-        <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
-        <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
+        <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <!--<security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE','ADMINISTRATOR_ROLE')"/>-->
+        <security:intercept-url pattern="/protected/approval/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/batch/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/employee/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/organisation/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/payroll/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/personalia/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+    
+    <security:session-management>
+        <security:concurrency-control max-sessions="2" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
+    </security:session-management>
+    <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
+    <!--<security:logout invalidate-session="true" delete-cookies="JSESSIONID" logout-url="/logout.htm"/>-->
       
-    </security:http>
-    <bean id="myHandlerSuccessLogin" class="com.inkubator.hrm.util.CustomAuthenticationSuccessHandler" lazy-init="true"/> 
-    <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
-        <constructor-arg index="0" value="/"/>
-        <constructor-arg index="1">
-            <list>
-                <bean id="authenticationLogoutSuccessHandler" class="com.inkubator.hrm.util.CustomAuthenticationLogoutSuccessHandler"/>
-                <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
-                    <property name="clearAuthentication" value="true"/>
-                    <property name="invalidateHttpSession" value="true"/>
-                </bean>
+</security:http>
+<bean id="myHandlerSuccessLogin" class="com.inkubator.hrm.util.CustomAuthenticationSuccessHandler" lazy-init="true"/> 
+<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+    <constructor-arg index="0" value="/"/>
+    <constructor-arg index="1">
+        <list>
+            <bean id="authenticationLogoutSuccessHandler" class="com.inkubator.hrm.util.CustomAuthenticationLogoutSuccessHandler"/>
+            <bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+                <property name="clearAuthentication" value="true"/>
+                <property name="invalidateHttpSession" value="true"/>
+            </bean>
                  
-            </list>
-        </constructor-arg>
-        <property name="filterProcessesUrl" value="/logout.htm"/>
-    </bean>
-    <security:authentication-manager>
-        <!--        <security:authentication-provider>
-            <security:password-encoder hash="sha-256" />
-            <security:user-service>
-                <security:user name="admin" password="admin1234" authorities="ROLE_ADMIN_HRM" />
-                <security:user name="rizky" password="admin1234" authorities="ROLE_ADMIN_HRM" />
-                <security:user name="deni.fahri" password="123456789" authorities="ROLE_ADMIN_HRM" />
-            </security:user-service>
-        </security:authentication-provider>-->
-        <security:authentication-provider user-service-ref="userDetailsService" >
-            <security:password-encoder hash="sha-256" />
-        </security:authentication-provider>
-    </security:authentication-manager>
-    <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
+        </list>
+    </constructor-arg>
+    <property name="filterProcessesUrl" value="/logout.htm"/>
+</bean>
+<security:authentication-manager>
+    <!--        <security:authentication-provider>
+        <security:password-encoder hash="sha-256" />
+        <security:user-service>
+            <security:user name="admin" password="admin1234" authorities="ROLE_ADMIN_HRM" />
+            <security:user name="rizky" password="admin1234" authorities="ROLE_ADMIN_HRM" />
+            <security:user name="deni.fahri" password="123456789" authorities="ROLE_ADMIN_HRM" />
+        </security:user-service>
+    </security:authentication-provider>-->
+    <security:authentication-provider user-service-ref="userDetailsService" >
+        <security:password-encoder hash="sha-256" />
+    </security:authentication-provider>
+</security:authentication-manager>
+<security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
         
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basenames" >
-            <list>
-                <value>messages</value>
-                <value>messages_in</value>
-                <value>messages_en</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames" >
+        <list>
+            <value>messages</value>
+            <value>messages_in</value>
+            <value>messages_en</value>
+        </list>
+    </property>
+</bean>
+<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 </beans>
