@@ -34,4 +34,6 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
     public Long getTotalTimeDeviation(long empid);
 
+  
+
 }
