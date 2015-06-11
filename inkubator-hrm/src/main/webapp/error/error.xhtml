@@ -11,25 +11,25 @@
         <h:outputScript name="layout.js" library="js" />
         <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans|Roboto' rel='stylesheet' type='text/css' /> -->
 
-        <h:outputStylesheet name="font-icon-layout.css" library="css" />
-        <h:outputStylesheet name="sentinel-layout.css" library="css" />
-        <h:outputStylesheet name="core-layout.css" library="css" />
-    </h:head>
-    <body class="fontRegular red-back">
-
-        <div class="Container100 Top20Percent PosAbsolute MarAuto OvHidden">
-            <div class="Wid50 MarAuto OvHidden TexAlCenter">
-                <img src="/sentinel-demo-1.1/javax.faces.resource/images/access-denied.svg.xhtml?ln=sentinel-layout" style="width: 140px;" />
-                <div class="EmptyBox20"></div>
-                <span class="white Fs60 Wid100 DispBlock">Access Denied</span>
-                <span class="white Wid100 DispBlock Fs24">Please Check Your Permissions !</span><br />
-                <span class="white Wid100 DispBlock Fs12">Sorry, but you have no access to this page.<br />
-                </span>
-                <div class="EmptyBox20"></div>
-                <p:button value="Back to Dashboard" styleClass="Fs24" style="font-size: 16px!important;" href="/protected/home.htm"></p:button>
-
-                <div class="EmptyBox50"></div>
-            </div>
-        </div></body>
+    <h:outputStylesheet name="font-icon-layout.css" library="css" />
+    <h:outputStylesheet name="sentinel-layout.css" library="css" />
+    <h:outputStylesheet name="core-layout.css" library="css" />
+	</h:head>
+	<body class="fontRegular red-back">
+    
+    <div class="Container100 Top20Percent PosAbsolute MarAuto OvHidden">
+        <div class="Wid50 MarAuto OvHidden TexAlCenter">
+        <p:graphicImage library="images" name="access-denied.png" width="100"  cache="true"/>
+            <div class="EmptyBox20"></div>
+            <span class="white Fs60 Wid100 DispBlock">Access Denied</span>
+            <span class="white Wid100 DispBlock Fs24">Please Check Your Permissions !</span><br />
+            <span class="white Wid100 DispBlock Fs12">Sorry, but you have no access to this page.<br />
+            </span>
+            <div class="EmptyBox20"></div>
+	<p:button value="Back to Dashboard" styleClass="Fs24" style="font-size: 16px!important;" href="/protected/home.htm"></p:button>
+                        
+<div class="EmptyBox50"></div>
+        </div>
+    </div></body>
 
 </html>
