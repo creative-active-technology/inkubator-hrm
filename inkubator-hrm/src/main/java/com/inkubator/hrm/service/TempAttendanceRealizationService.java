@@ -34,5 +34,9 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception;
+    
+    public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception;
+    
+    public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception;
 
 }

@@ -7,7 +7,7 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.EmpDataPtkpLazyDataModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class EmpPtkpViewController extends BaseController {
 
     public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
         if (empDataLazyDataModel == null) {
-            empDataLazyDataModel = new EmpDataLazyDataModel(empDataSearchParameter, empDataService);
+            empDataLazyDataModel = new EmpDataPtkpLazyDataModel(empDataSearchParameter, empDataService);
         }
         return empDataLazyDataModel;
     }

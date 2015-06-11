@@ -19,7 +19,7 @@
                 <h:form id="formPermitClassificationDetailId">
                     <div id="box_bg" style="margin: 10px">
                         <h:panelGrid  columns="2">
-                            <p:graphicImage library="images" name="permitClassification.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="definisi_izin.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['permitClassification.permitClassification']}" styleClass="header_big" />
@@ -44,16 +44,6 @@
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{permitClassificationDetailController.selectedPermitClassification.name}"/>
                                 </p:column>
-                            </p:row>  
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['permitClassification.permitClassification_status']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{permitClassificationDetailController.selectedPermitClassification.status}">
-                                        <f:converter converterId="booleanMessageConverter"/>
-                                    </p:outputLabel>	                                	                                
-                                </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
@@ -61,7 +51,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{permitClassificationDetailController.selectedPermitClassification.calculation}">
-                                        <f:converter converterId="dayCalculationConverter"/>
+                                        <f:converter converterId="permitDayCalculationConverter"/>
                                     </p:outputLabel>	                                	                                
                                 </p:column>
                             </p:row> 
@@ -79,7 +69,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{permitClassificationDetailController.selectedPermitClassification.basePeriod}">
-                                        <f:converter converterId="basePeriodConverter"/>
+                                        <f:converter converterId="permitBasePeriodConverter"/>
                                     </p:outputLabel>	                                	                                
                                 </p:column>
                             </p:row> 
@@ -89,7 +79,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{permitClassificationDetailController.selectedPermitClassification.availibility}">
-                                        <f:converter converterId="permitAvailbilityConverter"/>
+                                        <f:converter converterId="permitAvailabilityConverter"/>
                                     </p:outputLabel>	                                	                                
                                 </p:column>
                             </p:row> 

@@ -3,11 +3,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.entity.MedicalCare;
-import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -118,6 +116,18 @@ public class MedicalCareDaoImpl extends IDAOImpl<MedicalCare> implements Medical
         criteria.add(Restrictions.le("startDate", doDate));
         criteria.add(Restrictions.ge("endDate", doDate));
         return (MedicalCare) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<MedicalCare> getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(Long empDataId, Date dateFrom, Date dateUntill) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.ge("startDate", dateFrom));
+        criteria.add(Restrictions.le("startDate", dateUntill));
+
+        return criteria.list();
     }
 
 }

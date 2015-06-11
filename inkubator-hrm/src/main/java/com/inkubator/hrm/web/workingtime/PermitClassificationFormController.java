@@ -1,11 +1,27 @@
 package com.inkubator.hrm.web.workingtime;
 
+import ch.lambdaj.Lambda;
+import com.google.gson.Gson;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
+import com.inkubator.hrm.entity.PermitClassification;
+import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.PermitClassificationService;
+import com.inkubator.hrm.service.AttendanceStatusService;
+import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.web.model.PermitClassificationModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -13,27 +29,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ValueChangeEvent;
-
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
-
-import ch.lambdaj.Lambda;
-
-import com.google.gson.Gson;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
-import com.inkubator.hrm.entity.AttendanceStatus;
-import com.inkubator.hrm.entity.PermitClassification;
-import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.AttendanceStatusService;
-import com.inkubator.hrm.service.PermitClassificationService;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.model.PermitClassificationModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -51,9 +48,6 @@ public class PermitClassificationFormController extends BaseController {
     private AttendanceStatusService attendanceStatusService;
     private Map<String, Long> attendanceStatuss = new TreeMap<>();
     private Boolean disabled;
-    private Boolean hidden;
-    private Integer minimum;
-    private Integer maximum;
     private List<ApprovalDefinition> appDefs;
     private ApprovalDefinition selectedAppDef;
     private int indexOfAppDefs;
@@ -67,7 +61,6 @@ public class PermitClassificationFormController extends BaseController {
             permitClassificationModel = new PermitClassificationModel();
             isUpdate = Boolean.FALSE;
             disabled = Boolean.TRUE;
-            hidden = Boolean.FALSE;
             appDefs = new ArrayList<ApprovalDefinition>(); 
             List<AttendanceStatus> listAttendanceStatuss = attendanceStatusService.getAllData();
 
@@ -98,12 +91,13 @@ public class PermitClassificationFormController extends BaseController {
                     permitClassificationModel.setDescription(permitClassification.getDescription());
                     permitClassificationModel.setIsActive(permitClassification.getIsActive());
                     isUpdate = Boolean.TRUE;
-                    disabled = Boolean.FALSE;
-                    if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                        hidden = Boolean.TRUE;
+                    if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
+                    	disabled = Boolean.FALSE;
                     }
-                    
-                    List<ApprovalDefinitionPermit> setAppDefPermits = Lambda.sort(permitClassification.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition().getSequence());
+                    if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
+                    	disabled = Boolean.TRUE;
+                    }                    
+                    Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
                     for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
                     	appDefs.add(appDefPermit.getApprovalDefinition());
                     }
@@ -121,12 +115,11 @@ public class PermitClassificationFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         permitClassificationService = null;
-//        permitClassificationModel = null;
+        permitClassificationModel = null;
         isUpdate = null;
         attendanceStatusService = null;
         attendanceStatuss = null;
         disabled = null;
-        hidden = null;
         appDefs = null;
         selectedAppDef = null;
         
@@ -196,29 +189,7 @@ public class PermitClassificationFormController extends BaseController {
         this.disabled = disabled;
     }
 
-    public Boolean getHidden() {
-        return hidden;
-    }
-
-    public void setHidden(Boolean hidden) {
-        this.hidden = hidden;
-    }
-
-    public Integer getMinimum() {
-        return minimum;
-    }
-
-    public void setMinimum(Integer minimum) {
-        this.minimum = minimum;
-    }
-
-    public Integer getMaximum() {
-        return maximum;
-    }
-
-    public void setMaximum(Integer maximum) {
-        this.maximum = maximum;
-    }
+    
 
     public String doBack() {
         return "/protected/working_time/permit_classification_view.htm?faces-redirect=true";
@@ -275,30 +246,17 @@ public class PermitClassificationFormController extends BaseController {
 
     public void availibilityChanged(ValueChangeEvent event) {
         try {
-
             Integer availibility = Integer.parseInt(String.valueOf(event.getNewValue()));
 
-            if (availibility.equals(HRMConstant.AVAILIBILITY_FULL)) {
+            if (availibility.equals(HRMConstant.PERMIT_AVAILIBILITY_FULL)) {
+                disabled = Boolean.TRUE;
+                permitClassificationModel.setDateIncreased(null);
+            } else if (availibility.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
+                disabled = Boolean.TRUE;
+                permitClassificationModel.setDateIncreased(null);
+            } else if (availibility.equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
                 disabled = Boolean.FALSE;
-                hidden = Boolean.TRUE;
-                minimum = 1;
-                maximum = 365;
-
-            }
-
-            if (availibility.equals(HRMConstant.AVALILIBILITY_PER_MONTH)) {
-                disabled = Boolean.FALSE;
-                hidden = Boolean.TRUE;
-                minimum = 1;
-                maximum = 22;
-            }
-
-            if (availibility.equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                disabled = Boolean.FALSE;
-                hidden = Boolean.FALSE;
-                minimum = 1;
-                maximum = 365;
-
+                permitClassificationModel.setDateIncreased(1);
             }
 
         } catch (Exception ex) {
@@ -328,9 +286,8 @@ public class PermitClassificationFormController extends BaseController {
                 permitClassificationModel.setDescription(permitClassification.getDescription());
                 permitClassificationModel.setIsActive(permitClassification.getIsActive());
                 isUpdate = Boolean.TRUE;
-                disabled = Boolean.FALSE;
-                if (permitClassification.getAvailibility().equals(HRMConstant.AVALILIBILITY_PER_DATE)) {
-                    hidden = Boolean.FALSE;
+                if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
+                	disabled = Boolean.FALSE;
                 }
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -338,8 +295,6 @@ public class PermitClassificationFormController extends BaseController {
         } else {
             permitClassificationModel = new PermitClassificationModel();
             isUpdate = Boolean.FALSE;
-            disabled = Boolean.TRUE;
-            hidden = Boolean.TRUE;
         }
     }
     

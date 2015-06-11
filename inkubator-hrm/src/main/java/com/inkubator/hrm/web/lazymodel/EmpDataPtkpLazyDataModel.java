@@ -21,7 +21,7 @@ import org.primefaces.model.SortOrder;
  *
  * @author Deni Husni FR
  */
-public class EmpDataLazyDataModel extends LazyDataModel<EmpData> implements Serializable {
+public class EmpDataPtkpLazyDataModel extends LazyDataModel<EmpData> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(EmpDataLazyDataModel.class);
     private final EmpDataSearchParameter empDataSearchParameter;
@@ -29,7 +29,7 @@ public class EmpDataLazyDataModel extends LazyDataModel<EmpData> implements Seri
     private List<EmpData> empDatadatas = new ArrayList<>();
     private Integer jumlah;
 
-    public EmpDataLazyDataModel(EmpDataSearchParameter empDataSearchParameter, EmpDataService empDataService) {
+    public EmpDataPtkpLazyDataModel(EmpDataSearchParameter empDataSearchParameter, EmpDataService empDataService) {
         this.empDataSearchParameter = empDataSearchParameter;
         this.empDataService = empDataService;
     }
@@ -55,7 +55,7 @@ public class EmpDataLazyDataModel extends LazyDataModel<EmpData> implements Seri
             }
         } else {
             try {
-                empDatadatas = empDataService.getByParam(empDataSearchParameter, first, pageSize, Order.asc("nik"));
+                empDatadatas = empDataService.getByParam(empDataSearchParameter, first, pageSize, Order.asc("ptkpStatus"));
                 jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalEmpDataByParam(empDataSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

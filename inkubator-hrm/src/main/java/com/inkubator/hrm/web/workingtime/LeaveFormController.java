@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -73,7 +74,7 @@ public class LeaveFormController extends BaseController {
                 Leave leave = leaveService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                 if (leave != null) {
                     getModelFromEntity(leave);
-                    List<ApprovalDefinitionLeave> setAppDefLeaves = Lambda.sort(leave.getApprovalDefinitionLeaves(), Lambda.on(ApprovalDefinitionLeave.class).getApprovalDefinition().getSequence());
+                    Set<ApprovalDefinitionLeave> setAppDefLeaves = leave.getApprovalDefinitionLeaves();
                     for(ApprovalDefinitionLeave appDefLeave : setAppDefLeaves){
                     	appDefs.add(appDefLeave.getApprovalDefinition());
                     }

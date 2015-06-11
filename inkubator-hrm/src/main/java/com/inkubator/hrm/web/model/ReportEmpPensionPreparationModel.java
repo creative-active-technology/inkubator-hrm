@@ -22,7 +22,6 @@ public class ReportEmpPensionPreparationModel implements Serializable {
     private String jabatan;
     private String golJabatan;
     private Integer usiaKaryawan;
-    private Double age;
     private Date tglLahir;
     private Date tglMulaiBekerja;
     private BigInteger departmentId;
@@ -137,14 +136,5 @@ public class ReportEmpPensionPreparationModel implements Serializable {
     public void setTglMulaiBekerja(Date tglMulaiBekerja) {
         this.tglMulaiBekerja = tglMulaiBekerja;
     }
-
-	public Double getAge() {
-		return age;
-	}
-
-	public void setAge(Double age) {
-		this.age = age;
-	}
-    
     
 }

@@ -84,7 +84,6 @@ public class EmpPtkpFormController extends BaseController {
     public void doChangePtkpNumber(){
         if(empDataModel.getPtkpStatusInt() == 0){
             isDisabledPtkpNumber = Boolean.TRUE;
-            empDataModel.setPtkpNumber(0);
         }else{
             isDisabledPtkpNumber = Boolean.FALSE;
         }
