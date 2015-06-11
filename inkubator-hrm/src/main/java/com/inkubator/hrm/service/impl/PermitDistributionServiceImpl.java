@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -159,8 +160,9 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PermitDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        permitDistributionDao.delete(entity);
     }
 
     @Override
@@ -234,21 +236,63 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
         PermitClassification permit = this.permitDao.getEntiyByPK(permitId);
         List<PermitDistribution> listDistribution = new ArrayList<>();
         List<NeracaPermit> listNeracaPermit = new ArrayList<>();
-//        if (startBalance > permit.getQuotaPerPeriod()) {
-//            throw new BussinessException("permit_start_balance.error");
-//        }
 
         for (EmpData empData : data) {
+        	
+        	/** calculation of start and end date */
+        	DateTime now = new DateTime();
+        	DateTime dtStart = null;
+        	DateTime dtEnd = null;          	
+        	if(permit.getBasePeriod() == HRMConstant.PERMIT_BASE_FROM_JANUARY_NEXT_PERIOD){
+        		dtStart = now.withDate(now.plusYears(1).getYear(), 1, 1);
+        		dtEnd = now.withDate(now.plusYears(1).getYear(), 12, 31);
+        		
+        	} else if(permit.getBasePeriod() == HRMConstant.PERMIT_BASE_FROM_JOIN_DATE_NEXT_PERIOD){
+        		DateTime dtJoinDate = new DateTime(empData.getJoinDate());
+        		if(dtJoinDate.isAfter(now)){
+        			dtStart = dtJoinDate;
+            		dtEnd = dtStart.plusYears(1).minusDays(1);
+        		} else {
+        			dtJoinDate = dtJoinDate.withYear(now.getYear());
+        			if(dtJoinDate.isAfter(now)){
+        				dtStart = dtJoinDate;
+                		dtEnd = dtStart.plusYears(1).minusDays(1);
+        			} else {
+        				dtStart = dtJoinDate.plusYears(1);
+                		dtEnd = dtStart.plusYears(1).minusDays(1);
+        			}
+        		}        		
+        		
+        	} else if(permit.getBasePeriod() == HRMConstant.PERMIT_BASE_FROM_JOIN_DATE_THIS_PERIOD){
+        		DateTime dtJoinDate = new DateTime(empData.getJoinDate());
+        		if(dtJoinDate.isAfter(now)){
+        			dtStart = dtJoinDate;
+            		dtEnd = dtStart.plusYears(1).minusDays(1);
+        		} else {
+        			dtJoinDate = dtJoinDate.withYear(now.getYear());
+        			if(dtJoinDate.isAfter(now)){
+        				dtStart = dtJoinDate.minusYears(1);
+                		dtEnd = dtStart.plusYears(1).minusDays(1);
+        			} else {
+        				dtStart = dtJoinDate;
+                		dtEnd = dtStart.plusYears(1).minusDays(1);
+        			}
+        		}     
+        	}
+        	
+        	/** create distribution */
             PermitDistribution distribution = new PermitDistribution();
-            
-
+            distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             distribution.setBalance(startBalance);
+            distribution.setStartDate(dtStart.toDate());
+            distribution.setEndDate(dtEnd.toDate());
             distribution.setEmpData(empData);
             distribution.setPermitClassification(permit);
             distribution.setCreatedBy(UserInfoUtil.getUserName());
-            distribution.setCreatedOn(new Date());
-            distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            distribution.setCreatedOn(new Date());            
             listDistribution.add(distribution);
+            
+            /** create neraca */
             NeracaPermit neracaPermit = new NeracaPermit();
             neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaPermit.setDebet(startBalance);
@@ -256,8 +300,6 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
             neracaPermit.setCreatedBy(UserInfoUtil.getUserName());
             neracaPermit.setCreatedOn(new Date());
             listNeracaPermit.add(neracaPermit);
-//            permitDistributionDao.save(distribution);
-//            distribution.set
         }
         permitDistributionDao.saveBatch(listDistribution);
         neracaPermitDao.saveBacth(listNeracaPermit);

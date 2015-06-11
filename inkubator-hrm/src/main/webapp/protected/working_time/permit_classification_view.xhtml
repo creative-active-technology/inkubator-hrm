@@ -83,11 +83,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{permitClassificationData.name}"/>
                             </p:column>
-                            <p:column sortBy="status"  style="text-align: center;width: 20%">
+                            <p:column sortBy="isActive"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['permitClassification.permitClassification_status']}"/>
+                                    <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{permitClassificationData.status}"/>
+                                <h:outputLabel value= "#{permitClassificationData.isActive}">
+                                    <f:converter converterId="booleanMessageConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="calculation"  style="text-align: center;width: 20%">
                                 <f:facet name="header">  

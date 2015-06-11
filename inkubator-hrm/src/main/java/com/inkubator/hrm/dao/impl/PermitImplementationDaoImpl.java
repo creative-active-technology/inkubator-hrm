@@ -19,6 +19,7 @@ import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -149,23 +150,23 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         if (parameter.getEndDate() != null) {
             criteria.add(Restrictions.eq("endDate", parameter.getEndDate()));
         }
-        
+
         if (StringUtils.isNotEmpty(parameter.getApprovalStatus())) {
             if (!activityNumbers.isEmpty()) {
 
                 criteria.add(Restrictions.in("approvalActivityNumber", activityNumbers));
-            }else{
+            } else {
                 criteria.add(Restrictions.eq("approvalActivityNumber", "0"));
             }
         }
-        
-        if(empDataId != 0L){
+
+        if (empDataId != 0L) {
             criteria.add(Restrictions.eq("empData.id", empDataId));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
+
     @Override
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -174,5 +175,15 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("permit", FetchMode.JOIN);
         return criteria.list();
+    }
+
+    @Override
+    public PermitImplementation getByEmpStardDateEndDate(long empId, Date doDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
+        return (PermitImplementation) criteria.uniqueResult();
     }
 }
