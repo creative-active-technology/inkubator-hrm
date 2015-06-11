@@ -1812,7 +1812,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult) {
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -1824,9 +1824,24 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (parameter.getNik() != null) {
             criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
         }
-
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (parameter.getName() != null) {
-            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+//            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+
+        System.out.println("nilai ordernya " + order);
+        String sorting = "bio." + order;
+        if (order==null) {
+            criteria.addOrder(order);
+        } else {
+            if (order.isAscending()) {
+                System.out.println(" asc");
+                criteria.addOrder(Order.asc(sorting));
+            } else {
+                   System.out.println(" desc");
+                criteria.addOrder(Order.desc(sorting));
+            }
         }
 
         criteria.setFirstResult(firstResult);
@@ -1849,7 +1864,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         if (parameter.getName() != null) {
-            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

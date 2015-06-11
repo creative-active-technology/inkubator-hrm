@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <!--<p:panel style="margin: 10px" >-->
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="koreksi_realisasi.png" height="36" width="36" />
+                        <p:graphicImage library="images" name="selisih_waktu_kerja.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Selisih Waktu Kerja" styleClass="header_big" />
+                                <p:outputLabel value="Selisih Waktu Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -82,26 +82,22 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{empAttendaceRealizationController.tempAttendanceRealizationSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{workingTimeDeviationController.tempAttendanceRealizationSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="nik"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="No Jabatan" itemValue="noJab" />
-                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />
+<!--                                        <f:selectItem itemLabel="No Jabatan" itemValue="noJab" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />-->
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{empAttendaceRealizationController.tempAttendanceRealizationSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{workingTimeDeviationController.tempAttendanceRealizationSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empAttendaceRealizationController.doSearch()}" style="width: 75px"  icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{workingTimeDeviationController.doSearch()}" style="width: 75px"  icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId"  update="tableEmpDataId"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
-
-
-
-
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empAttendaceRealizationController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -115,7 +111,7 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['employeerotation.list_employee_work_schedule']}" styleClass="label_hrm"/>
+                                <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
@@ -123,17 +119,17 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{timeRealization.empRealName}" style="width: 40%">
+                            <p:column style="width: 40%" sortBy="#{timeRealization.firstName}">
                                 <f:facet name="header">  
                                     <h:outputText value="Nama"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{timeRealization.empRealName}"/>
+                                <h:outputLabel value="#{timeRealization.empRealName}"/>
                             </p:column>
                             <p:column  style="width: 40%">
-                                <f:facet name="Kehadiran">  
-                                    <h:outputText value="Nama"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="Kehadiran"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{timeRealization.attendaceRealization}"/>
+                                <h:outputLabel value="#{timeRealization.attendaceRealization}"/>
                             </p:column>
                             <p:column  style="width: 30%"> 
                                 <f:facet name="header">  

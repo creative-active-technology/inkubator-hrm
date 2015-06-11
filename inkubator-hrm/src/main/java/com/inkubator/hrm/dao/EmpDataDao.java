@@ -164,7 +164,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     /* get name only */
     public String getBioDataNameByEmpDataId(Long id);
 
-    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult);
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult,Order order);
 
     public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter);
 }

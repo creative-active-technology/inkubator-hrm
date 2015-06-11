@@ -41,8 +41,8 @@ public class EmpAttendaceRealizationController extends BaseController {
             super.initialization();
             attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
             tempAttendanceRealizationSearchParameter = new TempAttendanceRealizationSearchParameter();
-            List<WorkingTimeDeviation> deviations=tempAttendanceRealizationService.getWorkingHourDeviation(tempAttendanceRealizationSearchParameter, 0, 10, null);
-            
+            List<WorkingTimeDeviation> deviations = tempAttendanceRealizationService.getWorkingHourDeviation(tempAttendanceRealizationSearchParameter, 0, 10, null);
+
             for (WorkingTimeDeviation deviation : deviations) {
                 System.out.println(deviation);
             }
@@ -96,6 +96,7 @@ public class EmpAttendaceRealizationController extends BaseController {
     }
 
     public void doSearch() {
+        
         tempAttendanceRealizationsLazyModel = null;
     }
 

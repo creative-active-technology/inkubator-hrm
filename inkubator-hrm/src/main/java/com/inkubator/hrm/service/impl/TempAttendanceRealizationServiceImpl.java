@@ -46,6 +46,7 @@ import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import java.util.ArrayList;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -437,7 +438,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception {
 //        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
         List<WorkingTimeDeviation> dataToShow = new ArrayList<>();
-        List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults);
+        List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults, order);
         for (EmpData emp : getAllEmmp) {
             Long totalDeviation = tempProcessReadFingerDao.getTotalTimeDeviation(emp.getId());
             WorkingTimeDeviation deviation = new WorkingTimeDeviation();
