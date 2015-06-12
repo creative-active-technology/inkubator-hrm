@@ -30,7 +30,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.LogAttendanceRealizationService;
+import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.WtPeriodeService;
@@ -59,8 +59,8 @@ public class WtPeriodEmpDetailController extends BaseController {
     
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
     private TempAttendanceRealizationService tempAttendanceRealizationService;     
-    @ManagedProperty(value = "#{logAttendanceRealizationService}")
-    private LogAttendanceRealizationService logAttendanceRealizationService;  
+    @ManagedProperty(value = "#{logWtAttendanceRealizationService}")
+    private LogWtAttendanceRealizationService logWtAttendanceRealizationService;  
     @ManagedProperty(value = "#{jobLauncherAsync}")
     private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobTempAttendanceRealizationCalculation}")
@@ -198,7 +198,7 @@ public class WtPeriodEmpDetailController extends BaseController {
             if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_ACTIVE)){
                 lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
             }else  if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_VOID)){
-                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logWtAttendanceRealizationService, model.getWtPeriodId().longValue());
             }
             
         }
@@ -296,8 +296,8 @@ public class WtPeriodEmpDetailController extends BaseController {
         this.model = model;
     }   
 
-    public void setLogAttendanceRealizationService(LogAttendanceRealizationService logAttendanceRealizationService) {
-        this.logAttendanceRealizationService = logAttendanceRealizationService;
+    public void setLogWtAttendanceRealizationService(LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
+        this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
     }
         
         

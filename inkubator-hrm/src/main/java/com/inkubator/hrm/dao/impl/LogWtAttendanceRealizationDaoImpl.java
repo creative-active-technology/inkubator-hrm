@@ -6,8 +6,8 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.LogAttendanceRealizationDao;
-import com.inkubator.hrm.entity.LogAttendanceRealization;
+import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import java.util.List;
 import org.hibernate.Query;
@@ -20,13 +20,13 @@ import org.springframework.stereotype.Repository;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@Repository(value = "logAttendanceRealizationDao")
+@Repository(value = "logWtAttendanceRealizationDao")
 @Lazy
-public class LogAttendanceRealizationDaoImpl extends IDAOImpl<LogAttendanceRealization> implements LogAttendanceRealizationDao {
+public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceRealization> implements LogWtAttendanceRealizationDao {
 
     @Override
-    public Class<LogAttendanceRealization> getEntityClass() {
-        return LogAttendanceRealization.class;
+    public Class<LogWtAttendanceRealization> getEntityClass() {
+        return LogWtAttendanceRealization.class;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LogAttendanceRealizationDaoImpl extends IDAOImpl<LogAttendanceReali
         query.append(" logAttendanceRealization.permit AS permit,");
         query.append(" logAttendanceRealization.sick AS sick,");
         query.append(" logAttendanceRealization.duty AS duty");       
-        query.append(" FROM LogAttendanceRealization logAttendanceRealization");        
+        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
         
          return getCurrentSession().createQuery(query.toString())
@@ -58,7 +58,7 @@ public class LogAttendanceRealizationDaoImpl extends IDAOImpl<LogAttendanceReali
     @Override
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) {
          final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");       
-        query.append(" FROM LogAttendanceRealization logAttendanceRealization");        
+        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
         
           Query hbm = getCurrentSession().createQuery(query.toString())
