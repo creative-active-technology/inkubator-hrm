@@ -1832,17 +1832,17 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         System.out.println("nilai ordernya " + order);
         String sorting = "bio." + order;
-        if (order==null) {
-            criteria.addOrder(order);
-        } else {
-            if (order.isAscending()) {
-                System.out.println(" asc");
-                criteria.addOrder(Order.asc(sorting));
-            } else {
-                   System.out.println(" desc");
-                criteria.addOrder(Order.desc(sorting));
-            }
-        }
+//        if (order==null) {
+//            criteria.addOrder(order);
+//        } else {
+//            if (order.isAscending()) {
+//                System.out.println(" asc");
+//                criteria.addOrder(Order.asc(sorting));
+//            } else {
+//                   System.out.println(" desc");
+//                criteria.addOrder(Order.desc(sorting));
+//            }
+//        }
 
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResult);
