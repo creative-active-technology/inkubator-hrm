@@ -10,24 +10,31 @@ import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
@@ -38,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -65,6 +73,9 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     private FacesIO facesIO;
     @Autowired
     private BioDocumentDao bioDocumentDao;
+    @Autowired
+    private EmpDataDao empDataDao;
+    
 
     @Override
     public BioData getEntiyByPK(String id) throws Exception {
@@ -340,6 +351,28 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
         StreamedContent file = CommonReportUtil.exportReportToPDFStreamWithAttachment("cv_builder.jasper", params, bioData.getFirstName() + ".pdf", attachments);
         return file;
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updatePhoto(String nik, MultipartFile multipart) throws Exception {
+		EmpData empData = empDataDao.getEntityByNik(nik);
+		BioData bioData = empData.getBioData();
+		
+		//delete old photo (if any)
+		File oldFile = new File(bioData.getPathFoto());            
+        FileUtils.deleteQuietly(oldFile);
+        
+        //save new photo to disk
+		String pathPhoto = facesIO.getPathUpload() + bioData.getId() + "_" + multipart.getOriginalFilename();
+		System.out.println(pathPhoto);
+		File file = new File(pathPhoto);
+		multipart.transferTo(file);		
+		
+		//save new path photo
+		bioData.setPathFoto(pathPhoto);
+		bioDataDao.update(bioData);
+		
+	}
 
    
 }

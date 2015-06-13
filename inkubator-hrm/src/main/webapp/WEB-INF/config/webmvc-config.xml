@@ -12,7 +12,7 @@
     
     <faces:resources/>
     <context:component-scan base-package="com.inkubator.hrm.web.flow"/>
-    <mvc:annotation-driven /> 
+     
     <!-- Maps request paths to flows in the flowRegistry; e.g. a path of /hotels/booking looks for a flow with id "hotels/booking" -->
     <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
         <property name="order" value="1"/>
@@ -37,5 +37,12 @@
         <property name="flowExecutor" ref="flowExecutor" />
     </bean>
     
+    <!-- This config is for REST service purpose (using Spring MVC) -->
+    <mvc:annotation-driven />
+    <!-- Resolver for upload(multipart) -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="20971520" /> <!-- 20MB --> 
+    </bean>
    
 </beans>

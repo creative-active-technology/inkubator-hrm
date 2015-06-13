@@ -167,4 +167,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult,Order order);
 
     public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter);
+    
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName);
+	
 }
