@@ -84,7 +84,7 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" rendered="#{wtPeriodEmpDetailController.model.status eq 'Active'}"
-                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculatePayroll()}" >                        
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculateAttendanceRealization()}" >                        
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -134,7 +134,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.overtime']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.overTime.longValue()}" />
+                                <h:outputLabel value= "#{data.overTime}" />
                             </p:column>
                              <p:column sortBy="sick" style="width: 10%">
                                 <f:facet name="header">
@@ -240,11 +240,11 @@
                                 <p:outputLabel value="#{wtPeriodEmpDetailController.model.untilPeriode}"  styleClass="label_hrm">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>                                
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateWorkingTime()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateAttendanceRealization()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{wtPeriodEmpDetailController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{wtPeriodEmpDetailController.onCompleteCalculateWorkingTime}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
+                                <p:ajax event="complete" listener="#{wtPeriodEmpDetailController.onCompleteCalculateAttendanceRealization}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {detail.hide();}"/>
                             </p:progressBar>
                             <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="detail.hide();" immediate="true"/>                            
                         </h:form>

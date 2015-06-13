@@ -24,5 +24,7 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception;
     
     public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception;
+    
+    public void deleteAllData() throws Exception;
 
 }

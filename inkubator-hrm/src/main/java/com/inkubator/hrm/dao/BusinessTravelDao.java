@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -28,6 +29,8 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 
 	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
         
-        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+    public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+        
+    public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(Long empDataId, Date dateFrom, Date dateUntill);
 
 }

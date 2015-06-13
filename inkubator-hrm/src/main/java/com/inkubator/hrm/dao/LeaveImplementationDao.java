@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -38,5 +39,7 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
         public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
         
         public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception;
+        
+    public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 	
 }

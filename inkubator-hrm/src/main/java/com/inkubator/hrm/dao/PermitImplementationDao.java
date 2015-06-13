@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -34,5 +35,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
 
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+    
+    public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
 }

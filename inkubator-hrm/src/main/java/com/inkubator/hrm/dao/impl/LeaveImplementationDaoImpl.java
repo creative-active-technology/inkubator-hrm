@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+
 import java.util.ArrayList;
 
 /**
@@ -191,4 +193,17 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         criteria.add(Restrictions.eq("empData.id", empDataId));       
         return criteria.list();
     }
+
+	@Override
+	public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId,	Date dateFrom, Date dateUntill) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));  
+        criteria.add(Restrictions.ge("startDate", dateFrom));
+        criteria.add(Restrictions.le("startDate", dateUntill));
+        return criteria.list();
+	}
 }

@@ -7,7 +7,10 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -24,4 +27,6 @@ public interface ImplementationOfOverTimeService extends IService<Implementation
     public String save(ImplementationOfOverTime entity, boolean isBypassApprovalChecking) throws Exception;
     
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception;
+    
+    public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate) throws Exception;
 }

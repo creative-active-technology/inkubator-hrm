@@ -67,6 +67,8 @@ public class WtPeriodEmpDetailController extends BaseController {
     private Job jobTempAttendanceRealizationCalculation;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
     
     private LazyDataModel<TempAttendanceRealizationViewModel> lazyDataModel;
     private TempAttendanceRealizationViewModel selected;
@@ -122,7 +124,7 @@ public class WtPeriodEmpDetailController extends BaseController {
 
 
 
-    public void doCalculateWorkingTime() {
+    public void doCalculateAttendanceRealization() {
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
     	 *  please see onComplete method that will set jobExecution == null */
     	if(jobExecution == null){ 
@@ -158,7 +160,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     	}
     }
     
-    public void onCompleteCalculateWorkingTime() {
+    public void onCompleteCalculateAttendanceRealization() {
     	if(jobExecution != null) {
 	    	setProgress(0);
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
@@ -173,17 +175,17 @@ public class WtPeriodEmpDetailController extends BaseController {
     	}
     }
     
-    public void doInitCalculatePayroll(){
-//    	try {
-//			if(empDataService.getTotalByTaxFreeIsNull()>0) {
-//				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",
-//			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//				FacesContext.getCurrentInstance().validationFailed();
-//			}
-//			progress=0;
-//		} catch (Exception e) {
-//			LOGGER.error("Error ", e);
-//		}
+    public void doInitCalculateAttendanceRealization(){
+    	try {
+			if(empDataService.isEmpDataWithNullWtGroupWorkingExist()) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_emp_with_null_wt_group_working_found",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			progress=0;
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
     }
 
     public String doBack() {
@@ -299,6 +301,10 @@ public class WtPeriodEmpDetailController extends BaseController {
     public void setLogAttendanceRealizationService(LogAttendanceRealizationService logAttendanceRealizationService) {
         this.logAttendanceRealizationService = logAttendanceRealizationService;
     }
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
         
         
     
