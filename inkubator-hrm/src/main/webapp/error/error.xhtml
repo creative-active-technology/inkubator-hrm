@@ -1,36 +1,35 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:of="http://omnifaces.org/functions"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
-    <h:head>
-        <title>Error Informations</title>
-        <link rel="stylesheet" href="${request.contextPath}/resources/css/login.css" type="text/css" media="screen" />
-        <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
-    </h:head>
-    <h:body>
-                <div id="art-page-background-middle-texture">
-                    <div id="art-page-background-glare">
-        <div align="left" style="margin-top: 10px">
-            <p:panel header="An error occurred, please report it to your administrator. Capture and Send!" style="margin: 10px">
-                <h:panelGrid columns="2" style="color: #ff3333">		
-                    <h:outputText value="Date/time:" /> <h:outputText value="#{of:formatDate(now, 'yyyy-MM-dd HH:mm:ss')}" />
-                    <h:outputText value="User agent" /> <h:outputText value="#{header['user-agent']}" />
-                    <h:outputText value="User IP" /> <h:outputText value="#{empty header['x-forwarded-for'] ? request.remoteAddr : fn:split(header['x-forwarded-for'], ',')[0]}" />
-                    <h:outputText value="Request URI:" /> <a href="#{requestScope['javax.servlet.error.request_uri']}">#{requestScope['javax.servlet.error.request_uri']}</a>
-                    <h:outputText value="Ajax request" /> <h:outputText value="#{facesContext.partialViewContext.ajaxRequest ? 'Yes' : 'No'}" />
-                    <h:outputText value="Status code" /> <h:outputText value="#{requestScope['javax.servlet.error.status_code']}" />
-                    <h:outputText value="Exception type" /> <h:outputText value="#{requestScope['javax.servlet.error.exception_type']}" />
-                    <h:outputText value="Exception message" /> <h:outputText value="#{requestScope['javax.servlet.error.message']}" />
-                    <h:outputText value="Stack trace" /> <pre><code>#{of:printStackTrace(requestScope['javax.servlet.error.exception'])}</code></pre>
-                </h:panelGrid>
-            </p:panel>
-            <p:button href="/" value="Go to Login Page" icon="ui-icon-locked" style="width: 150px;margin-top: 5px;margin-bottom: 10px;margin-right: 10px;float: right" title="Log Out"/>
-        </div>
-                    </div>
-        </div>
-    </h:body>
-</html>
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Error Informations</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	    <h:outputScript name="layout.js" library="js" />
+    <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans|Roboto' rel='stylesheet' type='text/css' /> -->
+
+    <h:outputStylesheet name="font-icon-layout.css" library="css" />
+    <h:outputStylesheet name="sentinel-layout.css" library="css" />
+    <h:outputStylesheet name="core-layout.css" library="css" />
+	</h:head>
+	<body class="fontRegular red-back">
+    
+    <div class="Container100 Top20Percent PosAbsolute MarAuto OvHidden">
+        <div class="Wid50 MarAuto OvHidden TexAlCenter">
+<p:graphicImage library="images" name="access-denied.png" width="100"  cache="true"/>
+            <div class="EmptyBox20"></div>
+            <span class="white Fs60 Wid100 DispBlock">Access Denied</span>
+            <span class="white Wid100 DispBlock Fs24">Please Check Your Permissions !</span><br />
+            <span class="white Wid100 DispBlock Fs12">Sorry, but you have no access to this page.<br />
+            </span>
+            <div class="EmptyBox20"></div>
+	<p:button value="Back to Dashboard" styleClass="Fs24" style="font-size: 16px!important;" href="/protected/home.htm"></p:button>
+                        
+<div class="EmptyBox50"></div>
+        </div>
+    </div></body>
+
+</html>

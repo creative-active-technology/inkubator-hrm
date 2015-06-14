@@ -262,16 +262,14 @@ public class HRMConstant {
     public static final Integer ORDER_BY_DSC = 1;
 
     /* Permit Classification */
-    public static final Integer DAY_FULL = 1;
-    public static final Integer DAY_PART = 0;
-
-    public static final Integer FROM_JANUARY = 1;
-    public static final Integer FROM_BEGIN_WORK = 0;
-    public static final Integer FROM_BEGIN_CONVERT = 2;
-
-    public static final Integer AVAILIBILITY_FULL = 0;
-    public static final Integer AVALILIBILITY_PER_MONTH = 1;
-    public static final Integer AVALILIBILITY_PER_DATE = 2;
+    public static final Integer PERMIT_DAY_FULL = 1;
+    public static final Integer PERMIT_DAY_PART = 0;
+    public static final Integer PERMIT_BASE_FROM_JANUARY_NEXT_PERIOD = 1;
+    public static final Integer PERMIT_BASE_FROM_JOIN_DATE_NEXT_PERIOD = 0;
+    public static final Integer PERMIT_BASE_FROM_JOIN_DATE_THIS_PERIOD = 2;
+    public static final Integer PERMIT_AVAILIBILITY_FULL = 0;
+    public static final Integer PERMIT_AVALILIBILITY_PER_MONTH = 1;
+    public static final Integer PERMIT_AVALILIBILITY_PER_DATE = 2;
 
     /*Mecine Finger */
     public static final Integer METHOD_UPLOAD_MACINE = 0;

@@ -32,5 +32,7 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
     public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
         
     public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(Long empDataId, Date dateFrom, Date dateUntill);
+    
+    public BusinessTravel getByEmpIdAndDate(long empId, Date doDate);
 
 }

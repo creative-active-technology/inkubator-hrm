@@ -24,6 +24,7 @@ import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -57,11 +58,11 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     }
 
     private void doSearchByParam(LeaveImplementationSearchParameter parameter, Criteria criteria) {
-    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
-        
-        if (StringUtils.isNotEmpty(parameter.getLeave())) {            
+
+        if (StringUtils.isNotEmpty(parameter.getLeave())) {
             criteria.add(Restrictions.like("leave.name", parameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
@@ -156,23 +157,23 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         if (parameter.getEndDate() != null) {
             criteria.add(Restrictions.eq("endDate", parameter.getEndDate()));
         }
-        
+
         if (StringUtils.isNotEmpty(parameter.getApprovalStatus())) {
             if (!activityNumbers.isEmpty()) {
 
                 criteria.add(Restrictions.in("approvalActivityNumber", activityNumbers));
-            }else{
+            } else {
                 criteria.add(Restrictions.eq("approvalActivityNumber", "0"));
             }
         }
-        
-        if(empDataId != 0L){
+
+        if (empDataId != 0L) {
             criteria.add(Restrictions.eq("empData.id", empDataId));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
     }
-    
+
     @Override
     public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -185,14 +186,15 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 
     @Override
     public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
-        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
         criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
         criteria.setFetchMode("leave", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("empData.id", empDataId));       
+        criteria.add(Restrictions.eq("empData.id", empDataId));
         return criteria.list();
     }
+
 
 	@Override
 	public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId,	Date dateFrom, Date dateUntill) {
@@ -206,4 +208,14 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         criteria.add(Restrictions.le("startDate", dateUntill));
         return criteria.list();
 	}
+
+    @Override
+    public LeaveImplementation getByEmpStardDateEndDate(long empId, Date doDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empId));
+        criteria.add(Restrictions.le("startDate", doDate));
+        criteria.add(Restrictions.ge("endDate", doDate));
+        return (LeaveImplementation) criteria.uniqueResult();
+    }
 }

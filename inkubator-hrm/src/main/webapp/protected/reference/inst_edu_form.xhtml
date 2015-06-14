@@ -99,7 +99,7 @@
                             </p:column>
                             <p:column style="width: 80%">
                                 <p:selectOneMenu id="provinceIdA" value="#{institutionEducationFormController.institutionEducationModel.provinceId}" required="true" valueChangeListener="#{institutionEducationFormController.provinceChanged}"
-                                                 style="width: 200px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}">
+                                                 style="width: 200px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{institutionEducationFormController.disabledProvince}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{institutionEducationFormController.provinces}"  />
                                     <p:ajax update="cityIdA, cityId" event="change" />
@@ -111,7 +111,7 @@
                         
                         <p:row>
                             <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="cityId" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="cityIdA" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 80%">
                                 <p:focus for ="cityIdA">

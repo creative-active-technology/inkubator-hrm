@@ -9,6 +9,7 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
+import java.util.Date;
 
 /**
  *
@@ -23,9 +24,11 @@ public interface MedicalCareDao extends IDAO<MedicalCare> {
     public MedicalCare getEntityWithDetail(Long id);
 
     public List<MedicalCare> getAllDataWithDetail();
-    
+
     public MedicalCare getEntityWithNameAndNik(Long id);
     
     public List<MedicalCare> getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(Long empDataId, Date dateFrom, Date dateUntill);
+
+    public MedicalCare getByEmpIdAndDate(long empId, Date doDate);
 
 }
