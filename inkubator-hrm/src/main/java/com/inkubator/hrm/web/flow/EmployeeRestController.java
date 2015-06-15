@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.flow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,43 +42,63 @@ public class EmployeeRestController {
     private BioDataService bioDataService;
     
     @RequestMapping(method = RequestMethod.GET, value ="/get_all")
-    public @ResponseBody String getAllData(){
-    	String result = StringUtils.EMPTY;
+    public @ResponseBody EmployeeRestHeader getAllData(){
+    	EmployeeRestHeader header = new EmployeeRestHeader();
+    	List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
     	try {
-    		List<EmployeeRestModel> listEmpData = empDataService.getAllDataRestModel(StringUtils.EMPTY);
-    		result = jsonConverter.getJson(listEmpData);
+    		listEmpData = empDataService.getAllDataRestModel(StringUtils.EMPTY);
+    		header.setStatus(0);
+        	header.setErrorMessage("");
+        	header.setNumberOfProfiles(listEmpData.size());
+        	header.setProfiles(listEmpData);        		        	
+        	
     	} catch (Exception ex) {
             LOGGER.error("error", ex);
+            header.setStatus(1);
+   			header.setErrorMessage(ex.getMessage());
         }
-    	return result;
+    	return header;
     }
     
     @RequestMapping(method = RequestMethod.GET, value ="/get_all/{nikOrName}")
-    public @ResponseBody String getAllData(@PathVariable String nikOrName){
-    	String result = StringUtils.EMPTY;
+    public @ResponseBody EmployeeRestHeader getAllData(@PathVariable String nikOrName){
+    	EmployeeRestHeader header = new EmployeeRestHeader();
+    	List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
     	try {
-    		List<EmployeeRestModel> listEmpData = empDataService.getAllDataRestModel(nikOrName);
-    		result = jsonConverter.getJson(listEmpData);
+    		listEmpData = empDataService.getAllDataRestModel(nikOrName);
+    		if(!listEmpData.isEmpty()){
+    			header.setStatus(0);
+            	header.setErrorMessage("");
+            	header.setNumberOfProfiles(listEmpData.size());
+            	header.setProfiles(listEmpData);
+            	
+    		} else {
+    			header.setStatus(1);
+        		header.setErrorMessage("Tidak terdapat data karyawan untuk nik/name : " + nikOrName);
+        		header.setNumberOfProfiles(0);
+    		}
+    		        		        	
+        	
     	} catch (Exception ex) {
             LOGGER.error("error", ex);
+            header.setStatus(1);
+   			header.setErrorMessage(ex.getMessage());
         }
-    	return result;
+    	return header;
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/get_detail/{nik}")
     public @ResponseBody
-    String getDetailByNik(@PathVariable String nik) {
-        String result = StringUtils.EMPTY;
+    EmployeeRestHeader getDetailByNik(@PathVariable String nik) {
+        EmployeeRestHeader header = new EmployeeRestHeader();
         try {
-        	EmployeeRestHeader header = new EmployeeRestHeader();
+        	
         	EmployeeRestModel model = empDataService.getRestModelByNik(nik);
-        	if(model != null) {
-        		
+        	if(model != null) {        		
         		header.setStatus(0);
         		header.setErrorMessage("");
         		header.setNumberOfProfiles(1);
-        		header.setProfile(model);
-        		
+        		header.setProfile(model);        		
         		
         	} else {
         		header.setStatus(1);
@@ -85,23 +106,29 @@ public class EmployeeRestController {
         		header.setNumberOfProfiles(0);
         	}
         	
-        	result = jsonConverter.getJson(header);
         } catch (Exception ex) {
-           LOGGER.error("error", ex);
+        	LOGGER.error("error", ex);
+           	header.setStatus(1);
+   			header.setErrorMessage(ex.getMessage());
         }
-        return result;
+        return header;
     }
     
     @RequestMapping(method = RequestMethod.POST, value = "/upload_photo/{nik}")
     public @ResponseBody
-    String updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
-        String result = StringUtils.EMPTY;
+    EmployeeRestHeader updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+        EmployeeRestHeader header = new EmployeeRestHeader();
         try {
         	bioDataService.updatePhoto(nik, file);
+        	header.setStatus(0);
+    		header.setErrorMessage("");
+    		
         } catch (Exception ex) {
             LOGGER.error("error", ex);
+            header.setStatus(1);
+    		header.setErrorMessage(ex.getMessage());
          }
-        return result;
+        return header;
     }
 
 }

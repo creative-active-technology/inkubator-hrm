@@ -874,8 +874,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if(StringUtils.isNotEmpty(nikOrName)) {
 	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 	        Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.like("bioData.firstName", nikOrName, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("bioData.lastName", nikOrName, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
 	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
 	        criteria.add(disjunction);
         }
