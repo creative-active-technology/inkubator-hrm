@@ -26,5 +26,7 @@ public interface MedicalCareDao extends IDAO<MedicalCare> {
     public MedicalCare getEntityWithNameAndNik(Long id);
 
     public MedicalCare getByEmpIdAndDate(long empId, Date doDate);
+    
+    public List<MedicalCare> getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
 }

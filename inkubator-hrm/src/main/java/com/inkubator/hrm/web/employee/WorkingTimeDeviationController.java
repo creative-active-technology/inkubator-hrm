@@ -60,4 +60,8 @@ public class WorkingTimeDeviationController extends BaseController {
         this.tempAttendanceRealizationSearchParameter = tempAttendanceRealizationSearchParameter;
     }
 
+    public void doSearch(){
+        System.out.println(" sfsdfsdfsd "+tempAttendanceRealizationSearchParameter.getParameter());
+        workingTimeDeviationLazyDataModel=null;
+    }
 }

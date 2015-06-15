@@ -31,7 +31,7 @@ public class WorkingTimeDeviationLazyDataModel extends LazyDataModel<WorkingTime
 
     @Override
     public List<WorkingTimeDeviation> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        LOGGER.info("Step Load Lazy data Model");
+        LOGGER.info("Step Load Lazy data Model "+sortField);
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {

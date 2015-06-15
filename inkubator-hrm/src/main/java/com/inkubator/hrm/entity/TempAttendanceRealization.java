@@ -33,7 +33,7 @@ public class TempAttendanceRealization  implements java.io.Serializable {
      private Integer permit;
      private Integer sick;
      private Integer duty;
-     private Long overtime;
+     private Float overtime;
      private Date createdOn;
      private String createdBy;
 
@@ -141,11 +141,11 @@ public class TempAttendanceRealization  implements java.io.Serializable {
     }
     
      @Column(name="overtime")
-    public Long getOvertime() {
+    public Float getOvertime() {
         return this.overtime;
     }
     
-    public void setOvertime(Long overtime) {
+    public void setOvertime(Float overtime) {
         this.overtime = overtime;
     }
     

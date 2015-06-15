@@ -53,9 +53,9 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames" >
             <list>
-                <value>messages</value>
-                <value>messages_in</value>
-                <value>messages_en</value>
+                <value>Messages</value>
+                <value>Messages_in</value>
+                <value>Messages_en</value>
             </list>
         </property>
     </bean>

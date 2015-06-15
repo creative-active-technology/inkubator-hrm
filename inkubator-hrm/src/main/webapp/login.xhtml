@@ -16,13 +16,13 @@
                 <div id="art-page-background-glare-image">
                     <div id="header_login">
                         <div id="header_login_left">
-                            <h:panelGrid columns="1" styleClass="">
+                            <h:panelGrid columns="1">
                                 <h:outputLabel value="#{appmsg['global.application_name']}" style="color:#ff9900"/>        
                                 <h:outputLabel value="#{appmsg['global.company_name']}" style="font-size: 12px!important"/>
                             </h:panelGrid>
                         </div>
                         <div style="float: right">
-                            <h:panelGrid columns="1" style="padding-top: 3px">
+                            <h:panelGrid columns="1" style="padding-top: 0px">
                                 <p:graphicImage value="./resources/images/inkuba_logo_4.png"  width="210" style="margin-right: 10px; margin-top: 7px;" cache="true" />
                             </h:panelGrid>
                         </div> 
@@ -38,9 +38,9 @@
                                 <h:inputHidden value="#{loginController.selectedLanguage}"/>
                                 <h:panelGrid style="float: left;margin-left: 20px">
                                     <!--<p:lightBox iframe="true" style="margin-top: 5px;" width="1200px">-->
-                                                                            <h:outputLink value="${request.contextPath}/over_view.htm" title="OPTIMA HR Overview">
-                                                                                <h:outputText value="Optima-HR Overview"  style="font-size: 18px; font-weight: bold;color: #066"/>
-                                                                            </h:outputLink>
+                                    <h:outputLink value="${request.contextPath}/over_view.htm" title="OPTIMA HR Overview">
+                                        <h:outputText value="Optima-HR Overview"  style="font-size: 18px; font-weight: bold;color: #066"/>
+                                    </h:outputLink>
                                     <!--</p:lightBox>-->
                                     <!--<p:commandButton id="movieBtn" value="Dynamic" type="button" />-->
                                 </h:panelGrid>
@@ -56,11 +56,11 @@
                                 </h:panelGrid>
                                 <div style="clear: both"/>
                                 <p:separator style="margin-left: 20px;margin-right: 20px;margin-top: 5px"/>
-<!--                                <p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:820px" my="center bottom" >
-                                    <p:media value="./resources/media/OptimaHR for hr solution.mp4" width="800" height="600">
-                                        <f:param name="autoPlay" value="false" />
-                                    </p:media>
-                                </p:overlayPanel>-->
+                                <!--                                <p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade" dynamic="true" style="width:820px" my="center bottom" >
+                                                                    <p:media value="./resources/media/OptimaHR for hr solution.mp4" width="800" height="600">
+                                                                        <f:param name="autoPlay" value="false" />
+                                                                    </p:media>
+                                                                </p:overlayPanel>-->
                             </h:form>
                         </div>
                         <h:panelGrid style="float: right">
@@ -152,6 +152,7 @@
                     </div> 
                 </div>
             </div>
+
         </div>
 
         <p:dialog id="dialogResetId" widgetVar="dialogReset" modal="true" width="450" height="155" header="#{appmsg['loginform.form_reset_password']}"
