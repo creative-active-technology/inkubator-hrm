@@ -187,6 +187,7 @@
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/flow-protected/*</url-pattern>
+        <url-pattern>/REST/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
