@@ -189,6 +189,13 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
+
+	@Override
+	public void deleteAllData() {
+		 Query query = getCurrentSession().createQuery("delete from TempAttendanceRealization");
+	        query.executeUpdate();
+	}
+
     @Override
     public Long totalDayPresent() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

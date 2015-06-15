@@ -29,7 +29,8 @@ public class WorkingTimeDeviationController extends BaseController {
 //    private List<WorkingTimeDeviation> deviations;
     private LazyDataModel<WorkingTimeDeviation> workingTimeDeviationLazyDataModel;
     private TempAttendanceRealizationSearchParameter tempAttendanceRealizationSearchParameter;
-
+    private WorkingTimeDeviation selectedWorkingTimeDeviation;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -60,8 +61,26 @@ public class WorkingTimeDeviationController extends BaseController {
         this.tempAttendanceRealizationSearchParameter = tempAttendanceRealizationSearchParameter;
     }
 
+	public WorkingTimeDeviation getSelectedWorkingTimeDeviation() {
+		return selectedWorkingTimeDeviation;
+	}
+
+	public void setSelectedWorkingTimeDeviation(
+			WorkingTimeDeviation selectedWorkingTimeDeviation) {
+		this.selectedWorkingTimeDeviation = selectedWorkingTimeDeviation;
+	}
+
+	public TempAttendanceRealizationService getTempAttendanceRealizationService() {
+		return tempAttendanceRealizationService;
+	}
+
+    public String doDetail(){
+        return "/protected/employee/working_time_deviation_detail.htm?faces-redirect=true&execution=e" + selectedWorkingTimeDeviation.getEmpId();
+    }
+    
     public void doSearch(){
         System.out.println(" sfsdfsdfsd "+tempAttendanceRealizationSearchParameter.getParameter());
         workingTimeDeviationLazyDataModel=null;
     }
+
 }

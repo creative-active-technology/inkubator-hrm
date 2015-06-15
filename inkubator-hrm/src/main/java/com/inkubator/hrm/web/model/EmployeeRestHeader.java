@@ -6,6 +6,10 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  *
@@ -15,8 +19,12 @@ public class EmployeeRestHeader implements Serializable {
 
 	private Integer status;
 	private String errorMessage;
+	@JsonInclude(value=Include.NON_NULL)
 	private Integer numberOfProfiles;
+	@JsonInclude(value=Include.NON_NULL)
     private EmployeeRestModel profile;
+	@JsonInclude(value=Include.NON_NULL)
+	private List<EmployeeRestModel> profiles;
     
 	public Integer getStatus() {
 		return status;
@@ -41,6 +49,12 @@ public class EmployeeRestHeader implements Serializable {
 	}
 	public void setProfile(EmployeeRestModel profile) {
 		this.profile = profile;
+	}
+	public List<EmployeeRestModel> getProfiles() {
+		return profiles;
+	}
+	public void setProfiles(List<EmployeeRestModel> profiles) {
+		this.profiles = profiles;
 	}
     
 }

@@ -359,8 +359,10 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		BioData bioData = empData.getBioData();
 		
 		//delete old photo (if any)
-		File oldFile = new File(bioData.getPathFoto());            
-        FileUtils.deleteQuietly(oldFile);
+		if(bioData.getPathFoto() != null) {
+			File oldFile = new File(bioData.getPathFoto());            
+			FileUtils.deleteQuietly(oldFile);
+		}
         
         //save new photo to disk
 		String pathPhoto = facesIO.getPathUpload() + bioData.getId() + "_" + multipart.getOriginalFilename();

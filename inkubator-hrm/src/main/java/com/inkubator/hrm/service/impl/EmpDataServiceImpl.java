@@ -943,6 +943,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception {
         return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception {
+		return empDataDao.isEmpDataWithNullWtGroupWorkingExist();
+	}
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -954,8 +960,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	for(EmpData empData : listEmpData){
     		BioData bioData = empData.getBioData();
     		if(empData != null && bioData != null) {
-    			EmployeeRestModel model = this.bindToModel(bioData);
-    			listModel.add(model);
+    			try {
+	    			EmployeeRestModel model = this.bindToRestModel(empData, bioData);
+	    			listModel.add(model);
+    			} catch (NullPointerException ex){
+    				LOGGER.error("Employee Nik : "+ empData.getNikWithFullName() +", Error Null Pointer " + ex);
+    			}
+    			
     		}
     	}
     	
@@ -970,16 +981,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		
 		if(empData != null && empData.getBioData() != null) {
 			BioData bioData = empData.getBioData();
-			model = this.bindToModel(bioData);
+			model = this.bindToRestModel(empData, bioData);
 		}
 		return model;
 	}
 	
-	private EmployeeRestModel bindToModel(BioData bioData) throws ParseException{
+	private EmployeeRestModel bindToRestModel(EmpData empData,BioData bioData) throws ParseException{
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
 		
 		EmployeeRestModel model = new EmployeeRestModel();
+		model.setNik(empData.getNik());
 		model.setTitle(bioData.getTitle());
 		model.setFirstname(bioData.getFirstName());
 		model.setLastname(bioData.getLastName());

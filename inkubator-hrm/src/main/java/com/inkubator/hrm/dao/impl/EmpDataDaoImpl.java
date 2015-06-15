@@ -874,8 +874,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if(StringUtils.isNotEmpty(nikOrName)) {
 	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 	        Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.like("bioData.firstName", nikOrName, MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("bioData.lastName", nikOrName, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
 	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
 	        criteria.add(disjunction);
         }
@@ -912,7 +911,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {    	
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -923,6 +922,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        
         return criteria.list();
     }
 
@@ -1827,6 +1827,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
     }
 
+    
+	@Override
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+		criteria.add(Restrictions.isNull("wtGroupWorking"));
+		return !criteria.list().isEmpty();
+	}
+
+
     @Override
     public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -1885,4 +1895,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public EmpData getByIdWithBioData(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        return (EmpData) criteria.uniqueResult();
+	}
 }

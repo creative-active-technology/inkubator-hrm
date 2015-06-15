@@ -2,15 +2,19 @@ package com.inkubator.hrm.entity;
 // Generated May 29, 2014 11:36:01 AM by Hibernate Tools 3.6.0
 
 import com.inkubator.hrm.HRMConstant;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,6 +47,7 @@ public class WtOverTime implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private WtHitungLembur wtHitungLembur;
     private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
     private Set<WtWorkingHour> wtWorkingHours = new HashSet<WtWorkingHour>(0);
@@ -273,5 +278,15 @@ public class WtOverTime implements java.io.Serializable {
     
     public void setImplementationOfOvertimes(Set<ImplementationOfOverTime> implementationOfOvertimes) {
         this.implementationOfOvertimes = implementationOfOvertimes;
+    }
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="hitung_lembur_id")
+    public WtHitungLembur getWtHitungLembur() {
+        return this.wtHitungLembur;
+    }
+    
+    public void setWtHitungLembur(WtHitungLembur wtHitungLembur) {
+        this.wtHitungLembur = wtHitungLembur;
     }
 }
