@@ -258,8 +258,12 @@ public class LoginHistoryServiceImpl extends IServiceImpl implements LoginHistor
 
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, "Information Login", infoMessages);
 //        pushContext.push(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, model);
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, facesMessage);
+
+        if (EventBusFactory.getDefault() != null) {
+            EventBus eventBus = EventBusFactory.getDefault().eventBus();
+            eventBus.publish(HRMConstant.NOTIFICATION_LOGIN_CHANEL_SOCKET, facesMessage);
+        }
+
     }
 
     @Override

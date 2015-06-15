@@ -865,6 +865,21 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         return criteria.list();
     }
+    
+    @Override
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        if(StringUtils.isNotEmpty(nikOrName)) {
+	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+	        Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+	        criteria.add(disjunction);
+        }
+        return criteria.list();
+    }
 
     @Override
     public Long getTotalEmpDataNotTerminate() {
@@ -896,7 +911,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {    	
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -907,6 +922,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        
         return criteria.list();
     }
 
@@ -1811,8 +1827,18 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
     }
 
+    
+	@Override
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+		criteria.add(Restrictions.isNull("wtGroupWorking"));
+		return !criteria.list().isEmpty();
+	}
+
+
     @Override
-    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult) {
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -1824,10 +1850,25 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (parameter.getNik() != null) {
             criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
         }
-
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (parameter.getName() != null) {
-            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+//            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
+
+        System.out.println("nilai ordernya " + order);
+        String sorting = "bio." + order;
+//        if (order==null) {
+//            criteria.addOrder(order);
+//        } else {
+//            if (order.isAscending()) {
+//                System.out.println(" asc");
+//                criteria.addOrder(Order.asc(sorting));
+//            } else {
+//                   System.out.println(" desc");
+//                criteria.addOrder(Order.desc(sorting));
+//            }
+//        }
 
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResult);
@@ -1849,7 +1890,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 
         if (parameter.getName() != null) {
-            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

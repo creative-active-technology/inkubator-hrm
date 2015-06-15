@@ -140,6 +140,7 @@ public class HomeDashboardController extends BaseController {
 
         persentasiKehadiranPerWeek = new CartesianChartModel();
         barChartModel = new BarChartModel();
+        barChartModel.setAnimate(true);
         ChartSeries itpercent = new ChartSeries();
         itpercent.setLabel("IT & RND");
         itpercent.set("Minggu 1", 98);

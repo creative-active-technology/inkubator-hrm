@@ -8,7 +8,10 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -97,5 +100,18 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
         criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
         return (ImplementationOfOverTime) criteria.uniqueResult();
     }
+    
+    @Override
+	public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate) {
+		 	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());	        
+	        criteria.setFetchMode("empData", FetchMode.JOIN);
+	        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+	        criteria.setFetchMode("wtOverTime", FetchMode.JOIN);
+	        criteria.setFetchMode("wtOverTime.wtHitungLembur", FetchMode.JOIN);
+	        criteria.add(Restrictions.eq("empData.id", empDataId));
+	        criteria.add(Restrictions.ge("implementationDate", startDate));
+	        criteria.add(Restrictions.le("implementationDate", endDate));
+	        return criteria.list();
+	}
     
 }

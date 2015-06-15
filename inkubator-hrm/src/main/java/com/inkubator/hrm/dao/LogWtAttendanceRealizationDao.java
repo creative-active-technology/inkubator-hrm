@@ -5,14 +5,14 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.LogAttendanceRealization;
+import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 
 /**
 *
 * @author Ahmad Mudzakkir Amal
 */
-public interface LogAttendanceRealizationDao extends IDAO<LogAttendanceRealization> {
+public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceRealization> {
 
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 

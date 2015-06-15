@@ -77,4 +77,10 @@ public class WorkingTimeDeviationController extends BaseController {
     public String doDetail(){
         return "/protected/employee/working_time_deviation_detail.htm?faces-redirect=true&execution=e" + selectedWorkingTimeDeviation.getEmpId();
     }
+    
+    public void doSearch(){
+        System.out.println(" sfsdfsdfsd "+tempAttendanceRealizationSearchParameter.getParameter());
+        workingTimeDeviationLazyDataModel=null;
+    }
+
 }

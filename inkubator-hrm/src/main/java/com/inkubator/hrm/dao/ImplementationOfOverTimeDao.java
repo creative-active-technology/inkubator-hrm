@@ -7,7 +7,10 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
+
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -26,4 +29,6 @@ public interface ImplementationOfOverTimeDao extends IDAO<ImplementationOfOverTi
     public Long getByCode(String code);
     
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber);
+    
+    public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate);
 }

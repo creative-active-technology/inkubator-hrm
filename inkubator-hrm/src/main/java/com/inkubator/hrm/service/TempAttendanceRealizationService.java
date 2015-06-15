@@ -37,6 +37,12 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception;
 
+    public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception;
+    
+    public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception;
+    
+    public void deleteAllData() throws Exception;
+
     public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;

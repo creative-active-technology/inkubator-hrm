@@ -6,7 +6,7 @@
 package com.inkubator.hrm.web.lazymodel;
 
 import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.service.LogAttendanceRealizationService;
+import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
@@ -28,11 +28,11 @@ import org.primefaces.model.SortOrder;
 public class LogAttendanceRealizationVmLazyDataModel extends LazyDataModel<TempAttendanceRealizationViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(LogAttendanceRealizationVmLazyDataModel.class);
     private Long wtPeriodId;    
-    private final LogAttendanceRealizationService service;
+    private final LogWtAttendanceRealizationService service;
     private List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = new ArrayList<>();
     private Integer jumlahData;
 
-    public LogAttendanceRealizationVmLazyDataModel(LogAttendanceRealizationService service, Long wtPeriodId) {
+    public LogAttendanceRealizationVmLazyDataModel(LogWtAttendanceRealizationService service, Long wtPeriodId) {
         this.wtPeriodId = wtPeriodId;
         this.service = service;
         
