@@ -71,9 +71,11 @@ import com.inkubator.hrm.web.model.DetilAttendateRelaization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 
 import java.util.ArrayList;
 
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -82,10 +84,9 @@ import java.util.ArrayList;
 @Service(value = "tempAttendanceRealizationService")
 @Lazy
 public class TempAttendanceRealizationServiceImpl extends IServiceImpl implements TempAttendanceRealizationService {
-    
+
     @Autowired
     private TempAttendanceRealizationDao tempAttendanceRealizationDao;
-    
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
     @Autowired
@@ -330,6 +331,8 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
         attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
+        attendanceModel.setTotaldayPresent(tempAttendanceRealizationDao.totalDayPresent());
+        attendanceModel.setTotaldaySchedule(tempAttendanceRealizationDao.totalDaySchedule());
         return attendanceModel;
 
     }
@@ -367,6 +370,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception {
         WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
         DetilRealizationAttendanceModel attendanceModel = new DetilRealizationAttendanceModel();
+
 //        Perhatia dua data yang di perbandingkan harus sama soring ascrnding atau descending 
         List<TempJadwalKaryawan> dataToCalculate = tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
 //        List<TempProcessReadFinger> presentAteendace = tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
@@ -441,6 +445,11 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //                }
 //            }
 //            i++;
+            System.out.println(" Waktu kerjanya adalaha :" + tempJadwal.getTanggalWaktuKerja());
+            if (tempJadwal.getTanggalWaktuKerja().equals(new Date())) {
+                break;
+            }
+
         }
 
         attendanceModel.setStardDate(wtPeriode.getFromPeriode());
@@ -452,7 +461,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //        attendanceModel.setDataToShow(tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, attendanceModel.getStardDate(), attendanceModel.getEndDate()));
         return attendanceModel;
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
@@ -1139,4 +1148,75 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
             return DATE_FORMAT.format(d1).compareTo(DATE_FORMAT.format(d2));
         }
     }
+
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception {
+//        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+        List<WorkingTimeDeviation> dataToShow = new ArrayList<>();
+        List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults, order);
+        for (EmpData emp : getAllEmmp) {
+            Long totalDeviation = tempProcessReadFingerDao.getTotalTimeDeviation(emp.getId());
+            WorkingTimeDeviation deviation = new WorkingTimeDeviation();
+//            deviation.setTotalDeviation(totalDeviation);
+            deviation.setEmpId(emp.getId());
+            TempAttendanceRealization attendanceRealization = tempAttendanceRealizationDao.getByEmp(emp.getId());
+            if (attendanceRealization != null) {
+                deviation.setTotalOverTime(attendanceRealization.getOvertime().longValue());
+                deviation.setAttendaceRealization(attendanceRealization.getAttendanceDaysPresent() + "/" + attendanceRealization.getAttendanceDaysSchedule());
+            }
+
+//            Long totalOverTime = tempAttendanceRealizationDao.getTotalOverTime(emp.getId());
+//            deviation.setTotalOverTime(totalOverTime);
+            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
+            if (totalDeviation != null) {
+                deviation.setTotalDeviation(totalDeviation);
+//                if (totalDeviation < 0) {
+//                    long totalAbsolut = -1 * totalDeviation;
+//                    if (totalAbsolut >= 60) {
+//                        long jam = totalAbsolut / 60;
+//                        long minute = totalAbsolut % 60;
+//                        deviation.setMinuteDefect(minute);
+//                        deviation.setHourDefect(jam);
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+////                    Date date = new Date(totalDeviation * (-1));
+////                    deviation.setDateDefect(date);
+////                    deviation.setHourDefect(totalDeviation / 60);
+////                    deviation.setMinuteDefect(totalDeviation * (-1));
+//                } else {
+////                    Date date = new Date(totalDeviation);
+////                    deviation.setDateDefect(date);
+//                    Long time = totalDeviation * 60 * 1000;
+//                    Date date = new Date(time);
+//                    if (totalDeviation >= 60) {
+//                        long jam = totalDeviation / 60;
+//                        long minute = totalDeviation % 60;
+//                        deviation.setExtraMinute(minute);
+//                        deviation.setExtraHour(jam);
+//
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+
+            }
+            deviation.setOverTime(null);
+            dataToShow.add(deviation);
+
+        }
+        return dataToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception {
+        return empDataDao.getTotalNotTerminatePaging(parameter);
+    }
+    
+    
+
 }

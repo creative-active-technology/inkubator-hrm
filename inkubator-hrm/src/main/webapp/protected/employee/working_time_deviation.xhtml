@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="selisih_waktu_kerja.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Selisih Waktu Kerja" styleClass="header_big" />
+                                <p:outputLabel value="Selisih Waktu Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="codeId" value="Periode Proses" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="codeId" value="#{empAttendaceRealizationController.attendanceModel.stardDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                                -
+                                <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.endDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row> 
+                        <p:row >
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="name" value="#{empAttendaceRealizationController.attendanceModel.totalCuti} #{appmsg['global.people_only']}"  />
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalIzin} #{appmsg['global.people_only']}" />
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalSick} #{appmsg['global.people_only']}"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalOnDuty} #{appmsg['global.people_only']}"/>
+                            </p:column>
+                        </p:row> 
+                    </p:panelGrid>
+                    <p:growl id="empDataGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="userViewId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{workingTimeDeviationController.tempAttendanceRealizationSearchParameter.keyParam}"
+                                                     style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="nik"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
+<!--                                        <f:selectItem itemLabel="No Jabatan" itemValue="noJab" />
+                                        <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />-->
+                                    </p:selectOneMenu>
+                                    <p:inputText value="#{workingTimeDeviationController.tempAttendanceRealizationSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{workingTimeDeviationController.doSearch()}" style="width: 75px"  icon="ui-icon-search"
+                                                     styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId"  update="tableEmpDataId"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empAttendaceRealizationController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                                     label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+
+                        </p:toolbar>
+                        <p:focus for="pencarianId" />
+
+                        <p:dataTable  var="timeRealization"  value="#{workingTimeDeviationController.workingTimeDeviationLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 40%" sortBy="#{timeRealization.firstName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.empRealName}"/>
+                            </p:column>
+                            <p:column  style="width: 40%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Kehadiran"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.attendaceRealization}"/>
+                            </p:column>
+                            <p:column  style="width: 30%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Kelebihan Jam Kerja"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.totalDeviation}">
+                                    <f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 30%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Kekurangan Jam Kerja"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.totalDeviation}">
+                                    <f:converter converterId="minuteDeviationHumanReaderNegative" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 30%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Lembur"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.totalOverTime}">
+                                    <f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </p:outputLabel>
+                            </p:column>
+<!--                              <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="Kekurangan Menit"/>
+                                </f:facet>
+                                  <p:outputLabel value="#{timeRealization.minuteDefect}">
+                                </p:outputLabel>
+                            </p:column>-->
+<!--                            <p:column sortBy="#{timeRealization.minuteDefect}" style="width: 40%"> 
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{timeRealization.extraMinute}">
+                                </p:outputLabel>
+                            </p:column>-->
+                            <!--                            <p:column  style="width: 40%"> 
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Total"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value="#{timeRealization.totalDeviation}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.code}" style="width: 20%">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="No. Jabatan"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.code}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.name}" style="width: 40%">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Nama Jabatan"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.name}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.leave}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Cuti"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.leave}"/>
+                                                        </p:column>
+                                                        <p:column sortBy="#{timeRealization.permit}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Izin"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.permit}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.sick}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Sakit"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.sick}"/>
+                                                        </p:column>-->
+                            <!--                            <p:column sortBy="#{timeRealization.duty}" style="width: 15%;text-align: center">
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="Dinas"/>
+                                                            </f:facet>
+                                                            <p:outputLabel value= "#{timeRealization.duty}"/>
+                                                        </p:column>-->
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{empAttendaceRealizationController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{timeRealization}" target="#{empAttendaceRealizationController.selectedTempAttendanceRealization}" />
+                                </p:commandButton>
+
+                            </p:column>          
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{workingTimeDeviationController.workingTimeDeviationLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+
+
+
+
+
+                        <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+
+                    </h:form>
+
+                </div>
+<!--                <p:dialog widgetVar="confirmDialogEmpData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <h:form id="deleteDialogEmpDataId">
+                        <div align="center">
+                            <div align="center">
+                                <h:panelGrid columns="2" style="text-align: justify">
+                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                    <h:panelGroup>
+                                        <h:panelGrid style="text-align: center">
+                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        </h:panelGrid>
+                                    </h:panelGroup>
+                                </h:panelGrid>
+                            </div>
+                            <h:panelGrid  columns="3">
+                                <p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":"  styleClass="label_hrm" />
+                                <p:outputLabel value="#{empAttendaceRealizationController.selectedEmpData.bioData.firstName} #{empAttendaceRealizationController.selectedEmpData.bioData.lastName}" styleClass="isitext_hrm"/>
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="#{appmsg['global.yes']}" action="#{empAttendaceRealizationController.doDelete()}" update=":userViewId,:empDataGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
+                                             oncomplete="PF('confirmDialogEmpData').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogEmpData').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
+
+                        </div>
+                    </h:form>
+                </p:dialog>-->
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

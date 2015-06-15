@@ -5,9 +5,22 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionLoanDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -17,15 +30,6 @@ import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.service.LoanNewSchemaService;
 import com.inkubator.hrm.web.search.LoanNewSchemaSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-import java.util.Date;
-import java.util.List;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -39,6 +43,8 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
     private LoanNewSchemaDao loanNewSchemaDao;
     @Autowired
     private ApprovalDefinitionLoanDao approvalDefinitionLoanDao;
+    @Autowired
+    private ApprovalDefinitionDao approvalDefinitionDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -106,6 +112,13 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.loanNewSchemaDao.update(update);
+        
+        /** update specific name in approval definition related */
+		List<ApprovalDefinition> appDefs = Lambda.extract(update.getApprovalDefinitionLoanSchemas(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+		for(ApprovalDefinition appDef :appDefs){
+			appDef.setSpecificName(update.getLoanSchemaName());
+			approvalDefinitionDao.update(appDef);			
+		}
     }
 
     @Override

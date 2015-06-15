@@ -34,4 +34,8 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
     
     public Long getEmpTotalAttendanceBetweenDateFromAndDateUntill(Long empDataId, Date dateFrom, Date dateUntill);
 
+    public Long getTotalTimeDeviation(long empid);
+
+  
+
 }

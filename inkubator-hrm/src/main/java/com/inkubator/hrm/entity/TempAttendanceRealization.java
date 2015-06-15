@@ -140,7 +140,7 @@ public class TempAttendanceRealization  implements java.io.Serializable {
         this.sick = sick;
     }
     
-     @Column(name="overtime", precision=12, scale=0)
+     @Column(name="overtime")
     public Float getOvertime() {
         return this.overtime;
     }

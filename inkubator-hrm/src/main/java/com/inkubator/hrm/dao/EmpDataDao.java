@@ -30,6 +30,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
  *
@@ -166,5 +167,13 @@ public interface EmpDataDao extends IDAO<EmpData> {
     /* get name only */
     public String getBioDataNameByEmpDataId(Long id);
     
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order);
+    
+    public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter);
+    
     public Boolean isEmpDataWithNullWtGroupWorkingExist();
+    
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName);
+    
+    
 }

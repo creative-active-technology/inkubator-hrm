@@ -185,4 +185,14 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
     }
 
 
+    @Override
+    public Long getTotalTimeDeviation(long empid) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empid));
+        return (Long) criteria.setProjection(Projections.sum("totalMarginInMarginOut")).uniqueResult();
+
+    }
+
+   
+
 }

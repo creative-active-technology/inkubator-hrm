@@ -1,18 +1,12 @@
 package com.inkubator.hrm.service;
 
-import java.util.List;
-
-import org.hibernate.criterion.Order;
-
-import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.search.BankSearchParameter;
 import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import java.util.List;
 
@@ -20,7 +14,7 @@ import java.util.List;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public interface TempAttendanceRealizationService extends IService<TempAttendanceRealization> {    
+public interface TempAttendanceRealizationService extends IService<TempAttendanceRealization> {
 
     public List<TempAttendanceRealization> getByParam(TempAttendanceRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
@@ -35,14 +29,19 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public Long gettotalEmpOnDuty() throws Exception;
 
     public DetilRealizationAttendanceModel getStatisticEmpAttendaceDetil(long empId) throws Exception;
-    
+
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception;
-    
+
     public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception;
     
     public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception;
     
     public void deleteAllData() throws Exception;
+
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;
+
 }

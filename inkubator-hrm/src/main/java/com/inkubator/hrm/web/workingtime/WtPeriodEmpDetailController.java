@@ -200,7 +200,9 @@ public class WtPeriodEmpDetailController extends BaseController {
             if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_ACTIVE)){
                 lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
             }else  if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_VOID)){
+
                 lazyDataModel = new LogWtAttendanceRealizationVmLazyDataModel(logWtAttendanceRealizationService, model.getWtPeriodId().longValue());
+
             }
             
         }
@@ -298,14 +300,14 @@ public class WtPeriodEmpDetailController extends BaseController {
         this.model = model;
     }       
 
-	public void setLogWtAttendanceRealizationService(
-			LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
-		this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
-	}
 
 	public void setEmpDataService(EmpDataService empDataService) {
 		this.empDataService = empDataService;
 	}
+
+    public void setLogWtAttendanceRealizationService(LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
+        this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
+    }
         
         
     

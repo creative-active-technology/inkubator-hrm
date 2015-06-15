@@ -51,6 +51,7 @@ import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
  *
@@ -469,7 +470,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          */
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
-       
+
 //        criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
@@ -862,6 +863,22 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          * duplicate association path
          */
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        return criteria.list();
+    }
+    
+    @Override
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        if(StringUtils.isNotEmpty(nikOrName)) {
+	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+	        Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.like("bioData.firstName", nikOrName, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("bioData.lastName", nikOrName, MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+	        criteria.add(disjunction);
+        }
         return criteria.list();
     }
 
@@ -1810,6 +1827,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
     }
+
     
 	@Override
 	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
@@ -1818,4 +1836,64 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		criteria.add(Restrictions.isNull("wtGroupWorking"));
 		return !criteria.list().isEmpty();
 	}
+
+
+    @Override
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        if (parameter.getNik() != null) {
+            criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
+        }
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        if (parameter.getName() != null) {
+//            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+
+        System.out.println("nilai ordernya " + order);
+        String sorting = "bio." + order;
+//        if (order==null) {
+//            criteria.addOrder(order);
+//        } else {
+//            if (order.isAscending()) {
+//                System.out.println(" asc");
+//                criteria.addOrder(Order.asc(sorting));
+//            } else {
+//                   System.out.println(" desc");
+//                criteria.addOrder(Order.desc(sorting));
+//            }
+//        }
+
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResult);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        if (parameter.getNik() != null) {
+            criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
+        }
+
+        if (parameter.getName() != null) {
+            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

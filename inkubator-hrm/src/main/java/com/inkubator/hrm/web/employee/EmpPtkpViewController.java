@@ -5,23 +5,26 @@
  */
 package com.inkubator.hrm.web.employee;
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.web.lazymodel.EmpDataLazyDataModel;
-import com.inkubator.hrm.web.search.EmpDataSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
+
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.lazymodel.EmpDataPtkpLazyDataModel;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
 
 /**
  *
@@ -89,7 +92,7 @@ public class EmpPtkpViewController extends BaseController {
 
     public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
         if (empDataLazyDataModel == null) {
-            empDataLazyDataModel = new EmpDataLazyDataModel(empDataSearchParameter, empDataService);
+            empDataLazyDataModel = new EmpDataPtkpLazyDataModel(empDataSearchParameter, empDataService);
         }
         return empDataLazyDataModel;
     }

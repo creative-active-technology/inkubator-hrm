@@ -33,7 +33,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Class<TempAttendanceRealization> getEntityClass() {
-         return TempAttendanceRealization.class;
+        return TempAttendanceRealization.class;
     }
 
     @Override
@@ -109,7 +109,6 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     @Override
     public Long getTotalEmpLeav(long empId) {
-        System.out.println("No id nya "+empId);
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
@@ -141,17 +140,17 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         criteria.add(Restrictions.eq("ce.id", empId));
         return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
     }
-    
+
     @Override
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
-       
+
         final StringBuilder query = new StringBuilder("SELECT tempAttendanceRealization.id as id,");
         query.append(" wtPeriod.id AS wtPeriodId,");
         query.append(" wtGroupWorking.id AS wtGroupWorkingId,");
         query.append(" wtGroupWorking.name AS wtGroupWorkingName,");
         query.append(" empData.id AS empId,");
         query.append(" empData.nik AS nik,");
-        query.append(" CONCAT(bioData.firstName, ' ', bioData.lastName)  AS empName,");      
+        query.append(" CONCAT(bioData.firstName, ' ', bioData.lastName)  AS empName,");
         query.append(" tempAttendanceRealization.attendanceDaysSchedule AS attendanceDaysSchedule,");
         query.append(" tempAttendanceRealization.attendanceDaysPresent AS attendanceDaysPresent,");
         query.append(" tempAttendanceRealization.leave AS leaves,");
@@ -166,33 +165,62 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         query.append(" INNER JOIN tempAttendanceRealization.wtGroupWorking wtGroupWorking");
         query.append(" INNER JOIN tempAttendanceRealization.wtPeriod wtPeriod");
         query.append(" WHERE wtPeriod.id = :wtPeriodId ");
-        
-         return getCurrentSession().createQuery(query.toString())
-                    .setParameter("wtPeriodId", wtPeriodId)                   
-                    .setMaxResults(maxResults).setFirstResult(firstResult)                
-                    .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
-                    .list();
-        
+
+        return getCurrentSession().createQuery(query.toString())
+                .setParameter("wtPeriodId", wtPeriodId)
+                .setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
+                .list();
+
     }
 
     @Override
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) {
-        final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");       
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
         query.append(" FROM TempAttendanceRealization tempAttendanceRealization");
         query.append(" INNER JOIN tempAttendanceRealization.empData empData");
         query.append(" INNER JOIN empData.bioData bioData");
         query.append(" INNER JOIN tempAttendanceRealization.wtGroupWorking wtGroupWorking");
         query.append(" INNER JOIN tempAttendanceRealization.wtPeriod wtPeriod");
         query.append(" WHERE wtPeriod.id = :wtPeriodId ");
-        
-          Query hbm = getCurrentSession().createQuery(query.toString())
-                        .setParameter("wtPeriodId", wtPeriodId);
+
+        Query hbm = getCurrentSession().createQuery(query.toString())
+                .setParameter("wtPeriodId", wtPeriodId);
         return Long.valueOf(hbm.uniqueResult().toString());
     }
+
 
 	@Override
 	public void deleteAllData() {
 		 Query query = getCurrentSession().createQuery("delete from TempAttendanceRealization");
 	        query.executeUpdate();
 	}
+
+    @Override
+    public Long totalDayPresent() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("attendanceDaysPresent")).uniqueResult();
+    }
+
+    @Override
+    public Long totalDaySchedule() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.sum("attendanceDaysSchedule")).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalOverTime(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (Long) criteria.setProjection(Projections.sum("overtime")).uniqueResult();
+    }
+
+    @Override
+    public TempAttendanceRealization getByEmp(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (TempAttendanceRealization) criteria.uniqueResult();
+    }
 }

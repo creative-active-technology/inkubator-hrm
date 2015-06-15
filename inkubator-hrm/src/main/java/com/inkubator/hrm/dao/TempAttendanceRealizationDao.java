@@ -17,7 +17,7 @@ import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealization> {   
+public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealization> {
 
     public List<TempAttendanceRealization> getByParam(TempAttendanceRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
@@ -38,11 +38,19 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     public Long gettotalEmpOnDuty(long empId);
 
     public Long gettotalEmpOnSick(long empId);
-    
+
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
     
     public void deleteAllData();
+
+    public Long totalDayPresent();
+
+    public Long totalDaySchedule();
+
+    public Long getTotalOverTime(long empId);
+
+    public TempAttendanceRealization getByEmp(long empId);
 
 }
