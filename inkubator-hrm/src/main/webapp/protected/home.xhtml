@@ -17,10 +17,6 @@
                 Home
             </ui:define>
             <ui:define name="center">
-                <!--                <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
-                                    <h:outputText value="PrimeFaces Rocks!" style="font-size:36px;" />
-                                    <p:commandButton value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
-                                </p:notificationBar>-->
 
                 <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                     <p:row>
@@ -54,7 +50,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="createUserId6" value="${request.contextPath}/protected/organisation/job_title_diagram.htm">
+                                                <h:outputLink id="createUserId6" value="${request.contextPath}/protected/organisation/level_organisasi_diagram.htm">
                                                     <p:graphicImage library="images" name="diagram.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="#{appmsg['menu.organisation_setting']}" styleClass="label_quick"/>
@@ -623,9 +619,9 @@
                         </p:column>
                         <p:column style="width: 25%;" >
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
-                                <h:panelGrid style="margin-bottom: 3px">
+<!--                                <h:panelGrid style="margin-bottom: 3px">
                                     <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-60px !important;font-style:italic"/>
-                                </h:panelGrid>
+                                </h:panelGrid>-->
                                 <div align="center" style="margin-top: 5%">
                                     <p:calendar  mode="inline" id="inlineCal" />
                                     <!--<p:schedule />-->
