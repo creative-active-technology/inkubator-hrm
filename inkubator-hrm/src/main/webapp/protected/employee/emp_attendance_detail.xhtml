@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Detil Realisasi Kehadiran Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Detil Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['empAttendance.detail']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['empAttendance.detail_from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -57,7 +57,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Jabatan" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['empAttendance.position']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel  value="#{empAttendaceDetilRealizationController.empData.jabatanByJabatanId.code}" />
@@ -69,7 +69,7 @@
 
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="Periode Proses" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['empAttendance.process_period']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:outputLabel id="codeId" value="#{empAttendaceDetilRealizationController.attendanceModel.stardDate}">
@@ -83,7 +83,7 @@
                                         </p:row>
                                         <p:row >
                                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                                <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
+                                                <p:outputLabel for="name" value="#{appmsg['empAttendance.leave_employee_total']}" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
                                                 <p:outputLabel id="name" value="#{empAttendaceDetilRealizationController.attendanceModel.totalCuti} #{appmsg['admonitionType.admonitionType_day']}"  />
@@ -91,7 +91,7 @@
                                         </p:row> 
                                         <p:row>
                                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                                <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
+                                                <p:outputLabel value="#{appmsg['empAttendance.permit_employee_total']}" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
                                                 <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalIzin} #{appmsg['admonitionType.admonitionType_day']}" />
@@ -99,7 +99,7 @@
                                         </p:row> 
                                         <p:row>
                                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                                <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
+                                                <p:outputLabel value="#{appmsg['empAttendance.sick_employee_total']}" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
                                                 <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalSick} #{appmsg['admonitionType.admonitionType_day']}"/>
@@ -107,7 +107,7 @@
                                         </p:row> 
                                         <p:row>
                                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                                <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
+                                                <p:outputLabel value="#{appmsg['empAttendance.on_duty']}" styleClass="label_hrm"/>
                                             </p:column>
                                             <p:column  style="width: 75%">
                                                 <p:outputLabel  value="#{empAttendaceDetilRealizationController.attendanceModel.totalOnDuty} #{appmsg['admonitionType.admonitionType_day']}"/>
@@ -130,7 +130,7 @@
                             </p:column>
                             <p:column  style="width:120px"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Hari" />
+                                    <h:outputText value="#{appmsg['global.day']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{fingetRealization.asentDate}" >
                                     <f:convertDateTime pattern="EEEE"/>
@@ -138,7 +138,7 @@
                             </p:column> 
                             <p:column  style="width:120px"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal" />
+                                    <h:outputText value="#{appmsg['global.date']}" />
                                 </f:facet>
                                 <p:outputLabel value="#{fingetRealization.asentDate}" >
                                     <f:convertDateTime pattern="dd MMMM yyyy"/>
@@ -146,25 +146,25 @@
                             </p:column>
                             <p:column  style="width:120px" rendered="#{fingetRealization.isAttendaceKnowing}"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Realisasi" />
+                                    <h:outputText value="#{appmsg['empAttendance.realization']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiStatus}"  />
                             </p:column>
                             <p:column  style="width:120px" rendered="#{fingetRealization.isAttendaceKnowing}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Status Kehadiran" />
+                                    <h:outputText value="#{appmsg['empAttendance.attendance_status']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiAttendace}"  />
                             </p:column>
                             <p:column  style="width:120px" rendered="#{!fingetRealization.isAttendaceKnowing}"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Realisasi" />
+                                    <h:outputText value="#{appmsg['empAttendance.realization']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiStatus}"  style="color: red;font-weight: bold"/>
                             </p:column>
                             <p:column  style="width:120px" rendered="#{!fingetRealization.isAttendaceKnowing}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Status Kehadiran" />
+                                    <h:outputText value="#{appmsg['empAttendance.attendance_status']}" />
                                 </f:facet>
                                 <p:outputLabel value=" #{fingetRealization.realisasiAttendace}" style="color: red; font-weight: bold" />
                             </p:column>

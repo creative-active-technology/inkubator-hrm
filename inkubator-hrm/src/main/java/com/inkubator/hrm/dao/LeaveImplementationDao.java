@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -42,4 +43,7 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 
     public LeaveImplementation getByEmpStardDateEndDate(long empId, Date doDate);
 
+	
+    public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
+	
 }

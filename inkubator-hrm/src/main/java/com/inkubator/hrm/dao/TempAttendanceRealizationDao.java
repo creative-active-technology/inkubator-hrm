@@ -17,6 +17,10 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
 
     public List<TempAttendanceRealization> getByParam(TempAttendanceRealizationSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
+	public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
+	
+	public void deleteAllData();
+
     public Long getTotalTempAttendanceRealizationByParam(TempAttendanceRealizationSearchParameter searchParameter);
 
     public Long getTotalEmpLeav();
@@ -36,9 +40,7 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     public Long gettotalEmpOnSick(long empId);
 
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
-
+   
     public Long totalDayPresent();
 
     public Long totalDaySchedule();

@@ -190,6 +190,14 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 
     }
 
+
+	@Override
+	public void deleteAllData() {
+		  Query query = getCurrentSession().createQuery("delete from TempAttendanceRealization");
+	        query.executeUpdate();
+	}
+    
+
     @Override
     public Long totalDayPresent() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

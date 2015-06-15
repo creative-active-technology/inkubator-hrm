@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -176,6 +177,18 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.setFetchMode("permit", FetchMode.JOIN);
         return criteria.list();
     }
+
+
+	@Override
+	public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        criteria.setFetchMode("permitClassification", FetchMode.JOIN);        
+        criteria.add(Restrictions.eq("empData.id", empDataId));  
+        criteria.add(Restrictions.ge("startDate", dateFrom));
+        criteria.add(Restrictions.le("startDate", dateUntill));
+        return criteria.list();
+	}
 
     @Override
     public PermitImplementation getByEmpStardDateEndDate(long empId, Date doDate) {

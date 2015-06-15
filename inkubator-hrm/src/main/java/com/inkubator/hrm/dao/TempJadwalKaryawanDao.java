@@ -43,5 +43,7 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
 	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
 	
 	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(Long empDataid, Date startDate, Date endDate);
+	
+	public Long getTotalDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
 
 }
