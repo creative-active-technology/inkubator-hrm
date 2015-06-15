@@ -14,11 +14,12 @@
         <div id="art-page-background-middle-texture" >
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
+                    <h:inputHidden value="#{loginController.selectedLanguage}"/>
                     <div id="header_login">
                         <div id="header_login_left">
                             <h:panelGrid columns="1">
-                                <h:outputLabel value="#{appmsg['global.application_name']}" style="color:#ff9900"/>        
-                                <h:outputLabel value="#{appmsg['global.company_name']}" style="font-size: 12px!important"/>
+                                <h:outputLabel value="#{appmsg['global.company_name']}" style="color:#ff9900"/>        
+                                <h:outputLabel value="#{appmsg['global.company_address']}" style="font-size: 12px!important" id="alamatId"/>
                             </h:panelGrid>
                         </div>
                         <div style="float: right">
@@ -27,12 +28,17 @@
                             </h:panelGrid>
                         </div> 
                     </div>
+
                     <div style="clear: both"/>
+                    <div style="background:none repeat scroll 0 0 #ffffff;height: 2px;position: relative;">
+                        
+                    </div>
+                        
                     <div id="box_bg">
 
 
                         <!-- input hidden disini untuk memaksa view ini memanggil loginController yg bertujuan untuk memaksa nge-set default language/locale -->
-                        <h:inputHidden value="#{loginController.selectedLanguage}"/>
+
                         <div style="margin-top: 10px;margin-bottom: 5px">
                             <h:form id="pilihanBahasaForm" >
                                 <h:inputHidden value="#{loginController.selectedLanguage}"/>
@@ -51,7 +57,7 @@
                                                      required="true" label="#{appmsg['loginform.choose_language']}"
                                                      style="font-family: Calibri!important;width: 130px;text-align: left" >
                                         <f:selectItems value="#{bahasa}"/>
-                                        <p:ajax listener="#{loginController.doChageLanguange()}" update="pilihanBahasaForm,:loginForm,:dialogResetId"/>
+                                        <p:ajax listener="#{loginController.doChageLanguange()}" update="pilihanBahasaForm,:loginForm,:dialogResetId,:alamatId"/>
                                     </p:selectOneMenu>
                                 </h:panelGrid>
                                 <div style="clear: both"/>
