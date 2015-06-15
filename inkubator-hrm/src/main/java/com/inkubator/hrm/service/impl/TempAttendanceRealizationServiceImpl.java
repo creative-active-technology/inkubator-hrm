@@ -9,8 +9,10 @@ import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -45,6 +48,8 @@ import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
+
 import java.util.ArrayList;
 
 /**
@@ -498,4 +503,49 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception {
         return empDataDao.getTotalNotTerminatePaging(parameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public WorkingTimeDeviationDetailModel getEntityByEmpDataId(Long id) throws Exception {
+		WorkingTimeDeviationDetailModel workingTimeDeviationDetailModel = new WorkingTimeDeviationDetailModel();
+		//get Periode active
+		WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+		EmpData empData = this.empDataDao.getByIdWithBioData(id);
+		
+		
+		long totalHour = 0;
+		long workingTime = 0;
+		long workingHour = 0;
+		int marginIn = 0;
+		int marginOut = 0;
+		int marginMinutes = 0;
+		int marginHour = 0;
+		long totalWorkingTime = 0;
+		int restMinutesFromMargin = 0;
+		List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataByEmpDataId(id);
+		for(TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger){
+			//get hour from schedule in and schedule out
+			workingTime = Math.abs(tempProcessReadFinger.getScheduleIn().getTime() - tempProcessReadFinger.getScheduleOut().getTime());
+			workingHour = workingTime / (60 * 60 * 1000);
+			//get hour from margin in and margin out
+			marginIn = tempProcessReadFinger.getMarginIn();
+			marginOut = tempProcessReadFinger.getMarginOut();
+
+			//get total from marginHour and totalHour
+			marginMinutes += marginIn + marginOut;
+			totalHour += workingHour;
+		}	
+		
+		marginHour = marginMinutes / 60;
+		totalWorkingTime = marginHour + totalHour;
+		//insert data to workingTimeDeviationDetailModel
+		workingTimeDeviationDetailModel.setFromPeriod(wtPeriode.getFromPeriode());
+		workingTimeDeviationDetailModel.setToPeriod(wtPeriode.getUntilPeriode());
+		workingTimeDeviationDetailModel.setNikAndFullName(empData.getNik() + " " + empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
+		workingTimeDeviationDetailModel.setTotalWorkingTime(totalWorkingTime);
+		restMinutesFromMargin = marginMinutes - (marginHour * 60);
+		workingTimeDeviationDetailModel.setTotalMarginHour(marginHour);
+		workingTimeDeviationDetailModel.setTotalMarginMinutes(restMinutesFromMargin);
+		return workingTimeDeviationDetailModel;
+	}
 }

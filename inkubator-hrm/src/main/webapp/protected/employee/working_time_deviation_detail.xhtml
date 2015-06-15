@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="koreksi_realisasi.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Realisasi Kehadiran Karyawan" styleClass="header_big" />
+                                <p:outputLabel value="Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="fromPeriod" value="Periode Proses" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="fromPeriod" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.fromPeriod}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                                -
+                                <p:outputLabel id="toPeriod" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.toPeriod}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="fromPeriod" value="Periode Proses" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="nikAndName" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.nikAndFullName}" />
+							</p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="totalWorkingTime" value="Total Jam Kerja" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="totalWorkingTime" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalWorkingTime} Jam" />
+							</p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel value="Total Jam Kerja" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginHour} Jam " />
+                                <p:outputLabel id="totalMarginTimeMinutes" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginMinutes} Menit" />
+							</p:column>
+                        </p:row> 
+                        
+                    </p:panelGrid>
+                    
+
+
+
+
+                        <!-- <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI> -->
+
+
+                </div>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

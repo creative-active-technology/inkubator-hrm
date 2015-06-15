@@ -1,14 +1,17 @@
 package com.inkubator.hrm.service;
 
-import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import java.util.List;
+
 import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
-import java.util.List;
 
 /**
  *
@@ -38,4 +41,5 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
 
     public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;
 
+    public WorkingTimeDeviationDetailModel getEntityByEmpDataId(Long id) throws Exception;
 }

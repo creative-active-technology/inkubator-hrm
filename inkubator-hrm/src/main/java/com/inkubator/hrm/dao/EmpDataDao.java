@@ -65,6 +65,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public EmpData getByBioDataWithDepartment(long id);
 
+    public EmpData getByIdWithBioData(long id);
+    
     public EmpData getEntityByNik(String nik);
 
     public EmpData getByIdWithDetail(long id);
