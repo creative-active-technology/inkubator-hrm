@@ -6,7 +6,6 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -14,6 +13,7 @@ import java.util.Date;
  */
 public class EmployeeRestModel implements Serializable {
 
+	private String nik;
 	private String title;
 	private String firstname;
 	private String lastname;
@@ -38,7 +38,13 @@ public class EmployeeRestModel implements Serializable {
 	private String identityIssuingPlace;
 	private String identityIssuingDate;
 	private String expiryDate;
-	
+		
+	public String getNik() {
+		return nik;
+	}
+	public void setNik(String nik) {
+		this.nik = nik;
+	}
 	public String getTitle() {
 		return title;
 	}

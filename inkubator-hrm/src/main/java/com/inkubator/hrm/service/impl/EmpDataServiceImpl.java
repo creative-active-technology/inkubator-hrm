@@ -961,7 +961,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     		BioData bioData = empData.getBioData();
     		if(empData != null && bioData != null) {
     			try {
-	    			EmployeeRestModel model = this.bindToRestModel(bioData);
+	    			EmployeeRestModel model = this.bindToRestModel(empData, bioData);
 	    			listModel.add(model);
     			} catch (NullPointerException ex){
     				LOGGER.error("Employee Nik : "+ empData.getNikWithFullName() +", Error Null Pointer " + ex);
@@ -981,16 +981,17 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		
 		if(empData != null && empData.getBioData() != null) {
 			BioData bioData = empData.getBioData();
-			model = this.bindToRestModel(bioData);
+			model = this.bindToRestModel(empData, bioData);
 		}
 		return model;
 	}
 	
-	private EmployeeRestModel bindToRestModel(BioData bioData) throws ParseException{
+	private EmployeeRestModel bindToRestModel(EmpData empData,BioData bioData) throws ParseException{
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
 		
 		EmployeeRestModel model = new EmployeeRestModel();
+		model.setNik(empData.getNik());
 		model.setTitle(bioData.getTitle());
 		model.setFirstname(bioData.getFirstName());
 		model.setLastname(bioData.getLastName());

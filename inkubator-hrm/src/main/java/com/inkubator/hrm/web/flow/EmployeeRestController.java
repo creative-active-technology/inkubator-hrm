@@ -88,8 +88,7 @@ public class EmployeeRestController {
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/get_detail/{nik}")
-    public @ResponseBody
-    EmployeeRestHeader getDetailByNik(@PathVariable String nik) {
+    public @ResponseBody EmployeeRestHeader getDetailByNik(@PathVariable String nik) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
         	
@@ -115,8 +114,7 @@ public class EmployeeRestController {
     }
     
     @RequestMapping(method = RequestMethod.POST, value = "/upload_photo/{nik}")
-    public @ResponseBody
-    EmployeeRestHeader updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+    public @ResponseBody EmployeeRestHeader updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
         	bioDataService.updatePhoto(nik, file);
