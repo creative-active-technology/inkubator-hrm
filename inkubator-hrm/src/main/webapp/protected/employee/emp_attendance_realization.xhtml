@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="koreksi_realisasi.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['empAttendance.emp_attendance_realization']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['empAttendance.from_working_time']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,7 +30,7 @@
                     <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="codeId" value="Periode Proses" styleClass="label_hrm"/>
+                                <p:outputLabel for="codeId" value="#{appmsg['empAttendance.process_period']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="codeId" value="#{empAttendaceRealizationController.attendanceModel.stardDate}">
@@ -44,7 +44,7 @@
                         </p:row> 
                         <p:row >
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['empAttendance.leave_employee_total']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="name" value="#{empAttendaceRealizationController.attendanceModel.totalCuti} #{appmsg['global.people_only']}"  />
@@ -52,7 +52,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['empAttendance.permit_employee_total']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalIzin} #{appmsg['global.people_only']}" />
@@ -60,7 +60,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['empAttendance.sick']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalSick} #{appmsg['global.people_only']}"/>
@@ -68,7 +68,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['empAttendance.on_duty']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalOnDuty} #{appmsg['global.people_only']}"/>
@@ -87,7 +87,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="nik"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="No Jabatan" itemValue="noJab" />
+                                        <f:selectItem itemLabel="#{appmsg['empAttendance.job_position_no']}" itemValue="noJab" />
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{empAttendaceRealizationController.tempAttendanceRealizationSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
@@ -117,13 +117,13 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['employeerotation.list_employee_work_schedule']}" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="text-align: center;width: 4%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{timeRealization.attendanceDaysPresent}" style="width: 10%">
+                            <p:column sortBy="#{timeRealization.attendanceDaysPresent}" style="width: 9%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
@@ -137,37 +137,37 @@
                             </p:column>
                             <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.code}" style="width: 20%">
                                 <f:facet name="header">  
-                                    <h:outputText value="No. Jabatan"/>
+                                    <h:outputText value="#{appmsg['empAttendance.job_position_no']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.code}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.name}" style="width: 40%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Jabatan"/>
+                                    <h:outputText value="#{appmsg['empAttendance.job_position_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.name}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.leave}" style="width: 15%;text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Cuti"/>
+                                    <h:outputText value="#{appmsg['empAttendance.leave']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.leave}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.permit}" style="width: 15%;text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Izin"/>
+                                    <h:outputText value="#{appmsg['empAttendance.permit']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.permit}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.sick}" style="width: 15%;text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Sakit"/>
+                                    <h:outputText value="#{appmsg['empAttendance.sick']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.sick}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.duty}" style="width: 15%;text-align: center">
                                 <f:facet name="header">  
-                                    <h:outputText value="Dinas"/>
+                                    <h:outputText value="#{appmsg['empAttendance.on_duty']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.duty}"/>
                             </p:column>

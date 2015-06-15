@@ -9,6 +9,7 @@ import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+
 import java.util.Date;
 
 /**
@@ -38,5 +39,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
 
     public PermitImplementation getByEmpStardDateEndDate(long empId, Date doDate);
+    
+    public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
 }

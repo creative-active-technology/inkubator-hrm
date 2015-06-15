@@ -123,4 +123,31 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         return (String) criteria.setProjection(Projections.property("holidayName")).uniqueResult();
     }
 
+	@Override
+	public List<WtHoliday> getListPublicNonReligionHolidayBetweenDate(
+			Date start, Date end) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("religion", FetchMode.JOIN);
+        criteria.add(Restrictions.ge("holidayDate", start));
+        criteria.add(Restrictions.le("holidayDate", end));
+        criteria.add(Restrictions.isNull("religion"));       
+        
+        return criteria.list();
+	}
+
+	@Override
+	public List<WtHoliday> getListPublicReligionHolidayByReligionCodeAndBetweenDate(
+			Date start, Date end, String religionCode) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		//criteria.setFetchMode("religion", FetchMode.JOIN);
+		criteria.createAlias("religion", "religion", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.isNotNull("religion"));    
+        criteria.add(Restrictions.ge("holidayDate", start));
+        criteria.add(Restrictions.le("holidayDate", end));
+        criteria.add(Restrictions.eq("religion.code", religionCode));
+        
+        
+        return criteria.list();
+	}
+
 }
