@@ -128,5 +128,37 @@ public class EmployeeRestController {
          }
         return header;
     }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/upload_signature/{nik}")
+    public @ResponseBody EmployeeRestHeader updateSignature(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+        EmployeeRestHeader header = new EmployeeRestHeader();
+        try {
+        	bioDataService.updateSignature(nik, file);
+        	header.setStatus(0);
+    		header.setErrorMessage("");
+    		
+        } catch (Exception ex) {
+            LOGGER.error("error", ex);
+            header.setStatus(1);
+    		header.setErrorMessage(ex.getMessage());
+         }
+        return header;
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/upload_finger_print/{nik}")
+    public @ResponseBody EmployeeRestHeader updateFingerPrint(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+        EmployeeRestHeader header = new EmployeeRestHeader();
+        try {
+        	bioDataService.updateFingerPrint(nik, file);
+        	header.setStatus(0);
+    		header.setErrorMessage("");
+    		
+        } catch (Exception ex) {
+            LOGGER.error("error", ex);
+            header.setStatus(1);
+    		header.setErrorMessage(ex.getMessage());
+         }
+        return header;
+    }
 
 }
