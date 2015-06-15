@@ -45,6 +45,7 @@ import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
@@ -1174,6 +1175,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
 		
 		return criteria.list();
+	}
+
+	@Override
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);        
+        criteria.add(Restrictions.isNull("wtGroupWorking"));        
+        return !criteria.list().isEmpty();
 	}
 
 }

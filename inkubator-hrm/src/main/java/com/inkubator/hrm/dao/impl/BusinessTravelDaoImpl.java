@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -117,24 +118,41 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
 
     @Override
     public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("travelZone", FetchMode.JOIN);
-        criteria.setFetchMode("travelType", FetchMode.JOIN);
-        return (BusinessTravel) criteria.uniqueResult();
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("travelZone", FetchMode.JOIN);
+		criteria.setFetchMode("travelType", FetchMode.JOIN);
+		return (BusinessTravel) criteria.uniqueResult();
     }
 
     @Override
     public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("empData.id", empDataId));
-        criteria.setFetchMode("travelZone", FetchMode.JOIN);
-        criteria.setFetchMode("travelType", FetchMode.JOIN);
-        return criteria.list();
+    	 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
+         criteria.setFetchMode("empData", FetchMode.JOIN);
+          criteria.add(Restrictions.eq("empData.id", empDataId));
+         criteria.setFetchMode("travelZone", FetchMode.JOIN);
+ 	criteria.setFetchMode("travelType", FetchMode.JOIN);
+         return criteria.list();
     }
+
+
+		@Override
+		public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(
+				Long empDataId, Date dateFrom, Date dateUntill) {
+			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+	        criteria.setFetchMode("empData", FetchMode.JOIN);       
+	        criteria.setFetchMode("travelType", FetchMode.JOIN);
+	        criteria.createAlias("travelType.attendanceStatus", "attendanceStatus", JoinType.INNER_JOIN);	   
+	        
+	        criteria.add(Restrictions.eq("empData.id", empDataId));  
+	        criteria.add(Restrictions.ge("startDate", dateFrom));
+	        criteria.add(Restrictions.le("startDate", dateUntill));
+	        criteria.add(Restrictions.ne("attendanceStatus.code", "OFF"));
+	        
+	        return criteria.list();
+		}
 
     @Override
     public BusinessTravel getByEmpIdAndDate(long empId, Date doDate) {

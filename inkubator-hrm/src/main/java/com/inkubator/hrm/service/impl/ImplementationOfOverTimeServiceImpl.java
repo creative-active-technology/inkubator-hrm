@@ -5,6 +5,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.exception.BussinessException;
@@ -28,15 +29,18 @@ import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -470,6 +474,12 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception {
         return implementationOfOverTimeDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate) throws Exception{
+		return implementationOfOverTimeDao.getAllEmpOtImplBetweenStartDateAndEndDate(empDataId, startDate, endDate);
+	}
     
     
 }

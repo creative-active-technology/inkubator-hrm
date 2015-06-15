@@ -30,7 +30,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.LogAttendanceRealizationService;
+import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.WtPeriodeService;
@@ -59,14 +59,16 @@ public class WtPeriodEmpDetailController extends BaseController {
     
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
     private TempAttendanceRealizationService tempAttendanceRealizationService;     
-    @ManagedProperty(value = "#{logAttendanceRealizationService}")
-    private LogAttendanceRealizationService logAttendanceRealizationService;  
+    @ManagedProperty(value = "#{logWtAttendanceRealizationService}")
+    private LogWtAttendanceRealizationService logWtAttendanceRealizationService;  
     @ManagedProperty(value = "#{jobLauncherAsync}")
     private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobTempAttendanceRealizationCalculation}")
     private Job jobTempAttendanceRealizationCalculation;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
     
     private LazyDataModel<TempAttendanceRealizationViewModel> lazyDataModel;
     private TempAttendanceRealizationViewModel selected;
@@ -122,7 +124,7 @@ public class WtPeriodEmpDetailController extends BaseController {
 
 
 
-    public void doCalculateWorkingTime() {
+    public void doCalculateAttendanceRealization() {
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
     	 *  please see onComplete method that will set jobExecution == null */
     	if(jobExecution == null){ 
@@ -158,7 +160,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     	}
     }
     
-    public void onCompleteCalculateWorkingTime() {
+    public void onCompleteCalculateAttendanceRealization() {
     	if(jobExecution != null) {
 	    	setProgress(0);
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
@@ -173,17 +175,17 @@ public class WtPeriodEmpDetailController extends BaseController {
     	}
     }
     
-    public void doInitCalculatePayroll(){
-//    	try {
-//			if(empDataService.getTotalByTaxFreeIsNull()>0) {
-//				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",
-//			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//				FacesContext.getCurrentInstance().validationFailed();
-//			}
-//			progress=0;
-//		} catch (Exception e) {
-//			LOGGER.error("Error ", e);
-//		}
+    public void doInitCalculateAttendanceRealization(){
+    	try {
+			if(empDataService.isEmpDataWithNullWtGroupWorkingExist()) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_emp_with_null_wt_group_working_found",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			progress=0;
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
     }
 
     public String doBack() {
@@ -198,7 +200,7 @@ public class WtPeriodEmpDetailController extends BaseController {
             if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_ACTIVE)){
                 lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
             }else  if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_VOID)){
-                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logWtAttendanceRealizationService, model.getWtPeriodId().longValue());
             }
             
         }
@@ -296,9 +298,13 @@ public class WtPeriodEmpDetailController extends BaseController {
         this.model = model;
     }   
 
-    public void setLogAttendanceRealizationService(LogAttendanceRealizationService logAttendanceRealizationService) {
-        this.logAttendanceRealizationService = logAttendanceRealizationService;
+    public void setLogWtAttendanceRealizationService(LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
+        this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
     }
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
         
         
     

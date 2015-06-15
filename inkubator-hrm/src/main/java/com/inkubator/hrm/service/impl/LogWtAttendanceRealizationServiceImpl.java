@@ -6,11 +6,11 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.LogAttendanceRealizationDao;
+import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.entity.LogAttendanceRealization;
+import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.LogAttendanceRealizationService;
+import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -25,113 +25,113 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Ahmad Mudzakkir Amal
  */
-@Service(value = "logAttendanceRealizationService")
+@Service(value = "logWtAttendanceRealizationService")
 @Lazy
-public class LogAttendanceRealizationServiceImpl extends IServiceImpl implements LogAttendanceRealizationService {
+public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implements LogWtAttendanceRealizationService {
     
     @Autowired
-    private LogAttendanceRealizationDao logAttendanceRealizationDao;
+    private LogWtAttendanceRealizationDao logWtAttendanceRealizationDao;
     
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
 
     @Override
-    public LogAttendanceRealization getEntiyByPK(String string) throws Exception {
+    public LogWtAttendanceRealization getEntiyByPK(String string) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntiyByPK(Integer intgr) throws Exception {
+    public LogWtAttendanceRealization getEntiyByPK(Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntiyByPK(Long l) throws Exception {
+    public LogWtAttendanceRealization getEntiyByPK(Long l) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void save(LogAttendanceRealization t) throws Exception {
+    public void save(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void update(LogAttendanceRealization t) throws Exception {
+    public void update(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveOrUpdate(LogAttendanceRealization t) throws Exception {
+    public void saveOrUpdate(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization saveData(LogAttendanceRealization t) throws Exception {
+    public LogWtAttendanceRealization saveData(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization updateData(LogAttendanceRealization t) throws Exception {
+    public LogWtAttendanceRealization updateData(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization saveOrUpdateData(LogAttendanceRealization t) throws Exception {
+    public LogWtAttendanceRealization saveOrUpdateData(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(String string, Integer intgr) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(String string, Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(String string, Byte b) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(String string, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(String string, Boolean bln) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(String string, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Integer intgr, Integer intgr1) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Integer intgr, Integer intgr1) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Integer intgr, Byte b) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Integer intgr, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Integer intgr, Boolean bln) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Integer intgr, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Long l, Integer intgr) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Long l, Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Long l, Byte b) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Long l, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public LogAttendanceRealization getEntityByPkIsActive(Long l, Boolean bln) throws Exception {
+    public LogWtAttendanceRealization getEntityByPkIsActive(Long l, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(LogAttendanceRealization t) throws Exception {
+    public void delete(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void softDelete(LogAttendanceRealization t) throws Exception {
+    public void softDelete(LogWtAttendanceRealization t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -156,42 +156,42 @@ public class LogAttendanceRealizationServiceImpl extends IServiceImpl implements
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllData() throws Exception {
+    public List<LogWtAttendanceRealization> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllData(Boolean bln) throws Exception {
+    public List<LogWtAttendanceRealization> getAllData(Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllData(Integer intgr) throws Exception {
+    public List<LogWtAttendanceRealization> getAllData(Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllData(Byte b) throws Exception {
+    public List<LogWtAttendanceRealization> getAllData(Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllDataPageAble(int i, int i1, Order order) throws Exception {
+    public List<LogWtAttendanceRealization> getAllDataPageAble(int i, int i1, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Boolean bln) throws Exception {
+    public List<LogWtAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Boolean bln) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Integer intgr) throws Exception {
+    public List<LogWtAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Integer intgr) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<LogAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
+    public List<LogWtAttendanceRealization> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -199,7 +199,7 @@ public class LogAttendanceRealizationServiceImpl extends IServiceImpl implements
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
         WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(wtPeriodId);        
-        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logWtAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
         for(TempAttendanceRealizationViewModel tempModel : listTempAttendanceRealizationViewModel){
             tempModel.setAbsenStatus(wtPeriode.getAbsen());
         }
@@ -209,7 +209,7 @@ public class LogAttendanceRealizationServiceImpl extends IServiceImpl implements
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
-        return logAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
+        return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
     }
      
 }

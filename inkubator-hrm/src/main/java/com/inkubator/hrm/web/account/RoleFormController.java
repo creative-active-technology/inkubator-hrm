@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmMenu;
 import com.inkubator.hrm.entity.HrmMenuRole;
@@ -117,7 +118,7 @@ public class RoleFormController extends BaseController {
         } else {
             doInsert(hrmRole);
         }
-        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + roleModel.getId();
+        return "/protected/account/role_detail.htm?faces-redirect=true&execution=e" + hrmRole.getId();
     }
 
     public String doBack() {
@@ -206,6 +207,8 @@ public class RoleFormController extends BaseController {
         HrmRole hrmRole = new HrmRole();
         if (roleModel.getId() != null) {
             hrmRole.setId(roleModel.getId());
+        }else{
+        	hrmRole.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
         }
         hrmRole.setRoleName(roleModel.getRoleName());
         hrmRole.setDescription(roleModel.getDescription());

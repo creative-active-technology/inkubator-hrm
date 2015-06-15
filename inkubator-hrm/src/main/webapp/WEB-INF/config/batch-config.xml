@@ -237,6 +237,10 @@
                  writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
             </batch:tasklet>
         </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="tempAttendanceRealizationCalculationJobListener"/>
+        </batch:listeners>
     </batch:job>
     
             
@@ -262,6 +266,9 @@
 		<property name="logUnregPayrollService" ref="logUnregPayrollService"/>
 		<property name="logUnregTaxesService" ref="logUnregTaxesService"/>
 		<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
+	</bean>
+	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
+		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
 	</bean>
 	
 	
