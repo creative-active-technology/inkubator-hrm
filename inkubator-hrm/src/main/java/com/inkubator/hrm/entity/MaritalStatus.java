@@ -21,7 +21,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="marital_status"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class MaritalStatus  implements java.io.Serializable {

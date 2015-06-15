@@ -17,7 +17,7 @@ import javax.persistence.Version;
 import org.apache.commons.lang3.StringUtils;
 
 @Entity
-@Table(name = "bio_document", catalog="hrm_payroll")
+@Table(name = "bio_document", catalog="hrm_payroll_backup")
 public class BioDocument implements java.io.Serializable {
 
     private long id;    

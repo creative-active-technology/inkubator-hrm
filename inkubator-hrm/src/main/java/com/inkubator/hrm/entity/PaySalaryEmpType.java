@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="pay_salary_emp_type"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class PaySalaryEmpType  implements java.io.Serializable {
 

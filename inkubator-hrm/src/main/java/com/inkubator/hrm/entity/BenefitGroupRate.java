@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="benefit_group_rate"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class BenefitGroupRate  implements java.io.Serializable {
 

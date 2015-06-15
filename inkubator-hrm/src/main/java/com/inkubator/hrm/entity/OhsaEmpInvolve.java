@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="ohsa_emp_involve"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class OhsaEmpInvolve  implements java.io.Serializable {
 

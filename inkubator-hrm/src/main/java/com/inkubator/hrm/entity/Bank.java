@@ -24,7 +24,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bank"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = {@UniqueConstraint(columnNames="bank_code"), @UniqueConstraint(columnNames="swift_code"), @UniqueConstraint(columnNames="bank_identification_no"), @UniqueConstraint(columnNames="branch_code")} 
 )
 public class Bank  implements java.io.Serializable {

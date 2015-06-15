@@ -18,7 +18,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="BATCH_JOB_INSTANCE"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = @UniqueConstraint(columnNames={"JOB_NAME", "JOB_KEY"}) 
 )
 public class BatchJobInstance  implements java.io.Serializable {

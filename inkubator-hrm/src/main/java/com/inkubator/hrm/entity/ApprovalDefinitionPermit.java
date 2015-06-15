@@ -20,7 +20,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="approval_definition_permit"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class ApprovalDefinitionPermit implements java.io.Serializable {
 

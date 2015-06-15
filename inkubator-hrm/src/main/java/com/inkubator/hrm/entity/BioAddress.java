@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "bio_address", catalog="hrm_payroll")
+@Table(name = "bio_address", catalog="hrm_payroll_backup")
 public class BioAddress implements java.io.Serializable {
 
     private long id;    

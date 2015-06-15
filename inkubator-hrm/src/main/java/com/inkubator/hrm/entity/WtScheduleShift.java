@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="wt_schedule_shift"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class WtScheduleShift  implements java.io.Serializable {
 

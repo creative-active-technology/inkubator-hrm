@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="approval_definition_over_time"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class ApprovalDefinitionOT  implements java.io.Serializable {
 

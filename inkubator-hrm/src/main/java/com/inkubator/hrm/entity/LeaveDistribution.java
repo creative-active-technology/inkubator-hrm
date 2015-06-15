@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="leave_distribution"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class LeaveDistribution  implements java.io.Serializable {
 

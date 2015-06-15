@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_bank_account"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = {@UniqueConstraint(columnNames="swift_code"), @UniqueConstraint(columnNames="account_number")} 
 )
 public class BioBankAccount  implements java.io.Serializable {

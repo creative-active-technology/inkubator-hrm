@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_potensi_swot"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class BioPotensiSwot  implements java.io.Serializable {
 

@@ -17,7 +17,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="appraisal_element"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class AppraisalElement  implements java.io.Serializable {

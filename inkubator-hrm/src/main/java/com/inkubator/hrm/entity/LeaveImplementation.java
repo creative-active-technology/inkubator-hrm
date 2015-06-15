@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "leave_implementation", catalog="hrm_payroll"
+@Table(name = "leave_implementation", catalog="hrm_payroll_backup"
 )
 public class LeaveImplementation implements java.io.Serializable {
 

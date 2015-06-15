@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "education_non_formal", catalog="hrm_payroll")
+@Table(name = "education_non_formal", catalog="hrm_payroll_backup")
 public class EducationNonFormal implements Serializable {
 
     private Long id;

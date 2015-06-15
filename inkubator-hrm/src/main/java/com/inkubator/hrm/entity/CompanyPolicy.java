@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Entity
 @Table(name="company_policy"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class CompanyPolicy  implements java.io.Serializable {
 

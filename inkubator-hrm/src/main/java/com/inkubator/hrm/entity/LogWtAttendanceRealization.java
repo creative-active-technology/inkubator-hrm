@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="log_wt_attendance_realization"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class LogWtAttendanceRealization  implements java.io.Serializable {
 
