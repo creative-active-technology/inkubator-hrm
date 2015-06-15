@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -133,4 +134,8 @@ public interface EmpDataService extends IService<EmpData> {
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 	
 	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
+	
+	public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
+    
+    public EmployeeRestModel getRestModelByNik(String nik) throws Exception;
 }
