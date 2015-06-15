@@ -259,6 +259,20 @@
         </batch:step>
     </batch:job>
     
+     <!-- Job Calculation of Emp Attendance Realization  -->
+     <batch:job id="jobTempAttendanceRealizationCalculation">
+        <batch:step id="stepJobTempAttendanceRealizationCalculation_1">
+            <batch:tasklet>                
+                <batch:chunk reader="customTempAttendanceRealizationCalculationItemReader" processor="customTempAttendanceRealizationCalculationItemProcessor"
+                 writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
+            </batch:tasklet>
+        </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="tempAttendanceRealizationCalculationJobListener"/>
+        </batch:listeners>
+    </batch:job>
+    
             
     <!-- ALL batch listeners -->
     <bean id="monthEndPayrollJobListener" class="com.inkubator.hrm.batch.MonthEndPayrollJobListener" lazy-init="true">
@@ -284,7 +298,9 @@
 		<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
 	</bean>
 	
-	
+	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
+		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
+	</bean>
     
     <!-- reader and writer for synchronization_data_finger_realization -->
     <bean id="customSynchDataFingerRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
@@ -786,6 +802,22 @@
 	<bean id="customEmailingAnnouncementNotSentItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="announcementLogCronService" />
         <property name="targetMethod" value="executeBatchSendingEmail" />
+    </bean>
+    
+    <!-- reader, processor, and writer for temp attendance realization calculation -->	
+    <bean id="customTempAttendanceRealizationCalculationItemReader" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationReader" scope="step" destroy-method="destroy" lazy-init="true">
+    	<constructor-arg name="empDataService" ref="empDataService"/>
+        <constructor-arg name="periodUntillDate"  value="#{jobParameters['periodUntillDate']}"></constructor-arg>      
+    </bean>	
+    <bean id="customTempAttendanceRealizationCalculationItemProcessor" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationProcessor" scope="step" lazy-init="true">
+    	<constructor-arg name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>
+    	<property name="wtPeriodId" value="#{jobParameters['wtPeriodId']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
+    </bean>
+    <bean id="customTempAttendanceRealizationCalculationItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="tempAttendanceRealizationService" />      
+        <property name="targetMethod" value="executeBatchFileUpload" />        
     </bean>
     
 </beans>

@@ -153,5 +153,6 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception;
     
     public String getBioDataNameByEmpDataId(Long id) throws Exception;
-
+    
+    public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
 }

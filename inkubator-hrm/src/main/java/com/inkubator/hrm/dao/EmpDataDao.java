@@ -165,4 +165,6 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     /* get name only */
     public String getBioDataNameByEmpDataId(Long id);
+    
+    public Boolean isEmpDataWithNullWtGroupWorkingExist();
 }

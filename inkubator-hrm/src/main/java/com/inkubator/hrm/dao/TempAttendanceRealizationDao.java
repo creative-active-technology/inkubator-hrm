@@ -42,5 +42,7 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
+    
+    public void deleteAllData();
 
 }

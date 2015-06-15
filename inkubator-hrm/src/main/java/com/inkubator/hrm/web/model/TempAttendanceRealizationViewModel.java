@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -27,6 +28,8 @@ public class TempAttendanceRealizationViewModel implements Serializable {
     private Integer sick;
     private Integer duty;
     private String absenStatus;
+    private String createdBy;
+    private Date createdOn;
 
     public Long getId() {
         return id;
@@ -151,6 +154,22 @@ public class TempAttendanceRealizationViewModel implements Serializable {
     public void setOverTime(Float overTime) {
         this.overTime = overTime;
     }
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
     
     
     

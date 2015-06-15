@@ -895,7 +895,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {    	
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -906,6 +906,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        
         return criteria.list();
     }
 
@@ -1809,4 +1810,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
     }
+    
+	@Override
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+		criteria.add(Restrictions.isNull("wtGroupWorking"));
+		return !criteria.list().isEmpty();
+	}
 }

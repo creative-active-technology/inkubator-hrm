@@ -187,4 +187,15 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.add(Restrictions.ge("endDate", doDate));
         return (PermitImplementation) criteria.uniqueResult();
     }
+    
+    @Override
+	public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        criteria.setFetchMode("permitClassification", FetchMode.JOIN);        
+        criteria.add(Restrictions.eq("empData.id", empDataId));  
+        criteria.add(Restrictions.ge("startDate", dateFrom));
+        criteria.add(Restrictions.le("startDate", dateUntill));
+        return criteria.list();
+	}
 }

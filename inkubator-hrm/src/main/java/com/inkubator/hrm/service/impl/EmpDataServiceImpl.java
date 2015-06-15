@@ -936,4 +936,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception {
         return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception {
+		return empDataDao.isEmpDataWithNullWtGroupWorkingExist();
+	}
 }

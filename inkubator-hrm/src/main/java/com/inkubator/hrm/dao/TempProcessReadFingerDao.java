@@ -31,5 +31,7 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
     public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataId, Date startDate, Date endDate);
 
     public TempProcessReadFinger getEntityByEmpDataIdAndScheduleDate(Long empDataId, Date scheduleDate);
+    
+    public Long getEmpTotalAttendanceBetweenDateFromAndDateUntill(Long empDataId, Date dateFrom, Date dateUntill);
 
 }

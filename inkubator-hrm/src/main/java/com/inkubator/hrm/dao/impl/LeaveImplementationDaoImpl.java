@@ -200,4 +200,18 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         return (LeaveImplementation) criteria.uniqueResult();
 
     }
+    
+    @Override
+	public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId,	Date dateFrom, Date dateUntill) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+        criteria.setFetchMode("empData", FetchMode.JOIN);        
+        criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
+        criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));  
+        criteria.add(Restrictions.ge("startDate", dateFrom));
+        criteria.add(Restrictions.le("startDate", dateUntill));
+        return criteria.list();
+	}
+
 }

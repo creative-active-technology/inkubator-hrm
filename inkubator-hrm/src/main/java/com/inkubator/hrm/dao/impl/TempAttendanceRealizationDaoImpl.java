@@ -189,4 +189,10 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
                         .setParameter("wtPeriodId", wtPeriodId);
         return Long.valueOf(hbm.uniqueResult().toString());
     }
+
+	@Override
+	public void deleteAllData() {
+		 Query query = getCurrentSession().createQuery("delete from TempAttendanceRealization");
+	        query.executeUpdate();
+	}
 }

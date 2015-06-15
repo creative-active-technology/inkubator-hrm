@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -163,5 +165,24 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
         criteria.add(Restrictions.eq("scheduleDate", scheduleDate));
         return (TempProcessReadFinger) criteria.uniqueResult();
     }
+    
+    @Override
+    public Long getEmpTotalAttendanceBetweenDateFromAndDateUntill(Long empDataId, Date dateFrom, Date dateUntill) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.between("scheduleDate", dateFrom, dateUntill));
+
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.isNotNull("fingerIn"));
+        disjunction.add(Restrictions.isNotNull("fingerOut"));
+        disjunction.add(Restrictions.isNotNull("webCheckIn"));
+        disjunction.add(Restrictions.isNotNull("webCheckOut"));
+        criteria.add(disjunction);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+    }
+
 
 }

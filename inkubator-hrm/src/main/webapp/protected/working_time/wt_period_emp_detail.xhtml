@@ -84,7 +84,7 @@
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" rendered="#{wtPeriodEmpDetailController.model.status eq 'Active'}"
-                                                     onclick="PF('statusDialog').show()"  oncomplete="if (!args.validationFailed) {PF('detail').show();} else {PF('statusDialog').hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculatePayroll()}" >                        
+                                                     onclick="PF('statusDialog').show()"  oncomplete="if (!args.validationFailed) {PF('detail').show();} else {PF('statusDialog').hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculateAttendanceRealization()}" >                        
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -112,37 +112,37 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="wtGroupWorkingName" style="width: 15%">
+                            <p:column sortBy="#{data.wtGroupWorkingName}" style="width: 15%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['menu.workgroup']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.wtGroupWorkingName}" />
                             </p:column>
-                            <p:column sortBy="empName" style="width: 20%">
+                            <p:column sortBy="#{data.empName}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.nik} - #{data.empName}" />
                             </p:column>
-                            <p:column sortBy="attendanceDaysPresent" style="width: 10%">
+                            <p:column sortBy="#{data.attendanceDaysPresent}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['attedance.attend']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.attendanceDaysPresent}" />
                             </p:column>
-                            <p:column sortBy="overTime" style="width: 10%">
+                            <p:column sortBy="#{data.overTime}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.overtime']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.overTime.longValue()}" />
+                                <h:outputLabel value= "#{data.overTime}" />
                             </p:column>
-                             <p:column sortBy="sick" style="width: 10%">
+                             <p:column sortBy="#{data.sick}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.sick']}"/>
                                 </f:facet>
                                  <h:outputLabel value= "#{data.sick}" />
                             </p:column>
-                             <p:column sortBy="leave" style="width: 10%">
+                             <p:column sortBy="#{data.leaves}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.leave']}"/>
                                 </f:facet>
@@ -240,11 +240,11 @@
                                 <p:outputLabel value="#{wtPeriodEmpDetailController.model.untilPeriode}"  styleClass="label_hrm">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>                                
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateWorkingTime()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateAttendanceRealization()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{wtPeriodEmpDetailController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{wtPeriodEmpDetailController.onCompleteCalculateWorkingTime}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {PF('detail').hide();}"/>
+                                <p:ajax event="complete" listener="#{wtPeriodEmpDetailController.onCompleteCalculateAttendanceRealization}" update=":formId:growlId,:formId:tableId" oncomplete="if (!args.validationFailed) {PF('detail').hide();}"/>
                             </p:progressBar>
                             <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="PF('detail').hide();" immediate="true"/>                            
                         </h:form>
