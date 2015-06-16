@@ -23,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="province"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = {
             @UniqueConstraint(columnNames="province_code"), 
             @UniqueConstraint(columnNames="province_phone_code")

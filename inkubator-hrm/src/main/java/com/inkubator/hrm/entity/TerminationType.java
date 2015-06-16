@@ -17,7 +17,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="termination_type"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class TerminationType  implements java.io.Serializable {

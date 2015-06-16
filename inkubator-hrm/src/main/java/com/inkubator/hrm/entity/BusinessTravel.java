@@ -27,7 +27,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "business_travel", catalog="hrm_payroll")
+@Table(name = "business_travel", catalog="hrm_payroll_backup")
 public class BusinessTravel implements Serializable {
 
     private Long id;

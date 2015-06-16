@@ -21,7 +21,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "saving_type", catalog="hrm_payroll", uniqueConstraints =
+@Table(name = "saving_type", catalog="hrm_payroll_backup", uniqueConstraints =
         @UniqueConstraint(columnNames = "code"))
 public class SavingType implements Serializable {
 

@@ -24,7 +24,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_spesifikasi_ability"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
 )
 public class BioSpesifikasiAbility  implements java.io.Serializable {
 
