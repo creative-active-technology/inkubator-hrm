@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtFingerExceptionDao;
 import com.inkubator.hrm.entity.WtFingerException;
 import com.inkubator.hrm.web.search.WtFingerExceptionSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -65,16 +67,6 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
     }
 
     @Override
-    public List<WtFingerException> getAllDataByEmpIdWithDetail() {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.employeeType", FetchMode.JOIN);
-        criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
-        return criteria.list();
-    }
-
-    @Override
     public void saveBatch(List<WtFingerException> data) {
         int counter = 0;
         for (WtFingerException wtFingerException : data) {
@@ -110,5 +102,12 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public WtFingerException getEntityByEmpDataId(Long empDataid) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataid));
+        return (WtFingerException) criteria.uniqueResult();
+	}
     
 }
