@@ -533,4 +533,13 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     public HrmUser getByEmailAddressInNotLock(String emailAddress) throws Exception {
         return this.hrmUserDao.getByEmailAddressInNotLock(emailAddress);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getByUserIdWithEmpIdAndBioId(String userId) throws Exception {
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(userId);
+        hrmUser.getEmpData().getId();
+        hrmUser.getEmpData().getBioData().getId();
+        return hrmUser;
+    }
 }

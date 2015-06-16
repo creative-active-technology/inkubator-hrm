@@ -11,8 +11,8 @@
         <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin"
                              authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
         <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE')"/>
+        <security:intercept-url pattern="/flow-protected/**" access="isAuthenticated()"/>
+<!--        <security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE')"/>
         <security:intercept-url pattern="/protected/approval/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/batch/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/employee/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
@@ -21,7 +21,7 @@
         <security:intercept-url pattern="/protected/personalia/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>-->
     
         <security:session-management>
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
