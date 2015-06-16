@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="BATCH_JOB_EXECUTION"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
 )
 public class BatchJobExecution  implements java.io.Serializable {
 

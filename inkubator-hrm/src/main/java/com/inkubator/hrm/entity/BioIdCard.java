@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="bio_id_card"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="card_number") 
 )
 public class BioIdCard  implements java.io.Serializable {

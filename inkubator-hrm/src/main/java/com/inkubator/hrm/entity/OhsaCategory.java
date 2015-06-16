@@ -22,7 +22,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="ohsa_category"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="ohsa_category_code") 
 )
 public class OhsaCategory  implements java.io.Serializable {

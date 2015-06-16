@@ -24,7 +24,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="interest_type"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = @UniqueConstraint(columnNames="interest_type_name") 
 )
 public class InterestType implements java.io.Serializable {

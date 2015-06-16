@@ -19,7 +19,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "employee_type", catalog="hrm_payroll_backup", uniqueConstraints = @UniqueConstraint(columnNames = "name")
+@Table(name = "employee_type", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames = "name")
 )
 public class EmployeeType implements java.io.Serializable {
 

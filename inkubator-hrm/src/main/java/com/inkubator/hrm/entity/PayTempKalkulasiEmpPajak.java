@@ -19,7 +19,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="pay_temp_kalkulasi_emp_pajak"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
 )
 public class PayTempKalkulasiEmpPajak  implements java.io.Serializable {
 

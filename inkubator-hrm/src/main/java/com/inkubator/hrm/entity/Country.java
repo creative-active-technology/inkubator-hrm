@@ -21,7 +21,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="country"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm_payroll"
     , uniqueConstraints = {@UniqueConstraint(columnNames="country_code"), @UniqueConstraint(columnNames="phone_code")} 
 )
 public class Country  implements java.io.Serializable {

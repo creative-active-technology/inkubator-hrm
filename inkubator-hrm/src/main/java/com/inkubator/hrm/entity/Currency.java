@@ -25,7 +25,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "currency", catalog="hrm_payroll_backup", uniqueConstraints = @UniqueConstraint(columnNames = "country_code")
+@Table(name = "currency", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames = "country_code")
 )
 public class Currency implements java.io.Serializable {
 

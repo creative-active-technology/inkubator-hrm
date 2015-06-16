@@ -26,7 +26,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "loan_payment_detail", catalog="hrm_payroll_backup")
+@Table(name = "loan_payment_detail", catalog="hrm_payroll")
 public class LoanPaymentDetail implements java.io.Serializable {
     private Long id;
     private Integer version;

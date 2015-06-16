@@ -33,7 +33,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "reimbursment_schema", catalog="hrm_payroll_backup", uniqueConstraints = @UniqueConstraint(columnNames="code") )
+@Table(name = "reimbursment_schema", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames="code") )
 public class ReimbursmentSchema implements java.io.Serializable{
     private Long id;
     private Integer version;
