@@ -25,7 +25,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="faculty"
-    ,catalog="hrm"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = {@UniqueConstraint(columnNames="faculty_name")
     , @UniqueConstraint(columnNames="faculty_code") } 
 )
