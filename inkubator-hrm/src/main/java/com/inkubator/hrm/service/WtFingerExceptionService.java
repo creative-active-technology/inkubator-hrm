@@ -18,13 +18,12 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface WtFingerExceptionService extends IService<WtFingerException>{
+	
     public List<WtFingerException> getByParamWithDetail(WtFingerExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalWtFingerExceptionByParam(WtFingerExceptionSearchParameter searchParameter) throws Exception;
 
     public WtFingerException getEntityByParamWithDetail(Long id) throws Exception;
-    
-    public List<WtFingerException> getAllDataByEmpIdWithDetail() throws Exception;
 
     public void saveMassFingerException(List<EmpData> data, Date startDate, Date endDate, Boolean extendException) throws Exception;
 }
