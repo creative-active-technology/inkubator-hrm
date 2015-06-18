@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
@@ -134,8 +135,10 @@ public interface EmpDataService extends IService<EmpData> {
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 	
 	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
-	
+
 	public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
     
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;
+
+	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
 }

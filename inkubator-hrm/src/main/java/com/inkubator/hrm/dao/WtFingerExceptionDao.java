@@ -23,7 +23,7 @@ public interface WtFingerExceptionDao extends IDAO<WtFingerException> {
 
     public WtFingerException getEntityByParamWithDetail(Long id);
     
-    public List<WtFingerException> getAllDataByEmpIdWithDetail();
-
     public void saveBatch(List<WtFingerException> data);
+    
+    public WtFingerException getEntityByEmpDataId(Long id);
 }
