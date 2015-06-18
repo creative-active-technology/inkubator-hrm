@@ -211,11 +211,11 @@
                     <div id="art-main">
                     <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 3px" columns="2">
-                                <p:commandLink>
+                                <!-- <p:commandLink>
                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>
-                                </p:commandLink>
+                                </p:commandLink> -->
 
                                 <!--<p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/>-->
                                 <h:panelGroup>
@@ -363,7 +363,7 @@
                                                 </p:submenu>
                                             </p:submenu>           
                                             <p:submenu label="#{appmsg['menu.organisation_setting']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['organization.organization_profile']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
+                                                <p:menuitem value="#{appmsg['organization.organization_profile']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organization.organization_profile']}" url="/protected/organisation/company_view.htm" icon="img-company"/>
                                                 <p:menuitem value="#{appmsg['companypolicy.company_policy']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['companypolicy.company_policy']}" url="/protected/organisation/company_policy_view.htm" icon="img-company-policy"/>
                                                 <p:menuitem value="#{appmsg['costcenter.costcenter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['costcenter.costcenter']}" url="/protected/organisation/cc_view.htm" icon="img-cost-center"/>
                                                 <p:menuitem value="#{appmsg['organizationletter.organization_letter']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['organizationletter.organization_letter']}" url="/protected/organisation/organization_letter_view.htm" icon="img-organization-letter"/> 
@@ -476,7 +476,7 @@
                                             <p:menuitem value="#{appmsg['loan.loanHistory']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanHistory']}" url="/protected/personalia/loan_view.htm" />
                                             <p:menuitem value="#{appmsg['loan.loanApplicationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanApplicationInbox']}" url="/flow-protected/loan"/>
                                             <p:menuitem value="#{appmsg['loan.loanDiscount']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanDiscount']}" url="/protected/payroll/loan_discount_view.htm"/>
-                                            <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="/protected/personalia/loan_canceled_proc_view.htm"/>
+                                            <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="/protected/personalia/loan_canceled_form.htm"/>
                                             <p:menuitem value="#{appmsg['loan.cancellationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationInbox']}" url="/protected/personalia/loan_canceled_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.loanUpload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanUpload']}" url="/protected/payroll/loan_upload_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.loanStatus']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanStatus']}" url="#"/>
