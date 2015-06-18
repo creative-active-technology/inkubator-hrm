@@ -53,4 +53,8 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     public void updateAndFlush(ApprovalActivity approvalActivity);
     
     public ApprovalActivity getApprovalTimeByApprovalActivityNumber(String activityNumber);
+    
+    public List<ApprovalActivity> getAllDataNotApprovedYet(String userId, String approvalDefinitionName);
+    
+    public Boolean isAlreadyHaveApprovedStatus(String activityNumber);
 }

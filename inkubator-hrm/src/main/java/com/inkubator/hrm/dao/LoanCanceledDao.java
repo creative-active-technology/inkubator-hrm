@@ -20,6 +20,8 @@ public interface LoanCanceledDao extends IDAO<LoanCanceled> {
     public List<LoanCanceled> getByParam(LoanCanceledSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(LoanCanceledSearchParameter searchParameter);
-    
+
     public LoanCanceled getEntityByPkWithDetail(Long id);
+
+    public Long getCurrentMaxId();
 }
