@@ -5,14 +5,25 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
+import com.inkubator.hrm.dao.TempProcessReadFingerDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -31,7 +42,12 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
     
     @Autowired
     private LogWtAttendanceRealizationDao logWtAttendanceRealizationDao;
-    
+    @Autowired
+    private TempProcessReadFingerDao tempProcessReadFingerDao;
+    @Autowired
+    private TempAttendanceRealizationDao tempAttendanceRealizationDao;
+    @Autowired
+    private WtHolidayDao wtHolidayDao;    
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
 
@@ -211,5 +227,64 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
         return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteByPeriodId(Long periodId) throws Exception {
+		logWtAttendanceRealizationDao.deleteByPeriodId(periodId);
+		
+	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void afterMonthEndProcess() throws Exception {
+		
+		/** update payrollType status di periode yg lama menjadi VOID */
+		WtPeriode wtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
+		wtPeriode.setAbsen(HRMConstant.PERIODE_ABSEN_VOID);
+		wtPeriode.setUpdatedOn(new Date());
+		wtPeriode.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
+		wtPeriodeDao.update(wtPeriode);		
+		
+		/** dapatkan range (untilPeriode dan fromPeriode) untuk periode yg baru */
+		Date untilPeriode = wtPeriode.getUntilPeriode();
+		Date fromPeriode = DateUtils.addDays(untilPeriode, 1);
+		int lastDateOfMonth = DateUtils.toCalendar(untilPeriode).getActualMaximum(Calendar.DAY_OF_MONTH);
+		if(lastDateOfMonth == DateUtils.toCalendar(untilPeriode).get(Calendar.DATE)){			
+			untilPeriode = DateUtils.addMonths(untilPeriode, 1);
+			lastDateOfMonth = DateUtils.toCalendar(untilPeriode).getActualMaximum(Calendar.DAY_OF_MONTH);
+			untilPeriode = DateUtils.setDays(untilPeriode, lastDateOfMonth);
+		} else {
+			untilPeriode = DateUtils.addMonths(untilPeriode, 1);
+		}
+		
+		/** adding process or update the entity if already exist */
+		WtPeriode wtp = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(fromPeriode, untilPeriode);
+		if(wtp == null) {
+			wtp = new WtPeriode();
+			wtp.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			wtp.setTahun(String.valueOf(DateUtils.toCalendar(fromPeriode).get(Calendar.YEAR)));
+			wtp.setBulan(DateUtils.toCalendar(fromPeriode).get(Calendar.MONTH)+1);
+			wtp.setFromPeriode(fromPeriode);
+			wtp.setUntilPeriode(untilPeriode);
+			wtp.setAbsen(HRMConstant.PERIODE_ABSEN_ACTIVE);
+			wtp.setPayrollType(HRMConstant.PERIODE_PAYROLL_NOT_ACTIVE);
+			long totalHoliday = wtHolidayDao.getTotalBetweenDate(fromPeriode, untilPeriode);
+			int workingDays = DateTimeUtil.getTotalWorkingDay(fromPeriode, untilPeriode, (int)totalHoliday, 0);
+			wtp.setWorkingDays(workingDays);
+			wtp.setCreatedOn(new Date());
+			wtp.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
+			wtPeriodeDao.save(wtp);
+		} else {
+			wtp.setAbsen(HRMConstant.PERIODE_ABSEN_ACTIVE);
+			wtp.setUpdatedOn(new Date());
+			wtp.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
+			wtPeriodeDao.update(wtp);
+		}		
+		
+		/** delete all the record in the temporary table **/
+		tempProcessReadFingerDao.deleteAllData();
+		tempAttendanceRealizationDao.deleteAllData();
+	}
      
 }

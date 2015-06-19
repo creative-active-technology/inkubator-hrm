@@ -359,8 +359,10 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		BioData bioData = empData.getBioData();
 		
 		//delete old photo (if any)
-		File oldFile = new File(bioData.getPathFoto());            
-        FileUtils.deleteQuietly(oldFile);
+		if(bioData.getPathFoto() != null) {
+			File oldFile = new File(bioData.getPathFoto());            
+			FileUtils.deleteQuietly(oldFile);
+		}
         
         //save new photo to disk
 		String pathPhoto = facesIO.getPathUpload() + bioData.getId() + "_" + multipart.getOriginalFilename();
@@ -373,6 +375,51 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		bioDataDao.update(bioData);
 		
 	}
-
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateSignature(String nik, MultipartFile signatureFile) throws Exception {
+		EmpData empData = empDataDao.getEntityByNik(nik);
+		BioData bioData = empData.getBioData();
+		
+		//delete old signature (if any)
+		if(bioData.getPathSignature() != null) {
+			File oldFile = new File(bioData.getPathSignature());            
+			FileUtils.deleteQuietly(oldFile);
+		}
+        
+        //save new signature to disk
+		String pathSignature = facesIO.getPathUpload() + bioData.getId() + "_" + signatureFile.getOriginalFilename();
+		File file = new File(pathSignature);
+		signatureFile.transferTo(file);		
+		
+		//save new path signature
+		bioData.setPathSignature(pathSignature);
+		bioDataDao.update(bioData);
+		
+	}
+    
+    @Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateFingerPrint(String nik, MultipartFile fingerPrintFile) throws Exception {
+		EmpData empData = empDataDao.getEntityByNik(nik);
+		BioData bioData = empData.getBioData();
+		
+		//delete old fingerPrint (if any)
+		if(bioData.getPathFinger() != null) {
+			File oldFile = new File(bioData.getPathFinger());            
+			FileUtils.deleteQuietly(oldFile);
+		}
+        
+        //save new fingerPrint to disk
+		String pathFingerPrint = facesIO.getPathUpload() + bioData.getId() + "_" + fingerPrintFile.getOriginalFilename();
+		File file = new File(pathFingerPrint);
+		fingerPrintFile.transferTo(file);		
+		
+		//save new path fingerPrint
+		bioData.setPathFinger(pathFingerPrint);
+		bioDataDao.update(bioData);
+		
+	}
    
 }

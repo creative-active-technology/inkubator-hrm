@@ -193,6 +193,18 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 
     }
 
-   
+	@Override
+	public List<TempProcessReadFinger> getAllDataByEmpDataId(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        return criteria.list();
+	}
+
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger");
+        query.executeUpdate();
+	}
 
 }

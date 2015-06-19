@@ -113,7 +113,7 @@
                             <f:facet name="header">  
                                 <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"  />
                                 </f:facet>
@@ -131,7 +131,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.attendaceRealization}"/>
                             </p:column>
-                            <p:column  style="width: 30%"> 
+                            <p:column  style="width: 20%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="Kelebihan Jam Kerja"/>
                                 </f:facet>
@@ -215,8 +215,8 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" 
-                                                 action="#{empAttendaceRealizationController.doDetail()}">                        
-                                    <f:setPropertyActionListener value="#{timeRealization}" target="#{empAttendaceRealizationController.selectedTempAttendanceRealization}" />
+                                                 action="#{workingTimeDeviationController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{timeRealization}" target="#{workingTimeDeviationController.selectedWorkingTimeDeviation}" />
                                 </p:commandButton>
 
                             </p:column>          
