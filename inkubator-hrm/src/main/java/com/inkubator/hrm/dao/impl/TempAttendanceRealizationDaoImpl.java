@@ -10,9 +10,12 @@ import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -84,27 +87,31 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     }
 
     @Override
-    public Long getTotalEmpLeav() {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+    public Long getTotalEmpLeav() {           
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		Long result = (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+		return result == null ? 0l : result;		
     }
 
     @Override
     public Long getTotalEmpPermit() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+        return result == null ? 0l : result;		
     }
 
     @Override
     public Long gettotalEmpOnDuty() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+        return result == null ? 0l : result;	
     }
 
     @Override
     public Long gettotalEmpOnSick() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -112,7 +119,8 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
-        return (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -120,7 +128,8 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
-        return (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("permit")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -129,7 +138,8 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
-        return (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("duty")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -138,7 +148,8 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
-        return (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("sick")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -199,13 +210,15 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     @Override
     public Long totalDayPresent() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("attendanceDaysPresent")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("attendanceDaysPresent")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
     public Long totalDaySchedule() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("attendanceDaysSchedule")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("attendanceDaysSchedule")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override
@@ -213,7 +226,8 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ce.id", empId));
-        return (Long) criteria.setProjection(Projections.sum("overtime")).uniqueResult();
+        Long result = (Long) criteria.setProjection(Projections.sum("overtime")).uniqueResult();
+        return result == null ? 0l : result;
     }
 
     @Override

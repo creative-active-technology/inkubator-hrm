@@ -181,70 +181,7 @@ public class HomeDashboardController extends BaseController {
         }
 
 
-        persentasiKehadiranPerWeek = new CartesianChartModel();
-        /*barChartModel = new BarChartModel();
-        barChartModel.setAnimate(true);
-        ChartSeries itpercent = new ChartSeries();
-        itpercent.setLabel("IT & RND");
-        itpercent.set("Minggu 1", 98);
-        itpercent.set("Minggu 2", 90);
-        itpercent.set("Minggu 3", 80);
-        itpercent.set("Minggu 4", 95);
-        itpercent.set("Minggu 5", 100);
-        itpercent.set("Minggu 6", 80);
-
-        ChartSeries hrgaPercent = new ChartSeries();
-        hrgaPercent.setLabel("HR & GA");
-        hrgaPercent.set("Minggu 1", 70);
-        hrgaPercent.set("Minggu 2", 77);
-        hrgaPercent.set("Minggu 3", 80);
-        hrgaPercent.set("Minggu 4", 87);
-        hrgaPercent.set("Minggu 5", 100);
-        hrgaPercent.set("Minggu 6", 77);
-
-        ChartSeries marketingPercent = new ChartSeries();
-        marketingPercent.setLabel("MARKETING");
-        marketingPercent.set("Minggu 1", 66);
-        marketingPercent.set("Minggu 2", 55);
-        marketingPercent.set("Minggu 3", 88);
-        marketingPercent.set("Minggu 4", 47);
-        marketingPercent.set("Minggu 5", 69);
-        marketingPercent.set("Minggu 6", 45);
-
-        ChartSeries finacePercent = new ChartSeries();
-        finacePercent.setLabel("FINANCE");
-        finacePercent.set("Minggu 1", 66);
-        finacePercent.set("Minggu 2", 55);
-        finacePercent.set("Minggu 3", 66);
-        finacePercent.set("Minggu 4", 47);
-        finacePercent.set("Minggu 5", 99);
-        finacePercent.set("Minggu 6", 90);
-
-        ChartSeries designPercent = new ChartSeries();
-        designPercent.setLabel("DESIGN");
-        designPercent.set("Minggu 1", 56);
-        designPercent.set("Minggu 2", 77);
-        designPercent.set("Minggu 3", 89);
-        designPercent.set("Minggu 4", 99);
-        designPercent.set("Minggu 5", 78);
-        designPercent.set("Minggu 6", 100);
-
-        ChartSeries productionPercent = new ChartSeries();
-        productionPercent.setLabel("PRODUCTION");
-        productionPercent.set("Minggu 1", 89);
-        productionPercent.set("Minggu 2", 80);
-        productionPercent.set("Minggu 3", 99);
-        productionPercent.set("Minggu 4", 100);
-        productionPercent.set("Minggu 5", 89);
-        productionPercent.set("Minggu 6", 77);
-
-        barChartModel.addSeries(itpercent);
-        barChartModel.addSeries(hrgaPercent);
-        barChartModel.addSeries(marketingPercent);
-        barChartModel.addSeries(finacePercent);
-        barChartModel.addSeries(designPercent);
-        barChartModel.addSeries(productionPercent);*/
-        
+        persentasiKehadiranPerWeek = new CartesianChartModel();       
 
         presensiModel = new CartesianChartModel();
         presensiBarChartModel = new HorizontalBarChartModel();

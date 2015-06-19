@@ -328,7 +328,6 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         RealizationAttendanceModel attendanceModel = new RealizationAttendanceModel();
         attendanceModel.setStardDate(wtPeriode.getFromPeriode());
         attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
-        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav());
         attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
         attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
