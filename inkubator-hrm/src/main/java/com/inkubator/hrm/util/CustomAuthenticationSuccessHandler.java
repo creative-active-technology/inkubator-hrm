@@ -8,8 +8,10 @@ package com.inkubator.hrm.util;
 import com.inkubator.common.util.DateFormatter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoginHistory;
+import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.securitycore.util.AuthenticationSuccessHandler;
 import com.inkubator.webcore.util.FacesUtil;
@@ -32,6 +34,8 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
     private LoginHistoryService loginHistoryService;
     @Autowired
     private DateFormatter dateFormatter;
+    @Autowired
+    private HrmUserService hrmUserService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -39,6 +43,15 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             LoginHistory loginHistory = new LoginHistory();
             loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
             FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
+            try {
+//                FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(authentication.getName()));
+                EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(authentication.getName()).getEmpData();
+                FacesUtil.setSessionAttribute(HRMConstant.BIODATA_ID, data.getBioData().getId());
+                FacesUtil.setSessionAttribute(HRMConstant.EMP_DATA_ID, data.getId());
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+
             String number = RandomNumberUtil.getRandomNumber(15);
             loginHistory.setId(Long.parseLong(number));
             String ipHere = IpUtil.getIpFromRequest(request);

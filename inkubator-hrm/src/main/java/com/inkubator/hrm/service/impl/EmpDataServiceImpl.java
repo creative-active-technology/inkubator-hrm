@@ -5,12 +5,17 @@
  */
 package com.inkubator.hrm.service.impl;
 
+
 import java.math.BigDecimal;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
@@ -48,6 +53,9 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.entity.BioAddress;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioIdCard;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpCareerHistory;
@@ -65,6 +73,7 @@ import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -919,5 +928,80 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		return mapResult;
 	}
 	
+	@Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception{
+    	List<EmpData> listEmpData = empDataDao.getAllDataWithoutJoinCompany(nikOrName);
+    	List<EmployeeRestModel> listModel =  new ArrayList<EmployeeRestModel>();
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
+    	
+    	for(EmpData empData : listEmpData){
+    		BioData bioData = empData.getBioData();
+    		if(empData != null && bioData != null) {
+    			try {
+	    			EmployeeRestModel model = this.bindToRestModel(empData, bioData);
+	    			listModel.add(model);
+    			} catch (NullPointerException ex){
+    				LOGGER.error("Employee Nik : "+ empData.getNikWithFullName() +", Error Null Pointer " + ex);
+    			}
+    			
+    		}
+    	}
+    	
+    	return listModel;
+    }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public EmployeeRestModel getRestModelByNik(String nik) throws Exception {
+		EmployeeRestModel model = null;
+		EmpData empData = empDataDao.getEntityByNik(nik);		
+		
+		if(empData != null && empData.getBioData() != null) {
+			BioData bioData = empData.getBioData();
+			model = this.bindToRestModel(empData, bioData);
+		}
+		return model;
+	}
+	
+	private EmployeeRestModel bindToRestModel(EmpData empData,BioData bioData) throws ParseException{
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
+		
+		EmployeeRestModel model = new EmployeeRestModel();
+		model.setNik(empData.getNik());
+		model.setTitle(bioData.getTitle());
+		model.setFirstname(bioData.getFirstName());
+		model.setLastname(bioData.getLastName());
+		model.setPlaceOfBirth(bioData.getCity().getCityName());
+		model.setDateOfBirth(dateFormat.format(bioData.getDateOfBirth()));
+		model.setGender(bioData.getGender().equals(HRMConstant.GLOBAL_MALE)? 1 : 2);
+		model.setMaritalStatus(bioData.getMaritalStatus().getName());
+		model.setHomePhone("");
+		model.setHandPhone(bioData.getMobilePhone());
+		model.setEmail(bioData.getPersonalEmail());
+		
+		for(BioAddress address : bioData.getBioAddresses()){
+			model.setAddressLine1(address.getAddressDetail());
+			model.setAddressLine2(address.getNotes());
+			model.setCity(address.getCity().getCityName());
+			model.setState(address.getCity().getProvince().getProvinceName());
+			model.setCountry(address.getCity().getProvince().getCountry().getCountryName());
+			model.setZipCode("");
+			break;
+		}
+		
+		model.setNationality(bioData.getNationality().getNationalityName());		
+		for(BioIdCard idCard : bioData.getBioIdCards()){
+			model.setIdentityType(idCard.getType());
+			model.setIdentityNumber(idCard.getCardNumber());
+			model.setIdentityIssuingPlace(idCard.getCity().getCityName());
+			model.setIdentityIssuingDate(dateFormat.format(idCard.getIssuedDate()));
+			model.setExpiryDate(dateFormat.format(idCard.getValidDate()));
+			break;
+		}
+		
+		return model;
+	}
 	
 }

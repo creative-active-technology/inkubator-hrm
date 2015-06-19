@@ -223,6 +223,8 @@ public class HRMConstant {
     /* Constant for Organization */
     public static final String ORGANIZATION_LEVEL_HOLDING = "0";
     public static final String ORGANIZATION_LEVEL_COMPANY = "1";
+    public static final String BIODATA_ID = "BIODATA_ID";
+    public static final String EMP_DATA_ID = "EMP_DATA_ID";
     /* END */
 
     /* Constant for FinancialNonBanking */
@@ -367,9 +369,9 @@ public class HRMConstant {
     public static final Integer KLASIFIKASI_WEAKNESSES = 1;
     public static final Integer KLASIFIKASI_OPPORTUNITIES = 2;
     public static final Integer KLASIFIKASI_THREATS = 3;
-    
-     //Constant For WT Period Status
+
+    //Constant For WT Period Status
     public static final String WT_PERIOD_STATUS_ACTIVE = "Active";
     public static final String WT_PERIOD_STATUS_VOID = "Void";
-    
+
 }

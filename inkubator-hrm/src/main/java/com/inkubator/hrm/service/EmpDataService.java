@@ -14,6 +14,7 @@ import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -136,4 +137,8 @@ public interface EmpDataService extends IService<EmpData> {
 	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
 	
 	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
+
+	public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
+    
+    public EmployeeRestModel getRestModelByNik(String nik) throws Exception;
 }

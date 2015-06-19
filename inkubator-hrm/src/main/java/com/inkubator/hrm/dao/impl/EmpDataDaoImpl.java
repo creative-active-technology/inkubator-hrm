@@ -732,6 +732,21 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return criteria.list();
     }
+    
+    @Override
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        if(StringUtils.isNotEmpty(nikOrName)) {
+	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+	        Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+	        criteria.add(disjunction);
+        }
+        return criteria.list();
+    }
 
     @Override
     public Long getTotalEmpDataNotTerminate() {

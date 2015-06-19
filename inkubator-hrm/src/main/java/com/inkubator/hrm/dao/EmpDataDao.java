@@ -134,8 +134,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 	
 	public Boolean isEmpDataWithNullWtGroupWorkingExist();
-	
+
 	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill);
-	
-	
+
+	public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName);
 }
