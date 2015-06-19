@@ -7,7 +7,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoanSchemaEmployeeTypeDao;
 import com.inkubator.hrm.entity.LoanSchemaEmployeeType;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
@@ -38,4 +40,11 @@ public class LoanSchemaEmployeeTypeDaoImpl extends IDAOImpl<LoanSchemaEmployeeTy
         return criteria.list();
     }
     
+	@Override
+	public List<LoanSchemaEmployeeType> getAllDataByEmpTypeId(Long empTypeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("employeeType.id", empTypeId));
+		criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+		return criteria.list();
+	}
 }

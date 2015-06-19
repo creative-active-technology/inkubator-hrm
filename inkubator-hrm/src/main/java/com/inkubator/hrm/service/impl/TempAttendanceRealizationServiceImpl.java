@@ -5,64 +5,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-
-
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.BusinessTravelDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-
-import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
-import com.inkubator.hrm.dao.LeaveImplementationDao;
-import com.inkubator.hrm.dao.MedicalCareDao;
-import com.inkubator.hrm.dao.PermitImplementationDao;
-import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
-import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
-import com.inkubator.hrm.dao.TempProcessReadFingerDao;
-
-import com.inkubator.hrm.dao.WtGroupWorkingDao;
-
-import com.inkubator.hrm.dao.WtHitungLemburDao;
-import com.inkubator.hrm.dao.WtHitungLemburJamDao;
-import com.inkubator.hrm.dao.WtHolidayDao;
-import com.inkubator.hrm.dao.WtOverTimeDao;
-import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.dao.WtWorkingHourDao;
-import com.inkubator.hrm.entity.BusinessTravel;
-
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.ImplementationOfOverTime;
-import com.inkubator.hrm.entity.LeaveImplementation;
-import com.inkubator.hrm.entity.MedicalCare;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
-import com.inkubator.hrm.entity.PayTempUploadData;
-import com.inkubator.hrm.entity.PermitImplementation;
-import com.inkubator.hrm.entity.TaxRate;
-import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
-import com.inkubator.hrm.entity.WtGroupWorking;
-
-import com.inkubator.hrm.entity.WtHitungLembur;
-import com.inkubator.hrm.entity.WtHitungLemburJam;
-import com.inkubator.hrm.entity.WtHoliday;
-import com.inkubator.hrm.entity.WtOverTime;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.entity.WtScheduleShift;
-
-import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.service.WtScheduleShiftService;
-import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
-import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,7 +16,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.pdfbox.util.StringUtil;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,31 +24,55 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
+
+import ch.lambdaj.Lambda;
+
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BusinessTravelDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
+import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
+import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtHitungLemburDao;
+import com.inkubator.hrm.dao.WtHitungLemburJamDao;
+import com.inkubator.hrm.dao.WtHolidayDao;
+import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.dao.WtWorkingHourDao;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
+import com.inkubator.hrm.entity.WtGroupWorking;
+import com.inkubator.hrm.entity.WtHitungLemburJam;
+import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.entity.WtScheduleShift;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.DetilAttendateRelaization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import java.util.ArrayList;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -302,8 +270,9 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return tempAttendanceRealizationDao.getTotalData();
     }
 
     @Override
@@ -1091,7 +1060,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         int hasilBagi = (totalDateDif) / (num);
         Date beginScheduleDate;
         Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
-        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(createDate))) {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
         } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
@@ -1187,5 +1156,11 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         }
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
+		
+		return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
+	}
    
 }

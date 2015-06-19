@@ -906,6 +906,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
 	        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
 	        		Double percentage = totalPercentage / (listGroupedAttendance.size() - 5);
+	        		if(percentage.isNaN() || percentage.isInfinite()){
+	        			percentage = 0.0;
+	        		}
 	        		model.setWeekNumber(Integer.valueOf(key));
 	        		model.setAttendancePercentage(new BigDecimal(percentage));
 	        		listOtherDepAttendanceDistinctWeekNumber.add(model);	        		
