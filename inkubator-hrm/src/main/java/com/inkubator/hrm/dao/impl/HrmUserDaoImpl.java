@@ -97,6 +97,8 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         disjunction.add(Restrictions.eq("userId", param));
         disjunction.add(Restrictions.eq("emailAddress", param));
         criteria.add(disjunction);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (HrmUser) criteria.uniqueResult();
     }
 

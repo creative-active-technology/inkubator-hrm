@@ -75,19 +75,19 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empData.nik} #{data.empData.bioData.fullName}"/>
+                                <h:outputLabel value= "#{data.loan.empData.nik} #{data.loan.empData.bioData.fullName}"/>
                             </p:column> 
                             <p:column sortBy="loanSchema"  style="width: 17%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loanschema.loan']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.loanSchema.name}"/>
+                                <h:outputLabel value= "#{data.loan.loanSchema.name}"/>
                             </p:column>  
                             <p:column sortBy="loanDate"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.loan_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.loanDate}">
+                                <h:outputLabel value= "#{data.loan.loanDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>
@@ -95,7 +95,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.nominalPrincipal}">
+                                <h:outputLabel value= "#{data.loan.nominalPrincipal}">
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
@@ -125,39 +125,42 @@
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.nik']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.empData.nik}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loan.empData.nik}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.empData.bioData.fullName}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loan.empData.bioData.fullName}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loanSchema.name}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loan.loanSchema.name}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/></p:column>
                             <p:column>
-                                <p:outputLabel value="#{loanCanceledViewController.selectedLoan.loanDate}"> 
+                                <p:outputLabel value="#{loanCanceledViewController.selectedLoan.loan.loanDate}"> 
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loan.nominal_principal']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.nominalPrincipal}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.loan.nominalPrincipal}">
+                            	<f:convertNumber pattern="###,###" type="currency"/>
+                            </p:outputLabel> 
+                            </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['loanDiscount.cancellation_date']}" styleClass="label_hrm"/></p:column>
                             <p:column>
-                                <p:outputLabel value="#{loanCanceledViewController.selectedLoan.cancelationDate}"> 
+                                <p:outputLabel value="#{loanCanceledViewController.selectedLoan.cancelledDate}"> 
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.description}"/> </p:column>
+                            <p:column><p:outputLabel value="#{loanCanceledViewController.selectedLoan.reason}"/> </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
