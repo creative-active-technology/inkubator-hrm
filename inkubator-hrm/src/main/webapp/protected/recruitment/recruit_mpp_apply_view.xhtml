@@ -116,7 +116,7 @@
                                     <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" disabled="#{data.approvalStatus eq 1 || data.approvalStatus eq 2}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
                                                   action="#{recruitMppApplyViewController.doEdit()}" >
                                    <f:setPropertyActionListener value="#{data}" target="#{recruitMppApplyViewController.selected}" />                                  
                                 </p:commandButton> 

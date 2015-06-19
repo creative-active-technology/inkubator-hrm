@@ -93,9 +93,7 @@ public class RecruitMppApplyDetailController extends BaseController {
 
                 if (null != selectedApprovalActivity) {
                     isApproved = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED;
-                    if (!isApproved) {
-                        recruitMppApplyModel = convertJsonToModel(selectedApprovalActivity.getPendingData());
-                    }
+                    recruitMppApplyModel = convertJsonToModel(selectedApprovalActivity.getPendingData());                   
                 }
             }
 
