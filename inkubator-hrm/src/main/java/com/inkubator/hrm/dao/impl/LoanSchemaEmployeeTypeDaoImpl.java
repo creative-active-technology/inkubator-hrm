@@ -37,5 +37,10 @@ public class LoanSchemaEmployeeTypeDaoImpl extends IDAOImpl<LoanSchemaEmployeeTy
         criteria.setFetchMode("employeeType", FetchMode.JOIN);
         return criteria.list();
     }
+
+    @Override
+    public List<LoanSchemaEmployeeType> getAllDataByEmpTypeId(Long empTypeId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

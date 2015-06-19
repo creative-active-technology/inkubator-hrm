@@ -272,4 +272,53 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
         return (ApprovalActivity) criteria.uniqueResult();
     }
+
+    @Override
+    public List<ApprovalActivity> getAllDataNotApprovedYet(String userId, String approvalDefinitionName) {
+        Criteria criteria = getCurrentSession().createCriteria(ApprovalActivity.class, "main");
+
+        //sub query first, get the latest of approval activity based on parameter
+        DetachedCriteria subQueryMaxSeqAndActvNumber = DetachedCriteria.forClass(ApprovalActivity.class, "subFirst");
+        subQueryMaxSeqAndActvNumber.createAlias("approvalDefinition", "approvalDefinition");
+        subQueryMaxSeqAndActvNumber.add(Restrictions.eq("approvalDefinition.name", approvalDefinitionName));
+        if (StringUtils.isNotEmpty(userId)) {
+            subQueryMaxSeqAndActvNumber.add(Restrictions.eq("requestBy", userId));
+        }
+        ProjectionList projectionMaxSeqAndActvNumber = Projections.projectionList();
+        projectionMaxSeqAndActvNumber.add(Property.forName("sequence").max());
+        projectionMaxSeqAndActvNumber.add(Projections.groupProperty("activityNumber"));
+        subQueryMaxSeqAndActvNumber.setProjection(projectionMaxSeqAndActvNumber);
+
+        //sub query second, get approval activity which is not (approved or canceled or rejected) yet
+        DetachedCriteria subQueryNotApprovedYet = DetachedCriteria.forClass(ApprovalActivity.class, "subSecond");
+        subQueryNotApprovedYet.add(Restrictions.eqProperty("subSecond.activityNumber", "main.activityNumber"));
+        Disjunction disjuntionStatus = Restrictions.disjunction();
+        disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_APPROVED));
+        disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_CANCELLED));
+        disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_REJECTED));
+        subQueryNotApprovedYet.add(disjuntionStatus);
+        ProjectionList projectionNotApprovedYet = Projections.projectionList();
+        projectionNotApprovedYet.add(Property.forName("id"));
+        subQueryNotApprovedYet.setProjection(projectionNotApprovedYet);
+
+        //binding sub query to main criteria
+        String[] var = {"main.sequence", "main.activityNumber"};
+        criteria.add(Subqueries.propertiesIn(var, subQueryMaxSeqAndActvNumber));
+        criteria.add(Subqueries.notExists(subQueryNotApprovedYet));
+
+        return criteria.list();
+    }
+
+    @Override
+    public Boolean isAlreadyHaveApprovedStatus(String activityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_APPROVED));
+
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.eq("activityNumber", activityNumber));
+        disjunction.add(Restrictions.eq("previousActivityNumber", activityNumber));
+        criteria.add(disjunction);
+
+        return criteria.list().size() > 0;
+    }
 }

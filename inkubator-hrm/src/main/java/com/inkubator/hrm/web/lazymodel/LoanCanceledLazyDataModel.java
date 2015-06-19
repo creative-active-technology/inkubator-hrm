@@ -42,7 +42,7 @@ public class LoanCanceledLazyDataModel extends LazyDataModel<LoanCanceled> imple
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("approvalActivityNumber");
+                    order = Order.desc("cancelledDate");
                 }
                 loanCanceledList = service.getByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
