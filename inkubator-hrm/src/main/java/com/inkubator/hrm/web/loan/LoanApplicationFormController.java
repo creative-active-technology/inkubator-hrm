@@ -351,7 +351,9 @@ public class LoanApplicationFormController extends BaseController {
 
             List<LoanNewSchemaListOfType> listOfTypes = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(loanNewSchemaListOfEmp.getLoanNewSchema().getId());
             model.setListLoanNewSchemaListOfType(listOfTypes);
-
+            
+            //Clear the map before adding Loan New Type
+            mapLoanNewType.clear();
             for (LoanNewSchemaListOfType loanNewSchemaListOfType : listOfTypes) {
                 mapLoanNewType.put(loanNewSchemaListOfType.getLoanNewType().getLoanTypeName(), loanNewSchemaListOfType.getId());
             }
