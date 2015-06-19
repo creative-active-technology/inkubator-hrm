@@ -17,4 +17,7 @@ public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceReali
     public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
+
+	public void deleteByPeriodId(Long periodId);
+        
 }
