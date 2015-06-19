@@ -8,6 +8,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
@@ -40,5 +41,7 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception;
     
     public void deleteAllData() throws Exception;
+    
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception;
 
 }
