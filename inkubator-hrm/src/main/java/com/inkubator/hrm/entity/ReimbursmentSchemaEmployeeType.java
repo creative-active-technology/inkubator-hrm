@@ -24,7 +24,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "reimbursment_schema_employee_type", catalog="hrm_payroll"
+@Table(name = "reimbursment_schema_employee_type", catalog="hrm_payroll_backup"
 )
 public class ReimbursmentSchemaEmployeeType implements java.io.Serializable {
     private Long id;

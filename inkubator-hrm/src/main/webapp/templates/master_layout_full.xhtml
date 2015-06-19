@@ -209,12 +209,31 @@
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
                     <div id="art-main">
+                    	<div style="float:left">
+                            <h:panelGrid style="margin-left: 50px;padding-top: 3px" columns="2">
+                                <!-- <p:commandLink>
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
+                                        <f:param name="id" value="#{BIODATA_ID}"/>
+                                    </p:graphicImage>
+                                </p:commandLink> -->
+
+                                <!--<p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/>-->
+                                <h:panelGroup>
+                                    <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
+                                    <p:outputLabel value="Login as Administrator" styleClass="label_welcome_header" />
+                                </h:panelGroup>
+                                    
+                             
+
+                            </h:panelGrid>
+                        </div>
+                        
                         <div style="float: right">
                             <h:form>                                
                                 <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
-                                        <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />
+                                        <!-- <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" /> -->
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
@@ -453,6 +472,7 @@
                                                 <p:menuitem value="#{appmsg['workingTime.working_time_difference']}" icon="img-working_time_difference" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.working_time_difference']}" url="#" />
                                                 <p:menuitem value="#{appmsg['workingTime.schedule_realization_detail']}" icon="img-detail_realisasi_jadwal" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.schedule_realization_detail']}" url="/protected/employee/emp_attendance_realization.htm" />
                                                 <p:menuitem value="#{appmsg['workingTime.over_56hours_overtime']}" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.over_56hours_overtime']}" url="#" />
+                                                <p:menuitem value="#{appmsg['payroll.monthEnd']}" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.monthEnd']}" url="/protected/working_time/month_end_attendance.htm" />
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
@@ -464,7 +484,7 @@
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['loan.loanApplicationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanApplicationInbox']}" url="/flow-protected/loan"/>
                                             <p:menuitem value="#{appmsg['loan.loanDiscount']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanDiscount']}" url="/protected/payroll/loan_discount_view.htm"/>
-                                            <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="/protected/personalia/loan_canceled_proc_view.htm"/>
+                                            <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="/protected/personalia/loan_canceled_form.htm"/>
                                             <p:menuitem value="#{appmsg['loan.cancellationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationInbox']}" url="/protected/personalia/loan_canceled_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.loanUpload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanUpload']}" url="/protected/payroll/loan_upload_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.loanStatus']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanStatus']}" url="#"/>
@@ -561,8 +581,8 @@
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">
                                         <h:panelGrid >
-                                            <p:outputLabel value="PT BPR BHAKTI DAYA PRIMA" styleClass="header_hrm" style="font-size: 28px !important;color: #cff !important;font-family: Palatino Linotype!important"/>
-                                            <p:outputLabel value="Jl Perintis Kemerdekaan 23/24, Sleman - Yogyakarta" styleClass="header_hrm" style="font-size: 15px !important;padding-top: -5px!important;color: #036 !important;font-family: Lucida Grande!important"/>
+                                            <p:outputLabel value="#{appmsg['global.application_name']}" styleClass="header_hrm" style="font-size: 28px !important;color: #cff !important;font-family: Palatino Linotype!important"/>
+                                            <p:outputLabel value="#{appmsg['global.company_name']}" styleClass="header_hrm" style="font-size: 15px !important;padding-top: -5px!important;color: #036 !important;font-family: Lucida Grande!important"/>
                                         </h:panelGrid>
                                     </div>
                                 </div>

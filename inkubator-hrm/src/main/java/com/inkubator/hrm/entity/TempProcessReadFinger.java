@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "temp_process_read_finger", catalog="hrm_payroll", uniqueConstraints = @UniqueConstraint(columnNames= {"emp_data_id", "schedule_date", "schedule_in", "schedule_out"}))
+@Table(name = "temp_process_read_finger", catalog="hrm_payroll_backup", uniqueConstraints = @UniqueConstraint(columnNames= {"emp_data_id", "schedule_date", "schedule_in", "schedule_out"}))
 public class TempProcessReadFinger implements Serializable {
 
     private Long id;

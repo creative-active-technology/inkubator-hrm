@@ -24,7 +24,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "personal_discipline", catalog="hrm_payroll" )
+@Table(name = "personal_discipline", catalog="hrm_payroll_backup" )
 public class PersonalDiscipline implements java.io.Serializable{
     private Long id;
     private Integer version;

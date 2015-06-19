@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="model_component"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm_payroll_backup"
     , uniqueConstraints = {@UniqueConstraint(columnNames="code"), @UniqueConstraint(columnNames="name")} 
 )
 public class ModelComponent  implements java.io.Serializable {

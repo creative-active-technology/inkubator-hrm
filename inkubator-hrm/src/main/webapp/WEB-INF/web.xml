@@ -57,7 +57,7 @@
     <context-param>
         <description>Primefaces theme</description>
         <param-name>primefaces.THEME</param-name>
-        <param-value>cupertino</param-value>
+        <param-value>hot-sneaks</param-value>
     </context-param>
     <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
@@ -187,6 +187,7 @@
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/flow-protected/*</url-pattern>
+        <url-pattern>/REST/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>Push Servlet</servlet-name>

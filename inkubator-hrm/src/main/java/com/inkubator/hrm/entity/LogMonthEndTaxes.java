@@ -19,7 +19,7 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name="log_month_end_taxes", catalog="hrm_payroll"
+@Table(name="log_month_end_taxes", catalog="hrm_payroll_backup"
 )
 public class LogMonthEndTaxes implements Serializable {
 

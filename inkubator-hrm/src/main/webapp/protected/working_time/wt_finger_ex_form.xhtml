@@ -115,7 +115,7 @@
                                 <p:column style="width: 80%">
                                     <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{wtFingerExceptionFormController.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId2:picklistUserRoleId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -126,8 +126,8 @@
 
                         <p:focus context="formSubmitId" />
                     </div>
-<!--                </h:form>
-                <h:form id="formSubmitId">-->
+                </h:form>
+                <h:form id="formSubmitId2">
                     <div id="box_bg" style="margin: 10px">
                         <div style="margin-top: 10px">
                             <p:outputLabel value="#{appmsg['employee.list_of_employee']}" styleClass="header_big" />
@@ -136,26 +136,26 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_start']}"  styleClass="label_hrm" />
+                                    <p:outputLabel for="startDate" value="#{appmsg['publicHoliday.publicHoliday_start']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
                                     <p:calendar  id="startDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['publicHoliday.publicHoliday_start']}" value="#{wtFingerExceptionFormController.model.startDate}"
                                                  required="true" navigator="true">
-                                        <f:validator validatorId="birthDateValidator"  />
-                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                        <!-- <f:validator validatorId="birthDateValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/> -->
                                     </p:calendar>
                                     <p:message for="startDate"/>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['publicHoliday.publicHoliday_end']}"  styleClass="label_hrm" />
+                                    <p:outputLabel for="endDate" value="#{appmsg['publicHoliday.publicHoliday_end']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column>
                                     <p:calendar  id="endDate" size="16" pattern="dd MMMM yyyy" label="#{appmsg['publicHoliday.publicHoliday_end']}" value="#{wtFingerExceptionFormController.model.endDate}"
                                                  required="true" navigator="true">
-                                        <f:validator validatorId="birthDateValidator"  />
-                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                        <!-- <f:validator validatorId="birthDateValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/> -->
                                     </p:calendar>
                                     <p:message for="endDate"/>
                                 </p:column>
@@ -180,12 +180,12 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId,:growlId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId2, :formSubmitId, :growlId" onclick="statusDialog.show()" oncomplete="statusDialog.hide()"
                                              action="#{wtFingerExceptionFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="formSubmitId" action="#{wtFingerExceptionFormController.doReset()}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":formSubmitId" action="#{wtFingerExceptionFormController.doReset()}"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="formSubmitId" />  
                             </p:commandButton>

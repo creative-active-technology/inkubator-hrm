@@ -26,7 +26,7 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name = "resource_name", catalog="hrm_payroll",
+@Table(name = "resource_name", catalog="hrm_payroll_backup",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "code"),
             @UniqueConstraint(columnNames = "barcode_id")

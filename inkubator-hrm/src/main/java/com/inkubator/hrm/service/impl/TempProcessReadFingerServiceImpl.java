@@ -3,6 +3,7 @@ package com.inkubator.hrm.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.inkubator.hrm.dao.FingerMatchEmpDao;
 import com.inkubator.hrm.dao.FingerSwapCapturedDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
+import com.inkubator.hrm.dao.WtFingerExceptionDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.CheckInAttendance;
 import com.inkubator.hrm.entity.EmpData;
@@ -30,6 +32,7 @@ import com.inkubator.hrm.entity.FingerMatchEmp;
 import com.inkubator.hrm.entity.FingerSwapCaptured;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
+import com.inkubator.hrm.entity.WtFingerException;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.TempProcessReadFingerService;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
@@ -58,6 +61,8 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 	private EmpDataDao empDataDao;
 	@Autowired
 	private TempJadwalKaryawanDao tempJadwalKaryawanDao;
+	@Autowired
+	private WtFingerExceptionDao wtFingerExceptionDao;
 	
 	@Override
 	public TempProcessReadFinger getEntiyByPK(String id) throws Exception {
@@ -193,8 +198,9 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Long getTotalData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return tempProcessReadFingerDao.getTotalData();
 
 	}
 
@@ -318,8 +324,8 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 				/** hanya di proses insert/save yg datanya masih null(artinya belum di correction, baik yg in atau out). Lihat di view detailnya.*/
 				if(null == tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(empData.getId(), 
 						jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
-					CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());					
-					this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId, UserInfoUtil.getUserName(), new Date());	
+										
+					this.savingEntity(empData, jadwalKaryawan, listFingerIndexId, UserInfoUtil.getUserName(), new Date());	
 				}
 			}
 		}
@@ -336,28 +342,29 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 			/** hanya di proses insert/save yg datanya masih null(artinya belum di correction, baik yg in atau out). Lihat di view detailnya.*/
 			if(null == tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDateAndScheduleInAndScheduleOut(empData.getId(), 
 					jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
-				CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());					
-				this.savingEntity(empData, jadwalKaryawan, checkInAttendance, listFingerIndexId, createdBy, createdOn);	
+									
+				this.savingEntity(empData, jadwalKaryawan, listFingerIndexId, createdBy, createdOn);	
 			}
 		}
 		
 	}
 	
-	private void savingEntity(EmpData empData, TempJadwalKaryawan jadwalKaryawan, CheckInAttendance checkInAttendance, List<String> listFingerIndexId, String createdBy, Date createdOn){				
-		/** initialization working schedule limit */
-		DateTime workingHourBegin = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
-		DateTime workingHourEnd = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());		
-		Date arriveLimitBegin = workingHourBegin.minusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitBegin()).toDate();
-		Date arriveLimitEnd   = workingHourBegin.plusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitEnd()).toDate();
-		Date goHomeLimitBegin = workingHourEnd.minusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitBegin()).toDate();
-		Date goHomeLimitEnd   = workingHourEnd.plusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitEnd()).toDate();
-			
-		/** get finger swap captured from (several) data in (several) machine */
-		FingerSwapCaptured fingerInCaptured = this.getFingerInCaptured(listFingerIndexId, arriveLimitBegin, arriveLimitEnd);
-		FingerSwapCaptured fingerOutCaptured = this.getFingerOutCaptured(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd);
+	private void savingEntity(EmpData empData, TempJadwalKaryawan jadwalKaryawan, List<String> listFingerIndexId, String createdBy, Date createdOn){
+		/** check if the employee is fingerException,
+		 *  if fingerException then no need to check fingerSwap, just set finger in/out accordance to schedule in/out, so margin in/out will be 0(zero) */
+		WtFingerException fingerException = wtFingerExceptionDao.getEntityByEmpDataId(empData.getId());
+		Boolean isFingerException = Boolean.FALSE;
+		if(fingerException != null){
+			DateTime dtScheduleDate = new DateTime(jadwalKaryawan.getTanggalWaktuKerja());
+			Date startDate = fingerException.getStartDate();
+			Date endDate = fingerException.getEndDate();
+			isFingerException = fingerException.getExtendException() || 
+					((dtScheduleDate.isAfter(startDate.getTime()) || DateUtils.isSameDay(dtScheduleDate.toDate(), fingerException.getStartDate())) && 
+							(dtScheduleDate.isBefore(endDate.getTime()) || DateUtils.isSameDay(dtScheduleDate.toDate(), fingerException.getEndDate())));
+		}
 		
 		/** Start saving tempProcessReadFinger entity.
-		 *  webCheckIn or fingerCheckIn can be null
+		 *  webCheckIn(checkInAttendance) OR fingerCheckIn can be null
 		 *  (yang berarti ada kemungkinan employee tidak masuk atau mereka checkIn nya di luar limit waktu workingHour)*/
 		TempProcessReadFinger tempProcessReadFinger = new TempProcessReadFinger();
 		tempProcessReadFinger.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -366,22 +373,48 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		tempProcessReadFinger.setScheduleDate(jadwalKaryawan.getTanggalWaktuKerja());
 		tempProcessReadFinger.setScheduleIn(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
 		tempProcessReadFinger.setScheduleOut(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());
-		if(checkInAttendance != null){
-			if(checkInAttendance.getCheckInTime()!= null && arriveLimitBegin.after(checkInAttendance.getCheckInTime()) && arriveLimitEnd.before(checkInAttendance.getCheckInTime())){
-				tempProcessReadFinger.setWebCheckIn(checkInAttendance.getCheckInTime());
+		
+		if(isFingerException){
+			tempProcessReadFinger.setFingerIn(tempProcessReadFinger.getScheduleIn());
+			tempProcessReadFinger.setMarginIn(0);
+			tempProcessReadFinger.setFingerOut(tempProcessReadFinger.getScheduleOut());
+			tempProcessReadFinger.setMarginOut(0);
+			
+		} else {
+			/** initialization working schedule limit */
+			DateTime workingHourBegin = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin());
+			DateTime workingHourEnd = this.getExactWorkingSchedule(jadwalKaryawan.getTanggalWaktuKerja(), jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd());		
+			Date arriveLimitBegin = workingHourBegin.minusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitBegin()).toDate();
+			Date arriveLimitEnd   = workingHourBegin.plusMinutes(jadwalKaryawan.getWtWorkingHour().getArriveLimitEnd()).toDate();
+			Date goHomeLimitBegin = workingHourEnd.minusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitBegin()).toDate();
+			Date goHomeLimitEnd   = workingHourEnd.plusMinutes(jadwalKaryawan.getWtWorkingHour().getGoHomeLimitEnd()).toDate();
+				
+			/** get finger swap captured from (several) data in (several) machine */
+			FingerSwapCaptured fingerInCaptured = this.getFingerInCaptured(listFingerIndexId, arriveLimitBegin, arriveLimitEnd);
+			FingerSwapCaptured fingerOutCaptured = this.getFingerOutCaptured(listFingerIndexId, goHomeLimitBegin, goHomeLimitEnd);
+			
+			/** get web check in */
+			CheckInAttendance checkInAttendance = checkInAttendanceDao.getEntityByEmpDataIdAndCheckDate(empData.getId(), jadwalKaryawan.getTanggalWaktuKerja());
+			
+			/** proceed finger swap in/out and web check in/out */
+			if(checkInAttendance != null){
+				if(checkInAttendance.getCheckInTime()!= null && arriveLimitBegin.after(checkInAttendance.getCheckInTime()) && arriveLimitEnd.before(checkInAttendance.getCheckInTime())){
+					tempProcessReadFinger.setWebCheckIn(checkInAttendance.getCheckInTime());
+				}
+				if(checkInAttendance.getCheckOutTime()!= null && goHomeLimitBegin.after(checkInAttendance.getCheckOutTime()) && goHomeLimitEnd.before(checkInAttendance.getCheckOutTime())){
+					tempProcessReadFinger.setWebCheckOut(checkInAttendance.getCheckOutTime());
+				}			
 			}
-			if(checkInAttendance.getCheckOutTime()!= null && goHomeLimitBegin.after(checkInAttendance.getCheckOutTime()) && goHomeLimitEnd.before(checkInAttendance.getCheckOutTime())){
-				tempProcessReadFinger.setWebCheckOut(checkInAttendance.getCheckOutTime());
-			}			
+			if(fingerInCaptured != null){
+				tempProcessReadFinger.setFingerIn(fingerInCaptured.getSwapDatetimeLog());
+				tempProcessReadFinger.setMarginIn(DateTimeUtil.getTotalMinutesDifference(fingerInCaptured.getSwapDatetimeLog(), workingHourBegin.toDate()));
+			}
+			if(fingerOutCaptured != null){
+				tempProcessReadFinger.setFingerOut(fingerOutCaptured.getSwapDatetimeLog());
+				tempProcessReadFinger.setMarginOut(DateTimeUtil.getTotalMinutesDifference(workingHourEnd.toDate(), fingerOutCaptured.getSwapDatetimeLog()));
+			}
 		}
-		if(fingerInCaptured != null){
-			tempProcessReadFinger.setFingerIn(fingerInCaptured.getSwapDatetimeLog());
-			tempProcessReadFinger.setMarginIn(DateTimeUtil.getTotalMinutesDifference(fingerInCaptured.getSwapDatetimeLog(), workingHourBegin.toDate()));
-		}
-		if(fingerOutCaptured != null){
-			tempProcessReadFinger.setFingerOut(fingerOutCaptured.getSwapDatetimeLog());
-			tempProcessReadFinger.setMarginOut(DateTimeUtil.getTotalMinutesDifference(workingHourEnd.toDate(), fingerOutCaptured.getSwapDatetimeLog()));
-		}
+		
 		tempProcessReadFinger.setIsCorrectionIn(false);
 		tempProcessReadFinger.setIsCorrectionOut(false);
 		tempProcessReadFinger.setCreatedBy(createdBy);
