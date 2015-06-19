@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
@@ -160,5 +161,6 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
     
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;	
-
+	
+	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
 }

@@ -5,11 +5,15 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -60,17 +64,20 @@ public class HomeDashboardController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
+
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
     private TempAttendanceRealizationService tempAttendanceRealizationService;
     private RealizationAttendanceModel attendanceModel;
     private Double totalPersent;
 
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
+    
     @PostConstruct
     @Override
-
     public void initialization() {
         super.initialization();
-
+        
         distribusiKaryawanPerDepartment = new CartesianChartModel();
         barChartDistribusiByDept = new BarChartModel();
         pieModel = new PieChartModel();
@@ -129,17 +136,53 @@ public class HomeDashboardController extends BaseController {
             pieModel.setDiameter(120);
             pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
+
             System.out.println(" Service nya " + tempAttendanceRealizationService);
             attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
             double totalPresent = Double.parseDouble(String.valueOf(attendanceModel.getTotaldayPresent()));
             double totalSchedule = Double.parseDouble(String.valueOf(attendanceModel.getTotaldaySchedule()));
             totalPersent = (totalPresent / totalSchedule);
+
+            
+            //Get Period Active
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            persentasiKehadiranPerWeek = new CartesianChartModel();
+            barChartModel = new BarChartModel();
+            barChartModel.setStacked(false);
+            barChartModel.setLegendPosition("ne");
+            barChartModel.setLegendCols(6);
+            barChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
+            barChartModel.setShowDatatip(true);
+            barChartModel.setShadow(true);
+            barChartModel.setShowPointLabels(true);
+            Axis yAxis = barChartModel.getAxis(AxisType.Y);
+            yAxis.setMax(150);
+            yAxis.setMin(0);
+            
+            //Get Attendance Percentation per Department on Active Period
+            Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByDepartmentIdAndRangeDate(activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+            
+            //Looping and render it
+            for (Map.Entry<String, List<DepAttendanceRealizationViewModel>> entry : mapResult.entrySet()) {
+            	
+            	ChartSeries charDepartmentSeries = new ChartSeries();
+            	charDepartmentSeries.setLabel(entry.getKey());
+            	
+            	for(DepAttendanceRealizationViewModel depAttendanceModel : entry.getValue()){            		
+            		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue());
+            	}
+            	
+            	barChartModel.addSeries(charDepartmentSeries);            	
+            }
+
+
         } catch (Exception e) {
             LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
         }
 
+
         persentasiKehadiranPerWeek = new CartesianChartModel();
-        barChartModel = new BarChartModel();
+        /*barChartModel = new BarChartModel();
         barChartModel.setAnimate(true);
         ChartSeries itpercent = new ChartSeries();
         itpercent.setLabel("IT & RND");
@@ -200,17 +243,8 @@ public class HomeDashboardController extends BaseController {
         barChartModel.addSeries(marketingPercent);
         barChartModel.addSeries(finacePercent);
         barChartModel.addSeries(designPercent);
-        barChartModel.addSeries(productionPercent);
-        barChartModel.setStacked(false);
-        barChartModel.setLegendPosition("ne");
-        barChartModel.setLegendCols(6);
-        barChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
-        barChartModel.setShowDatatip(true);
-        barChartModel.setShadow(true);
-        barChartModel.setShowPointLabels(true);
-        Axis yAxis = barChartModel.getAxis(AxisType.Y);
-        yAxis.setMax(150);
-        yAxis.setMin(0);
+        barChartModel.addSeries(productionPercent);*/
+        
 
         presensiModel = new CartesianChartModel();
         presensiBarChartModel = new HorizontalBarChartModel();
@@ -410,5 +444,10 @@ public class HomeDashboardController extends BaseController {
     public void setTotalPersent(Double totalPersent) {
         this.totalPersent = totalPersent;
     }
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}    
+    
 
 }

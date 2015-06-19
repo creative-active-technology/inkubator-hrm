@@ -5,15 +5,20 @@
  */
 package com.inkubator.hrm.service.impl;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
+import org.hamcrest.Matcher;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,6 +29,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
@@ -70,8 +76,10 @@ import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
@@ -984,6 +992,76 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 			model = this.bindToRestModel(empData, bioData);
 		}
 		return model;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception {
+		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
+		
+			
+		//Dapatkan departemen dan jumlah karyawannya
+		 List<Department> departments = departmentDao.getAllData();
+	        Map<Department, Long> results = new HashMap<Department, Long>();
+	        for (Department department : departments) {
+	            Long total = empDataDao.getTotalByDepartmentId(department.getId());
+	            results.put(department, total);
+	        }
+	        
+	        //sorting by value (dari yang besar ke yang kecil)
+	        results = MapUtil.sortByValueDesc(results);
+	        
+	        /*
+	         * Jika jumlah departemen lebih besar dari 5, maka 5 departemen dengan total karyawan terbesar, 
+	         * masing - masing di jadikan satu model sendiri - sendiri, 
+	         * sedangkan sisanya di satukan jadi satu model dengan label Departemen lainnya (key resourceBundle : 'department.other_department')
+	         */
+	        if(results.size() > 5){        	
+	        	
+	        	List<Department> listOtherDepartment = new ArrayList<Department>();
+	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendance = new ArrayList<DepAttendanceRealizationViewModel>();
+	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendanceDistinctWeekNumber = new ArrayList<DepAttendanceRealizationViewModel>();
+	        	
+	        	int i = 1;
+	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
+	        		if(i <= 5){
+	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+		    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);	        			
+	        		}else{
+	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+	        			listOtherDepAttendance.addAll(listDepAttendance);
+	        			listOtherDepartment.add(entry.getKey());
+	        		}
+	        		
+	        		i++;	        		
+	        	}
+	        	
+	        	Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listOtherDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+	        	for (String key : groupAttendance.keySet()) {
+	        		List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
+	        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+	        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+	        		Double percentage = totalPercentage / (listGroupedAttendance.size() - 5);
+	        		model.setWeekNumber(Integer.valueOf(key));
+	        		model.setAttendancePercentage(new BigDecimal(percentage));
+	        		listOtherDepAttendanceDistinctWeekNumber.add(model);	        		
+	        		
+	        	}
+	        	
+	        	mapResult.put(ResourceBundleUtil.getAsString("department.other_department"), listOtherDepAttendanceDistinctWeekNumber);
+	        	
+	        	
+	        }else{	        	
+	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
+	        		List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+	    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
+	        	}
+	        }
+	        
+		
+		 
+		
+		return mapResult;
 	}
 	
 	private EmployeeRestModel bindToRestModel(EmpData empData,BioData bioData) throws ParseException{
