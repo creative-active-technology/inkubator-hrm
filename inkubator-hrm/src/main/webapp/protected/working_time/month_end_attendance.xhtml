@@ -72,7 +72,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
                                 	<p:commandButton value="#{appmsg['payroll.month_end_process']}" action="#{monthEndAttendanceViewController.doInitMonthEndProcess}"  title="#{appmsg['payroll.month_end_process']}" label="#{appmsg['payroll.month_end_process']}" styleClass="label_button"
-                                					 onclick="statusDialog.show()" oncomplete="if (!args.validationFailed) {monthEndProcessWidget.show();} else {statusDialog.hide();}" update=":formId,:growlId,:monthEndProcessWidgetId">
+                                					 onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('monthEndProcessWidget').show();} else {PF('statusDialog').hide();}" update=":formId,:growlId,:monthEndProcessWidgetId">
                                     </p:commandButton>                                    
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableMonthEndId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Month_End"/>
@@ -135,7 +135,7 @@
                 
                 <h:outputStylesheet library="css" name="progress_bar.css" />
                 <p:dialog widgetVar="monthEndProcessWidget" id="monthEndProcessWidgetId" header="#{appmsg['payroll.month_end_process']}" width="500" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="false" closable="false" focus="monthEndProcessForm">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="false" closable="false" focus="monthEndProcessForm">
 
                     <div align="center">
                         <h:form id="monthEndProcessForm">
@@ -153,10 +153,10 @@
                             </h:panelGrid>
                             <h:panelGrid columns="2" style="margin-bottom: 10px">
 								<p:commandButton value="#{appmsg['global.process']}"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" action="#{monthEndAttendanceViewController.doMonthEndProcess()}" update="monthEndProcessForm" />
-	                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="monthEndProcessWidget.hide();" immediate="true"/>
+	                            <p:commandButton value="#{appmsg['global.close']}" id="closeId" widgetVar="closeWidget" onclick="PF('monthEndProcessWidget').hide();" immediate="true"/>
                             </h:panelGrid>
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{monthEndAttendanceViewController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
-                                <p:ajax event="complete" listener="#{monthEndAttendanceViewController.onCompleteMonthEndProcess}" update=":growlId,:formId" oncomplete="if (!args.validationFailed) {monthEndProcessWidget.hide();}"/>
+                                <p:ajax event="complete" listener="#{monthEndAttendanceViewController.onCompleteMonthEndProcess}" update=":growlId,:formId" oncomplete="if (!args.validationFailed) {PF('monthEndProcessWidget').hide();}"/>
                             </p:progressBar>                                                        
                         </h:form>
                     </div>

@@ -111,7 +111,7 @@ public class TempAttendanceRealization  implements java.io.Serializable {
     }
 
     
-    @Column(name="leave")
+    @Column(name="leaves")
     public Integer getLeave() {
         return this.leave;
     }
