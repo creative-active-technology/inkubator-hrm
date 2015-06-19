@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -8,6 +9,7 @@ import org.primefaces.model.UploadedFile;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Loan;
+import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.model.LoanModel;
@@ -46,4 +48,8 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
     
     public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) throws Exception;
+    
+    public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
+    
+    public void cancelled(long approvalActivityId, LoanCanceled loanCancelation) throws Exception;
 }

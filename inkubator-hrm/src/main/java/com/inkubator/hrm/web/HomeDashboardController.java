@@ -5,19 +5,26 @@
  */
 package com.inkubator.hrm.web;
 
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.webcore.controller.BaseController;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -47,12 +54,13 @@ public class HomeDashboardController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
-
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-
+        
         distribusiKaryawanPerDepartment = new CartesianChartModel();
         pieModel = new PieChartModel();
         totalMale = new Long(0);
@@ -98,72 +106,32 @@ public class HomeDashboardController extends BaseController {
             pieModel.set("36-40", employeesByAge.get("between36And40"));
             pieModel.set("> 40", employeesByAge.get("moreThan40"));
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
+            
+            //Get Period Active
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            persentasiKehadiranPerWeek = new CartesianChartModel();
+            
+            //Get Attendance Percentation per Department on Active Period
+            Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByDepartmentIdAndRangeDate(activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+            
+            //Looping and render it
+            for (Map.Entry<String, List<DepAttendanceRealizationViewModel>> entry : mapResult.entrySet()) {
+            	
+            	ChartSeries charDepartmentSeries = new ChartSeries();
+            	charDepartmentSeries.setLabel(entry.getKey());
+            	
+            	for(DepAttendanceRealizationViewModel depAttendanceModel : entry.getValue()){            		
+            		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue());
+            	}
+            	
+            	persentasiKehadiranPerWeek.addSeries(charDepartmentSeries);            	
+            }
 
         } catch (Exception e) {
             LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
         }
 
-        persentasiKehadiranPerWeek = new CartesianChartModel();
-        ChartSeries itpercent = new ChartSeries();
-        itpercent.setLabel("IT & RND");
-        itpercent.set("Week 1", 98);
-        itpercent.set("Week 2", 90);
-        itpercent.set("Week 3", 80);
-        itpercent.set("Week 4", 95);
-        itpercent.set("Week 5", 100);
-        itpercent.set("Week 6", 80);
-
-        ChartSeries hrgaPercent = new ChartSeries();
-        hrgaPercent.setLabel("HR & GA");
-        hrgaPercent.set("Week 1", 70);
-        hrgaPercent.set("Week 2", 77);
-        hrgaPercent.set("Week 3", 80);
-        hrgaPercent.set("Week 4", 87);
-        hrgaPercent.set("Week 5", 100);
-        hrgaPercent.set("Week 6", 77);
-
-        ChartSeries marketingPercent = new ChartSeries();
-        marketingPercent.setLabel("MARKETING");
-        marketingPercent.set("Week 1", 66);
-        marketingPercent.set("Week 2", 55);
-        marketingPercent.set("Week 3", 88);
-        marketingPercent.set("Week 4", 47);
-        marketingPercent.set("Week 5", 69);
-        marketingPercent.set("Week 6", 45);
-
-        ChartSeries finacePercent = new ChartSeries();
-        finacePercent.setLabel("FINANCE");
-        finacePercent.set("Week 1", 66);
-        finacePercent.set("Week 2", 55);
-        finacePercent.set("Week 3", 66);
-        finacePercent.set("Week 4", 47);
-        finacePercent.set("Week 5", 99);
-        finacePercent.set("Week 6", 90);
-
-        ChartSeries designPercent = new ChartSeries();
-        designPercent.setLabel("DESIGN");
-        designPercent.set("Week 1", 56);
-        designPercent.set("Week 2", 77);
-        designPercent.set("Week 3", 89);
-        designPercent.set("Week 4", 99);
-        designPercent.set("Week 5", 78);
-        designPercent.set("Week 6", 100);
-
-        ChartSeries productionPercent = new ChartSeries();
-        productionPercent.setLabel("PRODUCTION");
-        productionPercent.set("Week 1", 89);
-        productionPercent.set("Week 2", 80);
-        productionPercent.set("Week 3", 99);
-        productionPercent.set("Week 4", 100);
-        productionPercent.set("Week 5", 89);
-        productionPercent.set("Week 6", 77);
-
-        persentasiKehadiranPerWeek.addSeries(itpercent);
-        persentasiKehadiranPerWeek.addSeries(hrgaPercent);
-        persentasiKehadiranPerWeek.addSeries(marketingPercent);
-        persentasiKehadiranPerWeek.addSeries(finacePercent);
-        persentasiKehadiranPerWeek.addSeries(designPercent);
-        persentasiKehadiranPerWeek.addSeries(productionPercent);
+        
 
         presensiModel = new CartesianChartModel();
         ChartSeries cutiDanDinas = new ChartSeries();
@@ -309,6 +277,10 @@ public class HomeDashboardController extends BaseController {
     public void setTotalEmp(Long totalEmp) {
         this.totalEmp = totalEmp;
     }
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
     
     
 }

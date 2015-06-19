@@ -8,6 +8,8 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.inkubator.hrm.entity.EmpData;
+
 /**
  *
  * @author deni
@@ -17,7 +19,7 @@ public class LoanCanceledModel implements Serializable {
     private Long id;
     private String keterangan;
     private String nomor;
-    private Long empData;
+//    private Long empData;
     private Long loanSchema;
     private String loanName;
     private Double nominalPrincipal;
@@ -29,6 +31,11 @@ public class LoanCanceledModel implements Serializable {
     private String approvalActivityNumber;
     private Integer statusPencairan;
     private Date approvalTime;
+    private EmpData empData;
+    private Long approvalActivityId;
+    private String code;
+    private Date cancelledDate;
+    private String reason;
 
     public Long getId() {
         return id;
@@ -38,11 +45,11 @@ public class LoanCanceledModel implements Serializable {
         this.id = id;
     }
 
-    public Long getEmpData() {
+    public EmpData getEmpData() {
         return empData;
     }
 
-    public void setEmpData(Long empData) {
+    public void setEmpData(EmpData empData) {
         this.empData = empData;
     }
 
@@ -149,6 +156,38 @@ public class LoanCanceledModel implements Serializable {
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
     }
+
+	public Long getApprovalActivityId() {
+		return approvalActivityId;
+	}
+
+	public void setApprovalActivityId(Long approvalActivityId) {
+		this.approvalActivityId = approvalActivityId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Date getCancelledDate() {
+		return cancelledDate;
+	}
+
+	public void setCancelledDate(Date cancelledDate) {
+		this.cancelledDate = cancelledDate;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
     
     
 }
