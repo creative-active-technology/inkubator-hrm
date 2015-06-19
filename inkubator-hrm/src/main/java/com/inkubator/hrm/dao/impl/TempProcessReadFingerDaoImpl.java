@@ -8,7 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -185,6 +184,12 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
     }
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger");
+        query.executeUpdate();
+	}
 
     
 }
