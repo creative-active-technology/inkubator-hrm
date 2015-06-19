@@ -198,8 +198,9 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Long getTotalData() throws Exception {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return tempProcessReadFingerDao.getTotalData();
 
 	}
 

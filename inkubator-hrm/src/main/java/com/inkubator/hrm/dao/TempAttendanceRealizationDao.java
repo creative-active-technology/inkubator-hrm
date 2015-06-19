@@ -6,11 +6,8 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.datacore.dao.IDAO;
-import java.util.List;
-import org.hibernate.criterion.Order;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
@@ -48,6 +45,8 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     public Long totalDayPresent();
 
     public Long totalDaySchedule();
+    
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId);
 
     public Long getTotalOverTime(long empId);
 
