@@ -200,4 +200,11 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
         return criteria.list();
 	}
 
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger");
+        query.executeUpdate();
+	}
+
 }

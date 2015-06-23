@@ -5,17 +5,11 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
-import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -25,6 +19,13 @@ import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
  *
@@ -176,6 +177,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         query.append(" INNER JOIN tempAttendanceRealization.wtGroupWorking wtGroupWorking");
         query.append(" INNER JOIN tempAttendanceRealization.wtPeriod wtPeriod");
         query.append(" WHERE wtPeriod.id = :wtPeriodId ");
+        query.append("ORDER BY " + orderable);
 
         return getCurrentSession().createQuery(query.toString())
                 .setParameter("wtPeriodId", wtPeriodId)
@@ -237,4 +239,29 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         criteria.add(Restrictions.eq("ce.id", empId));
         return (TempAttendanceRealization) criteria.uniqueResult();
     }
+    
+    @Override
+	public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) {
+    	StringBuffer selectQuery = new StringBuffer(
+    			"SELECT department.id as departmentId, "
+    			+ "department.departmentName as departmentName, "
+    			+ "SUM(1) AS totalEmployee, "
+    			+ "SUM(tempAttendanceRealization.attendanceDaysPresent) AS attendanceDaysPresent, "
+    			+ "SUM(tempAttendanceRealization.attendanceDaysSchedule) AS attendanceDaysSchedule, "
+    			+ "SUM(tempAttendanceRealization.overtime) AS overtime "
+    			+ "FROM TempAttendanceRealization tempAttendanceRealization "
+    			+ "LEFT JOIN tempAttendanceRealization.empData AS empData "
+    			+ "LEFT JOIN empData.jabatanByJabatanId AS jabatan "
+    			+ "LEFT JOIN jabatan.department AS department "
+    			+ "WHERE tempAttendanceRealization.wtPeriod.id = :wtPeriodId ");    	
+    	selectQuery.append("GROUP BY department ");
+    	selectQuery.append("ORDER BY departmentName DESC ");
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+                	.setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationMonthEndViewModel.class));
+    	hbm.setParameter("wtPeriodId", wtPeriodId);
+    	
+    	return hbm.list();                
+	}
+    
 }

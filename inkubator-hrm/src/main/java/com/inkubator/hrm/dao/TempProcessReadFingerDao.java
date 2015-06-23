@@ -38,4 +38,6 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
     public List<TempProcessReadFinger> getAllDataByEmpDataId(Long id);
 
+	public void deleteAllData();
+
 }
