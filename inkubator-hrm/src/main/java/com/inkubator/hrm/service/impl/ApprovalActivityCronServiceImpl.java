@@ -116,7 +116,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							businessTravelService.diverted(approvalActivity.getId());
 							break;
 						case HRMConstant.LOAN:
-							loanService.diverted(approvalActivity.getId());
+							//loanService.diverted(approvalActivity.getId());
+							loanNewApplicationService.diverted(approvalActivity.getId());
 							break;
 						case HRMConstant.REIMBURSEMENT:
 							//reimbursmentService.diverted(approvalActivity.getId());
