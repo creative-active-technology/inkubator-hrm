@@ -230,7 +230,7 @@ public class HrmUser implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "PHONE_NUMBER", length = 45)
+    @Column(name = "PHONE_NUMBER", length = 45, unique=true)
     public String getPhoneNumber() {
         return this.phoneNumber;
     }

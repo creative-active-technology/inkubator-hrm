@@ -42,6 +42,7 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public HrmUser getByEmailAddressInNotLock(String emailAddress);
 
     public HrmUser getUserWithDetailByUserId(String userId);
-
+    
+    public HrmUser getEntityByPhoneNumber(String phoneNumber);
  
 }
