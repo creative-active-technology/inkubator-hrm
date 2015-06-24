@@ -286,5 +286,20 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 		tempProcessReadFingerDao.deleteAllData();
 		tempAttendanceRealizationDao.deleteAllData();
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable)
+			throws Exception {
+		
+		return logWtAttendanceRealizationDao.getPaidOvertimeByParam(wtPeriodId, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) throws Exception {
+		
+		return logWtAttendanceRealizationDao.getTotalPaidOvertimeByParam(wtPeriodId);
+	}
      
 }
