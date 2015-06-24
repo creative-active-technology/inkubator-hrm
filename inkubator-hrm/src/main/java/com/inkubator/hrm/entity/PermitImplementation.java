@@ -140,7 +140,7 @@ public class PermitImplementation implements java.io.Serializable {
         this.description = description;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "end_date", nullable = false, length = 19)
     public Date getEndDate() {
         return this.endDate;
@@ -169,7 +169,7 @@ public class PermitImplementation implements java.io.Serializable {
         this.numberFilling = numberFilling;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false, length = 19)
     public Date getStartDate() {
         return this.startDate;

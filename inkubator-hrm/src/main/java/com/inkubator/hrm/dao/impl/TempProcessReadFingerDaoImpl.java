@@ -11,11 +11,13 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
@@ -29,7 +31,7 @@ import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 @Lazy
 public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger> implements TempProcessReadFingerDao {
 
-    @Override
+	@Override
     public Class<TempProcessReadFinger> getEntityClass() {
         return TempProcessReadFinger.class;
     }
@@ -190,6 +192,30 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger");
         query.executeUpdate();
 	}
-
-    
+	
+	@Override
+	public Long getTotalByScheduleDate(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("scheduleDate", date));  
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public Long getTotalAttendanceByScheduleDate(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("scheduleDate", date));
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.isNotNull("fingerIn"));
+        disjunction.add(Restrictions.isNotNull("fingerOut"));
+        disjunction.add(Restrictions.isNotNull("webCheckIn"));
+        disjunction.add(Restrictions.isNotNull("webCheckOut"));
+        criteria.add(disjunction);
+        
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }
