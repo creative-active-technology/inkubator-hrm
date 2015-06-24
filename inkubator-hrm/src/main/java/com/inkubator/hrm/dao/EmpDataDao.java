@@ -180,4 +180,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 	
 	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill);
 	
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(String rangeDepId, Date dateFrom, Date dateUntill);
+	
+	public String getIdChildDepRecursiveByDepartmentId(Long idDepartment);
+	
 }

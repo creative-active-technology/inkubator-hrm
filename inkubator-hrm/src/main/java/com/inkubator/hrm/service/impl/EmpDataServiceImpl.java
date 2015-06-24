@@ -75,6 +75,7 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringsUtils;
@@ -1000,15 +1001,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
 		
 			
-		//Dapatkan departemen dan jumlah karyawannya
-		 List<Department> departments = departmentDao.getAllData();
+		//Dapatkan List ROOT departemen dan jumlah karyawannya		
+		 List<Department> departments =  this.departmentDao.getByOrgLevelAndCompany("DEP", HrmUserInfoUtil.getCompanyId());
 	        Map<Department, Long> results = new HashMap<Department, Long>();
 	        for (Department department : departments) {
 	            Long total = empDataDao.getTotalByDepartmentId(department.getId());
 	            results.put(department, total);
 	        }
 	        
-	        //sorting by value (dari yang besar ke yang kecil)
+	        //sorting by total employee nya (dari yang besar ke yang kecil)
 	        results = MapUtil.sortByValueDesc(results);
 	        
 	        /*
@@ -1016,48 +1017,124 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	         * masing - masing di jadikan satu model sendiri - sendiri, 
 	         * sedangkan sisanya di satukan jadi satu model dengan label Departemen lainnya (key resourceBundle : 'department.other_department')
 	         */
-	        if(results.size() > 5){        	
+	        if(results.size() > 5){    	
 	        	
-	        	List<Department> listOtherDepartment = new ArrayList<Department>();
-	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendance = new ArrayList<DepAttendanceRealizationViewModel>();
-	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendanceDistinctWeekNumber = new ArrayList<DepAttendanceRealizationViewModel>();
 	        	
+	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendance = new ArrayList<DepAttendanceRealizationViewModel>();	        	
 	        	int i = 1;
+	        	
 	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
+	        		
+	        		//dapatkan String id department childnya (recursive)
+	        		String idDepChild = empDataDao.getIdChildDepRecursiveByDepartmentId(entry.getKey().getId());
+	        		
+	        		//jika looping masing didalam range 5 departemen dengan total employee terbesar, jadikan masing - masing satu model tersendiri
 	        		if(i <= 5){
-	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+	        			
+	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        			
+	        			// dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
+	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+		        		listDepAttendance.addAll(listDepAttendanceChid);
+		        		
+		        		//Group By Week Number
+		        		Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+		        		List<DepAttendanceRealizationViewModel> listDepAttendanceAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
+			        	for (String key : groupAttendance.keySet()) {
+			        		
+			        		List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);    		
+			        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+			        		
+			        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+			        		Double percentage = totalPercentage / (listGroupedAttendance.size());
+			        		
+			        		// jika infinite atau not a number, reset ke 0
+			        		if(percentage.isNaN() || percentage.isInfinite()){
+			        			percentage = 0.0;
+			        		}
+			        		model.setWeekNumber(Integer.valueOf(key));
+			        		model.setAttendancePercentage(new BigDecimal(percentage));
+			        		listDepAttendanceAfterGroupedAndSum.add(model);	        		
+			        		
+			        	}
+			        	
 		    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);	        			
-	        		}else{
+	        		}else{//jika sudah di departemen urutan ke 6 keatas, di pool ke dalam satu model
+	        			
 	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+		        		listDepAttendance.addAll(listDepAttendanceChid);
 	        			listOtherDepAttendance.addAll(listDepAttendance);
-	        			listOtherDepartment.add(entry.getKey());
+	        			
 	        		}
 	        		
 	        		i++;	        		
 	        	}
 	        	
+	        	//group departemen Root dengan urutan 6 beserta childnya  berdasarkan weekNumber 
 	        	Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listOtherDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+	        	List<DepAttendanceRealizationViewModel> listOtherDepAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
 	        	for (String key : groupAttendance.keySet()) {
+	        		
 	        		List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
 	        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
 	        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
-	        		Double percentage = totalPercentage / (listGroupedAttendance.size() - 5);
+	        		Double percentage = totalPercentage / (listGroupedAttendance.size());
+	        		
+	        		// jika infinite atau not a number, reset ke 0
 	        		if(percentage.isNaN() || percentage.isInfinite()){
 	        			percentage = 0.0;
 	        		}
+	        		
+	        		//assign ke dalam satu model
 	        		model.setWeekNumber(Integer.valueOf(key));
 	        		model.setAttendancePercentage(new BigDecimal(percentage));
-	        		listOtherDepAttendanceDistinctWeekNumber.add(model);	        		
+	        		listOtherDepAfterGroupedAndSum.add(model);	        		
 	        		
 	        	}
 	        	
-	        	mapResult.put(ResourceBundleUtil.getAsString("department.other_department"), listOtherDepAttendanceDistinctWeekNumber);
+	        	//tambahakan ke chart dengan label department lain - lain
+	        	mapResult.put(ResourceBundleUtil.getAsString("department.other_department"), listOtherDepAfterGroupedAndSum);
 	        	
 	        	
 	        }else{	        	
+
 	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
+	        		
 	        		List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
-	    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
+	        		
+	        		//dapatkan String id department childnya (recursive)
+	        		String idDepChild = empDataDao.getIdChildDepRecursiveByDepartmentId(entry.getKey().getId());
+	        		
+	        		// dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
+	        		List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        		listDepAttendance.addAll(listDepAttendanceChid);
+	        		
+	        		//Group By Week Number
+	        		List<DepAttendanceRealizationViewModel> listDepAttendanceAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
+	        		Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+		        	for (String key : groupAttendance.keySet()) {
+		        		
+		        		List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);	        		
+		        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+		        		
+		        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+		        		Double percentage = totalPercentage / (listGroupedAttendance.size());		        		
+		        		
+		        		// jika infinite atau not a number, reset ke 0
+		        		if(percentage.isNaN() || percentage.isInfinite()){
+		        			percentage = 0.0;
+		        		}
+		        		model.setWeekNumber(Integer.valueOf(key));
+		        		model.setAttendancePercentage(new BigDecimal(percentage));
+		        		
+		        		listDepAttendanceAfterGroupedAndSum.add(model);	        		
+		        		
+		        	}
+		        			        	
+		        	//tambah ke map yang akan ditampilkan ke chart dashboard  	
+	    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendanceAfterGroupedAndSum);
+	    			
 	        	}
 	        }
 	        
