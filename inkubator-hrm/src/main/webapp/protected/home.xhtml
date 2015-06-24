@@ -539,37 +539,36 @@
                     <p:row>
                         <p:column style="width: 25%">
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 242px;"> 
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-80px !important;font-style:italic"/>
+                                <h:panelGrid style="margin-bottom: 3px">                                    
                                     <p:outputLabel value="Resume Data Karyawan" styleClass="header_big" />
                                     <p:outputLabel value="Statistik Informasi" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <h:panelGrid columns="3">
                                     <p:outputLabel value="Karyawan"  styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="#{homeDashboardController.totalEmp} Orang" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.totalEmployee} Orang" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Cuti Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayLeave} Orang" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Jumlah Dinas Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayBusinessTravel} Orang" styleClass="isitext_hrm" />
 
                                     <p:outputLabel value="Kehadiran Kemarin" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.yesterdayAttendance} %" styleClass="isitext_hrm" />
 
-                                    <p:outputLabel value="Perkiraan Kehadiran 10/04" styleClass="label_hrm" />
+                                    <p:outputLabel value="Perkiraan Kehadiran Hari Ini" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:outputLabel value="n/a" styleClass="isitext_hrm" />
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayAttendance} %" styleClass="isitext_hrm" />
                                 </h:panelGrid>
 
                                 <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: px"/>
                                 <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
                                     <p:outputLabel value="Karyawan Ulang Tahun Terdekat" styleClass="header_small_no_bold"/>
-                                    <p:outputLabel value="#{homeDashboardController.nearestBirthDate.firstName} #{homeDashboardController.nearestBirthDate.lastName}"  styleClass="header_big"/>
+                                    <p:outputLabel value="#{homeDashboardController.employeeResumeModel.nearestBirthday}"  styleClass="header_big"/>
                                 </h:panelGrid>
 
                             </p:panel>

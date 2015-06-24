@@ -88,7 +88,7 @@ public class TempProcessReadFinger implements Serializable {
 		this.workingHourName = workingHourName;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
     @Column(name = "schedule_date", length = 19, nullable = false)
 	public Date getScheduleDate() {
 		return scheduleDate;
