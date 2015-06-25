@@ -144,8 +144,7 @@ public class HomeDashboardController extends BaseController {
             totalPersent = (totalPresent / totalSchedule);
 
             
-            //Get Period Active
-            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByAbsentTypeActive();
+           
             persentasiKehadiranPerWeek = new CartesianChartModel();
             barChartModel = new BarChartModel();
             barChartModel.setStacked(false);
@@ -160,7 +159,7 @@ public class HomeDashboardController extends BaseController {
             yAxis.setMin(0);
             
             //Get Attendance Percentation per Department on Active Period
-            Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByDepartmentIdAndRangeDate(activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+            Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByCompanyId(HrmUserInfoUtil.getCompanyId());
             
             //Looping and render it
             for (Map.Entry<String, List<DepAttendanceRealizationViewModel>> entry : mapResult.entrySet()) {

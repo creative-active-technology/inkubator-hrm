@@ -162,5 +162,5 @@ public interface EmpDataService extends IService<EmpData> {
     
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;	
 	
-	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
+	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByCompanyId(Long companyId) throws Exception;
 }

@@ -55,6 +55,7 @@ import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.AnnouncementEmpType;
 import com.inkubator.hrm.entity.AnnouncementGoljab;
@@ -74,6 +75,7 @@ import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
@@ -140,6 +142,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
     @Autowired
     private EducationLevelDao educationLevelDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -996,13 +1000,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 
 	@Override
+	@Cacheable(value = "attendancePercentagePerDepartment", key = "#companyId")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception {
+	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByCompanyId(Long companyId) throws Exception {
 		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
-		
+		System.out.println("Masuk ke getListDepAttendanceByCompanyId");
+		 //Get Period Active
+        WtPeriode activeWtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
 			
 		//Dapatkan List ROOT departemen dan jumlah karyawannya		
-		 List<Department> departments =  this.departmentDao.getByOrgLevelAndCompany("DEP", HrmUserInfoUtil.getCompanyId());
+		 List<Department> departments =  this.departmentDao.getByOrgLevelAndCompany("DEP", companyId);
 	        Map<Department, Long> results = new HashMap<Department, Long>();
 	        for (Department department : departments) {
 	            Long total = empDataDao.getTotalByDepartmentId(department.getId());
@@ -1031,10 +1038,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	        		//jika looping masing didalam range 5 departemen dengan total employee terbesar, jadikan masing - masing satu model tersendiri
 	        		if(i <= 5){
 	        			
-	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
 	        			
 	        			// dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
-	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
 		        		listDepAttendance.addAll(listDepAttendanceChid);
 		        		
 		        		//Group By Week Number
@@ -1061,8 +1068,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);	        			
 	        		}else{//jika sudah di departemen urutan ke 6 keatas, di pool ke dalam satu model
 	        			
-	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
-	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+	        			List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
 		        		listDepAttendance.addAll(listDepAttendanceChid);
 	        			listOtherDepAttendance.addAll(listDepAttendance);
 	        			
@@ -1101,13 +1108,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
 	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
 	        		
-	        		List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
+	        		List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
 	        		
 	        		//dapatkan String id department childnya (recursive)
 	        		String idDepChild = empDataDao.getIdChildDepRecursiveByDepartmentId(entry.getKey().getId());
 	        		
 	        		// dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
-	        		List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, dateFrom, dateUntill);
+	        		List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
 	        		listDepAttendance.addAll(listDepAttendanceChid);
 	        		
 	        		//Group By Week Number
