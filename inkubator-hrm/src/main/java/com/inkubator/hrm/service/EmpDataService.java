@@ -160,5 +160,7 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
     
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;	
+    
+    public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName) throws Exception;
 
 }

@@ -5,22 +5,6 @@
  */
 package com.inkubator.hrm.web.flow;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.RecruitHireApply;
-import com.inkubator.hrm.entity.RecruitSelectionType;
-import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.RecruitHireApplyService;
-import com.inkubator.hrm.service.RecruitSelectionTypeService;
-import com.inkubator.hrm.service.RecruitmenSelectionSeriesDetailService;
-import com.inkubator.hrm.web.lazymodel.RecruitVacancyEmployeeLazyDataModel;
-import com.inkubator.hrm.web.model.RecruitVacancySelectionDetailModel;
-import com.inkubator.hrm.web.model.RecruitVacancySelectionModel;
-import com.inkubator.webcore.WebCoreConstant;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +13,28 @@ import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
+import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.RecruitHireApplyService;
+import com.inkubator.hrm.service.RecruitSelectionTypeService;
+import com.inkubator.hrm.service.RecruitVacancySelectionService;
+import com.inkubator.hrm.service.RecruitmenSelectionSeriesDetailService;
+import com.inkubator.hrm.service.RecruitmenSelectionSeriesService;
+import com.inkubator.hrm.web.model.RecruitVacancySelectionDetailModel;
+import com.inkubator.hrm.web.model.RecruitVacancySelectionModel;
+import com.inkubator.webcore.WebCoreConstant;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /*--------------------------------------------------------------------
  *  Author:        Deni
@@ -63,7 +62,11 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	private RecruitmenSelectionSeriesDetailService recruitmenSelectionSeriesDetailService;
 	@Autowired
 	private EmpDataService empDataService;
-
+	@Autowired
+	private RecruitVacancySelectionService recruitVacancySelectionService;
+	@Autowired
+	private RecruitmenSelectionSeriesService recruitmenSelectionSeriesService;
+	
 	/*
 	 * Insert value for dropdown recruit vacancy selection and recruit hire
 	 * apply
@@ -71,14 +74,12 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	public RecruitVacancySelectionModel initSearchRecruitVacancySelectionFormFlow(
 			RequestContext context) throws Exception {
 		RecruitVacancySelectionModel recruitVacancySelectionModel = new RecruitVacancySelectionModel();
-		List<RecruitSelectionType> listRecruitSelectionType = new ArrayList<RecruitSelectionType>();
+		List<RecruitmenSelectionSeries> listRecruitmenSelectionSeries = new ArrayList<RecruitmenSelectionSeries>();
 		List<RecruitHireApply> listRecruitHireApply = new ArrayList<RecruitHireApply>();
 		Map<String, Long> dropDownRecruitHireApply = new TreeMap<String, Long>();
-		;
-		Map<String, Long> dropDownRecruitSelectionType = new TreeMap<String, Long>();
-		;
+		Map<String, Long> dropDownRecruitSelectionSeries = new TreeMap<String, Long>();
 
-		listRecruitSelectionType = recruitSelectionTypeService.getAllData();
+		listRecruitmenSelectionSeries = recruitmenSelectionSeriesService.getAllData();
 		listRecruitHireApply = recruitHireApplyService.getAllData();
 		for (RecruitHireApply recruitHireApply : listRecruitHireApply) {
 			dropDownRecruitHireApply.put(recruitHireApply.getReqHireCode()
@@ -86,14 +87,14 @@ public class RecruitVacancySelectionFormController implements Serializable {
 					recruitHireApply.getId());
 		}
 
-		for (RecruitSelectionType recruitSelectionType : listRecruitSelectionType) {
-			dropDownRecruitSelectionType.put(recruitSelectionType.getName(),
-					recruitSelectionType.getId());
+		for (RecruitmenSelectionSeries recruitSelectionSeries : listRecruitmenSelectionSeries) {
+			dropDownRecruitSelectionSeries.put(recruitSelectionSeries.getName(),
+					recruitSelectionSeries.getId());
 		}
 		recruitVacancySelectionModel
 				.setDropDownRecruitHireApply(dropDownRecruitHireApply);
 		recruitVacancySelectionModel
-				.setDropDownRecruitSelectionType(dropDownRecruitSelectionType);
+				.setDropDownRecruitSelectionSeries(dropDownRecruitSelectionSeries);
 		return recruitVacancySelectionModel;
 	}
 
@@ -124,30 +125,22 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	 * Methode for get List Recruit Selection Series Detail with LazyData by
 	 * SelectionType Id
 	 */
-	public void getRecruitVacancySelectionDetail(RequestContext context)
-			throws Exception {
+	public String getRecruitVacancySelectionDetail(RequestContext context) throws Exception {
 		System.out.println("getRecruitVacancySelectionDetail");
-		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
-				.getFlowScope().get("recruitVacancySelectionModel");
-		List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService
-				.getEntityBySelectionTypeId(recruitVacancySelectionModel
-						.getRecruitSelectionTypeId());
+		String condition = "yes";
+		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context.getFlowScope().get("recruitVacancySelectionModel");
+		List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getEntityBySelectionSeriesId(recruitVacancySelectionModel.getRecruitSelectionSeriesId());
 		List<RecruitVacancySelectionDetailModel> listVacancySelectionDetailToShow = new ArrayList<>();
 		RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel;
-		LazyDataModel<EmpData> lazyDataModel = new RecruitVacancyEmployeeLazyDataModel(
-				recruitVacancySelectionModel.getNikOrNameSearchParameter(),
-				empDataService);
 		for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : listVacancySelectionDetail) {
 			recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();
-			recruitVacancySelectionDetailModel
-					.setRecruitSelectionSeriesName(recruitmenSelectionSeriesDetail
-							.getRecruitmenSelectionSeries().getName());
-			listVacancySelectionDetailToShow
-					.add(recruitVacancySelectionDetailModel);
+			recruitVacancySelectionDetailModel.setRecruitSelectionTypeName(recruitmenSelectionSeriesDetail.getRecruitSelectionType().getName());
+			listVacancySelectionDetailToShow.add(recruitVacancySelectionDetailModel);
 		}
-		recruitVacancySelectionModel.setLazyDataModel(lazyDataModel);
-		recruitVacancySelectionModel
-				.setListVacancySelectionDetail(listVacancySelectionDetailToShow);
+		recruitVacancySelectionModel.setListVacancySelectionDetail(listVacancySelectionDetailToShow);
+		
+		context.getFlashScope().put("recruitmenSelectionSeriesDetailService", recruitVacancySelectionModel);
+		return condition;
 	}
 
 	/*
@@ -156,37 +149,35 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	public void saveListEmployee(RequestContext context) throws Exception {
 		org.primefaces.context.RequestContext contextPrime = FacesUtil
 				.getRequestContext();
-		System.out.println("asddddddddddddddddddddddddddddddddd");
 		Boolean listEmpExist = Boolean.FALSE;
 		String employeeName = "";
 		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
 				.getFlowScope().get("recruitVacancySelectionModel");
 		List<RecruitVacancySelectionDetailModel> newData = new ArrayList<RecruitVacancySelectionDetailModel>();
-		for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel
-				.getListVacancySelectionDetail()) {
-			if (data.getRecruitSelectionSeriesName().equals(
-					recruitVacancySelectionModel
-							.getSelectedVacSelectionDetailModel()
-							.getRecruitSelectionSeriesName())) {
+		/*for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel.getListVacancySelectionDetail()) {
+			if (data.getRecruitSelectionSeriesName().equals(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getRecruitSelectionSeriesName())) {
+				System.out.println(data.getStartDate() + " startDate");
 				// data.setListEmployeeId(recruitVacancySelectionModel.getListEmployeeId());
-				data.setListEmpData(recruitVacancySelectionModel
-						.getListEmpData());
+				data.setListEmpData(recruitVacancySelectionModel.getSelectedEmpData());
 				newData.add(data);
 			} else {
 				newData.add(data);
 			}
-		}
-		recruitVacancySelectionModel.setListVacancySelectionDetail(newData);
-		context.getFlowScope().put("recruitVacancySelectionModel",
-				recruitVacancySelectionModel);
-
+		}*/
+//		recruitVacancySelectionModel.setListVacancySelectionDetail(newData);
+//		context.getFlowScope().put("recruitVacancySelectionModel",recruitVacancySelectionModel);
 		// condition for close dialog pop-up if listEmpExist not empty
-		if (recruitVacancySelectionModel.getListEmpData().isEmpty()) {
+		System.out.println(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getStartDate() + " selected");
+		recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().setListEmpData(recruitVacancySelectionModel.getSelectedEmpData());
+		System.out.println(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getListEmpData().size() + " sizeeeeee");
+		if (recruitVacancySelectionModel.getSelectedEmpData().isEmpty()) {
+			System.out.println("error shake");
 			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO,
 					"global.error", "error.email_not_registered", FacesUtil
 							.getSessionAttribute(HRMConstant.BAHASA_ACTIVE)
 							.toString());
 		} else {
+			System.out.println("berhasil");
 			listEmpExist = Boolean.TRUE;
 		}
 		contextPrime.addCallbackParam("listEmpExist", listEmpExist);
@@ -195,38 +186,19 @@ public class RecruitVacancySelectionFormController implements Serializable {
 	}
 
 	public void doGetListEmployee(RequestContext context) throws Exception{
-		System.out.println("get list employee");
+		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
+				.getFlowScope().get("recruitVacancySelectionModel");
+		System.out.println(recruitVacancySelectionModel.getSelectedVacSelectionDetailModel().getStartDate() + " selected");
+		List<EmpData> listEmpData = empDataService.getAllDataNotTerminateWithSearchParameter(recruitVacancySelectionModel.getNikOrNameSearchParameter());
+		recruitVacancySelectionModel.setListEmpData(listEmpData);
 	}
 	
 	public void saveRecruitmentDetail(RequestContext context) throws Exception {
 		RecruitVacancySelectionModel recruitVacancySelectionModel = (RecruitVacancySelectionModel) context
 				.getFlowScope().get("recruitVacancySelectionModel");
-		for (RecruitVacancySelectionDetailModel data : recruitVacancySelectionModel
-				.getListVacancySelectionDetail()) {
-			System.out.println(data.getBasicCost() + " 1");
-			System.out.println(data.getStartDate() + " 2");
-			System.out.println(data.getEndDate() + " 3");
-			System.out.println(data.getListEmpData().size() + " 4");
-			System.out.println(data.getIndividualCost() + " 4");
-			System.out.println(data.getTime() + " 4");
-			System.out.println(data.getTime() + " 4");
+		if(recruitVacancySelectionModel != null){
+			recruitVacancySelectionService.saveRecruitVacancySelectionSeries(recruitVacancySelectionModel);
 		}
-		System.out.println("bukan detail");
-		System.out.println(recruitVacancySelectionModel.getCode() + " ");
-
-		System.out
-				.println(recruitVacancySelectionModel.getJobTitleName() + " ");
-		System.out.println(recruitVacancySelectionModel
-				.getRecruitHireApplyName() + " ");
-		System.out.println(recruitVacancySelectionModel.getStaffName() + " ");
-		System.out.println(recruitVacancySelectionModel.getEffectiveDate()
-				+ " ");
-		System.out.println(recruitVacancySelectionModel.getExtraBudget() + " ");
-		System.out.println(" Akhir 1 paket data");
-	}
-
-	public void doSelectEmployee(RequestContext context, EmpData empData) throws Exception {
-		System.out.println("Masukk do Ajax");
 	}
 
 	public void onDialogReturn(SelectEvent event) {

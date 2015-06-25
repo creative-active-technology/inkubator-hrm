@@ -113,9 +113,9 @@
                                     <p:outputLabel  value="Tipe Seleksi"  for="selectionType" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="selectionType" value="#{recruitVacancySelectionModel.recruitSelectionTypeId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="selectionType" value="#{recruitVacancySelectionModel.recruitSelectionSeriesId}" style="width: 150px;margin-right: 3px" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{recruitVacancySelectionModel.dropDownRecruitSelectionType}"/>
+                                         <f:selectItems value="#{recruitVacancySelectionModel.dropDownRecruitSelectionSeries}"/>
                                     </p:selectOneMenu>
                                     <p:message for="selectionType"/>
                                 </p:column>

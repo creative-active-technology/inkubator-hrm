@@ -7,14 +7,21 @@ package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitVacancySelectionDao;
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.RecruitMppPeriod;
 import com.inkubator.hrm.entity.RecruitVacancySelection;
 import com.inkubator.hrm.web.search.RecruitVacancySelectionSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +42,11 @@ public class RecruitVacancySelectionDaoImpl extends IDAOImpl<RecruitVacancySelec
     public List<RecruitVacancySelection> getByParam(RecruitVacancySelectionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
+        criteria.setFetchMode("recruitHireApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.recruitMppPeriod", FetchMode.JOIN);
+        criteria.setFetchMode("recruitmenSelectionSeries", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -54,4 +66,16 @@ public class RecruitVacancySelectionDaoImpl extends IDAOImpl<RecruitVacancySelec
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public RecruitVacancySelection getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("recruitHireApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("recruitHireApply.recruitMppPeriod", FetchMode.JOIN);
+        criteria.setFetchMode("recruitmenSelectionSeries", FetchMode.JOIN);
+        return (RecruitVacancySelection) criteria.uniqueResult();
+	}
 }

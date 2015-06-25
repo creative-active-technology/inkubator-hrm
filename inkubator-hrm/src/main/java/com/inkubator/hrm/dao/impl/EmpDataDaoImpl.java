@@ -854,6 +854,26 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
+	@Override
+	public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+    	criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (nikOrName!=null) {
+            Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
+	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+	        criteria.add(disjunction);
+        } 
+        return criteria.list();
+	}
+    
     @Override
     public List<EmpData> getAllData() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -1642,8 +1662,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchEmpDataByParam(nikOrNameSearchParameter, criteria);
         criteria.addOrder(order);
-        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
@@ -1903,4 +1921,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (EmpData) criteria.uniqueResult();
 	}
+
+
 }

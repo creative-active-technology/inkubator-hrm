@@ -19,4 +19,6 @@ public interface RecruitVacancySelectionDao extends IDAO<RecruitVacancySelection
     public List<RecruitVacancySelection> getByParam(RecruitVacancySelectionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(RecruitVacancySelectionSearchParameter searchParameter);
+    
+    public RecruitVacancySelection getEntityByPkWithDetail(Long id);
 }

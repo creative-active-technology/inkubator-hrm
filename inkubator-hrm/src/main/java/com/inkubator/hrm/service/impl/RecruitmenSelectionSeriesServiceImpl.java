@@ -201,8 +201,9 @@ public class RecruitmenSelectionSeriesServiceImpl extends IServiceImpl implement
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<RecruitmenSelectionSeries> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	return recruitmentSelectionSeriesDao.getAllData();
     }
 
     @Override

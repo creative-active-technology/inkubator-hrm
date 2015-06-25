@@ -19,6 +19,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 
 /**
@@ -198,6 +199,26 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", id));
         return criteria.list();
+	}
+
+	@Override
+	public List<TempProcessReadFinger> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.workingGroup", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalOvertimeAndReadFingerByEmpDataId(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
 }

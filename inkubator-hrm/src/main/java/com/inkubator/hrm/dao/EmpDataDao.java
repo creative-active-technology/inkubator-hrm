@@ -157,6 +157,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model);
 
     public List<EmpData> getAllDataNotTerminate();
+    
+    public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName);
 
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
 

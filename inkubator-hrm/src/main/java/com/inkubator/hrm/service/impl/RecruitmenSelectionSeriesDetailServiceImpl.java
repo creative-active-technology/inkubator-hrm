@@ -283,8 +283,8 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id) throws Exception {
-        return recruitmenSelectionSeriesDetailDao.getEntityBySelectionTypeId(id);
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) throws Exception {
+        return recruitmenSelectionSeriesDetailDao.getEntityBySelectionSeriesId(id);
     }
     
 }

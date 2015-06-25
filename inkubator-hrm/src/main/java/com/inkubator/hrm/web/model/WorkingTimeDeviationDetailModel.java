@@ -10,7 +10,7 @@ public class WorkingTimeDeviationDetailModel implements Serializable{
 	private Date toPeriod;
 	private String nikAndFullName;
 	private Long totalWorkingTime;
-	private String totalPlusMinus;
+	private Long totalPlusMinus;
 	private Integer totalMarginHour;
 	private Integer totalMarginMinutes;
 	private Date date;
@@ -57,12 +57,7 @@ public class WorkingTimeDeviationDetailModel implements Serializable{
 	public void setTotalWorkingTime(Long totalWorkingTime) {
 		this.totalWorkingTime = totalWorkingTime;
 	}
-	public String getTotalPlusMinus() {
-		return totalPlusMinus;
-	}
-	public void setTotalPlusMinus(String totalPlusMinus) {
-		this.totalPlusMinus = totalPlusMinus;
-	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -92,6 +87,12 @@ public class WorkingTimeDeviationDetailModel implements Serializable{
 	}
 	public void setDiffTime(String diffTime) {
 		this.diffTime = diffTime;
+	}
+	public Long getTotalPlusMinus() {
+		return totalPlusMinus;
+	}
+	public void setTotalPlusMinus(Long totalPlusMinus) {
+		this.totalPlusMinus = totalPlusMinus;
 	}
 	
 	
