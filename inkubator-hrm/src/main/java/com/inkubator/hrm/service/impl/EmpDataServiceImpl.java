@@ -870,6 +870,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 
 	@Override
+	@Cacheable(value = "attendancePercentagePerDepartment")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception {
 		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
