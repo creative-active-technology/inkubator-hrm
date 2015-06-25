@@ -51,7 +51,14 @@
            timeToLiveSeconds="86400" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
-    <cache name="attendancePercentagePerDepartment"
+
+    <cache name="attendancePercentagePerDepartment"    
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="86400" overflowToDisk="false"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+
+    <cache name="employeeResumeOnDashboard"
            maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
            timeToLiveSeconds="86400" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">

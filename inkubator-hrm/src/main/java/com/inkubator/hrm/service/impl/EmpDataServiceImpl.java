@@ -6,20 +6,19 @@
 package com.inkubator.hrm.service.impl;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
-import org.hamcrest.Matcher;
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
@@ -43,6 +42,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
+import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
@@ -52,8 +52,11 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
+import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
+import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.Announcement;
@@ -70,10 +73,8 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
-import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
@@ -87,6 +88,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
+import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -96,7 +98,6 @@ import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
-import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -144,6 +145,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private EducationLevelDao educationLevelDao;
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
+    @Autowired
+    private LeaveImplementationDateDao leaveImplementationDateDao;
+    @Autowired
+    private BusinessTravelDao businessTravelDao;
+    @Autowired
+    private TempProcessReadFingerDao tempProcessReadFingerDao;
+    @Autowired
+    private PermitImplementationDao permitImplementationDao;
+
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -1188,6 +1198,45 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 			break;
 		}
 		
+		return model;
+	}
+
+	@Override
+	@Cacheable(value = "employeeResumeOnDashboard", key = "#companyId")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard(Long companyId) {
+		DateTime now = DateTime.now();
+		Long totalEmployee = empDataDao.getTotalEmpDataNotTerminate();
+		Long todayLeave = leaveImplementationDateDao.getTotalActualLeave(now.toDate(), companyId);
+		Long todayBusinessTravel = businessTravelDao.getTotalActualBusinessTravel(now.toDate(), companyId);
+		Long todayPermit = permitImplementationDao.getTotalActualPermit(now.toDate(), companyId);
+		BioDataModel nearestBirthdayPerson = empDataDao.getEmpNameWithNearestBirthDate();
+		String nearestBirthday = nearestBirthdayPerson == null ? "N/A" : nearestBirthdayPerson.getFirstName() + " " + nearestBirthdayPerson.getLastName();
+		
+		/** kehadiran kemarin */
+		Long totalYesterdaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
+		Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
+		BigDecimal yesterdayAttendance = new BigDecimal(0);
+		if(totalYesterdaySchedule!=0 && totalYesterdayAttendance!=0){
+			yesterdayAttendance = new BigDecimal(totalYesterdayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalYesterdaySchedule), 2, RoundingMode.UP);
+		}		
+		
+		/** perkiraan kehadiran hari ini = jadwal - (ijin+cuti+dinas) */		
+		Long totalTodaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.toDate(), companyId);
+		Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);
+		BigDecimal todayAttendance = new BigDecimal(0);
+		if(totalTodaySchedule!=0 && totalTodayAttendance!=0){
+			todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);			
+		}
+		
+		//set value to model
+		EmployeeResumeDashboardModel model = new EmployeeResumeDashboardModel();
+		model.setTotalEmployee(totalEmployee);
+		model.setTodayLeave(todayLeave);
+		model.setTodayBusinessTravel(todayBusinessTravel);
+		model.setYesterdayAttendance(yesterdayAttendance);
+		model.setTodayAttendance(todayAttendance);
+		model.setNearestBirthday(nearestBirthday);
 		return model;
 	}
 }

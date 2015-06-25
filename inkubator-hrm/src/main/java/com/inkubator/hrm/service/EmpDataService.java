@@ -5,19 +5,24 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
+import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -27,14 +32,7 @@ import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
-import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -162,5 +160,8 @@ public interface EmpDataService extends IService<EmpData> {
     
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;	
 	
+
 	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByCompanyId(Long companyId) throws Exception;
+	
+	public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard(Long companyId);
 }

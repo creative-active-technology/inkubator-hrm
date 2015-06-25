@@ -20,7 +20,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="wt_hitung_lembur"
-    ,catalog="hrm_payroll"
+    ,catalog="hrm"
 )
 public class WtHitungLembur  implements java.io.Serializable {
 

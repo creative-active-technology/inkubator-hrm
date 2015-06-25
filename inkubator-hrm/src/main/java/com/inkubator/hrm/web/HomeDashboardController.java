@@ -5,19 +5,6 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.DepartmentService;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.service.WtPeriodeService;
-import com.inkubator.hrm.util.ResourceBundleUtil;
-import com.inkubator.hrm.web.model.BioDataModel;
-import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.model.LoginHistoryModel;
-import com.inkubator.hrm.web.model.RealizationAttendanceModel;
-import com.inkubator.webcore.controller.BaseController;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +24,19 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
+import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.ResourceBundleUtil;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
+import com.inkubator.hrm.web.model.LoginHistoryModel;
+import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.webcore.controller.BaseController;
+
 /**
  *
  * @author rizkykojek
@@ -50,8 +50,7 @@ public class HomeDashboardController extends BaseController {
     private Date lastUpdateEmpDistByAge;
     private Long totalMale;
     private Long totalFemale;
-    private Long totalEmp;
-    private BioDataModel nearestBirthDate;
+    private EmployeeResumeDashboardModel employeeResumeModel;
     private PieChartModel pieModel;
     private CartesianChartModel distribusiKaryawanPerDepartment;
     private CartesianChartModel presensiModel;
@@ -91,6 +90,7 @@ public class HomeDashboardController extends BaseController {
             totalFemale = employeesByGender.get("male");
             totalMale = employeesByGender.get("female");
             lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
+            
             /**
              * calculate employee distribution based on DEPARTMENT
              */
@@ -136,8 +136,15 @@ public class HomeDashboardController extends BaseController {
             pieModel.setDiameter(120);
             pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
-
-            System.out.println(" Service nya " + tempAttendanceRealizationService);
+            
+            /**
+             * calculate employee resume
+             */
+            employeeResumeModel = empDataService.getEmployeeResumeOnDashboard(HrmUserInfoUtil.getCompanyId());            
+            
+            /**
+             * calculate attendance statistic
+             */
             attendanceModel = tempAttendanceRealizationService.getStatisticEmpAttendaceRealization();
             double totalPresent = Double.parseDouble(String.valueOf(attendanceModel.getTotaldayPresent()));
             double totalSchedule = Double.parseDouble(String.valueOf(attendanceModel.getTotaldaySchedule()));
@@ -319,24 +326,6 @@ public class HomeDashboardController extends BaseController {
         this.distribusiKaryawanPerDepartment = distribusiKaryawanPerDepartment;
     }
 
-    public BioDataModel getNearestBirthDate() {
-        this.nearestBirthDate = empDataService.getEmpNameWithNearestBirthDate();
-        return nearestBirthDate;
-    }
-
-    public void setNearestBirthDate(BioDataModel nearestBirthDate) {
-        this.nearestBirthDate = nearestBirthDate;
-    }
-
-    public Long getTotalEmp() throws Exception {
-        this.totalEmp = empDataService.getTotalEmpDataNotTerminate();
-        return totalEmp;
-    }
-
-    public void setTotalEmp(Long totalEmp) {
-        this.totalEmp = totalEmp;
-    }
-
     public BarChartModel getBarChartModel() {
         return barChartModel;
     }
@@ -383,7 +372,14 @@ public class HomeDashboardController extends BaseController {
 
 	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
 		this.wtPeriodeService = wtPeriodeService;
-	}    
-    
+	}
+
+	public EmployeeResumeDashboardModel getEmployeeResumeModel() {
+		return employeeResumeModel;
+	}
+
+	public void setEmployeeResumeModel(EmployeeResumeDashboardModel employeeResumeModel) {
+		this.employeeResumeModel = employeeResumeModel;
+	}   
 
 }
