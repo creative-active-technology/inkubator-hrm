@@ -113,7 +113,7 @@ public class HomeDashboardController extends BaseController {
             employeeResumeModel = empDataService.getEmployeeResumeOnDashboard();            
             
             //Get Period Active
-            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByAbsentTypeActive();
             persentasiKehadiranPerWeek = new CartesianChartModel();
             
             //Get Attendance Percentation per Department on Active Period

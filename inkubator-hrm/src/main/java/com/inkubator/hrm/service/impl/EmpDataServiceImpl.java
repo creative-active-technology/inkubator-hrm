@@ -54,6 +54,7 @@ import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioIdCard;
@@ -65,6 +66,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
@@ -132,6 +134,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private TempProcessReadFingerDao tempProcessReadFingerDao;
     @Autowired
     private PermitImplementationDao permitImplementationDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -869,11 +873,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 
 	@Override
+	@Cacheable(value = "attendancePercentagePerDepartment")
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception {
 		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
 		
-			
 		//Dapatkan departemen dan jumlah karyawannya
 		 List<Department> departments = departmentDao.getAllData();
 	        Map<Department, Long> results = new HashMap<Department, Long>();
