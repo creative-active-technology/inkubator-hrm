@@ -21,5 +21,9 @@ public interface LogWtAttendanceRealizationService extends IService<LogWtAttenda
     public void deleteByPeriodId(Long periodId) throws Exception;
 
 	public void afterMonthEndProcess() throws Exception;
+    
+    public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
+
+    public Long getTotalPaidOvertimeByParam(Long wtPeriodId) throws Exception;
 
 }
