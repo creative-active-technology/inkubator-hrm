@@ -577,8 +577,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         }
 
         return emailAdresses;
-    }
-    
+    }    
+        
     /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
      *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
     private void sendApprovalSmsnotif(ApprovalActivity appActivity){
@@ -590,7 +590,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				final SMSSend mSSend = new SMSSend();
 				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
 				mSSend.setDestination(approver.getPhoneNumber());
-				mSSend.setContent("Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you.");
+				String content = this.getSmsContentOfWaitingApproval(appActivity);
+				mSSend.setContent(content);
 				//Send notificatin SMS
 				this.jmsTemplateSMS.send(new MessageCreator() {
 					@Override
@@ -606,7 +607,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				final SMSSend mSSend = new SMSSend();
 				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
 				mSSend.setDestination(requester.getPhoneNumber());
-				mSSend.setContent("Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you.");
+				String content = this.getSmsContentOfWaitingRevised(appActivity);
+				mSSend.setContent(content);
 				//Send notificatin SMS
 				this.jmsTemplateSMS.send(new MessageCreator() {
 					@Override
@@ -616,6 +618,16 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				});
 	    	}
     	}
+    }
+    
+    protected String getSmsContentOfWaitingApproval(ApprovalActivity appActivity){
+    	HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
+    	return "Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you. #ID=" + appActivity.getId();
+    }
+    
+    protected String getSmsContentOfWaitingRevised(ApprovalActivity appActivity){
+    	HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+    	return "Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you. #ID=" + appActivity.getId();
     }
     
     /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId

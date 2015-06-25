@@ -5,16 +5,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
-import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,9 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
@@ -47,6 +44,7 @@ import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
+import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
@@ -62,6 +60,7 @@ import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.entity.WtGroupWorking;
@@ -69,10 +68,12 @@ import com.inkubator.hrm.entity.WtHitungLemburJam;
 import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.entity.WtScheduleShift;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.DetilAttendateRelaization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
@@ -81,6 +82,10 @@ import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import java.util.ArrayList;
 
 import org.hibernate.criterion.Order;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+
+
 
 /**
  *
@@ -265,8 +270,9 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return tempAttendanceRealizationDao.getTotalData();
     }
 
     @Override
@@ -332,7 +338,6 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         RealizationAttendanceModel attendanceModel = new RealizationAttendanceModel();
         attendanceModel.setStardDate(wtPeriode.getFromPeriode());
         attendanceModel.setEndDate(wtPeriode.getUntilPeriode());
-        attendanceModel.setTotalCuti(tempAttendanceRealizationDao.getTotalEmpLeav());
         attendanceModel.setTotalIzin(tempAttendanceRealizationDao.getTotalEmpPermit());
         attendanceModel.setTotalOnDuty(tempAttendanceRealizationDao.gettotalEmpOnDuty());
         attendanceModel.setTotalSick(tempAttendanceRealizationDao.gettotalEmpOnSick());
@@ -1051,7 +1056,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         int hasilBagi = (totalDateDif) / (num);
         Date beginScheduleDate;
         Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
-        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+        if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(createDate))) {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
         } else {
             beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
@@ -1224,7 +1229,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         long scheduleOut = 0;
         int marginIn = 0;
         int marginOut = 0;
-        
+
         long totalHour = 0;
         long marginMinutes = 0;
         long marginHour = 0;
@@ -1255,51 +1260,58 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         return workingTimeDeviationDetailModel;
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception {
-		List<WorkingTimeDeviationListDetailModel> listModelToShow = new ArrayList<WorkingTimeDeviationListDetailModel>();
-		WorkingTimeDeviationListDetailModel model;
-		List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataOvertimeAndReadFingerByEmpDataId(id, firstResult, maxResults, order);
-		int marginIn = 0;
-		int marginOut = 0;
-		long totalMargin = 0;
-		for(TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger){
-			//hitung kalkulasi waktu
-			marginIn  = tempProcessReadFinger.getMarginIn();
-			marginOut = tempProcessReadFinger.getMarginOut();
-			totalMargin = getTotalMargin(marginIn, marginOut);
-			model = new WorkingTimeDeviationListDetailModel();
-			model.setDeviationTime(totalMargin);
-			model.setFingerIn(tempProcessReadFinger.getFingerIn());
-			model.setFingerOut(tempProcessReadFinger.getFingerOut());
-			model.setWorkingGroupName(tempProcessReadFinger.getEmpData().getWtGroupWorking().getName());
-			model.setWorkingDate(tempProcessReadFinger.getScheduleDate());
-			
-			listModelToShow.add(model);
-		}
-		return listModelToShow;
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception {
+        List<WorkingTimeDeviationListDetailModel> listModelToShow = new ArrayList<WorkingTimeDeviationListDetailModel>();
+        WorkingTimeDeviationListDetailModel model;
+        List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataOvertimeAndReadFingerByEmpDataId(id, firstResult, maxResults, order);
+        int marginIn = 0;
+        int marginOut = 0;
+        long totalMargin = 0;
+        for (TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger) {
+            //hitung kalkulasi waktu
+            marginIn = tempProcessReadFinger.getMarginIn();
+            marginOut = tempProcessReadFinger.getMarginOut();
+            totalMargin = getTotalMargin(marginIn, marginOut);
+            model = new WorkingTimeDeviationListDetailModel();
+            model.setDeviationTime(totalMargin);
+            model.setFingerIn(tempProcessReadFinger.getFingerIn());
+            model.setFingerOut(tempProcessReadFinger.getFingerOut());
+            model.setWorkingGroupName(tempProcessReadFinger.getEmpData().getWtGroupWorking().getName());
+            model.setWorkingDate(tempProcessReadFinger.getScheduleDate());
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception {
-		return tempProcessReadFingerDao.getTotalOvertimeAndReadFingerByEmpDataId(id);
-	}
-	
-	/**
-	 * 
-	 * Mencari jumlah waktu margin
-	 * 
-	 */
-	private Integer getTotalMargin(int marginIn, int marginOut){
-		return marginIn + marginOut;
-	}
-	
-	private Long getTotalHour(long startHour, long endHour){
-    	long diffTime = Math.abs(startHour - endHour);
+            listModelToShow.add(model);
+        }
+        return listModelToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception {
+        return tempProcessReadFingerDao.getTotalOvertimeAndReadFingerByEmpDataId(id);
+    }
+
+    /**
+     *
+     * Mencari jumlah waktu margin
+     *
+     */
+    private Integer getTotalMargin(int marginIn, int marginOut) {
+        return marginIn + marginOut;
+    }
+
+    private Long getTotalHour(long startHour, long endHour) {
+        long diffTime = Math.abs(startHour - endHour);
         long hour = diffTime / (60 * 60 * 1000);
-		return hour;
-	}
-	
+        return hour;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
+
+        return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
+    }
+
 }

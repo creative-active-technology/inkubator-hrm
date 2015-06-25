@@ -7,11 +7,14 @@ package com.inkubator.hrm.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -29,6 +32,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -39,6 +43,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -1855,6 +1860,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	}
 
 
+
     @Override
     public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -1888,10 +1894,44 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //            }
 //        }
 
+
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResult);
         return criteria.list();
     }
+    
+    /*
+	 * Query realisasi kehadiran per departemen dalam range date tertentu, 
+	 *  lalu di transform ke class DepAttendanceRealizationViewModel
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill) {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
+				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
+				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
+				+ " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
+				+ " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
+				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
+				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
+				+ " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
+				+ " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
+				+ " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
+				+ " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) +"' "
+				+ " AND wtWorkingHour.code <> 'OFF'"
+				+ " AND jabatan.departement_id =  " + departmentId
+				+ " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
+				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
+		
+		
+		return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
+                .list();
+	}
 
     @Override
     public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter) {
@@ -1921,6 +1961,55 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (EmpData) criteria.uniqueResult();
 	}
-
-
+	
+	/*
+	 * Get Id Departemen dengan root parent idDepartment, 
+	 * misal idDepartment = 7,
+	 * maka dia akan mencari id department dengan parent_id = 7, 
+	 * dan begitu seterusnya, masing - masing department tersebut akan di query lagi secara recursive sampai level terbawah.
+	 * return dalam bentuk string : idDep, idDep, idDep (ex : 5,6,8)
+	 * Reference : http://stackoverflow.com/questions/28363893/mysql-select-recursive-get-all-child-with-multiple-level/28366310
+	 */
+	@Override
+	public String getIdChildDepRecursiveByDepartmentId(Long idDepartment) {
+		StringBuilder query = new StringBuilder(" SELECT GROUP_CONCAT(lv SEPARATOR ',') FROM ("
+				+ "	SELECT @parameter \\:=(SELECT GROUP_CONCAT(id SEPARATOR ',') FROM department "
+				+ " WHERE FIND_IN_SET(parent_id, @parameter) ) AS lv FROM department JOIN "
+				+ "	(SELECT @parameter \\:= " + idDepartment + ")tmp"
+				+ "	WHERE parent_id IN (@parameter)) a; ");
+		
+		return (String) getCurrentSession().createSQLQuery(query.toString())
+                .uniqueResult();
+	}
+	
+	
+	
+	@Override
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(
+			String rangeDepId, Date dateFrom, Date dateUntill) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
+				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
+				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
+				+ " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
+				+ " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
+				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
+				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
+				+ " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
+				+ " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
+				+ " INNER JOIN department department ON jabatan.departement_id = department.id"
+				+ " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
+				+ " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) +"' "
+				+ " AND wtWorkingHour.code <> 'OFF'"				
+				+ " AND department.id in("
+				+ 	rangeDepId
+				+ " )"
+				+ " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
+				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
+		
+		return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
+                .list();
+	}
 }

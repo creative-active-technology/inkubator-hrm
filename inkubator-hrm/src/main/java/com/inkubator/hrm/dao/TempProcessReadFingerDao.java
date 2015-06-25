@@ -43,4 +43,10 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 
     public Long getTotalOvertimeAndReadFingerByEmpDataId(long id);
 
+	public void deleteAllData();
+	
+	public Long getTotalByScheduleDate(Date date, Long companyId);
+	
+	public Long getTotalAttendanceByScheduleDate(Date date, Long companyId);
+
 }

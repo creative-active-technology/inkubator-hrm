@@ -19,6 +19,7 @@ import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.ApprovalActivityCronService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
@@ -36,6 +37,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	private ApprovalActivityDao approvalActivityDao;
 	@Autowired
 	private LoanService loanService;
+	@Autowired
+	private LoanNewApplicationService loanNewApplicationService;
 	@Autowired
 	private BusinessTravelService businessTravelService;
 	@Autowired
@@ -78,7 +81,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							businessTravelService.approved(approvalActivity.getId(), null, null);
 							break;
 						case HRMConstant.LOAN:
-							loanService.approved(approvalActivity.getId(), null, null);
+							//loanService.approved(approvalActivity.getId(), null, null);
+							loanNewApplicationService.approved(approvalActivity.getId(), null, null);
 							break;
 						case HRMConstant.REIMBURSEMENT:
 							//reimbursmentService.approved(approvalActivity.getId(), null, null);
@@ -112,7 +116,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							businessTravelService.diverted(approvalActivity.getId());
 							break;
 						case HRMConstant.LOAN:
-							loanService.diverted(approvalActivity.getId());
+							//loanService.diverted(approvalActivity.getId());
+							loanNewApplicationService.diverted(approvalActivity.getId());
 							break;
 						case HRMConstant.REIMBURSEMENT:
 							//reimbursmentService.diverted(approvalActivity.getId());

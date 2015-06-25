@@ -17,6 +17,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -177,7 +178,12 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public Boolean isEmpDataWithNullWtGroupWorkingExist();
     
-    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName);
-    
-    
+    public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName); 
+	
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill);
+	
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(String rangeDepId, Date dateFrom, Date dateUntill);
+	
+	public String getIdChildDepRecursiveByDepartmentId(Long idDepartment);
+	
 }

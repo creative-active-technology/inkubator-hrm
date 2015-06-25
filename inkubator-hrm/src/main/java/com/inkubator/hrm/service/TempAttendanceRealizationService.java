@@ -8,6 +8,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
+import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
@@ -47,6 +48,8 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;
+ 
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception;
 
     public WorkingTimeDeviationDetailModel getEntityByEmpDataId(Long id) throws Exception;
     

@@ -8,14 +8,17 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
@@ -221,4 +224,44 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from TempProcessReadFinger");
+        query.executeUpdate();
+	}
+
+	@Override
+	public Long getTotalByScheduleDate(Date date, Long companyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.add(Restrictions.eq("scheduleDate", date));  
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public Long getTotalAttendanceByScheduleDate(Date date, Long companyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.add(Restrictions.eq("scheduleDate", date));
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.isNotNull("fingerIn"));
+        disjunction.add(Restrictions.isNotNull("fingerOut"));
+        disjunction.add(Restrictions.isNotNull("webCheckIn"));
+        disjunction.add(Restrictions.isNotNull("webCheckOut"));
+        criteria.add(disjunction);
+        
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

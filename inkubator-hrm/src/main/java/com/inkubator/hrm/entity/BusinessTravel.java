@@ -137,7 +137,7 @@ public class BusinessTravel implements Serializable {
         this.proposeDate = proposeDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "start_date", length = 19)
     public Date getStartDate() {
         return startDate;
@@ -147,7 +147,7 @@ public class BusinessTravel implements Serializable {
         this.startDate = startDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "end_date", length = 19)
     public Date getEndDate() {
         return endDate;

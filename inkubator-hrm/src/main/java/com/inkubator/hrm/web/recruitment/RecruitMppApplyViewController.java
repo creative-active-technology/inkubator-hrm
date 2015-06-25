@@ -78,6 +78,7 @@ public class RecruitMppApplyViewController extends BaseController {
     }
     
     public String doDetail() {
+    	System.out.println("selected.getActivityNumber() : " + selected.getActivityNumber());
         return "/protected/recruitment/recruit_mpp_apply_detail.htm?faces-redirect=true&execution=" + selected.getActivityNumber();
     }
     
