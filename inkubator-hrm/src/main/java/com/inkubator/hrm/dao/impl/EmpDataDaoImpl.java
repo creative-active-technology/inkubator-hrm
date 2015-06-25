@@ -1909,7 +1909,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 				+ " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
 				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
 		
-		System.out.println("query : " + query.toString());
 		
 		return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
@@ -1960,7 +1959,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 				+ " WHERE FIND_IN_SET(parent_id, @parameter) ) AS lv FROM department JOIN "
 				+ "	(SELECT @parameter \\:= " + idDepartment + ")tmp"
 				+ "	WHERE parent_id IN (@parameter)) a; ");
-		System.out.println("query getListIdChildDepartmentByDepartmentId : " + query.toString());
 		
 		return (String) getCurrentSession().createSQLQuery(query.toString())
                 .uniqueResult();

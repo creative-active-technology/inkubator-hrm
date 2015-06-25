@@ -1004,7 +1004,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByCompanyId(Long companyId) throws Exception {
 		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
-		System.out.println("Masuk ke getListDepAttendanceByCompanyId");
+		
 		 //Get Period Active
         WtPeriode activeWtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
 			
