@@ -7,7 +7,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PermitImplementation;
-import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 
 /**
@@ -30,11 +30,9 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
 
     public PermitImplementation getEntityByApprovalActivityNumberWithDetail(String activityNumber);
 
-    public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable);
+    public List<PermitImplementation> getReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
-    public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
-
-    public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId);
+    public Long getReportPermitHistoryTotalByParam(ReportPermitHistorySearchParameter parameter);    
     
     public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
