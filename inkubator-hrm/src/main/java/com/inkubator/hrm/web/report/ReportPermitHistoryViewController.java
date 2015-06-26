@@ -1,6 +1,6 @@
 package com.inkubator.hrm.web.report;
 
-import com.inkubator.hrm.entity.ApprovalActivity;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,127 +9,88 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.PermitImplementation;
-import com.inkubator.hrm.service.ApprovalActivityService;
+import ch.lambdaj.Lambda;
+
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.PermitImplementationService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.web.lazymodel.PermitImplementationReportSearchLazyDataModel;
+import com.inkubator.hrm.web.lazymodel.ReportPermitHistoryLazyDataModel;
 import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
-import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
- * @author Taufik Hidayat
+ * @author rizkykojek
  */
 @ManagedBean(name = "reportPermitHistoryViewController")
 @ViewScoped
 public class ReportPermitHistoryViewController extends BaseController {
 
-    private PermitImplementationReportSearchParameter searchParameter;
-    private LazyDataModel<PermitImplementation> lazyDataModel;
+    private ReportPermitHistorySearchParameter searchParameter;
+    private LazyDataModel<ReportPermitHistoryModel> lazyDataModel;
+    
     @ManagedProperty(value = "#{permitImplementationService}")
     private PermitImplementationService permitImplementationService;
-    private PermitImplementation selectedPermitImplementation;
-    @ManagedProperty(value = "#{approvalActivityService}")
-    private ApprovalActivityService approvalActivityService;
-    private List<ApprovalActivity> selectedApprovalActivity;
-    private List<String> activityNumbers = new ArrayList<>();
-    private ApprovalActivity approvalActivity;
-    private Long empData;
-    private List<PermitImplementation> listPermitImplementations;
-    private List<ReportPermitHistoryModel> listReportPermitHistoryModels = new ArrayList<>();
+    @ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
+	@ManagedProperty(value = "#{departmentService}")
+    private DepartmentService departmentService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new PermitImplementationReportSearchParameter();
-        empData = 0L;
-        for (String role : UserInfoUtil.getRoles()) {
-            
-            if (UserInfoUtil.hasRole("BASIC_USER")) {
-                empData = HrmUserInfoUtil.getEmpData().getId();
-            }
+        try {
+        	searchParameter = new ReportPermitHistorySearchParameter();
+        	List<GolonganJabatan> availableGolonganJabatans =  golonganJabatanService.getAllData();        	
+        	List<Department> availableDepartments = departmentService.getAllData();
+        	searchParameter.setGolJabDualModel(new DualListModel<String>(Lambda.extract(availableGolonganJabatans, Lambda.on(GolonganJabatan.class).getCode()), new ArrayList<String>()));
+        	searchParameter.setDepartmentDualModel(new DualListModel<Department>(availableDepartments, new ArrayList<Department>()));
+        	
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
         }
-        listReportHistory();
-
     }
 
     @PreDestroy
     public void cleanAndExit() {
+    	searchParameter = null;
+    	lazyDataModel = null;
     	permitImplementationService = null;
-        searchParameter = null;
-        lazyDataModel = null;
-        selectedPermitImplementation = null;
-        approvalActivity = null;
-        approvalActivityService = null;
-        selectedApprovalActivity = null;
-        activityNumbers = null;
-        empData = null;
-        listPermitImplementations = null;
-        listReportPermitHistoryModels = null;
+    	golonganJabatanService = null;
+    	departmentService = null;
     }
+    
+    public void doSearch(){		
+		lazyDataModel = null;		
+	}
 
-    public List<ReportPermitHistoryModel> getListReportPermitHistoryModels() {
-        return listReportPermitHistoryModels;
-    }
+	public ReportPermitHistorySearchParameter getSearchParameter() {
+		return searchParameter;
+	}
 
-    public void setListReportPermitHistoryModels(List<ReportPermitHistoryModel> listReportPermitHistoryModels) {
-        this.listReportPermitHistoryModels = listReportPermitHistoryModels;
-    }
+	public void setSearchParameter(ReportPermitHistorySearchParameter searchParameter) {
+		this.searchParameter = searchParameter;
+	}
 
-    public Long getEmpData() {
-        return empData;
-    }
+	public LazyDataModel<ReportPermitHistoryModel> getLazyDataModel() {
+		if(lazyDataModel == null){
+			lazyDataModel =  new ReportPermitHistoryLazyDataModel(searchParameter, permitImplementationService);
+		}
+		return lazyDataModel;
+	}
 
-    public void setEmpData(Long empData) {
-        this.empData = empData;
-    }
+	public void setLazyDataModel(LazyDataModel<ReportPermitHistoryModel> lazyDataModel) {
+		this.lazyDataModel = lazyDataModel;
+	}
 
-    public List<PermitImplementation> getListPermitImplementations() {
-        return listPermitImplementations;
-    }
-
-    public void setListPermitImplementations(List<PermitImplementation> listPermitImplementations) {
-        this.listPermitImplementations = listPermitImplementations;
-    }
-
-    public PermitImplementationReportSearchParameter getSearchParameter() {
-        return searchParameter;
-    }
-
-    public void setSearchParameter(PermitImplementationReportSearchParameter searchParameter) {
-        this.searchParameter = searchParameter;
-    }
-
-    public ApprovalActivity getApprovalActivity() {
-        return approvalActivity;
-    }
-
-    public void setApprovalActivity(ApprovalActivity approvalActivity) {
-        this.approvalActivity = approvalActivity;
-    }
-
-    public LazyDataModel<PermitImplementation> getLazyDataModel() {
-        if (lazyDataModel == null) {
-            lazyDataModel = new PermitImplementationReportSearchLazyDataModel(searchParameter, activityNumbers, empData, permitImplementationService);
-        }
-        return lazyDataModel;
-    }
-
-    public void setLazyDataModel(LazyDataModel<PermitImplementation> lazyDataModel) {
-        this.lazyDataModel = lazyDataModel;
-    }
-
-    public PermitImplementationService getPermitImplementationService() {
+	public PermitImplementationService getPermitImplementationService() {
 		return permitImplementationService;
 	}
 
@@ -137,86 +98,20 @@ public class ReportPermitHistoryViewController extends BaseController {
 		this.permitImplementationService = permitImplementationService;
 	}
 
-	public ApprovalActivityService getApprovalActivityService() {
-        return approvalActivityService;
-    }
+	public GolonganJabatanService getGolonganJabatanService() {
+		return golonganJabatanService;
+	}
 
-    public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
-        this.approvalActivityService = approvalActivityService;
-    }
+	public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+		this.golonganJabatanService = golonganJabatanService;
+	}
 
-    public List<ApprovalActivity> getSelectedApprovalActivity() {
-        return selectedApprovalActivity;
-    }
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
 
-    public void setSelectedApprovalActivity(List<ApprovalActivity> selectedApprovalActivity) {
-        this.selectedApprovalActivity = selectedApprovalActivity;
-    }
-
-    public List<String> getActivityNumbers() {
-        return activityNumbers;
-    }
-
-    public void setActivityNumbers(List<String> activityNumbers) {
-        this.activityNumbers = activityNumbers;
-    }
-
-    public PermitImplementation getSelectedPermitImplementation() {
-        return selectedPermitImplementation;
-    }
-
-    public void setSelectedPermitImplementation(PermitImplementation selectedPermitImplementation) {
-        this.selectedPermitImplementation = selectedPermitImplementation;
-    }
-
-    public void doSearch() throws Exception {
-        lazyDataModel = null;
-        activityNumbers.clear();
-        listReportPermitHistoryModels.clear();
-        if (StringUtils.isNotEmpty(searchParameter.getApprovalStatus())) {
-            selectedApprovalActivity = approvalActivityService.getByApprovalStatus(Integer.parseInt(searchParameter.getApprovalStatus()));
-            
-            for (ApprovalActivity a : selectedApprovalActivity) {
-
-                activityNumbers.add(a.getActivityNumber());
-
-            }
-        }
-        listReportHistory();
-    }
-
-    public void doDetail() {
-        try {
-            selectedPermitImplementation = this.permitImplementationService.getEntityByPkWithDetail(selectedPermitImplementation.getId());
-            approvalActivity = this.approvalActivityService.getEntityByActivityNumberLastSequence(selectedPermitImplementation.getNumberFilling());
-            approvalActivity.setApprovedBy(HrmUserInfoUtil.getRealNameByUserName(approvalActivity.getApprovedBy()));
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
-
-    public void listReportHistory() {
-        try {
-            listPermitImplementations = permitImplementationService.getReportHistoryByParam(searchParameter, activityNumbers, empData);
-            for (PermitImplementation l : listPermitImplementations) {
-                ReportPermitHistoryModel reportPermitHistoryModel = new ReportPermitHistoryModel();
-                reportPermitHistoryModel.setEndDate(l.getEndDate());
-                reportPermitHistoryModel.setPermitClassification(l.getPermitClassification().getName());
-                reportPermitHistoryModel.setNikWithFullName(l.getEmpData().getNikWithFullName());
-                reportPermitHistoryModel.setNumberFilling(l.getNumberFilling());
-                reportPermitHistoryModel.setStartDate(l.getStartDate());
-
-                ApprovalActivity appActivity = this.approvalActivityService.getEntityByActivityNumberLastSequence(l.getNumberFilling());
-                appActivity.setApprovedBy(HrmUserInfoUtil.getRealNameByUserName(appActivity.getApprovedBy()));
-                
-                reportPermitHistoryModel.setApprovalTime(appActivity.getApprovalTime());
-                reportPermitHistoryModel.setApprovedBy(appActivity.getApprovedBy());
-                reportPermitHistoryModel.setRequestTime(appActivity.getRequestTime());
-                
-                listReportPermitHistoryModels.add(reportPermitHistoryModel);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(ReportPermitHistoryViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+    
 }
