@@ -59,7 +59,8 @@ import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
-import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
+import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -841,20 +842,31 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 //    }
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception {
-        return permitImplementationDao.getReportByParam(parameter, activityNumbers, empDataId, firstResult, maxResults, orderable);
+    public List<ReportPermitHistoryModel> getReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        List<PermitImplementation> listPermit = permitImplementationDao.getReportPermitHistoryByParam(parameter, firstResult, maxResults, orderable);
+        List<ReportPermitHistoryModel> listModel = new ArrayList<ReportPermitHistoryModel>();
+        for(PermitImplementation permit : listPermit){
+        	ReportPermitHistoryModel model = new ReportPermitHistoryModel();
+        	model.setNikWithFullName(permit.getEmpData().getNikWithFullName());
+        	model.setStartDate(permit.getStartDate());
+        	model.setEndDate(permit.getEndDate());
+        	model.setPermitClassification(permit.getPermitClassification().getName());
+        	model.setNumberFilling(permit.getNumberFilling());
+        	List<ApprovalActivity> approvalActivities = approvalActivityDao.getAllDataByActivityNumberWithDetail(permit.getApprovalActivityNumber(), Order.desc("sequence"));
+        	if(!approvalActivities.isEmpty()) {
+        		HrmUser approver =  hrmUserDao.getByUserId(approvalActivities.get(0).getApprovedBy());
+        		model.setApprovedBy(approver.getEmpData().getNikWithFullName());
+        		
+        	}
+        	listModel.add(model);
+        }
+    	return listModel;
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception {
-        return permitImplementationDao.getReportTotalByParam(parameter, activityNumbers, empDataId);
-    }
-
-    @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception {
-        return permitImplementationDao.getReportHistoryByParam(parameter, activityNumbers, empDataId);
+    public Long getTotalReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter) throws Exception {
+        return permitImplementationDao.getReportPermitHistoryTotalByParam(parameter);
     }
 
     private String getUploadPath(Long id, UploadedFile documentFile) {
@@ -890,7 +902,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
             Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
             if (actualPermit > permitDistribution.getBalance()) {
-                throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+                //throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
             }
 
             

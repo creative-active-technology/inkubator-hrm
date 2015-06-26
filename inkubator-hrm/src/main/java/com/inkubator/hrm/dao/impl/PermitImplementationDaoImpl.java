@@ -19,7 +19,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.entity.PermitImplementation;
-import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 
 /**
@@ -122,12 +122,9 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
     }
 
     @Override
-    public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) {
+    public List<PermitImplementation> getReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchReportByParam(parameter, activityNumbers, empDataId, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+        doSearchReportPermitHistoryByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -135,49 +132,38 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
     }
 
     @Override
-    public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) {
+    public Long getReportPermitHistoryTotalByParam(ReportPermitHistorySearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchReportByParam(parameter, activityNumbers, empDataId, criteria);
+        doSearchReportPermitHistoryByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, Criteria criteria) {
-        //get approval definition ids
-
-        if (parameter.getStartDate() != null) {
-            criteria.add(Restrictions.eq("startDate", parameter.getStartDate()));
+    private void doSearchReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, Criteria criteria) {
+    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+    	criteria.createAlias("empData.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+    	criteria.createAlias("jabatan.department", "department", JoinType.INNER_JOIN);
+    	criteria.createAlias("empData.golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+    	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+    	criteria.createAlias("permitClassification", "permitClassification", JoinType.INNER_JOIN);
+    	
+    	if (parameter.getStartDate() != null) {
+            criteria.add(Restrictions.ge("startDate", parameter.getStartDate()));
         }
 
         if (parameter.getEndDate() != null) {
-            criteria.add(Restrictions.eq("endDate", parameter.getEndDate()));
+            criteria.add(Restrictions.le("startDate", parameter.getEndDate()));
         }
-
-        if (StringUtils.isNotEmpty(parameter.getApprovalStatus())) {
-            if (!activityNumbers.isEmpty()) {
-
-                criteria.add(Restrictions.in("approvalActivityNumber", activityNumbers));
-            } else {
-                criteria.add(Restrictions.eq("approvalActivityNumber", "0"));
-            }
+        
+        if(!parameter.getListDepartment().isEmpty()){
+        	criteria.add(Restrictions.in("department.id", parameter.getListDepartment()));
         }
-
-        if (empDataId != 0L) {
-            criteria.add(Restrictions.eq("empData.id", empDataId));
+        
+        if(!parameter.getListGolJab().isEmpty()){
+        	criteria.add(Restrictions.in("golonganJabatan.code", parameter.getListGolJab()));
         }
 
         criteria.add(Restrictions.isNotNull("id"));
     }
-
-    @Override
-    public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchReportByParam(parameter, activityNumbers, empDataId, criteria);
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("permit", FetchMode.JOIN);
-        return criteria.list();
-    }
-
 
 	@Override
 	public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill) {
