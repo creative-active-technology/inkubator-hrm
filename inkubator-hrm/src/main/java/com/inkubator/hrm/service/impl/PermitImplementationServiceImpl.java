@@ -902,7 +902,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
             Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
             if (actualPermit > permitDistribution.getBalance()) {
-                //throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+                throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
             }
 
             
