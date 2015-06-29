@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+
 import java.util.Date;
 import java.util.List;
 
@@ -45,5 +46,7 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
 	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(Long empDataid, Date startDate, Date endDate);
 	
 	public Long getTotalDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
+
+	public Long getTotalByTanggalWaktuKerja(Date date);
 
 }

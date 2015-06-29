@@ -212,4 +212,13 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 	    criteria.add(Restrictions.ne("wtWorkingHour.code", "OFF"));
 	    return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+	
+	@Override
+	public Long getTotalByTanggalWaktuKerja(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		//criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        //criteria.add(Restrictions.eq("tanggalWaktuKerja", date));  
+        //criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }
