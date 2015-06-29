@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -216,9 +217,9 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 	@Override
 	public Long getTotalByTanggalWaktuKerja(Date date) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		//criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-        //criteria.add(Restrictions.eq("tanggalWaktuKerja", date));  
-        //criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));  
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 }
