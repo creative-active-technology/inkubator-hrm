@@ -94,10 +94,10 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
     }
 
     @Override
-    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id) {
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("recruitSelectionType.id", id));
-        criteria.setFetchMode("recruitmenSelectionSeries", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", id));
+        criteria.setFetchMode("recruitSelectionType", FetchMode.JOIN);
         return criteria.list();
     }
 

@@ -31,5 +31,5 @@ public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelec
     
     public Long getTotalByPk(RecruitmenSelectionSeriesDetailId id);
     
-    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionTypeId(Long id);
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id);
 }

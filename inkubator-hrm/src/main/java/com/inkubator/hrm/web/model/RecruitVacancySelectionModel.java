@@ -29,9 +29,9 @@ public class RecruitVacancySelectionModel implements Serializable {
     private Date recruitVacancySelectionDate;
     private BigDecimal extraBudget;
     private Map<String, Long> dropDownRecruitHireApply;
-    private Map<String, Long> dropDownRecruitSelectionType;
+    private Map<String, Long> dropDownRecruitSelectionSeries;
     private Long recruitHireApplyId;
-    private Long recruitSelectionTypeId;
+    private Long recruitSelectionSeriesId;
     private String jobTitleName;
     private String staffName;
     private Date effectiveDate;
@@ -46,7 +46,7 @@ public class RecruitVacancySelectionModel implements Serializable {
     
     //test
     private List<EmpData> listEmpData;
-    private Map<EmpData, Boolean> selectedEmpData = new HashMap<EmpData, Boolean>();
+    private List<EmpData> selectedEmpData;
     
 	public String getCode() {
 		return code;
@@ -73,24 +73,11 @@ public class RecruitVacancySelectionModel implements Serializable {
 			Map<String, Long> dropDownRecruitHireApply) {
 		this.dropDownRecruitHireApply = dropDownRecruitHireApply;
 	}
-	public Map<String, Long> getDropDownRecruitSelectionType() {
-		return dropDownRecruitSelectionType;
-	}
-	public void setDropDownRecruitSelectionType(
-			Map<String, Long> dropDownRecruitSelectionType) {
-		this.dropDownRecruitSelectionType = dropDownRecruitSelectionType;
-	}
 	public Long getRecruitHireApplyId() {
 		return recruitHireApplyId;
 	}
 	public void setRecruitHireApplyId(Long recruitHireApplyId) {
 		this.recruitHireApplyId = recruitHireApplyId;
-	}
-	public Long getRecruitSelectionTypeId() {
-		return recruitSelectionTypeId;
-	}
-	public void setRecruitSelectionTypeId(Long recruitSelectionTypeId) {
-		this.recruitSelectionTypeId = recruitSelectionTypeId;
 	}
 	public String getJobTitleName() {
 		return jobTitleName;
@@ -167,26 +154,29 @@ public class RecruitVacancySelectionModel implements Serializable {
 		this.listEmployeeName = listEmployeeName;
 	}
 	public List<EmpData> getListEmpData() {
-		listEmpData = new ArrayList<EmpData>();
-		for(Map.Entry<EmpData, Boolean> selected : selectedEmpData.entrySet()){
-			if(StringUtils.equals(String.valueOf(selected.getValue()), "true")){
-				listEmpData.add(selected.getKey());
-			}
-		}
 		return listEmpData;
 	}
 	public void setListEmpData(List<EmpData> listEmpData) {
 		this.listEmpData = listEmpData;
 	}
-	public Map<EmpData, Boolean> getSelectedEmpData() {
+	public List<EmpData> getSelectedEmpData() {
 		return selectedEmpData;
 	}
-	public void setSelectedEmpData(Map<EmpData, Boolean> selectedEmpData) {
+	public void setSelectedEmpData(List<EmpData> selectedEmpData) {
 		this.selectedEmpData = selectedEmpData;
 	}
-
-    
-
-    
-    
+	public Map<String, Long> getDropDownRecruitSelectionSeries() {
+		return dropDownRecruitSelectionSeries;
+	}
+	public void setDropDownRecruitSelectionSeries(
+			Map<String, Long> dropDownRecruitSelectionSeries) {
+		this.dropDownRecruitSelectionSeries = dropDownRecruitSelectionSeries;
+	}
+	public Long getRecruitSelectionSeriesId() {
+		return recruitSelectionSeriesId;
+	}
+	public void setRecruitSelectionSeriesId(Long recruitSelectionSeriesId) {
+		this.recruitSelectionSeriesId = recruitSelectionSeriesId;
+	}
+	
 }

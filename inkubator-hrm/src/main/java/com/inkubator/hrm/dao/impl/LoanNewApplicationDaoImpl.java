@@ -9,10 +9,13 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -148,19 +151,23 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
                         "INNER JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
                         "INNER JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
                         "INNER JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id  " +
+                        "INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                        "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
+                        "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
                         "INNER JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
                         "INNER JOIN hrm.emp_data AS empDataApprover ON approver.emp_data_id = empDataApprover.id  " +
                         "INNER JOIN hrm.bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
                         "INNER JOIN hrm.loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
                         "LEFT JOIN hrm.loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
                         "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number)  " +
-                        "AND approvalDefinition.name = :appDefinitionName  "); 
+                        "AND approvalDefinition.name = :appDefinitionName"
+                        + " AND  company.id = :companyId "); 
 
         
     	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
     	selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY ").append(orderable);
-        
+    	
     	   Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
                 	.setResultTransformer(Transformers.aliasToBean(LoanNewApplicationBoxViewModel.class));
     	hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
@@ -212,6 +219,8 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     			hbm.setParameter("userId", parameter.getUserId());
     		} else if(StringUtils.equals(param, "appDefinitionName")){
     			hbm.setParameter("appDefinitionName", HRMConstant.LOAN);
+    		} else if(StringUtils.equals(param, "companyId")){
+    			hbm.setParameter("companyId", HrmUserInfoUtil.getCompanyId());
     		}
     	}    	
     	return hbm;
@@ -226,15 +235,18 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
                         "INNER JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
                         "INNER JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
                         "INNER JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id  " +
+                        "INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                        "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
+                        "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
                         "INNER JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
                         "INNER JOIN hrm.emp_data AS empDataApprover ON requester.emp_data_id = empDataApprover.id  " +
                         "INNER JOIN hrm.bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
                         "INNER JOIN hrm.loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
                         "LEFT JOIN hrm.loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
                         "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number)  " +
-                        "AND approvalDefinition.name = :appDefinitionName  ");    	
-    	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
-    	
+                        "AND approvalDefinition.name = :appDefinitionName "
+                        + " AND  company.id = :companyId ");    	
+    	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));    	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
     	hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
     	

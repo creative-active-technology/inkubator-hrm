@@ -5,21 +5,19 @@
  */
 package com.inkubator.hrm.service.impl;
 
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
-import org.hamcrest.Matcher;
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
@@ -43,6 +41,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.AttendanceStatusDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioEducationHistoryDao;
+import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
@@ -52,9 +51,13 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
+import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
+import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
+import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.AnnouncementEmpType;
 import com.inkubator.hrm.entity.AnnouncementGoljab;
@@ -69,12 +72,12 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
-import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.TaxFree;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringsUtils;
@@ -84,6 +87,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
+import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
@@ -93,7 +97,6 @@ import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
-import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -139,6 +142,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
     @Autowired
     private EducationLevelDao educationLevelDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
+    @Autowired
+    private LeaveImplementationDateDao leaveImplementationDateDao;
+    @Autowired
+    private BusinessTravelDao businessTravelDao;
+    @Autowired
+    private TempProcessReadFingerDao tempProcessReadFingerDao;
+    @Autowired
+    private PermitImplementationDao permitImplementationDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -917,30 +930,30 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return empDataDao.getTotalEmpDataByParam(nikOrNameSearchParameter);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public String getBioDataNameByEmpDataId(Long id) throws Exception {
-		return empDataDao.getBioDataNameByEmpDataId(id);
-	}
+        return empDataDao.getBioDataNameByEmpDataId(id);
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId,  String gender, int firstResult, int maxResults, Order order) throws Exception {
+    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) throws Exception {
         List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender, firstResult, maxResults, order);
         EducationLevel educationLevel = educationLevelDao.getEntiyByPK(educationLevelId);
-        
+
         // Set Detail Position Criteria of each Data 
         for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
             List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan());
             String kriteria = StringsUtils.EMPTY;
-            
+
             for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : listKlasifikasiKerjaJabatans) {
                 Boolean isNotLastRecord = listKlasifikasiKerjaJabatans.indexOf(klasifikasiKerjaJabatan) < listKlasifikasiKerjaJabatans.size() - 1;
-                kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription()  +  (isNotLastRecord ? ", " : "");
+                kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription() + (isNotLastRecord ? ", " : "");
             }
             searchEmployeeCandidateViewModel.setKriteria(kriteria);
             searchEmployeeCandidateViewModel.setLastEducationLevelName(educationLevel.getName());
-            
+
         }
 
         return listSearchEmployeeCandidateViewModels;
@@ -952,158 +965,280 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception {
-		return empDataDao.isEmpDataWithNullWtGroupWorkingExist();
-	}
-    
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception{
-    	List<EmpData> listEmpData = empDataDao.getAllDataWithoutJoinCompany(nikOrName);
-    	List<EmployeeRestModel> listModel =  new ArrayList<EmployeeRestModel>();
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
-    	
-    	for(EmpData empData : listEmpData){
-    		BioData bioData = empData.getBioData();
-    		if(empData != null && bioData != null) {
-    			try {
-	    			EmployeeRestModel model = this.bindToRestModel(empData, bioData);
-	    			listModel.add(model);
-    			} catch (NullPointerException ex){
-    				LOGGER.error("Employee Nik : "+ empData.getNikWithFullName() +", Error Null Pointer " + ex);
-    			}
-    			
-    		}
-    	}
-    	
-    	return listModel;
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception {
+        return empDataDao.isEmpDataWithNullWtGroupWorkingExist();
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public EmployeeRestModel getRestModelByNik(String nik) throws Exception {
-		EmployeeRestModel model = null;
-		EmpData empData = empDataDao.getEntityByNik(nik);		
-		
-		if(empData != null && empData.getBioData() != null) {
-			BioData bioData = empData.getBioData();
-			model = this.bindToRestModel(empData, bioData);
-		}
-		return model;
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception {
+        List<EmpData> listEmpData = empDataDao.getAllDataWithoutJoinCompany(nikOrName);
+        List<EmployeeRestModel> listModel = new ArrayList<EmployeeRestModel>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception {
-		Map<String,List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
-		
-			
-		//Dapatkan departemen dan jumlah karyawannya
-		 List<Department> departments = departmentDao.getAllData();
-	        Map<Department, Long> results = new HashMap<Department, Long>();
-	        for (Department department : departments) {
-	            Long total = empDataDao.getTotalByDepartmentId(department.getId());
-	            results.put(department, total);
-	        }
-	        
-	        //sorting by value (dari yang besar ke yang kecil)
-	        results = MapUtil.sortByValueDesc(results);
-	        
-	        /*
-	         * Jika jumlah departemen lebih besar dari 5, maka 5 departemen dengan total karyawan terbesar, 
-	         * masing - masing di jadikan satu model sendiri - sendiri, 
-	         * sedangkan sisanya di satukan jadi satu model dengan label Departemen lainnya (key resourceBundle : 'department.other_department')
-	         */
-	        if(results.size() > 5){        	
-	        	
-	        	List<Department> listOtherDepartment = new ArrayList<Department>();
-	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendance = new ArrayList<DepAttendanceRealizationViewModel>();
-	        	List<DepAttendanceRealizationViewModel> listOtherDepAttendanceDistinctWeekNumber = new ArrayList<DepAttendanceRealizationViewModel>();
-	        	
-	        	int i = 1;
-	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
-	        		if(i <= 5){
-	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
-		    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);	        			
-	        		}else{
-	        			List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
-	        			listOtherDepAttendance.addAll(listDepAttendance);
-	        			listOtherDepartment.add(entry.getKey());
-	        		}
-	        		
-	        		i++;	        		
-	        	}
-	        	
-	        	Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listOtherDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
-	        	for (String key : groupAttendance.keySet()) {
-	        		List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
-	        		DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
-	        		Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
-	        		Double percentage = totalPercentage / (listGroupedAttendance.size() - 5);
-	        		if(percentage.isNaN() || percentage.isInfinite()){
-	        			percentage = 0.0;
-	        		}
-	        		model.setWeekNumber(Integer.valueOf(key));
-	        		model.setAttendancePercentage(new BigDecimal(percentage));
-	        		listOtherDepAttendanceDistinctWeekNumber.add(model);	        		
-	        		
-	        	}
-	        	
-	        	mapResult.put(ResourceBundleUtil.getAsString("department.other_department"), listOtherDepAttendanceDistinctWeekNumber);
-	        	
-	        	
-	        }else{	        	
-	        	for(Map.Entry<Department, Long> entry : results.entrySet()){
-	        		List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), dateFrom, dateUntill);
-	    			mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
-	        	}
-	        }
-	        
-		
-		 
-		
-		return mapResult;
-	}
-	
-	private EmployeeRestModel bindToRestModel(EmpData empData,BioData bioData) throws ParseException{
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
-		
-		EmployeeRestModel model = new EmployeeRestModel();
-		model.setNik(empData.getNik());
-		model.setTitle(bioData.getTitle());
-		model.setFirstname(bioData.getFirstName());
-		model.setLastname(bioData.getLastName());
-		model.setPlaceOfBirth(bioData.getCity().getCityName());
-		model.setDateOfBirth(dateFormat.format(bioData.getDateOfBirth()));
-		model.setGender(bioData.getGender().equals(HRMConstant.GLOBAL_MALE)? 1 : 2);
-		model.setMaritalStatus(bioData.getMaritalStatus().getName());
-		model.setHomePhone("");
-		model.setHandPhone(bioData.getMobilePhone());
-		model.setEmail(bioData.getPersonalEmail());
-		
-		for(BioAddress address : bioData.getBioAddresses()){
-			model.setAddressLine1(address.getAddressDetail());
-			model.setAddressLine2(address.getNotes());
-			model.setCity(address.getCity().getCityName());
-			model.setState(address.getCity().getProvince().getProvinceName());
-			model.setCountry(address.getCity().getProvince().getCountry().getCountryName());
-			model.setZipCode("");
-			break;
-		}
-		
-		model.setNationality(bioData.getNationality().getNationalityName());		
-		for(BioIdCard idCard : bioData.getBioIdCards()){
-			model.setIdentityType(idCard.getType());
-			model.setIdentityNumber(idCard.getCardNumber());
-			model.setIdentityIssuingPlace(idCard.getCity().getCityName());
-			model.setIdentityIssuingDate(dateFormat.format(idCard.getIssuedDate()));
-			model.setExpiryDate(dateFormat.format(idCard.getValidDate()));
-			break;
-		}
-		
-		return model;
-	}
+        for (EmpData empData : listEmpData) {
+            BioData bioData = empData.getBioData();
+            if (empData != null && bioData != null) {
+                try {
+                    EmployeeRestModel model = this.bindToRestModel(empData, bioData);
+                    listModel.add(model);
+                } catch (NullPointerException ex) {
+                    LOGGER.error("Employee Nik : " + empData.getNikWithFullName() + ", Error Null Pointer " + ex);
+                }
+
+            }
+        }
+
+        return listModel;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmployeeRestModel getRestModelByNik(String nik) throws Exception {
+        EmployeeRestModel model = null;
+        EmpData empData = empDataDao.getEntityByNik(nik);
+
+        if (empData != null && empData.getBioData() != null) {
+            BioData bioData = empData.getBioData();
+            model = this.bindToRestModel(empData, bioData);
+        }
+        return model;
+    }
+
+    @Override
+    @Cacheable(value = "attendancePercentagePerDepartment", key = "#companyId")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Map<String, List<DepAttendanceRealizationViewModel>> getListDepAttendanceByCompanyId(Long companyId) throws Exception {
+        Map<String, List<DepAttendanceRealizationViewModel>> mapResult = new HashMap<String, List<DepAttendanceRealizationViewModel>>();
+
+        //Get Period Active
+        WtPeriode activeWtPeriode = wtPeriodeDao.getEntityByAbsentTypeActive();
+
+        //Dapatkan List ROOT departemen dan jumlah karyawannya		
+        List<Department> departments = this.departmentDao.getByOrgLevelAndCompany("DEP", companyId);
+        Map<Department, Long> results = new HashMap<Department, Long>();
+        for (Department department : departments) {
+            Long total = empDataDao.getTotalByDepartmentId(department.getId());
+            results.put(department, total);
+        }
+
+        //sorting by total employee nya (dari yang besar ke yang kecil)
+        results = MapUtil.sortByValueDesc(results);
+
+        /*
+         * Jika jumlah departemen lebih besar dari 5, maka 5 departemen dengan total karyawan terbesar, 
+         * masing - masing di jadikan satu model sendiri - sendiri, 
+         * sedangkan sisanya di satukan jadi satu model dengan label Departemen lainnya (key resourceBundle : 'department.other_department')
+         */
+        if (results.size() > 5) {
+
+            List<DepAttendanceRealizationViewModel> listOtherDepAttendance = new ArrayList<DepAttendanceRealizationViewModel>();
+            int i = 1;
+
+            for (Map.Entry<Department, Long> entry : results.entrySet()) {
+
+                //dapatkan String id department childnya (recursive)
+                String idDepChild = empDataDao.getIdChildDepRecursiveByDepartmentId(entry.getKey().getId());
+
+                //jika looping masing didalam range 5 departemen dengan total employee terbesar, jadikan masing - masing satu model tersendiri
+                if (i <= 5) {
+
+                    List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+
+                    // dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
+                    List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+                    listDepAttendance.addAll(listDepAttendanceChid);
+
+                    //Group By Week Number
+                    Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+                    List<DepAttendanceRealizationViewModel> listDepAttendanceAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
+                    for (String key : groupAttendance.keySet()) {
+
+                        List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
+                        DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+
+                        Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+                        Double percentage = totalPercentage / (listGroupedAttendance.size());
+
+                        // jika infinite atau not a number, reset ke 0
+                        if (percentage.isNaN() || percentage.isInfinite()) {
+                            percentage = 0.0;
+                        }
+                        model.setWeekNumber(Integer.valueOf(key));
+                        model.setAttendancePercentage(new BigDecimal(percentage));
+                        listDepAttendanceAfterGroupedAndSum.add(model);
+
+                    }
+
+                    mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
+                } else {//jika sudah di departemen urutan ke 6 keatas, di pool ke dalam satu model
+
+                    List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+                    List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+                    listDepAttendance.addAll(listDepAttendanceChid);
+                    listOtherDepAttendance.addAll(listDepAttendance);
+
+                }
+
+                i++;
+            }
+
+            //group departemen Root dengan urutan 6 beserta childnya  berdasarkan weekNumber 
+            Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listOtherDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+            List<DepAttendanceRealizationViewModel> listOtherDepAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
+            for (String key : groupAttendance.keySet()) {
+
+                List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
+                DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+                Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+                Double percentage = totalPercentage / (listGroupedAttendance.size());
+
+                // jika infinite atau not a number, reset ke 0
+                if (percentage.isNaN() || percentage.isInfinite()) {
+                    percentage = 0.0;
+                }
+
+                //assign ke dalam satu model
+                model.setWeekNumber(Integer.valueOf(key));
+                model.setAttendancePercentage(new BigDecimal(percentage));
+                listOtherDepAfterGroupedAndSum.add(model);
+
+            }
+
+            //tambahakan ke chart dengan label department lain - lain
+            mapResult.put(ResourceBundleUtil.getAsString("department.other_department"), listOtherDepAfterGroupedAndSum);
+
+        } else {
+
+            for (Map.Entry<Department, Long> entry : results.entrySet()) {
+
+                List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+
+                //dapatkan String id department childnya (recursive)
+                String idDepChild = empDataDao.getIdChildDepRecursiveByDepartmentId(entry.getKey().getId());
+
+                // dapatkan list DepAttendanceRealizationViewModel dari masing - masing idChild Department
+                List<DepAttendanceRealizationViewModel> listDepAttendanceChid = empDataDao.getListDepAttendanceByListRangeDepIdAndRangeDate(idDepChild, activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
+                listDepAttendance.addAll(listDepAttendanceChid);
+
+                //Group By Week Number
+                List<DepAttendanceRealizationViewModel> listDepAttendanceAfterGroupedAndSum = new ArrayList<DepAttendanceRealizationViewModel>();
+                Group<DepAttendanceRealizationViewModel> groupAttendance = Lambda.group(listDepAttendance, Lambda.by(Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber()));
+                for (String key : groupAttendance.keySet()) {
+
+                    List<DepAttendanceRealizationViewModel> listGroupedAttendance = groupAttendance.find(key);
+                    DepAttendanceRealizationViewModel model = new DepAttendanceRealizationViewModel();
+
+                    Double totalPercentage = Lambda.sum(listGroupedAttendance, Lambda.on(DepAttendanceRealizationViewModel.class).getAttendancePercentage().doubleValue());
+                    Double percentage = totalPercentage / (listGroupedAttendance.size());
+
+                    // jika infinite atau not a number, reset ke 0
+                    if (percentage.isNaN() || percentage.isInfinite()) {
+                        percentage = 0.0;
+                    }
+                    model.setWeekNumber(Integer.valueOf(key));
+                    model.setAttendancePercentage(new BigDecimal(percentage));
+
+                    listDepAttendanceAfterGroupedAndSum.add(model);
+
+                }
+
+                //tambah ke map yang akan ditampilkan ke chart dashboard  	
+                mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendanceAfterGroupedAndSum);
+
+            }
+        }
+
+        return mapResult;
+    }
+
+    private EmployeeRestModel bindToRestModel(EmpData empData, BioData bioData) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", new Locale("en"));
+
+        EmployeeRestModel model = new EmployeeRestModel();
+        model.setNik(empData.getNik());
+        model.setTitle(bioData.getTitle());
+        model.setFirstname(bioData.getFirstName());
+        model.setLastname(bioData.getLastName());
+        model.setPlaceOfBirth(bioData.getCity().getCityName());
+        model.setDateOfBirth(dateFormat.format(bioData.getDateOfBirth()));
+        model.setGender(bioData.getGender().equals(HRMConstant.GLOBAL_MALE) ? 1 : 2);
+        model.setMaritalStatus(bioData.getMaritalStatus().getName());
+        model.setHomePhone("");
+        model.setHandPhone(bioData.getMobilePhone());
+        model.setEmail(bioData.getPersonalEmail());
+
+        for (BioAddress address : bioData.getBioAddresses()) {
+            model.setAddressLine1(address.getAddressDetail());
+            model.setAddressLine2(address.getNotes());
+            model.setCity(address.getCity().getCityName());
+            model.setState(address.getCity().getProvince().getProvinceName());
+            model.setCountry(address.getCity().getProvince().getCountry().getCountryName());
+            model.setZipCode("");
+            break;
+        }
+
+        model.setNationality(bioData.getNationality().getNationalityName());
+        for (BioIdCard idCard : bioData.getBioIdCards()) {
+            model.setIdentityType(idCard.getType());
+            model.setIdentityNumber(idCard.getCardNumber());
+            model.setIdentityIssuingPlace(idCard.getCity().getCityName());
+            model.setIdentityIssuingDate(dateFormat.format(idCard.getIssuedDate()));
+            model.setExpiryDate(dateFormat.format(idCard.getValidDate()));
+            break;
+        }
+
+        return model;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName) throws Exception {
+        return empDataDao.getAllDataNotTerminateWithSearchParameter(nikOrName);
+    }
+
+    @Cacheable(value = "employeeResumeOnDashboard", key = "#companyId")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard(Long companyId) {
+        DateTime now = DateTime.now();
+        Long totalEmployee = empDataDao.getTotalEmpDataNotTerminate();
+        Long todayLeave = leaveImplementationDateDao.getTotalActualLeave(now.toDate(), companyId);
+        Long todayBusinessTravel = businessTravelDao.getTotalActualBusinessTravel(now.toDate(), companyId);
+        Long todayPermit = permitImplementationDao.getTotalActualPermit(now.toDate(), companyId);
+        BioDataModel nearestBirthdayPerson = empDataDao.getEmpNameWithNearestBirthDate();
+        String nearestBirthday = nearestBirthdayPerson == null ? "N/A" : nearestBirthdayPerson.getFirstName() + " " + nearestBirthdayPerson.getLastName();
+
+        /**
+         * kehadiran kemarin
+         */
+        Long totalYesterdaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
+        Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
+        BigDecimal yesterdayAttendance = new BigDecimal(0);
+        if (totalYesterdaySchedule != 0 && totalYesterdayAttendance != 0) {
+            yesterdayAttendance = new BigDecimal(totalYesterdayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalYesterdaySchedule), 2, RoundingMode.UP);
+        }
+
+        /**
+         * perkiraan kehadiran hari ini = jadwal - (ijin+cuti+dinas)
+         */
+        Long totalTodaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.toDate(), companyId);
+        Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);
+        BigDecimal todayAttendance = new BigDecimal(0);
+        if (totalTodaySchedule != 0 && totalTodayAttendance != 0) {
+            todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);
+        }
+
+        //set value to model
+        EmployeeResumeDashboardModel model = new EmployeeResumeDashboardModel();
+        model.setTotalEmployee(totalEmployee);
+        model.setTodayLeave(todayLeave);
+        model.setTodayBusinessTravel(todayBusinessTravel);
+        model.setYesterdayAttendance(yesterdayAttendance);
+        model.setTodayAttendance(todayAttendance);
+        model.setNearestBirthday(nearestBirthday);
+        return model;
+    }
 }

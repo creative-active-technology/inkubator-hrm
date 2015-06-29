@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
@@ -51,4 +52,9 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception;
 
     public WorkingTimeDeviationDetailModel getEntityByEmpDataId(Long id) throws Exception;
+    
+    public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception;
+
 }

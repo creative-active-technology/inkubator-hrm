@@ -143,7 +143,7 @@
 								<f:facet name="header">
 									<h:outputText value="Tipe Seleksi" />
 								</f:facet>
-								<h:outputLabel value="#{data.recruitSelectionSeriesName}" />
+								<h:outputLabel value="#{data.recruitSelectionTypeName}" />
 							</p:column>
 							<p:column style="width: 9%">
 								<f:facet name="header">
@@ -186,11 +186,11 @@
 								<f:facet name="header">
 									<h:outputText value="Penyeleksi" />
 								</f:facet>
-								<p:commandButton value="#{appmsg['global.search']}" ajax="true"
+								 <p:commandButton value="#{appmsg['global.search']}" ajax="true"
 									styleClass="label_button" style="margin-right: 5px"
 									label="#{appmsg['global.search']}" icon="ui-icon-disk"
-									immediate="true" update=":formDetail, tooltipEmployeeListId"
-									action="doGetListEmployee" onclick="PF('statusDialog').show()" 
+									immediate="false" update=":formDetail, tooltipEmployeeListId"
+									onclick="PF('statusDialog').show()" 
 									oncomplete="PF('penyeleksiDialog').show()"
 									id="employeeSearchButtonId" title="#{appmsg['global.search']}">
 									<f:setPropertyActionListener value="#{data}"
@@ -243,13 +243,7 @@
 							partialSubmit="true" action="save" styleClass="isitext_hrm"
 							style="margin-right: 5px" label="#{appmsg['global.save']}"
 							icon="ui-icon-search" title="#{appmsg['global.save']}" />
-						<p:commandButton value="#{appmsg['global.save']}" ajax="true"
-							action="testPopUp" styleClass="label_button"
-							style="margin-right: 5px" label="#{appmsg['global.save']}"
-							icon="ui-icon-disk" update="formId:tableVacancySelectionSeries"
-							oncomplete="handleUpdateRequest(args)" id="buttonSave"
-							title="#{appmsg['global.save']}">
-						</p:commandButton>
+						
 						<p:commandButton value="#{appmsg['global.reset']}"
 							title="#{appmsg['global.reset']}" process="@this" update="formId"
 							action="#{systemLetterReferenceFormController.doReset()}"
@@ -260,7 +254,7 @@
 						<p:commandButton value="#{appmsg['global.back']}"
 							icon="ui-icon-contact" title="#{appmsg['global.back']}"
 							immediate="true"
-							action="#{systemLetterReferenceFormController.doBack()}"
+							action="back"
 							styleClass="label_button" />
 					</div>
 
@@ -287,34 +281,38 @@
 							<p:outputLabel value=":" styleClass="header_big" />
 							<p:inputText id="searchId" style="width: 450px"
 								value="#{recruitVacancySelectionModel.nikOrNameSearchParameter}" />
-							<p:commandButton value="#{appmsg['global.search']}"
-								icon="ui-icon-search" action="save" />
+							<p:commandButton value="#{appmsg['global.search']}" update="checkboxDT"
+								icon="ui-icon-search" action="doGetListEmployee" />
 						</h:panelGrid>
 						<p:focus for="searchId" />
-						<p:dataTable var="data"
-							value="#{recruitVacancySelectionModel.lazyDataModel}" lazy="true"
-							paginator="true" pageLinks="7"
-							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-							id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31"
-							style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+						<p:dataTable id="checkboxDT" var="empData" value="#{recruitVacancySelectionModel.listEmpData}" selection="#{recruitVacancySelectionModel.selectedEmpData}" rowKey="#{empData.id}" style="margin-bottom:0">
+     
 
-
+							<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 							<p:column sortBy="#{data.nik}" style="width: 15%">
 								<f:facet name="header">
 									<h:outputText value="NIK" />
 								</f:facet>
-								<p:outputLabel value=" #{data.nik}" />
+								<p:outputLabel value=" #{empData.nik}" />
 							</p:column>
-							<p:column style="width: 5%">
+							<p:column sortBy="#{data.bioData.firstName}" style="width: 15%">
 								<f:facet name="header">
-									<h:outputText value=" " />
+									<h:outputText value="Name" />
 								</f:facet>
-								<p:selectBooleanButton
-									value="#{recruitVacancySelectionModel.selectedEmpData[data]}"
-									styleClass="label_button" onLabel="#{appmsg['global.yes']}"
-									offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check"
-									offIcon="ui-icon-close">
-								</p:selectBooleanButton>
+								<p:outputLabel value="#{empData.bioData.firstName} #{empData.bioData.lastName}" />
+							</p:column>
+							<p:column sortBy="#{data.bioData.firstName}" style="width: 15%">
+								<f:facet name="header">
+									<h:outputText value="Jabatan" />
+								</f:facet>
+								<p:outputLabel value=" #{empData.jabatanByJabatanId.name}" />
+							</p:column>
+							
+							<p:column sortBy="#{data.bioData.firstName}" style="width: 15%">
+								<f:facet name="header">
+									<h:outputText value="Department" />
+								</f:facet>
+								<p:outputLabel value=" #{empData.jabatanByJabatanId.department.departmentName}" />
 							</p:column>
 
 
@@ -334,7 +332,7 @@
 			</p:dialog>
 			<script type="text/javascript">
 				function handleUpdateRequest(args) {
-					if (args.listEmpExist) {
+					if (!args.listEmpExist) {
 						jQuery('#penyeleksiDialogId').effect("shake", {
 							times : 3
 						}, 75);

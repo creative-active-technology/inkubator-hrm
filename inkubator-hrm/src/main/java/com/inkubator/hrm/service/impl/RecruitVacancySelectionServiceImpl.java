@@ -5,12 +5,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.RecruitVacancySelectionDao;
-import com.inkubator.hrm.entity.RecruitVacancySelection;
-import com.inkubator.hrm.service.RecruitVacancySelectionService;
-import com.inkubator.hrm.web.search.RecruitVacancySelectionSearchParameter;
+import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +15,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.dao.RecruitSelectionTypeDao;
+import com.inkubator.hrm.dao.RecruitVacancySelectionDao;
+import com.inkubator.hrm.dao.RecruitVacancySelectionDetailDao;
+import com.inkubator.hrm.dao.RecruitVacancySelectionDetailPicDao;
+import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitSelectionType;
+import com.inkubator.hrm.entity.RecruitVacancySelection;
+import com.inkubator.hrm.entity.RecruitVacancySelectionDetail;
+import com.inkubator.hrm.entity.RecruitVacancySelectionDetailPic;
+import com.inkubator.hrm.entity.RecruitVacancySelectionDetailPicId;
+import com.inkubator.hrm.service.RecruitVacancySelectionService;
+import com.inkubator.hrm.web.model.RecruitVacancySelectionDetailModel;
+import com.inkubator.hrm.web.model.RecruitVacancySelectionModel;
+import com.inkubator.hrm.web.search.RecruitVacancySelectionSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -29,6 +46,16 @@ public class RecruitVacancySelectionServiceImpl extends IServiceImpl implements 
 
     @Autowired
     private RecruitVacancySelectionDao recruitVacancySelectionDao;
+    @Autowired
+    private RecruitHireApplyDao recruitHireApplyDao;
+    @Autowired
+    private RecruitmenSelectionSeriesDao recruitmenSelectionSeriesDao;
+    @Autowired
+    private RecruitSelectionTypeDao recruitSelectionTypeDao;
+    @Autowired
+    private RecruitVacancySelectionDetailDao recruitVacancySelectionDetailDao;
+    @Autowired
+    private RecruitVacancySelectionDetailPicDao recruitVacancySelectionDetailPicDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -205,5 +232,56 @@ public class RecruitVacancySelectionServiceImpl extends IServiceImpl implements 
     public List<RecruitVacancySelection> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveRecruitVacancySelectionSeries(RecruitVacancySelectionModel modelEntity) {
+		//save entity form RecruitVacancySelection
+		RecruitVacancySelection entity = new RecruitVacancySelection();
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		entity.setCode(modelEntity.getCode());
+		entity.setRecruitHireApply(recruitHireApplyDao.getEntiyByPK(modelEntity.getRecruitHireApplyId()));
+		entity.setRecruitmenSelectionSeries(recruitmenSelectionSeriesDao.getEntiyByPK(modelEntity.getRecruitSelectionSeriesId()));
+		entity.setRecruitVacancySelectionDate(modelEntity.getRecruitVacancySelectionDate());
+		entity.setExtraBudget(modelEntity.getExtraBudget());
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		this.recruitVacancySelectionDao.save(entity);
+		//save entity form RecruitVacancySelectionDetail
+		RecruitVacancySelectionDetail entityDetail;
+		RecruitVacancySelectionDetailPic recruitVacancySelectionDetailPic;
+		RecruitSelectionType recruitSelectionType;
+		for (RecruitVacancySelectionDetailModel data : modelEntity.getListVacancySelectionDetail()) {
+			recruitSelectionType = recruitSelectionTypeDao.getEntityByName(data.getRecruitSelectionTypeName());
+			entityDetail =  new RecruitVacancySelectionDetail();
+			entityDetail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			entityDetail.setRecruitVacancySelection(entity);
+			entityDetail.setRecruitSelectionType(recruitSelectionType);
+			entityDetail.setStartDate(data.getStartDate());
+			entityDetail.setEndDate(data.getEndDate());
+			entityDetail.setTime(data.getTime());
+			entityDetail.setPlace(data.getPlace());
+			entityDetail.setBasicCost(data.getBasicCost());
+			entityDetail.setIndividualCost(data.getIndividualCost());
+			this.recruitVacancySelectionDetailDao.save(entityDetail);
+			
+			//save entity form RecruitVacancySelectionDetail for List Employee
+			for(EmpData empData: data.getListEmpData()){
+				recruitVacancySelectionDetailPic = new RecruitVacancySelectionDetailPic();
+				recruitVacancySelectionDetailPic.setId(new RecruitVacancySelectionDetailPicId(entityDetail.getId(), empData.getId()));
+				recruitVacancySelectionDetailPic.setRecruitVacancySelectionDetail(entityDetail);
+				recruitVacancySelectionDetailPic.setEmpData(empData);
+				recruitVacancySelectionDetailPic.setCreatedBy(UserInfoUtil.getUserName());
+				recruitVacancySelectionDetailPic.setCreatedOn(new Date());
+				this.recruitVacancySelectionDetailPicDao.save(recruitVacancySelectionDetailPic);
+			}
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RecruitVacancySelection getEntityByPkWithDetail(Long id) throws Exception {
+		return recruitVacancySelectionDao.getEntityByPkWithDetail(id);
+	}
     
 }

@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.web.model.DataFingerRealizationModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.DataFingerRealizationSearchParameter;
 
 /**
@@ -37,7 +38,15 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
     public Long getTotalTimeDeviation(long empid);
 
     public List<TempProcessReadFinger> getAllDataByEmpDataId(Long id);
+    
+    public List<TempProcessReadFinger> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order);
+
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(long id);
 
 	public void deleteAllData();
+	
+	public Long getTotalByScheduleDate(Date date, Long companyId);
+	
+	public Long getTotalAttendanceByScheduleDate(Date date, Long companyId);
 
 }

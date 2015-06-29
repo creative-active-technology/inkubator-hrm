@@ -19,5 +19,7 @@ public interface RecruitSelectionTypeDao extends IDAO<RecruitSelectionType> {
     public List<RecruitSelectionType> getByParam(RecruitSelectionTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(RecruitSelectionTypeSearchParameter searchParameter);
+    
+    public RecruitSelectionType getEntityByName(String name);
 }
 

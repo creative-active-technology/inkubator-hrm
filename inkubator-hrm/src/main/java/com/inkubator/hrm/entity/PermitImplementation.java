@@ -2,6 +2,7 @@ package com.inkubator.hrm.entity;
 // Generated Nov 13, 2014 9:33:14 AM by Hibernate Tools 3.6.0
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -28,6 +30,7 @@ public class PermitImplementation implements java.io.Serializable {
     private Integer version;
     private EmpData empData;
     private PermitClassification permitClassification;
+    private String approvalActivityNumber;
     private String createdBy;
     private Date createdOn;
     private String description;
@@ -108,6 +111,15 @@ public class PermitImplementation implements java.io.Serializable {
     public void setPermitClassification(PermitClassification permitClassification) {
         this.permitClassification = permitClassification;
     }
+    
+    @Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
 
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
@@ -137,7 +149,7 @@ public class PermitImplementation implements java.io.Serializable {
         this.description = description;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "end_date", nullable = false, length = 19)
     public Date getEndDate() {
         return this.endDate;
@@ -166,7 +178,7 @@ public class PermitImplementation implements java.io.Serializable {
         this.numberFilling = numberFilling;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false, length = 19)
     public Date getStartDate() {
         return this.startDate;

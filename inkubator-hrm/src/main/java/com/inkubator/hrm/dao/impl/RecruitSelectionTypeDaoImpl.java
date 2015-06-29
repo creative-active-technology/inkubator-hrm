@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitSelectionTypeDao;
 import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.web.search.RecruitSelectionTypeSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -57,4 +59,11 @@ public class RecruitSelectionTypeDaoImpl extends IDAOImpl<RecruitSelectionType> 
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public RecruitSelectionType getEntityByName(String name) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("name", name));
+		return (RecruitSelectionType) criteria.uniqueResult();
+	}
 }

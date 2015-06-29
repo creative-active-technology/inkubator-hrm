@@ -7,10 +7,10 @@ package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
 import ch.lambdaj.group.Group;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import com.google.gson.JsonParser;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -29,6 +29,7 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewCancelation;
@@ -46,6 +47,7 @@ import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -55,9 +57,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
@@ -416,6 +420,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
         Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
@@ -440,8 +445,25 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void diverted(long approvalActivityId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            String pendingData = appActivity.getPendingData();
+            LoanNewApplication loan = gson.fromJson(pendingData, LoanNewApplication.class);
+            loan.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+
+            this.save(loan, Boolean.TRUE, null);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingEmailApprovalNotif(appActivity);
     }
 
     @Override

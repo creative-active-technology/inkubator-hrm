@@ -66,28 +66,83 @@
                                 <p:outputLabel value="Total Jam Kerja" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
-                                <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginHour} Jam " />
-                                <p:outputLabel id="totalMarginTimeMinutes" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginMinutes} Menit" />
+<!--                                 <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginHour} Jam " />
+                                <p:outputLabel id="totalMarginTimeMinutes" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginMinutes} Menit" /> -->
+                                <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalPlusMinus}" >
+                                	<f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </p:outputLabel>
 							</p:column>
                         </p:row> 
                         
                     </p:panelGrid>
                     
+					<p:dataTable  var="timeRealization"  value="#{workingTimeDeviationDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.workingDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Kelompok Kerja"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.workingGroupName}"/>
+                            </p:column>
 
+							<p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Jam Masuk"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.fingerIn}"/>
+                            </p:column>
+                            
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Jam Keluar"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.fingerOut}"/>
+                            </p:column>
+                            
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="Selisih Waktu"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.deviationTime}">
+                                	<f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{workingTimeDeviationController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{timeRealization}" target="#{workingTimeDeviationController.selectedWorkingTimeDeviation}" />
+                                </p:commandButton>
 
-
-
-                        <!-- <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
-                            <h:panelGrid columns="2" styleClass="grid_no_border">
-                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
-                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
-                            </h:panelGrid>
-                        </p:blockUI> -->
-
-
+                            </p:column>          
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{workingTimeDeviationDetailController.lazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
                 </div>
 
-
+				
             </ui:define>
 
         </ui:composition>

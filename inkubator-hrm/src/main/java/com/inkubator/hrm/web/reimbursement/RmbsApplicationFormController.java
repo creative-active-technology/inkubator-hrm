@@ -300,6 +300,7 @@ public class RmbsApplicationFormController extends BaseController {
         model.setRmbsTypeId(null);
         model.setNominal(null);
         model.setCurrencyId(null);
+        rmbsSchemaListOfType.setLimitPerClaim(null);
         
     }
 

@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +13,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -26,6 +27,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.CommonUtilConstant;
@@ -73,8 +77,15 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
+
+import java.util.ArrayList;
+
+import org.hibernate.criterion.Order;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
+
 
 /**
  *
@@ -1214,27 +1225,28 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
         EmpData empData = this.empDataDao.getByIdWithBioData(id);
 
-        long totalHour = 0;
-        long workingTime = 0;
-        long workingHour = 0;
+        long scheduleIn = 0;
+        long scheduleOut = 0;
         int marginIn = 0;
         int marginOut = 0;
-        int marginMinutes = 0;
-        int marginHour = 0;
+
+        long totalHour = 0;
+        long marginMinutes = 0;
+        long marginHour = 0;
         long totalWorkingTime = 0;
-        int restMinutesFromMargin = 0;
         List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataByEmpDataId(id);
         for (TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger) {
             //get hour from schedule in and schedule out
-            workingTime = Math.abs(tempProcessReadFinger.getScheduleIn().getTime() - tempProcessReadFinger.getScheduleOut().getTime());
-            workingHour = workingTime / (60 * 60 * 1000);
-            //get hour from margin in and margin out
+            scheduleIn = tempProcessReadFinger.getScheduleIn().getTime();
+            scheduleOut = tempProcessReadFinger.getScheduleOut().getTime();
+
+            //get margin in and margin out
             marginIn = tempProcessReadFinger.getMarginIn();
             marginOut = tempProcessReadFinger.getMarginOut();
 
             //get total from marginHour and totalHour
-            marginMinutes += marginIn + marginOut;
-            totalHour += workingHour;
+            marginMinutes += getTotalMargin(marginIn, marginOut);
+            totalHour += getTotalHour(scheduleIn, scheduleOut);
         }
 
         marginHour = marginMinutes / 60;
@@ -1244,17 +1256,62 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         workingTimeDeviationDetailModel.setToPeriod(wtPeriode.getUntilPeriode());
         workingTimeDeviationDetailModel.setNikAndFullName(empData.getNik() + " " + empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
         workingTimeDeviationDetailModel.setTotalWorkingTime(totalWorkingTime);
-        restMinutesFromMargin = marginMinutes - (marginHour * 60);
-        workingTimeDeviationDetailModel.setTotalMarginHour(marginHour);
-        workingTimeDeviationDetailModel.setTotalMarginMinutes(restMinutesFromMargin);
+        workingTimeDeviationDetailModel.setTotalPlusMinus(marginMinutes);
         return workingTimeDeviationDetailModel;
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
-		
-		return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception {
+        List<WorkingTimeDeviationListDetailModel> listModelToShow = new ArrayList<WorkingTimeDeviationListDetailModel>();
+        WorkingTimeDeviationListDetailModel model;
+        List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataOvertimeAndReadFingerByEmpDataId(id, firstResult, maxResults, order);
+        int marginIn = 0;
+        int marginOut = 0;
+        long totalMargin = 0;
+        for (TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger) {
+            //hitung kalkulasi waktu
+            marginIn = tempProcessReadFinger.getMarginIn();
+            marginOut = tempProcessReadFinger.getMarginOut();
+            totalMargin = getTotalMargin(marginIn, marginOut);
+            model = new WorkingTimeDeviationListDetailModel();
+            model.setDeviationTime(totalMargin);
+            model.setFingerIn(tempProcessReadFinger.getFingerIn());
+            model.setFingerOut(tempProcessReadFinger.getFingerOut());
+            model.setWorkingGroupName(tempProcessReadFinger.getEmpData().getWtGroupWorking().getName());
+            model.setWorkingDate(tempProcessReadFinger.getScheduleDate());
+
+            listModelToShow.add(model);
+        }
+        return listModelToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception {
+        return tempProcessReadFingerDao.getTotalOvertimeAndReadFingerByEmpDataId(id);
+    }
+
+    /**
+     *
+     * Mencari jumlah waktu margin
+     *
+     */
+    private Integer getTotalMargin(int marginIn, int marginOut) {
+        return marginIn + marginOut;
+    }
+
+    private Long getTotalHour(long startHour, long endHour) {
+        long diffTime = Math.abs(startHour - endHour);
+        long hour = diffTime / (60 * 60 * 1000);
+        return hour;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
+
+        return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
+    }
 
 }

@@ -6,11 +6,14 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -37,6 +40,7 @@ public class LoanCanceled  implements java.io.Serializable {
      private EmpData empData;
      private LoanSchema loanSchema;
      private String approvalActivityNumber;
+     private Integer applicationStatus;
      private String createdBy;
      private Date createdOn;
      private double interestRate;
@@ -241,7 +245,14 @@ public class LoanCanceled  implements java.io.Serializable {
         this.cancelationDate = cancelationDate;
     }
 
+    @Column(name = "application_status", nullable = false)
+    public Integer getApplicationStatus() {
+        return applicationStatus;
+    }
 
+    public void setApplicationStatus(Integer applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 
 
 }

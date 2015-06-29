@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Detail Bank" styleClass="header_big" />
+                                <p:outputLabel value="Data Bank dari Referensi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Code" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.code}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Tanggal" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.recruitVacancySelectionDate}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Rekrutment" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.recruitHireApply.reqHireCode}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Jabatan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.recruitHireApply.jabatan.name}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Jenis Karyawan" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.recruitHireApply.employeeType.name}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Extra Fee" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.extraBudget}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="Selection Series" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:outputLabel  value="#{recruitVacancySelectionDetailController.recruitVacancySelection.recruitmenSelectionSeries.name}" >
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        
+                        <p:dataTable  var="data"  value="#{recruitVacancySelectionDetailController.listVacancySelectionDetail}" lazy="false" 
+                                      id="tableId" rows="11" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['recruitSelectionView.list_recruit_selection']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{data.recruitSelectionType.name}po"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.recruitSelectionType.name}" />
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Tanggal Mulai"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.startDate}" >
+                                	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Tanggal Selesai"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.endDate}" >
+                                	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Waktu"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.time}" >
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Tempat"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.place}" >
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Basic Cost"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.basicCost}" >
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <p:column sortBy="#{data.code}" style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Individual Cost"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.individualCost}" >
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <p:column sortBy="#{data.code}" style="width: 53%">
+                                <f:facet name="header">
+                                    <h:outputText value="Individual Cost"/>
+                                </f:facet>
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{recruitVacancySelectionDetailController.doSelectDetailEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{recruitVacancySelectionDetailController.selectedRecruitVacancySelectionDetail}" />
+                                </p:commandButton>
+                            </p:column>
+                              
+                        </p:dataTable>
+
+                        <p:separator/>
+                        <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bankDetailController.doUpdates()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{bankDetailController.doBack()}" styleClass="label_button"/>
+                        </h:panelGrid>
+                        
+                        <div style="clear: both"/>
+                    </h:form>
+                    <p:dialog widgetVar="detail" header="#{appmsg['savingType.savingType_detail']}" width="650" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:dataTable  var="data"  value="#{recruitVacancySelectionDetailController.listRecruitVacancySelectionDetailPic}" lazy="false" 
+                                      id="tableId" rows="11" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="NIK"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.empData.nik}" />
+                            </p:column>
+                            <p:column style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Nama Karyawan"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.empData.bioData.firstName} #{data.empData.bioData.lastName}" />
+                            </p:column>
+                            <p:column style="width: 23%">
+                                <f:facet name="header">
+                                    <h:outputText value="Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.empData.jabatanByJabatanId.name}" />
+                            </p:column>
+                              
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:dialog>
+                </div>
+				
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

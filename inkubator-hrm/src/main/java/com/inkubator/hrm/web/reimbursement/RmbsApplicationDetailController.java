@@ -13,11 +13,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
@@ -37,6 +39,7 @@ public class RmbsApplicationDetailController extends BaseController {
     private RmbsSchemaListOfType rmbsSchemaListOfType;
     private BigDecimal totalRequestThisMoth;
     private Boolean isHaveAttachment;
+    private ApprovalActivity lastApprovalActivity;
     
     @ManagedProperty(value = "#{rmbsApplicationService}")
     private RmbsApplicationService rmbsApplicationService;
@@ -44,6 +47,8 @@ public class RmbsApplicationDetailController extends BaseController {
     private RmbsSchemaListOfEmpService rmbsSchemaListOfEmpService;
     @ManagedProperty(value = "#{rmbsSchemaListOfTypeService}")
     private RmbsSchemaListOfTypeService rmbsSchemaListOfTypeService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
 
     @PostConstruct
     @Override
@@ -52,6 +57,7 @@ public class RmbsApplicationDetailController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution").substring(1);
             rmbsApplication = rmbsApplicationService.getEntityByPkWithDetail(Long.parseLong(id));
+            lastApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(rmbsApplication.getApprovalActivityNumber());            
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(rmbsApplication.getEmpData().getId());
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsApplication.getRmbsType().getId(), rmbsSchema.getId()));
@@ -145,5 +151,20 @@ public class RmbsApplicationDetailController extends BaseController {
 	public void setIsHaveAttachment(Boolean isHaveAttachment) {
 		this.isHaveAttachment = isHaveAttachment;
 	}
+
+	public ApprovalActivity getLastApprovalActivity() {
+		return lastApprovalActivity;
+	}
+
+	public void setLastApprovalActivity(ApprovalActivity lastApprovalActivity) {
+		this.lastApprovalActivity = lastApprovalActivity;
+	}
+
+	public void setApprovalActivityService(
+			ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
+	
+	
 	
 }

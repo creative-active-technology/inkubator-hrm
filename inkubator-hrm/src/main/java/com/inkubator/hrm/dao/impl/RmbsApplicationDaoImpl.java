@@ -20,6 +20,7 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.entity.RmbsApplication;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
@@ -81,12 +82,16 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
     			"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
     			"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
+    			"INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
     			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     			"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
     			"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
     			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
     			"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
-    			"AND approvalDefinition.name = :appDefinitionName ");    	
+    			"AND approvalDefinition.name = :appDefinitionName "
+    			+ " AND  company.id = :companyId ");    	
     	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
     	selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY " + orderable);
@@ -107,12 +112,16 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
     	    	"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
     	    	"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
+    	    	"INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
     	    	"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     	    	"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
     	    	"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
     	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
     	    	"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
-    	    	"AND approvalDefinition.name = :appDefinitionName ");    	
+    	    	"AND approvalDefinition.name = :appDefinitionName"
+    	    	+ " AND  company.id = :companyId ");    	
     	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
     	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
@@ -157,6 +166,8 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			hbm.setParameter("userId", parameter.getUserId());
     		} else if(StringUtils.equals(param, "appDefinitionName")){
     			hbm.setParameter("appDefinitionName", HRMConstant.REIMBURSEMENT);
+    		}else if(StringUtils.equals(param, "companyId")){
+    			hbm.setParameter("companyId", HrmUserInfoUtil.getCompanyId());
     		}
     	}    	
     	return hbm;

@@ -5,18 +5,11 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.RecruitVacancySelection;
-import com.inkubator.hrm.service.RecruitVacancySelectionService;
-import com.inkubator.hrm.web.search.RecruitSelectionTypeSearchParameter;
-import com.inkubator.hrm.web.search.RecruitVacancySelectionSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -24,11 +17,21 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.RecruitVacancySelection;
+import com.inkubator.hrm.service.RecruitVacancySelectionService;
+import com.inkubator.hrm.web.lazymodel.RecruitVacancySelectionLazyDataModel;
+import com.inkubator.hrm.web.search.RecruitVacancySelectionSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -85,7 +88,7 @@ public class RecruitVacancySelectionViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/recruitment/recruit_selection_detail.htm?faces-redirect=true&execution=" + selected.getId();
+        return "/protected/recruitment/recruit_vacancy_selection_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 
     public void doDelete() {
@@ -149,6 +152,10 @@ public class RecruitVacancySelectionViewController extends BaseController {
     }
 
     public LazyDataModel<RecruitVacancySelection> getLazyDataModel() {
+    	if(lazyDataModel == null){
+    		lazyDataModel = new RecruitVacancySelectionLazyDataModel(searchParameter, service);
+    		
+    	}
         return lazyDataModel;
     }
 

@@ -10,37 +10,34 @@
     </on-start>
     
     <view-state id="start" view="recruit_vacancy_selection_form.xhtml">
-        <transition on="next" to="result" >
-        </transition>
+        <transition on="next" to="nextToDetail" />
     </view-state>
+    
+    <action-state id="nextToDetail">
+        <evaluate expression="recruitVacancySelectionFormController.getRecruitVacancySelectionDetail(flowRequestContext)"/> 
+        <transition on="yes" to="result"/>
+        <transition on="no" to="start"/>
+    </action-state>
     
     <view-state id="result" view="recruit_vacancy_selection_form_detail.xhtml">
-        <on-render>
-            <evaluate expression="recruitVacancySelectionFormController.getRecruitVacancySelectionDetail(flowRequestContext)" /> 
-        </on-render>
     	<transition on="save" to="save_recruitment_detail"/>
-        <transition on="saveListEmployee" to="save_list_employee" />
-        <transition on="doGetListEmployee" to="get_list_employee" />
-        
+        <transition on="saveListEmployee">
+        	<evaluate expression="recruitVacancySelectionFormController.saveListEmployee(flowRequestContext)"/>
+        </transition>
+        <transition on="doGetListEmployee">
+        	<evaluate expression="recruitVacancySelectionFormController.doGetListEmployee(flowRequestContext)"/>
+        </transition>
+        <transition on="back" to="start" />
     </view-state>
-    
-    <view-state id="back_to_detail_with_value" view="recruit_vacancy_selection_form_detail.xhtml">
-    	<transition on="save" to="save_recruitment_detail"/>
-        <transition on="saveListEmployee" to="save_list_employee" />
-    </view-state>
-
     
     <action-state id="save_recruitment_detail">
         <evaluate expression="recruitVacancySelectionFormController.saveRecruitmentDetail(flowRequestContext)"/>
+    	<transition to="end" />
     </action-state >
-    
-    <action-state id="save_list_employee">
-        <evaluate expression="recruitVacancySelectionFormController.saveListEmployee(flowRequestContext)"/>
-        <transition to="back_to_detail_with_value" />
-    </action-state>
     
     <action-state id="get_list_employee">
 	    <evaluate expression="recruitVacancySelectionFormController.doGetListEmployee(flowRequestContext)"/>
-    	<transition to="result"/>
     </action-state>
+    
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/recruitment/recruit_vacancy_selection_view.htm" />
 </flow>

@@ -158,6 +158,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getEmployeeBySearchEmployeeFingerException(WtFingerExceptionModel model);
 
     public List<EmpData> getAllDataNotTerminate();
+    
+    public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName);
 
     public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
 
@@ -179,5 +181,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName); 
 	
 	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill);
+	
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(String rangeDepId, Date dateFrom, Date dateUntill);
+	
+	public String getIdChildDepRecursiveByDepartmentId(Long idDepartment);
 	
 }
