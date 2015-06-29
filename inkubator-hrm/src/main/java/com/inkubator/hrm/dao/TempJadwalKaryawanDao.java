@@ -5,10 +5,11 @@
  */
 package com.inkubator.hrm.dao;
 
-import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import java.util.Date;
 import java.util.List;
+
+import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
 
 /**
  *
@@ -43,5 +44,7 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
 	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
 	
 	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(Long empDataid, Date startDate, Date endDate);
+
+	public Long getTotalByTanggalWaktuKerja(Date date, Long companyId);
 
 }
