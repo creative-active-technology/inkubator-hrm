@@ -29,13 +29,16 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
+import com.inkubator.hrm.entity.WtHitungLembur;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.WtHitungLemburService;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.web.model.OverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.TreeMap;
 
 /**
  *
@@ -53,6 +56,11 @@ public class OverTimeFormController extends BaseController {
     private List<ApprovalDefinition> appDefs;
     private int indexOfAppDefs;
     private ApprovalDefinition selectedAppDef;
+    @ManagedProperty(value = "#{wtHitungLemburService}")
+    private WtHitungLemburService wtHitungLemburService;
+    
+    private List<WtHitungLembur> wtHitungLembur = new ArrayList<WtHitungLembur>();
+    private Map<String, Long> dropDownWtHitungLembur = new TreeMap<String, Long>();
 
     public WtOverTime getSelectedWtOverTime() {
         return selectedWtOverTime;
@@ -97,6 +105,7 @@ public class OverTimeFormController extends BaseController {
             } else {
                 isEdit = Boolean.FALSE;
             }
+            doSelectOneMenuWtHitungLembur();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -268,5 +277,29 @@ public class OverTimeFormController extends BaseController {
         appDefs.remove(indexOfAppDefs);
 		appDefs.add(indexOfAppDefs, dataUpdated);
     }    
-    /** End Approval Definition form */
+     /** End Approval Definition form */
+
+    public WtHitungLemburService getWtHitungLemburService() {
+        return wtHitungLemburService;
+    }
+
+    public void setWtHitungLemburService(WtHitungLemburService wtHitungLemburService) {
+        this.wtHitungLemburService = wtHitungLemburService;
+    }
+
+    public Map<String, Long> getDropDownWtHitungLembur() {
+        return dropDownWtHitungLembur;
+    }
+
+    public void setDropDownWtHitungLembur(Map<String, Long> dropDownWtHitungLembur) {
+        this.dropDownWtHitungLembur = dropDownWtHitungLembur;
+    }
+   
+    public void doSelectOneMenuWtHitungLembur() throws Exception{
+        wtHitungLembur = wtHitungLemburService.getAllData();
+        for(WtHitungLembur wtHitungLemburs : wtHitungLembur){
+            dropDownWtHitungLembur.put(wtHitungLemburs.getMetodeHitung(), wtHitungLemburs.getId());
+        }
+    }
+    
 }

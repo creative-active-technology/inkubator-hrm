@@ -318,6 +318,12 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         return wtOverTimeDao.getEntityByPkFetchApprovalDefinition(id);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public WtOverTime getCountMethodByOvertimeId(Long id) throws Exception {
+        return this.wtOverTimeDao.getCountMethodByOvertimeId(id);
+    }
+
     
     
 }

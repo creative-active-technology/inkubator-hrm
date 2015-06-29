@@ -96,26 +96,26 @@
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
                             <p:tab id="tabTipePinjamanId" title="#{appmsg['loanschema.loan_type']}">  
                                 <p:dataTable value="#{loanNewSchemaDetailController.listOfLoanNewType}" var="data" rowIndexVar="no" id="loanNewSchemaTypeTableId" lazy="false" paginator="false">
-                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
                                         </f:facet>
                                         <h:outputLabel value=" #{data.loanNewType.loanTypeName}" />
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.available_days']}"/>
                                         </f:facet>
                                         <p:outputLabel value=" #{data.maksimumHariTersedia}" >
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_approve']}"/>
                                         </f:facet>
@@ -123,7 +123,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_allocation']}"/>
                                         </f:facet>
@@ -131,7 +131,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_approve']}"/>
                                         </f:facet>
@@ -139,7 +139,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_allocation']}"/>
                                         </f:facet>
@@ -147,7 +147,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.min_monthly_installment']}"/>
                                         </f:facet>
@@ -155,7 +155,7 @@
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['loanschema.max_period']}"/>
                                         </f:facet>
@@ -163,7 +163,7 @@
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.active']}"/>
                                         </f:facet>
@@ -171,7 +171,7 @@
                                             <f:converter converterId="activeStatusMessageConverter"/>
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmId"
                                                          action="#{loanNewSchemaDetailController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
@@ -192,53 +192,53 @@
                                         </p:row>
                                     </p:columnGroup>
                                     
-                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         
-                                        <h:outputLabel value="Total Aktif" />
+                                        <h:outputLabel value="Total" />
                                     </p:column>
                                     
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <h:outputLabel value=" - " />
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <p:outputLabel value=" #{data.maksimumHariTersedia}" >
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 8%;max-width: 8%">
                                         <p:outputLabel value=" #{data.totalPinjaman}" >
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 8%;max-width: 8%">
                                         <p:outputLabel value=" #{data.totalAllocation}" >
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <p:outputLabel value=" #{data.minimumApproval}" >
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <p:outputLabel value=" #{data.minimumAllocation}" >
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column> 
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px"> 
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%"> 
                                         <p:outputLabel value=" #{data.totalInstallment}" >
                                             <f:converter converterId="moneyConverter" />
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 8%;max-width: 8%">
                                         <p:outputLabel value="#{data.maxPeriode}" >
                                             <!--<f:convertNumber pattern="###,###" type="currency"/>-->
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column style="text-align: center;width: 50px;max-width: 50px">
+                                    <p:column style="text-align: center;width: 9%;max-width: 9%">
                                         <p:outputLabel value="Aktif" >
                                         </p:outputLabel>
                                     </p:column>
-                                    <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
 <!--                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogConfirmId"
                                                          action="#{loanNewSchemaDetailController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="dialogConfirmDelete.show()">

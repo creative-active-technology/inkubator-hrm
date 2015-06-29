@@ -25,6 +25,7 @@ public class OverTimeModel implements Serializable {
     private Date startTimeFactor;
     private Date finishTimeFactor;
     private Double valuePrice;
+    private Long wtHitungLemburID;
 
     public Long getId() {
         return id;
@@ -112,6 +113,14 @@ public class OverTimeModel implements Serializable {
 
     public void setValuePrice(Double valuePrice) {
         this.valuePrice = valuePrice;
+    }
+
+    public Long getWtHitungLemburID() {
+        return wtHitungLemburID;
+    }
+
+    public void setWtHitungLemburID(Long wtHitungLemburID) {
+        this.wtHitungLemburID = wtHitungLemburID;
     }
     
     
