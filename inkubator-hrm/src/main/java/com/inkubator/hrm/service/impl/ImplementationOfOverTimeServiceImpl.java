@@ -388,7 +388,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             jsonObj.put("endTime", timeFormat.format(implementationOfOverTime.getEndTime()));
             jsonObj.put("overTimeDate", dateFormat.format(implementationOfOverTime.getImplementationDate()));
             jsonObj.put("implementationNumber", implementationOfOverTime.getCode());
-            jsonObj.put("empName", implementationOfOverTime.getEmpData().getBioData().getFirstName() + " " + implementationOfOverTime.getEmpData().getBioData().getLastName());
+            jsonObj.put("empName", implementationOfOverTime.getEmpData().getBioData().getFullName());
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }

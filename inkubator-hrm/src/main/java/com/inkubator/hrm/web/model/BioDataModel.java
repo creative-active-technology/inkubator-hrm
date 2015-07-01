@@ -21,9 +21,11 @@ public class BioDataModel implements Serializable {
     private long doialekId;
     private long religionId;
     private long cityid;
+    private String birthplaceText;
     private long raceId;
     private long maritalStatusId;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String title;
     private String nickname;
@@ -86,7 +88,15 @@ public class BioDataModel implements Serializable {
         this.cityid = cityid;
     }
 
-    public long getRaceId() {
+    public String getBirthplaceText() {
+		return birthplaceText;
+	}
+
+	public void setBirthplaceText(String birthplaceText) {
+		this.birthplaceText = birthplaceText;
+	}
+
+	public long getRaceId() {
         return raceId;
     }
 
@@ -109,9 +119,18 @@ public class BioDataModel implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
+    }    
+    
+    @Pattern(regexp = "^[A-Za-z]+", message = "{errorr_middle_name}")
+    public String getMiddleName() {
+		return middleName;
+	}
 
-    @Pattern(regexp = "^([A-Za-z]|)+", message = "{errorr_last_name}")
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	@Pattern(regexp = "^([A-Za-z]|)+", message = "{errorr_last_name}")
     public String getLastName() {
         return lastName;
     }
