@@ -163,7 +163,7 @@
                             <p:outputLabel value="#{leaveDistributionViewController.selected.empData.nikWithFullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{leaveDistributionViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{leaveDistributionViewController.doDelete()}" update=":formId:tableId, :formId:growlId"
                                          oncomplete="dialogConfirmDelete.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmDelete.hide()" icon="ui-icon-close" />                     	
                     </div>

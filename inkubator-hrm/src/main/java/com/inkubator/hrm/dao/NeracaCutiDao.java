@@ -27,4 +27,6 @@ public interface NeracaCutiDao extends IDAO<NeracaCuti>{
     public NeracaCuti getEntityByPkWithDetail(Long id);
 
     public void saveBacth(List<NeracaCuti> data);
+    
+    public void deleteNeracaCutiByLeaveDistributionId(Long leaveDistributionId);
 }
