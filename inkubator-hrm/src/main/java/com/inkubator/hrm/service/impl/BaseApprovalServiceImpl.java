@@ -141,7 +141,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		return appActivity;
 	}
 	
-	private String getApproverByAppDefinition(ApprovalDefinition appDef, String requestByEmployee){
+	private String getApproverByAppDefinition(ApprovalDefinition appDef, String requestByEmployee) throws Exception{
 		String userId = StringUtils.EMPTY;
 		
 		if(StringUtils.equals(appDef.getApproverType(), HRMConstant.APPROVAL_TYPE_INDIVIDUAL)){  
@@ -167,14 +167,20 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		return userId;
 	}
 	
-	private String getApproverByJabatanId(long jabatanId){
+	private String getApproverByJabatanId(long jabatanId) throws Exception{
 		String userId = StringUtils.EMPTY;
 		
 		/** jika dalam satu jabatan yg sama terdapat beberapa employee, maka pilih employee berdasarkan joinDate/TMB yg terlama 
 		 *  itulah kenapa di order desc "joinDate" */
 		List<EmpData> employees = empDataDao.getAllDataByJabatanId(jabatanId, Order.desc("joinDate"));		
 		if(!employees.isEmpty()) { //if not empty
-			EmpData empData = employees.get(0);				
+			EmpData empData = employees.get(0);	
+			
+			//if empty throw BussinessException : approver still not have account
+			if (empData.getHrmUsers().isEmpty()) {
+				throw new BussinessException("loan.approver_still_not_have_account");
+			}
+			
 			if(!empData.getHrmUsers().isEmpty()){ //if not empty
 				HrmUser approver = empData.getHrmUsers().iterator().next();
 				userId = approver.getUserId();					
@@ -508,7 +514,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @param appActivity  Approval Activity id
      * @return comment String
      */
-    protected List<String> getCcEmailAddressesOnApproveOrReject(ApprovalActivity appActivity){
+    protected List<String> getCcEmailAddressesOnApproveOrReject(ApprovalActivity appActivity) throws Exception{
     	//initialization
     	List<String> emailAdresses = new ArrayList<String>();
     	List<ApprovalDefinition> appDefinitions = new ArrayList<ApprovalDefinition>();
