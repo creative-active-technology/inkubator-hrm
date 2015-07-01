@@ -21,11 +21,13 @@ import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -159,8 +161,11 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(LeaveDistribution entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	neracaCutiDao.deleteNeracaCutiByLeaveDistributionId(entity.getId());
+        leaveDistributionDao.delete(entity);      
+        
     }
 
     @Override
