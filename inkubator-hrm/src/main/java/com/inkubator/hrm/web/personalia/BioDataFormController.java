@@ -90,6 +90,7 @@ public class BioDataFormController extends BaseController {
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
                 bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
                 bioDataModel.setFirstName(selectedBioData.getFirstName());
+                bioDataModel.setMiddleName(selectedBioData.getMiddleName());
                 bioDataModel.setGender(selectedBioData.getGender());
                 bioDataModel.setId(selectedBioData.getId());
                 bioDataModel.setJamsostek(selectedBioData.getJamsostek());
@@ -388,6 +389,7 @@ public class BioDataFormController extends BaseController {
         bioData.setDateOfBirth(bioDataModel.getDateOfBirth());
         bioData.setDialect(new Dialect(bioDataModel.getDoialekId()));
         bioData.setFirstName(bioDataModel.getFirstName());
+        bioData.setMiddleName(bioDataModel.getMiddleName());
         bioData.setGender(bioDataModel.getGender());
         bioData.setJamsostek(bioDataModel.getJamsostek());
         bioData.setLastName(bioDataModel.getLastName());
