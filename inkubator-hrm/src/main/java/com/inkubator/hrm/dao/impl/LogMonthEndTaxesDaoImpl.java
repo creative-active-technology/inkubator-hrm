@@ -35,7 +35,8 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
 
     @Override
     public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        final StringBuilder query = new StringBuilder("select id as id, empDataId as empDataId, empName as empName,"
+        System.out.println("LOG MONTH END TAXEX DAO");
+    	final StringBuilder query = new StringBuilder("select id as id, empDataId as empDataId, empName as empName,"
                 + "empNik as empNik,"
                 + "empGolJabatan as empGolJabatan,"
                 + "empNik as empNik,"
@@ -49,4 +50,13 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
                     .list();
     }
 
+    @Override
+    public Long getTotalDataByParam(LogMonthEndTaxesSearchParameter searchParameter) {
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(LMTE.id)");
+        query.append(" FROM hrm.log_month_end_taxes LMTE");
+        query.append(" GROUP BY LMTE.id) as totalData");
+
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
+    }
 }
