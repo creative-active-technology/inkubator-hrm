@@ -109,7 +109,7 @@
                                     <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm" for="rasId"/>
                                 </p:column>
                                 <p:column style="width: 34%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="rasId" filter="true" required="true" value="#{bioDataFormController.bioDataModel.raceId}"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="rasId" filter="true" required="false" value="#{bioDataFormController.bioDataModel.raceId}"
                                                       label="#{appmsg['ras.ras']}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapRas}"  />
@@ -161,7 +161,7 @@
                                     <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm" for="wargaNegaraId"/>
                                 </p:column>
                                 <p:column style="width: 34%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="wargaNegaraId" filter="true" label="#{appmsg['biodata.citizen']}" required="true" value="#{bioDataFormController.bioDataModel.nationalitiId}" >
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="wargaNegaraId" filter="true" label="#{appmsg['biodata.citizen']}" required="false" value="#{bioDataFormController.bioDataModel.nationalitiId}" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.mapNationality}"  />
                                     </p:selectOneMenu>

@@ -17,4 +17,5 @@ public interface LogMonthEndTaxesDao extends IDAO<LogMonthEndTaxes> {
         
         public List<PphReportModel> getAllDataByParam(LogMonthEndTaxesSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 	
+        public Long getTotalDataByParam(LogMonthEndTaxesSearchParameter searchParameter);
 }
