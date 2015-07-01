@@ -51,6 +51,7 @@ public class HomeController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        System.out.println("asdfasfasdfasfasfadf");
         /**
          * saving process of User Access History
          */
@@ -151,5 +152,7 @@ public class HomeController extends BaseController {
     public HrmUserService getHrmUserService() {
         return hrmUserService;
     }
+    
+    
 
 }

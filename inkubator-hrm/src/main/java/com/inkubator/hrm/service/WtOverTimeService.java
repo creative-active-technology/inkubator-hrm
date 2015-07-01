@@ -29,5 +29,4 @@ public interface WtOverTimeService extends IService<WtOverTime> {
     
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
     
-    public WtOverTime getCountMethodByOvertimeId(Long id) throws Exception;
 }

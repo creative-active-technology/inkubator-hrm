@@ -59,7 +59,7 @@ public class OverTimeFormController extends BaseController {
     @ManagedProperty(value = "#{wtHitungLemburService}")
     private WtHitungLemburService wtHitungLemburService;
     
-    private List<WtHitungLembur> wtHitungLembur = new ArrayList<WtHitungLembur>();
+    private List<WtHitungLembur> listWtHitungLembur = new ArrayList<WtHitungLembur>();
     private Map<String, Long> dropDownWtHitungLembur = new TreeMap<String, Long>();
 
     public WtOverTime getSelectedWtOverTime() {
@@ -296,9 +296,9 @@ public class OverTimeFormController extends BaseController {
     }
    
     public void doSelectOneMenuWtHitungLembur() throws Exception{
-        wtHitungLembur = wtHitungLemburService.getAllData();
-        for(WtHitungLembur wtHitungLemburs : wtHitungLembur){
-            dropDownWtHitungLembur.put(wtHitungLemburs.getMetodeHitung(), wtHitungLemburs.getId());
+        listWtHitungLembur = wtHitungLemburService.getAllData();
+        for(WtHitungLembur list : listWtHitungLembur){
+            dropDownWtHitungLembur.put(list.getMetodeHitung(), list.getId());
         }
     }
     

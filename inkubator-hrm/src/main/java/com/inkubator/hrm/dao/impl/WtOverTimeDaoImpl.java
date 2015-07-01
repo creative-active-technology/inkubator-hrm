@@ -98,12 +98,4 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
         criteria.add(Restrictions.eq("id", id));
         return (WtOverTime) criteria.uniqueResult();
     }
-
-    @Override
-    public WtOverTime getCountMethodByOvertimeId(Long id) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("wtHitungLembut", FetchMode.JOIN);
-        return (WtOverTime) criteria.uniqueResult();
-    }
 }
