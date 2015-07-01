@@ -34,6 +34,7 @@ public class BioData implements java.io.Serializable {
     private Dialect dialect;
     private Religion religion;
     private City city;
+    private String birthplaceText;
     private Race race;
     private MaritalStatus maritalStatus;
     private String firstName;
@@ -174,9 +175,18 @@ public class BioData implements java.io.Serializable {
 
     public void setCity(City city) {
         this.city = city;
-    }
+    }    
+    
+    @Column(name = "birthplace_text", length = 100)
+    public String getBirthplaceText() {
+		return birthplaceText;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
+	public void setBirthplaceText(String birthplaceText) {
+		this.birthplaceText = birthplaceText;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ras")
     public Race getRace() {
         return this.race;

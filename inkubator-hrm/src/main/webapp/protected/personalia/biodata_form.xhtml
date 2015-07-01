@@ -74,11 +74,13 @@
                                     <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm" for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 34%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="placeOfBirthId" filter="true" required="false" label="#{appmsg['global.tempat_lahir']}"
+                                	<p:inputText  value="#{bioDataFormController.bioDataModel.birthplaceText}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['global.tempat_lahir']}"
+                                                  required="false" id="placeOfBirthId" maxlength="100"/>
+                                    <!-- <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="placeOfBirthId" filter="true" required="false" label="#{appmsg['global.tempat_lahir']}"
                                                       value="#{bioDataFormController.bioDataModel.cityid}"   >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{bioDataFormController.tempatlahir}"  />
-                                    </p:selectOneMenu>
+                                    </p:selectOneMenu> -->
                                     <p:message for="placeOfBirthId"/>
                                 </p:column>
                                 <p:column style="width: 16%;background-color: #e1f0f0 !important" >
@@ -99,7 +101,7 @@
                                 </p:column>
                                 <p:column style="width: 34%" >
                                     <p:calendar  id="tanggalLahirid" pattern="dd MMMM yyyy" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" value="#{bioDataFormController.bioDataModel.dateOfBirth}"
-                                                 required="true" navigator="true">
+                                                 required="true" navigator="true" yearRange="c-80:c+10">
                                         <f:validator validatorId="birthDateValidator"  />
                                         <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
                                     </p:calendar>

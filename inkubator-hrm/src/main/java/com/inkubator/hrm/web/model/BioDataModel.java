@@ -21,6 +21,7 @@ public class BioDataModel implements Serializable {
     private long doialekId;
     private long religionId;
     private long cityid;
+    private String birthplaceText;
     private long raceId;
     private long maritalStatusId;
     private String firstName;
@@ -86,7 +87,15 @@ public class BioDataModel implements Serializable {
         this.cityid = cityid;
     }
 
-    public long getRaceId() {
+    public String getBirthplaceText() {
+		return birthplaceText;
+	}
+
+	public void setBirthplaceText(String birthplaceText) {
+		this.birthplaceText = birthplaceText;
+	}
+
+	public long getRaceId() {
         return raceId;
     }
 

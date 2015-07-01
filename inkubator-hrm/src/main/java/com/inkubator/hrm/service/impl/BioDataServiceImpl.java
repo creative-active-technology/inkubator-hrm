@@ -120,6 +120,7 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
         BioData bioData = this.bioDataDao.getEntiyByPK(entity.getId());
         bioData.setBloodType(entity.getBloodType());
         bioData.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
+        bioData.setBirthplaceText(entity.getBirthplaceText());
         bioData.setDateOfBirth(entity.getDateOfBirth());
         bioData.setDialect(this.dialectDao.getEntiyByPK(entity.getDialect().getId()));
         bioData.setFirstName(entity.getFirstName());
