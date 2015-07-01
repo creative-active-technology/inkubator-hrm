@@ -107,7 +107,8 @@
                                 <p:column style="width: 37%">
                                 	<p:autoComplete id="approverIndividualId" title="#{appmsg['approvaldefinition.approval_individual']}" 
                                                 value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.hrmUserByApproverIndividual}"
-                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"
+                                                disabled="#{approvalDefinitionPopupFormController.approverTypeIndividual}"                                                
                                                 var="hrmUser" itemValue="#{hrmUser}"
                                                 itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
                                                 converter="hrmUserConverter"
@@ -133,7 +134,8 @@
                                 <p:column style="width: 37%" >
                                 	<p:autoComplete id="approverPositionId" title="#{appmsg['approvaldefinition.approver_position']}" 
                                                 value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.jabatanByApproverPosition}"
-                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"                                                
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"
+                                                disabled="#{approvalDefinitionPopupFormController.approverTypePosition}"                                                
                                                 var="jabatan" itemValue="#{jabatan}"
                                                 itemLabel="#{jabatan.code} #{jabatan.name}"
                                                 converter="jabatanConverter"
@@ -156,7 +158,7 @@
                                     <p:outputLabel for="onBehalfId"  value="#{appmsg['approvaldefinition.on_behalf_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.onBehalfType}" style="width: 75%" required="true">
+                                    <p:selectOneMenu id="onBehalfId" styleClass="isitext_hrm" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.onBehalfType}" style="width: 75%" required="true" disabled="#{approvalDefinitionPopupFormController.onBehalf}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.approved_by_position']}" itemValue="APPROVAL_TYPE_POSITION" />
@@ -173,7 +175,8 @@
                                 <p:column style="width: 37%">
                                 	<p:autoComplete id="onBehalfIndividualId" title="#{appmsg['approvaldefinition.on_behalf_individual']}" 
                                                 value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.hrmUserByOnBehalfIndividual}"
-                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"
+                                                disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypeIndividual}"                                                
                                                 var="hrmUser" itemValue="#{hrmUser}"
                                                 itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
                                                 converter="hrmUserConverter"
@@ -187,7 +190,8 @@
                                 <p:column style="width: 37%" >
                                 	<p:autoComplete id="onBehalfPositionId" title="#{appmsg['approvaldefinition.on_behalf_position']}" 
                                                 value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.jabatanByOnBehalfPosition}"
-                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"                                                
+                                                completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteJabatan}"       
+                                                disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypePosition}"                                         
                                                 var="jabatan" itemValue="#{jabatan}"
                                                 itemLabel="#{jabatan.code} #{jabatan.name}"
                                                 converter="jabatanConverter"
@@ -197,19 +201,19 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column style="width: 18%;background-color: #e1f0f0!important" >
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.auto_approved_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
-                                <p:column style="width: 32%">
+                                <p:column style="width: 37%">
                                     <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.autoApproveOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close"  id="approveOnDelay" styleClass="label_button" >
                                         <p:ajax listener="#{approvalDefinitionPopupFormController.autoApproveOnDelay()}" immediate="true" update="approveOnDelay,escalateOnDelay"/>
                                     </p:selectBooleanButton>
                                 </p:column>
-                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.escalate_on_delay']}" style="font-weight: bold"/>
                                 </p:column>
-                                <p:column style="width: 35%" >
+                                <p:column style="width: 37%" >
 
                                     <p:selectBooleanButton value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.escalateOnDelay}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close"  id="escalateOnDelay" styleClass="label_button" >
@@ -239,7 +243,7 @@
                                 </p:column>
                                 <p:column style="width: 37%">
                                     <p:inputText id="specificNameId" title="#{appmsg['approvaldefinition.specific_approval']}" value="#{approvalDefinitionPopupFormController.approvalDefinitionModel.specificName}" 
-                                    			 required="true" maxlength="30" styleClass="isitext_hrm" style="width:75%;" />
+                                    			 required="true" readonly="true" maxlength="30" styleClass="isitext_hrm" style="width:75%;" />
                                     <p:message for="specificNameId"/>
                                 </p:column>
                             </p:row>
@@ -252,6 +256,10 @@
                                              style="margin-right: 5px" label="#{appmsg['global.add']}"
                                              icon="ui-icon-document"
                                              id="buttonSave" title="#{appmsg['global.add']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{approvalDefinitionPopupFormController.doReset()}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
+                                <p:resetInput target="approvalFormId" />  
+                            </p:commandButton>
                         </div>
                     </h:form>
                 </div>
