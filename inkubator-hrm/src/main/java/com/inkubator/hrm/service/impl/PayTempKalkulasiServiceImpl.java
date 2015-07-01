@@ -18,6 +18,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -440,10 +441,13 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                 LOGGER.info("Save By ComponentDataException - " + dataException.getPaySalaryComponent().getName() + ", nominal : " + dataException.getNominal());
             }
 
-            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), createdOn);
+            int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), endPeriodDate);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
-            List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
-            for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
+            List<PaySalaryComponent> listPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
+            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))){
+            	throw new Exception("Employee with nik : " + empData.getNik() + ", doesn't have any basic salary. Please contact administrator.");
+            }
+            for (PaySalaryComponent paySalaryComponent : listPayComponetNotExcp) {
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
                 	PayTempUploadData payUpload = this.payTempUploadDataDao.getEntityByEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
                     if(payUpload != null) {
