@@ -35,4 +35,6 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
     
     public BusinessTravel getByEmpIdAndDate(long empId, Date doDate);
 
+	public Long getTotalActualBusinessTravel(Date date);
+	
 }

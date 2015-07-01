@@ -9,16 +9,23 @@ import java.util.Date;
  */
 public class ReportPermitHistoryModel implements Serializable {
 
+	private Long id;
     private String nikWithFullName;
     private String numberFilling;
     private String permitClassification;
-    private Date requestTime;
-    private Date approvalTime;
     private String approvedBy;
     private Date startDate;
     private Date endDate;
+    
+    public Long getId() {
+		return id;
+	}
 
-    public String getNikWithFullName() {
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNikWithFullName() {
         return nikWithFullName;
     }
 
@@ -40,22 +47,6 @@ public class ReportPermitHistoryModel implements Serializable {
 
     public void setPermitClassification(String permitClassification) {
         this.permitClassification = permitClassification;
-    }
-
-    public Date getRequestTime() {
-        return requestTime;
-    }
-
-    public void setRequestTime(Date requestTime) {
-        this.requestTime = requestTime;
-    }
-
-    public Date getApprovalTime() {
-        return approvalTime;
-    }
-
-    public void setApprovalTime(Date approvalTime) {
-        this.approvalTime = approvalTime;
     }
 
     public String getApprovedBy() {

@@ -33,7 +33,7 @@
           p:configLocation="classpath:spring/spring_ehcache.xml" 
           p:shared="true"/>
           
-          
+          <!-- com.inkubator.iitc3p0.ComboPooledDataSourceEncript com.mchange.v2.c3p0.ComboPooledDataSource -->
     <bean id="c3p0DataSourceAbstract" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
           abstract="true" destroy-method="close">
         <property name="acquireIncrement" value="5"/>
