@@ -14,6 +14,8 @@ public interface FingerMatchEmpDao extends IDAO<FingerMatchEmp> {
 	public List<FingerMatchEmp> getAllDataByNik(String nik);
 	
 	public FingerMatchEmp getEntityByNikAndMachineId(String nik, Long machineId);
+
+	public FingerMatchEmp getEntityByFingerIndexIdAndMachineId(String fingerIndexId, Long machineId);
 	
 }
 
