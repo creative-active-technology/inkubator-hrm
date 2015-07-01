@@ -55,6 +55,7 @@ import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
+import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.dao.TempProcessReadFingerDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
@@ -77,7 +78,6 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringsUtils;
@@ -152,6 +152,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private TempProcessReadFingerDao tempProcessReadFingerDao;
     @Autowired
     private PermitImplementationDao permitImplementationDao;
+    @Autowired
+    private TempJadwalKaryawanDao tempJadwalKaryawanDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -1224,12 +1226,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         /**
          * perkiraan kehadiran hari ini = jadwal - (ijin+cuti+dinas)
          */
-        Long totalTodaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.toDate(), companyId);
-        Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);
-        BigDecimal todayAttendance = new BigDecimal(0);
-        if (totalTodaySchedule != 0 && totalTodayAttendance != 0) {
-            todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);
-        }
+        Long totalTodaySchedule = tempJadwalKaryawanDao.getTotalByTanggalWaktuKerja(now.toDate(), companyId);
+		Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);		
+		BigDecimal todayAttendance = new BigDecimal(100);
+		if(totalTodaySchedule!=0 && totalTodayAttendance!=0){
+			todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);			
+		}
 
         //set value to model
         EmployeeResumeDashboardModel model = new EmployeeResumeDashboardModel();

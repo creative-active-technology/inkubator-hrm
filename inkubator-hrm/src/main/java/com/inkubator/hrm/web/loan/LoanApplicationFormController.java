@@ -153,7 +153,7 @@ public class LoanApplicationFormController extends BaseController {
         loanNewTypeId = null;
         subsidiType = null;
         approvalDefId = null;
-        isAdmin = null;
+        isAdmin = null;        
     }
 
     public String doApply() {
@@ -174,7 +174,7 @@ public class LoanApplicationFormController extends BaseController {
                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 }
-
+                cleanAndExit();
                 return path;
 
             } catch (BussinessException ex) {
@@ -203,6 +203,7 @@ public class LoanApplicationFormController extends BaseController {
                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 }
+                cleanAndExit();
                 return path;
 
             } catch (BussinessException ex) {
@@ -230,7 +231,15 @@ public class LoanApplicationFormController extends BaseController {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.loan_new_schema_doesnt_have_approval_def", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return Boolean.FALSE;
             }
-
+            
+            List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
+            List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef, model.getEmpData().getId());
+            
+            if(listApprover.isEmpty()){
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.approver_not_found", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return Boolean.FALSE;
+            }
+            
             if (model.getNominalLoan() > model.getSelectedLoanNewSchemaListOfType().getMaximumAllocation()) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_nominal_principal", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return Boolean.FALSE;
@@ -252,6 +261,9 @@ public class LoanApplicationFormController extends BaseController {
                 return Boolean.FALSE;
             }
 
+        }catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return Boolean.FALSE;
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -367,13 +379,22 @@ public class LoanApplicationFormController extends BaseController {
 
             List<ApprovalDefinition> listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanIdWithDetail(loanNewSchemaListOfEmp.getLoanNewSchema().getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
             List<EmpData> listApprover = loanNewApplicationService.getListApproverByListAppDefintion(listAppDef, model.getEmpData().getId());
+            
+            if(listApprover.isEmpty()){
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.approver_not_found", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return;
+            }
             model.setListApprover(listApprover);
 
             if (!model.getListLoanNewApplicationInstallments().isEmpty()) {
                 doCalculateInstallmentSchedule();
             }
 
-        } catch (Exception e) {
+        } catch (BussinessException ex) {
+        	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }catch (Exception e) {
             Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, e);
         }
 

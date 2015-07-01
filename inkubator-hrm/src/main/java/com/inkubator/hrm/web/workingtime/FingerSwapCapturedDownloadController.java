@@ -2,8 +2,6 @@ package com.inkubator.hrm.web.workingtime;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -29,6 +30,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
+import com.inkubator.hrm.util.MachineFingerUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
@@ -96,13 +98,18 @@ public class FingerSwapCapturedDownloadController extends BaseController {
     
     private void batchServiceXmlProcess(MecineFinger machineFinger) throws BussinessException {
     	try {
-	    	//download file from url stream to disk before running jobs    	
-	    	Long currentTimeInMillis = System.currentTimeMillis();
+	    	/**
+	    	 * Download file from service(url) as stream to disk(file) before running jobs
+	    	 * */
+    		String xmlResponse = MachineFingerUtil.getAllDataAttendanceLog(machineFinger.getServiceHost(), Integer.parseInt(machineFinger.getServicePort()));   
+    		if(StringUtils.isEmpty(xmlResponse)){
+				throw new BussinessException("global.error_data_finger_empty");
+			}
+    		Long currentTimeInMillis = System.currentTimeMillis();
 	    	String pathUpload = facesIO.getPathUpload() + "machine_" + machineFinger.getCode() + "_xml_" + currentTimeInMillis + ".xml";
-	    	String url = "http://" + machineFinger.getServiceHost()+ ":" + machineFinger.getServicePort();
-	    	Files.copy(new URL(url).openStream(), new File(pathUpload).toPath());
+	    	FileUtils.writeStringToFile(new File(pathUpload), xmlResponse);
 	    	
-	    	//running jobs batch to execute file upload
+	    	//running jobs batch to execute file
 	    	JobParameters jobParameters = new JobParametersBuilder()
 		    	.addString("fragmentRootElementName", "Row")
 		    	.addString("resourcePath", "file:///"+pathUpload)
@@ -110,6 +117,10 @@ public class FingerSwapCapturedDownloadController extends BaseController {
 		    	.addString("timeInMilis", String.valueOf(currentTimeInMillis)).toJobParameters();	    	
 			JobExecution jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
 			
+			//check status jobs
+			if(jobExecution.getStatus() == BatchStatus.FAILED){
+				throw new BussinessException("global.error_batch_process");
+			}
 		} catch (IOException e) {
 			LOGGER.error("Error", e);
 			throw new BussinessException("global.error_connection_lost");

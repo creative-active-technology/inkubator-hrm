@@ -9,10 +9,13 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.NeracaCuti;
 import com.inkubator.hrm.web.search.NeracaCutiSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -111,4 +114,11 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
             }
         }
     }
+
+	@Override
+	public void deleteNeracaCutiByLeaveDistributionId(Long leaveDistributionId) {
+		Query query = getCurrentSession().createQuery("DELETE FROM NeracaCuti neracaCuti WHERE neracaCuti.leaveDistribution.id = :leaveDistributionId")
+				.setLong("leaveDistributionId", leaveDistributionId);
+        query.executeUpdate();
+	}
 }

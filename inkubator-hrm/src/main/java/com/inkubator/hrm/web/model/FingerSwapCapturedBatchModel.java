@@ -16,17 +16,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Row")
 public class FingerSwapCapturedBatchModel implements Serializable{
     
-	private String nik;
+	private String fingerIndexId;
     private String dateTime;
     private String createdBy;
     private Long machineId;
 	
     @XmlElement(name = "PIN")
-	public String getNik() {
-		return nik;
+    public String getFingerIndexId() {
+		return fingerIndexId;
 	}
-	public void setNik(String nik) {
-		this.nik = nik;
+	public void setFingerIndexId(String fingerIndexId) {
+		this.fingerIndexId = fingerIndexId;
 	}
 	@XmlElement(name = "DateTime")
 	public String getDateTime() {
