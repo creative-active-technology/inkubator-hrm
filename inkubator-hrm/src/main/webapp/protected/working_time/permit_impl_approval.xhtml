@@ -84,7 +84,7 @@
                                         </p:outputLabel>
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{implementationOfOverTimeApprovalFormController.isWaitingApproval}">
+	                        <p:row rendered="#{permitImplApprovalFormController.isWaitingApproval}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
@@ -97,7 +97,7 @@
                             
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<h:panelGroup rendered="#{implementationOfOverTimeApprovalFormController.isWaitingApproval}">
+	                    	<h:panelGroup rendered="#{permitImplApprovalFormController.isWaitingApproval}">
 		                        <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{permitImplApprovalFormController.doApproved()}"
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isApprover}" update=":growlId"/>
 							 	<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{permitImplApprovalFormController.doRejected()}"
@@ -105,7 +105,7 @@
 <!-- 	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{permitImplApprovalFormController.doCancelled()}"
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isRequester}" update=":growlId"/> -->
 	                        </h:panelGroup>
-	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{implementationOfOverTimeApprovalFormController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{permitImplApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>

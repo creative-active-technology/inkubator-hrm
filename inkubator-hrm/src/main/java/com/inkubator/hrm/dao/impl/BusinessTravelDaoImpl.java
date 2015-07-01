@@ -16,12 +16,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BusinessTravelDao;
-import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BusinessTravel;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
-import java.util.Date;
 
 /**
  *
@@ -31,7 +29,7 @@ import java.util.Date;
 @Lazy
 public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements BusinessTravelDao {
 
-    @Override
+	@Override
     public Class<BusinessTravel> getEntityClass() {
         return BusinessTravel.class;
 
@@ -163,4 +161,14 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
         criteria.add(Restrictions.ge("endDate", doDate));
         return (BusinessTravel) criteria.uniqueResult();
     }
+
+	@Override
+	public Long getTotalActualBusinessTravel(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.le("startDate", date));
+        criteria.add(Restrictions.ge("endDate", date));
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

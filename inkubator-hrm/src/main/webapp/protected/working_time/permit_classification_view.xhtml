@@ -95,7 +95,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitClassification.permitClassification_calculation']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{permitClassificationData.calculation}"/>
+                                <h:outputLabel value= "#{permitClassificationData.calculation}">
+                                	<f:converter converterId="permitCalculationConverter"/>
+                                </h:outputLabel>
                             </p:column>                            
                             <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
