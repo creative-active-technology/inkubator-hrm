@@ -414,6 +414,11 @@
                                                 <p:menuitem value="#{appmsg['paySalaryComponent.paySalaryComponent']}" icon="img-pay_salary_component" style="font-size: 12px !important;color: #003366" title="#{appmsg['paySalaryComponent.paySalaryComponent']}" url="/protected/payroll/pay_salary_comp_view.htm" /> 
                                                 <!--<p:menuitem value="#{appmsg['salaryCalculation.salaryCalculation']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['salaryCalculation.salaryCalculation']}" url="/protected/payroll/salary_execution_view.htm" />--> 
                                             </p:submenu>
+<!--                                            <p:submenu label="#{appmsg['menu.loan_setting_sub']}" styleClass="menu_child">
+                                                <p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="/protected/personalia/loan_type_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="/protected/personalia/loan_schema_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" /> 
+                                            </p:submenu>-->
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="Bio Data" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/personalia/biodata_view.htm" />                                              
@@ -472,8 +477,8 @@
                                             <p:menuitem value="#{appmsg['loan.loanHistory']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanHistory']}" url="/protected/personalia/loan_view.htm" />
                                             <p:submenu label="#{appmsg['menu.loan_setting']}" styleClass="menu_child">
                                                 <!--<p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="/protected/personalia/loan_type_view.htm" />--> 
+                                                <!--<p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" />--> 
                                                 <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="/protected/personalia/loan_schema_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" /> 
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['loan.loanApplicationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanApplicationInbox']}" url="/flow-protected/loan"/>
                                             <p:menuitem value="#{appmsg['loan.loanDiscount']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanDiscount']}" url="/protected/payroll/loan_discount_view.htm"/>
@@ -482,7 +487,12 @@
                                             <p:menuitem value="#{appmsg['loan.loanUpload']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanUpload']}" url="/protected/payroll/loan_upload_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.loanStatus']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanStatus']}" url="#"/>
                                             <p:menuitem value="#{appmsg['loan.disbursementTable']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.disbursementTable']}" url="/protected/payroll/loan_disbursement_view.htm"/>
-                                            <p:menuitem value="#{appmsg['loantype.loantype']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loantype.loantype']}" url="/protected/personalia/loan_type_view.htm"/>
+                                            <!--<p:menuitem value="#{appmsg['loantype.loantype']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loantype.loantype']}" url="/protected/personalia/loan_type_view.htm"/>-->
+                                            <p:submenu label="#{appmsg['menu.loan_setting']}" styleClass="menu_child">
+                                                <!--<p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="/protected/personalia/loan_type_view.htm" />--> 
+                                                <!--<p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" />--> 
+                                                <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="/protected/personalia/loan_schema_view.htm" /> 
+                                            </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['payroll.payroll']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
