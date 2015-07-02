@@ -91,8 +91,8 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
     public List<UnregSalaryViewModel> getByParamWithViewModel(UnregSalarySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         
         final StringBuilder query = new StringBuilder("SELECT A.id AS unregSalaryId, A.code AS code, A.name AS name, A.salary_date AS salaryDate, C.bulan AS bulan, C.tahun AS year, count(B.unreg_id) AS total");
-        query.append(" FROM hrm.unreg_salary A");
-        query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
+        query.append(" FROM unreg_salary A");
+        query.append(" LEFT JOIN unreg_pay_components B ON A.id = B.unreg_id");
         query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
         doSearchByParam(searchParameter, query);
         query.append(" GROUP BY A.code");
@@ -111,8 +111,8 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
     @Override
     public Long getTotalByParamViewModel(UnregSalarySearchParameter searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(A.code)");
-        query.append(" FROM hrm.unreg_salary A");
-        query.append(" LEFT JOIN hrm.unreg_pay_components B ON A.id = B.unreg_id");
+        query.append(" FROM unreg_salary A");
+        query.append(" LEFT JOIN unreg_pay_components B ON A.id = B.unreg_id");
         query.append(" INNER JOIN wt_periode C WHERE A.based_period_id = C.id");
         doSearchByParam(searchParameter, query);
         query.append(" GROUP BY A.code) as totalData");
