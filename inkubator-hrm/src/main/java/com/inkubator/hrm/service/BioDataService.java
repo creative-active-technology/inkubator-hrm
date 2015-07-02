@@ -25,7 +25,7 @@ public interface BioDataService extends IService<BioData> {
 
     public Long getTotalByParam(BioDataSearchParameter parameter) throws Exception;
     
-    public List<BioData> getEntityByPKWithDetail(long id) throws Exception;
+    public BioData getEntityByPKWithDetail(long id) throws Exception;
 
     public List<BioData> getByName(String name) throws Exception;
 
