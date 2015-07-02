@@ -15,12 +15,18 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import java.io.IOException;
 import java.util.Date;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -85,6 +91,19 @@ public class HomeController extends BaseController {
 
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
+    }
+    
+    public String doChangeLanguageSession() {
+    	try {
+	    	String languange = FacesUtil.getRequestParameter("languange");
+	    	FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
+	    	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+    	} catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    	
+    	return null;
     }
 
 }

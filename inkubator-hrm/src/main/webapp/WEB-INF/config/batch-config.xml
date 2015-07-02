@@ -85,6 +85,10 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="fingerSwapCapturedDownloadXmlJobListener"/>
+        </batch:listeners>
     </batch:job>	
     
     <batch:job id="jobPayEmployeeCalculation">
@@ -295,6 +299,9 @@
 	</bean>
 	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
 		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
+	</bean>
+	<bean id="fingerSwapCapturedDownloadXmlJobListener" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlJobListener" lazy-init="true">
+		<property name="mecineFingerService" ref="mecineFingerService"/>			      
 	</bean>
 	
 	

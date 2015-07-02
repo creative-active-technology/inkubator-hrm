@@ -121,7 +121,7 @@ public class BioDataModel implements Serializable {
         this.firstName = firstName;
     }    
     
-    @Pattern(regexp = "^[A-Za-z]+", message = "{errorr_middle_name}")
+    @Pattern(regexp = "^([A-Za-z]|)+", message = "{errorr_middle_name}")
     public String getMiddleName() {
 		return middleName;
 	}
