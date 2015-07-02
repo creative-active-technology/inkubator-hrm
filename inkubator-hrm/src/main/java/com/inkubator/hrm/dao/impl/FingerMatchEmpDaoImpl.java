@@ -41,6 +41,14 @@ public class FingerMatchEmpDaoImpl extends IDAOImpl<FingerMatchEmp> implements F
 		criteria.add(Restrictions.eq("mecineFinger.id", machineId));
 		return (FingerMatchEmp) criteria.uniqueResult();
 	}
+	
+	@Override
+	public FingerMatchEmp getEntityByFingerIndexIdAndMachineId(String fingerIndexId, Long machineId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("fingerIndexId", fingerIndexId));
+		criteria.add(Restrictions.eq("mecineFinger.id", machineId));
+		return (FingerMatchEmp) criteria.uniqueResult();
+	}
 
 	
 }
