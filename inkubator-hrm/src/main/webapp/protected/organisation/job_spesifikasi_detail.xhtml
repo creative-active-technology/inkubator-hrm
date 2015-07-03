@@ -99,7 +99,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Education Level" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['educationhistory.education_level']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{jabatanSpesifikasiDetailController.dualListModel}" var="role" itemValue="#{role}" converter="educationLevelConverter" id="educationLevelId"
@@ -114,7 +114,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Jenis Profesi" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['occupationType.occupationType']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{jabatanSpesifikasiDetailController.occupationDualListModel}" var="role" itemValue="#{role}" converter="occupationTypeConverter" id="picklistOccupation"
@@ -129,7 +129,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Bidang" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['major.major']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{jabatanSpesifikasiDetailController.majorDualListModel}" var="role" itemValue="#{role}" converter="majorConverter" id="picklistMajor"
@@ -144,7 +144,7 @@
                             <p:row>
                                 <div align="center">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="Faculty" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['educationhistory.faculty']}" style="font-weight: bold"/>
                                     </p:column>
                                     <p:column style="text-align: center;">
                                         <p:pickList value="#{jabatanSpesifikasiDetailController.facultyDualListModel}" var="role" itemValue="#{role}" converter="facultyConverter" id="picklistFaculty"
