@@ -147,7 +147,7 @@
                             <p:outputLabel value="#{loanSchemaViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{reimbursmentSchemaViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{loanSchemaViewController.doDelete()}" update="formId"
                                          oncomplete="deleteDialog.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="deleteDialog.hide()" icon="ui-icon-close" />                     	
                     </div>

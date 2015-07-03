@@ -86,9 +86,11 @@ public class BioDataFormController extends BaseController {
                 BioData selectedBioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioId.substring(1)));
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
                 bioDataModel.setCityid(selectedBioData.getCity().getId());
+                bioDataModel.setBirthplaceText(selectedBioData.getBirthplaceText());
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
                 bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
                 bioDataModel.setFirstName(selectedBioData.getFirstName());
+                bioDataModel.setMiddleName(selectedBioData.getMiddleName());
                 bioDataModel.setGender(selectedBioData.getGender());
                 bioDataModel.setId(selectedBioData.getId());
                 bioDataModel.setJamsostek(selectedBioData.getJamsostek());
@@ -383,9 +385,11 @@ public class BioDataFormController extends BaseController {
         }
         bioData.setBloodType(bioDataModel.getBloodType());
         bioData.setCity(new City(bioDataModel.getCityid()));
+        bioData.setBirthplaceText(bioDataModel.getBirthplaceText());
         bioData.setDateOfBirth(bioDataModel.getDateOfBirth());
         bioData.setDialect(new Dialect(bioDataModel.getDoialekId()));
         bioData.setFirstName(bioDataModel.getFirstName());
+        bioData.setMiddleName(bioDataModel.getMiddleName());
         bioData.setGender(bioDataModel.getGender());
         bioData.setJamsostek(bioDataModel.getJamsostek());
         bioData.setLastName(bioDataModel.getLastName());

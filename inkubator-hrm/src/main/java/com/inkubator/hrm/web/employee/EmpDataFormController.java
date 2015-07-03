@@ -113,7 +113,7 @@ public class EmpDataFormController extends BaseController {
                 String basicSalaryDecript = empData.getBasicSalaryDecrypted();
                 empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
                 empDataModel.setBioDataId(empData.getBioData().getId());
-                empDataModel.setBioDataName(empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
+                empDataModel.setBioDataName(empData.getBioData().getFullName());
                 empDataModel.setBirthDate(empData.getBioData().getDateOfBirth());
                 empDataModel.setDepartementId(empData.getJabatanByJabatanId().getDepartment().getId());
                 empDataModel.setEmployeeTypeId(empData.getEmployeeType().getId());
@@ -276,7 +276,7 @@ public class EmpDataFormController extends BaseController {
     public void onDialogReturn(SelectEvent event) {
         BioData bioData = (BioData) event.getObject();
         empDataModel.setBioDataId(bioData.getId());
-        empDataModel.setBioDataName(bioData.getFirstName() + " " + bioData.getLastName());
+        empDataModel.setBioDataName(bioData.getFullName());
         empDataModel.setBirthDate(bioData.getDateOfBirth());
 
     }

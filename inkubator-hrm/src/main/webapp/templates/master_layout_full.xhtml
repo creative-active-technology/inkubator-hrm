@@ -230,12 +230,20 @@
                         
                         <div style="float: right">
                             <h:form>                                
-                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <!-- <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" /> -->
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
+                                    <h:commandLink id="englishId" title="#{appmsg['global.changed_language_to_english']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="en"/>
+                                        <p:graphicImage library="images" name="England.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
+                                    <h:commandLink id="indonesiaId" title="#{appmsg['global.changed_language_to_indonesian']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="id"/>
+                                        <p:graphicImage library="images" name="Indonesia.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
                                         <p:graphicImage library="images" name="check_in_out.png"  height="22" id="ima" cache="true" />
                                     </p:commandLink>
@@ -415,11 +423,11 @@
                                                 <p:menuitem value="#{appmsg['paySalaryComponent.paySalaryComponent']}" icon="img-pay_salary_component" style="font-size: 12px !important;color: #003366" title="#{appmsg['paySalaryComponent.paySalaryComponent']}" url="/protected/payroll/pay_salary_comp_view.htm" /> 
                                                 <!--<p:menuitem value="#{appmsg['salaryCalculation.salaryCalculation']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['salaryCalculation.salaryCalculation']}" url="/protected/payroll/salary_execution_view.htm" />--> 
                                             </p:submenu>
-                                            <p:submenu label="#{appmsg['menu.loan_setting_sub']}" styleClass="menu_child">
+<!--                                            <p:submenu label="#{appmsg['menu.loan_setting_sub']}" styleClass="menu_child">
                                                 <p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="/protected/personalia/loan_type_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="/protected/personalia/loan_schema_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" /> 
-                                            </p:submenu>
+                                            </p:submenu>-->
                                         </p:submenu>
                                         <p:submenu label="Personalia"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:menuitem value="Bio Data" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="Bio Data" url="/protected/personalia/biodata_view.htm" />                                              
@@ -476,11 +484,7 @@
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
                                             <p:menuitem value="#{appmsg['loan.loanHistory']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanHistory']}" url="/protected/personalia/loan_view.htm" />
-                                            <p:submenu label="#{appmsg['menu.loan_setting']}" styleClass="menu_child">
-                                                <!--<p:menuitem value="#{appmsg['menu.loan_type']}" icon="img-grade-level" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_type']}" url="/protected/personalia/loan_type_view.htm" />--> 
-                                                <p:menuitem value="#{appmsg['menu.loan_scheme']}" icon="img-pay_salary_grade_position" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_scheme']}" url="/protected/personalia/loan_schema_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['menu.loan_distribution_scheme']}" icon="img-penggajian" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.loan_distribution_scheme']}" url="#" /> 
-                                            </p:submenu>
+                                            
                                             <p:menuitem value="#{appmsg['loan.loanApplicationInbox']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanApplicationInbox']}" url="/flow-protected/loan"/>
                                             <p:menuitem value="#{appmsg['loan.loanDiscount']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanDiscount']}" url="/protected/payroll/loan_discount_view.htm"/>
                                             <p:menuitem value="#{appmsg['loan.cancellationForm']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.cancellationForm']}" url="/protected/personalia/loan_canceled_form.htm"/>
