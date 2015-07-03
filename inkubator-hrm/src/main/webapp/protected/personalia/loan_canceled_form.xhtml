@@ -35,17 +35,17 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="codeId" value="Cancelation Number" styleClass="label_hrm"/>
+                                        <p:outputLabel for="codeId" value="#{appmsg['loan.cancellation_number']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="codeId" title="Cancelation Number" value="#{loanCanceledFormController.loanCanceledModel.code}" 
+                                        <p:inputText id="codeId" title="#{appmsg['loan.cancellation_number']}" value="#{loanCanceledFormController.loanCanceledModel.code}" 
 	                                    		 readonly="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="codeId"/>
 	                            </p:column>
 	                        </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Karyawan"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employee.employee']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{loanCanceledFormController.loanCanceledModel.empData}"
@@ -84,7 +84,7 @@
                             </p:row>
                             <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="reasonId" value="Reason" styleClass="label_hrm"/>
+	                                <p:outputLabel for="reasonId" value="#{appmsg['loan.reason']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:inputTextarea id="reasonId" rows="5" cols="37" counter="counter" maxlength="225" value="#{loanCanceledFormController.loanCanceledModel.reason}" 
@@ -96,7 +96,7 @@
 	                        </p:row>
                         </p:panelGrid>
                         
-                        <p:outputLabel value="Detail Info" styleClass="header_big" />
+                        <p:outputLabel value="#{appmsg['loan.detail_info']}" styleClass="header_big" />
 	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px;"/>
                         
                         <p:panelGrid id="detailInfoGrid" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
@@ -147,7 +147,7 @@
 	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Interest Type" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmg['loan.interest_type']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.loanSchema.typeOfInterest}" >

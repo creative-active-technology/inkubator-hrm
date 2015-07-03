@@ -292,7 +292,7 @@
                                     <p:sticky target="menuId" />
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
-                                        <p:submenu label="Aplikasi"  styleClass="menu" icon="img-user-account">
+                                        <p:submenu label="#{appmsg['menu.system']}"  styleClass="menu" icon="img-user-account">
                                             <p:submenu label="#{appmsg['menu.account']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
                                                 <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
@@ -401,8 +401,7 @@
                                                     <p:menuitem value="#{appmsg['ohsa.ohsa']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['ohsa.ohsa']}" url="/protected/personalia/ohsa_cat_view.htm" /> 
                                                     <p:menuitem value="#{appmsg['admonitionType.admonitionType']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['admonitionType.admonitionType']}" url="/protected/personalia/admonition_type_view.htm" /> 
                                                     <p:menuitem value="#{appmsg['terminationtype.termination_type']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['terminationtype.termination_type']}" url="/protected/personalia/termination_type_view.htm" />
-                                                    <p:menuitem value="#{appmsg['reimbursementschema.reimbursement_schema']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursementschema.reimbursement_schema']}" url="/protected/personalia/reimbursment_schema_view.htm" />
-                                                    <p:menuitem value="#{appmsg['loanschema.loan']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['loanschema.loan']}" url="/protected/personalia/loan_schema_view.htm" />
+                                                    
                                                 </p:submenu>
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['payroll.payroll_conf']}"  styleClass="menu_child" >
@@ -483,6 +482,7 @@
                                             <p:menuitem value="#{appmsg['loan.loanStatus']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.loanStatus']}" url="#"/>
                                             <p:menuitem value="#{appmsg['loan.disbursementTable']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loan.disbursementTable']}" url="/protected/payroll/loan_disbursement_view.htm"/>
                                             <p:menuitem value="#{appmsg['loantype.loantype']}" icon="img-loan" style="font-size: 12px !important;color: #003366" title="#{appmsg['loantype.loantype']}" url="/protected/personalia/loan_type_view.htm"/>
+                                            <p:menuitem value="#{appmsg['loanschema.loan']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['loanschema.loan']}" url="/protected/personalia/loan_schema_view.htm" />
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['payroll.payroll']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-payroll">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -528,6 +528,8 @@
                                             <p:menuitem value="#{appmsg['reimbursment.application_form']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
                                             <p:menuitem value="#{appmsg['reimbursment.reimbursment_inbox']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="" url="#" /> 
                                             <p:menuitem value="#{appmsg['reimbursment.reimbursment_history']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="" url="#" />
+                                            <p:menuitem value="#{appmsg['reimbursementschema.reimbursement_schema']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursementschema.reimbursement_schema']}" url="/protected/personalia/reimbursment_schema_view.htm" />
+                                            
                                         </p:submenu>
                                         <!-- 
                                         <p:submenu label="Approval Metrix"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu">
