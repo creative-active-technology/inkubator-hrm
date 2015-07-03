@@ -23,4 +23,6 @@ public interface WtHolidayService extends IService<WtHoliday> {
     public Long getTotalWtHolidayByParam(HolidaySearchParameter searchParameter) throws Exception;
 
     public List<WtHoliday> getBetweenDate(Date start, Date end) throws Exception;
+    
+    public WtHoliday getEntityByDate(Date date)  throws Exception;
 }
