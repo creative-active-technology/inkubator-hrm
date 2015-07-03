@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-
+				<h:form id="formHomeId">
                 <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
@@ -592,12 +592,10 @@
                         </p:column>
                         <p:column style="width: 25%;" >
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
-                                <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-60px !important;font-style:italic"/>
-                                </h:panelGrid>
                                 <div align="center" style="margin-top: 5%">
-                                    <p:calendar  mode="inline" id="inlineCal" />
-                                    <!--<p:schedule />-->
+                                    <p:calendar id="calendarId" mindate="#{homeDashboardController.startCalendarDate}" maxdate="#{homeDashboardController.endCalendarDate}" mode="inline" beforeShowDay="holidaysDisabled">
+                                    	<p:ajax event="dateSelect" listener="#{homeDashboardController.onSelectDate}" update=":mainGrowl"/>
+                                    </p:calendar>
                                 </div>
                             </p:panel>
                         </p:column>
@@ -630,6 +628,7 @@
 <!--                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>-->
+            </h:form>
             </ui:define>
 
         </ui:composition>
