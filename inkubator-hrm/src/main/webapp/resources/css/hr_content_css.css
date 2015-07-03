@@ -1357,3 +1357,7 @@ td.even {
     /*padding-bottom: 20px;*/
    
 }
+
+.ui-datepicker-holiday a.ui-state-default {
+	color: #C00;
+}

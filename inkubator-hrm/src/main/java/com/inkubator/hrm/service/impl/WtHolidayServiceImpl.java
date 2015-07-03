@@ -14,8 +14,10 @@ import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.service.WtHolidayService;
 import com.inkubator.hrm.web.search.HolidaySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -245,5 +247,11 @@ public class WtHolidayServiceImpl extends IServiceImpl implements WtHolidayServi
       
         return this.wtHolidayDao.getBetweenDate(start, end);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtHoliday getEntityByDate(Date date) throws Exception {
+		return wtHolidayDao.getWtHolidayByDate(date);
+	}
 
 }

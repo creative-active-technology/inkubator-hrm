@@ -876,6 +876,26 @@
         </div>
 
         <script type="text/javascript">
+	        function holidaysDisabled(date) {	          
+	          var arrHoliday = "#{homeDashboardController.listHolidayDate}";
+	          arrHoliday = arrHoliday.replace('[','');
+	          arrHoliday = arrHoliday.replace(']','');
+	          arrHoliday = arrHoliday.split(',');
+	          
+	          var day = date.getDate();
+	          var styleClass = contains(arrHoliday,day) ? 'ui-datepicker-holiday' : '';
+	          alr =false
+	          return [true, styleClass]
+	        }
+	        function contains(array, value) {	        	
+	            var i = array.length;
+	            while (i--) {
+	               if (array[i] == value) {
+	                   return true;
+	               }
+	            }
+	            return false;
+	        }
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {
                     $('#changeUserInfoId').show();
