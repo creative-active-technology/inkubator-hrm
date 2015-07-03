@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Pph Report" styleClass="header_big" />
-                                    <p:outputLabel value="Pph Report from application" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['pphReport.pphReport']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['pphReport.pphReport_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,22 +33,18 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{savingTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{reportPphViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{savingTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{savingTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{reportPphViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPphViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -61,7 +57,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['savingType.savingType_list']}"/>
+                                <h:outputText value="#{appmsg['pphReport.list_pphReport']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -81,45 +77,45 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empNik} - #{data.empName}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 10%">
+                            <p:column sortBy="empGolJabatan" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empGolJabatan}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="ptkp" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['ptkp.ptkp_menu']}"/>
+                                    <h:outputText value="#{appmsg['ptkp.ptkp']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.ptkp}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="biayaJabatan" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['position.position_cost']}"/>
+                                    <h:outputText value="#{appmsg['ptkp.cost']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.biayaJabatan}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="name" style="width: 15%">
+                            <p:column sortBy="pph" style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['taxComponent.income_tax']}"/>
+                                    <h:outputText value="#{appmsg['ptkp.pph']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.pph}" >
                                     <f:convertNumber pattern="###,###" type="currency" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-folder-open" title="Generate Report" label="Generate Report" style="font-size: 10px!important" ajax="true"
+                                <p:commandButton  icon="ui-icon-copy" title="Generate Report" label="Generate Report" style="font-size: 10px!important" ajax="true"
                                                   action="#{reportPphViewController.doGenerateReportPph()}" immediate="true">
                                     <f:setPropertyActionListener value="#{data}" target="#{reportPphViewController.selectedModel}" />    
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{reportPphViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>

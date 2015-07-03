@@ -24,7 +24,7 @@
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['loanCanceled.loanCanceled_form']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loanCanceled.loan_data_from_application']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -51,7 +51,7 @@
                                     <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{loanCanceledFormController.loanCanceledModel.empData}"
                                                 completeMethod="#{loanCanceledFormController.doAutoCompleteEmployee}"                                                
                                                 var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                converter="empDataConverter" styleClass="isitext_hrm" size="45" requiredMessage="#{appmsg['employee.employee_name_must_be_filled']}"
                                                 required="true" readonly="#{not loanCanceledFormController.isAdministator}">
                                     	<!-- <p:ajax event="itemSelect" listener="#{rmbsCancelationFormController.onChangeEmployee()}" update="detailInfoGrid,numberApplicationId"/> -->
                                     </p:autoComplete>
@@ -61,20 +61,20 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal Pembatalan"  styleClass="label_hrm" />
+                                    <p:outputLabel for="cancelledDateId" value="#{appmsg['loanCanceled.canceledDate']}"  styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:calendar id="cancelledDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanCanceledFormController.loanCanceledModel.cancelledDate}" maxdate="#{now}"/>
+                                    <p:calendar id="cancelledDateId" requiredMessage="#{appmsg['cancellationdate.cancellation_date_must_be_filled']}" required="true" pattern="dd-MMMM-yyyy" value="#{loanCanceledFormController.loanCanceledModel.cancelledDate}" maxdate="#{now}"/>
 	                                <p:message for="cancelledDateId"/>
                                 </p:column>
                             </p:row>
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="No. Pengajuan" styleClass="label_hrm" />
+                                    <p:outputLabel for="numberApplicationId" value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="numberApplicationId" styleClass="isitext_hrm" required="true" value="#{loanCanceledFormController.loanCanceledModel.approvalActivityId}" style="width:290px;">
+                                    <p:selectOneMenu id="numberApplicationId" requiredMessage="#{appmsg['noApplicant.no_applicant_must_be_filled']}"  styleClass="isitext_hrm" required="true" value="#{loanCanceledFormController.loanCanceledModel.approvalActivityId}" style="width:290px;">
 		                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                               	<f:selectItems value="#{loanCanceledFormController.listActivity.entrySet()}" var="activity" itemValue="#{activity.key}" itemLabel="#{activity.value}"/>
 		                               	<p:ajax listener="#{loanCanceledFormController.onChangeNumberApplication()}" update="detailInfoGrid, tableLoanId" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"/>
@@ -87,7 +87,7 @@
 	                                <p:outputLabel for="reasonId" value="#{appmsg['loan.reason']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="reasonId" rows="5" cols="37" counter="counter" maxlength="225" value="#{loanCanceledFormController.loanCanceledModel.reason}" 
+	                            	<p:inputTextarea id="reasonId" rows="5" requiredMessage="#{appmsg['reason.reason_must_be_filled']}" cols="37" counter="counter" maxlength="225" value="#{loanCanceledFormController.loanCanceledModel.reason}" 
                                                  	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
                                                  	 label="#{appmsg['rmbs_cancelation.cancelation_reason']}" title="#{appmsg['rmbs_cancelation.cancelation_reason']}" />
                                     <p:message for="reasonId"/>
@@ -102,7 +102,7 @@
                         <p:panelGrid id="detailInfoGrid" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                    	<p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Skema Pinjaman" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.loanSchema.name}" >
@@ -112,7 +112,7 @@
 	                        </p:row>
 	                    	<p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Nominal" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['reimbursement.nominal']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.nominalPrincipal}" >
@@ -127,7 +127,7 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Termin" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['loan.termin']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.termin}" >
@@ -137,7 +137,7 @@
 	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Suku Bunga" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.interestRate} %" >
@@ -158,7 +158,7 @@
 	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Tanggal Pinjaman" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.loanDate}" >
@@ -169,7 +169,7 @@
 	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="Tanggal Pencairan" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['loan.approvalDate']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{loanCanceledFormController.loan.loanPaymentDate}" >
@@ -237,7 +237,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Batalkan" ajax="true" action="#{loanCanceledFormController.doCancel()}"
+                            <p:commandButton value="#{appmsg['global.cancel']}" ajax="true" action="#{loanCanceledFormController.doCancel()}"
                                              styleClass="isitext_hrm" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
