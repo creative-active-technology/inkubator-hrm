@@ -108,7 +108,7 @@
                                                 <h:outputLink id="izinId" value="#">
                                                     <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
-                                                <h:outputLabel value="#{appmsg['menu.permit_and_disease']}" styleClass="label_quick"/>
+                                                <h:outputLabel value="#{appmsg['home.permit_and_sick']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
 
@@ -129,7 +129,7 @@
                     <p:row>
                         <p:column style="width: 95%" colspan="3">
                             <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
-                                <p:tab id="tab31" title="Request History">  
+                                <p:tab id="tab31" title="#{appmsg['home.request_history']}">  
                                     <p:dataTable value="#{homeApproalActivityController.requestHistory}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" id="tablePendingId" >
                                         <p:column style="text-align: center;width: 10px">
                                             <f:facet name="header">  
@@ -139,13 +139,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Request Name" />
+                                                <h:outputText value="#{appmsg['home.request_name']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvalDefinition.name}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Tanggal Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_date']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.requestTime}" >
                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -153,13 +153,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="No Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_no']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.activityNumber}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Approver By" />
+                                                <h:outputText value="#{appmsg['home.approved_by']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvedBy}" />
                                         </p:column>
@@ -173,7 +173,7 @@
                                         </p:column>
                                         <p:column style="text-align: center" >
                                             <f:facet name="header" >  
-                                                <h:outputText value="Aksi" />
+                                                <h:outputText value="#{appmsg['home.action']}" />
                                             </f:facet>
                                             <p:commandLink action="#{homeApproalActivityController.doDetailRequestHistory()}"
                                                            title="Detail Request" ajax="true" rendered="#{approval.approvalStatus != 4}">  
@@ -184,7 +184,7 @@
                                         </p:column>
                                     </p:dataTable>
                                 </p:tab>  
-                                <p:tab id="tba11" title="Pending Task">  
+                                <p:tab id="tba11" title="#{appmsg['home.pending_task']}">  
                                     <p:dataTable value="#{homeApproalActivityController.pendingTask}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
                                         <p:column style="text-align: center;width: 10px">
                                             <f:facet name="header">  
@@ -194,13 +194,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Request Name" />
+                                                <h:outputText value="#{appmsg['home.request_name']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvalDefinition.name}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Tanggal Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_date']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.requestTime}" >
                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -208,13 +208,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="No Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_no']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.activityNumber}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Request By" />
+                                                <h:outputText value="#{appmsg['home.request_by']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.requestBy}" />
                                         </p:column>
@@ -228,11 +228,11 @@
                                         </p:column>
                                         <p:column style="text-align: center" >
                                             <f:facet name="header" >  
-                                                <h:outputText value="Aksi" />
+                                                <h:outputText value="#{appmsg['home.action']}" />
                                             </f:facet>
                                             <p:commandLink action="#{homeApproalActivityController.doApprove()}" id="approveId"
-                                                           title="Persetujuan" ajax="true" >  
-                                                <h:outputText value="Persetujuan" />
+                                                           title="#{appmsg['home.approval']}" ajax="true" >  
+                                                <h:outputText value="#{appmsg['home.approval']}" />
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
                                         </p:column>
@@ -240,7 +240,7 @@
 
                                 </p:tab>  
 
-                                <p:tab id="tab21" title="Pending Request">  
+                                <p:tab id="tab21" title="#{appmsg['home.pending_request']}">  
                                     <p:dataTable value="#{homeApproalActivityController.pendingRequest}"  rowIndexVar="no" var="approval" styleClass="grid_border_table" style="margin-bottom: 5px" >
                                         <p:column style="text-align: center;width: 10px">
                                             <f:facet name="header">  
@@ -250,13 +250,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Request Name" />
+                                                <h:outputText value="#{appmsg['home.request_name']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvalDefinition.name}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Tanggal Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_date']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.requestTime}" >
                                                 <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -264,13 +264,13 @@
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="No Pengajuan" />
+                                                <h:outputText value="#{appmsg['home.request_no']}}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.activityNumber}" />
                                         </p:column>
                                         <p:column >
                                             <f:facet name="header">  
-                                                <h:outputText value="Approver By" />
+                                                <h:outputText value="#{appmsg['home.approved_by']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{approval.approvedBy}" />
                                         </p:column>
@@ -284,16 +284,16 @@
                                         </p:column>
                                         <p:column style="text-align: center" >
                                             <f:facet name="header" >  
-                                                <h:outputText value="Aksi" />
+                                                <h:outputText value="#{appmsg['home.action']}" />
                                             </f:facet>
                                             <p:commandLink action="#{homeApproalActivityController.doDetailRequestPending()}"
-                                                           title="Detail Request" ajax="true">  
+                                                           title="#{appmsg['home.detail_request']}" ajax="true">  
                                                 <h:outputText value="Detail"/>
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
                                             -
                                             <p:commandLink action="#{homeApproalActivityController.doApprove()}"
-                                                           title="Cancel Request" ajax="true">  
+                                                           title="#{appmsg['home.cancel_request']}" ajax="true">  
                                                 <h:outputText value="Cancel"/>
                                                 <f:setPropertyActionListener value="#{approval}" target="#{homeApproalActivityController.selectedApprovalActivity}" />   
                                             </p:commandLink>
@@ -337,9 +337,9 @@
                         <p:column style="width: 70%;color: #990000" colspan="2">                        	
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 250px" >
                                 <h:panelGrid style="margin-bottom: 3px" columns="2">
-                                    <p:outputLabel value="History Kehadiran Karyawan"  styleClass="header_big"  />
+                                    <p:outputLabel value="#{appmsg['home.employee_attendance_history']}"  styleClass="header_big"  />
                                     <p:outputLabel value=" "  styleClass="header_big"  />
-                                    <p:outputLabel value="Pada Setiap Departement (Update Data Per Week)" styleClass="header_small_no_bold" />                                    
+                                    <p:outputLabel value="#{appmsg['home.on_each_department']}" styleClass="header_small_no_bold" />                                    
                                 </h:panelGrid>
                                 <p:barChart id="basic" value="#{homeDashboardController.persentasiKehadiranPerWeek}" legendPosition="ne"  stacked="false" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc"   animate="false"
                                             showDatatip="true"  legendCols="6" max="150" min="0"
@@ -381,8 +381,8 @@
                             <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px; height: 230px;">
                                 <h:panelGrid style="margin-bottom: 3px" columns="2">
 
-                                    <p:outputLabel value="Data Statistik Absensi" styleClass="header_big" />
-                                    <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-270px !important;font-style:italic"/>
+                                    <p:outputLabel value="#{appmsg['home.attendance_statistic']}" styleClass="header_big" />
+                                    <!--<p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-270px !important;font-style:italic"/>-->
                                 </h:panelGrid>
                                 <h:panelGroup  layout="block" style="margin-bottom: 8px">
                                     <div align="center" style="margin-top: 25px;margin-bottom: 35px">
@@ -391,7 +391,7 @@
                                                 <p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: left">
-                                                        <h:outputLabel value="Cuti" styleClass="header_big"/>
+                                                        <h:outputLabel value="#{appmsg['empAttendance.leave']}" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
@@ -401,7 +401,7 @@
                                                 <p:graphicImage library="images" name="nurse2.png"  cache="true" height="64" width="64"  /> 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
-                                                        <h:outputLabel value="Sakit" styleClass="header_big"/>
+                                                        <h:outputLabel value="#{appmsg['empAttendance.sick']}" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
@@ -411,7 +411,7 @@
                                                 <p:graphicImage library="images" name="permit_absen.png"  cache="true" height="64" width="64"  /> 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
-                                                        <h:outputLabel value="Izin" styleClass="header_big"/>
+                                                        <h:outputLabel value="#{appmsg['empAttendance.permit']}" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
@@ -421,7 +421,7 @@
                                                 <p:graphicImage library="images" name="alpha.png"  cache="true" height="64" width="64"  /> 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
-                                                        <h:outputLabel value="Alpha" styleClass="header_big"/>
+                                                        <h:outputLabel value="#{appmsg['home.alpa']}" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
@@ -431,7 +431,7 @@
                                                 <p:graphicImage library="images" name="people_run.png"  cache="true" height="64" width="64"  /> 
                                                 <h:panelGroup layout="block">
                                                     <h:panelGrid columns="3" style="text-align: center">
-                                                        <h:outputLabel value="Terlambat" styleClass="header_big"/>
+                                                        <h:outputLabel value="#{appmsg['home.late']}" styleClass="header_big"/>
                                                         <h:outputLabel value=":" styleClass="header_big"/>
                                                         <h:outputLabel value="3" styleClass="header_big"/>
                                                     </h:panelGrid>
@@ -446,7 +446,7 @@
                         <p:column style="width: 25%;color: #990099">
                             <p:panel style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 231px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="My Favorite Menu" styleClass="header_big" />
+                                    <p:outputLabel value="Favorite Menu" styleClass="header_big" />
                                 </h:panelGrid>
                                 <p:dataTable value="#{homeFavoriteMenuController.favoriteMenus}"  rowIndexVar="no" var="favoriteMenu" styleClass="grid_border_table" style="margin-bottom: 5px" >
                                     <p:column style="text-align: center;width: 10px">
@@ -470,7 +470,7 @@
                         <p:column style="width: 25%;color: #990099">
                             <p:panel style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 240px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['home.employees_distribution']}" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
                                         <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByAge}" style="margin-left:-8px;" styleClass="header_small_no_bold">
@@ -487,7 +487,7 @@
                         <p:column style="width: 53%;color: #990000">
                             <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px;height: 240px;">
                                 <h:panelGrid style="margin-bottom: 3px" columns="2">
-                                    <p:outputLabel value="Presensi Absen Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['home.employees_attendace_presentation']}" styleClass="header_big" />
                                     <p:outputLabel value=" "  styleClass="header_big"  />
                                     <p:outputLabel value="Minggu Ke 3 Juni 2014 (Data Update per Hari)" styleClass="header_small_no_bold" />
                                     <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-155px !important;font-style:italic"/>
@@ -502,7 +502,7 @@
                         <p:column style="width: 25%">
                             <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 240px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Distribusi Karyawan" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['home.employees_distribution']}" styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
                                         <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByGender}" style="margin-left:-8px;" styleClass="header_small_no_bold">
@@ -539,34 +539,34 @@
                         <p:column style="width: 25%">
                             <p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 242px;"> 
                                 <h:panelGrid style="margin-bottom: 3px">                                    
-                                    <p:outputLabel value="Resume Data Karyawan" styleClass="header_big" />
-                                    <p:outputLabel value="Statistik Informasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['home.employee_resume_data']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['home.statistic_information']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                                 <h:panelGrid columns="3">
-                                    <p:outputLabel value="Karyawan"  styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['employee.employee']}"  styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.totalEmployee} Orang" styleClass="isitext_hrm" />
 
-                                    <p:outputLabel value="Cuti Hari Ini" styleClass="label_hrm" />
+                                    <p:outputLabel value="#{appmsg['home.todays_leave']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayLeave} Orang" styleClass="isitext_hrm" />
 
-                                    <p:outputLabel value="Jumlah Dinas Hari Ini" styleClass="label_hrm" />
+                                    <p:outputLabel value="#{appmsg['home.on_duty_total_today']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayBusinessTravel} Orang" styleClass="isitext_hrm" />
 
-                                    <p:outputLabel value="Kehadiran Kemarin" styleClass="label_hrm" />
+                                    <p:outputLabel value="#{appmsg['home.yesterday_attendance']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.yesterdayAttendance} %" styleClass="isitext_hrm" />
 
-                                    <p:outputLabel value="Perkiraan Kehadiran Hari Ini" styleClass="label_hrm" />
+                                    <p:outputLabel value="#{appmsg['home.today_attendance_estimation']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayAttendance} %" styleClass="isitext_hrm" />
                                 </h:panelGrid>
 
                                 <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: px"/>
                                 <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
-                                    <p:outputLabel value="Karyawan Ulang Tahun Terdekat" styleClass="header_small_no_bold"/>
+                                    <p:outputLabel value="#{appmsg['home.nearest_birthdate']}" styleClass="header_small_no_bold"/>
                                     <p:outputLabel value="#{homeDashboardController.employeeResumeModel.nearestBirthday}"  styleClass="header_big"/>
                                 </h:panelGrid>
 
@@ -575,7 +575,7 @@
                         <p:column style="width: 53% !important;color: #006666">
                             <p:panel  style="margin-left: 0px;margin-right: 0px;margin-top: 10px">
                                 <h:panelGrid style="margin-bottom: 3px">
-                                    <p:outputLabel value="Distribusi Karyawan"  styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['home.employees_distribution']}"  styleClass="header_big" />
                                     <h:panelGrid columns="2" style="margin-left:-6px;">
                                         <p:outputLabel value="Updated :" styleClass="header_small_no_bold" />
                                         <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByDepartment}" style="margin-left:-8px;" styleClass="header_small_no_bold">
