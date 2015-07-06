@@ -54,7 +54,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
         
          return getCurrentSession().createQuery(query.toString())
-                    .setParameter("wtPeriodId", wtPeriodId.intValue())                   
+                    .setParameter("wtPeriodId", wtPeriodId)                   
                     .setMaxResults(maxResults).setFirstResult(firstResult)                
                     .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
                     .list();
@@ -67,7 +67,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
         
           Query hbm = getCurrentSession().createQuery(query.toString())
-                        .setParameter("wtPeriodId", wtPeriodId.intValue());
+                        .setParameter("wtPeriodId", wtPeriodId);
         return Long.valueOf(hbm.uniqueResult().toString());
     }
 
