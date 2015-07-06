@@ -261,7 +261,7 @@ public class FingerSwapCapturedServiceImpl extends IServiceImpl implements Finge
 			fingerSwapCaptured.setDataSource(0);
 			fingerSwapCaptured.setIsAlreadyProcessed(Boolean.FALSE);
 			fingerSwapCaptured.setCreatedBy(model.getCreatedBy());
-			fingerSwapCaptured.setCreatedOn(new Date());
+			fingerSwapCaptured.setCreatedOn(model.getCreatedOn());
 			fingerSwapCapturedDao.save(fingerSwapCaptured);	
 			
 		} catch (ParseException e) {
