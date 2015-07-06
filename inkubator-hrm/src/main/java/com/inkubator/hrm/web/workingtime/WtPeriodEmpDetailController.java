@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.workingtime;
 
 import com.inkubator.hrm.web.payroll.*;
+
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,9 +31,11 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.FingerSwapCapturedService;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
+import com.inkubator.hrm.service.TempProcessReadFingerService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.LogAttendanceRealizationVmLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
@@ -45,7 +48,9 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.text.SimpleDateFormat;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -61,6 +66,10 @@ public class WtPeriodEmpDetailController extends BaseController {
     private TempAttendanceRealizationService tempAttendanceRealizationService;     
     @ManagedProperty(value = "#{logWtAttendanceRealizationService}")
     private LogWtAttendanceRealizationService logWtAttendanceRealizationService;  
+    @ManagedProperty(value = "#{fingerSwapCapturedService}")
+    private FingerSwapCapturedService fingerSwapCapturedService;  
+    @ManagedProperty(value = "#{tempProcessReadFingerService}")
+    private TempProcessReadFingerService tempProcessReadFingerService;
     @ManagedProperty(value = "#{jobLauncherAsync}")
     private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobTempAttendanceRealizationCalculation}")
@@ -76,8 +85,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     private Integer progress;
     private Date payrollCalculationDate;
     private JobExecution jobExecution;
-    private WtPeriode wtPeriodePayroll;
-    private WtPeriode wtPeriodeAbsen;
+   
 
     @PostConstruct
     @Override
@@ -91,13 +99,7 @@ public class WtPeriodEmpDetailController extends BaseController {
             model = wtPeriodeService.getWtPeriodEmpByWtPeriodId(periodeId);          
             SimpleDateFormat  dateFormat = new SimpleDateFormat("MMMM yyyy");
             
-            wtPeriodePayroll = wtPeriodeService.getEntityByPayrollTypeActive();
-            wtPeriodeAbsen = wtPeriodeService.getEntityByAbsentTypeActive();
-            
-            if (wtPeriodePayroll != null) {
-//                payTempKalkulasiModel.setStartDate(wtPeriodePayroll.getFromPeriode());
-//                payTempKalkulasiModel.setEndDate(wtPeriodePayroll.getUntilPeriode());
-            }
+           
         } catch (Exception ex) {
             Logger.getLogger(WtPeriodEmpDetailController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,8 +116,7 @@ public class WtPeriodEmpDetailController extends BaseController {
         payrollCalculationDate = null;
         jobLauncherAsync = null;
         jobExecution = null;
-        wtPeriodePayroll = null;
-        wtPeriodeAbsen = null;
+        
     }
 
     public void doSearch() {
@@ -177,12 +178,27 @@ public class WtPeriodEmpDetailController extends BaseController {
     
     public void doInitCalculateAttendanceRealization(){
     	try {
+    		
 			if(empDataService.isEmpDataWithNullWtGroupWorkingExist()) {
 				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_emp_with_null_wt_group_working_found",
 			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				FacesContext.getCurrentInstance().validationFailed();
 			}
+			
+			if (fingerSwapCapturedService.isDataSwapOnPeriodDateStillEmpty(model.getFromPeriode(), model.getUntilPeriode())) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR,"global.error","workingTime.attendance_realization_calc_error_finger_swap_captured_still_empty",
+					FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+
+			if (tempProcessReadFingerService.isDataTempProcessReadFingerOnPeriodDateStillEmpty(model.getFromPeriode(), model.getUntilPeriode())) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR,"global.error","workingTime.attendance_realization_calc_error_temp_process_read_finger_still_empty",
+					FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			
 			progress=0;
+			
 		} catch (Exception e) {
 			LOGGER.error("Error ", e);
 		}
@@ -273,23 +289,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     public void setProgress(Integer progress) {
         this.progress = progress;
     }
-
-	public WtPeriode getWtPeriodePayroll() {
-		return wtPeriodePayroll;
-	}
-
-	public void setWtPeriodePayroll(WtPeriode wtPeriodePayroll) {
-		this.wtPeriodePayroll = wtPeriodePayroll;
-	}
-
-	public WtPeriode getWtPeriodeAbsen() {
-		return wtPeriodeAbsen;
-	}
-
-	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
-		this.wtPeriodeAbsen = wtPeriodeAbsen;
-	}
-
+	
     public WtPeriodEmpViewModel getModel() {
         return model;
     }
@@ -305,7 +305,15 @@ public class WtPeriodEmpDetailController extends BaseController {
 	public void setEmpDataService(EmpDataService empDataService) {
 		this.empDataService = empDataService;
 	}
+
+	public void setFingerSwapCapturedService(FingerSwapCapturedService fingerSwapCapturedService) {
+		this.fingerSwapCapturedService = fingerSwapCapturedService;
+	}
+
+	public void setTempProcessReadFingerService(TempProcessReadFingerService tempProcessReadFingerService) {
+		this.tempProcessReadFingerService = tempProcessReadFingerService;
+	}
         
-        
+    
     
 }

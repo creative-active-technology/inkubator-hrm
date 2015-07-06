@@ -1,6 +1,7 @@
 
 package com.inkubator.hrm.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -23,4 +24,5 @@ public interface FingerSwapCapturedService extends IService<FingerSwapCaptured> 
 	
 	public void executeBatchProcess(FingerSwapCapturedBatchModel model) throws Exception;
 	
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception;
 }
