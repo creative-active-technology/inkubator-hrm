@@ -85,9 +85,13 @@ public class BioDataFormController extends BaseController {
                 isEdit = Boolean.TRUE;
                 BioData selectedBioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioId.substring(1)));
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
-                bioDataModel.setCityid(selectedBioData.getCity().getId());
+                if(selectedBioData.getCity() != null){
+                    bioDataModel.setCityid(selectedBioData.getCity().getId());
+                }
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
-                bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
+                if(selectedBioData.getDialect() != null){
+                    bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
+                }
                 bioDataModel.setFirstName(selectedBioData.getFirstName());
                 bioDataModel.setGender(selectedBioData.getGender());
                 bioDataModel.setId(selectedBioData.getId());
@@ -95,7 +99,9 @@ public class BioDataFormController extends BaseController {
                 bioDataModel.setLastName(selectedBioData.getLastName());
                 bioDataModel.setMaritalStatusId(selectedBioData.getMaritalStatus().getId());
                 bioDataModel.setMobilePhone(selectedBioData.getMobilePhone());
-                bioDataModel.setNationalitiId(selectedBioData.getNationality().getId());
+                if(selectedBioData.getNationality() != null){
+                    bioDataModel.setNationalitiId(selectedBioData.getNationality().getId());
+                }
                 bioDataModel.setNickname(selectedBioData.getNickname());
                 bioDataModel.setNoKK(selectedBioData.getNoKK());
                 bioDataModel.setNpwp(selectedBioData.getNpwp());
@@ -103,7 +109,9 @@ public class BioDataFormController extends BaseController {
                 bioDataModel.setPathFoto(selectedBioData.getPathFoto());
                 bioDataModel.setPathSignature(selectedBioData.getPathSignature());
                 bioDataModel.setPersonalEmail(selectedBioData.getPersonalEmail());
-                bioDataModel.setRaceId(selectedBioData.getRace().getId());
+                if(selectedBioData.getRace() != null){
+                    bioDataModel.setRaceId(selectedBioData.getRace().getId());
+                }
                 bioDataModel.setReligionId(selectedBioData.getReligion().getId());
                 bioDataModel.setTitle(selectedBioData.getTitle());
                 String fotoPath = StringUtils.reverse(bioDataModel.getPathFoto());

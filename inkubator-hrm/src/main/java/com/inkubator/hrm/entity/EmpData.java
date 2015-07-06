@@ -634,7 +634,7 @@ public class EmpData implements java.io.Serializable {
         String message = "";
         ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
         if(ptkpNumber == null){
-            message = messages.getString("global.no_dependent");
+            message = "";
         }else if(ptkpNumber == 0){
             message = messages.getString("global.no_dependent");
         }else{

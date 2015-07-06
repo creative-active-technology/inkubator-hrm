@@ -264,4 +264,9 @@ public class LogMonthEndTaxesServiceImpl extends IServiceImpl implements LogMont
         return file;
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Long getTotalDataByParam(LogMonthEndTaxesSearchParameter searchParameter) throws Exception {
+        return logMonthEndTaxesDao.getTotalDataByParam(searchParameter);
+    }
 }
