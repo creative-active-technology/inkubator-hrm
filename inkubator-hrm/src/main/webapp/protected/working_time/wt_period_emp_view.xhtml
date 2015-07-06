@@ -70,7 +70,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="fromPeriode"  style="width: 15%">
+                            <p:column  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workingTime.start_period']}"/>
                                 </f:facet>
@@ -78,7 +78,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>  
-                            <p:column sortBy="#{data.name}"  style="width: 15%">
+                            <p:column style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workingTime.end_period']}"/>
                                 </f:facet>
@@ -86,19 +86,19 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="totalEmpData"  style="width: 15%">
+                            <p:column  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_karyawan']}" />
                                 </f:facet>
                                 <h:outputLabel value= "#{data.totalEmpData}"/>
                             </p:column>
-                            <p:column sortBy="totalWorkingGroup"  style="width: 15%">
+                            <p:column  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['workingTime.total_working_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.totalWorkingGroup}"/>
                             </p:column>    
-                            <p:column sortBy="status"  style="width: 15%">
+                            <p:column  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['batchJobExecution.status']}" />                                       
                                 </f:facet>
