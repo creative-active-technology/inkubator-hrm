@@ -16,7 +16,7 @@ public class EmpDataSearchParameter extends SearchParameter {
 
     private String NIK;
     private String name;
-//    private Date joinDate;
+    private String workingGroupName;
     private String jabatanKode;
     private String jabatanName;
 
@@ -46,15 +46,21 @@ public class EmpDataSearchParameter extends SearchParameter {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public String getWorkingGroupName() {
+    	if (StringUtils.equalsIgnoreCase(getKeyParam(), "workingGroupName")) {
+    		workingGroupName = getParameter();
+        } else {
+        	workingGroupName = null;
+        }
+        return workingGroupName;
+	}
 
-//    public Date getJoinDate() {
-//        return joinDate;
-//    }
-//
-//    public void setJoinDate(Date joinDate) {
-//        this.joinDate = joinDate;
-//    }
-    public String getJabatanKode() {
+	public void setWorkingGroupName(String workingGroupName) {
+		this.workingGroupName = workingGroupName;
+	}
+
+	public String getJabatanKode() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "jabatanKode")) {
             jabatanKode = getParameter();
         } else {

@@ -161,9 +161,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<EmpData> getAllDataByParam(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchEmpDataByParam(searchParameter, criteria);
+        doSearchByParam(companyId, searchParameter, criteria);
         criteria.addOrder(order);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
@@ -186,20 +186,20 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) {
+    public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchEmpDataByParam(searchParameter, criteria);
+        doSearchByParam(companyId, searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-    private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+    private void doSearchByParam(Long companyId, EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
 
         /**
          * automatically get relations of jabatanByJabatanId, department,
          * company don't create alias for that entity, or will get error :
          * duplicate association path
          */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
         if (dataSearchParameter.getJabatanKode() != null) {
@@ -2023,4 +2023,46 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         
         return criteria.list();
 	}
+	
+	@Override
+    public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParam(EmpDataSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        
+        if (dataSearchParameter.getJabatanKode() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+        }
+        if (dataSearchParameter.getJabatanName() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        }
+        if (dataSearchParameter.getWorkingGroupName() != null) {
+            criteria.add(Restrictions.like("wtGroupWorking.name", dataSearchParameter.getWorkingGroupName(), MatchMode.ANYWHERE));
+        }
+        if (dataSearchParameter.getNIK() != null) {
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
+        }
+        if (dataSearchParameter.getName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+    }
 }
