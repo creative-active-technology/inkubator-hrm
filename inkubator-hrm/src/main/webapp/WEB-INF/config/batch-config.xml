@@ -286,10 +286,10 @@
     
      <!-- Job Calculation of Emp Attendance Realization  -->
      <batch:job id="jobTempAttendanceRealizationCalculation">
-        <batch:step id="stepJobTempAttendanceRealizationCalculation_1" >
-            <batch:tasklet >                
+        <batch:step id="stepJobTempAttendanceRealizationCalculation_1">
+            <batch:tasklet>                
                 <batch:chunk reader="customTempAttendanceRealizationCalculationItemReader" processor="customTempAttendanceRealizationCalculationItemProcessor"
-                 writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/> 
+                 writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
             </batch:tasklet>
         </batch:step>
         <!-- add job execution listener  -->
@@ -330,7 +330,6 @@
 	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
 		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
 	</bean>
-	
 	<bean id="fingerSwapCapturedDownloadXmlJobListener" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlJobListener" lazy-init="true">
 		<property name="mecineFingerService" ref="mecineFingerService"/>			
 	</bean>
@@ -616,6 +615,8 @@
 	</bean>	
 	<bean id="customFingerSwapCapturedDownloadXmlItemProcessor" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlProcessor" scope="step" lazy-init="true">
         <property name="machineId" value="#{jobParameters['machineId']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
     <bean id="customFingerSwapCapturedItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="fingerSwapCapturedService" />
@@ -915,7 +916,7 @@
     	<constructor-arg name="empDataService" ref="empDataService"/>
         <constructor-arg name="periodUntillDate"  value="#{jobParameters['periodUntillDate']}"></constructor-arg>      
     </bean>	
-    <bean id="customTempAttendanceRealizationCalculationItemProcessor"  class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationProcessor" scope="step" lazy-init="true">
+    <bean id="customTempAttendanceRealizationCalculationItemProcessor" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationProcessor" scope="step" lazy-init="true">
     	<constructor-arg name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>
     	<property name="wtPeriodId" value="#{jobParameters['wtPeriodId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
