@@ -46,9 +46,13 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Map<String, Long> getTotalByDepartment(Long companyId) throws Exception;
 
-    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<EmpData> getAllDataByParam(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception;
+    public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter) throws Exception;
+    
+    public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+	public Long getTotalByParam(EmpDataSearchParameter searchParameter) throws Exception;
 
     public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order) throws Exception;
 

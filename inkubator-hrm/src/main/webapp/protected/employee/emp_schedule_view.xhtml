@@ -29,12 +29,13 @@
                     <p:separator/>
                     <p:growl id="empDataGrowlId" globalOnly="true" showDetail="true" />
                     <h:form id="userViewId">
+                        <p:focus for="pencarianId" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{employeeViewController.empDataSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
@@ -42,31 +43,25 @@
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{employeeViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empDataViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{employeeViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
-
-
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
+                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Schedule"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['workschedule.work_schedule_synchronously']}" action="#{empDataViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
-
-                                    
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                    <p:commandButton value="#{appmsg['workschedule.work_schedule_synchronously']}" action="#{employeeViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{employeeViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
-
                         </p:toolbar>
-                        <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="empViewData"  value="#{employeeViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -107,20 +102,20 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
 
                                 <p:commandButton  icon="ui-icon-calendar" title="#{appmsg['employeeschedule.work_schedule']}" label="#{appmsg['employeeschedule.work_schedule']}" value="#{appmsg['employeeschedule.work_schedule']}" style="font-size: 10px!important" 
-                                                  action="#{empDataViewController.doEmployeeTimeSchedule()}" >
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
-                                    <p:ajax event="dialogReturn" listener="#{empDataViewController.onDialogReturn}"  update="tableEmpDataId"/>
+                                                  action="#{employeeViewController.doEmployeeTimeSchedule()}" >
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{employeeViewController.selectedEmpData}" />
+                                    <p:ajax event="dialogReturn" listener="#{employeeViewController.onDialogReturn}"  update="tableEmpDataId"/>
                                 </p:commandButton> 
                                 -
                                 <p:commandButton  icon="ui-icon-contact" title="#{appmsg['employeeschedule.detail_schedule']}" label="#{appmsg['employeeschedule.detail_schedule']}" value="#{appmsg['employeeschedule.detail_schedule']}" style="font-size: 10px!important" 
-                                                  action="#{empDataViewController.doDetailShedule()}"  disabled="#{empViewData.sheduleDisable}">
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
+                                                  action="#{employeeViewController.doDetailShedule()}"  disabled="#{empViewData.sheduleDisable}">
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{employeeViewController.selectedEmpData}" />
 
                                 </p:commandButton> 
                             </p:column>          
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{empDataViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{employeeViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
@@ -128,7 +123,7 @@
                         <!-- 
                                 hide datatable, used for reporting expand 
                         -->
-                        <p:dataTable  var="empViewData" rendered="false"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="empViewData" rendered="false"  value="#{employeeViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataIdExpand" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -240,42 +235,10 @@
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
                             </h:panelGrid>
                         </p:blockUI>
-
                     </h:form>
-                    <!--</p:panel>-->
                 </div>
-                <p:dialog widgetVar="confirmDialogEmpData" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
-                          appendTo="@(body)" resizable="false" id="confirmDialogHrmRoleId" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <h:form id="deleteDialogEmpDataId">
-                        <div align="center">
-                            <div align="center">
-                                <h:panelGrid columns="2" style="text-align: justify">
-                                    <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                    <h:panelGroup>
-                                        <h:panelGrid style="text-align: center">
-                                            <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                        </h:panelGrid>
-                                    </h:panelGroup>
-                                </h:panelGrid>
-                            </div>
-                            <h:panelGrid  columns="3">
-                                <p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/>
-                                <p:outputLabel value=":"  styleClass="label_hrm" />
-                                <p:outputLabel value="#{empDataViewController.selectedEmpData.bioData.firstName} #{empDataViewController.selectedEmpData.bioData.lastName}" styleClass="isitext_hrm"/>
-                            </h:panelGrid>
-                            <p:separator/>
-                            <p:commandButton value="#{appmsg['global.yes']}" action="#{empDataViewController.doDelete()}" update=":userViewId,:empDataGrowlId" id="yesId" title="#{appmsg['global.yes']}" styleClass="isitext_hrm"
-                                             oncomplete="PF('confirmDialogEmpData').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                            <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('confirmDialogEmpData').hide()" icon="ui-icon-close" title="#{appmsg['global.no']}"  styleClass="isitext_hrm"/>
-
-                        </div>
-                    </h:form>
-                </p:dialog>
-
             </ui:define>
-
         </ui:composition>
-
     </h:body>
 </html>
 

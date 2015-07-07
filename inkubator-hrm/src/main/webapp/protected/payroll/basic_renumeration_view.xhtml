@@ -34,7 +34,7 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:selectOneMenu id="pencarianSelectId" value="#{empDataViewController.empDataSearchParameter.keyParam}"
+                                    <p:selectOneMenu id="pencarianSelectId" value="#{employeeViewController.empDataSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="NIK"/>
@@ -42,9 +42,9 @@
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_code']}" itemValue="jabatanKode" />
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatanName" />
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{empDataViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                    <p:inputText value="#{employeeViewController.empDataSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
                                                  label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
-                                    <p:commandButton value="#{appmsg['global.search']}" action="#{empDataViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
+                                    <p:commandButton value="#{appmsg['global.search']}" action="#{employeeViewController.doSearch()}" style="width: 75px" update="tableEmpDataId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -53,11 +53,11 @@
 <!--                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{empDataViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{employeeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-document"
                                                      styleClass="label_button" ajax="true" immediate="true">
 
                                     </p:commandButton>-->
-                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
+                                    <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{employeeViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -65,7 +65,7 @@
                         </p:toolbar>
                         <p:focus for="pencarianId" />
 
-                        <p:dataTable  var="empViewData"  value="#{empDataViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                        <p:dataTable  var="empViewData"  value="#{employeeViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -119,14 +119,14 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center;" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                  action="#{empDataViewController.doDetailRenumeration()}" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{empViewData}" target="#{empDataViewController.selectedEmpData}" />
+                                                  action="#{employeeViewController.doDetailRenumeration()}" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{empViewData}" target="#{employeeViewController.selectedEmpData}" />
                                 </p:commandButton>
 
                             </p:column>          
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
-                                <p:outputLabel value="#{empDataViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{employeeViewController.empDataLazyDataModel.rowCount}" styleClass="label_hrm"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
