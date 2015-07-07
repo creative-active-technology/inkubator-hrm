@@ -615,6 +615,8 @@
 	</bean>	
 	<bean id="customFingerSwapCapturedDownloadXmlItemProcessor" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlProcessor" scope="step" lazy-init="true">
         <property name="machineId" value="#{jobParameters['machineId']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
     <bean id="customFingerSwapCapturedItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="fingerSwapCapturedService" />
