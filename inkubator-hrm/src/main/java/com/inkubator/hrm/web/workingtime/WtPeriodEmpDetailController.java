@@ -5,9 +5,11 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.web.payroll.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +23,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.LazyDataModel;
 import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -160,7 +163,12 @@ public class WtPeriodEmpDetailController extends BaseController {
 	            	}
 	            }
 	            
-	        } catch (Exception ex) {
+	        } catch (BussinessException ex) {
+	        	jobExecution.setExitStatus(ExitStatus.FAILED);
+	        	jobExecution.setStatus(BatchStatus.FAILED);
+	        	jobExecution.addFailureException(ex);
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }catch (Exception ex) {
 	            LOGGER.error("Error ", ex);
 	        }
     	}
@@ -173,6 +181,23 @@ public class WtPeriodEmpDetailController extends BaseController {
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "workingTime.attendance_realization_calc_process_succesfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    	} else {
+	    		
+	    		final List<Throwable> exceptions = jobExecution.getAllFailureExceptions();
+                for (final Throwable throwable : exceptions) {
+                	
+                	if (throwable instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable;
+                		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", bussinessException.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    }
+                	
+                	if (throwable.getCause() instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable.getCause();
+                		MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", bussinessException.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    }
+                	
+                	
+                }
+	    		
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_process_failed",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		FacesContext.getCurrentInstance().validationFailed();

@@ -11,18 +11,22 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
+import com.inkubator.hrm.dao.WtHitungLemburDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
 import com.inkubator.hrm.entity.ApprovalDefinitionOT;
 import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
 import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.entity.WtHitungLembur;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.WtOverTimeService;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -45,6 +49,8 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     private ApprovalDefinitionDao approvalDefinitionDao;
     @Autowired
     private ApprovalDefinitionOTDao approvalDefinitionOTDao;
+    @Autowired
+    private WtHitungLemburDao wtHitungLemburDao;
     
     @Override
     public WtOverTime getEntiyByPK(String id) throws Exception {
@@ -260,6 +266,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         /** validasi approval definition conf */
         super.validateApprovalConf(appDefs);
         
+        WtHitungLembur wtHitungLembur = wtHitungLemburDao.getEntiyByPK(entity.getWtHitungLembur().getId());
+        entity.setWtHitungLembur(wtHitungLembur);
+        
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -278,8 +287,11 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         
         /** validasi approval definition conf */
         super.validateApprovalConf(appDefs);	
-                
+        
+        WtHitungLembur wtHitungLembur = wtHitungLemburDao.getEntiyByPK(entity.getWtHitungLembur().getId());
         WtOverTime overTime=this.wtOverTimeDao.getEntiyByPK(entity.getId());
+        
+        overTime.setWtHitungLembur(wtHitungLembur);
         overTime.setCode(entity.getCode());
         overTime.setDescription(entity.getDescription());
         overTime.setFinishTimeFactor(entity.getFinishTimeFactor());

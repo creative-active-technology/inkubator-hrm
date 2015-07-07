@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -28,10 +29,17 @@ public class WtHitungLemburJamDaoImpl extends IDAOImpl<WtHitungLemburJam> implem
 	@Override
 	public List<WtHitungLemburJam> getListByWtHitungLemburId(Long wtHitungLemburId) {
 		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("wtHitungLembur.id", wtHitungLemburId));        
-        return criteria.list();
+		try {
+			System.out.println("masuk WtHitungLemburJamDaoImpl, getListByWtHitungLemburId, wtHitungLemburId : " + wtHitungLemburId);
+			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+			criteria.setFetchMode("wtHitungLembur", FetchMode.JOIN);
+			criteria.add(Restrictions.eq("wtHitungLembur.id", wtHitungLemburId));        
+			return criteria.list();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }
