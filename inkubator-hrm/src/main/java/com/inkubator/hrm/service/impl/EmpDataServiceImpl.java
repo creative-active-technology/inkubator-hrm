@@ -746,8 +746,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {
-        return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) throws Exception {
+        return this.empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(companyId, date);
 
     }
 
@@ -1246,7 +1246,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {
-		return empDataDao.getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception {
+		return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
 	}
 }

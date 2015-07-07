@@ -936,17 +936,17 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {    	
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) {    	
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
          * company don't create alias for that entity, or will get error :
          * duplicate association path
          */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
-        criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        criteria.add(Restrictions.le("joinDate", date));
         
         return criteria.list();
     }
@@ -2016,10 +2016,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	}
 
 	@Override
-	public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        criteria.add(Restrictions.le("joinDate", date));
         
         return criteria.list();
 	}

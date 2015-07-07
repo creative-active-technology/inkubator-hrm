@@ -103,9 +103,9 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Long getTotalByTaxFreeIsNull() throws Exception;
 
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) throws Exception;
     
-    public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception;
 
     public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 

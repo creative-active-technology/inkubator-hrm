@@ -161,7 +161,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName);
 
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date);
 
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 
@@ -169,7 +169,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);
     
-    public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date);
     
     /* get name only */
     public String getBioDataNameByEmpDataId(Long id);
