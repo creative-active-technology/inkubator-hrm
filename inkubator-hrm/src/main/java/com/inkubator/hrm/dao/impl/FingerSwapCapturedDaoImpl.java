@@ -134,5 +134,13 @@ public class FingerSwapCapturedDaoImpl extends IDAOImpl<FingerSwapCaptured> impl
     	
     	return hbm;
     }
+
+	@Override
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.ge("swapDatetimeLog", startDate));
+        criteria.add(Restrictions.le("swapDatetimeLog", endDate));        
+        return criteria.list().isEmpty();
+	}
 	
 }

@@ -24,8 +24,7 @@ public class TempAttendanceRealizationCalculationReader implements ItemReader<Em
 	
 	public TempAttendanceRealizationCalculationReader(EmpDataService empDataService, Date periodUntillDate) throws Exception{
 		//Populated List Employee Data
-		listEmpData = empDataService.getAllDataNotTerminateAndJoinDateLowerThan(periodUntillDate);
-		
+		listEmpData = empDataService.getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(periodUntillDate);		
 	}
 	
 	@Override

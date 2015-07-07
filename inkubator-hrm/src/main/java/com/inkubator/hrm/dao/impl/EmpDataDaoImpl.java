@@ -1854,8 +1854,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	@Override
 	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);		
 		criteria.add(Restrictions.isNull("wtGroupWorking"));
+		criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+		
 		return !criteria.list().isEmpty();
 	}
 
@@ -2011,5 +2013,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
                 .list();
+	}
+
+	@Override
+	public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.add(Restrictions.le("joinDate", payrollCalculationDate));
+        
+        return criteria.list();
 	}
 }

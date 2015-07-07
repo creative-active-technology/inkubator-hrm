@@ -1243,4 +1243,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         model.setNearestBirthday(nearestBirthday);
         return model;
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception {
+		return empDataDao.getAllDataAllCompanyNotTerminateAndJoinDateLowerThan(payrollCalculationDate);
+	}
 }

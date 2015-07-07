@@ -269,4 +269,10 @@ public class FingerSwapCapturedServiceImpl extends IServiceImpl implements Finge
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception {
+		return fingerSwapCapturedDao.isDataSwapOnPeriodDateStillEmpty(startDate, endDate);
+	}
+
 }
