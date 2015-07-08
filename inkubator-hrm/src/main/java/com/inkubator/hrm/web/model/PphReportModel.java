@@ -20,6 +20,7 @@ public class PphReportModel implements Serializable{
     private Double pph;
     private Double ptkp;
     private Long empDataId;
+    private String departmentName;
 
     public Long getId() {
         return id;
@@ -84,6 +85,14 @@ public class PphReportModel implements Serializable{
     public void setEmpDataId(Long empDataId) {
         this.empDataId = empDataId;
     }
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
     
     
 }
