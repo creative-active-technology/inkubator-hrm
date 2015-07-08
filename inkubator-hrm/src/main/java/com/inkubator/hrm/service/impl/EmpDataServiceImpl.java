@@ -1039,7 +1039,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		
 		/** kehadiran kemarin */
 		Long totalYesterdaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate());
-		Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate());
+		Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalAttendanceByScheduleDate(now.minusDays(1).toDate());
 		BigDecimal yesterdayAttendance = new BigDecimal(0);
 		if(totalYesterdaySchedule!=0 && totalYesterdayAttendance!=0){
 			yesterdayAttendance = new BigDecimal(totalYesterdayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalYesterdaySchedule), 2, RoundingMode.UP);
