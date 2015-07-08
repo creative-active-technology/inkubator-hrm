@@ -18,6 +18,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -31,6 +32,7 @@ import ch.lambdaj.Lambda;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -442,8 +444,11 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
             int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), createdOn);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
-            List<PaySalaryComponent> totalPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
-            for (PaySalaryComponent paySalaryComponent : totalPayComponetNotExcp) {
+            List<PaySalaryComponent> listPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
+            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))){
+            	throw new BussinessException("global.error_user_does_not_have_basic_salary", empData.getNikWithFullName());
+            }
+            for (PaySalaryComponent paySalaryComponent : listPayComponetNotExcp) {
                 if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_UPLOAD)) {
                 	PayTempUploadData payUpload = this.payTempUploadDataDao.getEntityByEmpIdAndComponentId(empData.getId(), paySalaryComponent.getId());
                     if(payUpload != null) {

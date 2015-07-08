@@ -6,6 +6,9 @@
 package com.inkubator.hrm.web.payroll;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +28,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -164,6 +168,29 @@ public class PaySalaryExecuteController extends BaseController {
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "salaryCalculation.calculation_process_succesfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    	} else {
+	    		final List<Throwable> exceptions = jobExecution.getAllFailureExceptions();
+                for (final Throwable throwable : exceptions) {                	
+                	if (throwable instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable;
+                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
+                        FacesUtil.getFacesContext().addMessage(null, msg);
+                        
+                    } else if (throwable.getCause() instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable.getCause();
+                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
+                        FacesUtil.getFacesContext().addMessage(null, msg); 
+                        
+                    } else if (throwable.getCause().getCause() instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable.getCause().getCause();
+                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
+                        FacesUtil.getFacesContext().addMessage(null, msg); 
+                        
+                    }
+                }
+                
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.calculation_process_failed",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		FacesContext.getCurrentInstance().validationFailed();
