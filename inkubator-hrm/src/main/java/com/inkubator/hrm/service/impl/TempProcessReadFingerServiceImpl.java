@@ -543,4 +543,10 @@ public class TempProcessReadFingerServiceImpl extends IServiceImpl implements Te
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception {
+		return tempProcessReadFingerDao.isDataTempProcessReadFingerOnPeriodDateStillEmpty(startDate, endDate);
+	}
+
 }

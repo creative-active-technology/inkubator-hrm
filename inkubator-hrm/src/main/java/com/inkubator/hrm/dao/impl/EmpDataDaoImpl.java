@@ -1202,6 +1202,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);        
         criteria.add(Restrictions.isNull("wtGroupWorking"));        
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return !criteria.list().isEmpty();
 	}
 	

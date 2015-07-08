@@ -261,12 +261,18 @@ public class FingerSwapCapturedServiceImpl extends IServiceImpl implements Finge
 			fingerSwapCaptured.setDataSource(0);
 			fingerSwapCaptured.setIsAlreadyProcessed(Boolean.FALSE);
 			fingerSwapCaptured.setCreatedBy(model.getCreatedBy());
-			fingerSwapCaptured.setCreatedOn(new Date());
+			fingerSwapCaptured.setCreatedOn(model.getCreatedOn());
 			fingerSwapCapturedDao.save(fingerSwapCaptured);	
 			
 		} catch (ParseException e) {
 			LOGGER.error(e.getMessage());
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception {
+		return fingerSwapCapturedDao.isDataSwapOnPeriodDateStillEmpty(startDate, endDate);
 	}
 
 }
