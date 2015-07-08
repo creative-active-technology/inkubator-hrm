@@ -218,4 +218,12 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
         
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+
+	@Override
+	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ge("scheduleDate", startDate));
+		criteria.add(Restrictions.le("scheduleDate", endDate));
+		return criteria.list().isEmpty();
+	}
 }

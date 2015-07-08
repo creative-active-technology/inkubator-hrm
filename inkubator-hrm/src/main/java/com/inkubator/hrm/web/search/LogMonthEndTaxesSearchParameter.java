@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -17,6 +18,11 @@ public class LogMonthEndTaxesSearchParameter extends SearchParameter{
     private String name;
 
     public String getDepartment() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "department")) {
+			department = getParameter();
+		} else {
+			department = null;
+		}
         return department;
     }
 
@@ -25,6 +31,11 @@ public class LogMonthEndTaxesSearchParameter extends SearchParameter{
     }
 
     public String getGoljab() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "goljab")) {
+			goljab = getParameter();
+		} else {
+			goljab = null;
+		}
         return goljab;
     }
 

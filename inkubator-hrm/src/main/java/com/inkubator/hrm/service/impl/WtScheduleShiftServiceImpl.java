@@ -343,20 +343,22 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
 		WtGroupWorking workingGroup = wtGroupWorkingDao.getByCode(HRMConstant.WORKING_GROUP_CODE_DEFAULT);
 		
-		//loop date-nya, check jadwal berdasarkan kelompok kerja		
-		for(Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)){
-			TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
-			if(jadwal == null){
-				//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
-				List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(workingGroup.getId(), loop);
-				tempJadwalKaryawans.addAll(jadwalKaryawans);
-				jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+		//loop date-nya, check jadwal berdasarkan kelompok kerja
+		if(workingGroup != null) {
+			for(Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)){
+				TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+				if(jadwal == null){
+					//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
+					List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(workingGroup.getId(), loop);
+					tempJadwalKaryawans.addAll(jadwalKaryawans);
+					jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+				}
+				
+				//hanya yg "OFF"(hari libur) saja
+				if(StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+					offDays.add(jadwal.getTanggalWaktuKerja());
+				}	
 			}
-			
-			//hanya yg "OFF"(hari libur) saja
-			if(StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
-				offDays.add(jadwal.getTanggalWaktuKerja());
-			}	
 		}
 		
 		//loop holiday nya
