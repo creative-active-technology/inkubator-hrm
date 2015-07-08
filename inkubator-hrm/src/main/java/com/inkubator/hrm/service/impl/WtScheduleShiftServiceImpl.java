@@ -26,12 +26,15 @@ import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.entity.WtScheduleShift;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -39,6 +42,7 @@ import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -329,6 +333,41 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 			}			
 		}
 		return workingDays;
+	}
+    
+    @Override
+    @Cacheable(value = "allRegulerOffDaysBetween")
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Set<Date> getAllRegulerOffDaysBetween(Date startDate, Date endDate) throws Exception {
+    	Set<Date> offDays = new HashSet<Date>();
+		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
+		WtGroupWorking workingGroup = wtGroupWorkingDao.getByCode(HRMConstant.WORKING_GROUP_CODE_DEFAULT);
+		
+		//loop date-nya, check jadwal berdasarkan kelompok kerja
+		if(workingGroup != null) {
+			for(Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)){
+				TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+				if(jadwal == null){
+					//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
+					List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(workingGroup.getId(), loop);
+					tempJadwalKaryawans.addAll(jadwalKaryawans);
+					jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+				}
+				
+				//hanya yg "OFF"(hari libur) saja
+				if(StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+					offDays.add(jadwal.getTanggalWaktuKerja());
+				}	
+			}
+		}
+		
+		//loop holiday nya
+		List<WtHoliday> listHoliday = wtHolidayDao.getBetweenDate(startDate, endDate);
+		for(WtHoliday holiday : listHoliday){
+			offDays.add(holiday.getHolidayDate());
+		}
+		
+		return offDays;
 	}
 
 }

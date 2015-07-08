@@ -7,12 +7,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.WtHitungLemburDao;
 import com.inkubator.hrm.entity.WtHitungLembur;
 import com.inkubator.hrm.service.WtHitungLemburService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service(value = "wtHitungLemburService")
 @Lazy
 public class WtHitungLemburServiceImpl extends IServiceImpl implements WtHitungLemburService {
+    
+        @Autowired
+        private WtHitungLemburDao wtHitungLemburDao;
 
 	@Override
 	public void delete(WtHitungLembur arg0) throws Exception {
@@ -21,9 +29,9 @@ public class WtHitungLemburServiceImpl extends IServiceImpl implements WtHitungL
 	}
 
 	@Override
+        @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<WtHitungLembur> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+            return wtHitungLemburDao.getAllData();
 	}
 
 	@Override

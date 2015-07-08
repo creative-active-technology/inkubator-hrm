@@ -46,6 +46,8 @@ public class BioRelasiPerusahaanFormController extends BaseController {
     private List<City> cities;
     private BioRelasiPerusahaanModel model;
     private Boolean isUpdate;
+    private Boolean isCountrySelected;
+    private Boolean isProvinceSelected;
     @ManagedProperty(value = "#{countryService}")
     private CountryService countryService;
     @ManagedProperty(value = "#{provinceService}")
@@ -62,6 +64,8 @@ public class BioRelasiPerusahaanFormController extends BaseController {
         super.initialization();
         try {
             isUpdate = Boolean.FALSE;
+            isCountrySelected = Boolean.FALSE;
+            isProvinceSelected = Boolean.FALSE;
             model = new BioRelasiPerusahaanModel();
             countries = countryService.getAllData();
             provinces = new ArrayList<Province>();
@@ -161,6 +165,11 @@ public class BioRelasiPerusahaanFormController extends BaseController {
             provinces.clear();
             cities.clear();
             provinces = provinceService.getByCountryId(model.getCountryId());
+            isCountrySelected = Boolean.TRUE;
+            isProvinceSelected = Boolean.FALSE;
+            if(provinces.isEmpty()){
+            	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_WARN, "global.error","companyRelation.warning_province_of_selected_country_still_empty", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -170,6 +179,10 @@ public class BioRelasiPerusahaanFormController extends BaseController {
         try {
             cities.clear();
             cities = cityService.getByProvinceId(model.getProvinceId());
+            isProvinceSelected = Boolean.TRUE;
+            if(cities.isEmpty()){
+            	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_WARN, "global.error","companyRelation.warning_city_of_selected_province_still_empty", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -259,5 +272,23 @@ public class BioRelasiPerusahaanFormController extends BaseController {
     public void setBioRelasiPerusahaanService(BioRelasiPerusahaanService bioRelasiPerusahaanService) {
         this.bioRelasiPerusahaanService = bioRelasiPerusahaanService;
     }
+
+	public Boolean getIsCountrySelected() {
+		return isCountrySelected;
+	}
+
+	public void setIsCountrySelected(Boolean isCountrySelected) {
+		this.isCountrySelected = isCountrySelected;
+	}
+
+	public Boolean getIsProvinceSelected() {
+		return isProvinceSelected;
+	}
+
+	public void setIsProvinceSelected(Boolean isProvinceSelected) {
+		this.isProvinceSelected = isProvinceSelected;
+	}
+    
+    
 
 }

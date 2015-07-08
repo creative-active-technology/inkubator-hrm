@@ -86,9 +86,13 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     
     /** get pageable/paging */
-    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    public List<EmpData> getAllDataByParam(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter);   
+    public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter); 
+    
+    public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+	public Long getTotalByParam(EmpDataSearchParameter searchParameter);
     
     public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order);
 
@@ -161,13 +165,15 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName);
 
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate);
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date);
 
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 
     public List<String> getAllNikBetween(String from, String until);
     
-    public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);    
+    public List<EmpData> getAllDataByCompanyIdAndEmpTypeAndGolJabAndUnitKerja(Long companyId, List<Long> empTypes, List<Long> golJabs, List<Long> unitKerjas);
+    
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date);
     
     /* get name only */
     public String getBioDataNameByEmpDataId(Long id);

@@ -8,14 +8,21 @@ package com.inkubator.hrm.web;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
@@ -24,11 +31,16 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
-import com.inkubator.hrm.entity.WtPeriode;
+import ch.lambdaj.Lambda;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.WtHoliday;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
+import com.inkubator.hrm.service.WtHolidayService;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
@@ -36,6 +48,8 @@ import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -45,6 +59,9 @@ import com.inkubator.webcore.controller.BaseController;
 @RequestScoped
 public class HomeDashboardController extends BaseController {
 
+	private Date startCalendarDate;
+	private Date endCalendarDate;
+	private List<Integer> listHolidayDate = new ArrayList<Integer>();
     private Date lastUpdateEmpDistByGender;
     private Date lastUpdateEmpDistByDepartment;
     private Date lastUpdateEmpDistByAge;
@@ -71,6 +88,10 @@ public class HomeDashboardController extends BaseController {
 
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    @ManagedProperty(value = "#{wtScheduleShiftService}")
+    private WtScheduleShiftService wtScheduleShiftService;
+    @ManagedProperty(value = "#{wtHolidayService}")
+    private WtHolidayService wtHolidayService;
     
     @PostConstruct
     @Override
@@ -83,6 +104,19 @@ public class HomeDashboardController extends BaseController {
         totalMale = new Long(0);
         totalFemale = new Long(0);
         try {
+        	/**
+             * find All holiday date based on JadwalKaryawan "DEFAULT" which is OFF and public holiday
+             */
+        	DateTime now = new DateTime(); 
+        	now = now.withMillisOfSecond(0).withSecondOfMinute(0).withMinuteOfHour(0).withHourOfDay(0);
+        	startCalendarDate = now.dayOfMonth().withMinimumValue().toDate();
+        	endCalendarDate = now.dayOfMonth().withMaximumValue().toDate();
+        	Set<Date> holidays = wtScheduleShiftService.getAllRegulerOffDaysBetween(startCalendarDate, endCalendarDate);
+        	for(Date holiday:holidays){
+        		DateTime dtHoliday =  new DateTime(holiday);
+        		listHolidayDate.add(dtHoliday.getDayOfMonth());
+        	}
+        	
             /**
              * calculate employee distribution based on GENDER
              */
@@ -183,7 +217,7 @@ public class HomeDashboardController extends BaseController {
 
 
         } catch (Exception e) {
-            LOGGER.error("Error when calculate employee distribution based on Gender, Age or Department", e);
+            LOGGER.error("Error ", e);
         }
 
 
@@ -236,6 +270,24 @@ public class HomeDashboardController extends BaseController {
         xAxis.setTickInterval("20");
         xAxis.setMin(0);
 
+    }
+    
+    public void onSelectDate(SelectEvent event){
+    	try {
+    		Date date = (Date) event.getObject();
+    		WtHoliday holiday = wtHolidayService.getEntityByDate(date);
+    		if(holiday!=null){
+    			//libur holiday
+    			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("global.information"), holiday.getHolidayName());
+    			FacesUtil.getFacesContext().addMessage(null, msg);
+    		} else if( Lambda.exists(listHolidayDate, Matchers.equalTo(new DateTime(date).getDayOfMonth()))) {
+    			//libur jadwal kerja reguler(default)
+    			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.information", "global.regular_holiday", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());    			
+    		}
+    	} catch (Exception e) {
+            LOGGER.error("Error ", e);
+        }
     }
 
     public Date getLastUpdateEmpDistByGender() {
@@ -370,16 +422,48 @@ public class HomeDashboardController extends BaseController {
         this.totalPersent = totalPersent;
     }
 
-	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
-		this.wtPeriodeService = wtPeriodeService;
-	}
-
 	public EmployeeResumeDashboardModel getEmployeeResumeModel() {
 		return employeeResumeModel;
 	}
 
 	public void setEmployeeResumeModel(EmployeeResumeDashboardModel employeeResumeModel) {
 		this.employeeResumeModel = employeeResumeModel;
-	}   
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+
+	public List<Integer> getListHolidayDate() {
+		return listHolidayDate;
+	}
+
+	public void setListHolidayDate(List<Integer> listHolidayDate) {
+		this.listHolidayDate = listHolidayDate;
+	}
+	
+	public Date getStartCalendarDate() {
+		return startCalendarDate;
+	}
+
+	public void setStartCalendarDate(Date startCalendarDate) {
+		this.startCalendarDate = startCalendarDate;
+	}
+
+	public Date getEndCalendarDate() {
+		return endCalendarDate;
+	}
+
+	public void setEndCalendarDate(Date endCalendarDate) {
+		this.endCalendarDate = endCalendarDate;
+	}
+
+	public void setWtScheduleShiftService(WtScheduleShiftService wtScheduleShiftService) {
+		this.wtScheduleShiftService = wtScheduleShiftService;
+	}
+
+	public void setWtHolidayService(WtHolidayService wtHolidayService) {
+		this.wtHolidayService = wtHolidayService;
+	}	    	
 
 }

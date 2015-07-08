@@ -29,4 +29,5 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id);
     
     public WtOverTime getEntityByPkWithDetail(Long id);
+    
 }

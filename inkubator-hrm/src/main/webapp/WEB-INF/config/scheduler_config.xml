@@ -34,6 +34,8 @@
 	
     <bean id="companyPolicyCronService" class="com.inkubator.hrm.service.impl.CompanyPolicyCronServiceImpl" />
     
+    <bean id="attendanceCronService" class="com.inkubator.hrm.service.impl.AttendanceCronServiceImpl" />
+    
     <bean id="scheduleService" class="com.inkubator.hrm.service.impl.ScheduleServiceImpl">
         <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>
         <property name="difNumberOfMonthTempEmployeeScheduleToDelete" value="${dif.number.month.temp.employee.schedule.to.delete}"/>                    

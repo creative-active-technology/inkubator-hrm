@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -202,4 +203,18 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
 	    criteria.add(Restrictions.eq("wtWorkingHour.code", "OFF"));
 	    return criteria.list();
 	}
+	
+	@Override
+	public Long getTotalByTanggalWaktuKerja(Date date, Long companyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));  
+        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
 }

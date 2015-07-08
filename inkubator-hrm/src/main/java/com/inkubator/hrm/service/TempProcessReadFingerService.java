@@ -45,4 +45,6 @@ public interface TempProcessReadFingerService extends IService<TempProcessReadFi
 	//return collections
 	public List<TempProcessReadFinger> getAllDataByEmpDataIdAndScheduleDate(Long empDataID, Date startDate, Date endDate) throws Exception;
 	
+	// return Boolean
+	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception;
 }

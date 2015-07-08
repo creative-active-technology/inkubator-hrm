@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
@@ -30,12 +31,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -82,6 +85,7 @@ import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import java.util.ArrayList;
 
 import org.hibernate.criterion.Order;
+
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -663,7 +667,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         return totalSick;
     }
 
-    private Float calculateAndCheckTotalOverTime(List<ImplementationOfOverTime> listImplementationOfOverTime, WtPeriode wtPeriode, Long empDataId, String religionCode) {
+    private Float calculateAndCheckTotalOverTime(List<ImplementationOfOverTime> listImplementationOfOverTime, WtPeriode wtPeriode, Long empDataId, String religionCode) throws Exception {
         Float totalOvertime = 0f;
 
         //Get List Holiday Schedule
@@ -683,7 +687,14 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
         //Looping List Overtime Implementation
         for (ImplementationOfOverTime otImpl : listImplementationOfOverTime) {
-
+        	
+        	//if overtime with null wtHitungLembur found, throw BussinessException
+        	if(ObjectUtils.equals(otImpl.getWtOverTime().getWtHitungLembur(), null)){
+        		throw new BussinessException("workingTime.attendance_realization_calc_error_overtime_with_null_wt_hitung_lembur_found");
+        	}
+        	
+        	System.out.println("otImpl.getWtOverTime().getId()  : " + otImpl.getWtOverTime().getId());
+        	System.out.println("otImpl.getWtOverTime().getWtHitungLembur() null : " + (otImpl.getWtOverTime().getWtHitungLembur() == null));
             List<WtHitungLemburJam> listWtHitungLemburJam = wtHitungLemburJamDao.getListByWtHitungLemburId(otImpl.getWtOverTime().getWtHitungLembur().getId());
 
             Boolean isImplementedOnScheduleHoliday = Collections.binarySearch(listDateLibur, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;

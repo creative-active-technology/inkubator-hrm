@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.joda.time.DateTime;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -122,7 +123,8 @@ public class FingerSwapCapturedDaoImpl extends IDAOImpl<FingerSwapCaptured> impl
     		if(StringUtils.equals(param, "startDate")){
     			hbm.setParameter("startDate", parameter.getStartPeriod());
     		} else if(StringUtils.equals(param, "endDate")){
-    			hbm.setParameter("endDate", parameter.getEndPeriod());
+    			DateTime dtEndPeriod = new DateTime(parameter.getEndPeriod()).plusHours(23).plusMinutes(59).plusSeconds(59);
+    			hbm.setParameter("endDate", dtEndPeriod.toDate());
     		} else if(StringUtils.equals(param, "empDataId")){
     			hbm.setParameter("empDataId", parameter.getEmpData().getId());
     		} else if(StringUtils.equals(param, "machineFingerId")){
@@ -132,5 +134,13 @@ public class FingerSwapCapturedDaoImpl extends IDAOImpl<FingerSwapCaptured> impl
     	
     	return hbm;
     }
+
+	@Override
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.ge("swapDatetimeLog", startDate));
+        criteria.add(Restrictions.le("swapDatetimeLog", endDate));        
+        return criteria.list().isEmpty();
+	}
 	
 }

@@ -46,9 +46,13 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Map<String, Long> getTotalByDepartment(Long companyId) throws Exception;
 
-    public List<EmpData> getByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<EmpData> getAllDataByParam(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalEmpDataByParam(EmpDataSearchParameter searchParameter) throws Exception;
+    public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter) throws Exception;
+    
+    public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+	public Long getTotalByParam(EmpDataSearchParameter searchParameter) throws Exception;
 
     public List<EmpData> getByParam(String nikOrNameSearchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
@@ -103,7 +107,9 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Long getTotalByTaxFreeIsNull() throws Exception;
 
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date payrollCalculationDate) throws Exception;
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) throws Exception;
+    
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception;
 
     public List<EmpData> getAllDataSalaryConfirmationByParam(SalaryConfirmationParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 

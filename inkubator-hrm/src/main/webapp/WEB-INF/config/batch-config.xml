@@ -85,6 +85,10 @@
                 </batch:chunk>
             </batch:tasklet>
         </batch:step>
+        <!-- add job execution listener  -->
+        <batch:listeners>
+        	<batch:listener ref="fingerSwapCapturedDownloadXmlJobListener"/>
+        </batch:listeners>
     </batch:job>	
     
     <batch:job id="jobPayEmployeeCalculation">
@@ -322,11 +326,15 @@
 		<property name="logUnregPayrollService" ref="logUnregPayrollService"/>
 		<property name="logUnregTaxesService" ref="logUnregTaxesService"/>
 		<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
-	</bean>
-	
+	</bean>	
 	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
 		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
 	</bean>
+	<bean id="fingerSwapCapturedDownloadXmlJobListener" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlJobListener" lazy-init="true">
+		<property name="mecineFingerService" ref="mecineFingerService"/>			
+	</bean>
+	
+	
     
     <!-- reader and writer for synchronization_data_finger_realization -->
     <bean id="customSynchDataFingerRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
@@ -607,6 +615,8 @@
 	</bean>	
 	<bean id="customFingerSwapCapturedDownloadXmlItemProcessor" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlProcessor" scope="step" lazy-init="true">
         <property name="machineId" value="#{jobParameters['machineId']}"/>
+        <property name="createdBy" value="#{jobParameters['createdBy']}"/>
+        <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
     <bean id="customFingerSwapCapturedItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="fingerSwapCapturedService" />

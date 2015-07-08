@@ -4,15 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.model.UploadedFile;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitImplementation;
-//import com.inkubator.hrm.entity.PermitImplementationDate;
-import com.inkubator.hrm.web.search.PermitImplementationReportSearchParameter;
+import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
-
-import org.primefaces.model.UploadedFile;
+//import com.inkubator.hrm.entity.PermitImplementationDate;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 
 /**
  *
@@ -36,12 +35,9 @@ public interface PermitImplementationService extends IService<PermitImplementati
 
     public String save(PermitImplementation entity, boolean isBypassApprovalChecking) throws Exception;
 
-//	public String cancellation(Long permitImplementationId, List<PermitImplementationDate> actualPermits, List<PermitImplementationDate> cancellationPermits, String cancellationDescription) throws Exception;
-    public List<PermitImplementation> getReportByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<ReportPermitHistoryModel> getReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getReportTotalByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception;
-
-    public List<PermitImplementation> getReportHistoryByParam(PermitImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception;
+    public Long getTotalReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter) throws Exception;    
 
     public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception;
 
