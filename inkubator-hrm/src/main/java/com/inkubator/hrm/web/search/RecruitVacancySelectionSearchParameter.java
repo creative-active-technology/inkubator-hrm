@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RecruitVacancySelectionSearchParameter extends SearchParameter {
     private String code;
+    private String recruitment;
 
     public String getCode() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
@@ -27,4 +28,19 @@ public class RecruitVacancySelectionSearchParameter extends SearchParameter {
     public void setCode(String code) {
         this.code = code;
     }
+
+	public String getRecruitment() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "recruitment")) {
+			recruitment = getParameter();
+        } else {
+        	recruitment = null;
+        }
+		return recruitment;
+	}
+
+	public void setRecruitment(String recruitment) {
+		this.recruitment = recruitment;
+	}
+    
+    
 }

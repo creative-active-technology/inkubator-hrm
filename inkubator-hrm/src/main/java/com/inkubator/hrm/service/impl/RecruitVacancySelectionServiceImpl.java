@@ -163,12 +163,6 @@ public class RecruitVacancySelectionServiceImpl extends IServiceImpl implements 
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void delete(RecruitVacancySelection entity) throws Exception {
-        this.recruitVacancySelectionDao.delete(entity);
-    }
-
-    @Override
     public void softDelete(RecruitVacancySelection entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -235,7 +229,7 @@ public class RecruitVacancySelectionServiceImpl extends IServiceImpl implements 
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveRecruitVacancySelectionSeries(RecruitVacancySelectionModel modelEntity) {
+    public void saveRecruitVacancySelectionSeries(RecruitVacancySelectionModel modelEntity) throws Exception {
 		//save entity form RecruitVacancySelection
 		RecruitVacancySelection entity = new RecruitVacancySelection();
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -277,7 +271,112 @@ public class RecruitVacancySelectionServiceImpl extends IServiceImpl implements 
 			}
 		}
 	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateRecruitVacancySelectionSeries(RecruitVacancySelectionModel modelEntity) throws Exception {
+		//save entity form RecruitVacancySelection
+		RecruitVacancySelection updateRecruitVacancySelection = recruitVacancySelectionDao.getEntityByPkWithDetail(modelEntity.getId());
+		updateRecruitVacancySelection.setCode(modelEntity.getCode());
+		updateRecruitVacancySelection.setRecruitHireApply(recruitHireApplyDao.getEntiyByPK(modelEntity.getRecruitHireApplyId()));
+		updateRecruitVacancySelection.setRecruitmenSelectionSeries(recruitmenSelectionSeriesDao.getEntiyByPK(modelEntity.getRecruitSelectionSeriesId()));
+		updateRecruitVacancySelection.setRecruitVacancySelectionDate(modelEntity.getRecruitVacancySelectionDate());
+		updateRecruitVacancySelection.setExtraBudget(modelEntity.getExtraBudget());
+		updateRecruitVacancySelection.setCreatedBy(UserInfoUtil.getUserName());
+		updateRecruitVacancySelection.setCreatedOn(new Date());
+		//this.recruitVacancySelectionDao.update(updateRecruitVacancySelection);
+		//save entity form RecruitVacancySelectionDetail
+		RecruitVacancySelectionDetail updateDetail;
+		RecruitVacancySelectionDetailPic recruitVacancySelectionDetailPic;
+		RecruitSelectionType recruitSelectionType;
+		if(modelEntity.getIsUpdatedNewTypeSelection()){
+			System.out.println("masuk if service");
+			//delete detailPic data yang lama
+			List<RecruitVacancySelectionDetail> listOldData = recruitVacancySelectionDetailDao.getAllDataByRecruitVacancySelection(modelEntity.getId());
+			for(RecruitVacancySelectionDetail oldData : listOldData){
+				System.out.println("delete pic");
+				//delete all existing data recruitVacancySelectionDetailPic
+				recruitVacancySelectionDetailPicDao.deleteAllDataByVacancySelectionDetailId(oldData.getId());
+				recruitVacancySelectionDetailDao.delete(oldData);
+			}
+			//save new updated data
+			//save entity form RecruitVacancySelectionDetail
+			RecruitVacancySelectionDetail entityDetail;
+			for (RecruitVacancySelectionDetailModel data : modelEntity.getListVacancySelectionDetail()) {
+				System.out.println(data.getListEmpData().size() + " DARI SERVICE NIH");
+				recruitSelectionType = recruitSelectionTypeDao.getEntityByName(data.getRecruitSelectionTypeName());
+				entityDetail =  new RecruitVacancySelectionDetail();
+				entityDetail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				entityDetail.setRecruitVacancySelection(updateRecruitVacancySelection);
+				entityDetail.setRecruitSelectionType(recruitSelectionType);
+				entityDetail.setStartDate(data.getStartDate());
+				entityDetail.setEndDate(data.getEndDate());
+				entityDetail.setTime(data.getTime());
+				entityDetail.setPlace(data.getPlace());
+				entityDetail.setBasicCost(data.getBasicCost());
+				entityDetail.setIndividualCost(data.getIndividualCost());
+				this.recruitVacancySelectionDetailDao.save(entityDetail);
+				
+				//save entity form RecruitVacancySelectionDetail for List Employee
+				for(EmpData empData: data.getListEmpData()){
+					recruitVacancySelectionDetailPic = new RecruitVacancySelectionDetailPic();
+					recruitVacancySelectionDetailPic.setId(new RecruitVacancySelectionDetailPicId(entityDetail.getId(), empData.getId()));
+					recruitVacancySelectionDetailPic.setRecruitVacancySelectionDetail(entityDetail);
+					recruitVacancySelectionDetailPic.setEmpData(empData);
+					recruitVacancySelectionDetailPic.setCreatedBy(UserInfoUtil.getUserName());
+					recruitVacancySelectionDetailPic.setCreatedOn(new Date());
+					this.recruitVacancySelectionDetailPicDao.save(recruitVacancySelectionDetailPic);
+				}
+			}
+		}else{
+			System.out.println("masuk else gitu");
+			for (RecruitVacancySelectionDetailModel data : modelEntity.getListVacancySelectionDetail()) {
+				System.out.println(data.getListEmpData().size() + " LIST DI ELSE");
+				recruitSelectionType = recruitSelectionTypeDao.getEntityByName(data.getRecruitSelectionTypeName());
+				updateDetail =  recruitVacancySelectionDetailDao.getEntiyByPK(data.getId());
+				updateDetail.setRecruitVacancySelection(updateRecruitVacancySelection);
+				updateDetail.setRecruitSelectionType(recruitSelectionType);
+				updateDetail.setStartDate(data.getStartDate());
+				updateDetail.setEndDate(data.getEndDate());
+				updateDetail.setTime(data.getTime());
+				updateDetail.setPlace(data.getPlace());
+				updateDetail.setBasicCost(data.getBasicCost());
+				updateDetail.setIndividualCost(data.getIndividualCost());
+				this.recruitVacancySelectionDetailDao.update(updateDetail);
+				
+				//delete all existing data recruitVacancySelectionDetailPic
+				recruitVacancySelectionDetailPicDao.deleteAllDataByVacancySelectionDetailId(updateDetail.getId());
+				
+				
+				//then save all new data recruitVacancySelectionDetailPic
+				for(EmpData empData: data.getListEmpData()){
+					recruitVacancySelectionDetailPic = new RecruitVacancySelectionDetailPic();
+					recruitVacancySelectionDetailPic.setId(new RecruitVacancySelectionDetailPicId(updateDetail.getId(), empData.getId()));
+					recruitVacancySelectionDetailPic.setRecruitVacancySelectionDetail(updateDetail);
+					recruitVacancySelectionDetailPic.setEmpData(empData);
+					recruitVacancySelectionDetailPic.setCreatedBy(UserInfoUtil.getUserName());
+					recruitVacancySelectionDetailPic.setCreatedOn(new Date());
+					this.recruitVacancySelectionDetailPicDao.save(recruitVacancySelectionDetailPic);
+				}
+			}
+		}
+		
+	}
 
+	@Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(RecruitVacancySelection entity) throws Exception {
+		//delete detailPic data yang lama
+		List<RecruitVacancySelectionDetail> listOldData = recruitVacancySelectionDetailDao.getAllDataByRecruitVacancySelection(entity.getId());
+		for(RecruitVacancySelectionDetail oldData : listOldData){
+			System.out.println("delete pic");
+			//delete all existing data recruitVacancySelectionDetailPic
+			recruitVacancySelectionDetailPicDao.deleteAllDataByVacancySelectionDetailId(oldData.getId());
+			recruitVacancySelectionDetailDao.delete(oldData);
+		}
+		this.recruitVacancySelectionDao.delete(entity);
+    }
+	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public RecruitVacancySelection getEntityByPkWithDetail(Long id) throws Exception {

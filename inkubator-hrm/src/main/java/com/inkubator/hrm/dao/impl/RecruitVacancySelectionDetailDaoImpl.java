@@ -39,5 +39,14 @@ public class RecruitVacancySelectionDetailDaoImpl extends IDAOImpl<RecruitVacanc
 		criteria.setFetchMode("recruitSelectionType", FetchMode.JOIN);
 		return criteria.list();
 	}
+
+	@Override
+	public RecruitVacancySelectionDetail getEntityByRecruitVacancySelection(
+			Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+	    criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("recruitSelectionType", FetchMode.JOIN);
+		return (RecruitVacancySelectionDetail) criteria.uniqueResult();
+	}
     
 }

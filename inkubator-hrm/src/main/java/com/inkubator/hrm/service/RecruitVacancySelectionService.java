@@ -23,7 +23,10 @@ public interface RecruitVacancySelectionService extends IService<RecruitVacancyS
 
     public Long getTotalByParam(RecruitVacancySelectionSearchParameter searchParameter) throws Exception;
     
-    public void saveRecruitVacancySelectionSeries(RecruitVacancySelectionModel model);
+    public void saveRecruitVacancySelectionSeries(RecruitVacancySelectionModel model) throws Exception;
+    
+    public void updateRecruitVacancySelectionSeries(RecruitVacancySelectionModel model) throws Exception;
+
     
     public RecruitVacancySelection getEntityByPkWithDetail(Long id) throws Exception;
     

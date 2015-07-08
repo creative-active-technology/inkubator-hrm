@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Recruit Vacancy Selection" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['systemLetterRef.system_letter_reference_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['recruitVacancySelectionView.recruit_vacancy_selection']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['recruitVacancySelectionView.recruit_vacancy_selection_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,7 +33,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Kode"  for="codeId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['recruitSelectionView.code']}"  for="codeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText id="codeId" value="#{recruitVacancySelectionModel.code}" onkeyup="this.value = this.value.toUpperCase();"
@@ -44,7 +44,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tanggal"  for="recruitVacancySelectionDate" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['global.date']}"  for="recruitVacancySelectionDate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:calendar  id="recruitVacancySelectionDate" size="32" pattern="dd MMMM yyyy" label="#{appmsg['reimbursement.claim_date']}" value="#{recruitVacancySelectionModel.recruitVacancySelectionDate}"
@@ -56,7 +56,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Rekrutment"  for="rekrutment" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['recruitSelectionVacancy.rekrutment']}"  for="rekrutment" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="rekrutment" value="#{recruitVacancySelectionModel.recruitHireApplyId}" style="width: 150px;margin-right: 3px" required="true">
@@ -70,7 +70,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Jabatan" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['companyRelation.jabatan']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel id="jobTitleName" value="#{recruitVacancySelectionModel.jobTitleName}"  styleClass="label_hrm" />
@@ -79,7 +79,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Staff" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['employee.staff']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel id="staff" value="#{recruitVacancySelectionModel.staffName}"  styleClass="label_hrm" />
@@ -88,7 +88,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Efektif Date" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['systemLetterRef.effective_date']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:outputLabel id="effectiveDate" value="#{recruitVacancySelectionModel.effectiveDate}"  styleClass="label_hrm" >
@@ -99,7 +99,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Ekstra Fee"  for="extraFee" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['recruitVacancySelection.extra_fee']}"  for="extraFee" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <pe:inputNumber id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}" onkeyup="this.value = this.value.toUpperCase();"
@@ -110,7 +110,7 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Tipe Seleksi"  for="selectionType" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}"  for="selectionType" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="selectionType" value="#{recruitVacancySelectionModel.recruitSelectionSeriesId}" style="width: 150px;margin-right: 3px" required="true">
@@ -125,15 +125,15 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.search']}" ajax="true" partialSubmit="true"
+                            <p:commandButton value="#{appmsg['global.next']}" ajax="true" partialSubmit="true"
                                          action="next" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="Lanjut"
-                                         icon="ui-icon-search" title="Lanjut"/>
+                                         icon="ui-icon-arrow-1-e" title="Lanjut"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="formId" />  
                             </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="back"
                                              styleClass="label_button"/>
                         </div>
                     </div>

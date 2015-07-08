@@ -75,7 +75,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("company.id", companyId));
+//        criteria.add(Restrictions.eq("company.id", companyId));
 
         return criteria;
     }

@@ -17,4 +17,6 @@ import com.inkubator.hrm.entity.RecruitVacancySelectionDetailPic;
  */
 public interface RecruitVacancySelectionDetailPicDao extends IDAO<RecruitVacancySelectionDetailPic>{
     public List<RecruitVacancySelectionDetailPic> getAllDataByRecruitVacancySelectionDetailId(Long id);
+    
+    public void deleteAllDataByVacancySelectionDetailId(Long id);
 }

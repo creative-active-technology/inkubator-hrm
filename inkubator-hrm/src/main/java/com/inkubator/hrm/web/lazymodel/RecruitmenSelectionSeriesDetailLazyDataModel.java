@@ -42,7 +42,7 @@ public class RecruitmenSelectionSeriesDetailLazyDataModel extends LazyDataModel<
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("recruitSelectionType");
+                    order = Order.asc("listOrder");
                 }
                 recruitSelectionDetailList = service.getAllDataBySelectionSeriesId(selectionSeriesId, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalBySelectionSeriesId(selectionSeriesId)));
