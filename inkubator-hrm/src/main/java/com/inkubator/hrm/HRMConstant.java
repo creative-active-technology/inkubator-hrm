@@ -249,6 +249,7 @@ public class HRMConstant {
     /* Constant for Working Group */
     public static final Integer NORMAL_SCHEDULE = 0;
     public static final Integer NON_NORMAL_SCHEDULE = 1;
+    public static final String WORKING_GROUP_CODE_DEFAULT = "DEFAULT";
 
     /* Placement of Employee Work Schedule */
     public static final Integer DEPARTMENT_EQUAL = 0;

@@ -236,7 +236,7 @@ public class BioDataDetilController extends BaseController {
         try {
             super.initialization();           
             userId = FacesUtil.getRequestParameter("execution");
-            selectedBioData = bioDataService.getEntiyByPK(Long.parseLong(userId.substring(1)));            
+            selectedBioData = bioDataService.getEntityByPKWithDetail(Long.parseLong(userId.substring(1)));            
             selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());            
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
@@ -1312,7 +1312,7 @@ public class BioDataDetilController extends BaseController {
 
     public void onDialogReturnReport(SelectEvent event) {
         try {
-            bioDataList = bioDataService.getEntityByPKWithDetail(selectedBioData.getId());
+            //bioDataList = bioDataService.getEntityByPKWithDetail(selectedBioData.getId());
             super.onDialogReturn(event);
         } catch (Exception e) {
             LOGGER.error("Error", e);

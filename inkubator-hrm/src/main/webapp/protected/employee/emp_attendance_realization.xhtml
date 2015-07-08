@@ -87,7 +87,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="nik"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
-                                        <f:selectItem itemLabel="#{appmsg['empAttendance.job_position_no']}" itemValue="noJab" />
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.job_title_code']}" itemValue="noJab" />
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />
                                     </p:selectOneMenu>
                                     <p:inputText value="#{empAttendaceRealizationController.tempAttendanceRealizationSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
@@ -137,13 +137,13 @@
                             </p:column>
                             <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.code}" style="width: 20%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['empAttendance.job_position_no']}"/>
+                                    <h:outputText value="#{appmsg['jabatan.job_title_code']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.code}"/>
                             </p:column>
                             <p:column sortBy="#{timeRealization.empData.jabatanByJabatanId.name}" style="width: 40%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['empAttendance.job_position_name']}"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{timeRealization.empData.jabatanByJabatanId.name}"/>
                             </p:column>

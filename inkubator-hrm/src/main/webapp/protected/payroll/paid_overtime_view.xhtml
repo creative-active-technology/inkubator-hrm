@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['payTempOvertime.payTempOvertime']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['payTempOvertime.payTempOvertime_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['workingTime.start_period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:outputLabel value="#{paidOvertimeViewController.period.fromPeriode}" styleClass="label_hrm">
+                                		<f:convertDateTime pattern="dd MMMM yyyy"></f:convertDateTime>
+                                	</p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['workingTime.end_period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:outputLabel value="#{paidOvertimeViewController.period.untilPeriode}" styleClass="label_hrm">
+                                		<f:convertDateTime pattern="dd MMMM yyyy"></f:convertDateTime>
+                                	</p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['paysalaryupload.total_employee']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:outputLabel value="#{paidOvertimeViewController.totalEmployee} #{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>                            
+                        </p:panelGrid>
+                        <p:toolbar  style="margin-top: 10px">                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Paid_Overtime"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:dataTable  var="data"  value="#{paidOvertimeViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['payTempOvertime.payTempOvertime_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.empNik}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empNik}" />
+                            </p:column>
+                            <p:column sortBy="#{data.empName}" style="width: 43%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.overtime}" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.overtime']} (#{appmsg['global.hour']})"/>
+                                </f:facet>
+                                <div style="text-align: center;">
+	                                <h:outputLabel value= "#{data.overtime}" >
+	                                	<f:convertNumber integerOnly="true"/>
+	                                </h:outputLabel>
+                                </div>
+                            </p:column>                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{paidOvertimeViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

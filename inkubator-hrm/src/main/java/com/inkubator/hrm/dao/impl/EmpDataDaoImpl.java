@@ -221,6 +221,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
         disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("bioData.middleName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
@@ -278,6 +279,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (param != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.middleName", param, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
             criteria.add(disjunction);
@@ -802,6 +804,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (StringUtils.isNotEmpty(param.getName())) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", param.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.middleName", param.getName(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.lastName", param.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
@@ -1202,6 +1205,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());       
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);        
         criteria.add(Restrictions.isNull("wtGroupWorking"));        
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return !criteria.list().isEmpty();
 	}
 	

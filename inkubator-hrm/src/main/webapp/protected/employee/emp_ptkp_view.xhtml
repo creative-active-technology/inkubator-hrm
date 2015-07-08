@@ -50,7 +50,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
+                                        <pe:exporter target="tableEmpDataId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_PTKP"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{empDataViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"
                                                      label="#{appmsg['global.close']}"/>
@@ -65,7 +65,7 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['placement.placement_header']}" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['ptkp.list_of_ptkp']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%;">
                                 <f:facet name="header">  

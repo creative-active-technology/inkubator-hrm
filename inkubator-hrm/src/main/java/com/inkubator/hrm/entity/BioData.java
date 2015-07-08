@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Formula;
 
 /**
@@ -34,9 +37,11 @@ public class BioData implements java.io.Serializable {
     private Dialect dialect;
     private Religion religion;
     private City city;
+    private String birthplaceText;
     private Race race;
     private MaritalStatus maritalStatus;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String title;
     private String nickname;
@@ -174,9 +179,18 @@ public class BioData implements java.io.Serializable {
 
     public void setCity(City city) {
         this.city = city;
-    }
+    }    
+    
+    @Column(name = "birthplace_text", length = 100)
+    public String getBirthplaceText() {
+		return birthplaceText;
+	}
 
-    @ManyToOne(fetch = FetchType.LAZY)
+	public void setBirthplaceText(String birthplaceText) {
+		this.birthplaceText = birthplaceText;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ras")
     public Race getRace() {
         return this.race;
@@ -203,9 +217,18 @@ public class BioData implements java.io.Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
+    }    
+    
+    @Column(name = "middle_name", length = 100)
+    public String getMiddleName() {
+		return middleName;
+	}
 
-    @Column(name = "last_name", length = 100)
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	@Column(name = "last_name", length = 100)
     public String getLastName() {
         return this.lastName;
     }
@@ -525,7 +548,13 @@ public class BioData implements java.io.Serializable {
 
     @Transient
     public String getFullName() {
-        String data = firstName + " " + lastName;
+        String data = firstName;
+        if(StringUtils.isNotEmpty(middleName)){
+        	data = data + " " + middleName;
+        }
+        if(StringUtils.isNotEmpty(lastName)){
+        	data = data + " " + lastName;
+        }
         return data;
     }
 

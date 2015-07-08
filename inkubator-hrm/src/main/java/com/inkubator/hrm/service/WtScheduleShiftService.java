@@ -11,6 +11,8 @@ import com.inkubator.hrm.entity.WtScheduleShift;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -30,5 +32,7 @@ public interface WtScheduleShiftService extends IService<WtScheduleShift> {
     public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate)throws Exception;
     
     public List<Date> getAllWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception;
+
+	public Set<Date> getAllRegulerOffDaysBetween(Date startDate, Date endDate) throws Exception;
     
 }

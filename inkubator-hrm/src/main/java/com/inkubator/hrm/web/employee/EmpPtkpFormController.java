@@ -77,13 +77,14 @@ public class EmpPtkpFormController extends BaseController {
                 isDisabledPtkpNumber = Boolean.FALSE;
             }
         }
-        model.setNikAndName(entity.getNik() + " - " + entity.getBioData().getFirstName() + " " + entity.getBioData().getLastName());
+        model.setNikAndName(entity.getNik() + " - " + entity.getBioData().getFullName());
         return model;
     }
 
     public void doChangePtkpNumber(){
         if(empDataModel.getPtkpStatusInt() == 0){
             isDisabledPtkpNumber = Boolean.TRUE;
+            empDataModel.setPtkpNumber(0);
         }else{
             isDisabledPtkpNumber = Boolean.FALSE;
         }

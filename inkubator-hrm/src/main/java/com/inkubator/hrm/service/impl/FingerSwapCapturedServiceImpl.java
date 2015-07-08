@@ -251,23 +251,28 @@ public class FingerSwapCapturedServiceImpl extends IServiceImpl implements Finge
 		try {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date dateTime = dateFormat.parse(model.getDateTime());
-			FingerMatchEmp fingerMatchEmp = fingerMatchEmpDao.getEntityByNikAndMachineId(model.getNik(), model.getMachineId());	
-			/** hanya diproses employee yang memiliki fingerIndexId */
-			if(fingerMatchEmp != null) {				
-				FingerSwapCaptured fingerSwapCaptured =  new FingerSwapCaptured();
-				fingerSwapCaptured.setFingerIndexId(fingerMatchEmp.getFingerIndexId());
-				fingerSwapCaptured.setMecineFinger(fingerMatchEmp.getMecineFinger());
-				fingerSwapCaptured.setDatetimeAdded(new Date());
-				fingerSwapCaptured.setSwapDatetimeLog(dateTime);
-				fingerSwapCaptured.setDataSource(0);
-				fingerSwapCaptured.setIsAlreadyProcessed(Boolean.FALSE);
-				fingerSwapCaptured.setCreatedBy(model.getCreatedBy());
-				fingerSwapCaptured.setCreatedOn(new Date());
-				fingerSwapCapturedDao.save(fingerSwapCaptured);
-			}
+			MecineFinger machineFinger = mecineFingerDao.getEntiyByPK(model.getMachineId());
+			
+			FingerSwapCaptured fingerSwapCaptured =  new FingerSwapCaptured();
+			fingerSwapCaptured.setFingerIndexId(model.getFingerIndexId());
+			fingerSwapCaptured.setMecineFinger(machineFinger);
+			fingerSwapCaptured.setDatetimeAdded(new Date());
+			fingerSwapCaptured.setSwapDatetimeLog(dateTime);
+			fingerSwapCaptured.setDataSource(0);
+			fingerSwapCaptured.setIsAlreadyProcessed(Boolean.FALSE);
+			fingerSwapCaptured.setCreatedBy(model.getCreatedBy());
+			fingerSwapCaptured.setCreatedOn(model.getCreatedOn());
+			fingerSwapCapturedDao.save(fingerSwapCaptured);	
+			
 		} catch (ParseException e) {
 			LOGGER.error(e.getMessage());
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception {
+		return fingerSwapCapturedDao.isDataSwapOnPeriodDateStillEmpty(startDate, endDate);
 	}
 
 }

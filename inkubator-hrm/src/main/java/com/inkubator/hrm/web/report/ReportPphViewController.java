@@ -5,19 +5,20 @@
  */
 package com.inkubator.hrm.web.report;
 
-import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
-import com.inkubator.hrm.service.LogMonthEndTaxesService;
-import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
-import com.inkubator.hrm.web.lazymodel.ReportPphLazyDataModel;
-import com.inkubator.hrm.web.model.PphReportModel;
-import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.model.LazyDataModel;
+
+import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.service.LogMonthEndTaxesService;
+import com.inkubator.hrm.web.lazymodel.ReportPphLazyDataModel;
+import com.inkubator.hrm.web.model.PphReportModel;
+import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
 
 /**
  *
@@ -38,6 +39,7 @@ public class ReportPphViewController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new LogMonthEndTaxesSearchParameter();
     }
 
     @PreDestroy

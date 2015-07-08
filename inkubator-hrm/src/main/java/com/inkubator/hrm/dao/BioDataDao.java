@@ -22,7 +22,7 @@ public interface BioDataDao extends IDAO<BioData> {
 
     public Long getTotalByParam(BioDataSearchParameter parameter);
     
-    public List<BioData> getEntityByPKWithDetail(long id);
+    public BioData getEntityByPKWithDetail(long id);
     
     public List<BioData> getByName(String name);
     

@@ -90,12 +90,12 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioData getEntiyByPK(Long id) throws Exception {
         BioData bioData = bioDataDao.getEntiyByPK(id);
-        bioData.getCity().getCityName();
+        /*bioData.getCity().getCityName();
         bioData.getReligion().getName();
         bioData.getMaritalStatus().getName();
         bioData.getNationality().getNationalityName();
         bioData.getRace().getRaceName();
-        bioData.getDialect().getDialectName();
+        bioData.getDialect().getDialectName();*/
         return bioData;
     }
 
@@ -120,9 +120,11 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
         BioData bioData = this.bioDataDao.getEntiyByPK(entity.getId());
         bioData.setBloodType(entity.getBloodType());
         bioData.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
+        bioData.setBirthplaceText(entity.getBirthplaceText());
         bioData.setDateOfBirth(entity.getDateOfBirth());
         bioData.setDialect(this.dialectDao.getEntiyByPK(entity.getDialect().getId()));
         bioData.setFirstName(entity.getFirstName());
+        bioData.setMiddleName(entity.getMiddleName());
         bioData.setGender(entity.getGender());
         bioData.setJamsostek(entity.getJamsostek());
         bioData.setLastName(entity.getLastName());
@@ -304,7 +306,7 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<BioData> getEntityByPKWithDetail(long id) throws Exception {
+    public BioData getEntityByPKWithDetail(long id) throws Exception {
         return bioDataDao.getEntityByPKWithDetail(id);
     }
 
