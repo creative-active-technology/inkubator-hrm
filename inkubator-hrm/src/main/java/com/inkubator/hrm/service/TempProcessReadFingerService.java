@@ -36,4 +36,6 @@ public interface TempProcessReadFingerService extends IService<TempProcessReadFi
 	
 	public void deleteByScheduleDateAndIsNotCorrection(Date fromPeriode, Date untilPeriode) throws Exception;
 	
+	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate) throws Exception;
+	
 }
