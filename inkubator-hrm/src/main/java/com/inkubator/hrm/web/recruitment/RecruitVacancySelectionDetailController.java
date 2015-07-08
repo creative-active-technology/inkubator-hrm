@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.recruitment;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -7,7 +9,9 @@ import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitVacancySelection;
 import com.inkubator.hrm.entity.RecruitVacancySelectionDetail;
 import com.inkubator.hrm.entity.RecruitVacancySelectionDetailPic;
@@ -30,6 +34,7 @@ public class RecruitVacancySelectionDetailController extends BaseController{
 	private RecruitVacancySelectionDetail selectedRecruitVacancySelectionDetail;
 	private List<RecruitVacancySelectionDetailPic> listRecruitVacancySelectionDetailPic;
 	private List<RecruitVacancySelectionDetail> listVacancySelectionDetail;
+	private List<EmpData> listEmpData;
 	
     @PostConstruct
     @Override
@@ -53,7 +58,17 @@ public class RecruitVacancySelectionDetailController extends BaseController{
     	listVacancySelectionDetail = null;
     	recruitVacancySelectionDetailPicService = null;
     	listRecruitVacancySelectionDetailPic = null;
+    	listEmpData = null;
     }
+
+    
+	public List<EmpData> getListEmpData() {
+		return listEmpData;
+	}
+
+	public void setListEmpData(List<EmpData> listEmpData) {
+		this.listEmpData = listEmpData;
+	}
 
 	public RecruitVacancySelectionService getRecruitVacancySelectionService() {
 		return recruitVacancySelectionService;
@@ -102,8 +117,9 @@ public class RecruitVacancySelectionDetailController extends BaseController{
 
 	public void doSelectDetailEntity(){
 		try {
-			selectedRecruitVacancySelectionDetail = this.recruitVacancySelectionDetailService.getEntiyByPK(selectedRecruitVacancySelectionDetail.getId());
-			listRecruitVacancySelectionDetailPic = recruitVacancySelectionDetailPicService.getAllDataByRecruitVacancySelectionDetailId(selectedRecruitVacancySelectionDetail.getRecruitVacancySelection().getId());
+			listEmpData = new ArrayList<EmpData>();
+			selectedRecruitVacancySelectionDetail = this.recruitVacancySelectionDetailService.getEntityByRecruitVacancySelection(selectedRecruitVacancySelectionDetail.getId());
+			listEmpData = selectedRecruitVacancySelectionDetail.getListEmpData();
 		} catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -127,7 +143,16 @@ public class RecruitVacancySelectionDetailController extends BaseController{
 		this.listRecruitVacancySelectionDetailPic = listRecruitVacancySelectionDetailPic;
 	}
 	
-	
+	public void doEdit(){
+		ExternalContext red = FacesUtil.getExternalContext();
+       try {
+           red.redirect(red.getRequestContextPath() + "/flow-protected/recruit_vacancy_selection?otherParam=" + recruitVacancySelection.getId());
+       } catch (IOException ex) {
+         LOGGER.error("Error", ex);
+       }
+   }
     
-    
+   public String doBack(){
+	   return "/protected/recruitment/recruit_vacancy_selection_view.htm?faces-redirect=true";
+   }
 }

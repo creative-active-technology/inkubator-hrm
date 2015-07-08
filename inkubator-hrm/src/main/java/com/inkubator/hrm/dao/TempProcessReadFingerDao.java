@@ -48,5 +48,7 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 	public Long getTotalByScheduleDate(Date date, Long companyId);
 	
 	public Long getTotalAttendanceByScheduleDate(Date date, Long companyId);
+	
+	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate);
 
 }

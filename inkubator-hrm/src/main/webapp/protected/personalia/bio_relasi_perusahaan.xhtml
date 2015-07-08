@@ -154,7 +154,7 @@
                                 <p:selectOneMenu id="countryId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.countryId}" style="width:227px;">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioRelasiPerusahaanFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
-                                    <p:ajax listener="#{bioRelasiPerusahaanFormController.onChangeCountries()}" update="provinceId, cityId"/>
+                                    <p:ajax listener="#{bioRelasiPerusahaanFormController.onChangeCountries()}" update="provinceId, cityId, :growlId"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -173,7 +173,7 @@
                                 <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 35%">
-                                <p:selectOneMenu id="provinceId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.provinceId}" style="width:227px;">
+                                <p:selectOneMenu id="provinceId" disabled="#{!bioRelasiPerusahaanFormController.isCountrySelected}" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.provinceId}" style="width:227px;">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioRelasiPerusahaanFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
                                     <p:ajax listener="#{bioRelasiPerusahaanFormController.onChangeProvinces()}" update="cityId"/>
@@ -204,7 +204,7 @@
                                 <h:outputLabel for="kodePos" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 35%">
-                                <pe:inputNumber id="kodePos"  value="#{bioRelasiPerusahaanFormController.model.postCode}"
+                                <pe:inputNumber decimalPlaces="0" thousandSeparator="" id="kodePos"  value="#{bioRelasiPerusahaanFormController.model.postCode}"
                                                 required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
                             </p:column>
                             <p:column style="width: 16%">
@@ -214,7 +214,7 @@
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 35%">
-                                <p:selectOneMenu id="cityId" required="true" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.cityId}" style="width:227px;">
+                                <p:selectOneMenu id="cityId" required="true" disabled="#{!bioRelasiPerusahaanFormController.isProvinceSelected}" filter="true" styleClass="isitext_hrm" value="#{bioRelasiPerusahaanFormController.model.cityId}" style="width:227px;">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioRelasiPerusahaanFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
                                 </p:selectOneMenu>

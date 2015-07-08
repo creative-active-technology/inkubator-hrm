@@ -78,7 +78,7 @@ public class OverTimeFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-//        String param = FacesUtil.getRequestParameter("param");
+
         String param = FacesUtil.getRequestParameter("execution");
         overTimeModel = new OverTimeModel();
         try {
@@ -137,24 +137,7 @@ public class OverTimeFormController extends BaseController {
         return null;
     }
     
-//    public void doSave() {
-//        WtOverTime wtOverTime = getEntityFromViewModel(overTimeModel);
-//        try {
-//            if (isEdit) {
-//                wtOverTimeService.update(wtOverTime);
-//                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-//            } else {
-//                wtOverTimeService.save(wtOverTime);
-//                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-//            }
-//            cleanAndExit();
-//        } catch (BussinessException ex) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//        } catch (Exception ex) {
-//            LOGGER.error("Error", ex);
-//        }
-//        cleanAndExit();
-//    }
+
 
     private WtOverTime getEntityFromViewModel(OverTimeModel overTimeModel) {
         WtOverTime overTime = new WtOverTime();
@@ -171,6 +154,7 @@ public class OverTimeFormController extends BaseController {
         overTime.setOverTimeCalculation(overTimeModel.getOverTimeCalculation());
         overTime.setStartTimeFactor(overTimeModel.getStartTimeFactor());
         overTime.setValuePrice(overTimeModel.getValuePrice());
+        overTime.setWtHitungLembur(new WtHitungLembur(overTimeModel.getWtHitungLemburID()));
         return overTime;
     }
 

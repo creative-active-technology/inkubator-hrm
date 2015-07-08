@@ -125,9 +125,14 @@ public class RecruitVacancySelectionViewController extends BaseController {
         }
     }
 
-    public String doEdit() {
-        return "/protected/recruitment/recruit_selection_form.htm?faces-redirect=true&execution=" + selected.getId();
-    }
+    public void doEdit(){
+        ExternalContext red = FacesUtil.getExternalContext();
+       try {
+           red.redirect(red.getRequestContextPath() + "/flow-protected/recruit_vacancy_selection?otherParam=" + selected.getId());
+       } catch (IOException ex) {
+         LOGGER.error("Error", ex);
+       }
+   }
 
     @Override
     public void onDialogReturn(SelectEvent event) {

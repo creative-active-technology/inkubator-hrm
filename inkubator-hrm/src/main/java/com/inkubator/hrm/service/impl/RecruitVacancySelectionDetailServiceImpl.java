@@ -251,17 +251,35 @@ public class RecruitVacancySelectionDetailServiceImpl extends IServiceImpl imple
     public List<RecruitVacancySelectionDetail> getAllDataByRecruitVacancySelection(Long id)throws Exception {
 		List<RecruitVacancySelectionDetail> listRecruitVacancySelection = recruitVacancySelectionDetailDao.getAllDataByRecruitVacancySelection(id);
 		List<RecruitVacancySelectionDetailPic> listRecruitVacancySelectionPic = new ArrayList<RecruitVacancySelectionDetailPic>();
-		List<EmpData> listEmpData = new ArrayList<EmpData>();
+		List<EmpData> listEmpData;
 		for(RecruitVacancySelectionDetail data : listRecruitVacancySelection){
-			listRecruitVacancySelectionPic = recruitVacancySelectionDetailPicDao.getAllDataByRecruitVacancySelectionDetailId(data.getRecruitVacancySelection().getId());
+			listEmpData = new ArrayList<EmpData>();
+			listRecruitVacancySelectionPic = recruitVacancySelectionDetailPicDao.getAllDataByRecruitVacancySelectionDetailId(data.getId());
 			System.out.println(listRecruitVacancySelectionPic + " list Recruit Pic");
 			for(RecruitVacancySelectionDetailPic dataEmployee : listRecruitVacancySelectionPic){
+				
 				listEmpData.add(dataEmployee.getEmpData());
 			}
 			System.out.println(listEmpData.size() + "sizenya nih");
 			data.setListEmpData(listEmpData);
 		}
 		return listRecruitVacancySelection;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public RecruitVacancySelectionDetail getEntityByRecruitVacancySelection(Long id) throws Exception {
+		RecruitVacancySelectionDetail recruitVacancySelectionDetail = recruitVacancySelectionDetailDao.getEntityByRecruitVacancySelection(id);
+		List<RecruitVacancySelectionDetailPic> listRecruitVacancySelectionPic = recruitVacancySelectionDetailPicDao.getAllDataByRecruitVacancySelectionDetailId(recruitVacancySelectionDetail.getId());
+		List<EmpData> listEmployee = new ArrayList<EmpData>();
+		
+		for(RecruitVacancySelectionDetailPic employee : listRecruitVacancySelectionPic){
+			listEmployee.add(employee.getEmpData());
+			
+		}
+		recruitVacancySelectionDetail.setListEmpData(listEmployee);
+		System.out.println(recruitVacancySelectionDetail.getListEmpData().size()  +  " size di entity");
+		return recruitVacancySelectionDetail;
 	}
 
 }

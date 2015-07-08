@@ -123,35 +123,12 @@ public class EmpDataViewController extends BaseController {
         return "/protected/personalia/emp_background_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
-    public String doDetailRenumeration() {
-        return "/protected/payroll/basic_renumeration_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
-    }
-
     public String doEdit() {
         return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
     public String doRotasi() {
         return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=r" + selectedEmpData.getId() + "&from=rotasi";
-
-    }
-
-    public String doPlacementOfEmployee() {
-        return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
-    }
-
-    public void doEmployeeTimeSchedule() {
-        List<String> values = new ArrayList<>();
-        values.add(String.valueOf(selectedEmpData.getId()));
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        dataToSend.put("empId", values);
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 450);
-        options.put("contentHeight", 270);
-        RequestContext.getCurrentInstance().openDialog("emp_schedule_form", options, dataToSend);
 
     }
 
@@ -162,15 +139,5 @@ public class EmpDataViewController extends BaseController {
         empDataService = null;
         selectedEmpData = null;
 
-    }
-
-    @Override
-    public void onDialogReturn(SelectEvent event) {
-        
-        super.onDialogReturn(event);
-    }
-
-    public String doDetailShedule() {
-        return "/protected/employee/emp_schedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
 }

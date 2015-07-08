@@ -62,7 +62,7 @@
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="text-align: center;width: 5%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}" />
                                 </f:facet>
@@ -71,25 +71,25 @@
                                     <f:selectItems value="#{recruitmenSelectionSeriesDetailController.listOrder}"/>
                                 </p:selectOneMenu>
                             </p:column>
-                            <p:column > 
+                            <p:column style="width: 15%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['recruitSelectionSeriesView.selection_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value=" #{data.recruitSelectionType.name}" />
                             </p:column> 
-                            <p:column > 
+                            <p:column style="width: 15%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['recruitSelectionSeriesView.accept_letter']}"/>
                                 </f:facet>
                                 <h:outputLabel value=" #{data.systemLetterReferenceByAcceptLetterId.name}" />
                             </p:column>
-                            <p:column > 
+                            <p:column style="width: 15%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['recruitSelectionSeriesView.reject_letter']}"/>
                                 </f:facet>
                                 <h:outputLabel value=" #{data.systemLetterReferenceByRejectLetterId.name}" />
                             </p:column>
-                            <p:column > 
+                            <p:column style="width: 15%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['recruitSelectionSeriesView.note']}"/>
                                 </f:facet>

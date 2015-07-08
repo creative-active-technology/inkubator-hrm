@@ -10,12 +10,15 @@ import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -73,6 +76,7 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
     @Override
     public RecruitmenSelectionSeriesDetail getByListOrderAndRecSelectionSeriesId(Integer number, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("recruitmenSelectionSeries", "recruitmenSelectionSeries", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("listOrder", number));
         criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", id));
         return (RecruitmenSelectionSeriesDetail) criteria.uniqueResult();
@@ -100,5 +104,17 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
         criteria.setFetchMode("recruitSelectionType", FetchMode.JOIN);
         return criteria.list();
     }
+
+	@Override
+	public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(
+			Long recruitSelectionType, Long recruitSelectionSeries) {
+		System.out.println(recruitSelectionType + " hahahoho " + recruitSelectionSeries);
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("recruitSelectionType", "recruitSelectionType", JoinType.INNER_JOIN);
+		criteria.createAlias("recruitmenSelectionSeries", "recruitmenSelectionSeries", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("recruitSelectionType.id", recruitSelectionType));
+        criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", recruitSelectionSeries));
+        return (RecruitmenSelectionSeriesDetail) criteria.uniqueResult();
+	}
 
 }

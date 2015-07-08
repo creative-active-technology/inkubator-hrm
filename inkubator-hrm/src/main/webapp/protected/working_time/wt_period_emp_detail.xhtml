@@ -240,7 +240,7 @@
                                 <p:outputLabel value="#{wtPeriodEmpDetailController.model.untilPeriode}"  styleClass="label_hrm">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>                                
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateAttendanceRealization()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:commandButton  value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();PF('startButton').disable();" widgetVar="startButton" action="#{wtPeriodEmpDetailController.doCalculateAttendanceRealization()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{wtPeriodEmpDetailController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">

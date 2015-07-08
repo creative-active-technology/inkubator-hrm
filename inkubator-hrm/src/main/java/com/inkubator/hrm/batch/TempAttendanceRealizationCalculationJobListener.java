@@ -38,6 +38,8 @@ public class TempAttendanceRealizationCalculationJobListener implements JobExecu
 		}
 		
 	}
+	
+	
 
 	@Override
 	public void afterJob(JobExecution jobExecution) {		

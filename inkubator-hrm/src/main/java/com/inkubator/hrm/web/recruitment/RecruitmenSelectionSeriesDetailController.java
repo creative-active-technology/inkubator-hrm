@@ -163,7 +163,7 @@ public class RecruitmenSelectionSeriesDetailController extends BaseController {
         try {
             int newGrade = recruitmenSelectionSeriesDetail.getListOrder();
 //            Long idOldData = recruitmenSelectionSeriesDetail.getId();
-            recruitmenSelectionSeriesDetailService.doChangerListOrder(newGrade, new RecruitmenSelectionSeriesDetailId(recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getId(), recruitmenSelectionSeriesDetail.getRecruitSelectionType().getId()), recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getId()); 
+            recruitmenSelectionSeriesDetailService.doChangerListOrder(newGrade, recruitmenSelectionSeriesDetail.getRecruitSelectionType().getId(), recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getId(), recruitmenSelectionSeriesDetail.getRecruitmenSelectionSeries().getId()); 
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }

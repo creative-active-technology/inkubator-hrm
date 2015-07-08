@@ -254,14 +254,15 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void doChangerListOrder(int newGradeLevel, RecruitmenSelectionSeriesDetailId id, Long recSelectionSeriesId) throws Exception {
-        RecruitmenSelectionSeriesDetail targetChage = this.recruitmenSelectionSeriesDetailDao.getByListOrderAndRecSelectionSeriesId(newGradeLevel, recSelectionSeriesId);
+    public void doChangerListOrder(int newGradeLevel, Long selectionType, Long selectionSeries, Long recSelectionSeriesId) throws Exception {
+        System.out.println(recSelectionSeriesId + " CHANGE LIST ORDER " + newGradeLevel);
+    	RecruitmenSelectionSeriesDetail targetChage = this.recruitmenSelectionSeriesDetailDao.getByListOrderAndRecSelectionSeriesId(newGradeLevel, recSelectionSeriesId);
         targetChage.setListOrder(0);
         targetChage.setUpdatedOn(UserInfoUtil.getUserName());
         targetChage.setUpdatedBy(new Date());
         this.recruitmenSelectionSeriesDetailDao.update(targetChage);
-
-        RecruitmenSelectionSeriesDetail newChange = this.recruitmenSelectionSeriesDetailDao.getEntityByPk(id);
+        System.out.println(targetChage.getListOrder() + " " + targetChage.getRecruitmenSelectionSeries().getCode());
+        RecruitmenSelectionSeriesDetail newChange = this.recruitmenSelectionSeriesDetailDao.getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(selectionType, selectionSeries);
         int gradeNumberOld = newChange.getListOrder();
         newChange.setListOrder(newGradeLevel);
         newChange.setUpdatedOn(UserInfoUtil.getUserName());

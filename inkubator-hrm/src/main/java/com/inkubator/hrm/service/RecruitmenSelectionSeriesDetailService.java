@@ -22,7 +22,7 @@ public interface RecruitmenSelectionSeriesDetailService extends IService<Recruit
     
     public List<RecruitmenSelectionSeriesDetail> getAllDataBySelectionSeriesId(Long id, int firstResult, int maxResults, Order order) throws Exception;
 
-    public void doChangerListOrder(int newGradeLevel, RecruitmenSelectionSeriesDetailId id, Long recSelectionSeriesId) throws Exception;
+    public void doChangerListOrder(int newGradeLevel, Long selectionType, Long selectionSeries, Long recSelectionSeriesId) throws Exception;
     
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id) throws Exception;
 

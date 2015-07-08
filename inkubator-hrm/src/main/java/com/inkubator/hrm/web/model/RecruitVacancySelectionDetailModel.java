@@ -18,6 +18,7 @@ import org.primefaces.model.LazyDataModel;
  */
 public class RecruitVacancySelectionDetailModel implements Serializable {
 
+	private Long id;
     private String recruitSelectionSeriesName;
     private String recruitSelectionTypeName;
     private Date time;
@@ -31,7 +32,16 @@ public class RecruitVacancySelectionDetailModel implements Serializable {
     private List<Long> listEmployeeId;
 
     
-    public String getRecruitSelectionTypeName() {
+    
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getRecruitSelectionTypeName() {
 		return recruitSelectionTypeName;
 	}
 

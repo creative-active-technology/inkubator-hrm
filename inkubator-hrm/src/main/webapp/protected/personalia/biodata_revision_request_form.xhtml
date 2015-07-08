@@ -35,7 +35,7 @@
                                     <p:outputLabel  value="#{appmsg['biodata.revision_in']} : " styleClass="label_hrm" for="revisionDetailId" />
                                 </p:column>                                
                                 <p:column style="width: 84%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 30%" id="revisionDetailId" filter="true" immediate="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 30%" id="revisionDetailId" filter="true"  immediate="true"
                                                       value="#{bioDataRevisionRequestFormController.selectedJenisData}"
                                                       label="#{appmsg['biodata.revision_in']}" >                                        
                                         <f:selectItem itemLabel="#{appmsg['global.detail']}" itemValue="detail"/>
@@ -47,15 +47,17 @@
                                         <f:selectItem itemLabel="#{appmsg['biodata.skill']}" itemValue="skill"/>
                                         <f:selectItem itemLabel="#{appmsg['biodata.spesifikasi_ability']}" itemValue="specificationAbility"/>
                                         <f:selectItem itemLabel="#{appmsg['interest.interest']}" itemValue="interest"/>
-                                        <p:ajax    update="panelGridDetail,panelGridAlamat"/>
+                                        <p:ajax    update="divData"/>
                                     </p:selectOneMenu>
                                     <p:message for="revisionDetailId"/>
                                 </p:column>
 
-
+	
                             </p:row>
                         </p:panelGrid>
                         <p:separator/>
+                        <p:panel id="divData">
+                        <!-- <div id="divData"> -->
                         <h:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'detail'}" id="panelGridDetail" >
                             <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3"  >
                                 <p:row id="panelName">
@@ -361,6 +363,8 @@
                             </p:column>
                         </p:dataTable>
                         </h:panelGrid>
+                       <!--  </div> -->
+                       </p:panel>
                             <p:separator/>
                   
 
@@ -377,6 +381,7 @@
                         </div>
 
                     </div>
+                    
                     <p:focus  context="bioDataFormId" id="focusId"/>
                 </h:form>
                 

@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.workingtime;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
 import com.inkubator.hrm.util.MachineFingerUtil;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
@@ -114,7 +116,8 @@ public class FingerSwapCapturedDownloadController extends BaseController {
 		    	.addString("fragmentRootElementName", "Row")
 		    	.addString("resourcePath", "file:///"+pathUpload)
 		    	.addLong("machineId", machineFinger.getId())
-		    	.addString("timeInMilis", String.valueOf(currentTimeInMillis)).toJobParameters();	    	
+		    	.addString("createdBy", UserInfoUtil.getUserName())
+		    	.addDate("createdOn", new Timestamp(currentTimeInMillis)).toJobParameters();	    	
 			JobExecution jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
 			
 			//check status jobs
