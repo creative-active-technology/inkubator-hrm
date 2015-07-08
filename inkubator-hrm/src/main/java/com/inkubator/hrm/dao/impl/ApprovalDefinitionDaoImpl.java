@@ -10,7 +10,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
@@ -174,6 +176,13 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(Restrictions.eq("specificName", specificName));
         criteria.add(Restrictions.eq("isNoLongerInUse", false));
         criteria.addOrder(order);
+        return criteria.list();
+	}
+
+	@Override
+	public List<ApprovalDefinition> getAllDataByName(String name) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", name));
         return criteria.list();
 	}
 }
