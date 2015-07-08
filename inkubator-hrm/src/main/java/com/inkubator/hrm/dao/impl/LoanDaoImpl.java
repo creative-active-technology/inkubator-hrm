@@ -56,6 +56,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
+    	System.out.println(parameter.getLoanSchema() + " LOAN SCHEMAA");
                             criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
             criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
             criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);

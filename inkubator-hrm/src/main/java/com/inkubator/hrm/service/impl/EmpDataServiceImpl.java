@@ -1261,4 +1261,5 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception {
 		return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
 	}
+
 }

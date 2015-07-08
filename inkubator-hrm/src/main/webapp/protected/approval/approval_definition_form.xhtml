@@ -34,7 +34,7 @@
                                     <p:outputLabel for="approvalName"  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.name}" style="width: 75%" required="true">
+                                    <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionFormController.approvalDefinitionModel.name}" filter="true" filterMatchMode="contains" style="width: 75%" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.change_process_biodata']}" itemValue="BIO_DATA_EDIT" />
