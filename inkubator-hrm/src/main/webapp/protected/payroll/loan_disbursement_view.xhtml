@@ -23,7 +23,7 @@
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="#{appmsg['loan.disbursementTable']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['loan.disbursementTable']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['loan.disbursementTable_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -39,7 +39,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['workschedule.nik']}" itemValue="nik"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="employee" />
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.loan']}" itemValue="loanScheme"/>                                                                                                                        
+                                        <f:selectItem itemLabel="#{appmsg['loanschema.loan']}" itemValue="loanSchema"/>                                                                                                                        
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{loanDisbursementViewController.loanSearchParameter.parameter}" style="width: 180px" styleClass="label_button"/>
                                      <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanDisbursementViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
