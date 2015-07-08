@@ -90,6 +90,10 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter); 
     
+    public List<EmpData> getAllDataPtkpByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalPtkpByParam(EmpDataSearchParameter searchParameter); 
+    
     public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
 	public Long getTotalByParam(EmpDataSearchParameter searchParameter);

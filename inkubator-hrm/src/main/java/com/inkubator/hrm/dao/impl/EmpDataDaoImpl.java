@@ -75,7 +75,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
-//        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.add(Restrictions.eq("company.id", companyId));
 
         return criteria;
     }
@@ -2062,6 +2062,66 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
         if (dataSearchParameter.getName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+    }
+    
+    @Override
+    public List<EmpData> getAllDataPtkpByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchPtkpByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+
+//        criteria.createAlias("jabatanByJabatanId", "bioData", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("taxFree", "taxFree", JoinType.INNER_JOIN);
+//        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+//        criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+//        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+//        criteria.setFetchMode("taxFree", FetchMode.JOIN);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalPtkpByParam(EmpDataSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchPtkpByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchPtkpByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
+        if (dataSearchParameter.getJabatanKode() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+        }
+
+        if (dataSearchParameter.getJabatanName() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        }
+
+        if (dataSearchParameter.getNIK() != null) {
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
+        }
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (dataSearchParameter.getName() != null) {
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
+//            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
+//            criteria.add(disjunction);
             criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
     }

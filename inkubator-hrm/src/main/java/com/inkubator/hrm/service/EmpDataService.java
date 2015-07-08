@@ -50,6 +50,10 @@ public interface EmpDataService extends IService<EmpData> {
 
     public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter) throws Exception;
     
+    public List<EmpData> getAllDataPtkpByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalPtkpByParam(EmpDataSearchParameter searchParameter) throws Exception; 
+    
     public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
 	public Long getTotalByParam(EmpDataSearchParameter searchParameter) throws Exception;
