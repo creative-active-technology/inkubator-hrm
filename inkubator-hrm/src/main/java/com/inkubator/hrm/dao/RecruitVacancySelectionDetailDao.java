@@ -16,4 +16,6 @@ import com.inkubator.hrm.entity.RecruitVacancySelectionDetail;
  */
 public interface RecruitVacancySelectionDetailDao extends IDAO<RecruitVacancySelectionDetail>{
 	public List<RecruitVacancySelectionDetail> getAllDataByRecruitVacancySelection(Long id);
+	
+	public RecruitVacancySelectionDetail getEntityByRecruitVacancySelection(Long id);
 }

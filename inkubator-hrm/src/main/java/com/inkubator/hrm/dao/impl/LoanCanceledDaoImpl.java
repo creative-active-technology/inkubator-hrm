@@ -6,6 +6,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanCanceledDao;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.web.search.LoanCanceledSearchParameter;
@@ -40,9 +41,11 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 
         doSearchByParam(searchParameter, criteria);
-//        criteria.setFetchMode("empData", FetchMode.JOIN);
-//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-//        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
+        criteria.setFetchMode("loan.empData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.bioData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("loan.statusPencairan", HRMConstant.LOAN_CANCELED));
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -58,14 +61,13 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
 
     private void doSearchByParam(LoanCanceledSearchParameter searchParameter, Criteria criteria) {
 
-        criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
-
-        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getLoanSchema())) {
+            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", searchParameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getEmployee())) {
+            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
 
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmployee(), MatchMode.ANYWHERE));
@@ -81,10 +83,17 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
     public LoanCanceled getEntityByPkWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+        criteria.createAlias("loan", "loan", JoinType.INNER_JOIN);
+        criteria.createAlias("loan.loanSchema", "loanSchema", JoinType.INNER_JOIN);
+        criteria.setFetchMode("loan.empData", FetchMode.JOIN);
+        criteria.setFetchMode("loan.empData.bioData", FetchMode.JOIN);
         return (LoanCanceled) criteria.uniqueResult();
 
+    }
+    
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
 }

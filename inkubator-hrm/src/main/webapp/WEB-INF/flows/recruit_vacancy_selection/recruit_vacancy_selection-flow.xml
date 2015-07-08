@@ -6,11 +6,13 @@
       	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd" start-state="start">
     
     <on-start>
+    <set name="flowScope.param" value="requestParameters.otherParam" type="java.lang.String" />
         <evaluate expression="recruitVacancySelectionFormController.initSearchRecruitVacancySelectionFormFlow(flowRequestContext)" result="flowScope.recruitVacancySelectionModel"/> 
     </on-start>
     
     <view-state id="start" view="recruit_vacancy_selection_form.xhtml">
         <transition on="next" to="nextToDetail" />
+        <transition on="back" to="end" />
     </view-state>
     
     <action-state id="nextToDetail">
@@ -26,6 +28,9 @@
         </transition>
         <transition on="doGetListEmployee">
         	<evaluate expression="recruitVacancySelectionFormController.doGetListEmployee(flowRequestContext)"/>
+        </transition>
+        <transition on="initEmployeeSelectors">
+        	<evaluate expression="recruitVacancySelectionFormController.initEmployeeSelectors(flowRequestContext)"/>
         </transition>
         <transition on="back" to="start" />
     </view-state>

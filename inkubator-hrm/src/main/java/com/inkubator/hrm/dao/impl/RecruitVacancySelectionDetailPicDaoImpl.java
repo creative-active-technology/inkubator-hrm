@@ -34,15 +34,23 @@ public class RecruitVacancySelectionDetailPicDaoImpl extends IDAOImpl<RecruitVac
 	@Override
 	public List<RecruitVacancySelectionDetailPic> getAllDataByRecruitVacancySelectionDetailId(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		System.out.println(id + " idnya");
 		criteria.createAlias("recruitVacancySelectionDetail", "recruitVacancySelectionDetail", JoinType.INNER_JOIN);
 		criteria.createAlias("recruitVacancySelectionDetail.recruitVacancySelection", "recruitVacancySelection", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("recruitVacancySelection.id", id));
+		criteria.add(Restrictions.eq("recruitVacancySelectionDetail.id", id));
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
 		criteria.setFetchMode("empData.jabatanByJabatanId.department", FetchMode.JOIN);
 		criteria.setFetchMode("empData.employeeType", FetchMode.JOIN);
 		return criteria.list();
+	}
+
+	@Override
+	public void deleteAllDataByVacancySelectionDetailId(Long id) {
+		String hqlDeletedSelectionDetailPic = "delete from RecruitVacancySelectionDetailPic rvsdp where rvsdp.recruitVacancySelectionDetail.id = :id";
+        int deletedSelectionDetailPic = getCurrentSession().createQuery( hqlDeletedSelectionDetailPic ).setString( "id", String.valueOf(id) ).executeUpdate();
+	
 	}
     
 }

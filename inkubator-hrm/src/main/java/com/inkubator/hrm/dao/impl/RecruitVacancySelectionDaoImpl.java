@@ -64,6 +64,10 @@ public class RecruitVacancySelectionDaoImpl extends IDAOImpl<RecruitVacancySelec
         if (searchParameter.getCode()!=null) {
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         } 
+        if (searchParameter.getRecruitment()!=null) {
+        	criteria.createAlias("recruitHireApply", "recruitHireApply", JoinType.INNER_JOIN);
+        	criteria.add(Restrictions.like("recruitHireApply.reqHireCode", searchParameter.getRecruitment(), MatchMode.START));
+        } 
         criteria.add(Restrictions.isNotNull("id"));
     }
 

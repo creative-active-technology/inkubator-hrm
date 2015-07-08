@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="selisih_waktu_kerja.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Selisih Waktu Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Selisih Waktu Kerja dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,7 +30,7 @@
                     <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="codeId" value="Periode Proses" styleClass="label_hrm"/>
+                                <p:outputLabel for="codeId" value="#{appmsg['workingTime.proses_period']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="codeId" value="#{empAttendaceRealizationController.attendanceModel.stardDate}">
@@ -44,7 +44,7 @@
                         </p:row> 
                         <p:row >
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="name" value="Total Karyaawan Cuti" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['workingTime.total_leave']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="name" value="#{empAttendaceRealizationController.attendanceModel.totalCuti} #{appmsg['global.people_only']}"  />
@@ -52,7 +52,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Izin" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workingTime.total_permit']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalIzin} #{appmsg['global.people_only']}" />
@@ -60,7 +60,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Sakit" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workingTime.total_sick']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalSick} #{appmsg['global.people_only']}"/>
@@ -68,7 +68,7 @@
                         </p:row> 
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Karyaawan Dinas" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workingTime.total_on_duty']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel  value="#{empAttendaceRealizationController.attendanceModel.totalOnDuty} #{appmsg['global.people_only']}"/>
@@ -111,7 +111,7 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['workingTime.list_difference_working_time']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -119,37 +119,37 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column style="width: 40%" sortBy="#{timeRealization.firstName}">
+                            <p:column style="width: 30%" sortBy="#{timeRealization.firstName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.empRealName}"/>
                             </p:column>
-                            <p:column  style="width: 40%">
+                            <p:column  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Kehadiran"/>
+                                    <h:outputText value="#{appmsg['workingTime.attendance']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.attendaceRealization}"/>
                             </p:column>
                             <p:column  style="width: 20%"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Kelebihan Jam Kerja"/>
+                                    <h:outputText value="#{appmsg['workingTime.excess_working_time']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{timeRealization.totalDeviation}">
                                     <f:converter converterId="minuteDeviationHumanReaderPositif" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column  style="width: 30%"> 
+                            <p:column  style="width: 15%"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Kekurangan Jam Kerja"/>
+                                    <h:outputText value="#{appmsg['workingTime.shortage_working_time']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{timeRealization.totalDeviation}">
                                     <f:converter converterId="minuteDeviationHumanReaderNegative" />
                                 </p:outputLabel>
                             </p:column>
-                            <p:column  style="width: 30%"> 
+                            <p:column  style="width: 15%"> 
                                 <f:facet name="header">  
-                                    <h:outputText value="Lembur"/>
+                                    <h:outputText value="#{appmsg['overtime.overtime']}"/>
                                 </f:facet>
                                 <p:outputLabel value="#{timeRealization.totalOverTime}">
                                     <f:converter converterId="minuteDeviationHumanReaderPositif" />
@@ -212,7 +212,7 @@
                                                             <p:outputLabel value= "#{timeRealization.duty}"/>
                                                         </p:column>-->
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" 
                                                  action="#{workingTimeDeviationController.doDetail()}">                        

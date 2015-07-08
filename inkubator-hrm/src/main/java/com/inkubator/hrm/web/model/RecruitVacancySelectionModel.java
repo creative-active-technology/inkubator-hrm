@@ -26,6 +26,9 @@ import org.primefaces.model.LazyDataModel;
 public class RecruitVacancySelectionModel implements Serializable {
 
     private String code;
+    private Long id;
+    private Boolean isUpdatedNewTypeSelection;
+    private Long existingRecruitSelectionSeriesId;
     private Date recruitVacancySelectionDate;
     private BigDecimal extraBudget;
     private Map<String, Long> dropDownRecruitHireApply;
@@ -177,6 +180,25 @@ public class RecruitVacancySelectionModel implements Serializable {
 	}
 	public void setRecruitSelectionSeriesId(Long recruitSelectionSeriesId) {
 		this.recruitSelectionSeriesId = recruitSelectionSeriesId;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Long getExistingRecruitSelectionSeriesId() {
+		return existingRecruitSelectionSeriesId;
+	}
+	public void setExistingRecruitSelectionSeriesId(
+			Long existingRecruitSelectionSeriesId) {
+		this.existingRecruitSelectionSeriesId = existingRecruitSelectionSeriesId;
+	}
+	public Boolean getIsUpdatedNewTypeSelection() {
+		return isUpdatedNewTypeSelection;
+	}
+	public void setIsUpdatedNewTypeSelection(Boolean isUpdatedNewTypeSelection) {
+		this.isUpdatedNewTypeSelection = isUpdatedNewTypeSelection;
 	}
 	
 }

@@ -1229,7 +1229,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
          * kehadiran kemarin
          */
         Long totalYesterdaySchedule = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
-        Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalByScheduleDate(now.minusDays(1).toDate(), companyId);
+        Long totalYesterdayAttendance = tempProcessReadFingerDao.getTotalAttendanceByScheduleDate(now.minusDays(1).toDate(), companyId);
         BigDecimal yesterdayAttendance = new BigDecimal(0);
         if (totalYesterdaySchedule != 0 && totalYesterdayAttendance != 0) {
             yesterdayAttendance = new BigDecimal(totalYesterdayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalYesterdaySchedule), 2, RoundingMode.UP);
@@ -1260,5 +1260,22 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception {
 		return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataPtkpByParam(
+			EmpDataSearchParameter searchParameter, int firstResult,
+			int maxResults, Order order) throws Exception {
+		// TODO Auto-generated method stub
+		return empDataDao.getAllDataPtkpByParam(searchParameter, firstResult, maxResults, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPtkpByParam(EmpDataSearchParameter searchParameter)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return empDataDao.getTotalPtkpByParam(searchParameter);
 	}
 }

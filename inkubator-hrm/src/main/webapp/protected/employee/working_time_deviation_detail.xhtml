@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="koreksi_realisasi.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan" styleClass="header_big" />
-                                <p:outputLabel value="Realisasi Kehadiran Karyawan dari Waktu Kerja" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,7 +30,7 @@
                     <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="fromPeriod" value="Periode Proses" styleClass="label_hrm"/>
+                                <p:outputLabel for="fromPeriod" value="#{appmsg['workingTime.proses_period']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="fromPeriod" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.fromPeriod}">
@@ -45,7 +45,7 @@
                         
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="fromPeriod" value="Periode Proses" styleClass="label_hrm"/>
+                                <p:outputLabel for="nikAndName" value="#{appmsg['global.nik']} - #{appmsg['biodata.fullname']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="nikAndName" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.nikAndFullName}" />
@@ -54,7 +54,7 @@
                         
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel for="totalWorkingTime" value="Total Jam Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="totalWorkingTime" value="#{appmsg['workingTime.total_working_hour']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
                                 <p:outputLabel id="totalWorkingTime" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalWorkingTime} Jam" />
@@ -63,7 +63,7 @@
                         
                         <p:row>
                             <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                <p:outputLabel value="Total Jam Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['workingTime.margin_working_hour']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
 <!--                                 <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginHour} Jam " />
@@ -81,7 +81,7 @@
                                       id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Selisih Waktu Kerja" styleClass="label_hrm"/>
+                                <h:outputText value="#{appmsg['workingTime.list_difference_working_time']}" styleClass="label_hrm"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -91,7 +91,7 @@
                             </p:column>
                             <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal"/>
+                                    <h:outputText value="#{appmsg['global.date']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.workingDate}">
                                 	<f:convertDateTime pattern="dd MMMM yyyy"/>
@@ -99,28 +99,28 @@
                             </p:column>
                             <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Nama Kelompok Kerja"/>
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_name_of_working_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.workingGroupName}"/>
                             </p:column>
 
 							<p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Jam Masuk"/>
+                                    <h:outputText value="#{appmsg['workinggroup.check_in']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.fingerIn}"/>
                             </p:column>
                             
                             <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Jam Keluar"/>
+                                    <h:outputText value="#{appmsg['workinggroup.check_out']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.fingerOut}"/>
                             </p:column>
                             
                             <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Selisih Waktu"/>
+                                    <h:outputText value="#{appmsg['workinggroup.diff_time']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{timeRealization.deviationTime}">
                                 	<f:converter converterId="minuteDeviationHumanReaderPositif" />
