@@ -55,18 +55,16 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
-        
-
         if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {        
             criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", parameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(parameter.getEmployee())) {
+        if (StringUtils.isNotEmpty(parameter.getEmployee()) || StringUtils.isNotEmpty(parameter.getNik())) {
             criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
             criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
 
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", parameter.getNik(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
