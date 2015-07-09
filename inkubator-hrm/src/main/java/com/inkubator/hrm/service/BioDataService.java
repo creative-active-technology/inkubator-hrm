@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
 
@@ -38,6 +39,6 @@ public interface BioDataService extends IService<BioData>, BaseApprovalService {
 
 	public void updateFingerPrint(String nik, MultipartFile fingerPrintFile) throws Exception;
 	
-	public String saveBiodataRevisionWithApproval(Object entity, String dataType) throws Exception;
+	public String saveBiodataRevisionWithApproval(Object modifiedEntity, String dataType, EmpData empData) throws Exception;
     
 }

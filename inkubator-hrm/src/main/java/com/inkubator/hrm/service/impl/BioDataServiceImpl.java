@@ -8,6 +8,7 @@ package com.inkubator.hrm.service.impl;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -36,6 +37,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.util.CommonReportUtil;
@@ -56,6 +58,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -479,48 +482,86 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public String saveBiodataRevisionWithApproval(Object entity, String dataType) throws Exception {
+	public String saveBiodataRevisionWithApproval(Object modifiedEntity, String dataType, EmpData empData) throws Exception {
 		
+		//Jika Approval Definition untuk proses revisi biodata belum di buat, lempar BussinessException
 		if(isApprovalDefinitionNotFound()){
 			throw new BussinessException("biodata.biodata_revision_doesnt_have_approval_def");
+			
 		}
 		
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
 		
+		//Dapatkan List Pending Approval Activity
+		List<ApprovalActivity> listPreviousActivities = approvalActivityDao.getPendingRequest(requestUser.getUserId());
 		
-		return null;
+		//Filter hanya yang berasal dari proses request revisi biodata
+		listPreviousActivities = Lambda.select(listPreviousActivities, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.BIO_DATA_EDIT)));
+		
+		//Looping satu persatu
+		for(ApprovalActivity approvalActivity : listPreviousActivities){
+			String pendingData = approvalActivity.getPendingData();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();		
+			
+			// dapatkan nilai dataType (jenis kelompok formulir biodata) dari pending approval activity
+			JsonElement jsonElementDataType = gson.fromJson(pendingData, JsonObject.class).get("dataType");
+		        if (!jsonElementDataType.isJsonNull()) {
+		        	
+		        	String dataTypeFromJson = jsonElementDataType.getAsString();
+		        	
+		        	//Jika kelompok formulir dari pending Request sama dengan yang akan di ajukan sekarang, maka lempar BusinessException,
+		        	//karena tidak boleh mengajukan perubahan biodata pada satu jenis kelompok formulir, 
+		        	//jika sebelumnya sudah pernah diajukan pada jenis kelompok formulir tsb, akan tetapi statusnya masih pending.
+		        	if(StringUtils.equals(dataType, dataTypeFromJson)){
+		        		throw new BussinessException("biodata.error_revision_same_data_type_which_still_pending_found");
+		        	}
+		        	
+		        }
+	       
+		}
+		
+		return this.saveRevision(modifiedEntity, dataType, empData, Boolean.FALSE, null);
+		
 	}
 	
-	private String save(Object entity, String dataType, EmpData empData, Boolean isBypassApprovalChecking,  Long revisedApprActivityId) throws Exception {
+	private String saveRevision(Object modifiedEntity, String dataType, EmpData empData, Boolean isBypassApprovalChecking,  Long revisedApprActivityId) throws Exception {
         String result = "error";
-
-        /*EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-        LoanNewType loanNewType = loanNewTypeDao.getEntiyByPK(entity.getLoanNewType().getId());
-        String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-        entity.setEmpData(empData);
-        entity.setLoanNewType(loanNewType);
-        entity.setCreatedBy(createdBy);
-        entity.setCreatedOn(createdOn);*/
-
-       // HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        
+        //Check Next Approval
         ApprovalActivity approvalActivity = this.checkApprovalIfAny(empData, isBypassApprovalChecking);
-        //ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.LOAN, requestUser.getUserId());
-       
+        
         if (approvalActivity == null) {
-
-            /*entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));        
-            loanNewApplicationDao.save(entity);*/
-
+        	
+        	switch (dataType) {
+        	
+        		case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+        			BioData modifiedBiodata = (BioData) modifiedEntity;
+        			this.update(modifiedBiodata);
+        			break;
+        			
+        		default:
+    				break;
+        	}
+        	
             result = "success_without_approval";
 
         } else {
-            approvalActivity.setPendingData(getJsonPendingData(entity));
-            approvalActivity.setTypeSpecific(null);
-            approvalActivityDao.save(approvalActivity);
-
-            result = "success_need_approval";
-
+        	
+        	switch (dataType) {
+        	
+				case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+					BioData modifiedBiodata = (BioData) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(modifiedBiodata, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+	
+				default:
+					break;
+				
+			}
+            
             //sending email notification
             this.sendingEmailApprovalNotif(approvalActivity);
         }
@@ -536,14 +577,14 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         return isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
 	}
 	
-	 private String getJsonPendingData(Object entity) throws IOException {
+	 private String getJsonPendingData(Object entity, String dataType) throws IOException {
 
 	        //parsing object to json 
 	        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 	        JsonParser parser = new JsonParser();
 	        JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-
+	        jsonObject.addProperty("dataType", dataType);
 	        return gson.toJson(jsonObject);
-	    }
-   
+	 }
+	
 }

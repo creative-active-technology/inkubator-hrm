@@ -6,6 +6,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
@@ -14,6 +15,7 @@ import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.DialectService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.MaritalStatusService;
 import com.inkubator.hrm.service.NationalityService;
 import com.inkubator.hrm.service.RaceService;
@@ -68,6 +70,8 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private MaritalStatusService maritalStatusService;
     @ManagedProperty(value = "#{nationalityService}")
     private NationalityService nationalityService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
     @ManagedProperty(value = "#{bioDataService}")
@@ -80,6 +84,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private String signatureFileName;
     private String selectedJenisData;
     private Boolean isEdit;
+    private EmpData empData;
 
     @PostConstruct
     @Override
@@ -88,7 +93,9 @@ public class BioDataRevisionRequestFormController extends BaseController {
             super.initialization();
             bioDataModel = new BioDataModel();
             Long bioDataId = HrmUserInfoUtil.getBioDataId();
-            selectedJenisData = "detail";
+            empData = empDataService.getByEmpDataByBioDataId(bioDataId);
+            
+            selectedJenisData = HRMConstant.BIO_REV_DETAIL_BIO_DATA;
             if (bioDataId != null) {
                 isEdit = Boolean.TRUE;
                 BioData  selectedBioData = bioDataService.getEntiyByPK(bioDataId);
@@ -315,7 +322,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
             BioData bioData = getEntityFromView(bioDataModel);
             try {
             	
-                String result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData);
+                String result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData, empData);
 
                 if (StringUtils.equals(result, "success_need_approval")) {
 
@@ -488,6 +495,18 @@ public class BioDataRevisionRequestFormController extends BaseController {
     public void setSelectedJenisData(String selectedJenisData) {
         this.selectedJenisData = selectedJenisData;
     }
+
+	public EmpData getEmpData() {
+		return empData;
+	}
+
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
+	}
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
     
     
 
