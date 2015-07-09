@@ -1,7 +1,9 @@
 package com.inkubator.exception;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
@@ -11,9 +13,15 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public class BussinessException extends Exception {
 
 	String errorKeyMessage;
+	Object[] parameters;
 	
 	public BussinessException(String errorKeyMessage){
 		this.errorKeyMessage = errorKeyMessage;
+	}
+	
+	public BussinessException(String errorKeyMessage, Object... parameters){
+		this.errorKeyMessage = errorKeyMessage;
+		this.parameters = parameters;
 	}
 
 	public String getErrorKeyMessage() {
@@ -26,7 +34,9 @@ public class BussinessException extends Exception {
 	
 	@Override
 	public String getMessage() {
-		ResourceBundle messages = ResourceBundle.getBundle("Messages", LocaleContextHolder.getLocale());
-		return messages.getString(errorKeyMessage);
+		String message = StringUtils.EMPTY;
+		ResourceBundle bundle = ResourceBundle.getBundle("Messages", LocaleContextHolder.getLocale());
+		message = (parameters != null) ? MessageFormat.format(bundle.getString(errorKeyMessage), parameters) : bundle.getString(errorKeyMessage);		
+		return message;
 	}
 }

@@ -1262,20 +1262,4 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
 	}
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<EmpData> getAllDataPtkpByParam(
-			EmpDataSearchParameter searchParameter, int firstResult,
-			int maxResults, Order order) throws Exception {
-		// TODO Auto-generated method stub
-		return empDataDao.getAllDataPtkpByParam(searchParameter, firstResult, maxResults, order);
-	}
-
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalPtkpByParam(EmpDataSearchParameter searchParameter)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return empDataDao.getTotalPtkpByParam(searchParameter);
-	}
 }
