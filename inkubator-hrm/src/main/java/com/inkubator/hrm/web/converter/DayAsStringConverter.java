@@ -5,9 +5,6 @@
  */
 package com.inkubator.hrm.web.converter;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.webcore.util.FacesUtil;
-
 import java.text.DateFormatSymbols;
 import java.util.Date;
 import java.util.Locale;
@@ -18,6 +15,9 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import org.joda.time.DateTime;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -35,7 +35,7 @@ public class DayAsStringConverter implements Converter {
     public String getAsString(FacesContext context, UIComponent component, Object value) {
     	DateTime dt = new DateTime((Date) value);
         DateFormatSymbols dfs = new DateFormatSymbols(new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        return dfs.getWeekdays()[dt.getDayOfWeek()];
+        return dfs.getWeekdays()[dt.getDayOfWeek()+1];
     }
     
 }
