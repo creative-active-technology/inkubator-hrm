@@ -303,7 +303,7 @@
                         <h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'ADDRESS'}" id="panelGridAlamat" >
                             <p:outputLabel value="Daftar Alamat" styleClass="header_big"/>
                         
-                        <p:dataTable  id="tableBioAdressId" var="bioAddressesData"  value="#{bioDataController.bioAddresses}" lazy="false" paginator="false"
+                        <p:dataTable  id="tableBioAdressId" var="bioAddressesData"  value="#{bioDataRevisionRequestFormController.bioAddresses}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
                                       rowIndexVar="no">
                             <!--                            <f:facet name="header">  
@@ -315,7 +315,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{bioAddressesData.type}" style="width: 26%">
+                            <p:column sortBy="#{bioAddressesData.type}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.type']}"/>
                                 </f:facet>
@@ -324,45 +324,63 @@
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column sortBy="#{bioAddressesData.city.province.country.countryName}" style="width: 30%;">
+                            <p:column sortBy="#{bioAddressesData.city.province.country.countryName}" style="width: 13%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['country.country']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{bioAddressesData.city.province.country.countryName}"/>
                             </p:column>
-                            <p:column sortBy="#{bioAddressesData.city.province.provinceName}" style="width: 30%;">
+                            <p:column sortBy="#{bioAddressesData.city.province.provinceName}" style="width: 15%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['province.province']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{bioAddressesData.city.province.provinceName}"/>
                             </p:column>
-                            <p:column sortBy="#{bioAddressesData.city.cityName}" style="width: 26%;">
+                            <p:column sortBy="#{bioAddressesData.city.cityName}" style="width: 12%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['city.city']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{bioAddressesData.city.cityName}"/>
                             </p:column>
-                            <p:column sortBy="#{bioAddressesData.addressDetail}" style="width: 30%;">
+                            <p:column sortBy="#{bioAddressesData.addressDetail}" style="width: 20%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.address']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{bioAddressesData.addressDetail}"/>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 20%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 25%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-clipboard" title="#{appmsg['global.maps']}" label="#{appmsg['global.maps']}" value="Google Map"
-                                                 style="font-size: 10px!important" action="#{bioDataController.doUpdateBioAddressMap()}">
-                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataController.selectedBioAddress}" />
-                                    <p:ajax event="dialogReturn" listener="#{bioDataController.onDialogReturnBioAddress}"  update="tableBioAdressId,:growlBidoDataFormId"/>
+                                                 style="font-size: 10px!important" action="#{bioDataRevisionRequestFormController.doUpdateBioAddressMap()}">
+                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataRevisionRequestFormController.selectedBioAddress}" />
+                                    <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioAddress}"  update="tableBioAdressId"/>
                                 </p:commandButton>
                                 -
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogBioAddressDetailId"
-                                                 action="#{bioDataController.doSelectBioAddress()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioAddress').show()">                        
-                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataController.selectedBioAddress}" />
+                                                 action="#{bioDataRevisionRequestFormController.doSelectBioAddress(bioAddressesData)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioAddress').show()">                        
+                                    <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataRevisionRequestFormController.selectedBioAddress}" />
                                 </p:commandButton>
+								- 
+                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogBioAddressConfirmId" 
+                                                         action="#{bioDataRevisionRequestFormController.doSelectBioAddress(bioAddressesData)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioAddress').show()">
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataRevisionRequestFormController.selectedBioAddress}" />
+                                 </p:commandButton>
+                                 -
+                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataRevisionRequestFormController.doUpdateBioAddress()}" >
+                                            <f:setPropertyActionListener value="#{bioAddressesData}" target="#{bioDataRevisionRequestFormController.selectedBioAddress}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioAddress}"  update="tableBioAdressId"/>
+                                 </p:commandButton>                        
 
                             </p:column>
                         </p:dataTable>
+                        <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataRevisionRequestFormController.doAddBioAddress()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioAddress}"  update="tableBioAdressId"/>
+                                    </p:commandButton>
+                       	</h:panelGrid>
                         </h:panelGrid>
                         <h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'CONTACT'}" id="panelGridContact" >
                         	<p:outputLabel value="Daftar Kontak" styleClass="header_big"/>
@@ -862,47 +880,71 @@
                     
                     <p:focus  context="bioDataFormId" id="focusId"/>
                 </h:form>
-                
+                 <!-- START Bio Address DIALOG -->
+                <p:dialog widgetVar="dialogConfirmBioAddress" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogBioAddressConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['global.address']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.addressDetail}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataRevisionRequestFormController.doDeleteBioAddress()}" update="bioDataFormId:tableBioAdressId,:growlBidoDataFormId"
+                                         oncomplete="PF('dialogConfirmBioAddress').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmBioAddress').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
                 <p:dialog widgetVar="dialogDetailBioAddress" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" width="900" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioAddressDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.type']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;">
-                                <p:outputLabel value="#{bioDataController.selectedBioAddress.type}" styleClass="label_hrm">
+                                <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.type}" styleClass="label_hrm">
                                     <f:converter converterId="bioAddressTypeConverter"/>
                                 </p:outputLabel>
                             </p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.ownership_status']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:35%;">
-                                <p:outputLabel value="#{bioDataController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
+                                <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.statusAddress}" styleClass="label_hrm">
                                     <f:converter converterId="bioAddressStatusConverter"/>
                                 </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['country.country']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.city.province.country.countryName}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.phoneNumber}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.phoneNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['province.province']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.city.province.provinceName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.city.province.provinceName}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.sub_district']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.subDistrict}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.subDistrict}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['city.city']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.city.cityName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.city.cityName}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['bioaddress.village']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.village}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.village}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.addressDetail}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.addressDetail}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{appmsg['global.notes']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataController.selectedBioAddress.notes}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioAddress.notes}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
@@ -911,7 +953,8 @@
                         </f:facet>
                     </p:panelGrid>
                 </p:dialog>
-                <!--Bio Contact-->
+                <!-- END Bio Address DIALOG -->
+                <!-- START Bio Contact DIALOG-->
                 <p:dialog widgetVar="dialogDetailContact" header="Contact Detail" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioContactDetailId" style="width:100%;margin:5px;">
