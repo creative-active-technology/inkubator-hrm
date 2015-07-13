@@ -295,8 +295,9 @@ public class BioDataRevisionRequestFormController extends BaseController {
         		//karena Id BioAddress tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
         		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
         		if(bioAddress.getId() == 0){
-        			
-                	Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			bioAddress.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			bioAddresses.add(bioAddress);
+                	/*Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
                 	
                 	if(ObjectUtils.notEqual(sessionMap.get("selectedBioAddress"), null)){
                 		sessionMap.remove("selectedBioAddress");
@@ -310,10 +311,11 @@ public class BioDataRevisionRequestFormController extends BaseController {
             			}
                 	}else{
                 		bioAddresses.add(bioAddress);
-                	}
+                	}*/
                     
         		}else{//Jika tidak kosong berarti edit data yang sudah ada
-        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioAddress");
         			//Replace element dengan return value dari form dialog        			
         			BioAddress bioAddressOld = Lambda.selectFirst(bioAddresses, Lambda.having(Lambda.on(BioAddress.class).getId(), Matchers.equalTo(bioAddress.getId())));
         			int index = bioAddresses.indexOf(bioAddressOld);
@@ -422,48 +424,57 @@ public class BioDataRevisionRequestFormController extends BaseController {
 
         if (isValidForm()) {
             String path = StringUtils.EMPTY;
-            BioData bioData = getEntityFromView(bioDataModel);
-            try {
-            	
-                String result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData, empData);
+            String result = StringUtils.EMPTY;
+            try{
+            	 switch (selectedJenisData) {
+                 
+     			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+     				 BioData bioData = getEntityFromView(bioDataModel);
+     				 result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData, empData);
+     				 
+	     				if (fotoFile != null) {
+	                        facesIO.transferFile(fotoFile);
+	                        File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
+	                        fotoOldFile.renameTo(new File(bioData.getPathFoto()));
+	                    }
+	
+	                    if (fingerFile != null) {
+	                        facesIO.transferFile(fingerFile);
+	                        File fingerOldFile = new File(facesIO.getPathUpload() + fingerFileName);
+	                        fingerOldFile.renameTo(new File(bioData.getPathFinger()));
+	                    }
+	
+	                    if (signatureFile != null) {
+	                        facesIO.transferFile(signatureFile);
+	                        File sigtarueOldFile = new File(facesIO.getPathUpload() + signatureFileName);
+	                        sigtarueOldFile.renameTo(new File(bioData.getPathSignature()));
+	                    }
+     				break;
+     				
+     			case HRMConstant.BIO_REV_ADDRESS:
+     				 result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
+     				break;
+     			default:
+     				break;
+     			}
+            	 
+            	 if (StringUtils.equals(result, "success_need_approval")) {
+                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
+                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
-                if (StringUtils.equals(result, "success_need_approval")) {
-
-                    path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-                } else {
-                    path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                }
-                
-                if (fotoFile != null) {
-                    facesIO.transferFile(fotoFile);
-                    File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
-                    fotoOldFile.renameTo(new File(bioData.getPathFoto()));
-                }
-
-                if (fingerFile != null) {
-                    facesIO.transferFile(fingerFile);
-                    File fingerOldFile = new File(facesIO.getPathUpload() + fingerFileName);
-                    fingerOldFile.renameTo(new File(bioData.getPathFinger()));
-                }
-
-                if (signatureFile != null) {
-                    facesIO.transferFile(signatureFile);
-                    File sigtarueOldFile = new File(facesIO.getPathUpload() + signatureFileName);
-                    sigtarueOldFile.renameTo(new File(bioData.getPathSignature()));
-                }
-
-                cleanAndExit();
-                return path;
-
+                 } else {
+                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
+                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                 }
+            	 
+            	 cleanAndExit();
+            	 return path;
             } catch (BussinessException ex) {
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            } catch (Exception ex) {
-                LOGGER.error("Error", ex);
+            }catch(Exception ex){
+            	LOGGER.error("Error", ex);
             }
-
+           
         }
         return null;
     }

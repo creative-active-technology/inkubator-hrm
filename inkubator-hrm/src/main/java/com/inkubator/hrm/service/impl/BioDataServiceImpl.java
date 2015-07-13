@@ -8,6 +8,7 @@ package com.inkubator.hrm.service.impl;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -30,6 +31,7 @@ import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.EmpData;
@@ -524,6 +526,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private String saveRevision(Object modifiedEntity, String dataType, EmpData empData, Boolean isBypassApprovalChecking,  Long revisedApprActivityId) throws Exception {
         String result = "error";
         
@@ -556,7 +559,14 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		            approvalActivityDao.save(approvalActivity);
 		            result = "success_need_approval";
 					break;
-	
+				
+				case HRMConstant.BIO_REV_ADDRESS:
+					List<BioAddress> listModifiedAddress = (List<BioAddress>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedAddress, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
 				default:
 					break;
 				
@@ -578,12 +588,28 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 	}
 	
 	 private String getJsonPendingData(Object entity, String dataType) throws IOException {
-
-	        //parsing object to json 
-	        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		 	
+		 	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 	        JsonParser parser = new JsonParser();
-	        JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-	        jsonObject.addProperty("dataType", dataType);
+	        JsonObject jsonObject = new JsonObject();
+	        
+		 	switch (dataType) {
+			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+				jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+		        jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_ADDRESS:				
+				jsonObject.addProperty("dataType", dataType);
+				JsonArray jsonArray = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("listBioAddress", jsonArray);
+				break;
+
+			default:
+				break;
+			}
+
+	        //parsing object to json         
 	        return gson.toJson(jsonObject);
 	 }
 	
