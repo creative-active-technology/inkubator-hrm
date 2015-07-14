@@ -18,8 +18,10 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.BioAddressDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
+import com.inkubator.hrm.dao.BioEmergencyContactDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -34,6 +36,8 @@ import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoanNewApplication;
@@ -106,6 +110,10 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     private HrmUserDao hrmUserDao;
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private BioAddressDao bioAddressDao;
+    @Autowired
+    private BioEmergencyContactDao bioEmergencyContactDao;
     
 
     @Override
@@ -533,13 +541,24 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         //Check Next Approval
         ApprovalActivity approvalActivity = this.checkApprovalIfAny(empData, isBypassApprovalChecking);
         
+        // jika null berarti tidak ada next approval, langsung simpan/update ke DB
         if (approvalActivity == null) {
         	
         	switch (dataType) {
         	
         		case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
         			BioData modifiedBiodata = (BioData) modifiedEntity;
-        			this.update(modifiedBiodata);
+        			update(modifiedBiodata);
+        			break;
+        			
+        		case HRMConstant.BIO_REV_ADDRESS:
+        			List<BioAddress> modifiedListBioAddress = (List<BioAddress>) modifiedEntity;
+        			saveOrUpdateListBioAddress(modifiedListBioAddress);
+        			break;
+        			
+        		case HRMConstant.BIO_REV_CONTACT:
+        			List<BioEmergencyContact> modifiedListBioEmergencyContact = (List<BioEmergencyContact>) modifiedEntity;
+        			updateBioEmergencyContact(modifiedListBioEmergencyContact);
         			break;
         			
         		default:
@@ -563,6 +582,14 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 				case HRMConstant.BIO_REV_ADDRESS:
 					List<BioAddress> listModifiedAddress = (List<BioAddress>) modifiedEntity;
 					approvalActivity.setPendingData(getJsonPendingData(listModifiedAddress, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+				
+				case HRMConstant.BIO_REV_CONTACT:
+					List<BioEmergencyContact> listModifiedBioContact = (List<BioEmergencyContact>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioContact, dataType));
 		            approvalActivity.setTypeSpecific(null);
 		            approvalActivityDao.save(approvalActivity);
 		            result = "success_need_approval";
@@ -595,14 +622,21 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 	        
 		 	switch (dataType) {
 			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
-				jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+				JsonObject jsonObjectBioData = (JsonObject) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonObjectBioData);
 		        jsonObject.addProperty("dataType", dataType);
 				break;
 				
 			case HRMConstant.BIO_REV_ADDRESS:				
+				JsonArray jsonArrayBioAddress = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioAddress);
 				jsonObject.addProperty("dataType", dataType);
-				JsonArray jsonArray = (JsonArray) parser.parse(gson.toJson(entity));
-				jsonObject.add("listBioAddress", jsonArray);
+				break;
+				
+			case HRMConstant.BIO_REV_CONTACT:				
+				JsonArray jsonArrayBioEmergencyContact = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioEmergencyContact);
+				jsonObject.addProperty("dataType", dataType);
 				break;
 
 			default:
@@ -611,6 +645,31 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 
 	        //parsing object to json         
 	        return gson.toJson(jsonObject);
+	 }
+	 
+	 private void saveOrUpdateListBioAddress(List<BioAddress> listBioAddress){
+		 for(BioAddress bioAddress : listBioAddress){
+			 
+			 if(ObjectUtils.equals(null, bioAddressDao.getEntiyByPK(bioAddress.getId()))){
+				 City city = cityDao.getEntiyByPK(bioAddress.getCity().getId());
+				 BioData bioData = bioDataDao.getEntiyByPK(bioAddress.getBioData().getId());
+				 
+				 bioAddress.setCity(city);
+				 bioAddress.setBioData(bioData);
+				 bioAddress.setCreatedBy(UserInfoUtil.getUserName());
+				 bioAddress.setCreatedOn(new Date());
+				 
+				 bioAddressDao.save(bioAddress);
+			 }else{
+				 
+			 }
+		 }
+	 }
+	 
+	 private void updateBioEmergencyContact(List<BioEmergencyContact> listBioEmergencyContact){
+		 for(BioEmergencyContact bioEmergencyContact : listBioEmergencyContact){
+			 
+		 }
 	 }
 	
 }

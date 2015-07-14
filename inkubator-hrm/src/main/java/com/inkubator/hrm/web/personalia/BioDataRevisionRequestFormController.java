@@ -7,9 +7,11 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
@@ -17,9 +19,11 @@ import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.DialectService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.FamilyRelationService;
 import com.inkubator.hrm.service.MaritalStatusService;
 import com.inkubator.hrm.service.NationalityService;
 import com.inkubator.hrm.service.RaceService;
@@ -89,6 +93,8 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private FacesIO facesIO;
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
+    @ManagedProperty(value = "#{familyRelationService}")
+    private FamilyRelationService familyRelationService;
     private UploadedFile fotoFile;
     private String fotoFileName;
     private UploadedFile fingerFile;
@@ -99,13 +105,20 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private EmpData empData;
     private BioData selectedBioData;
     
-  //Start BioAddress
+    //Start BioAddress
     private List<BioAddress> bioAddresses;
     @ManagedProperty(value = "#{bioAddressService}")
     private BioAddressService bioAddressService;
     private BioAddress selectedBioAddress;
-     //End BioAddress
-
+    //End BioAddress
+    
+    //Start. bio Emergency Contact
+    @ManagedProperty(value = "#{bioEmergencyContactService}")
+    private BioEmergencyContactService bioEmergencyContactService;
+    private List<BioEmergencyContact> dataBioEmergencyContacs;
+    private BioEmergencyContact selectedBioEmergencyContact;
+    //End. bio Emergency Contact
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -120,6 +133,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
                 
             	selectedBioData = bioDataService.getEntiyByPK(bioDataId);
                 bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
+                dataBioEmergencyContacs = bioEmergencyContactService.getAllDataWithDetailByBioDataId(selectedBioData.getId());
                 
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
                 bioDataModel.setCityid(selectedBioData.getCity().getId());
@@ -201,6 +215,9 @@ public class BioDataRevisionRequestFormController extends BaseController {
         raceService = null;
         maritalStatusService = null;
         nationalityService = null;
+        familyRelationService = null;
+        bioAddressService = null;
+        bioEmergencyContactService = null;
         facesIO = null;
         bioDataService = null;
         fotoFile = null;
@@ -283,8 +300,6 @@ public class BioDataRevisionRequestFormController extends BaseController {
     public void onDialogReturnBioAddress(SelectEvent event) {
         try {
         	
-        	
-            
         	BioAddress bioAddress = (BioAddress) event.getObject();
         	if(ObjectUtils.notEqual(bioAddress, null)){
         		
@@ -297,21 +312,6 @@ public class BioDataRevisionRequestFormController extends BaseController {
         		if(bioAddress.getId() == 0){
         			bioAddress.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         			bioAddresses.add(bioAddress);
-                	/*Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
-                	
-                	if(ObjectUtils.notEqual(sessionMap.get("selectedBioAddress"), null)){
-                		sessionMap.remove("selectedBioAddress");
-                		//Replace element dengan return value dari form dialog        			
-            			BioAddress bioAddressOld = Lambda.selectFirst(bioAddresses, Lambda.having(Lambda.on(BioAddress.class).getId(), Matchers.equalTo(bioAddress.getId())));
-            			int index = bioAddresses.indexOf(bioAddressOld);
-            			System.out.println("index-nya : " + index);
-            			if(-1 != index){
-            				bioAddresses.remove(index);
-            				bioAddresses.add(index, bioAddress);
-            			}
-                	}else{
-                		bioAddresses.add(bioAddress);
-                	}*/
                     
         		}else{//Jika tidak kosong berarti edit data yang sudah ada
         			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
@@ -319,7 +319,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
         			//Replace element dengan return value dari form dialog        			
         			BioAddress bioAddressOld = Lambda.selectFirst(bioAddresses, Lambda.having(Lambda.on(BioAddress.class).getId(), Matchers.equalTo(bioAddress.getId())));
         			int index = bioAddresses.indexOf(bioAddressOld);
-        			System.out.println("index-nya : " + index);
+        			
         			if(-1 != index){
         				bioAddresses.remove(index);
         				bioAddresses.add(index, bioAddress);
@@ -337,6 +337,109 @@ public class BioDataRevisionRequestFormController extends BaseController {
 
     /**
      * END Bio Address method
+     */
+    
+    /**
+     * START Bio Contact method
+     */
+    public void doSelectBioContact(BioEmergencyContact contact) {
+        try {
+            selectedBioEmergencyContact = contact;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void doDeleteBioContact() {
+        try {
+            dataBioEmergencyContacs.remove(selectedBioEmergencyContact);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void doAddEmergencyContact() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("param", Arrays.asList("i" + String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));    
+        showDialogBioContact(dataToSend);
+    }
+    
+    public void doUpdateBioContact() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("param",  Arrays.asList("e" + String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+        
+        //Set Object selectedBioAddress into SessionMap
+        Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        sessionMap.put("selectedBioContact", selectedBioEmergencyContact);
+        showDialogBioAddress(dataToSend);
+        showDialogBioContact(dataToSend);
+    }
+    
+    private void showDialogBioContact(Map<String, List<String>> params) {
+    	 Map<String, Object> options = new HashMap<>();
+         options.put("modal", true);
+         options.put("draggable", true);
+         options.put("resizable", false);
+         options.put("contentWidth", 700);
+         options.put("contentHeight", 450);
+         RequestContext.getCurrentInstance().openDialog("bio_emerg_cont_form", options, params);
+    }
+
+    public void onDialogReturnContact(SelectEvent event) {
+       
+    	try {
+        	
+        	BioEmergencyContact bioEmergencyContact = (BioEmergencyContact) event.getObject();
+        	if(ObjectUtils.notEqual(bioEmergencyContact, null)){
+        		
+        		City city = cityService.getCityByIdWithDetail(bioEmergencyContact.getCity().getId());
+        		System.out.println("familyRelationService equal null ?? : " + (familyRelationService == null));
+        		System.out.println("bioEmergencyContact.getFamilyRelation() equal null ?? : " + (bioEmergencyContact.getFamilyRelation() == null));
+        		FamilyRelation familyRelation = familyRelationService.getEntiyByPK(bioEmergencyContact.getFamilyRelation().getId());
+        		
+        		bioEmergencyContact.setCity(city);
+        		bioEmergencyContact.setFamilyRelation(familyRelation);
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioEmergencyContact tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioEmergencyContact.getId() == 0){
+        			bioEmergencyContact.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			dataBioEmergencyContacs.add(bioEmergencyContact);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioContact");
+        			//Replace element dengan return value dari form dialog        			
+        			BioEmergencyContact bioEmergencyContactOld = Lambda.selectFirst(dataBioEmergencyContacs, Lambda.having(Lambda.on(BioEmergencyContact.class).getId(), Matchers.equalTo(bioEmergencyContact.getId())));
+        			int index = dataBioEmergencyContacs.indexOf(bioEmergencyContactOld);
+        			
+        			if(-1 != index){
+        				dataBioEmergencyContacs.remove(index);
+        				dataBioEmergencyContacs.add(index, bioEmergencyContact);
+        			}
+        			
+        		}
+        		
+        	}
+            
+            
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio Contact method
      */
 
     public BioDataModel getBioDataModel() {
@@ -454,6 +557,11 @@ public class BioDataRevisionRequestFormController extends BaseController {
      			case HRMConstant.BIO_REV_ADDRESS:
      				 result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
      				break;
+     				
+     			case HRMConstant.BIO_REV_CONTACT:
+    				 result = bioDataService.saveBiodataRevisionWithApproval(dataBioEmergencyContacs, selectedJenisData, empData);
+    				break;
+    				
      			default:
      				break;
      			}
@@ -651,6 +759,33 @@ public class BioDataRevisionRequestFormController extends BaseController {
 
 	public void setBioAddressService(BioAddressService bioAddressService) {
 		this.bioAddressService = bioAddressService;
+	}
+
+	public List<BioEmergencyContact> getDataBioEmergencyContacs() {
+		return dataBioEmergencyContacs;
+	}
+
+	public void setDataBioEmergencyContacs(
+			List<BioEmergencyContact> dataBioEmergencyContacs) {
+		this.dataBioEmergencyContacs = dataBioEmergencyContacs;
+	}
+
+	public BioEmergencyContact getSelectedBioEmergencyContact() {
+		return selectedBioEmergencyContact;
+	}
+
+	public void setSelectedBioEmergencyContact(
+			BioEmergencyContact selectedBioEmergencyContact) {
+		this.selectedBioEmergencyContact = selectedBioEmergencyContact;
+	}
+
+	public void setBioEmergencyContactService(
+			BioEmergencyContactService bioEmergencyContactService) {
+		this.bioEmergencyContactService = bioEmergencyContactService;
+	}
+
+	public void setFamilyRelationService(FamilyRelationService familyRelationService) {
+		this.familyRelationService = familyRelationService;
 	}
     
     

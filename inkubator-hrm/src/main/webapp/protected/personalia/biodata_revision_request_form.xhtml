@@ -385,7 +385,7 @@
                         <h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'CONTACT'}" id="panelGridContact" >
                         	<p:outputLabel value="Daftar Kontak" styleClass="header_big"/>
 	                       
-	                        <p:dataTable  id="tableContactId" var="bioContacts"  value="#{bioDataController.dataBioEmergencyContacs}" lazy="false" paginator="false"
+	                        <p:dataTable  id="tableContactId" var="bioContacts"  value="#{bioDataRevisionRequestFormController.dataBioEmergencyContacs}" lazy="false" paginator="false"
 	                                      style="margin-top: 10px;margin-bottom: 40px"
 	                                      rowIndexVar="no">
 	                            <!--                            <f:facet name="header">  
@@ -418,23 +418,30 @@
 	                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 	                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
 	                                                 style="font-size: 10px!important" update=":panelDialogBioContactDetailId" 
-	                                                 action="#{bioDataController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailContact').show()">                        
-	                                    <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataController.selectedBioEmergencyContact}" />
+	                                                 action="#{bioDataRevisionRequestFormController.doSelectBioContact(bioContacts)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailContact').show()">                        
+	                                    <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact}" />
 	                                </p:commandButton>
-	                                <!--                                - 
-	                                                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-	                                                                                 style="font-size: 10px!important" update=":panelDialogConfirmContactId" 
-	                                                                                 action="#{bioDataController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDeleteContact').show()">
-	                                                                    <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataController.selectedBioEmergencyContact}" />
-	                                                                </p:commandButton>
-	                                                                -
-	                                                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-	                                                                                 action="#{bioDataController.doUpdateBioContact()}" >
-	                                                                    <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataController.selectedBioEmergencyContact}" />
-	                                                                    <p:ajax event="dialogReturn" listener="#{bioDataController.onDialogReturnContact}"  update="tableContactId,:growlBioDetailFormId"/>
-	                                                                </p:commandButton>-->
+									 - 
+	                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+	                                      style="font-size: 10px!important" update=":panelDialogConfirmContactId" 
+	                                      action="#{bioDataRevisionRequestFormController.doSelectBioContact(bioContacts)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDeleteContact').show()">
+	                                      <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact}" />
+	                                </p:commandButton>
+	                                 -
+	                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+	                                       action="#{bioDataRevisionRequestFormController.doUpdateBioContact()}" >
+	                                       <f:setPropertyActionListener value="#{bioContacts}" target="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact}" />
+	                                        <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnContact}"  update="tableContactId"/>
+	                                 </p:commandButton>                                                              
 	                            </p:column>
 	                        </p:dataTable>
+	                        
+	                        <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataRevisionRequestFormController.doAddEmergencyContact()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnContact}" update="tableContactId" />
+                                    </p:commandButton>
+                                </h:panelGrid>
                         </h:panelGrid>
                         
                          <h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'ID_CARD'}" id="panelGridIdCard" >
@@ -961,23 +968,23 @@
 
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Nama Contact" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.contactName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.contactName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="No. Telepon" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.phoneNumber}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.phoneNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Alamat" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.address}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.address}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Kota" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.city.cityName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.city.cityName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Hubungan Keluarga" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.familyRelation.relasiName}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.familyRelation.relasiName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
@@ -985,6 +992,31 @@
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
+                </p:dialog>
+                
+                <p:dialog widgetVar="dialogConfirmDeleteContact" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmContactId"  columns="3">
+                            <p:outputLabel value="Nama Kontak"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioEmergencyContact.contactName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataRevisionRequestFormController.doDeleteBioContact()}" update="bioDataFormId:tableContactId,:growlBidoDataFormId"
+                                         oncomplete="PF('dialogConfirmDeleteContact').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDeleteContact').hide()" icon="ui-icon-close" />                     	
+                    </div>
                 </p:dialog>
                 <!-- END Bio Contact DIALOG -->
                 <!-- Start Bio IdCard DIALOG -->
