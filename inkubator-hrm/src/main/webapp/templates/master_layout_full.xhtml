@@ -231,7 +231,7 @@
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 3px" columns="2">
                                <h:panelGroup>
-                                    <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
+                                    <p:outputLabel value="#{realName} : #{roleName}" style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="Login as Administrator" styleClass="label_welcome_header" />
                                 </h:panelGroup>
                                     
@@ -256,7 +256,8 @@
                                         
                                            
                                        
-                                    </h:outputLink>-->
+                                    </h:outputLink>
+                                    -->
                                     <p:commandLink id="userId" onclick="PF('statusDialog').show()" oncomplete="PF('dialogUserInfo').show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
                                         <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>

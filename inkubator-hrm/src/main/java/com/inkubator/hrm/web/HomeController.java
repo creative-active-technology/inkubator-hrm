@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +14,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AnnouncementLog;
 import com.inkubator.hrm.entity.HrmUser;
@@ -51,7 +56,10 @@ public class HomeController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
-        System.out.println("asdfasfasdfasfasfadf");
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        String role = authorities.toString();
+        role = role.replace("[", "");
+        role = role.replace("]", "");
         /**
          * saving process of User Access History
          */
