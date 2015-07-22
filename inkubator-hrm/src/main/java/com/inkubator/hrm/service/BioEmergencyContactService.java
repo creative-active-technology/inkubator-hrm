@@ -18,4 +18,6 @@ public interface BioEmergencyContactService extends IService<BioEmergencyContact
     public List<BioEmergencyContact> getAllDataByBioDataId(long id) throws Exception;
     
     public BioEmergencyContact getEntityByPKWithDetail(long id) throws Exception;
+    
+    public List<BioEmergencyContact> getAllDataWithDetailByBioDataId(long bioDataId) throws Exception;
 }

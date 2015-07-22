@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.personalia;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -9,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -47,12 +49,14 @@ public class BioAddressFormController extends BaseController {
 	private ProvinceService provinceService;
 	@ManagedProperty(value = "#{cityService}")
 	private CityService cityService;
+	private String isRevision;
 	
 	@PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
+        	isRevision = StringUtils.EMPTY;
             isUpdate = Boolean.FALSE;
             model = new BioAddressModel();
             countries = countryService.getAllData();
@@ -62,16 +66,39 @@ public class BioAddressFormController extends BaseController {
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             model.setBioDataId(Long.parseLong(bioDataId));
             
-            String bioAddressId = FacesUtil.getRequestParameter("bioAddressId");
-            if (StringUtils.isNotEmpty(bioAddressId)) {
-            	BioAddress bioAddress = bioAddressService.getEntityByPKWithDetail(Long.parseLong(bioAddressId));
-            	if(bioAddress != null){
-            		model = getModelFromEntity(bioAddress);
-            		provinces = provinceService.getByCountryId(model.getCountryId());
-            		cities = cityService.getByProvinceId(model.getProvinceId());
-            		isUpdate = Boolean.TRUE;
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+                	BioAddress bioAddress = (BioAddress) sessionMap.get("selectedBioAddress");
+                	if(ObjectUtils.notEqual(bioAddress, null)){
+                		model = getModelFromEntity(bioAddress);
+                		provinces = provinceService.getByCountryId(model.getCountryId());
+                		cities = cityService.getByProvinceId(model.getProvinceId());
+                		isUpdate = Boolean.TRUE;
+                	}
             	}
-            }            	
+            	
+            }else{
+            	
+            	String bioAddressId = FacesUtil.getRequestParameter("bioAddressId");
+                if (StringUtils.isNotEmpty(bioAddressId)) {
+                	BioAddress bioAddress = bioAddressService.getEntityByPKWithDetail(Long.parseLong(bioAddressId));
+                	if(bioAddress != null){
+                		model = getModelFromEntity(bioAddress);
+                		provinces = provinceService.getByCountryId(model.getCountryId());
+                		cities = cityService.getByProvinceId(model.getProvinceId());
+                		isUpdate = Boolean.TRUE;
+                	}
+                }   
+            }
+            
+           
+            
+                     	
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -149,13 +176,23 @@ public class BioAddressFormController extends BaseController {
 	public void doSave() {
         BioAddress bioAddress = getEntityFromViewModel(model);
         try {
-            if (isUpdate) {
-                bioAddressService.update(bioAddress);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-            	bioAddressService.save(bioAddress);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        	
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+        	 	cukup di return kembali Object BioAddress yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+        	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+        	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+        	if(StringUtils.isNotBlank(isRevision)){
+        		RequestContext.getCurrentInstance().closeDialog(bioAddress);
+        	}else{
+        		if (isUpdate) {
+                    bioAddressService.update(bioAddress);
+                    RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+                } else {
+                	bioAddressService.save(bioAddress);
+                    RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+                }
+        	}
+            
             cleanAndExit();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -202,6 +239,7 @@ public class BioAddressFormController extends BaseController {
 	
 	private BioAddress getEntityFromViewModel(BioAddressModel model) {
 		BioAddress bioAddress = new BioAddress();
+		System.out.println("getEntityFromViewModel, model.getId() :  " + model.getId());
 		if(model.getId() != null){
 			bioAddress.setId(model.getId());
 		}
@@ -216,7 +254,7 @@ public class BioAddressFormController extends BaseController {
 		bioAddress.setSubDistrict(model.getSubDistrict());
 		bioAddress.setVillage(model.getVillage());
 		bioAddress.setNotes(model.getNotes());
-		
+		System.out.println("getEntityFromViewModel, bioAddress.getId() :  " + bioAddress.getId());
 	    return bioAddress;
 	}
 	

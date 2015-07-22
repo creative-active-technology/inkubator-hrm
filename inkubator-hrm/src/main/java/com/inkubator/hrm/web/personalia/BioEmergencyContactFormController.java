@@ -6,6 +6,7 @@ package com.inkubator.hrm.web.personalia;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.City;
@@ -17,15 +18,20 @@ import com.inkubator.hrm.web.model.EmergencyContactModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -47,6 +53,7 @@ public class BioEmergencyContactFormController extends BaseController {
     private Map<String, Long> mapCity = new HashMap<>();
     private Boolean isEdit;
     private Long bioDataId;
+    private String isRevision;
 
         @PreDestroy
     private void cleanAndExit() {
@@ -68,23 +75,49 @@ public class BioEmergencyContactFormController extends BaseController {
             emergencyContactModel = new EmergencyContactModel();
             List<City> dataCity = cityService.getAllData();
             String param = FacesUtil.getRequestParameter("param");
-            if(param.contains("e")){
-                BioEmergencyContact emergencyContact = bioEmergencyContactService.getEntiyByPK(Long.parseLong(param.substring(1)));
-                isEdit = Boolean.TRUE;
-                emergencyContactModel.setId(emergencyContact.getId());
-                emergencyContactModel.setName(emergencyContact.getContactName());
-                emergencyContactModel.setAddress(emergencyContact.getAddress());
-                emergencyContactModel.setPhoneNumber(emergencyContact.getPhoneNumber());
-                emergencyContactModel.setCityId(emergencyContact.getCity().getId());
-                emergencyContactModel.setFamilyRelationId(emergencyContact.getFamilyRelation().getId());
-                emergencyContactModel.setIsSameHouse(emergencyContact.getIsSameHouse());
-                emergencyContactModel.setBioDataId(emergencyContact.getBioData().getId());
-                bioDataId = emergencyContact.getBioData().getId();
+            
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	bioDataId = Long.parseLong(param.substring(1));
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioEmergencyContact emergencyContact = (BioEmergencyContact) sessionMap.get("selectedBioContact");
+                	if(ObjectUtils.notEqual(emergencyContact, null)){
+                		
+                		emergencyContactModel.setId(emergencyContact.getId());
+                        emergencyContactModel.setName(emergencyContact.getContactName());
+                        emergencyContactModel.setAddress(emergencyContact.getAddress());
+                        emergencyContactModel.setPhoneNumber(emergencyContact.getPhoneNumber());
+                        emergencyContactModel.setCityId(emergencyContact.getCity().getId());
+                        emergencyContactModel.setFamilyRelationId(emergencyContact.getFamilyRelation().getId());
+                        emergencyContactModel.setIsSameHouse(emergencyContact.getIsSameHouse());
+                        emergencyContactModel.setBioDataId(emergencyContact.getBioData().getId());
+                        isEdit = Boolean.TRUE;
+                	}
+            	}
+            	
+            }else{
+            	 if(param.contains("e")){
+                     BioEmergencyContact emergencyContact = bioEmergencyContactService.getEntiyByPK(Long.parseLong(param.substring(1)));
+                     isEdit = Boolean.TRUE;
+                     emergencyContactModel.setId(emergencyContact.getId());
+                     emergencyContactModel.setName(emergencyContact.getContactName());
+                     emergencyContactModel.setAddress(emergencyContact.getAddress());
+                     emergencyContactModel.setPhoneNumber(emergencyContact.getPhoneNumber());
+                     emergencyContactModel.setCityId(emergencyContact.getCity().getId());
+                     emergencyContactModel.setFamilyRelationId(emergencyContact.getFamilyRelation().getId());
+                     emergencyContactModel.setIsSameHouse(emergencyContact.getIsSameHouse());
+                     emergencyContactModel.setBioDataId(emergencyContact.getBioData().getId());
+                     bioDataId = emergencyContact.getBioData().getId();
+                 }
+                 if(param.contains("i")){
+                     bioDataId = Long.parseLong(param.substring(1));
+                     isEdit = Boolean.FALSE;
+                 }
             }
-            if(param.contains("i")){
-                bioDataId = Long.parseLong(param.substring(1));
-                isEdit = Boolean.FALSE;
-            }
+           
             for (City city : dataCity) {
                 mapCity.put(city.getCityName(), city.getId());
             }
@@ -136,15 +169,24 @@ public class BioEmergencyContactFormController extends BaseController {
     public void doSave() {
         BioEmergencyContact bioEmergencyContact = getEntityFromView(emergencyContactModel);
         try {
-            if (isEdit) {
+        	
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioAddress yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		RequestContext.getCurrentInstance().closeDialog(bioEmergencyContact);
+	    	}else{
+	    		if (isEdit) {
+	                bioEmergencyContactService.update(bioEmergencyContact);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
 
-                bioEmergencyContactService.update(bioEmergencyContact);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-
-            } else {
-                bioEmergencyContactService.save(bioEmergencyContact);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+	            } else {
+	                bioEmergencyContactService.save(bioEmergencyContact);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	            }
+	    	}
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

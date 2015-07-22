@@ -18,4 +18,6 @@ public interface BioEmergencyContactDao extends IDAO<BioEmergencyContact>{
      public List<BioEmergencyContact> getAllDataByBioDataId(long id);
      
      public BioEmergencyContact getEntityByPKWithDetail(long id);
+     
+     public List<BioEmergencyContact> getAllDataWithDetailByBioDataId(long bioDataId);
 }
