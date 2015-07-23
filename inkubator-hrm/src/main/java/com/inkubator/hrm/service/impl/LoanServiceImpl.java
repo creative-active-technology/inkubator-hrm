@@ -352,8 +352,11 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         //Set Kodefikasi pada nomor
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
         Long currentMaxLoanId = loanDao.getCurrentMaxId();
+        if (currentMaxLoanId == null) {
+            currentMaxLoanId = 0L;
+        }
         entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-           
+        
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);        
 

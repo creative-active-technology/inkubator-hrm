@@ -365,7 +365,7 @@ public class HRMConstant {
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
-    public static final String PERMIT_KODE = "PERMIT";
+    public static final String PERMIT_KODE = "PRMT";
     public static final String REIMBURSEMENT_KODE = "REIM";
     public static final String REIMBURSEMENT_CANCEL_KODE = "REIM-CL";
     public static final String REIMBURSEMENT_DISBURSED_KODE = "REIM-DI";
