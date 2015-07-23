@@ -3,6 +3,9 @@ package com.inkubator.hrm.web.payroll;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -20,6 +23,7 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.LogUnregPayrollService;
@@ -153,6 +157,22 @@ public class UnregPayrollDetailController extends BaseController {
 		            LOGGER.error("Error ", ex);
 		        }
 	    	} else {
+	    		final List<Throwable> exceptions = jobExecution.getAllFailureExceptions();
+                for (final Throwable throwable : exceptions) {                	
+                	if (throwable instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable;
+                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
+                        FacesUtil.getFacesContext().addMessage(null, msg);                		
+                    
+                	}else if (throwable.getCause() instanceof BussinessException) {
+                		BussinessException bussinessException = (BussinessException) throwable.getCause();
+                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
+                        FacesUtil.getFacesContext().addMessage(null, msg); 
+                    }                	
+                }
+                
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "unregpayroll.payment_process_failed",
 				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	    		FacesContext.getCurrentInstance().validationFailed();
