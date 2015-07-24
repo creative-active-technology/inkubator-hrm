@@ -90,7 +90,7 @@ public class FingerSwapCapturedViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 650);
         options.put("contentHeight", 320);
         RequestContext.getCurrentInstance().openDialog("finger_swap_captured_upload", options, dataToSend);
 	}	
