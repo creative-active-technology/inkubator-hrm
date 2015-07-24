@@ -420,7 +420,7 @@
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
-                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioDocument').show()">
+                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioDocument').show()">
                                             <f:setPropertyActionListener value="#{bioDocumentData}" target="#{empDataDetilController.selectedBioDocument}" />
                                         </p:commandButton>
                                         -
