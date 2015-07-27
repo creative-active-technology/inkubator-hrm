@@ -16,8 +16,8 @@ public class UnitKerjaModel implements Serializable{
     private String code;
     private String name;
     private String location;
-    private String countryId;
-    private String provinceId;
+    private Long countryId;
+    private Long provinceId;
     private String emailAddress;
     private String phoneNumber;
     private String faxNumber;
@@ -63,19 +63,19 @@ public class UnitKerjaModel implements Serializable{
         this.location = location;
     }
 
-    public String getCountryId() {
+    public Long getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(String countryId) {
+    public void setCountryId(Long countryId) {
         this.countryId = countryId;
     }
 
-    public String getProvinceId() {
+    public Long getProvinceId() {
         return provinceId;
     }
 
-    public void setProvinceId(String provinceId) {
+    public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
     }
 

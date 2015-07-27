@@ -83,21 +83,25 @@ public class UnitKerjaFormController extends BaseController{
         
         try {
             if (param != null) {
+                doSelectOneMenuCountry();
+                doSelectOneMenuProvince();
                 
-                UnitKerja unitKerja = unitKerjaService.getEntiyByPK(Long.parseLong(param));
+                UnitKerja unitKerja = unitKerjaService.getEntityByPkWithCity(Long.parseLong(param));
                 isEdit = Boolean.TRUE;
                 unitKerjaModel.setId(unitKerja.getId());
                 unitKerjaModel.setCode(unitKerja.getCode());
                 unitKerjaModel.setName(unitKerja.getName());
-                unitKerjaModel.setLocation(unitKerja.getLocation());
+                unitKerjaModel.setLocation(unitKerja.getLocation());    
                 unitKerjaModel.setCityId(unitKerja.getCity().getId());
+                unitKerjaModel.setProvinceId(unitKerja.getCity().getProvince().getId());
+                unitKerjaModel.setCountryId(unitKerja.getCity().getProvince().getCountry().getId());
                 unitKerjaModel.setPhoneNumber(unitKerja.getPhoneNumber());
                 unitKerjaModel.setEmailAddress(unitKerja.getEmailAddress());
                 unitKerjaModel.setFaxNumber(unitKerja.getFaxNumber());
+                
             } else {
                 isEdit = Boolean.FALSE;
             }
-            doSelectOneMenuCountry();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -155,6 +159,14 @@ public class UnitKerjaFormController extends BaseController{
         listDropDownCountry = new TreeMap<>();
         for(Country countries : countryList){
             listDropDownCountry.put(countries.getCountryName(), countries.getId());
+        }
+    }
+    
+    public void doSelectOneMenuProvince() throws Exception{
+        provinceList = provinceService.getAllData();
+        listDropDownProvince = new TreeMap<>();
+        for(Province provinces : provinceList){
+            listDropDownProvince.put(provinces.getProvinceName(), provinces.getId());
         }
     }
     

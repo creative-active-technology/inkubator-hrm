@@ -34,16 +34,16 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="codeId" value="#{appmsg['disease.disease_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 63%">
                                 <p:focus for ="codeId">
                                     <p:inputText id="codeId" title="#{appmsg['disease.disease_code']}" value="#{diseaseFormController.diseaseModel.code}" 
-                                                 required="true" requiredMessage="#{appmsg['disease.disease_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="true" requiredMessage="#{appmsg['disease.disease_code_should_not_be_empty']}" maxlength="8" styleClass="isitext_hrm" style="width:220px;" />
                                 </p:focus>
                             </p:column>
                         </p:row>
@@ -53,15 +53,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="nameId" value="#{appmsg['disease.disease_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 63%">
                                 <p:inputText id="nameId" title="#{appmsg['disease.disease_name']}" value="#{diseaseFormController.diseaseModel.name}" 
-                                             required="true" requiredMessage="#{appmsg['disease.disease_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
+                                             required="true" requiredMessage="#{appmsg['disease.disease_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:220px;" />
 
                             </p:column>
                         </p:row>
@@ -71,15 +71,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 63%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{diseaseFormController.diseaseModel.description}" 
-                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:220px;" />
 
                             </p:column>
                         </p:row>
