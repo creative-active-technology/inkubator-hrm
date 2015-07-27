@@ -60,13 +60,13 @@
                                                 <p:calendar  id="startPeriode" size="25" pattern="dd MMMM yyyy" label="Start Periode" value="#{UnregSalaryEmpSettingFormController.model.startPeriodDate}"
                                                              required="true" navigator="true">
                                                     <f:validator validatorId="birthDateValidator"  />
-                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.period_date_validator']}"/>
                                                 </p:calendar>
                                                 <p:outputLabel  value=" s/d " style="font-weight: bold"/>
                                                 <p:calendar  id="endPeriode" size="25" pattern="dd MMMM yyyy" label="End Periode" value="#{UnregSalaryEmpSettingFormController.model.endPeriodDate}"
                                                              required="true" navigator="true">
                                                     <f:validator validatorId="birthDateValidator"  />
-                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.period_date_validator']}"/>
                                                 </p:calendar>
                                                 <p:message for="startPeriode"/>
                                                 <p:message for="endPeriode"/>
