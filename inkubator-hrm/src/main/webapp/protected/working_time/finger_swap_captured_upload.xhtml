@@ -29,13 +29,13 @@
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>                    
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">                       
                         <p:row>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 25%">
                                 <p:outputLabel for="machineId" value="#{appmsg['data_log_interface.fingerprint_machine']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="machineId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 74%">
                                 <p:selectOneMenu id="machineId" required="true" styleClass="isitext_hrm" value="#{fingerSwapCapturedUploadFileController.machineId}" style="width:200px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{fingerSwapCapturedUploadFileController.listMachineFinger}" var="machineFinger" itemValue="#{machineFinger.id}" itemLabel="#{machineFinger.name}"/>	                                    
@@ -48,13 +48,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 25%">
                                 <p:outputLabel for="fileId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="fileId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 74%">
                                 <p:fileUpload id="fileId"  required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{fingerSwapCapturedUploadFileController.handingFileUpload}"
 	                                          mode="advanced" style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
 	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlUploadFormId"
@@ -70,13 +70,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 25%">
                                 <p:outputLabel value="Download Template" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 74%">
 								<p:commandLink ajax="false" immediate="true" value="CSV" title="CSV" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
                                     <p:fileDownload value="#{imageFileTemplateStreamerController.fingerSwapCapturedUploadFile}" />
                                     <f:param name="extension" value="csv"/>
