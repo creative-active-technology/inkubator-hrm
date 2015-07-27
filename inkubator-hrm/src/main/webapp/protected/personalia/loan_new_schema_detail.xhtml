@@ -91,6 +91,17 @@
 
                             </p:row>
 
+							<p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.active']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:outputLabel  value="#{loanNewSchemaDetailController.selectedLoanSchema.isActive}" >
+                                        <f:converter converterId="activeStatusMessageConverter"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                            </p:row>
 
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">

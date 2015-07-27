@@ -75,7 +75,7 @@ public class RmbsSchemaServiceImpl extends BaseApprovalConfigurationServiceImpl<
 		}
 		
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		entity.setIsActive(Boolean.TRUE);
+		entity.setIsActive(entity.getIsActive());
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
 		rmbsSchemaDao.save(entity);

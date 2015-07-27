@@ -279,7 +279,7 @@
                             </p:tab>
                             
                             <p:tab id="riwayatKerjasId" title="#{appmsg['biodata.employment_history']}">  
-                                <p:dataTable  id="tableBioEmploymentHistoryId" var="bioEmploymentHistoryData"  value="#{bioDataDetilController.bioEmploymentHistorys}" lazy="false" paginator="false"
+                                <p:dataTable  id="tableBioEmploymentHistoryId" var="bioEmploymentHistoryData"  value="#{empDataDetilController.bioEmploymentHistorys}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
@@ -313,27 +313,27 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioEmploymentHistory').show()">                        
-                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
+                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioEmploymentHistory').show()">                        
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioEmploymentHistory').show()">
-                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
+                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioEmploymentHistory').show()">
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{bioDataDetilController.doUpdateBioEmploymentHistory()}" >
-                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
-                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
+                                                         action="#{empDataDetilController.doUpdateBioEmploymentHistory()}" >
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
                                 <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" label="#{appmsg['global.add']} #{appmsg['bioEmploymentHistory.bioEmploymentHistory']}" styleClass="label_button" icon="ui-icon-document" 
-                                                     actionListener="#{bioDataDetilController.doAddBioEmploymentHistory()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
+                                                     actionListener="#{empDataDetilController.doAddBioEmploymentHistory()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
@@ -581,7 +581,7 @@
                             </p:tab> 
                             
                             <p:tab id="bank" title="Bank">  
-                                <p:dataTable  id="tableBioBankAccountId" var="bioBankAccountData"  value="#{bioDataDetilController.bioBankAccounts}" lazy="false" paginator="false"
+                                <p:dataTable  id="tableBioBankAccountId" var="bioBankAccountData"  value="#{empDataDetilController.bioBankAccounts}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
@@ -615,34 +615,34 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioBankAccountDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioBankAccount').show()">                        
-                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{bioDataDetilController.selectedBioBankAccount}" />
+                                                         action="#{empDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioBankAccount').show()">                        
+                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{empDataDetilController.selectedBioBankAccount}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioBankAccountConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioBankAccount').show()">
-                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{bioDataDetilController.selectedBioBankAccount}" />
+                                                         action="#{empDataDetilController.doSelectBioBankAccount()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioBankAccount').show()">
+                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{empDataDetilController.selectedBioBankAccount}" />
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{bioDataDetilController.doUpdateBioBankAccount()}" >
-                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{bioDataDetilController.selectedBioBankAccount}" />
-                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioBankAccount}"  update="tableBioBankAccountId,:growlBioDetailFormId"/>
+                                                         action="#{empDataDetilController.doUpdateBioBankAccount()}" >
+                                            <f:setPropertyActionListener value="#{bioBankAccountData}" target="#{empDataDetilController.selectedBioBankAccount}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioBankAccount}"  update="tableBioBankAccountId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
                                 <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" label="#{appmsg['global.add']} #{appmsg['bioBankAccount.bioBankAccount']}" styleClass="label_button" icon="ui-icon-document" 
-                                                     actionListener="#{bioDataDetilController.doAddBioBankAccount()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioBankAccount}"  update="tableBioBankAccountId,:growlBioDetailFormId"/>
+                                                     actionListener="#{empDataDetilController.doAddBioBankAccount()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioBankAccount}"  update="tableBioBankAccountId,:growlBioDetailFormId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
 
                             </p:tab>  
                             
                             <p:tab id="asuransiId" title="#{appmsg['global.assurance']}">  
-                                <p:dataTable  id="tableBioInsuranceId" var="bioInsuranceData"  value="#{bioDataDetilController.bioInsurances}" lazy="false" paginator="false"
+                                <p:dataTable  id="tableBioInsuranceId" var="bioInsuranceData"  value="#{empDataDetilController.bioInsurances}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
@@ -676,33 +676,33 @@
 
                                         <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" update=":panelDialogBioInsuranceDetailId" 
-                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioInsurance').show()">                        
-                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
+                                                         action="#{empDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioInsurance').show()">                        
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{empDataDetilController.selectedBioInsurance}" />
                                         </p:commandButton>
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioInsuranceConfirmId" 
-                                                         action="#{bioDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioInsurance').show()">
-                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
+                                                         action="#{empDataDetilController.doSelectBioInsurance()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioInsurance').show()">
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{empDataDetilController.selectedBioInsurance}" />
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                         action="#{bioDataDetilController.doUpdateBioInsurance()}" >
-                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{bioDataDetilController.selectedBioInsurance}" />
-                                            <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
+                                                         action="#{empDataDetilController.doUpdateBioInsurance()}" >
+                                            <f:setPropertyActionListener value="#{bioInsuranceData}" target="#{empDataDetilController.selectedBioInsurance}" />
+                                            <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
                                 <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioInsurance.bioInsurance']}" label="#{appmsg['global.add']} #{appmsg['bioInsurance.bioInsurance']}" styleClass="label_button" icon="ui-icon-document" 
-                                                     actionListener="#{bioDataDetilController.doAddBioInsurance()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
+                                                     actionListener="#{empDataDetilController.doAddBioInsurance()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioInsurance}"  update="tableBioInsuranceId,:growlBioDetailFormId"/>
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab> 
                             
                             <p:tab id="businessTravelId" title="#{appmsg['biodata.business_travel_history']}">  
-                                <p:dataTable  id="tableBusinessTravelHistoryId" var="businessTravelHistoryData"  value="#{bioDataDetilController.businessTravelList}" lazy="false" paginator="false"
+                                <p:dataTable  id="tableBusinessTravelHistoryId" var="businessTravelHistoryData"  value="#{empDataDetilController.businessTravelList}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  

@@ -39,5 +39,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public List<PermitImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 
 	public Long getTotalActualPermit(Date date, Long companyId);
+	
+	public Long getCurrentMaxId();
 
 }

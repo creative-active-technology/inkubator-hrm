@@ -84,7 +84,7 @@ public class LoanNewSchemaListOfEmpFormController extends BaseController {
                 
             }
             
-            List<LoanNewSchema> listLoanNewSchema = loanNewSchemaService.getAllData();
+            List<LoanNewSchema> listLoanNewSchema = loanNewSchemaService.getAllDataWhereIsActive();
             for (LoanNewSchema loanNewSchema : listLoanNewSchema) {
                 dropDownLoanNewSchema.put(loanNewSchema.getLoanSchemaName(), loanNewSchema.getId());
             }

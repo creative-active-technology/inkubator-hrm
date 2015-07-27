@@ -133,6 +133,12 @@
                                     <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
 
                                 </p:commandButton> 
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{bioDataViewController.doUpdatePenempatan()}" >
+                                    <f:setPropertyActionListener value="#{biodataView}" target="#{bioDataViewController.selectedBioData}" />
+
+                                </p:commandButton> 
                             </p:column>                                                    
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />

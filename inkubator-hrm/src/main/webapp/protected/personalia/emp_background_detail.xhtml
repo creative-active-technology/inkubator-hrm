@@ -230,11 +230,17 @@
                                                          action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioSertifikasi').show()">                        
                                             <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
                                         </p:commandButton>
+                                        
                                         - 
-                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                        <!-- <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioSertifikasiConfirmId" 
-                                                         action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioSertifikasi').show()">
+                                                         action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioSertifikasi').show()">
                                             <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
+                                        </p:commandButton> -->
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogBioSertifikasiConfirmId" 
+                                                 action="#{empDataDetilController.doSelectBioSertifikasi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioSertifikasi').show()">
+		                                    <f:setPropertyActionListener value="#{bioSertifikasiData}" target="#{empDataDetilController.selectedBioSertifikasi}" />
                                         </p:commandButton>
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
@@ -414,7 +420,7 @@
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioDocumentConfirmId" 
-                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioDocument').show()">
+                                                         action="#{empDataDetilController.doSelectBioDocument()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioDocument').show()">
                                             <f:setPropertyActionListener value="#{bioDocumentData}" target="#{empDataDetilController.selectedBioDocument}" />
                                         </p:commandButton>
                                         -

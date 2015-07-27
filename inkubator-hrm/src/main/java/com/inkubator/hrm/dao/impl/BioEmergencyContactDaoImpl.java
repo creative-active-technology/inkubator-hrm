@@ -47,4 +47,14 @@ public class BioEmergencyContactDaoImpl extends IDAOImpl<BioEmergencyContact> im
         return (BioEmergencyContact) criteria.uniqueResult();
     }
 
+	@Override
+	public List<BioEmergencyContact> getAllDataWithDetailByBioDataId(long bioDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("city", FetchMode.JOIN);
+        criteria.setFetchMode("familyRelation", FetchMode.JOIN);
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("bioData.id", bioDataId));
+		return criteria.list();
+	}
+
 }

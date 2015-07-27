@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -63,6 +64,7 @@ import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import java.util.HashMap;
 
 /**
  *
@@ -350,8 +352,11 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         //Set Kodefikasi pada nomor
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
         Long currentMaxLoanId = loanDao.getCurrentMaxId();
+        if (currentMaxLoanId == null) {
+            currentMaxLoanId = 0L;
+        }
         entity.setNomor(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-           
+        
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);        
 
@@ -567,18 +572,9 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         //save data to loan_canceled table
         LoanCanceled loanCanceled = new LoanCanceled();
         loanCanceled.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        loanCanceled.setApprovalActivityNumber(loanCanceledModel.getApprovalActivityNumber());
         loanCanceled.setCreatedBy(UserInfoUtil.getUserName());
         loanCanceled.setCreatedOn(new Date());
-        loanCanceled.setInterestRate(loanCanceledModel.getInterestRate());
-        loanCanceled.setLoanDate(loanCanceledModel.getLoanDate());
-        loanCanceled.setNominalPrincipal(loanCanceledModel.getNominalPrincipal());
-        loanCanceled.setTermin(loanCanceledModel.getTermin());
-        loanCanceled.setTypeOfInterest(loanCanceledModel.getTypeOfInterest());
-        loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData()));
-        loanCanceled.setLoanSchema(loanSchemaDao.getEntiyByPK(loanCanceledModel.getLoanSchema()));
-        loanCanceled.setDescription(loanCanceledModel.getKeterangan());
-        loanCanceled.setCancelationDate(new Date());
+        /*loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData()));*/
         loanCanceledDao.save(loanCanceled);
     }
     
@@ -706,5 +702,86 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getCurrentMaxId() {
         return this.loanDao.getCurrentMaxId();
+    }
+    
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception {
+        HashMap<Long, String> map = new HashMap<Long, String>();
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+
+        List<ApprovalActivity> appActivities = approvalActivityDao.getAllDataNotApprovedYet(userId, HRMConstant.LOAN);
+        for (ApprovalActivity app : appActivities) {
+            Loan loan = gson.fromJson(app.getPendingData(), Loan.class);
+            map.put(app.getId(), loan.getNomor());
+        }
+
+        return map;
+    }
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void cancelled(long approvalActivityId, LoanCanceled loanCancelation) throws Exception {
+        ApprovalActivity appActivity = approvalActivityDao.getEntiyByPK(approvalActivityId);
+
+        //check if there is already approved by someone(approver), then it shouldn't be cancelled
+        if (approvalActivityDao.isAlreadyHaveApprovedStatus(appActivity.getActivityNumber())) {
+            throw new BussinessException("approval.error_cancelled_already_approved");
+        }
+        /**
+         * saving entity Loan to DB
+         */
+        Loan application = this.convertJsonToEntity(appActivity.getPendingData());
+        application.setStatusPencairan(HRMConstant.LOAN_CANCELED);
+        application.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        this.save(application, Boolean.TRUE);
+
+        /**
+         * saving entity RmbsCancelation to DB
+         */
+        this.savingCancelation(loanCancelation, application, appActivity.getActivityNumber());
+
+        /**
+         * cancel this approval activity and saving log approver history
+         */
+        //LoanSchema loanSchema = loanSchemaEmpTypeDao.getAllDataByEmpTypeId(application.getEmpData().getEmployeeType().getId()).get(0).getLoanSchema();
+        //List<ApprovalDefinition> appDefs = Lambda.extract(loanSchema.get(), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());        
+        super.cancelled(approvalActivityId, loanCancelation.getReason());
+    }
+    
+    private void savingCancelation(LoanCanceled cancelation, Loan application, String activityNumber) throws BussinessException {
+        System.out.println("saving cancelation");
+        // check duplicate code
+        Long totalDuplicates = loanCanceledDao.getTotalByCode(cancelation.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("rmbs_application.error_duplicate_number");
+        }
+
+        //generate number of code
+        String nomor = this.generateCancelationLoanNumber();
+
+        cancelation.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        cancelation.setCode(nomor);
+        cancelation.setLoan(application);
+        cancelation.setCreatedBy(UserInfoUtil.getUserName());
+        cancelation.setCreatedOn(new Date());
+        loanCanceledDao.save(cancelation);
+    }
+
+    private String generateCancelationLoanNumber() {
+        /**
+         * generate cancelation number form codification, from reimbursement
+         * module
+         */
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+        Long currentMaxId = loanCanceledDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor = KodefikasiUtil.getKodefikasi(((int) currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+    }
+
+    private Loan convertJsonToEntity(String json) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        Loan entity = gson.fromJson(json, Loan.class);
+        return entity;
     }
 }

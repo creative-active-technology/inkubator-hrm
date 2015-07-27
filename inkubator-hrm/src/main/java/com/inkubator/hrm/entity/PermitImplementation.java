@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 )
 public class PermitImplementation implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private Integer version;
     private EmpData empData;
     private PermitClassification permitClassification;
@@ -45,7 +48,7 @@ public class PermitImplementation implements java.io.Serializable {
     public PermitImplementation() {
     }
 
-    public PermitImplementation(long id, EmpData empData, PermitClassification permitClassification, Date endDate, Date fillingDate, String numberFilling, Date startDate) {
+    public PermitImplementation(Long id, EmpData empData, PermitClassification permitClassification, Date endDate, Date fillingDate, String numberFilling, Date startDate) {
         this.id = id;
         this.empData = empData;
         this.permitClassification = permitClassification;
@@ -55,7 +58,7 @@ public class PermitImplementation implements java.io.Serializable {
         this.startDate = startDate;
     }
 
-    public PermitImplementation(long id, EmpData empData, PermitClassification permitClassification, String createdBy, Date createdOn, String description, Date endDate, Date fillingDate, String numberFilling, Date startDate, String updatedBy, Date updatedOn, String uploadPath) {
+    public PermitImplementation(Long id, EmpData empData, PermitClassification permitClassification, String createdBy, Date createdOn, String description, Date endDate, Date fillingDate, String numberFilling, Date startDate, String updatedBy, Date updatedOn, String uploadPath) {
         this.id = id;
         this.empData = empData;
         this.permitClassification = permitClassification;
@@ -72,13 +75,14 @@ public class PermitImplementation implements java.io.Serializable {
     }
 
     @Id
-
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "permit_seq_gen")
+    @SequenceGenerator(name = "permit_seq_gen", sequenceName = "PERMIT_SEQ")
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

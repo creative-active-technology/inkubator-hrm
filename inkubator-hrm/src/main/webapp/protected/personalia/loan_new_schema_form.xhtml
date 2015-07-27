@@ -155,6 +155,24 @@
                             </p:column>
                         </p:row>
                         
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="isActiveId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="false"
+                                                            offIcon="ui-icon-close"  id="isActiveId" styleClass="label_button" value="#{loanNewSchemaFormController.model.isActive}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="isActiveId"/>
+                            </p:column>
+                        </p:row>
+                        
                         
                     </p:panelGrid>
                     <p:focus context="formId" />

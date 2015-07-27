@@ -88,6 +88,7 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
+        entity.setIsActive(entity.getIsActive());
         this.loanNewSchemaDao.save(entity);
     }
 
@@ -111,6 +112,7 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
         update.setDescription(entity.getDescription());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
+        update.setIsActive(entity.getIsActive());
         this.loanNewSchemaDao.update(update);
         
         /** update specific name in approval definition related */
@@ -353,5 +355,11 @@ public class LoanNewSchemaServiceImpl extends BaseApprovalConfigurationServiceIm
          */
         super.updateApprovalDefinition(appDef);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<LoanNewSchema> getAllDataWhereIsActive() throws Exception {
+		return loanNewSchemaDao.getAllDataWhereIsActive();
+	}
 
 }

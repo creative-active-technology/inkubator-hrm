@@ -30,6 +30,7 @@ public class LoanNewSchemaModel implements Serializable {
     private Double minimumApproval;
     private List<LoanNewSchemaModel> listTotalModel;
     private LoanNewSchemaModel totalModel;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -158,6 +159,14 @@ public class LoanNewSchemaModel implements Serializable {
     public void setTotalModel(LoanNewSchemaModel totalModel) {
         this.totalModel = totalModel;
     }
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
 
     
 }

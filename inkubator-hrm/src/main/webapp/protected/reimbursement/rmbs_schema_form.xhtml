@@ -127,6 +127,16 @@
                             		<p:outputLabel value=" hari" styleClass="label_hrm"/>
 	                                <p:message for="submissionDeadlineId"/>
 	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="false"
+                                                            offIcon="ui-icon-close"  id="isActiveId" styleClass="label_button" value="#{rmbsSchemaFormController.model.isActive}" />
+                                    <p:message for="isActiveId"/>
+	                            </p:column>
 	                        </p:row>	                                                     
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
