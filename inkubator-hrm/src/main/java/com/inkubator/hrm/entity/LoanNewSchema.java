@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +30,7 @@ public class LoanNewSchema implements java.io.Serializable {
     private String description;
     private Long totalMaximumLoan;
     private Long totalMaximumInstallment;
+    private Boolean isActive;
     private Date createdOn;
     private String createdBy;
     private String updatedBy;
@@ -182,6 +184,15 @@ public class LoanNewSchema implements java.io.Serializable {
         this.nomorSk = nomorSk;
     }
 
+    @Column(name = "is_active", nullable = false)
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "loanNewSchema")
     public Set<LoanNewSchemaListOfType> getLoanNewSchemaListOfTypes() {
         return this.loanNewSchemaListOfTypes;

@@ -134,4 +134,8 @@ public class BioDataViewController extends BaseController {
     public String doAdd() {
         return "/protected/personalia/biodata_form.htm?faces-redirect=true";
     }
+    
+    public String doUpdatePenempatan(){
+        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e";    	
+    }
 }

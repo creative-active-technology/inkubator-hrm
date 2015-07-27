@@ -100,4 +100,11 @@ public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements Loa
 
     }
 
+	@Override
+	public List<LoanNewSchema> getAllDataWhereIsActive() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+		return criteria.list();
+	}
+
 }
