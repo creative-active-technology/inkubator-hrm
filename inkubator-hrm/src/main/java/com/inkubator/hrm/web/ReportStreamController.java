@@ -71,7 +71,7 @@ public class ReportStreamController extends BaseController {
             EmpData empData = empDataService.getByBioDataIdWithDepartment(cardNameId);
             // isi data
             mapData.put("NIK", empData.getNik());
-            mapData.put("name", empData.getBioData().getFirstName() + " " + empData.getBioData().getLastName());
+            mapData.put("name", empData.getBioData().getFullName());
             mapData.put("jabatan", empData.getJabatanByJabatanId().getName());
             mapData.put("department", empData.getJabatanByJabatanId().getDepartment().getDepartmentName());
             mapData.put("tmb", String.valueOf(empData.getJoinDate()));

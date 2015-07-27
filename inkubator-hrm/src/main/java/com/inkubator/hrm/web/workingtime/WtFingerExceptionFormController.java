@@ -60,7 +60,7 @@ public class WtFingerExceptionFormController extends BaseController{
             if(wtFingerExceptionId != null){
                 WtFingerException wtFingerException = wtFingerExceptionService.getEntityByParamWithDetail(Long.parseLong(wtFingerExceptionId));
                 model.setId(wtFingerException.getId());
-                model.setEmpData(wtFingerException.getEmpData().getNik() + " - " + wtFingerException.getEmpData().getBioData().getFirstName() + " " + wtFingerException.getEmpData().getBioData().getLastName());
+                model.setEmpData(wtFingerException.getEmpData().getNik() + " - " + wtFingerException.getEmpData().getBioData().getFullName());
                 model.setStartDate(wtFingerException.getStartDate());
                 model.setEndDate(wtFingerException.getEndDate());
                 model.setExtendException(wtFingerException.getExtendException());
