@@ -34,15 +34,15 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">                       
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 39%">
                                 <p:outputLabel for="nameId" value="#{appmsg['publicHoliday.publicHoliday_leave']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 60%">
                                 <p:selectOneMenu id="nameId" value="#{publicHolidayFormController.publicHolidayModel.leaveSchemeId}" required="true"  
-                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['publicHoliday.publicHoliday_leave_should_not_be_empty']}">
+                                                     style="width: 230px" filter="true" requiredMessage="#{appmsg['publicHoliday.publicHoliday_leave_should_not_be_empty']}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                         <f:selectItems value="#{publicHolidayFormController.leaveSchemes}"  />
                                     </p:selectOneMenu>
@@ -62,7 +62,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
 
-                                <p:calendar id="startId" pattern="dd MMMM yyyy" value="#{publicHolidayFormController.publicHolidayModel.startDate}" style="width: 150px;margin-right: 3px" 
+                                <p:calendar id="startId" pattern="dd MMMM yyyy" value="#{publicHolidayFormController.publicHolidayModel.startDate}" style="width: 220px;margin-right: 3px" 
                                             required="true" requiredMessage="#{appmsg['publicHoliday.publicHoliday_start_should_not_be_empty']}" navigator="true">
                                     <f:validator validatorId="dateBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{endId}"/>
@@ -103,7 +103,7 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{publicHolidayFormController.publicHolidayModel.description}" 
-                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:220px;" />
 
                             </p:column>
                         </p:row>
@@ -143,4 +143,3 @@
 
     </h:body>
 </html>
-
