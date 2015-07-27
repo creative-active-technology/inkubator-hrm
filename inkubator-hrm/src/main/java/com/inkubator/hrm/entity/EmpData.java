@@ -370,7 +370,7 @@ public class EmpData implements java.io.Serializable {
 
     @Transient
     public String getNikWithFullName() {
-        String data = nik + " - " + bioData.getFirstName() + " " + bioData.getLastName();
+        String data = nik + " - " + bioData.getFullName();
         return data;
     }
 
