@@ -102,7 +102,7 @@ public class BioDataModel implements Serializable {
         this.maritalStatusId = maritalStatusId;
     }
 
-    @Pattern(regexp = "^([a-zA-Z][a-zA-Z\\s]|)", message = "{errorr_first_name}")
+    @Pattern(regexp = "^([a-zA-Z][a-zA-Z\\s]|)+", message = "{errorr_first_name}")
     public String getFirstName() {
         return firstName;
 

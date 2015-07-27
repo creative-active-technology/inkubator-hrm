@@ -21,4 +21,6 @@ public interface FingerSwapCapturedDao extends IDAO<FingerSwapCaptured> {
 	public List<FingerSwapCapturedViewModel> getAllDataByParam(FingerSwapCapturedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalByParam(FingerSwapCapturedSearchParameter parameter);
+	
+	public Boolean isDataSwapOnPeriodDateStillEmpty(Date startDate, Date endDate);
 }

@@ -195,4 +195,10 @@ public class PermitImplementationDaoImpl extends IDAOImpl<PermitImplementation> 
         criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+        
+        @Override
+	public Long getCurrentMaxId() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+	}
 }

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LogUnregListOfTransferDao;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
 import com.inkubator.hrm.entity.LogUnregListOfTransfer;
@@ -261,9 +262,9 @@ public class LogUnregListOfTransferServiceImpl extends IServiceImpl implements L
 	public void executeBatchUnregPayroll(TempUnregPayroll tempUnregPayroll, String createdBy, Date createdOn) throws Exception {
 		List<PayReceiverBankAccount> listPayReceiverBankAccount = payReceiverBankAccountDao.getAllByEmpId(tempUnregPayroll.getEmpData().getId());
 		if(listPayReceiverBankAccount.isEmpty()){
-			throw new Exception("User "+ tempUnregPayroll.getEmpData().getNikWithFullName() +" doesn't have BankAccount to transferred.");
+			throw new BussinessException("global.error_user_does_not_have_account_bank", tempUnregPayroll.getEmpData().getNikWithFullName());
 		} else if(Lambda.sum(listPayReceiverBankAccount, Lambda.on(PayReceiverBankAccount.class).getPersen()) !=100){
-			throw new Exception("Transfer Percent value of User "+ tempUnregPayroll.getEmpData().getNikWithFullName() +" is below than 100%.");
+			throw new BussinessException("global.error_transfer_percent_below_100", tempUnregPayroll.getEmpData().getNikWithFullName());
 		}		
 		
 		for(PayReceiverBankAccount payReceiverBankAccount : listPayReceiverBankAccount){

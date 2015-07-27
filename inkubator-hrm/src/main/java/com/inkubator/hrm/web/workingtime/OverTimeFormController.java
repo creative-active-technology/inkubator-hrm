@@ -215,6 +215,29 @@ public class OverTimeFormController extends BaseController {
     	Lambda.forEach(appDefs).setSpecificName(overTimeModel.getName());
     }
     
+    public void doReset() throws Exception{
+    	if(isEdit){
+    		WtOverTime wtOverTime = wtOverTimeService.getEntityByPkFetchApprovalDefinition(overTimeModel.getId());
+            overTimeModel.setId(wtOverTime.getId());
+            overTimeModel.setCode(wtOverTime.getCode());
+            overTimeModel.setDescription(wtOverTime.getDescription());
+            overTimeModel.setFinishTimeFactor(wtOverTime.getFinishTimeFactor());
+            overTimeModel.setMaximumTime(wtOverTime.getMaximumTime());
+            overTimeModel.setMinimumTime(wtOverTime.getMinimumTime());
+            overTimeModel.setName(wtOverTime.getName());
+            overTimeModel.setOtRounding(wtOverTime.getOtRounding());
+            overTimeModel.setOverTimeCalculation(wtOverTime.getOverTimeCalculation());
+            overTimeModel.setStartTimeFactor(wtOverTime.getStartTimeFactor());
+            overTimeModel.setValuePrice(wtOverTime.getValuePrice());
+            Set<ApprovalDefinitionOT> approvalDefinitionOTs = wtOverTime.getApprovalDefinitionOTs();
+                for(ApprovalDefinitionOT appDefOverTime : approvalDefinitionOTs){
+                	appDefs.add(appDefOverTime.getApprovalDefinition());
+                }
+    	}else{
+        	overTimeModel = null;
+    	}
+    }
+    
     /** Start Approval Definition form */
     public void doDeleteAppDef() {
     	appDefs.remove(selectedAppDef);

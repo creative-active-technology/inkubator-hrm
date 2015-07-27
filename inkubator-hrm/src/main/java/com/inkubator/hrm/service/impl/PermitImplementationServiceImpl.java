@@ -47,6 +47,7 @@ import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
@@ -56,9 +57,11 @@ import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
 import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
@@ -91,6 +94,8 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private FacesIO facesIO;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 //    @Autowired
 //    private PermitImplementationDateDao permitImplementationDateDao;
 
@@ -118,10 +123,10 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
         // check duplicate number filling
-        long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
-        if (totalDuplicates > 0) {
-            throw new BussinessException("permitimplementation.error_duplicate_filling_number");
-        }
+//        long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+//        if (totalDuplicates > 0) {
+//            throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+//        }
 
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
@@ -139,7 +144,14 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
         }
 
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+//        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        //Set Kodefikasi pada nomor
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+        Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+        if (currentMaxLoanId == null) {
+            currentMaxLoanId = 0L;
+        }
+        entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
         entity.setEmpData(empData);
         entity.setPermitClassification(permit);
 //        entity.setTemporaryActing(temporaryActing);
