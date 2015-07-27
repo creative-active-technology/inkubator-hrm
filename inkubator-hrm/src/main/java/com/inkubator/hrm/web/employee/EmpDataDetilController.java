@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.employee;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.BioBankAccount;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEmploymentHistory;
 import com.inkubator.hrm.entity.BioMedicalHistory;
@@ -24,6 +25,7 @@ import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.PersonalDiscipline;
 import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEmploymentHistoryService;
 import com.inkubator.hrm.service.BioMedicalHistoryService;
@@ -150,6 +152,12 @@ public class EmpDataDetilController extends BaseController {
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
     
+    // bio bank
+    private BioBankAccount selectedBioBankAccount;
+    private List<BioBankAccount> bioBankAccounts;
+    @ManagedProperty(value = "#{bioBankAccountService}")
+    private BioBankAccountService bioBankAccountService;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -165,6 +173,7 @@ public class EmpDataDetilController extends BaseController {
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
             listLoan = loanService.getAllDataByEmpDataIdAndStatusDisbursed(selectedEmpData.getId());
             /////
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
@@ -550,7 +559,31 @@ public class EmpDataDetilController extends BaseController {
     public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
     }
-        
+
+    public BioBankAccount getSelectedBioBankAccount() {
+        return selectedBioBankAccount;
+    }
+
+    public void setSelectedBioBankAccount(BioBankAccount selectedBioBankAccount) {
+        this.selectedBioBankAccount = selectedBioBankAccount;
+    }
+
+    public List<BioBankAccount> getBioBankAccounts() {
+        return bioBankAccounts;
+    }
+
+    public void setBioBankAccounts(List<BioBankAccount> bioBankAccounts) {
+        this.bioBankAccounts = bioBankAccounts;
+    }
+
+    public BioBankAccountService getBioBankAccountService() {
+        return bioBankAccountService;
+    }
+
+    public void setBioBankAccountService(BioBankAccountService bioBankAccountService) {
+        this.bioBankAccountService = bioBankAccountService;
+    }
+    
 	@PreDestroy
     public void cleanAndExit() {
         empDataService = null;
@@ -572,6 +605,8 @@ public class EmpDataDetilController extends BaseController {
         bioProjects = null;
         ListBioPotensiSwot = null;
         bioDocuments = null;
+        bioBankAccounts = null;
+        bioBankAccountService = null;
     }
     
     
@@ -972,4 +1007,74 @@ public class EmpDataDetilController extends BaseController {
         }
     }
     
+    /**
+     * START Bio BankAccount method
+     */
+    public void doSelectBioBankAccount() {
+        try {
+            selectedBioBankAccount = bioBankAccountService.getEntityByPKWithDetail(selectedBioBankAccount.getId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioBankAccount() {
+
+        List<String> bioBankAccountId = new ArrayList<>();
+        bioBankAccountId.add(String.valueOf(selectedBioBankAccount.getId()));
+
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioBankAccountId", bioBankAccountId);
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioBankAccount(dataToSend);
+
+    }
+
+    public void doAddBioBankAccount() {
+        List<String> bioDataId = new ArrayList<>();
+        bioDataId.add(String.valueOf(selectedEmpData.getBioData().getId()));
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", bioDataId);
+        showDialogBioBankAccount(dataToSend);
+    }
+
+    public void doDeleteBioBankAccount() {
+        try {
+            bioBankAccountService.delete(selectedBioBankAccount);
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedBioBankAccount.getBioData().getId());
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioBankAccount", ex);
+        }
+    }
+
+    private void showDialogBioBankAccount(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 500);
+        RequestContext.getCurrentInstance().openDialog("bio_bank_acc_form", options, params);
+    }
+
+    public void onDialogReturnBioBankAccount(SelectEvent event) {
+        try {
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
+            super.onDialogReturn(event);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio BankAccount method
+     */
 }
