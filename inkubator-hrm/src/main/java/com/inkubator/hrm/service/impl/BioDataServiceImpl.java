@@ -5,19 +5,46 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.BioAddressDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
+import com.inkubator.hrm.dao.BioEmergencyContactDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
+import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewSchema;
+import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.RmbsApplication;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
@@ -35,7 +62,9 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +82,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service(value = "bioDataService")
 @Lazy
-public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
+public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDataService {
 
     @Autowired
     private BioDataDao bioDataDao;
@@ -75,6 +104,16 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     private BioDocumentDao bioDocumentDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private ApprovalDefinitionDao approvalDefinitionDao;
+    @Autowired
+    private HrmUserDao hrmUserDao;
+    @Autowired
+    private ApprovalActivityDao approvalActivityDao;
+    @Autowired
+    private BioAddressDao bioAddressDao;
+    @Autowired
+    private BioEmergencyContactDao bioEmergencyContactDao;
     
 
     @Override
@@ -421,5 +460,216 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
 		bioDataDao.update(bioData);
 		
 	}
-   
+
+	@Override
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rejected(long approvalActivityId, String comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diverted(long approvalActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void sendingEmailApprovalNotif(ApprovalActivity appActivity)	throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private Boolean isApprovalDefinitionNotFound(){		
+		Long total = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.BIO_DATA_EDIT);
+		return ObjectUtils.equals(total, null) ? Boolean.TRUE : total == 0 ? Boolean.TRUE : Boolean.FALSE;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String saveBiodataRevisionWithApproval(Object modifiedEntity, String dataType, EmpData empData) throws Exception {
+		
+		//Jika Approval Definition untuk proses revisi biodata belum di buat, lempar BussinessException
+		if(isApprovalDefinitionNotFound()){
+			throw new BussinessException("biodata.biodata_revision_doesnt_have_approval_def");
+			
+		}
+		
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+		
+		//Dapatkan List Pending Approval Activity
+		List<ApprovalActivity> listPreviousActivities = approvalActivityDao.getPendingRequest(requestUser.getUserId());
+		
+		//Filter hanya yang berasal dari proses request revisi biodata
+		listPreviousActivities = Lambda.select(listPreviousActivities, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.BIO_DATA_EDIT)));
+		
+		//Looping satu persatu
+		for(ApprovalActivity approvalActivity : listPreviousActivities){
+			String pendingData = approvalActivity.getPendingData();
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();		
+			
+			// dapatkan nilai dataType (jenis kelompok formulir biodata) dari pending approval activity
+			JsonElement jsonElementDataType = gson.fromJson(pendingData, JsonObject.class).get("dataType");
+		        if (!jsonElementDataType.isJsonNull()) {
+		        	
+		        	String dataTypeFromJson = jsonElementDataType.getAsString();
+		        	
+		        	//Jika kelompok formulir dari pending Request sama dengan yang akan di ajukan sekarang, maka lempar BusinessException,
+		        	//karena tidak boleh mengajukan perubahan biodata pada satu jenis kelompok formulir, 
+		        	//jika sebelumnya sudah pernah diajukan pada jenis kelompok formulir tsb, akan tetapi statusnya masih pending.
+		        	if(StringUtils.equals(dataType, dataTypeFromJson)){
+		        		throw new BussinessException("biodata.error_revision_same_data_type_which_still_pending_found");
+		        	}
+		        	
+		        }
+	       
+		}
+		
+		return this.saveRevision(modifiedEntity, dataType, empData, Boolean.FALSE, null);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String saveRevision(Object modifiedEntity, String dataType, EmpData empData, Boolean isBypassApprovalChecking,  Long revisedApprActivityId) throws Exception {
+        String result = "error";
+        
+        //Check Next Approval
+        ApprovalActivity approvalActivity = this.checkApprovalIfAny(empData, isBypassApprovalChecking);
+        
+        // jika null berarti tidak ada next approval, langsung simpan/update ke DB
+        if (approvalActivity == null) {
+        	
+        	switch (dataType) {
+        	
+        		case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+        			BioData modifiedBiodata = (BioData) modifiedEntity;
+        			update(modifiedBiodata);
+        			break;
+        			
+        		case HRMConstant.BIO_REV_ADDRESS:
+        			List<BioAddress> modifiedListBioAddress = (List<BioAddress>) modifiedEntity;
+        			saveOrUpdateListBioAddress(modifiedListBioAddress);
+        			break;
+        			
+        		case HRMConstant.BIO_REV_CONTACT:
+        			List<BioEmergencyContact> modifiedListBioEmergencyContact = (List<BioEmergencyContact>) modifiedEntity;
+        			updateBioEmergencyContact(modifiedListBioEmergencyContact);
+        			break;
+        			
+        		default:
+    				break;
+        	}
+        	
+            result = "success_without_approval";
+
+        } else {
+        	
+        	switch (dataType) {
+        	
+				case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+					BioData modifiedBiodata = (BioData) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(modifiedBiodata, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+				
+				case HRMConstant.BIO_REV_ADDRESS:
+					List<BioAddress> listModifiedAddress = (List<BioAddress>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedAddress, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+				
+				case HRMConstant.BIO_REV_CONTACT:
+					List<BioEmergencyContact> listModifiedBioContact = (List<BioEmergencyContact>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioContact, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+				default:
+					break;
+				
+			}
+            
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
+        }
+
+        return result;
+    }
+	
+	private ApprovalActivity checkApprovalIfAny(EmpData empData, Boolean isBypassApprovalChecking) throws Exception{
+		/** check approval process if any,
+		 *  return null if no need approval process */
+		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        List<ApprovalDefinition> appDefs = approvalDefinitionDao.getAllDataByName(HRMConstant.BIO_DATA_EDIT);
+        return isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
+	}
+	
+	 private String getJsonPendingData(Object entity, String dataType) throws IOException {
+		 	
+		 	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	        JsonParser parser = new JsonParser();
+	        JsonObject jsonObject = new JsonObject();
+	        
+		 	switch (dataType) {
+			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+				JsonObject jsonObjectBioData = (JsonObject) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonObjectBioData);
+		        jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_ADDRESS:				
+				JsonArray jsonArrayBioAddress = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioAddress);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_CONTACT:				
+				JsonArray jsonArrayBioEmergencyContact = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioEmergencyContact);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+
+			default:
+				break;
+			}
+
+	        //parsing object to json         
+	        return gson.toJson(jsonObject);
+	 }
+	 
+	 private void saveOrUpdateListBioAddress(List<BioAddress> listBioAddress){
+		 for(BioAddress bioAddress : listBioAddress){
+			 
+			 if(ObjectUtils.equals(null, bioAddressDao.getEntiyByPK(bioAddress.getId()))){
+				 City city = cityDao.getEntiyByPK(bioAddress.getCity().getId());
+				 BioData bioData = bioDataDao.getEntiyByPK(bioAddress.getBioData().getId());
+				 
+				 bioAddress.setCity(city);
+				 bioAddress.setBioData(bioData);
+				 bioAddress.setCreatedBy(UserInfoUtil.getUserName());
+				 bioAddress.setCreatedOn(new Date());
+				 
+				 bioAddressDao.save(bioAddress);
+			 }else{
+				 
+			 }
+		 }
+	 }
+	 
+	 private void updateBioEmergencyContact(List<BioEmergencyContact> listBioEmergencyContact){
+		 for(BioEmergencyContact bioEmergencyContact : listBioEmergencyContact){
+			 
+		 }
+	 }
+	
 }

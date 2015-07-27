@@ -14,8 +14,10 @@ import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -230,5 +232,11 @@ public class BioEmergencyContactServiceImpl extends IServiceImpl implements BioE
     public BioEmergencyContact getEntityByPKWithDetail(long id) throws Exception {
         return bioEmergencyContactDao.getEntityByPKWithDetail(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BioEmergencyContact> getAllDataWithDetailByBioDataId(long bioDataId) throws Exception {
+		return bioEmergencyContactDao.getAllDataWithDetailByBioDataId(bioDataId);
+	}
 
 }

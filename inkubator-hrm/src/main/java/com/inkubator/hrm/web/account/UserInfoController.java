@@ -1,5 +1,7 @@
 package com.inkubator.hrm.web.account;
 
+import java.util.Collection;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -9,6 +11,8 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.inkubator.common.util.HashingUtils;
 import com.inkubator.exception.BussinessException;
@@ -40,6 +44,9 @@ public class UserInfoController extends BaseController {
     public void initialization() {
         super.initialization();
         userModel = new UserModel();
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        System.out.println("HOHOOHOHOHO");
+        System.out.println(authorities);
     }
 
     @PreDestroy

@@ -43,23 +43,23 @@ public class EmpDataPtkpLazyDataModel extends LazyDataModel<EmpData> implements 
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                    empDatadatas = empDataService.getAllDataByParam(empDataSearchParameter, first, pageSize, Order.asc(sortField));
+                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(empDataSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.desc(sortField));
-                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                    empDatadatas = empDataService.getAllDataByParam(empDataSearchParameter, first, pageSize, Order.desc(sortField));
+                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(empDataSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.asc("ptkpStatus"));
-                jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                empDatadatas = empDataService.getAllDataByParam(empDataSearchParameter, first, pageSize, Order.asc("ptkpStatus"));
+                jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(empDataSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

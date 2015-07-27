@@ -259,7 +259,8 @@
                                         
                                            
                                        
-                                    </h:outputLink>-->
+                                    </h:outputLink>
+                                    -->
                                     <p:commandLink id="userId" onclick="PF('statusDialog').show()" oncomplete="PF('dialogUserInfo').show()" update=":tabViewUserInfoId" action="#{userInfoController.onRenderUserInfo()}" title="User Profile" >
                                         <p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/> 
                                     </p:commandLink>
@@ -592,7 +593,7 @@
                                             <p:submenu label="#{appmsg['workingTime.permit_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['permitdistribution.permit_distribution']}" icon="img-permit_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitdistribution.permit_distribution']}" url="/protected/employee/permit_distribution_view.htm" />
                                                 <p:menuitem value="#{appmsg['permitbalance.permitbalance']}" icon="img-permit_balance" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitbalance.permitbalance']}" url="/protected/employee/neraca_permit_view.htm" />
-                                                <p:menuitem value="#{appmsg['permitbalance.permit_implementation']}" icon="img-permit_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitbalance.permit_implementation']}" url="#" />
+                                                <p:menuitem value="#{appmsg['permitbalance.permit_implementation']}" icon="img-permit_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitbalance.permit_implementation']}" url="/protected/working_time/permit_impl_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.overtime_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['overtimedistribution.overtime_distribution']}" icon="img-overtime_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="/protected/employee/ot_distribution_view.htm" />
@@ -774,6 +775,7 @@
                                                 <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="/protected/report/report_pph_view.htm" />
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['payroll.uploadData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.uploadData']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-pay_salary_upload"/>
+                                            <p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_comp_ex_view.htm" />
                                             <p:menuitem value="#{appmsg['payroll.ptkpData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.ptkpData']}" icon="img-ptkp" url="/protected/employee/emp_ptkp_view.htm"/> 
                                             <p:menuitem value="#{appmsg['transferAccount.transferAccount']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['transferAccount.transferAccount']}" icon="img-transfer_account" url="/protected/payroll/pay_receiver_view.htm"/> 
                                             <p:menuitem value="#{appmsg['payroll.paySalaryCalculation']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.paySalaryCalculation']}" icon="img-pay_salary_calculation" url="/protected/payroll/salary_execution_view.htm"/>

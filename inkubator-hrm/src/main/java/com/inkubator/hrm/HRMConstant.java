@@ -365,6 +365,7 @@ public class HRMConstant {
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
+    public static final String PERMIT_KODE = "PRMT";
     public static final String REIMBURSEMENT_KODE = "REIM";
     public static final String REIMBURSEMENT_CANCEL_KODE = "REIM-CL";
     public static final String REIMBURSEMENT_DISBURSED_KODE = "REIM-DI";
@@ -435,7 +436,21 @@ public class HRMConstant {
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_CANCELLED = 2;
     /* END */
     
-     //Constant For WT Period Status
+    //Constant For WT Period Status
     public static final String WT_PERIOD_STATUS_ACTIVE = "Active";
     public static final String WT_PERIOD_STATUS_VOID = "Void";
+    
+    //Constant For Biodata Revision Data Type
+    public static final String BIO_REV_DETAIL_BIO_DATA = "DETAIL_BIO_DATA";
+    public static final String BIO_REV_ADDRESS = "ADDRESS";
+    public static final String BIO_REV_CONTACT = "CONTACT";
+    public static final String BIO_REV_ID_CARD = "ID_CARD";
+    public static final String BIO_REV_FAMILY = "FAMILY";
+    public static final String BIO_REV_COMPANY_RELATION = "COMPANY_RELATION";
+    public static final String BIO_REV_EDUCATION = "EDUCATION";
+    public static final String BIO_REV_SKILL = "SKILL";
+    public static final String BIO_REV_SPESIFICATION_ABILITY = "SPESIFICATION_ABILITY";
+    public static final String BIO_REV_INTEREST = "INTEREST";
+    
+    
 }
