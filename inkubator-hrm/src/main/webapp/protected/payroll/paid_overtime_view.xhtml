@@ -18,11 +18,11 @@
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="formId">
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="lembur_diatas_56_jam_ico.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['payTempOvertime.payTempOvertime']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['payTempOvertime.payTempOvertime_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['payTempOvertime.overtime_calculation_result']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['payTempOvertime.overtime_calculation_result_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -62,7 +62,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Paid_Overtime"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Overtime_Calculation"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
@@ -74,7 +74,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['payTempOvertime.payTempOvertime_list']}"/>
+                                <h:outputText value="#{appmsg['payTempOvertime.overtime_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -82,19 +82,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.empNik}" style="width: 20%">
+                            <p:column sortBy="empData.nik" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empNik}" />
+                                <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="#{data.empName}" style="width: 43%">
+                            <p:column sortBy="bioData.firstName" style="width: 43%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.empName}" />
+                                <h:outputLabel value= "#{data.empData.bioData.fullName}" />
                             </p:column>
-                            <p:column sortBy="#{data.overtime}" style="width: 30%">
+                            <p:column sortBy="overtime" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.overtime']} (#{appmsg['global.hour']})"/>
                                 </f:facet>

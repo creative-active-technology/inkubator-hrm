@@ -5,19 +5,22 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.PayTempOvertimeDao;
-import com.inkubator.hrm.entity.PayTempOvertime;
-import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.PayTempOvertimeDao;
+import com.inkubator.hrm.entity.PayTempOvertime;
+import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
 
 /**
  *
@@ -35,8 +38,6 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
     @Override
     public List<PayTempOvertime> getByParam(PayTempOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("empData", FetchMode.JOIN);
-        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         doSearchByParam(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
@@ -52,13 +53,12 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
     }
 
     private void doSearchByParam(PayTempOvertimeSearchParameter searchParameter, Criteria criteria) {
-        if (searchParameter.getEmployeeName() != null) {
-            criteria.createAlias("empData", "empData");
-            criteria.createAlias("empData.bioData", "bioData");
+    	criteria.createAlias("empData", "empData");
+        criteria.createAlias("empData.bioData", "bioData");
+    	if (searchParameter.getEmployeeName() != null) {            
             criteria.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.START));
         }
         if (searchParameter.getNim() != null) {
-            criteria.createAlias("empData", "empData");
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNim(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -79,4 +79,17 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
         criteria.add(Restrictions.eq("id", id));
         return (PayTempOvertime) criteria.uniqueResult();
     }
+
+	@Override
+	public void deleteAllData() {
+		Query query = getCurrentSession().createQuery("delete from PayTempOvertime");
+        query.executeUpdate();
+	}
+	
+	@Override
+	public PayTempOvertime getEntityByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		return (PayTempOvertime) criteria.uniqueResult();
+	}
 }

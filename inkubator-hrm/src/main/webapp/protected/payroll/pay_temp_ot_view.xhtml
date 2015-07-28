@@ -47,10 +47,11 @@
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Pay_Temp_Overtime"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{payTempOvertimeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                    <!-- <p:commandButton value="#{appmsg['global.add']}" actionListener="#{payTempOvertimeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{payTempOvertimeViewController.onDialogReturn}"  update="tableId, growlId"/>
-                                    </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{savingTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    </p:commandButton> -->
+                                    <p:commandButton id="btnSyncId" value="#{appmsg['global.synchronization']}" title="#{appmsg['global.synchronization']}" action="#{payTempOvertimeViewController.doSynchronized()}" onstart="statusDialog.show()" oncomplete="statusDialog.hide()" update="tableId,growlId"  styleClass="label_button" icon="ui-icon-document"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{payTempOvertimeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -69,19 +70,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code" style="width: 20%">
+                            <p:column sortBy="empData.nik" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.nik}" />
                             </p:column>
-                            <p:column sortBy="code" style="width: 43%">
+                            <p:column sortBy="bioData.firstName" style="width: 43%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empData.bioData.fullName}" />
                             </p:column>
-                            <p:column sortBy="name" style="width: 43%">
+                            <p:column sortBy="overtime" style="width: 43%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.total_time']}"/>
                                 </f:facet>

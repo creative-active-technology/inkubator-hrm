@@ -48,4 +48,8 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     
     public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId);
 
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalPaidOvertimeByParam();
+
 }

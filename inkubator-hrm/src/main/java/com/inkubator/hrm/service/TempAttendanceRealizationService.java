@@ -44,4 +44,8 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     
     public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception;
 
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) throws Exception;
+
+	public Long getTotalPaidOvertimeByParam() throws Exception;
+
 }

@@ -238,4 +238,21 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     	return hbm.list();                
 	}
     
+    @Override
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalPaidOvertimeByParam() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+    
 }
