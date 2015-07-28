@@ -22,9 +22,14 @@ import com.inkubator.hrm.dao.BioAddressDao;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.dao.BioEmergencyContactDao;
+import com.inkubator.hrm.dao.BioFamilyRelationshipDao;
+import com.inkubator.hrm.dao.BioIdCardDao;
+import com.inkubator.hrm.dao.BioRelasiPerusahaanDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
@@ -37,8 +42,13 @@ import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.BioFamilyRelationship;
+import com.inkubator.hrm.entity.BioIdCard;
+import com.inkubator.hrm.entity.BioRelasiPerusahaan;
 import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewSchema;
@@ -67,6 +77,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.StreamedContent;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -114,7 +125,16 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     private BioAddressDao bioAddressDao;
     @Autowired
     private BioEmergencyContactDao bioEmergencyContactDao;
-    
+    @Autowired
+    private FamilyRelationDao familyRelationDao;
+    @Autowired
+    private BioIdCardDao bioIdCardDao;
+    @Autowired
+    private BioFamilyRelationshipDao bioFamilyRelationshipDao;
+    @Autowired
+    private BioRelasiPerusahaanDao bioRelasiPerusahaanDao;
+    @Autowired
+    private EducationLevelDao educationLevelDao;
 
     @Override
     public BioData getEntiyByPK(String id) throws Exception {
@@ -553,12 +573,27 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         			
         		case HRMConstant.BIO_REV_ADDRESS:
         			List<BioAddress> modifiedListBioAddress = (List<BioAddress>) modifiedEntity;
-        			saveOrUpdateListBioAddress(modifiedListBioAddress);
+        			saveOrUpdateListBioAddress(modifiedListBioAddress, empData.getBioData().getId());
         			break;
         			
         		case HRMConstant.BIO_REV_CONTACT:
         			List<BioEmergencyContact> modifiedListBioEmergencyContact = (List<BioEmergencyContact>) modifiedEntity;
-        			updateBioEmergencyContact(modifiedListBioEmergencyContact);
+        			saveOrUpdateBioEmergencyContact(modifiedListBioEmergencyContact, empData.getBioData().getId());
+        			break;
+        			
+        		case HRMConstant.BIO_REV_ID_CARD:
+        			List<BioIdCard> modifiedListBioIdCard = (List<BioIdCard>) modifiedEntity;
+        			saveOrUpdateBioIdCard(modifiedListBioIdCard, empData.getBioData().getId());
+        			break;
+        			
+        		case HRMConstant.BIO_REV_FAMILY:
+        			List<BioFamilyRelationship> modifiedListBioFamilyRelationship = (List<BioFamilyRelationship>) modifiedEntity;
+        			saveOrUpdateBioFamilyRelationship(modifiedListBioFamilyRelationship, empData.getBioData().getId());
+        			break;
+        			
+        		case HRMConstant.BIO_REV_COMPANY_RELATION:
+        			List<BioRelasiPerusahaan> modifiedListBioRelasiPerusahaan = (List<BioRelasiPerusahaan>) modifiedEntity;
+        			saveOrUpdateBioRelasiPerusahaan(modifiedListBioRelasiPerusahaan, empData.getBioData().getId());
         			break;
         			
         		default:
@@ -594,6 +629,31 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		            approvalActivityDao.save(approvalActivity);
 		            result = "success_need_approval";
 					break;
+					
+				case HRMConstant.BIO_REV_ID_CARD:
+					List<BioIdCard> listModifiedBioIdCard = (List<BioIdCard>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioIdCard, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+					
+				case HRMConstant.BIO_REV_FAMILY:
+					List<BioFamilyRelationship> listModifiedBioFamilyRelationship = (List<BioFamilyRelationship>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioFamilyRelationship, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+					
+				case HRMConstant.BIO_REV_COMPANY_RELATION:
+					List<BioRelasiPerusahaan> listModifiedBioRelasiPerusahaan = (List<BioRelasiPerusahaan>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioRelasiPerusahaan, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+					
 				default:
 					break;
 				
@@ -638,6 +698,24 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 				jsonObject.add("modifiedEntity", jsonArrayBioEmergencyContact);
 				jsonObject.addProperty("dataType", dataType);
 				break;
+				
+			case HRMConstant.BIO_REV_ID_CARD:				
+				JsonArray jsonArrayBioIdCard = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioIdCard);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_FAMILY:				
+				JsonArray jsonArrayFamily = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayFamily);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_COMPANY_RELATION:				
+				JsonArray jsonArrayCompanyRelation = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayCompanyRelation);
+				jsonObject.addProperty("dataType", dataType);
+				break;
 
 			default:
 				break;
@@ -647,29 +725,233 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 	        return gson.toJson(jsonObject);
 	 }
 	 
-	 private void saveOrUpdateListBioAddress(List<BioAddress> listBioAddress){
-		 for(BioAddress bioAddress : listBioAddress){
+	 private void saveOrUpdateListBioAddress(List<BioAddress> listBioAddressRevision, Long bioDataId){
+		 
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		 //Dapatkan List BioAddress dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioAddress> listBioAddressFromDb = bioAddressDao.getAllDataByBioDataId(bioDataId);
+		 
+		 //Looping Data Existing BioAddress dari database
+		 for(BioAddress bioAddressFromDb : listBioAddressFromDb){
 			 
-			 if(ObjectUtils.equals(null, bioAddressDao.getEntiyByPK(bioAddress.getId()))){
-				 City city = cityDao.getEntiyByPK(bioAddress.getCity().getId());
-				 BioData bioData = bioDataDao.getEntiyByPK(bioAddress.getBioData().getId());
+			 //jika data bioAddress dari db, tidak ada dalam list BioAddress dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioAddressRevision, Lambda.having(Lambda.on(BioAddress.class).getId() == bioAddressFromDb.getId()))){
+				 bioAddressDao.delete(bioAddressFromDb);
+			 }
+		 }
+		 
+		//Looping Data  BioAddress dari list BioAddress hasil revisi
+		 for(BioAddress bioAddressRevision : listBioAddressRevision){
+			 
+			 //Cek apakah data BioAddress dari proses revisi biodata, sudah ada di database
+			 BioAddress bioAddressToUpdate = bioAddressDao.getEntiyByPK(bioAddressRevision.getId());
+			 City city = cityDao.getEntiyByPK(bioAddressRevision.getCity().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioAddressToUpdate)){
 				 
-				 bioAddress.setCity(city);
-				 bioAddress.setBioData(bioData);
-				 bioAddress.setCreatedBy(UserInfoUtil.getUserName());
-				 bioAddress.setCreatedOn(new Date());
+				 bioAddressRevision.setCity(city);
+				 bioAddressRevision.setBioData(bioData);
+				 bioAddressRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 bioAddressRevision.setCreatedOn(new Date());
+				 bioAddressDao.save(bioAddressRevision);
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
 				 
-				 bioAddressDao.save(bioAddress);
-			 }else{
+				 BeanUtils.copyProperties(bioAddressRevision, bioAddressToUpdate, new String[]{"id","version","city","bioData","createdBy","createdOn"});
+				 bioAddressToUpdate.setCity(city);
+				 bioAddressToUpdate.setBioData(bioData);
+				 bioAddressToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioAddressToUpdate.setUpdatedOn(new Date());
+				 bioAddressDao.update(bioAddressToUpdate);
 				 
 			 }
 		 }
 	 }
 	 
-	 private void updateBioEmergencyContact(List<BioEmergencyContact> listBioEmergencyContact){
-		 for(BioEmergencyContact bioEmergencyContact : listBioEmergencyContact){
+	 private void saveOrUpdateBioEmergencyContact(List<BioEmergencyContact> listBioEmergencyContactRevision, Long bioDataId){
+		 
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		//Dapatkan List BioEmergencyContact dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioEmergencyContact> listBioEmergencyContactFromDb = bioEmergencyContactDao.getAllDataByBioDataId(bioDataId);
+		 
+		//Looping Data Existing BioEmergencyContact dari database
+		 for(BioEmergencyContact bioEmergencyContactFromDb : listBioEmergencyContactFromDb){
+			 
+			 //jika data BioEmergencyContact dari db, tidak ada dalam list BioEmergencyContact dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioEmergencyContactRevision, Lambda.having(Lambda.on(BioEmergencyContact.class).getId() == bioEmergencyContactFromDb.getId()))){
+				 bioEmergencyContactDao.delete(bioEmergencyContactFromDb);
+			 }
+		 }
+		 
+		//Looping Data  BioEmergencyContact dari list BioEmergencyContact hasil revisi
+		 for(BioEmergencyContact bioEmergencyContactRevision : listBioEmergencyContactRevision){
+			 
+			//Cek apakah data BioAddress dari proses revisi biodata, sudah ada di database
+			 BioEmergencyContact bioEmergencyContactToUpdate = bioEmergencyContactDao.getEntiyByPK(bioEmergencyContactRevision.getId());
+			 City city = cityDao.getEntiyByPK(bioEmergencyContactRevision.getCity().getId());
+			 FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(bioEmergencyContactRevision.getFamilyRelation().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioEmergencyContactToUpdate)){
+				 
+				 bioEmergencyContactRevision.setCity(city);
+				 bioEmergencyContactRevision.setFamilyRelation(familyRelation);
+				 bioEmergencyContactRevision.setBioData(bioData);
+				 bioEmergencyContactRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 bioEmergencyContactRevision.setCreatedOn(new Date());
+				 bioEmergencyContactDao.save(bioEmergencyContactRevision);
+				 
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
+				 
+				 BeanUtils.copyProperties(bioEmergencyContactRevision, bioEmergencyContactToUpdate, new String[]{"id","version","city","bioData","familyRelation","createdBy","createdOn"});
+				 bioEmergencyContactToUpdate.setCity(city);
+				 bioEmergencyContactToUpdate.setFamilyRelation(familyRelation);
+				 bioEmergencyContactToUpdate.setBioData(bioData);
+				 bioEmergencyContactToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioEmergencyContactToUpdate.setUpdatedOn(new Date());
+				 bioEmergencyContactDao.update(bioEmergencyContactToUpdate);
+				 
+			 }
 			 
 		 }
+	 }
+	 
+	 private void saveOrUpdateBioIdCard(List<BioIdCard> listBioIdCardRevision, Long bioDataId){
+		 
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		 //Dapatkan List BioIdCard dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioIdCard> listBioIdCardFromDb = bioIdCardDao.getAllDataByBioDataId(bioDataId);
+		 
+		//Looping Data Existing BioIdCard dari database
+		 for(BioIdCard bioIdCardFromDb : listBioIdCardFromDb){
+			 
+			//jika data BioIdCard dari db, tidak ada dalam list BioIdCard dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioIdCardRevision, Lambda.having(Lambda.on(BioIdCard.class).getId() == bioIdCardFromDb.getId()))){
+				 bioIdCardDao.delete(bioIdCardFromDb);
+			 }
+		 }
+		 
+		 //Looping Data BioIdCard dari list BioIdCard hasil revisi
+		 for(BioIdCard bioIdCardRevision : listBioIdCardRevision){
+			 
+			 //Cek apakah data BioIdCard dari proses revisi biodata, sudah ada di database
+			 BioIdCard bioIdCardToUpdate = bioIdCardDao.getEntiyByPK(bioIdCardRevision.getId());
+			 City city = cityDao.getEntiyByPK(bioIdCardRevision.getCity().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioIdCardToUpdate)){
+				 
+				 bioIdCardRevision.setCity(city);
+				 bioIdCardRevision.setBioData(bioData);
+				 bioIdCardRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 bioIdCardRevision.setCreatedOn(new Date());
+				 bioIdCardDao.save(bioIdCardRevision);
+				 
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
+				 
+				 BeanUtils.copyProperties(bioIdCardRevision, bioIdCardToUpdate, new String[]{"id","city","bioData","createdBy","createdOn"});
+				 bioIdCardToUpdate.setCity(city);
+				 bioIdCardToUpdate.setBioData(bioData);
+				 bioIdCardToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioIdCardToUpdate.setUpdatedOn(new Date());
+				 bioIdCardDao.update(bioIdCardToUpdate);
+				 
+			 }
+		 }
+	 }
+	 
+	 private void saveOrUpdateBioFamilyRelationship(List<BioFamilyRelationship> listBioFamilyRelationshipRevision, Long bioDataId){
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		 //Dapatkan List BioFamilyRelationship dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioFamilyRelationship> listBioFamilyRelationshipFromDb = bioFamilyRelationshipDao.getAllDataByBioDataId(bioDataId);
+		 
+		//Looping Data Existing BioFamilyRelationship dari database
+		 for(BioFamilyRelationship bioFamilyRelationshipFromDb : listBioFamilyRelationshipFromDb){
+			 
+			//jika data BioFamilyRelationship dari db, tidak ada dalam list BioFamilyRelationship dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioFamilyRelationshipRevision, Lambda.having(Lambda.on(BioIdCard.class).getId() == bioFamilyRelationshipFromDb.getId()))){
+				 bioFamilyRelationshipDao.delete(bioFamilyRelationshipFromDb);
+			 }
+		 }
+		 
+		 //Looping Data BioFamilyRelationship dari list BioFamilyRelationship hasil revisi
+		 for(BioFamilyRelationship bioFamilyRelationshipRevision : listBioFamilyRelationshipRevision){
+			 
+			//Cek apakah data BioFamilyRelationship dari proses revisi biodata, sudah ada di database
+			 BioFamilyRelationship bioFamilyRelationshipToUpdate = bioFamilyRelationshipDao.getEntiyByPK(bioFamilyRelationshipRevision.getId());
+			 EducationLevel educationLevel = educationLevelDao.getEntiyByPK(bioFamilyRelationshipRevision.getEducationLevel().getId());
+			 FamilyRelation familyRelation = familyRelationDao.getEntiyByPK(bioFamilyRelationshipRevision.getFamilyRelation().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioFamilyRelationshipToUpdate)){
+				 bioFamilyRelationshipRevision.setEducationLevel(educationLevel);
+				 bioFamilyRelationshipRevision.setFamilyRelation(familyRelation);
+				 bioFamilyRelationshipRevision.setBioData(bioData);
+				 bioFamilyRelationshipRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 bioFamilyRelationshipRevision.setCreatedOn(new Date());
+				 bioFamilyRelationshipDao.save(bioFamilyRelationshipRevision);
+				 
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
+				 
+				 BeanUtils.copyProperties(bioFamilyRelationshipRevision, bioFamilyRelationshipToUpdate, new String[]{"id","educationLevel","familyRelation","bioData","createdBy","createdOn"});
+				 bioFamilyRelationshipToUpdate.setEducationLevel(educationLevel);
+				 bioFamilyRelationshipToUpdate.setFamilyRelation(familyRelation);
+				 bioFamilyRelationshipToUpdate.setBioData(bioData);
+				 bioFamilyRelationshipToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioFamilyRelationshipToUpdate.setUpdatedOn(new Date());
+				 bioFamilyRelationshipDao.update(bioFamilyRelationshipToUpdate);
+				 
+			 }
+		 }
+	 }
+	 
+	 private void saveOrUpdateBioRelasiPerusahaan(List<BioRelasiPerusahaan> listBioRelasiPerusahaanRevision, Long bioDataId){
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		 //Dapatkan List BioRelasiPerusahaan dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioRelasiPerusahaan> listBioFamilyRelationshipFromDb = bioRelasiPerusahaanDao.getAllDataByBioDataId(bioDataId);
+		 
+		//Looping Data Existing BioRelasiPerusahaan dari database
+		 for(BioRelasiPerusahaan bioRelasiPerusahaanFromDb : listBioFamilyRelationshipFromDb){
+			 
+			//jika data BioFamilyRelationship dari db, tidak ada dalam list BioFamilyRelationship dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioRelasiPerusahaanRevision, Lambda.having(Lambda.on(BioRelasiPerusahaan.class).getId() == bioRelasiPerusahaanFromDb.getId()))){
+				 bioRelasiPerusahaanDao.delete(bioRelasiPerusahaanFromDb);
+			 }
+		 }
+		 
+		 //Looping Data BioFamilyRelationship dari list BioFamilyRelationship hasil revisi
+		 for(BioRelasiPerusahaan bioRelasiPerusahaanRevision : listBioRelasiPerusahaanRevision){
+			 
+			 //Cek apakah data BioRelasiPerusahaan dari proses revisi biodata, sudah ada di database
+			 BioRelasiPerusahaan bioRelasiPerusahaanToUpdate = bioRelasiPerusahaanDao.getEntiyByPK(bioRelasiPerusahaanRevision.getId());
+			 City city = cityDao.getEntiyByPK(bioRelasiPerusahaanRevision.getCity().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioRelasiPerusahaanToUpdate)){
+				 
+				 bioRelasiPerusahaanRevision.setCity(city);
+				 bioRelasiPerusahaanRevision.setBioData(bioData);
+				 bioRelasiPerusahaanRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 bioRelasiPerusahaanRevision.setCreatedOn(new Date());
+				 bioRelasiPerusahaanDao.save(bioRelasiPerusahaanRevision);
+				 
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
+				 
+				 BeanUtils.copyProperties(bioRelasiPerusahaanRevision, bioRelasiPerusahaanToUpdate, new String[]{"id","version","city","bioData","createdBy","createdOn"});
+				 bioRelasiPerusahaanToUpdate.setCity(city);
+				 bioRelasiPerusahaanToUpdate.setBioData(bioData);
+				 bioRelasiPerusahaanToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioRelasiPerusahaanToUpdate.setUpdatedOn(new Date());
+				 bioRelasiPerusahaanDao.update(bioRelasiPerusahaanToUpdate);
+				 
+			 }
+		 }
+		 
 	 }
 	
 }
