@@ -81,14 +81,16 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
     }
 
     @Override
-    public List<BioData> getEntityByPKWithDetail(long id) {
+    public BioData getEntityByPKWithDetail(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("city", FetchMode.JOIN);
         criteria.setFetchMode("race", FetchMode.JOIN);
         criteria.setFetchMode("religion", FetchMode.JOIN);
         criteria.setFetchMode("nationality", FetchMode.JOIN);
-        return criteria.list();
+        criteria.setFetchMode("maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("dialect", FetchMode.JOIN);
+        return (BioData) criteria.uniqueResult();
     }
 
     @Override
