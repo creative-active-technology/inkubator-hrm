@@ -145,7 +145,7 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                 action="#{reportLeaveHistoryViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetail.show()">                        
+                                                 action="#{reportLeaveHistoryViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="PF('dialogDetail').show()">                        
                                     <f:setPropertyActionListener value="#{leaveImplementationData}" target="#{reportLeaveHistoryViewController.selectedLeaveImplementation}" />
                                 </p:commandButton>
                             </p:column>

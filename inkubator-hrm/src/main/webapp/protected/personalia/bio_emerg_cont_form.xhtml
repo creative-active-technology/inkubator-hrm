@@ -41,7 +41,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputText id="contactName" title="#{appmsg['bioaddress.contact_name']}" value="#{bioEmergencyContactFormController.emergencyContactModel.name}" 
-                                             required="true" maxlength="100" styleClass="isitext_hrm" style="width:300px;" />
+                                             required="true" maxlength="100" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
 
                         </p:row>
@@ -59,7 +59,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:selectOneMenu id="falmilyRelationId" styleClass="isitext_hrm" required="true" filter="true"
-                                                 value="#{bioEmergencyContactFormController.emergencyContactModel.familyRelationId}" style="width:305px;">
+                                                 value="#{bioEmergencyContactFormController.emergencyContactModel.familyRelationId}" style="width:250px;">
                                     <!--Cek HRM Constanta..-->
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioEmergencyContactFormController.mapRelationFamily}"/>
@@ -81,7 +81,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:selectOneMenu id="cityId" styleClass="isitext_hrm" required="true" filter="true" 
-                                                 value="#{bioEmergencyContactFormController.emergencyContactModel.cityId}" style="width:305px;">
+                                                 value="#{bioEmergencyContactFormController.emergencyContactModel.cityId}" style="width:250px;">
                                     <!--Cek HRM Constanta..-->
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{bioEmergencyContactFormController.mapCity}"/>
@@ -103,7 +103,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputText id="phoneNumber" title="#{appmsg['bioaddress.contact_name']}" value="#{bioEmergencyContactFormController.emergencyContactModel.phoneNumber}" 
-                                             required="true" maxlength="100" styleClass="isitext_hrm" style="width:300px;" />
+                                             required="true" maxlength="100" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
 
                         </p:row>
@@ -140,7 +140,7 @@
                             </p:column>
                             <p:column  style="width: 30%">
                                 <p:inputTextarea id="address" title="#{appmsg['global.description']}" value="#{bioEmergencyContactFormController.emergencyContactModel.address}" 
-                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:300px;" />
+                                                 required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
                             </p:column>
 
                         </p:row>
