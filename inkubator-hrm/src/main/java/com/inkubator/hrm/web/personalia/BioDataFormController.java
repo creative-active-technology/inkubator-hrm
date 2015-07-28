@@ -83,9 +83,11 @@ public class BioDataFormController extends BaseController {
             String bioId = FacesUtil.getRequestParameter("execution");
             if (bioId != null) {
                 isEdit = Boolean.TRUE;
-                BioData selectedBioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioId.substring(1)));
+                BioData selectedBioData = this.bioDataService.getEntityByPKWithDetail(Long.parseLong(bioId.substring(1)));
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
-                bioDataModel.setCityid(selectedBioData.getCity().getId());
+                if(selectedBioData.getCity() != null){
+                	bioDataModel.setCityid(selectedBioData.getCity().getId());
+            	}
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
                 bioDataModel.setDoialekId(selectedBioData.getDialect().getId());
                 bioDataModel.setFirstName(selectedBioData.getFirstName());
