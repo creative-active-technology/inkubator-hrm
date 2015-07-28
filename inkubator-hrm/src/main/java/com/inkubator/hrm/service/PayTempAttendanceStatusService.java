@@ -31,4 +31,6 @@ public interface PayTempAttendanceStatusService extends IService<PayTempAttendan
     public void executeBatchFileUpload(PayTempAttendanceStatusModel report) throws Exception;
 
     public String updateFileAndDeleteData(UploadedFile file) throws Exception;
+    
+    public void synchronizedAttendanceStatus() throws Exception;
 }

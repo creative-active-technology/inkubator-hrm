@@ -1,25 +1,12 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
-import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.entity.PayTempAttendanceStatus;
-import com.inkubator.hrm.entity.PayTempUploadData;
-import com.inkubator.hrm.service.PayTempAttendanceStatusService;
-import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
-import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
-import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
-import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
@@ -29,6 +16,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.entity.PayTempAttendanceStatus;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.PayTempAttendanceStatusService;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesIO;
 
 /**
  *
@@ -50,6 +55,9 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     
     @Autowired
     private FacesIO facesIO;
+    
+    @Autowired
+    private LogWtAttendanceRealizationDao logWtAttendanceRealizationDao;
 
     @Override
     public void delete(PayTempAttendanceStatus arg0) throws Exception {
@@ -172,8 +180,9 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return payTempAttendanceStatusDao.getTotalData();
     }
 
     @Override
@@ -250,7 +259,7 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
     public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter,
             PayTempAttendanceStatusModel payTempAttendanceStatusModel)
             throws Exception {
-       return payTempAttendanceStatusDao.getTotalResourceTypeByParam(parameter, payTempAttendanceStatusModel);
+       return payTempAttendanceStatusDao.getTotalByParam(parameter, payTempAttendanceStatusModel);
     }
     
      @Override
@@ -295,5 +304,34 @@ public class PayTempAttendanceStatusServiceImpl extends IServiceImpl implements
         String uploadPath = facesIO.getPathUpload() + "paysalaryupload." + extension;
         return uploadPath;
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void synchronizedAttendanceStatus() throws Exception {				
+		//validate
+		WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
+		List<LogWtAttendanceRealization> listAttendanceRealization = logWtAttendanceRealizationDao.getAllDataByPeriodId(periode.getId());
+		if(StringUtils.equals(periode.getAbsen(), HRMConstant.PERIODE_ABSEN_ACTIVE)){
+			throw new BussinessException("payTempAttendanceStatus.error_absent_period_still_active");
+		} else if(listAttendanceRealization.isEmpty()){
+			throw new BussinessException("payTempAttendanceStatus.error_attendance_realization_empty");
+		}
+		
+		//delete all data PayTempAttendanceStatus
+		payTempAttendanceStatusDao.deleteAllData();
+		
+		//synchronize All Data based on active payroll wtPeriode		
+		for(LogWtAttendanceRealization attendanceRealization : listAttendanceRealization){
+			EmpData empData = empDataDao.getEntiyByPK(attendanceRealization.getEmpDataId());
+			PayTempAttendanceStatus payTempAttendanceStatus =  new PayTempAttendanceStatus();
+			payTempAttendanceStatus.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			payTempAttendanceStatus.setEmpData(empData);
+			payTempAttendanceStatus.setTotalAttendance(attendanceRealization.getAttendanceDaysSchedule());
+			payTempAttendanceStatus.setCreatedBy(UserInfoUtil.getUserName());
+			payTempAttendanceStatus.setCreatedOn(new Date());
+			payTempAttendanceStatusDao.save(payTempAttendanceStatus);
+		}
+		
+	}
 
 }

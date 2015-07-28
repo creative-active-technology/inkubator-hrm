@@ -80,20 +80,10 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 	}
 
 	@Override
-	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
+	public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
-        criteria.addOrder(orderable);
-        criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);
-        return criteria.list();
-	}
-
-	@Override
-	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		return criteria.list();
 	}
     
 }

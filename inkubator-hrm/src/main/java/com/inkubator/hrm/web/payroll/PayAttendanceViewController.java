@@ -1,6 +1,8 @@
 package com.inkubator.hrm.web.payroll;
 
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.PayTempAttendanceStatusService;
@@ -9,9 +11,11 @@ import com.inkubator.hrm.web.lazymodel.PayTempAttendanceStatusLazyDataModel;
 import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
 import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.Calendar;
 import java.util.Date;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +24,13 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
-
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -115,6 +120,16 @@ public class PayAttendanceViewController extends BaseController{
     }
     public void doSearch() {
         lazy = null;
+    }
+    
+    public void doSynchronized(){
+    	try {
+			payTempAttendanceStatusService.synchronizedAttendanceStatus();
+		} catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
     }
 
     public void doUpload() {
