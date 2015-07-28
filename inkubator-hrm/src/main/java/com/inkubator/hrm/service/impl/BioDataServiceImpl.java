@@ -150,12 +150,12 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public BioData getEntiyByPK(Long id) throws Exception {
         BioData bioData = bioDataDao.getEntiyByPK(id);
-        bioData.getCity().getCityName();
+        /*bioData.getCity().getCityName();
         bioData.getReligion().getName();
         bioData.getMaritalStatus().getName();
         bioData.getNationality().getNationalityName();
         bioData.getRace().getRaceName();
-        bioData.getDialect().getDialectName();
+        bioData.getDialect().getDialectName();*/
         return bioData;
     }
 
@@ -364,7 +364,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public List<BioData> getEntityByPKWithDetail(long id) throws Exception {
+    public BioData getEntityByPKWithDetail(long id) throws Exception {
         return bioDataDao.getEntityByPKWithDetail(id);
     }
 

@@ -116,7 +116,7 @@ public class EmpDataFormController extends BaseController {
                 mapPaySalary.put(paySalaryGrade.getGradeSalary() + " | " + min + " - " + max, paySalaryGrade.getId());
             }
             if (bioOrEmpId != null && bioOrEmpId.contains("e")) {
-                isEdit = Boolean.TRUE;
+            	isEdit = Boolean.TRUE;
                 EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(bioOrEmpId.substring(1)));
                 String basicSalaryDecript = empData.getBasicSalaryDecrypted();
                 empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
@@ -147,7 +147,7 @@ public class EmpDataFormController extends BaseController {
                     empDataModel.setRotasiDate(empData.getRotasiDate());
                 }
             } else if (bioOrEmpId != null && bioOrEmpId.contains("c")) {
-                BioData bioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioOrEmpId.substring(1)));
+            	BioData bioData = this.bioDataService.getEntiyByPK(Long.parseLong(bioOrEmpId.substring(1)));
                 empDataModel.setBioDataName(bioData.getFirstName() + " " + bioData.getLastName());
                 empDataModel.setBirthDate(bioData.getDateOfBirth());
                 empDataModel.setBioDataId(bioData.getId());

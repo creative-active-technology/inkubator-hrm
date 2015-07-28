@@ -4,24 +4,29 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.service.BioDataService;
-import com.inkubator.hrm.web.lazymodel.BioDataLazyDataModel;
-import com.inkubator.hrm.web.search.BioDataSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.File;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.lazymodel.BioDataLazyDataModel;
+import com.inkubator.hrm.web.search.BioDataSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -33,6 +38,8 @@ public class BioDataViewController extends BaseController {
 
     @ManagedProperty(value = "#{bioDataService}")
     private BioDataService bioDataService;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
     private BioDataSearchParameter bioDataSearchParameter;
     private LazyDataModel<BioData> lazyDataBioData;
     private BioData selectedBioData;
@@ -63,6 +70,7 @@ public class BioDataViewController extends BaseController {
         bioDataSearchParameter = null;
         lazyDataBioData = null;
         selectedBioData = null;
+        empDataService = null;
     }
 
     public LazyDataModel<BioData> getLazyDataBioData() {
@@ -92,7 +100,15 @@ public class BioDataViewController extends BaseController {
         this.selectedBioData = selectedBioData;
     }
 
-    public void onDelete() {
+    public EmpDataService getEmpDataService() {
+		return empDataService;
+	}
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+
+	public void onDelete() {
         try {
             selectedBioData = this.bioDataService.getEntiyByPK(selectedBioData.getId());
 
@@ -136,6 +152,14 @@ public class BioDataViewController extends BaseController {
     }
     
     public String doUpdatePenempatan(){
-        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e";    	
+    	EmpData empData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());
+    	if(empData != null){
+    		return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + empData.getId();    	
+    	}else if(empData == null){
+    		return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=c" + selectedBioData.getId();    	
+    	}else{
+    		return null;
+    	}
+//        return "/protected/employee/emp_placement_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();    	
     }
 }
