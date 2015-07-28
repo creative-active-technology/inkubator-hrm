@@ -57,7 +57,7 @@ public class JabatanDeskripsiFormController extends BaseController {
                 jabatanDeskripsiModel.setCategoryTugas(jabatanDeskripsi.getKategoryTugas());
                 jabatanDeskripsiModel.setDeskripsi(jabatanDeskripsi.getDescription());
                 jabatanDeskripsiModel.setJabatanId(jabatanDeskripsi.getJabatan().getId());
-                jabatanDeskripsiModel.setTypeWaktu(jabatanDeskripsi.getKategoryTugas());
+                jabatanDeskripsiModel.setTypeWaktu(jabatanDeskripsi.getTypeWaktu());
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
