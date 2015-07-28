@@ -99,7 +99,7 @@ public class LoanNewSchemaViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 460);
+        options.put("contentHeight", 480);
         RequestContext.getCurrentInstance().openDialog("loan_new_schema_form", options, params);
     }
 

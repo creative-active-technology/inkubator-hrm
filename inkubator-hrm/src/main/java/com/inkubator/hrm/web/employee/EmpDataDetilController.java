@@ -183,6 +183,7 @@ public class EmpDataDetilController extends BaseController {
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
             listLoan = loanService.getAllDataByEmpDataIdAndStatusDisbursed(selectedEmpData.getId());
             /////
+            bioBankAccounts = bioBankAccountService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             bioMedicalHistorys = bioMedicalHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             listBioSertifikasi = bioSertifikasiService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
             bioEmploymentHistorys = bioEmploymentHistoryService.getAllDataByBioDataId(selectedEmpData.getBioData().getId());
@@ -642,6 +643,8 @@ public class EmpDataDetilController extends BaseController {
         bioProjects = null;
         ListBioPotensiSwot = null;
         bioDocuments = null;
+        bioBankAccounts = null;
+        bioBankAccountService = null;
     }
     
     

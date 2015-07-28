@@ -63,6 +63,7 @@ public class LoanNewSchemaFormController extends BaseController {
         model.setLoanSchemaCode(entity.getLoanSchemaCode());
         model.setLoanSchemaName(entity.getLoanSchemaName());
         model.setDescription(entity.getDescription());
+        model.setIsActive(entity.getIsActive());
         return model;
     }
     
@@ -103,6 +104,7 @@ public class LoanNewSchemaFormController extends BaseController {
         loanNewSchema.setTotalMaximumInstallment(model.getTotalMaximumInstallment());
         loanNewSchema.setTotalMaximumLoan(model.getTotalMaximumLoan());
         loanNewSchema.setDescription(model.getDescription());
+        loanNewSchema.setIsActive(model.getIsActive());
         return loanNewSchema;
     }
     

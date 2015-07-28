@@ -212,7 +212,7 @@
                             </p:row>
 
                         </p:panelGrid>
-                        <p:outputLabel value="Daftar Alamat" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.address_list']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableBioAdressId" var="bioAddressesData"  value="#{bioDataController.bioAddresses}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -274,7 +274,7 @@
 
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Daftar Keluarga" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.family_list']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableBioFamilyRelationshipId" var="bioFamilyRelationshipData"  value="#{bioDataController.bioFamilyRelationships}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -343,7 +343,7 @@
                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Daftar Kontak Darurat" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.emergency_contact_list']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableContactId" var="bioContacts"  value="#{bioDataController.dataBioEmergencyContacs}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -395,7 +395,7 @@
                                                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Daftar Kartu Identitas" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.identity_card_list']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableBioIdCardId" var="bioIdCardData"  value="#{bioDataController.bioIdCards}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -454,7 +454,7 @@
                                                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Relasi Perusahaan" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['companyRelation.company_relation']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableRelasiPerusahaanId" var="relasiPerusahaan"  value="#{bioDataController.listBioRelasiPerusaan}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -525,7 +525,7 @@
                                                                 </p:commandButton>-->
                             </p:column>                                                                        
                         </p:dataTable>  
-                        <p:outputLabel value="Riwayat Pendidikan" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['educationhistory.education_history']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableEducationId" var="bioEducationData"  value="#{bioDataController.listBioEducationHistoryViewModel}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -590,7 +590,7 @@
                                                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Keahlian" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.skill']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableKeahlianId" var="bioKeahlian"  value="#{bioDataController.listBioKeahlian}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -638,7 +638,7 @@
                                                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Spesifikasi Kemampuan" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableSpecAbilityId" var="bioSpecAbi"  value="#{bioDataController.listBioSpesifikasiAbility}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
@@ -684,7 +684,7 @@
                                                                 </p:commandButton>-->
                             </p:column>
                         </p:dataTable>
-                        <p:outputLabel value="Minat" styleClass="header_big"/>
+                        <p:outputLabel value="#{appmsg['interest.interest']}" styleClass="header_big"/>
                         <p:separator />
                         <p:dataTable  id="tableMinatId" var="peopleInterestData"  value="#{bioDataController.listPeopleInterest}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"

@@ -33,4 +33,6 @@ public interface LoanNewSchemaService extends IService<LoanNewSchema> {
     public void saveApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception;
 
     public void updateApprovalConf(ApprovalDefinition appDef, Long loanNewSchema) throws Exception;
+    
+    public List<LoanNewSchema> getAllDataWhereIsActive() throws Exception;
 }
