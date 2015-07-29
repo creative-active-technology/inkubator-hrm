@@ -278,7 +278,7 @@ public class HomeDashboardController extends BaseController {
     		WtHoliday holiday = wtHolidayService.getEntityByDate(date);
     		if(holiday!=null){
     			//libur holiday
-    			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    			ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
     			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("global.information"), holiday.getHolidayName());
     			FacesUtil.getFacesContext().addMessage(null, msg);
     		} else if( Lambda.exists(listHolidayDate, Matchers.equalTo(new DateTime(date).getDayOfMonth()))) {
