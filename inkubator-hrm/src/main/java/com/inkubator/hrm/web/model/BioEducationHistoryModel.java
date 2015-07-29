@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.City;
+
 import java.io.Serializable;
 
 /**
@@ -24,6 +25,8 @@ public class BioEducationHistoryModel implements Serializable{
      private Integer yearOut;
      private Long cityId;
      private City city;
+     private Boolean isDownload;
+     private String isDownloadString;
 
     public Long getCityId() {
         return cityId;
@@ -121,6 +124,22 @@ public class BioEducationHistoryModel implements Serializable{
     public void setCity(City city) {
         this.city = city;
     }
+
+	public Boolean getIsDownload() {
+		return isDownload;
+	}
+
+	public void setIsDownload(Boolean isDownload) {
+		this.isDownload = isDownload;
+	}
+
+	public String getIsDownloadString() {
+		return isDownloadString;
+	}
+
+	public void setIsDownloadString(String isDownloadString) {
+		this.isDownloadString = isDownloadString;
+	}
      
      
 }

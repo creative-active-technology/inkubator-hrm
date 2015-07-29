@@ -21,10 +21,12 @@ import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioEducationHistoryModel;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,12 +36,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -72,6 +77,7 @@ public class BioEducationHistoryFormController extends BaseController{
     private Boolean isEdit;
     private UploadedFile fotoFile;
     private String fotoFileName;
+    private String isRevision;
     
     //List Dropdown
     
@@ -118,6 +124,7 @@ public class BioEducationHistoryFormController extends BaseController{
         facesIO = null;
         listCity = null;
         listCitys = null;
+        isRevision = null;
     }
     
     @PostConstruct
@@ -129,39 +136,77 @@ public class BioEducationHistoryFormController extends BaseController{
         model = new BioEducationHistoryModel();
         
         try {
-            if(param.contains("i")){
-                bioDataId = Long.parseLong(param.substring(1));
-                isEdit = Boolean.FALSE;
+        	
+        	//parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioEducationHistoryViewModel bioEducationHistoryViewModel = (BioEducationHistoryViewModel) sessionMap.get("selectedBioEducationHistoryViewModel");
+            		isEdit = Boolean.TRUE;
+            		 model.setId(bioEducationHistoryViewModel.getId());
+                     model.setBiodataId(Long.parseLong(bioEducationHistoryViewModel.getBiodata()));
+                     if(bioEducationHistoryViewModel.getEducationLevel() != null){
+                         model.setEducationLevelId(Long.parseLong(bioEducationHistoryViewModel.getEducationLevel()));
+                     }
+                     if(bioEducationHistoryViewModel.getInstitutionEducation() != null){
+                         model.setInstitutionEducationId(Long.parseLong(bioEducationHistoryViewModel.getInstitutionEducation()));
+                     }
+                     if(bioEducationHistoryViewModel.getFaculty()!=null){
+                         model.setFacultyId(Long.parseLong(bioEducationHistoryViewModel.getFaculty()));
+                     }
+                     if(bioEducationHistoryViewModel.getMajor()!=null){
+                         model.setMajorId(Long.parseLong(bioEducationHistoryViewModel.getMajor()));
+                     }
+                     model.setCertificateNumber(bioEducationHistoryViewModel.getCertificateNumber());
+                     model.setScore(bioEducationHistoryViewModel.getScore());
+                     /*if(bioEducationHistoryViewModel.getCity() != null ){
+                         model.setCity(bioEducationHistoryViewModel.getCity());
+                     }*/
+                     model.setYearIn(bioEducationHistoryViewModel.getYearIn());
+                     model.setYearOut(bioEducationHistoryViewModel.getYearOut());
+                     //bioDataId = bioEducationHistoryViewModel.getBiodata().getId();
+            	}
+            	
+            }else{
+            	if(param.contains("i")){
+                    bioDataId = Long.parseLong(param.substring(1));
+                    isEdit = Boolean.FALSE;
+                }
+                if (param.contains("e")) {
+                    isEdit = Boolean.TRUE;
+                    long educationId = Long.parseLong(param.substring(1));
+                    BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
+                    model.setId(educationHistory.getId());
+                    model.setBiodataId(educationHistory.getBiodata().getId());
+                    if(educationHistory.getEducationLevel() != null){
+                        model.setEducationLevelId(educationHistory.getEducationLevel().getId());
+                    }
+                    if(educationHistory.getInstitutionEducation() != null){
+                        model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
+                    }
+                    if(educationHistory.getFaculty()!=null){
+                        model.setFacultyId(educationHistory.getFaculty().getId());
+                    }
+                    if(educationHistory.getMajor()!=null){
+                        model.setMajorId(educationHistory.getMajor().getId());
+                    }
+                    model.setCertificateNumber(educationHistory.getCertificateNumber());
+                    model.setScore(educationHistory.getScore());
+                    if(educationHistory.getCity() != null ){
+                        model.setCity(educationHistory.getCity());
+                    }
+                    model.setYearIn(educationHistory.getYearIn());
+                    model.setYearOut(educationHistory.getYearOut());
+                    bioDataId = educationHistory.getBiodata().getId();
+                } else {
+                    isEdit = Boolean.FALSE;
+                }
             }
-            if (param.contains("e")) {
-                isEdit = Boolean.TRUE;
-                long educationId = Long.parseLong(param.substring(1));
-                BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
-                model.setId(educationHistory.getId());
-                model.setBiodataId(educationHistory.getBiodata().getId());
-                if(educationHistory.getEducationLevel() != null){
-                    model.setEducationLevelId(educationHistory.getEducationLevel().getId());
-                }
-                if(educationHistory.getInstitutionEducation() != null){
-                    model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
-                }
-                if(educationHistory.getFaculty()!=null){
-                    model.setFacultyId(educationHistory.getFaculty().getId());
-                }
-                if(educationHistory.getMajor()!=null){
-                    model.setMajorId(educationHistory.getMajor().getId());
-                }
-                model.setCertificateNumber(educationHistory.getCertificateNumber());
-                model.setScore(educationHistory.getScore());
-                if(educationHistory.getCity() != null ){
-                    model.setCity(educationHistory.getCity());
-                }
-                model.setYearIn(educationHistory.getYearIn());
-                model.setYearOut(educationHistory.getYearOut());
-                bioDataId = educationHistory.getBiodata().getId();
-            } else {
-                isEdit = Boolean.FALSE;
-            }
+        	
+            
             listDrowDown();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -460,6 +505,14 @@ public class BioEducationHistoryFormController extends BaseController{
     public void setListCity(List<City> listCity) {
         this.listCity = listCity;
     }
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
+	}
     
     
 }
