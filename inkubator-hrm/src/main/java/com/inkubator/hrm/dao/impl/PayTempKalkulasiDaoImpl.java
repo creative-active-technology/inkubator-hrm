@@ -261,13 +261,13 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM");
         query.append(" (SELECT count(d.`code`)");
-        query.append(" FROM hrm.pay_temp_kalkulasi a");
-        query.append(" INNER JOIN hrm.pay_salary_component f ON f.id = a.pay_salary_component_id");
-        query.append(" INNER JOIN hrm.pay_salary_jurnal n ON n.id = f.paysalary_jurnal_id");
-        query.append(" INNER JOIN hrm.emp_data b ON a.emp_data_id = b.id");
-        query.append(" INNER JOIN hrm.jabatan x ON x.id = b.jabatan_id");
-        query.append(" INNER JOIN hrm.department c ON c.id = x.departement_id");
-        query.append(" INNER JOIN hrm.cost_center d ON d.id = c.cost_center_id");
+        query.append(" FROM pay_temp_kalkulasi a");
+        query.append(" INNER JOIN pay_salary_component f ON f.id = a.pay_salary_component_id");
+        query.append(" INNER JOIN pay_salary_jurnal n ON n.id = f.paysalary_jurnal_id");
+        query.append(" INNER JOIN emp_data b ON a.emp_data_id = b.id");
+        query.append(" INNER JOIN jabatan x ON x.id = b.jabatan_id");
+        query.append(" INNER JOIN department c ON c.id = x.departement_id");
+        query.append(" INNER JOIN cost_center d ON d.id = c.cost_center_id");
         if (searchParameter != null) {
             query.append(" WHERE d.name like '%" + searchParameter + "%'");
             query.append(" OR d.code like '%" + searchParameter + "%'");

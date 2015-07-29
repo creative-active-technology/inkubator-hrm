@@ -146,20 +146,20 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
                         "loanType.loan_type_name AS loanNewTypeName, " +
                         "approvalActivity.approval_status AS approvalStatus, " +
                         "approvalActivity.pending_data AS jsonData " +                     
-                        "FROM hrm.approval_activity approvalActivity " +
-                        "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
-                        "INNER JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
-                        "INNER JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
-                        "INNER JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id  " +
-                        "INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
-                        "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
-                        "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
-                        "INNER JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
-                        "INNER JOIN hrm.emp_data AS empDataApprover ON approver.emp_data_id = empDataApprover.id  " +
-                        "INNER JOIN hrm.bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
-                        "INNER JOIN hrm.loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
-                        "LEFT JOIN hrm.loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
-                        "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number)  " +
+                        "FROM approval_activity approvalActivity " +
+                        "INNER JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+                        "INNER JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
+                        "INNER JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
+                        "INNER JOIN emp_data AS empData ON requester.emp_data_id = empData.id  " +
+                        "INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                        "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                        "INNER JOIN company AS company ON department.company_id = company.id  " +
+                        "INNER JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
+                        "INNER JOIN emp_data AS empDataApprover ON approver.emp_data_id = empDataApprover.id  " +
+                        "INNER JOIN bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
+                        "INNER JOIN loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
+                        "LEFT JOIN loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
+                        "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number)  " +
                         "AND approvalDefinition.name = :appDefinitionName"
                         + " AND  company.id = :companyId "); 
 
@@ -230,20 +230,20 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     public Long getTotalUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter) {
         StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(*) " +
-    			"FROM hrm.approval_activity approvalActivity " +
-                        "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
-                        "INNER JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
-                        "INNER JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
-                        "INNER JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id  " +
-                        "INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
-                        "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
-                        "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
-                        "INNER JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
-                        "INNER JOIN hrm.emp_data AS empDataApprover ON requester.emp_data_id = empDataApprover.id  " +
-                        "INNER JOIN hrm.bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
-                        "INNER JOIN hrm.loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
-                        "LEFT JOIN hrm.loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
-                        "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number)  " +
+    			"FROM approval_activity approvalActivity " +
+                        "INNER JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+                        "INNER JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by  " +
+                        "INNER JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by  " +
+                        "INNER JOIN emp_data AS empData ON requester.emp_data_id = empData.id  " +
+                        "INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                        "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                        "INNER JOIN company AS company ON department.company_id = company.id  " +
+                        "INNER JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id  " +
+                        "INNER JOIN emp_data AS empDataApprover ON requester.emp_data_id = empDataApprover.id  " +
+                        "INNER JOIN bio_data AS bioDataApprover ON empDataApprover.bio_data_id = bioDataApprover.id  " +
+                        "INNER JOIN loan_new_type AS loanType ON approvalActivity.type_specific = loanType.id  " +
+                        "LEFT JOIN loan_new_application AS loanApplication ON approvalActivity.activity_number = loanApplication.approval_activity_number  " +
+                        "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number)  " +
                         "AND approvalDefinition.name = :appDefinitionName "
                         + " AND  company.id = :companyId ");    	
     	selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));    	
