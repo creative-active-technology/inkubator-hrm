@@ -19,9 +19,7 @@ public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceReali
 
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
 
-	public void deleteByPeriodId(Long periodId);
-    
-    public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
+    public void deleteByPeriodId(Long periodId);
 
     public Long getTotalPaidOvertimeByParam(Long wtPeriodId);
     
@@ -29,4 +27,6 @@ public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceReali
     
     public Long getTotalDataByParam(LogWtAttendanceRealizationModel model);
     
+    public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId);
+        
 }

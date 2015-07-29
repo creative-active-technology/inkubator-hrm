@@ -8,7 +8,9 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -16,6 +18,7 @@ import org.hibernate.criterion.Order;
  * @author deni
  */
 public interface PayTempOvertimeDao extends IDAO<PayTempOvertime> {
+	
     public List<PayTempOvertime> getByParam(PayTempOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(PayTempOvertimeSearchParameter searchParameter);
@@ -23,4 +26,8 @@ public interface PayTempOvertimeDao extends IDAO<PayTempOvertime> {
     public PayTempOvertime getAllDataByNik(String nik);
     
     public PayTempOvertime getEntityByPkWithDetail(Long id);
+
+	public void deleteAllData();
+
+	public PayTempOvertime getEntityByEmpDataId(Long empDataId);
 }

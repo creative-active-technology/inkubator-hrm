@@ -49,14 +49,14 @@ public class RmbsCancelationDaoImpl extends IDAOImpl<RmbsCancelation> implements
     			"application.application_date AS applicationDate, " +
     			"cancellation.reason AS reason, " +
     			"CONCAT(bioData.first_name,' ',bioData.last_name) AS employeeName " +
-    			"FROM hrm.rmbs_cancelation cancellation " +
-    			"LEFT JOIN hrm.rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
-    			"LEFT JOIN hrm.rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
-    			"LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-    			"LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
-    			"LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-    			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
+    			"FROM rmbs_cancelation cancellation " +
+    			"LEFT JOIN rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
+    			"LEFT JOIN rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
+    			"LEFT JOIN log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
+    			"LEFT JOIN hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+    			"LEFT JOIN hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
+    			"LEFT JOIN emp_data AS empData ON empData.id = user.emp_data_id " +
+    			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
     	selectQuery.append(this.setWhereQueryByParam(parameter));
     	selectQuery.append("ORDER BY " + orderable);
         
@@ -73,14 +73,14 @@ public class RmbsCancelationDaoImpl extends IDAOImpl<RmbsCancelation> implements
 	public Long getTotalByParam(RmbsCancelationSearchParameter parameter) {
 		StringBuffer selectQuery = new StringBuffer(
     			"SELECT COUNT(DISTINCT(cancellation.id)) " +
-    			"FROM hrm.rmbs_cancelation cancellation " +
-    			"LEFT JOIN hrm.rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
-    			"LEFT JOIN hrm.rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
-    			"LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-    			"LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
-    			"LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-    			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
+    			"FROM rmbs_cancelation cancellation " +
+    			"LEFT JOIN rmbs_application AS application ON application.id = cancellation.rmbs_application_id " +
+    			"LEFT JOIN rmbs_type AS rmbsType ON rmbsType.id = application.rmbs_type_id " +
+    			"LEFT JOIN log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number " +
+    			"LEFT JOIN hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+    			"LEFT JOIN hrm_user AS user ON user.emp_data_id = application.emp_data_id " +
+    			"LEFT JOIN emp_data AS empData ON empData.id = user.emp_data_id " +
+    			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " );    	
     	selectQuery.append(this.setWhereQueryByParam(parameter));
         
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());

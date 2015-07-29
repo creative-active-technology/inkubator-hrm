@@ -36,12 +36,12 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
 
     @Override
     public List<LoanNewSchemaListOfEmpViewModel> getByParam(LoanNewSchemaListOfEmpSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-        final StringBuilder query = new StringBuilder("SELECT emp.id as idEmp, bio.first_name as firstName, bio.last_name as lastName, emp.nik as nik, goljab.code as code, listEmp.nomor_sk as noSk, newSchema.loan_schema_code as schemaCode FROM hrm.emp_data emp");
-//        query.append(" FROM hrm.unreg_salary A");
-        query.append(" LEFT JOIN hrm.loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
-        query.append(" LEFT JOIN hrm.bio_data bio ON bio.id = emp.bio_data_id");
-        query.append(" LEFT JOIN hrm.golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-        query.append(" LEFT JOIN hrm.loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
+        final StringBuilder query = new StringBuilder("SELECT emp.id as idEmp, bio.first_name as firstName, bio.last_name as lastName, emp.nik as nik, goljab.code as code, listEmp.nomor_sk as noSk, newSchema.loan_schema_code as schemaCode FROM emp_data emp");
+//        query.append(" FROM unreg_salary A");
+        query.append(" LEFT JOIN loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
+        query.append(" LEFT JOIN bio_data bio ON bio.id = emp.bio_data_id");
+        query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+        query.append(" LEFT JOIN loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
         if(parameter.getName() != null){
             query.append(" WHERE bio.first_name like '%" + parameter.getName() + "%'");
             query.append(" OR bio.last_name like '%" + parameter.getName() + "%'");
@@ -79,12 +79,12 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
     }
     
     public Long getTotalByParam(LoanNewSchemaListOfEmpSearchParameter parameter) {
-        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT bio.first_name FROM hrm.emp_data emp");
-//        query.append(" FROM hrm.unreg_salary A");
-        query.append(" LEFT JOIN hrm.loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
-        query.append(" LEFT JOIN hrm.bio_data bio ON bio.id = emp.bio_data_id");
-        query.append(" LEFT JOIN hrm.golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-        query.append(" LEFT JOIN hrm.loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT bio.first_name FROM emp_data emp");
+//        query.append(" FROM unreg_salary A");
+        query.append(" LEFT JOIN loan_new_schema_list_of_emp listEmp ON listEmp.emp_id = emp.id");
+        query.append(" LEFT JOIN bio_data bio ON bio.id = emp.bio_data_id");
+        query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+        query.append(" LEFT JOIN loan_new_schema newSchema ON newSchema.id = listEmp.loan_new_schema_id");
         if(parameter.getName() != null){
             query.append(" WHERE bio.first_name like '%" + parameter.getName() + "%'");
             query.append(" OR bio.last_name like '%" + parameter.getName() + "%'");

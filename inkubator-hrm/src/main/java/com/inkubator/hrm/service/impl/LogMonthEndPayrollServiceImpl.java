@@ -24,8 +24,10 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
+import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
+import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
@@ -61,6 +63,10 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	private PayTempKalkulasiDao payTempKalkulasiDao;
 	@Autowired
 	private PayTempKalkulasiEmpPajakDao payTempKalkulasiEmpPajakDao;
+	@Autowired
+	private PayTempAttendanceStatusDao payTempAttendanceStatusDao;
+	@Autowired
+	private PayTempOvertimeDao payTempOvertimeDao;
 
 	@Override
 	public LogMonthEndPayroll getEntiyByPK(String id) throws Exception {
@@ -345,6 +351,8 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 		/** delete all the record in the temporary table **/
 		payTempKalkulasiDao.deleteAllData();
 		payTempKalkulasiEmpPajakDao.deleteAllData();
+		payTempAttendanceStatusDao.deleteAllData();
+		payTempOvertimeDao.deleteAllData();
 	}
 
 	@Override

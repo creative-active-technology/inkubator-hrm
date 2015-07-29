@@ -257,12 +257,12 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
         long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
         Date createDate = new SimpleDateFormat("dd-MM-yyyy").parse(jSONObject.getString("createDate"));
         
-        return this.getAllScheduleForView(workingGroupId, createDate);
+        return this.getAllScheduleForView(workingGroupId, createDate, UserInfoUtil.getUserName());
     }
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate) throws Exception {
+    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate, String createdBy) throws Exception {
     	List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
     	WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
         Date startDate = selectedWtGroupWorking.getBeginTime();
@@ -292,7 +292,7 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-            jadwalKaryawan.setCreatedBy(UserInfoUtil.getUserName());
+            jadwalKaryawan.setCreatedBy(createdBy);
             jadwalKaryawan.setCreatedOn(new Date());
             jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
             jadwalKaryawan.getWtWorkingHour();
@@ -322,7 +322,7 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 			TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
 			if(jadwal == null){
 				//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
-				List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(empData.getWtGroupWorking().getId(), loop);
+				List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(empData.getWtGroupWorking().getId(), loop, null);
 				tempJadwalKaryawans.addAll(jadwalKaryawans);
 				jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
 			}
@@ -349,7 +349,7 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 				TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
 				if(jadwal == null){
 					//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
-					List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(workingGroup.getId(), loop);
+					List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(workingGroup.getId(), loop, null);
 					tempJadwalKaryawans.addAll(jadwalKaryawans);
 					jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
 				}

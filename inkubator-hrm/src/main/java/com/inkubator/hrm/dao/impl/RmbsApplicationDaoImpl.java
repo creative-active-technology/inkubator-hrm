@@ -77,18 +77,18 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     			"approvalActivity.approval_status AS approvalStatus, " +
     			"approvalActivity.pending_data AS jsonData, " +
     			"rmbsApplication.code AS rmbsApplicationCode " +
-    			"FROM hrm.approval_activity approvalActivity " +
-    			"LEFT JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
-    			"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
-    			"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
-    			"INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
-                "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
-                "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
-    			"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
-    			"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
-    			"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
-    			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
+    			"FROM approval_activity approvalActivity " +
+    			"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+    			"LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    			"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    			"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+    			"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN company AS company ON department.company_id = company.id  " +
+    			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+    			"LEFT JOIN rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
+    			"LEFT JOIN rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
+    			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +
     			"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
     			"AND approvalDefinition.name = :appDefinitionName "
     			+ " AND  company.id = :companyId ");    	
@@ -107,18 +107,18 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     public Long getTotalUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(*) " +
-    			"FROM hrm.approval_activity approvalActivity " +
-    			"LEFT JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
-    			"LEFT JOIN hrm.hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
-    	    	"LEFT JOIN hrm.hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
-    	    	"LEFT JOIN hrm.emp_data AS empData ON requester.emp_data_id = empData.id " +
-    	    	"INNER JOIN hrm.jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
-                "INNER JOIN hrm.department AS department ON jabatan.departement_id = department.id  " +
-                "INNER JOIN hrm.company AS company ON department.company_id = company.id  " +
-    	    	"LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " +
-    	    	"LEFT JOIN hrm.rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
-    	    	"LEFT JOIN hrm.rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
-    	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) " +
+    			"FROM approval_activity approvalActivity " +
+    			"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+    			"LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    	    	"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    	    	"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+    	    	"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN company AS company ON department.company_id = company.id  " +
+    	    	"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+    	    	"LEFT JOIN rmbs_type AS rmbsType ON approvalActivity.type_specific = rmbsType.id " +
+    	    	"LEFT JOIN rmbs_application AS rmbsApplication ON approvalActivity.activity_number = rmbsApplication.approval_activity_number " +
+    	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +
     	    	"AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
     	    	"AND approvalDefinition.name = :appDefinitionName"
     	    	+ " AND  company.id = :companyId ");    	

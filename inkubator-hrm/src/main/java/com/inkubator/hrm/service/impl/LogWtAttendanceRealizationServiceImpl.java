@@ -293,15 +293,16 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable)
 			throws Exception {
 		
-		return logWtAttendanceRealizationDao.getPaidOvertimeByParam(wtPeriodId, firstResult, maxResults, orderable);
-	}
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        }
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) throws Exception {
 		
-		return logWtAttendanceRealizationDao.getTotalPaidOvertimeByParam(wtPeriodId);
-	}
+	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)

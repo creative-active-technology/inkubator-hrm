@@ -57,4 +57,8 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     
     public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception;
 
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) throws Exception;
+
+	public Long getTotalPaidOvertimeByParam() throws Exception;
+
 }
