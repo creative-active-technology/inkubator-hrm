@@ -565,8 +565,8 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                 + " CONCAT(lmep.emp_nik,'  ', lmep.emp_name) AS karyawan, " 
                 + " CONCAT(lmep.pay_salary_comp_code,'  ', lmep.pay_salary_desc) AS namaKomponen, " 
                 + " lmep.nominal AS nominal " 
-                + " FROM hrm.log_month_end_payroll lmep INNER JOIN " 
-                + " hrm.wt_periode wp ON lmep.periode_id = wp.id ");
+                + " FROM log_month_end_payroll lmep INNER JOIN " 
+                + " wt_periode wp ON lmep.periode_id = wp.id ");
         
        /* Begin Filtering for Reguler Payroll */
         
@@ -874,8 +874,8 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
                 + " CONCAT(lmep.emp_nik,'  ', lmep.emp_name) AS karyawan, " 
                 + " CONCAT(lmep.pay_salary_comp_code,'  ', lmep.pay_salary_desc) AS namaKomponen, " 
                 + " lmep.nominal AS nominal " 
-                + " FROM hrm.log_month_end_payroll lmep INNER JOIN " 
-                + " hrm.wt_periode wp ON lmep.periode_id = wp.id ");
+                + " FROM log_month_end_payroll lmep INNER JOIN " 
+                + " wt_periode wp ON lmep.periode_id = wp.id ");
         
        /* Begin Filtering for Reguler Payroll */
         

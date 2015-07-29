@@ -199,8 +199,8 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     @Override
     public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         final StringBuilder query = new StringBuilder("SELECT B.id AS paySalaryComponentId, B.name AS name, B.code AS code, count(A.emp_id) AS jumlahKaryawan, sum(A.nominal) AS jumlahNominal");
-        query.append(" FROM hrm.pay_salary_component B");
-        query.append(" LEFT JOIN hrm.pay_component_data_exception A ON A.pay_component_id = B.id");
+        query.append(" FROM pay_salary_component B");
+        query.append(" LEFT JOIN pay_component_data_exception A ON A.pay_component_id = B.id");
         if (searchParameter.getCode() != null) {
             query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
         } else if (searchParameter.getName() != null) {
@@ -224,8 +224,8 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     @Override
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name)");
-        query.append(" FROM hrm.pay_salary_component B");
-        query.append(" LEFT JOIN hrm.pay_component_data_exception A ON A.pay_component_id = B.id");
+        query.append(" FROM pay_salary_component B");
+        query.append(" LEFT JOIN pay_component_data_exception A ON A.pay_component_id = B.id");
         if (searchParameter.getCode() != null) {
             query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
         } else if (searchParameter.getName() != null) {
