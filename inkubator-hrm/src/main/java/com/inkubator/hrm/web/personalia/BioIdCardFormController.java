@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.BioIdCardModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,12 +21,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -43,6 +47,7 @@ public class BioIdCardFormController extends BaseController {
     private BioIdCardService bioIdCardService;
     @ManagedProperty(value = "#{cityService}")
     private CityService cityService;
+    private String isRevision;
 
     @PostConstruct
     @Override
@@ -53,15 +58,35 @@ public class BioIdCardFormController extends BaseController {
             isUpdate = Boolean.FALSE;
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             bioIdCardModel.setBioDataId(Long.parseLong(bioDataId));
-
-            String bioIdCardId = FacesUtil.getRequestParameter("bioIdCardId");
-            if (StringUtils.isNotEmpty(bioIdCardId)) {
-                BioIdCard bioIdCard = bioIdCardService.getEntityByPKWithDetail(Long.parseLong(bioIdCardId));
-                if (bioIdCardId != null) {
-                    bioIdCardModel = getModelFromEntity(bioIdCard);
-                    isUpdate = Boolean.TRUE;
+            
+          //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioIdCard bioIdCard = (BioIdCard) sessionMap.get("selectedBioIdCard");
+            		if(ObjectUtils.notEqual(bioIdCard, null)){
+            			bioIdCardModel.setId(bioIdCard.getId());
+            	        bioIdCardModel.setCity(bioIdCard.getCity());
+            	        bioIdCardModel.setType(bioIdCard.getType());
+            	        bioIdCardModel.setCardNumber(bioIdCard.getCardNumber());
+            	        bioIdCardModel.setValidDate(bioIdCard.getValidDate());
+            	        bioIdCardModel.setIssuedDate(bioIdCard.getIssuedDate());
+            		}
+            	}
+            }else{
+            	String bioIdCardId = FacesUtil.getRequestParameter("bioIdCardId");
+                if (StringUtils.isNotEmpty(bioIdCardId)) {
+                    BioIdCard bioIdCard = bioIdCardService.getEntityByPKWithDetail(Long.parseLong(bioIdCardId));
+                    if (bioIdCardId != null) {
+                        bioIdCardModel = getModelFromEntity(bioIdCard);
+                        isUpdate = Boolean.TRUE;
+                    }
                 }
             }
+            
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -105,13 +130,22 @@ public class BioIdCardFormController extends BaseController {
     public void doSave() {
         BioIdCard bioIdCard = getEntityFromViewModel(bioIdCardModel);
         try {
-            if (isUpdate) {
-                bioIdCardService.update(bioIdCard);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                bioIdCardService.save(bioIdCard);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        	
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioAddress yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		RequestContext.getCurrentInstance().closeDialog(bioIdCard);
+	    	}else{
+	    		 if (isUpdate) {
+	                 bioIdCardService.update(bioIdCard);
+	                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	             } else {
+	                 bioIdCardService.save(bioIdCard);
+	                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	             }
+	    	}
             cleanAndExit();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -162,4 +196,14 @@ public class BioIdCardFormController extends BaseController {
         }
         return null;
     }
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
+	}
+    
+    
 }

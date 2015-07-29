@@ -65,6 +65,7 @@ public class BioEmergencyContactFormController extends BaseController {
         mapCity = null;
         isEdit = null;
         bioDataId = null;
+        isRevision = null;
     }
         
     @PostConstruct

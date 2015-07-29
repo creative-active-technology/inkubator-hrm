@@ -8,6 +8,7 @@ package com.inkubator.hrm.web.personalia;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BioIdCard;
 import com.inkubator.hrm.entity.BioRelasiPerusahaan;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
@@ -20,14 +21,18 @@ import com.inkubator.hrm.web.model.BioRelasiPerusahaanModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -57,6 +62,7 @@ public class BioRelasiPerusahaanFormController extends BaseController {
     @ManagedProperty(value = "#{bioRelasiPerusahaanService}")
     private BioRelasiPerusahaanService bioRelasiPerusahaanService;
     private UploadedFile fileUploadFile;
+    private String isRevision;
 
     @PostConstruct
     @Override
@@ -73,17 +79,48 @@ public class BioRelasiPerusahaanFormController extends BaseController {
 
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             model.setBioData(Long.parseLong(bioDataId));
-
-            String bioRelasiPerusahaanId = FacesUtil.getRequestParameter("bioRelasiPerusahaanId");
-            if (StringUtils.isNotEmpty(bioRelasiPerusahaanId)) {
-                BioRelasiPerusahaan bioRelasiPerusahaan = bioRelasiPerusahaanService.getEntityByPkWithDetail(Long.parseLong(bioRelasiPerusahaanId));
-                if (bioRelasiPerusahaan != null) {
-                    model = getModelFromEntity(bioRelasiPerusahaan);
-                    provinces = provinceService.getByCountryId(model.getCountryId());
+            
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioRelasiPerusahaan bioRelasiPerusahaan = (BioRelasiPerusahaan) sessionMap.get("selectedBioRelasiPerusahaan");
+            		
+            		model.setId(bioRelasiPerusahaan.getId());
+        	        model.setCity(bioRelasiPerusahaan.getCity().getId());
+        	        model.setRelasiAddress(bioRelasiPerusahaan.getRelasiAddress());
+        	        model.setCountryId(bioRelasiPerusahaan.getCity().getProvince().getCountry().getId());
+        	        model.setProvinceId(bioRelasiPerusahaan.getCity().getProvince().getId());
+        	        model.setCityId(bioRelasiPerusahaan.getCity().getId());
+        	        model.setRelasiCompany(bioRelasiPerusahaan.getRelasiCompany());
+        	        model.setRelasiEmail(bioRelasiPerusahaan.getRelasiEmail());
+        	        model.setPostCode(bioRelasiPerusahaan.getPostalCode());
+        	        model.setRelasiJabatan(bioRelasiPerusahaan.getRelasiJabatan());
+        	        model.setRelasiMobilePhone(bioRelasiPerusahaan.getRelasiMobilePhone());
+        	        model.setRelasiName(bioRelasiPerusahaan.getRelasiName());
+        	        model.setRelasiPhoneNumber(bioRelasiPerusahaan.getRelasiPhoneNumber());
+        	        model.setRelasiAttachmentName(bioRelasiPerusahaan.getRelasiAttachmentName());
+        	        
+        	        provinces = provinceService.getByCountryId(model.getCountryId());
                     cities = cityService.getByProvinceId(model.getProvinceId());
-                    isUpdate = Boolean.TRUE;
+            	}
+            }else{
+            	String bioRelasiPerusahaanId = FacesUtil.getRequestParameter("bioRelasiPerusahaanId");
+                if (StringUtils.isNotEmpty(bioRelasiPerusahaanId)) {
+                    BioRelasiPerusahaan bioRelasiPerusahaan = bioRelasiPerusahaanService.getEntityByPkWithDetail(Long.parseLong(bioRelasiPerusahaanId));
+                    if (bioRelasiPerusahaan != null) {
+                        model = getModelFromEntity(bioRelasiPerusahaan);
+                        provinces = provinceService.getByCountryId(model.getCountryId());
+                        cities = cityService.getByProvinceId(model.getProvinceId());
+                        isUpdate = Boolean.TRUE;
+                    }
                 }
             }
+
+            
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -106,13 +143,23 @@ public class BioRelasiPerusahaanFormController extends BaseController {
     public void doSave(){
         BioRelasiPerusahaan bioRelasiPerusahaan = getEntityFromViewModel(model);
         try {
-            if (isUpdate) {
-                bioRelasiPerusahaanService.update(bioRelasiPerusahaan, fileUploadFile);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                bioRelasiPerusahaanService.save(bioRelasiPerusahaan, fileUploadFile);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        	
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+    	 	cukup di return kembali Object bioRelasiPerusahaan yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		RequestContext.getCurrentInstance().closeDialog(bioRelasiPerusahaan);
+	    	}else{
+	    		if (isUpdate) {
+	                bioRelasiPerusahaanService.update(bioRelasiPerusahaan, fileUploadFile);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	            } else {
+	                bioRelasiPerusahaanService.save(bioRelasiPerusahaan, fileUploadFile);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	            }
+	    	}
+            
             cleanAndExit();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -287,6 +334,14 @@ public class BioRelasiPerusahaanFormController extends BaseController {
 
 	public void setIsProvinceSelected(Boolean isProvinceSelected) {
 		this.isProvinceSelected = isProvinceSelected;
+	}
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
 	}
     
     
