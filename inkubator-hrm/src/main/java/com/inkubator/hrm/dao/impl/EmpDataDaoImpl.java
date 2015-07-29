@@ -652,7 +652,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (StringUtils.isNotEmpty(param.getNikEnd())) {
             criteria.add(Restrictions.le("nik", param.getNikEnd()));
         }
-
+        
+        criteria.add(Restrictions.ne("status", HRMConstant.EMP_TERMINATION));
         return criteria;
     }
 
