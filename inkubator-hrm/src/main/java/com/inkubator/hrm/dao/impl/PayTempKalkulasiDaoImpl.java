@@ -86,7 +86,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
-        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM hrm.pay_temp_kalkulasi A INNER JOIN hrm.pay_salary_component B WHERE A.pay_salary_component_id = B.id");
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM pay_temp_kalkulasi A INNER JOIN pay_salary_component B WHERE A.pay_salary_component_id = B.id");
 
         if (searchParameter != null) {
             query.append(" AND B.name like :name ");
