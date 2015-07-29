@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.PayTempOvertime;
-import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
 import com.inkubator.hrm.web.model.PayTempOvertimeFileModel;
 import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -26,4 +27,7 @@ public interface PayTempOvertimeService extends IService<PayTempOvertime>{
     public void executeBatchFileUpload(PayTempOvertimeFileModel entity) throws Exception;
     
     public PayTempOvertime getEntityByPkWithDetail(Long id) throws Exception;
+
+	public void synchronizedOvertimeStatus() throws Exception;
+	
 }

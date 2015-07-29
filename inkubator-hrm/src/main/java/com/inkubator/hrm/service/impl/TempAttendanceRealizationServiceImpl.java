@@ -1162,5 +1162,20 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 		
 		return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
 	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable)
+			throws Exception {
+		
+		return tempAttendanceRealizationDao.getPaidOvertimeByParam(firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalPaidOvertimeByParam() throws Exception {
+		
+		return tempAttendanceRealizationDao.getTotalPaidOvertimeByParam();
+	}
    
 }
