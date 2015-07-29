@@ -122,5 +122,6 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 		}
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
-    
+
+
 }
