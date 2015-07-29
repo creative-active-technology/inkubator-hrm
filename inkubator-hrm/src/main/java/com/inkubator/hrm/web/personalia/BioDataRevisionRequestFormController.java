@@ -8,8 +8,12 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioAddress;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioEmergencyContact;
+import com.inkubator.hrm.entity.BioFamilyRelationship;
+import com.inkubator.hrm.entity.BioIdCard;
+import com.inkubator.hrm.entity.BioRelasiPerusahaan;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.entity.LoanNewApplication;
@@ -19,9 +23,14 @@ import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.BioAddressService;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
+import com.inkubator.hrm.service.BioFamilyRelationshipService;
+import com.inkubator.hrm.service.BioIdCardService;
+import com.inkubator.hrm.service.BioRelasiPerusahaanService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.DialectService;
+import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.FamilyRelationService;
 import com.inkubator.hrm.service.MaritalStatusService;
@@ -30,6 +39,7 @@ import com.inkubator.hrm.service.RaceService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
@@ -95,6 +105,8 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private BioDataService bioDataService;
     @ManagedProperty(value = "#{familyRelationService}")
     private FamilyRelationService familyRelationService;
+    @ManagedProperty(value = "#{educationLevelService}")
+    private EducationLevelService educationLevelService;
     private UploadedFile fotoFile;
     private String fotoFileName;
     private UploadedFile fingerFile;
@@ -119,6 +131,33 @@ public class BioDataRevisionRequestFormController extends BaseController {
     private BioEmergencyContact selectedBioEmergencyContact;
     //End. bio Emergency Contact
     
+    //start. BioIdCard
+    private BioIdCard selectedBioIdCard;
+    private List<BioIdCard> bioIdCards;
+    @ManagedProperty(value = "#{bioIdCardService}")
+    private BioIdCardService bioIdCardService;
+    //End. BioIdCard
+    
+    //start. BioFamilyRelationship
+    private BioFamilyRelationship selectedBioFamilyRelationship;
+    private List<BioFamilyRelationship> bioFamilyRelationships;
+    @ManagedProperty(value = "#{bioFamilyRelationshipService}")
+    private BioFamilyRelationshipService bioFamilyRelationshipService;
+    //end. BioFamilyRelationship
+    
+    //start. Bio Relasi Perusahaan
+    @ManagedProperty(value = "#{bioRelasiPerusahaanService}")
+    private BioRelasiPerusahaanService bioRelasiPerusahaanService;
+    private List<BioRelasiPerusahaan> listBioRelasiPerusaan;
+    private BioRelasiPerusahaan selectedBioRelasiPerusahaan;
+    //end. Bio RelasiPerusahaan
+    
+    //Start BioEducationHistory
+    @ManagedProperty(value = "#{bioEducationHistoryService}")
+    private BioEducationHistoryService bioEducationHistoryService;
+    private List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel;	
+    private BioEducationHistoryViewModel selectedBioEducationHistoryViewModel;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -128,12 +167,18 @@ public class BioDataRevisionRequestFormController extends BaseController {
             Long bioDataId = HrmUserInfoUtil.getBioDataId();
             empData = empDataService.getByEmpDataByBioDataId(bioDataId);
             
+            //Inisialisasi awal jenis data yang akan di revisi adalah detail dari biodata
             selectedJenisData = HRMConstant.BIO_REV_DETAIL_BIO_DATA;
+            
             if (bioDataId != null) {
                 
             	selectedBioData = bioDataService.getEntiyByPK(bioDataId);
                 bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
                 dataBioEmergencyContacs = bioEmergencyContactService.getAllDataWithDetailByBioDataId(selectedBioData.getId());
+                bioIdCards = bioIdCardService.getAllDataByBioDataId(selectedBioData.getId());
+                bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
+                listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
+                listBioEducationHistoryViewModel = bioEducationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
                 
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
                 bioDataModel.setCityid(selectedBioData.getCity().getId());
@@ -377,10 +422,10 @@ public class BioDataRevisionRequestFormController extends BaseController {
         dataToSend.put("isRevision", Arrays.asList("isRevision"));   
         dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
         
-        //Set Object selectedBioAddress into SessionMap
+        //Set Object selectedBioContact into SessionMap
         Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
         sessionMap.put("selectedBioContact", selectedBioEmergencyContact);
-        showDialogBioAddress(dataToSend);
+       
         showDialogBioContact(dataToSend);
     }
     
@@ -441,6 +486,471 @@ public class BioDataRevisionRequestFormController extends BaseController {
     /**
      * END Bio Contact method
      */
+    
+    
+    /**
+     * START Bio IdCard method
+     */
+    public void doSelectBioIdCard(BioIdCard bioIdCard) {
+        try {
+            selectedBioIdCard = bioIdCard;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioIdCard() {
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioIdCardId", Arrays.asList(String.valueOf(selectedBioIdCard.getId())));
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+        
+        //Set Object selectedBioIdCard into SessionMap
+        Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        sessionMap.put("selectedBioIdCard", selectedBioIdCard);
+       
+        showDialogBioIdCard(dataToSend);
+
+    }
+
+    public void doAddBioIdCard() {
+        
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));    
+        showDialogBioIdCard(dataToSend);
+    }
+
+    public void doDeleteBioIdCard() {
+        try {
+        	bioIdCards.remove(selectedBioIdCard);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioIdCard", ex);
+        }
+    }
+
+    private void showDialogBioIdCard(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 410);
+        RequestContext.getCurrentInstance().openDialog("bio_id_card_form", options, params);
+    }
+
+    public void onDialogReturnBioIdCard(SelectEvent event) {
+        try {
+        	BioIdCard bioIdCard = (BioIdCard) event.getObject();
+        	if(ObjectUtils.notEqual(bioIdCard, null)){
+        		
+        		City city = cityService.getCityByIdWithDetail(bioIdCard.getCity().getId());
+        		bioIdCard.setCity(city);
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioEmergencyContact tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioIdCard.getId() == 0){
+        			bioIdCard.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			bioIdCards.add(bioIdCard);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioIdCard");
+        			//Replace element dengan return value dari form dialog        			
+        			BioIdCard bioIdCardOld = Lambda.selectFirst(bioIdCards, Lambda.having(Lambda.on(BioIdCard.class).getId(), Matchers.equalTo(bioIdCard.getId())));
+        			int index = bioIdCards.indexOf(bioIdCardOld);
+        			
+        			if(-1 != index){
+        				bioIdCards.remove(index);
+        				bioIdCards.add(index, bioIdCard);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END BioIdCard method
+     */
+    
+    /**
+     * START BioFamilyRelationship method
+     */
+    public void doSelectBioFamilyRelationship(BioFamilyRelationship familyRelationship) {
+        try {
+            selectedBioFamilyRelationship = familyRelationship;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioFamilyRelationship() {
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioFamilyRelationshipId", Arrays.asList(String.valueOf(selectedBioFamilyRelationship.getId())));
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+        
+        //Set Object selectedBioIdCard into SessionMap
+        Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        sessionMap.put("selectedBioFamilyRelationship", selectedBioFamilyRelationship);
+        
+        showDialogBioFamilyRelationship(dataToSend);
+
+    }
+
+    public void doAddBioFamilyRelationship() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));
+        showDialogBioFamilyRelationship(dataToSend);
+    }
+
+    public void doDeleteBioFamilyRelationship() {
+        try {
+            bioFamilyRelationships.remove(selectedBioFamilyRelationship);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioFamilyRelationship(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 460);
+        RequestContext.getCurrentInstance().openDialog("bio_fam_rel_form", options, params);
+    }
+
+    public void onDialogReturnBioFamilyRelationship(SelectEvent event) {
+        try {
+        	BioFamilyRelationship bioFamilyRelationship = (BioFamilyRelationship) event.getObject();
+        	if(ObjectUtils.notEqual(bioFamilyRelationship, null)){
+        		
+        		EducationLevel educationLevel = educationLevelService.getEntiyByPK(bioFamilyRelationship.getEducationLevel().getId());
+        		FamilyRelation familyRelation = familyRelationService.getEntiyByPK(bioFamilyRelationship.getFamilyRelation().getId());
+        		
+        		bioFamilyRelationship.setEducationLevel(educationLevel);
+        		bioFamilyRelationship.setFamilyRelation(familyRelation);
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioFamilyRelationship tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioFamilyRelationship.getId() == 0){
+        			bioFamilyRelationship.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			bioFamilyRelationships.add(bioFamilyRelationship);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioFamilyRelationship");
+        			
+        			//Replace element dengan return value dari form dialog        			
+        			BioFamilyRelationship bioFamilyRelationshipOld = Lambda.selectFirst(bioFamilyRelationships, Lambda.having(Lambda.on(BioFamilyRelationship.class).getId(), Matchers.equalTo(bioFamilyRelationship.getId())));
+        			int index = bioFamilyRelationships.indexOf(bioFamilyRelationshipOld);
+        			
+        			if(-1 != index){
+        				bioFamilyRelationships.remove(index);
+        				bioFamilyRelationships.add(index, bioFamilyRelationship);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END BioFamilyRelationship method
+     */
+    
+    /**
+     * START BioRelasiPerusahaan
+     */
+    public void doSelectBioRelasiPerusahaan(BioRelasiPerusahaan relasiPerusahaan) {
+        try {
+            selectedBioRelasiPerusahaan = relasiPerusahaan;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doDeleteBioRelasiPerusahaan() {
+        try {
+            listBioRelasiPerusaan.remove(selectedBioRelasiPerusahaan);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioProject", ex);
+        }
+    }
+
+    public void doAddBioRelasiPerusahaan() {
+       
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));
+        showDialogBioRelasiPerusahaan(dataToSend);
+    }
+
+    public void doUpdateBioRelasiPerusahaan() {
+        
+        try {
+			Map<String, List<String>> dataToSend = new HashMap<>();
+			dataToSend.put("bioRelasiPerusahaanId", Arrays.asList(String.valueOf(selectedBioRelasiPerusahaan.getId())));
+			dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+			dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+			dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+			
+			City city = cityService.getCityByIdWithDetail(selectedBioRelasiPerusahaan.getCity().getId());
+			selectedBioRelasiPerusahaan.setCity(city);
+			
+			//Set Object selectedBioRelasiPerusahaan into SessionMap
+			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+			sessionMap.put("selectedBioRelasiPerusahaan", selectedBioRelasiPerusahaan);
+			
+			showDialogBioRelasiPerusahaan(dataToSend);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    private void showDialogBioRelasiPerusahaan(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 890);
+        options.put("contentHeight", 520);
+        RequestContext.getCurrentInstance().openDialog("bio_relasi_perusahaan", options, params);
+    }
+
+    public void onDialogReturnBioRelasiPerusahaan(SelectEvent event) {
+        try {
+        	BioRelasiPerusahaan bioRelasiPerusahaan = (BioRelasiPerusahaan) event.getObject();
+        	if(ObjectUtils.notEqual(bioRelasiPerusahaan, null)){
+        		
+        		City city = cityService.getCityByIdWithDetail(bioRelasiPerusahaan.getCity().getId());
+        		bioRelasiPerusahaan.setCity(city);
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioRelasiPerusahaan tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioRelasiPerusahaan.getId() == 0){
+        			bioRelasiPerusahaan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			listBioRelasiPerusaan.add(bioRelasiPerusahaan);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioRelasiPerusahaan");
+        			
+        			//Replace element dengan return value dari form dialog        			
+        			BioRelasiPerusahaan bioRelasiPerusahaanOld = Lambda.selectFirst(listBioRelasiPerusaan, Lambda.having(Lambda.on(BioRelasiPerusahaan.class).getId(), Matchers.equalTo(bioRelasiPerusahaan.getId())));
+        			int index = listBioRelasiPerusaan.indexOf(bioRelasiPerusahaanOld);
+        			
+        			if(-1 != index){
+        				listBioRelasiPerusaan.remove(index);
+        				listBioRelasiPerusaan.add(index, bioRelasiPerusahaan);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END BioRelasiPerusahaan
+     */
+   
+    public String doApply() {
+
+        if (isValidForm()) {
+            String path = StringUtils.EMPTY;
+            String result = StringUtils.EMPTY;
+            try{
+            	 switch (selectedJenisData) {
+                 
+     			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+     				 BioData bioData = getEntityFromView(bioDataModel);
+     				 result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData, empData);
+     				 
+	     				if (fotoFile != null) {
+	                        facesIO.transferFile(fotoFile);
+	                        File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
+	                        fotoOldFile.renameTo(new File(bioData.getPathFoto()));
+	                    }
+	
+	                    if (fingerFile != null) {
+	                        facesIO.transferFile(fingerFile);
+	                        File fingerOldFile = new File(facesIO.getPathUpload() + fingerFileName);
+	                        fingerOldFile.renameTo(new File(bioData.getPathFinger()));
+	                    }
+	
+	                    if (signatureFile != null) {
+	                        facesIO.transferFile(signatureFile);
+	                        File signatureOldFile = new File(facesIO.getPathUpload() + signatureFileName);
+	                        signatureOldFile.renameTo(new File(bioData.getPathSignature()));
+	                    }
+     				break;
+     				
+     			case HRMConstant.BIO_REV_ADDRESS:
+     				 result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
+     				break;
+     				
+     			case HRMConstant.BIO_REV_CONTACT:
+    				 result = bioDataService.saveBiodataRevisionWithApproval(dataBioEmergencyContacs, selectedJenisData, empData);
+    				break;
+    				
+     			case HRMConstant.BIO_REV_ID_CARD:
+   				 result = bioDataService.saveBiodataRevisionWithApproval(bioIdCards, selectedJenisData, empData);
+   				break;
+   				
+     			case HRMConstant.BIO_REV_FAMILY:
+      				 result = bioDataService.saveBiodataRevisionWithApproval(bioFamilyRelationships, selectedJenisData, empData);
+      				break;
+      				
+     			case HRMConstant.BIO_REV_COMPANY_RELATION:
+     				 result = bioDataService.saveBiodataRevisionWithApproval(listBioRelasiPerusaan, selectedJenisData, empData);
+     				break;
+    				
+     			default:
+     				break;
+     			}
+            	 
+            	 if (StringUtils.equals(result, "success_need_approval")) {
+                     path = "/protected/personalia/biodata.htm?faces-redirect=true";
+                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+                 } else {
+                     path = "/protected/personalia/biodata.htm?faces-redirect=true";
+                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                 }
+            	 
+            	 cleanAndExit();
+            	 return path;
+            } catch (BussinessException ex) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }catch(Exception ex){
+            	LOGGER.error("Error", ex);
+            }
+           
+        }
+        return null;
+    }
+    
+    private Boolean isValidForm() {
+        try {
+        	return Boolean.TRUE;
+        }catch(Exception e){
+        	
+        }
+        return Boolean.TRUE;
+    }
+    
+    public void doReset() {
+        fotoFile = null;
+        fotoFileName = null;
+        fingerFile = null;
+        fingerFileName = null;
+        signatureFile = null;
+        signatureFileName = null;
+        dialectService = null;
+
+    }
+
+    public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
+        fotoFile = fileUploadEvent.getFile();
+        fotoFileName = fotoFile.getFileName();
+    }
+
+    public void handingFingerUpload(FileUploadEvent fileUploadEvent) {
+        fingerFile = fileUploadEvent.getFile();
+        fingerFileName = fingerFile.getFileName();
+    }
+
+    public void handingSignatureUpload(FileUploadEvent fileUploadEvent) {
+        signatureFile = fileUploadEvent.getFile();
+        signatureFileName = signatureFile.getFileName();
+    }
+
+    public UploadedFile getFotoFile() {
+        return fotoFile;
+    }
+
+    public void setFotoFile(UploadedFile fotoFile) {
+        this.fotoFile = fotoFile;
+    }
+
+    public String getFotoFileName() {
+        return fotoFileName;
+    }
+
+    public void setFotoFileName(String fotoFileName) {
+        this.fotoFileName = fotoFileName;
+    }
+
+    public UploadedFile getFingerFile() {
+        return fingerFile;
+    }
+
+    public void setFingerFile(UploadedFile fingerFile) {
+        this.fingerFile = fingerFile;
+    }
+
+    public String getFingerFileName() {
+        return fingerFileName;
+    }
+
+    public void setFingerFileName(String fingerFileName) {
+        this.fingerFileName = fingerFileName;
+    }
+
+    public UploadedFile getSignatureFile() {
+        return signatureFile;
+    }
+
+    public void setSignatureFile(UploadedFile signatureFile) {
+        this.signatureFile = signatureFile;
+    }
+
+    public String getSignatureFileName() {
+        return signatureFileName;
+    }
+
+    public void setSignatureFileName(String signatureFileName) {
+        this.signatureFileName = signatureFileName;
+    }
 
     public BioDataModel getBioDataModel() {
         return bioDataModel;
@@ -522,154 +1032,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
         this.mapNationality = mapNationality;
     }
 
-   
-    public String doApply() {
-
-        if (isValidForm()) {
-            String path = StringUtils.EMPTY;
-            String result = StringUtils.EMPTY;
-            try{
-            	 switch (selectedJenisData) {
-                 
-     			case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
-     				 BioData bioData = getEntityFromView(bioDataModel);
-     				 result = bioDataService.saveBiodataRevisionWithApproval(bioData, selectedJenisData, empData);
-     				 
-	     				if (fotoFile != null) {
-	                        facesIO.transferFile(fotoFile);
-	                        File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
-	                        fotoOldFile.renameTo(new File(bioData.getPathFoto()));
-	                    }
-	
-	                    if (fingerFile != null) {
-	                        facesIO.transferFile(fingerFile);
-	                        File fingerOldFile = new File(facesIO.getPathUpload() + fingerFileName);
-	                        fingerOldFile.renameTo(new File(bioData.getPathFinger()));
-	                    }
-	
-	                    if (signatureFile != null) {
-	                        facesIO.transferFile(signatureFile);
-	                        File sigtarueOldFile = new File(facesIO.getPathUpload() + signatureFileName);
-	                        sigtarueOldFile.renameTo(new File(bioData.getPathSignature()));
-	                    }
-     				break;
-     				
-     			case HRMConstant.BIO_REV_ADDRESS:
-     				 result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
-     				break;
-     				
-     			case HRMConstant.BIO_REV_CONTACT:
-    				 result = bioDataService.saveBiodataRevisionWithApproval(dataBioEmergencyContacs, selectedJenisData, empData);
-    				break;
-    				
-     			default:
-     				break;
-     			}
-            	 
-            	 if (StringUtils.equals(result, "success_need_approval")) {
-                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-                 } else {
-                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
-                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                 }
-            	 
-            	 cleanAndExit();
-            	 return path;
-            } catch (BussinessException ex) {
-                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }catch(Exception ex){
-            	LOGGER.error("Error", ex);
-            }
-           
-        }
-        return null;
-    }
     
-    private Boolean isValidForm() {
-        try {
-        	return Boolean.TRUE;
-        }catch(Exception e){
-        	
-        }
-        return Boolean.TRUE;
-    }
-
-    public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
-        fotoFile = fileUploadEvent.getFile();
-        fotoFileName = fotoFile.getFileName();
-    }
-
-    public void handingFingerUpload(FileUploadEvent fileUploadEvent) {
-        fingerFile = fileUploadEvent.getFile();
-        fingerFileName = fingerFile.getFileName();
-    }
-
-    public void handingSignatureUpload(FileUploadEvent fileUploadEvent) {
-        signatureFile = fileUploadEvent.getFile();
-        signatureFileName = signatureFile.getFileName();
-    }
-
-    public UploadedFile getFotoFile() {
-        return fotoFile;
-    }
-
-    public void setFotoFile(UploadedFile fotoFile) {
-        this.fotoFile = fotoFile;
-    }
-
-    public String getFotoFileName() {
-        return fotoFileName;
-    }
-
-    public void setFotoFileName(String fotoFileName) {
-        this.fotoFileName = fotoFileName;
-    }
-
-    public UploadedFile getFingerFile() {
-        return fingerFile;
-    }
-
-    public void setFingerFile(UploadedFile fingerFile) {
-        this.fingerFile = fingerFile;
-    }
-
-    public String getFingerFileName() {
-        return fingerFileName;
-    }
-
-    public void setFingerFileName(String fingerFileName) {
-        this.fingerFileName = fingerFileName;
-    }
-
-    public UploadedFile getSignatureFile() {
-        return signatureFile;
-    }
-
-    public void setSignatureFile(UploadedFile signatureFile) {
-        this.signatureFile = signatureFile;
-    }
-
-    public String getSignatureFileName() {
-        return signatureFileName;
-    }
-
-    public void setSignatureFileName(String signatureFileName) {
-        this.signatureFileName = signatureFileName;
-    }
-
-    public void doReset() {
-        fotoFile = null;
-        fotoFileName = null;
-        fingerFile = null;
-        fingerFileName = null;
-        signatureFile = null;
-        signatureFileName = null;
-        dialectService = null;
-
-    }
-
     public void setFacesIO(FacesIO facesIO) {
         this.facesIO = facesIO;
     }
@@ -786,6 +1149,99 @@ public class BioDataRevisionRequestFormController extends BaseController {
 
 	public void setFamilyRelationService(FamilyRelationService familyRelationService) {
 		this.familyRelationService = familyRelationService;
+	}
+
+	public BioIdCard getSelectedBioIdCard() {
+		return selectedBioIdCard;
+	}
+
+	public void setSelectedBioIdCard(BioIdCard selectedBioIdCard) {
+		this.selectedBioIdCard = selectedBioIdCard;
+	}
+
+	public List<BioIdCard> getBioIdCards() {
+		return bioIdCards;
+	}
+
+	public void setBioIdCards(List<BioIdCard> bioIdCards) {
+		this.bioIdCards = bioIdCards;
+	}
+
+	public void setBioIdCardService(BioIdCardService bioIdCardService) {
+		this.bioIdCardService = bioIdCardService;
+	}
+
+	public BioFamilyRelationship getSelectedBioFamilyRelationship() {
+		return selectedBioFamilyRelationship;
+	}
+
+	public void setSelectedBioFamilyRelationship(
+			BioFamilyRelationship selectedBioFamilyRelationship) {
+		this.selectedBioFamilyRelationship = selectedBioFamilyRelationship;
+	}
+
+	public List<BioFamilyRelationship> getBioFamilyRelationships() {
+		return bioFamilyRelationships;
+	}
+
+	public void setBioFamilyRelationships(
+			List<BioFamilyRelationship> bioFamilyRelationships) {
+		this.bioFamilyRelationships = bioFamilyRelationships;
+	}
+
+	public void setBioFamilyRelationshipService(
+			BioFamilyRelationshipService bioFamilyRelationshipService) {
+		this.bioFamilyRelationshipService = bioFamilyRelationshipService;
+	}
+
+	public List<BioRelasiPerusahaan> getListBioRelasiPerusaan() {
+		return listBioRelasiPerusaan;
+	}
+
+	public void setListBioRelasiPerusaan(
+			List<BioRelasiPerusahaan> listBioRelasiPerusaan) {
+		this.listBioRelasiPerusaan = listBioRelasiPerusaan;
+	}
+
+	public BioRelasiPerusahaan getSelectedBioRelasiPerusahaan() {
+		return selectedBioRelasiPerusahaan;
+	}
+
+	public void setSelectedBioRelasiPerusahaan(
+			BioRelasiPerusahaan selectedBioRelasiPerusahaan) {
+		this.selectedBioRelasiPerusahaan = selectedBioRelasiPerusahaan;
+	}
+
+	public void setBioRelasiPerusahaanService(
+			BioRelasiPerusahaanService bioRelasiPerusahaanService) {
+		this.bioRelasiPerusahaanService = bioRelasiPerusahaanService;
+	}
+
+	public void setEducationLevelService(EducationLevelService educationLevelService) {
+		this.educationLevelService = educationLevelService;
+	}
+
+	public List<BioEducationHistoryViewModel> getListBioEducationHistoryViewModel() {
+		return listBioEducationHistoryViewModel;
+	}
+
+	public void setListBioEducationHistoryViewModel(
+			List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel) {
+		this.listBioEducationHistoryViewModel = listBioEducationHistoryViewModel;
+	}
+
+	public BioEducationHistoryViewModel getSelectedBioEducationHistoryViewModel() {
+		return selectedBioEducationHistoryViewModel;
+	}
+
+	public void setSelectedBioEducationHistoryViewModel(
+			BioEducationHistoryViewModel selectedBioEducationHistoryViewModel) {
+		this.selectedBioEducationHistoryViewModel = selectedBioEducationHistoryViewModel;
+	}
+
+	public void setBioEducationHistoryService(
+			BioEducationHistoryService bioEducationHistoryService) {
+		this.bioEducationHistoryService = bioEducationHistoryService;
 	}
     
     
