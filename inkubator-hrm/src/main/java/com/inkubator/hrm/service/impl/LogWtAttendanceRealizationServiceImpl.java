@@ -17,6 +17,7 @@ import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 
 import java.util.Calendar;
@@ -285,6 +286,35 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 		/** delete all the record in the temporary table **/
 		tempProcessReadFingerDao.deleteAllData();
 		tempAttendanceRealizationDao.deleteAllData();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable)
+			throws Exception {
+		
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) throws Exception {
+		
+	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) throws Exception {
+		System.out.println(logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable).size() + " sizeeeeee");
+		return logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) throws Exception {
+		return logWtAttendanceRealizationDao.getTotalDataByParam(model);
 	}
      
 }

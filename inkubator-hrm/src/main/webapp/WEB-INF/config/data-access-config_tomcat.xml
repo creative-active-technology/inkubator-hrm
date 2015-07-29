@@ -34,7 +34,7 @@
           p:shared="true"/>
           
           
-    <bean id="c3p0DataSourceAbstract" class="com.inkubator.iitc3p0.ComboPooledDataSourceEncript" 
+    <bean id="c3p0DataSourceAbstract" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
           abstract="true" destroy-method="close">
         <property name="acquireIncrement" value="5"/>
         <property name="acquireRetryAttempts" value="3"/>
