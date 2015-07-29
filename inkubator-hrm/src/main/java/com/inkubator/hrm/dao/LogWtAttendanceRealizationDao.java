@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 
 /**
@@ -23,5 +24,9 @@ public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceReali
     public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalPaidOvertimeByParam(Long wtPeriodId);
-        
+    
+    public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult,int maxResults, Order orderable);
+    
+    public Long getTotalDataByParam(LogWtAttendanceRealizationModel model);
+    
 }

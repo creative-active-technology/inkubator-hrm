@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['reportEmployeeAttendance.report_employee_attendance']}" styleClass="header_big" />
+                                <!--<p:outputLabel value="#{appmsg['reportEmployeeAttendance.report_employee_attendance_header']}" styleClass="header_small_no_bold" />-->
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:growl id="userViewGrowlId" globalOnly="true" showDetail="true" />
+                    <h:form id="formId">
+
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel value="#{appmsg['unregSalary.periode']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:calendar value="#{reportAttendanceViewController.modelSearchParameter.startPeriod}" style="width: 100px" styleClass="isitext_hrm"/>
+                                    <p:outputLabel value="&nbsp;&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;&nbsp;" />
+                                    <p:calendar value="#{reportAttendanceViewController.modelSearchParameter.endPeriod}" style="width: 100px" styleClass="isitext_hrm"/>		                    		
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportAttendanceViewController.departmentDualListModel}" var="role" itemValue="#{role}" converter="departmentConverter" id="educationLevelId"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['department.department']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="educationLevelId" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                            <p:row>
+                                <div align="center">
+                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportAttendanceViewController.golJabDualListModel}" var="role" itemValue="#{role}" converter="golonganJabatanConverter" id="picklistDepartment"
+                                                    required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Education Level" styleClass="isitext_hrm"
+                                                    itemLabel="#{role.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="picklistDepartment" />
+                                    </p:column>
+                                </div>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:commandButton id="buttonSearchId" value="#{appmsg['global.search']}" actionListener="#{reportAttendanceViewController.doSearchEmployee()}" title="#{appmsg['global.search']}" label="#{appmsg['global.search']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update="tableId">
+                                <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
+                        </p:commandButton>
+
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        
+                                                <p:toolbar  style="margin-top: 10px">
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Employee_Education"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmployeeEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
+                        <p:dataTable  var="data"  value="#{reportAttendanceViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryCalculation.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.empName}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empNik} #{data.empName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.empDepartementName}" style="width: 16%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['department.department']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empDepartementName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.empGolJab}" style="width: 18%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empGolJab}" />
+                            </p:column>
+                            <p:column sortBy="#{data.empJabatanName}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['companyRelation.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empJabatanName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.attendanceDaysSchedule}" style="width: 8%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['attedance.attend']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.attendanceDaysPresent}" />
+                            </p:column>
+
+                            <p:column sortBy="#{data.duty}" style="width: 8%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['empAttendance.on_duty']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.duty}" />
+                            </p:column>
+                            <p:column sortBy="#{data.permit}" style="width: 8%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['empAttendance.leave']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.permit}" />
+                            </p:column>
+                            <p:column sortBy="#{data.leaves}" style="width: 8%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['empAttendance.permit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.leaves}" />
+                            </p:column>
+                            <p:column sortBy="#{data.sick}" style="width: 8%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['empAttendance.sick']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.sick}" />
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportAttendanceViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block=":formId" trigger="tableId,buttonSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -18,7 +19,10 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 
 /**
@@ -93,6 +97,39 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) {
+		System.out.println(model.getListDeptName() + " dao ieu teh : " + model.getListGolJabName());
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+		if(model.getListDeptName() != null){
+			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+		}
+		if(model.getListGolJabName() != null){
+			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+		}
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+		if(model.getListDeptName() != null){
+			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+		}
+		if(model.getListGolJabName() != null){
+			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+		}
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
     
