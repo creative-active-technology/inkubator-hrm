@@ -4,24 +4,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.LeaveDao;
-import com.inkubator.hrm.dao.LeaveDistributionDao;
-import com.inkubator.hrm.dao.NeracaCutiDao;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.entity.LeaveDistribution;
-import com.inkubator.hrm.entity.NeracaCuti;
-import com.inkubator.hrm.service.LeaveDistributionService;
-import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +17,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LeaveDao;
+import com.inkubator.hrm.dao.LeaveDistributionDao;
+import com.inkubator.hrm.dao.LeaveImplementationDao;
+import com.inkubator.hrm.dao.NeracaCutiDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.NeracaCuti;
+import com.inkubator.hrm.service.LeaveDistributionService;
+import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -52,6 +54,8 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     private LeaveDao leaveDao;
     @Autowired
     private NeracaCutiDao neracaCutiDao;
+    @Autowired
+    private LeaveImplementationDao leaveImplementationDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -322,5 +326,20 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         return leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveId, empDataId);
 
     }
+
+	@Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LeaveDistribution> getAllDataByEmpDataId(Long empDataId) throws Exception {
+		List<LeaveDistribution> listLeaveDist =  leaveDistributionDao.getAllDataByEmpDataId(empDataId);
+		List<LeaveImplementation> leaveImplementation = leaveImplementationDao.getAllDataByEmpDataId(empDataId);
+		System.out.println(leaveImplementation.size() + " id leave implementation");
+		int i = 0;
+		int consume;
+		for(LeaveDistribution ld : listLeaveDist){
+//			leaveImplementation.get(i).get
+			i++;
+		}
+		return listLeaveDist;
+	}
 
 }
