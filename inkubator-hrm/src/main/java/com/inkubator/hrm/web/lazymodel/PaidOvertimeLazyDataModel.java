@@ -10,29 +10,27 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.LogWtAttendanceRealization;
-import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
 
 
 /**
 *
 * @author rizkykojek
 */
-public class PaidOvertimeLazyDataModel extends LazyDataModel<LogWtAttendanceRealization> implements Serializable {
+public class PaidOvertimeLazyDataModel extends LazyDataModel<TempAttendanceRealization> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(PaidOvertimeLazyDataModel.class);
-    private final Long wtPeriodId;
-    private final LogWtAttendanceRealizationService logWtAttendanceRealizationService;
-    private List<LogWtAttendanceRealization> list = new ArrayList<>();
+    private final TempAttendanceRealizationService tempAttendanceRealizationService;
+    private List<TempAttendanceRealization> list = new ArrayList<>();
     private Integer total;
 
-    public PaidOvertimeLazyDataModel(Long wtPeriodId, LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
-        this.wtPeriodId = wtPeriodId;
-        this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
+    public PaidOvertimeLazyDataModel(TempAttendanceRealizationService tempAttendanceRealizationService) {
+        this.tempAttendanceRealizationService = tempAttendanceRealizationService;
     }
 
     @Override
-    public List<LogWtAttendanceRealization> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<TempAttendanceRealization> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
@@ -42,8 +40,8 @@ public class PaidOvertimeLazyDataModel extends LazyDataModel<LogWtAttendanceReal
 	        	orderable = Order.asc("id");
 	        }
 	        
-	        list = logWtAttendanceRealizationService.getPaidOvertimeByParam(wtPeriodId, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(logWtAttendanceRealizationService.getTotalPaidOvertimeByParam(wtPeriodId)));            
+	        list = tempAttendanceRealizationService.getPaidOvertimeByParam(first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalPaidOvertimeByParam()));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -57,15 +55,15 @@ public class PaidOvertimeLazyDataModel extends LazyDataModel<LogWtAttendanceReal
     }
 
     @Override
-    public Object getRowKey(LogWtAttendanceRealization logWtAttendanceRealization) {
-        return logWtAttendanceRealization.getId();
+    public Object getRowKey(TempAttendanceRealization tempAttendanceRealization) {
+        return tempAttendanceRealization.getId();
     }
 
     @Override
-    public LogWtAttendanceRealization getRowData(String id) {
-        for (LogWtAttendanceRealization logWtAttendanceRealization : list) {
-            if (id.equals(String.valueOf(logWtAttendanceRealization.getId()))) {
-                return logWtAttendanceRealization;
+    public TempAttendanceRealization getRowData(String id) {
+        for (TempAttendanceRealization tempAttendanceRealization : list) {
+            if (id.equals(String.valueOf(tempAttendanceRealization.getId()))) {
+                return tempAttendanceRealization;
             }
         }
         return null;

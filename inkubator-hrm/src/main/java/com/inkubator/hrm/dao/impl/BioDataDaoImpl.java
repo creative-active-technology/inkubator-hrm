@@ -112,7 +112,7 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
     @Override
     public List<EmpDataMatrixModel> getAllAgeFromBirthDate() {
         final StringBuilder query = new StringBuilder("SELECT DISTINCT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(date_of_birth)), '%Y')+0 AS ages2");
-        query.append(" FROM hrm.bio_data GROUP BY ages2 ORDER BY ages2 ASC");
+        query.append(" FROM bio_data GROUP BY ages2 ORDER BY ages2 ASC");
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(EmpDataMatrixModel.class))
                 .list();

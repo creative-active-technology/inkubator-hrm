@@ -82,10 +82,10 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
                 + "mpp.recruit_mpp_apply_name AS recruitMppApplyName,  "
                 + "approvalActivity.approval_status AS approvalStatus, "
                 + "approvalActivity.pending_data AS jsonData  "
-                + "FROM hrm.approval_activity approvalActivity "
-                + "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
-                + "LEFT JOIN hrm.recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
-                + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) "
+                + "FROM approval_activity approvalActivity "
+                + "INNER JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
+                + "LEFT JOIN recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
+                + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) "
                 + "AND approvalDefinition.name = :appDefinitionName  ");
 
         selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
@@ -129,10 +129,10 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
     public Long getTotalUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter) {
         StringBuffer selectQuery = new StringBuffer(
                 "SELECT COUNT(*) "
-                + "FROM hrm.approval_activity approvalActivity "
-                + "INNER JOIN hrm.approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
-                + "LEFT JOIN hrm.recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
-                + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM hrm.approval_activity app GROUP BY app.activity_number) "
+                + "FROM approval_activity approvalActivity "
+                + "INNER JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id "
+                + "LEFT JOIN recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
+                + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) "
                 + "AND approvalDefinition.name = :appDefinitionName  ");
         selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
 

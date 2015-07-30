@@ -39,6 +39,7 @@ import com.inkubator.hrm.service.RaceService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
+import com.inkubator.hrm.web.model.BioEducationHistoryModel;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
@@ -155,8 +156,11 @@ public class BioDataRevisionRequestFormController extends BaseController {
     //Start BioEducationHistory
     @ManagedProperty(value = "#{bioEducationHistoryService}")
     private BioEducationHistoryService bioEducationHistoryService;
-    private List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel;	
-    private BioEducationHistoryViewModel selectedBioEducationHistoryViewModel;
+   /* private List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel;	
+    private BioEducationHistoryViewModel selectedBioEducationHistoryViewModel;*/
+    private List<BioEducationHistoryModel> listBioEducationHistoryModel;	
+    private BioEducationHistoryModel selectedBioEducationHistoryModel;
+    
     
     @PostConstruct
     @Override
@@ -178,8 +182,8 @@ public class BioDataRevisionRequestFormController extends BaseController {
                 bioIdCards = bioIdCardService.getAllDataByBioDataId(selectedBioData.getId());
                 bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
                 listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
-                listBioEducationHistoryViewModel = bioEducationHistoryService.getAllDataByBioDataId(selectedBioData.getId());
-                
+                listBioEducationHistoryModel = bioEducationHistoryService.getAllDataBioEduHistoryModelByBioDataId(selectedBioData.getId());
+                System.out.println("listBioEducationHistoryModel.size() : " + listBioEducationHistoryModel.size());
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
                 bioDataModel.setCityid(selectedBioData.getCity().getId());
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
@@ -790,9 +794,114 @@ public class BioDataRevisionRequestFormController extends BaseController {
     }
 
     /**
-     * END BioRelasiPerusahaan
+     * END BioRelasiPerusahaan method
      */
-   
+    
+    /**
+     * START BioEducationHistory method
+     */
+    public void doSelectBioEduHistory(BioEducationHistoryModel bioEducationHistoryModel) {
+        try {
+        	selectedBioEducationHistoryModel = bioEducationHistoryModel;
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+
+   /* public void doDetailBioEduHistory() {
+        try {
+            selectedBioEducationHistoryViewController = this.educationHistoryService.getAllByPKByController(selectedBioEducationHistoryViewController.getId());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }*/
+
+    public void doUpdateBioEduHistory() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("param", Arrays.asList("e" + String.valueOf(selectedBioEducationHistoryModel.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+		dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+		
+		//Set Object selectedBioEducationHistoryViewModel into SessionMap
+		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+		sessionMap.put("selectedBioEducationHistoryModel", selectedBioEducationHistoryModel);
+		
+        showDialogBioEducationHistory(dataToSend);
+    }
+
+    public void doAddBioEduHistory() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("param", Arrays.asList("i" + String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));
+        showDialogBioEducationHistory(dataToSend);
+    }
+    
+    private void showDialogBioEducationHistory(Map<String, List<String>> params) {
+    	Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 750);
+        options.put("contentHeight", 440);
+        RequestContext.getCurrentInstance().openDialog("bio_edu_hist_form", options, params);
+    }
+
+
+    public void doDeleteBioEduHistory() {
+        try {
+            listBioEducationHistoryModel.remove(selectedBioEducationHistoryModel);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            LOGGER.error("Error", ex);
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+    }
+    
+    public void onDialogReturnBioEduHistory(SelectEvent event) {
+        try {
+        	BioRelasiPerusahaan bioRelasiPerusahaan = (BioRelasiPerusahaan) event.getObject();
+        	if(ObjectUtils.notEqual(bioRelasiPerusahaan, null)){
+        		
+        		City city = cityService.getCityByIdWithDetail(bioRelasiPerusahaan.getCity().getId());
+        		bioRelasiPerusahaan.setCity(city);
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioRelasiPerusahaan tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioRelasiPerusahaan.getId() == 0){
+        			bioRelasiPerusahaan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			listBioRelasiPerusaan.add(bioRelasiPerusahaan);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioRelasiPerusahaan");
+        			
+        			//Replace element dengan return value dari form dialog        			
+        			BioRelasiPerusahaan bioRelasiPerusahaanOld = Lambda.selectFirst(listBioRelasiPerusaan, Lambda.having(Lambda.on(BioRelasiPerusahaan.class).getId(), Matchers.equalTo(bioRelasiPerusahaan.getId())));
+        			int index = listBioRelasiPerusaan.indexOf(bioRelasiPerusahaanOld);
+        			
+        			if(-1 != index){
+        				listBioRelasiPerusaan.remove(index);
+        				listBioRelasiPerusaan.add(index, bioRelasiPerusahaan);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END BioEducationHistory method
+     */
+    
     public String doApply() {
 
         if (isValidForm()) {
@@ -1221,22 +1330,24 @@ public class BioDataRevisionRequestFormController extends BaseController {
 		this.educationLevelService = educationLevelService;
 	}
 
-	public List<BioEducationHistoryViewModel> getListBioEducationHistoryViewModel() {
-		return listBioEducationHistoryViewModel;
+	
+
+	public List<BioEducationHistoryModel> getListBioEducationHistoryModel() {
+		return listBioEducationHistoryModel;
 	}
 
-	public void setListBioEducationHistoryViewModel(
-			List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel) {
-		this.listBioEducationHistoryViewModel = listBioEducationHistoryViewModel;
+	public void setListBioEducationHistoryModel(
+			List<BioEducationHistoryModel> listBioEducationHistoryModel) {
+		this.listBioEducationHistoryModel = listBioEducationHistoryModel;
 	}
 
-	public BioEducationHistoryViewModel getSelectedBioEducationHistoryViewModel() {
-		return selectedBioEducationHistoryViewModel;
+	public BioEducationHistoryModel getSelectedBioEducationHistoryModel() {
+		return selectedBioEducationHistoryModel;
 	}
 
-	public void setSelectedBioEducationHistoryViewModel(
-			BioEducationHistoryViewModel selectedBioEducationHistoryViewModel) {
-		this.selectedBioEducationHistoryViewModel = selectedBioEducationHistoryViewModel;
+	public void setSelectedBioEducationHistoryModel(
+			BioEducationHistoryModel selectedBioEducationHistoryModel) {
+		this.selectedBioEducationHistoryModel = selectedBioEducationHistoryModel;
 	}
 
 	public void setBioEducationHistoryService(

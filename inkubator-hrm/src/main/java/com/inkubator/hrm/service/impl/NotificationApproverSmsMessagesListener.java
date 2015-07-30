@@ -70,14 +70,16 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
     public void onMessage(Message message) {
+    	String approverNumber = StringUtils.EMPTY;
+    	String notifMessage = StringUtils.EMPTY;
         try {
             TextMessage textMessage = (TextMessage) message;
             String json = textMessage.getText();
-            String approverNumber = jsonConverter.getValueByKey(json, "senderNumber");
+            approverNumber = jsonConverter.getValueByKey(json, "senderNumber");
             HrmUser approver = hrmUserDao.getEntityByPhoneNumber("+"+approverNumber);
             String content = jsonConverter.getValueByKey(json, "smsContent");
             String[] arrContent = StringUtils.split(content, "#");
-            String notifMessage = StringUtils.EMPTY;
+            notifMessage = StringUtils.EMPTY;
             ApprovalActivity approvalActivity = StringUtils.isNumeric(arrContent[0]) ? 
             		approvalActivityDao.getEntiyByPK(Long.parseLong(arrContent[0])) : null;
             
@@ -195,27 +197,27 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
 					}
 					if(StringUtils.isEmpty(notifMessage)){
 						notifMessage = "Terima kasih, permintaan untuk direvisi telah di proses";
-					}
-					
+					}					
             	}
-            	
-            	/** kirim sms balik ke sender untuk notifikasi messagenya */
-            	final SMSSend mSSend = new SMSSend();
-				mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
-				mSSend.setDestination("+"+approverNumber);
-				mSSend.setContent(notifMessage);
-				//Send notificatin SMS
-				this.jmsTemplateSMS.send(new MessageCreator() {
-					@Override
-					public Message createMessage(Session session) throws JMSException {
-						return session.createTextMessage(jsonConverter.getJson(mSSend));
-					}
-				});
             }
             
         } catch (Exception ex) {
+        	notifMessage = "Maaf, permintaan tidak dapat di proses, ada kegagalan di sistem. Mohon ulangi proses via aplikasi web atau hubungi Administrator";
             LOGGER.error("Error", ex);
         }
+        
+        /** kirim sms balik ke sender untuk notifikasi messagenya */
+    	final SMSSend mSSend = new SMSSend();
+		mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
+		mSSend.setDestination("+"+approverNumber);
+		mSSend.setContent(notifMessage);
+		//Send notificatin SMS
+		this.jmsTemplateSMS.send(new MessageCreator() {
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				return session.createTextMessage(jsonConverter.getJson(mSSend));
+			}
+		});
     }
 
 }

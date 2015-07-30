@@ -55,6 +55,7 @@ public class UnregPayComponentsDaoImpl extends IDAOImpl<UnregPayComponents> impl
             criteria.add(Restrictions.like("paySalaryComponent.name", searchParameter.getName(), MatchMode.START));
         }
         if (searchParameter.getModelComponentName() != null) {
+        	criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
             criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("modelComponent.name", searchParameter.getModelComponentName(), MatchMode.START));
         }

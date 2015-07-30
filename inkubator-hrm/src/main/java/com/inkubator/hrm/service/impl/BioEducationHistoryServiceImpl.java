@@ -16,12 +16,15 @@ import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.entity.BioEducationHistory;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.service.BioEducationHistoryService;
+import com.inkubator.hrm.web.model.BioEducationHistoryModel;
 import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -324,5 +327,35 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         }
         return view;
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BioEducationHistoryModel> getAllDataBioEduHistoryModelByBioDataId(Long bioDataId) throws Exception {
+		List<BioEducationHistoryModel> listBioEducationHistoryModel = new ArrayList<BioEducationHistoryModel>();
+		List<BioEducationHistory> bioEducationHistorys = educationHistoryDao.getAllDataByBioDataId(bioDataId);
+        for (BioEducationHistory bioEducationHistory : bioEducationHistorys) {
+        	BioEducationHistoryModel bioEducationHistoryModel = new BioEducationHistoryModel();
+        	bioEducationHistoryModel.setId(bioEducationHistory.getId());
+        	bioEducationHistoryModel.setBiodataId(bioDataId);
+        	bioEducationHistoryModel.setCertificateNumber(bioEducationHistory.getCertificateNumber());
+        	bioEducationHistoryModel.setCity(bioEducationHistory.getCity());
+        	bioEducationHistoryModel.setCityId(bioEducationHistory.getCity().getId());
+        	bioEducationHistoryModel.setEducationLevelId(bioEducationHistory.getEducationLevel().getId());
+        	bioEducationHistoryModel.setFacultyId(bioEducationHistory.getFaculty() == null ? null : bioEducationHistory.getFaculty().getId());
+        	bioEducationHistoryModel.setInstitutionEducationId(bioEducationHistory.getInstitutionEducation().getId());
+        	bioEducationHistoryModel.setMajorId(bioEducationHistory.getMajor() == null ? null : bioEducationHistory.getMajor().getId());
+        	bioEducationHistoryModel.setScore(bioEducationHistory.getScore());
+        	bioEducationHistoryModel.setYearIn(bioEducationHistory.getYearIn());
+        	bioEducationHistoryModel.setYearOut(bioEducationHistory.getYearOut());
+        	if(bioEducationHistory.getPathFoto() != null ){
+        		bioEducationHistoryModel.setIsDownload(Boolean.TRUE);
+        	}else{
+        		bioEducationHistoryModel.setIsDownload(Boolean.FALSE);
+        		bioEducationHistoryModel.setIsDownloadString("File Not Available");
+            }
+        	listBioEducationHistoryModel.add(bioEducationHistoryModel);
+        }
+		return listBioEducationHistoryModel;
+	}
     
 }

@@ -629,12 +629,12 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     
     protected String getSmsContentOfWaitingApproval(ApprovalActivity appActivity){
     	HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
-    	return "Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you. #ID=" + appActivity.getId();
+    	return "Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
     }
     
     protected String getSmsContentOfWaitingRevised(ApprovalActivity appActivity){
     	HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-    	return "Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you. #ID=" + appActivity.getId();
+    	return "Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
     }
     
     /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId

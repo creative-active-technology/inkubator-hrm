@@ -51,14 +51,14 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
                         "application.application_date AS applicationDate, " +
                         "cancellation.reason AS reason, " +
                         "CONCAT(bioData.first_name,' ',bioData.last_name) AS employeeName " +
-                        "FROM hrm.loan_new_cancelation cancellation " +
-                        "LEFT JOIN hrm.loan_new_application AS application ON application.id = cancellation.loan_id " +
-                        "LEFT JOIN hrm.loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
-                        "LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
-                        "LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-                        "LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_id " +
-                        "LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-                        "LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );
+                        "FROM loan_new_cancelation cancellation " +
+                        "LEFT JOIN loan_new_application AS application ON application.id = cancellation.loan_id " +
+                        "LEFT JOIN loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
+                        "LEFT JOIN log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
+                        "LEFT JOIN hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+                        "LEFT JOIN hrm_user AS user ON user.emp_data_id = application.emp_id " +
+                        "LEFT JOIN emp_data AS empData ON empData.id = user.emp_data_id " +
+                        "LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " );
         
     	selectQuery.append(this.setWhereQueryByParam(parameter));
     	selectQuery.append("ORDER BY " + orderable);
@@ -77,14 +77,14 @@ public class LoanNewCancelationDaoImpl extends IDAOImpl<LoanNewCancelation> impl
         
          StringBuffer selectQuery = new StringBuffer(
     			"SELECT COUNT(DISTINCT(cancellation.id)) " +                        
-                        "FROM hrm.loan_new_cancelation cancellation " +
-                        "LEFT JOIN hrm.loan_new_application AS application ON application.id = cancellation.loan_id " +
-                        "LEFT JOIN hrm.loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
-                        "LEFT JOIN hrm.log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
-                        "LEFT JOIN hrm.hrm_user AS approver ON approver.id = approverHistory.approver_id " +
-                        "LEFT JOIN hrm.hrm_user AS user ON user.emp_data_id = application.emp_id " +
-                        "LEFT JOIN hrm.emp_data AS empData ON empData.id = user.emp_data_id " +
-                        "LEFT JOIN hrm.bio_data AS bioData ON empData.bio_data_id = bioData.id " );
+                        "FROM loan_new_cancelation cancellation " +
+                        "LEFT JOIN loan_new_application AS application ON application.id = cancellation.loan_id " +
+                        "LEFT JOIN loan_new_type AS loanNewType ON loanNewType.id = application.loan_new_type " +
+                        "LEFT JOIN log_approver_history AS approverHistory ON approverHistory.activity_number = application.approval_activity_number \n" +
+                        "LEFT JOIN hrm_user AS approver ON approver.id = approverHistory.approver_id " +
+                        "LEFT JOIN hrm_user AS user ON user.emp_data_id = application.emp_id " +
+                        "LEFT JOIN emp_data AS empData ON empData.id = user.emp_data_id " +
+                        "LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " );
          
     	selectQuery.append(this.setWhereQueryByParam(parameter));
         
