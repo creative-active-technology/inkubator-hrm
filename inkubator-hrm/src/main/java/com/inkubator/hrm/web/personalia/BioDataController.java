@@ -129,7 +129,7 @@ public class BioDataController extends BaseController {
         try {
             super.initialization();
             Long bioDataId = HrmUserInfoUtil.getBioDataId();
-            selectedBioData = bioDataService.getEntiyByPK(bioDataId);
+            selectedBioData = bioDataService.getEntityByPKWithDetail(bioDataId);
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
             dataBioEmergencyContacs = bioEmergencyContactService.getAllDataByBioDataId(selectedBioData.getId());

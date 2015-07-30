@@ -231,9 +231,9 @@
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 3px" columns="2">
                                 <p:commandLink >
-                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
+                                     <!-- <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
-                                    </p:graphicImage> 
+                                    </p:graphicImage>  -->
                                 </p:commandLink>
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
@@ -589,6 +589,7 @@
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_implementation']}" icon="img-leave_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_implementation']}" url="/protected/working_time/leave_impl_form.htm" />
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_history']}" icon="img-leave_history" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_history']}" url="/protected/working_time/leave_impl_view.htm" />
                                                 <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_ex_view.htm" />
+                                            	<p:menuitem value="Resume Cuti Karyawan" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="Resume Cuti Karyawan" url="/protected/working_time/resume_leave_employee.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.permit_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['permitdistribution.permit_distribution']}" icon="img-permit_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitdistribution.permit_distribution']}" url="/protected/employee/permit_distribution_view.htm" />
