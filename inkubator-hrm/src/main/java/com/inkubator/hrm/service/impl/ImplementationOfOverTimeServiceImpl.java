@@ -5,6 +5,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.exception.BussinessException;
@@ -28,14 +29,17 @@ import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -469,6 +473,22 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception {
         return implementationOfOverTimeDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        ImplementationOfOverTime entity =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
+        
+        detail.append("Pengajuan lembur oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+        detail.append("Jenis: " + entity.getOverTimeName() + ". ");
+        detail.append("Tanggal " + dateFormat.format(entity.getImplementationDate()) + ". ");        
+        detail.append("Dari jam " + timeFormat.format(entity.getStartTime()) + " s/d " + timeFormat.format(entity.getEndTime()));
+        return detail.toString();
+	}
     
     
 }

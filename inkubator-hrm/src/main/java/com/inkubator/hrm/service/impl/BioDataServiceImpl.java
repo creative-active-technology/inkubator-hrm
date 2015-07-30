@@ -953,5 +953,11 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		 }
 		 
 	 }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+	}
 	
 }

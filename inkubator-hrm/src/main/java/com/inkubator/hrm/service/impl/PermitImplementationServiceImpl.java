@@ -1,37 +1,25 @@
 package com.inkubator.hrm.service.impl;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
@@ -39,36 +27,31 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+//import com.inkubator.hrm.dao.PermitImplementationDateDao;
+import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
-//import com.inkubator.hrm.dao.PermitImplementationDateDao;
-import com.inkubator.hrm.dao.NeracaPermitDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+//import com.inkubator.hrm.entity.PermitImplementationDate;
+import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.PermitImplementation;
-//import com.inkubator.hrm.entity.PermitImplementationDate;
-import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
-import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-
-import java.io.File;
-
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -955,5 +938,19 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
             this.creditPermitBalance(permitDistribution, actualPermit);
             return message;
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		PermitImplementation entity = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
+		
+		detail.append("Pengajuan ijin oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jenis: " + entity.getPermitClassification().getName() + ". ");
+		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+		return detail.toString();
 	}
 }

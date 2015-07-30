@@ -40,11 +40,11 @@ import com.inkubator.hrm.dao.RmbsApplicationDisbursementDao;
 import com.inkubator.hrm.dao.RmbsDisbursementDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsApplicationDisbursement;
 import com.inkubator.hrm.entity.RmbsApplicationDisbursementId;
 import com.inkubator.hrm.entity.RmbsDisbursement;
-import com.inkubator.hrm.entity.RmbsType;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsDisbursementService;
@@ -510,6 +510,19 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
         String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
         return nomor;
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		RmbsDisbursement entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan pencairan penggantian oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Tanggal pencairan  " + dateFormat.format(entity.getDisbursementDate()) + ". ");
+		detail.append("Periode " + dateFormat.format(entity.getPayrollPeriodDate()));
+		return detail.toString();
 	}
 
 }
