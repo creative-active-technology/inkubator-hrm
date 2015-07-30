@@ -161,6 +161,7 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         query.append(" FROM wt_periode wtPeriode ");
         query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");       
         query.append(" WHERE  wtPeriode.id = " + wtPeriodId);
+        query.append(" AND  empData.status <> '" + HRMConstant.EMP_TERMINATION + "' ");
         Query hbm = getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(WtPeriodEmpViewModel.class));
         return (WtPeriodEmpViewModel)hbm.uniqueResult();
