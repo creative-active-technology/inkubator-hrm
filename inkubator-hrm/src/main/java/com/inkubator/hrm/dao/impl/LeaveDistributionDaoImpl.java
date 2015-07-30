@@ -9,8 +9,10 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -142,4 +144,12 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         criteria.add(Restrictions.eq("leave.id", leaveId));
         return (LeaveDistribution) criteria.uniqueResult();
     }
+
+	@Override
+	public List<LeaveDistribution> getAllDataByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("leave", FetchMode.JOIN);
+        return criteria.list();
+	}
 }
