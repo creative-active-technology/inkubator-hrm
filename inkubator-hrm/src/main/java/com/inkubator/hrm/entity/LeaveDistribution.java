@@ -3,6 +3,7 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -35,6 +37,7 @@ public class LeaveDistribution  implements java.io.Serializable {
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private Integer totalConsume;
 
     public LeaveDistribution() {
     }
@@ -167,6 +170,16 @@ public class LeaveDistribution  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @Transient
+	public Integer getTotalConsume() {
+		return totalConsume;
+	}
+
+
+	public void setTotalConsume(Integer totalConsume) {
+		this.totalConsume = totalConsume;
+	}
 
 
 

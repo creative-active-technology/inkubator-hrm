@@ -2,6 +2,7 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +19,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,7 +33,6 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.WtEmpCorrectionAttendanceDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TransactionCodefication;
@@ -499,6 +498,19 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter) throws Exception {
 		return wtEmpCorrectionAttendanceDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+		WtEmpCorrectionAttendance entity = gson.fromJson(appActivity.getPendingData(), WtEmpCorrectionAttendance.class);
+		
+		detail.append("Pengajuan koreksi kehadiran oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Tanggal kerja  " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()) );
+		return detail.toString();
 	}
 
 }

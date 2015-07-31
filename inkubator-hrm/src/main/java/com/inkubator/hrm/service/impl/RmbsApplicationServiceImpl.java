@@ -764,5 +764,18 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	public Long getTotalUndisbursedByParam() {
 		return rmbsApplicationDao.getTotalUndisbursedByParam();
 	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan penggantian oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Tipe " + entity.getRmbsType().getName() + ". ");
+		detail.append("Sejumlah " + decimalFormat.format(entity.getNominal()) + ", mata uang " + entity.getCurrency().getName());
+		return detail.toString();
+	}
 	
 }

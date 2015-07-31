@@ -1025,6 +1025,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		 }
 		 
 	 }
+
 	 
 	 private void saveOrUpdateBioEducationHistory(List<BioEducationHistoryModel> listBioEducationHistoryModelRevision, Long bioDataId){
 		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
@@ -1179,5 +1180,13 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 			 }
 		 }
 	 }
+
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+	}
+
 	
 }

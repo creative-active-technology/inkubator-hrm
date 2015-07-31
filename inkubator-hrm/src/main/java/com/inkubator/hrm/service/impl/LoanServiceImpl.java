@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,6 @@ import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.util.HashMap;
 
 /**
  *
@@ -784,4 +784,17 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         Loan entity = gson.fromJson(json, Loan.class);
         return entity;
     }
+    
+    @Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Loan entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan pinjaman oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Skema: " + entity.getLoanSchema().getName() + ". ");
+		detail.append("Sejumlah Rp. " + decimalFormat.format(entity.getNominalPrincipal()) + ", dengan termin " + entity.getTermin() + " kali");
+		return detail.toString();
+	}
 }
