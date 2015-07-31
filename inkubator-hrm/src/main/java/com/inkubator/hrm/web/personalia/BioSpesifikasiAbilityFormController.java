@@ -18,18 +18,21 @@ import com.inkubator.hrm.web.model.BioSpesifikasiAbilityModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -51,6 +54,7 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
     private BioSpesifikasiAbility selected;
     private BioSpesifikasiAbilityModel model;
     private Boolean isEdit;
+    private String isRevision;
     
     //List Dropdown
     private List<SpecificationAbility> specAbility = new ArrayList<SpecificationAbility>();
@@ -83,16 +87,30 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
             model = new BioSpesifikasiAbilityModel();
             isEdit = Boolean.FALSE;
             
-            String bioSpecAbiId = FacesUtil.getRequestParameter("bioSpecAbiId");
-            if (StringUtils.isNotEmpty(bioSpecAbiId)) {
-                BioSpesifikasiAbility bioSpesifikasiAbility = bioSpesifikasiAbilityService.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(bioDataId, Long.valueOf(bioSpecAbiId)));
-                if (bioSpesifikasiAbility != null) {
-                    model = getModelFromEntity(bioSpesifikasiAbility);
-                    isEdit = Boolean.TRUE;
-                    bioDataId = bioSpesifikasiAbility.getBioData().getId();
-                    doChangeValue();
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioSpesifikasiAbility  bioSpesifikasiAbility = (BioSpesifikasiAbility ) sessionMap.get("selectedBioSpesifikasiAbility");
+            		model = getModelFromEntity(bioSpesifikasiAbility);
+            		doChangeValue();
+            	}
+            }else{
+            	String bioSpecAbiId = FacesUtil.getRequestParameter("bioSpecAbiId");
+                if (StringUtils.isNotEmpty(bioSpecAbiId)) {
+                    BioSpesifikasiAbility bioSpesifikasiAbility = bioSpesifikasiAbilityService.getEntityByBioSpesifikasiAbilityId(new BioSpesifikasiAbilityId(bioDataId, Long.valueOf(bioSpecAbiId)));
+                    if (bioSpesifikasiAbility != null) {
+                        model = getModelFromEntity(bioSpesifikasiAbility);
+                        isEdit = Boolean.TRUE;
+                        bioDataId = bioSpesifikasiAbility.getBioData().getId();
+                        doChangeValue();
+                    }
                 }
             }
+            
+            
             
         listSpecAbility = new TreeMap<>();
         //get all specification list
@@ -152,13 +170,22 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
     public void doSave() {
         BioSpesifikasiAbility bioSpesifikasiAbility = getEntityFromViewModel(model);
         try {
-            if (isEdit) {
-                bioSpesifikasiAbilityService.updateBioSpecAbility(bioSpesifikasiAbility, model.getOldId());
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                bioSpesifikasiAbilityService.save(bioSpesifikasiAbility);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioSpesifikasiAbility yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		RequestContext.getCurrentInstance().closeDialog(bioSpesifikasiAbility);
+	    	}else{
+	    		if (isEdit) {
+	                bioSpesifikasiAbilityService.updateBioSpecAbility(bioSpesifikasiAbility, model.getOldId());
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	            } else {
+	                bioSpesifikasiAbilityService.save(bioSpesifikasiAbility);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	            }
+	    	}
+            
             cleanAndExit();
         } catch (BussinessException ex) { 
             System.out.println("errorrrrrrrrr");
@@ -255,6 +282,14 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
     public void setListValue(Map<String, String> listValue) {
         this.listValue = listValue;
     }
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
+	}
     
     
     

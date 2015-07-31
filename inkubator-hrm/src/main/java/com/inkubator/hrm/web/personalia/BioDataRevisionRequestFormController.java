@@ -10,7 +10,10 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BioFamilyRelationship;
 import com.inkubator.hrm.entity.BioIdCard;
+import com.inkubator.hrm.entity.BioKeahlian;
 import com.inkubator.hrm.entity.BioRelasiPerusahaan;
+import com.inkubator.hrm.entity.BioSpesifikasiAbility;
+import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
 import com.inkubator.hrm.entity.EducationLevel;
@@ -27,7 +30,9 @@ import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioEmergencyContactService;
 import com.inkubator.hrm.service.BioFamilyRelationshipService;
 import com.inkubator.hrm.service.BioIdCardService;
+import com.inkubator.hrm.service.BioKeahlianService;
 import com.inkubator.hrm.service.BioRelasiPerusahaanService;
+import com.inkubator.hrm.service.BioSpesifikasiAbilityService;
 import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.DialectService;
 import com.inkubator.hrm.service.EducationLevelService;
@@ -156,11 +161,23 @@ public class BioDataRevisionRequestFormController extends BaseController {
     //Start BioEducationHistory
     @ManagedProperty(value = "#{bioEducationHistoryService}")
     private BioEducationHistoryService bioEducationHistoryService;
-   /* private List<BioEducationHistoryViewModel> listBioEducationHistoryViewModel;	
-    private BioEducationHistoryViewModel selectedBioEducationHistoryViewModel;*/
     private List<BioEducationHistoryModel> listBioEducationHistoryModel;	
     private BioEducationHistoryModel selectedBioEducationHistoryModel;
+    //End BioEducationHistory
     
+    //Start BioKeahlian
+    private BioKeahlian selectedBioKeahlian;
+    @ManagedProperty(value = "#{bioKeahlianService}")
+    private BioKeahlianService bioKeahlianService;
+    private List<BioKeahlian> bioKeahlians;
+    //End BioKeahlian
+    
+    //Start. BioSpesifikasiAbility
+    private BioSpesifikasiAbility selectedBioSpesifikasiAbility;
+    @ManagedProperty(value = "#{bioSpesifikasiAbilityService}")
+    private BioSpesifikasiAbilityService bioSpesifikasiAbilityService;
+    private List<BioSpesifikasiAbility> spesifikasiAbilitys;
+    //End. BioSpesifikasiAbility
     
     @PostConstruct
     @Override
@@ -183,7 +200,8 @@ public class BioDataRevisionRequestFormController extends BaseController {
                 bioFamilyRelationships = bioFamilyRelationshipService.getAllDataByBioDataId(selectedBioData.getId());
                 listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
                 listBioEducationHistoryModel = bioEducationHistoryService.getAllDataBioEduHistoryModelByBioDataId(selectedBioData.getId());
-                System.out.println("listBioEducationHistoryModel.size() : " + listBioEducationHistoryModel.size());
+                bioKeahlians = bioKeahlianService.getAllDataByBioDataId(selectedBioData.getId());
+               
                 bioDataModel.setBloodType(selectedBioData.getBloodType());
                 bioDataModel.setCityid(selectedBioData.getCity().getId());
                 bioDataModel.setDateOfBirth(selectedBioData.getDateOfBirth());
@@ -808,13 +826,6 @@ public class BioDataRevisionRequestFormController extends BaseController {
         }
     }
 
-   /* public void doDetailBioEduHistory() {
-        try {
-            selectedBioEducationHistoryViewController = this.educationHistoryService.getAllByPKByController(selectedBioEducationHistoryViewController.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }*/
 
     public void doUpdateBioEduHistory() {
         Map<String, List<String>> dataToSend = new HashMap<>();
@@ -863,31 +874,28 @@ public class BioDataRevisionRequestFormController extends BaseController {
     
     public void onDialogReturnBioEduHistory(SelectEvent event) {
         try {
-        	BioRelasiPerusahaan bioRelasiPerusahaan = (BioRelasiPerusahaan) event.getObject();
-        	if(ObjectUtils.notEqual(bioRelasiPerusahaan, null)){
+        	BioEducationHistoryModel bioEducationHistoryModel = (BioEducationHistoryModel) event.getObject();
+        	if(ObjectUtils.notEqual(bioEducationHistoryModel, null)){
         		
-        		City city = cityService.getCityByIdWithDetail(bioRelasiPerusahaan.getCity().getId());
-        		bioRelasiPerusahaan.setCity(city);
+        		City city = cityService.getCityByIdWithDetail(bioEducationHistoryModel.getCity().getId());
+        		bioEducationHistoryModel.setCity(city);
         		
-        		//Jika Id masih kosong maka itu berarti tambah baru
-        		//karena Id BioRelasiPerusahaan tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
-        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
-        		if(bioRelasiPerusahaan.getId() == 0){
-        			bioRelasiPerusahaan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        			listBioRelasiPerusaan.add(bioRelasiPerusahaan);
+        		if(bioEducationHistoryModel.getId() == null){
+        			bioEducationHistoryModel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			listBioEducationHistoryModel.add(bioEducationHistoryModel);
                     
         		}else{//Jika tidak kosong berarti edit data yang sudah ada
         			
         			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
-        			sessionMap.remove("selectedBioRelasiPerusahaan");
+        			sessionMap.remove("selectedBioEducationHistoryModel");
         			
         			//Replace element dengan return value dari form dialog        			
-        			BioRelasiPerusahaan bioRelasiPerusahaanOld = Lambda.selectFirst(listBioRelasiPerusaan, Lambda.having(Lambda.on(BioRelasiPerusahaan.class).getId(), Matchers.equalTo(bioRelasiPerusahaan.getId())));
-        			int index = listBioRelasiPerusaan.indexOf(bioRelasiPerusahaanOld);
+        			BioEducationHistoryModel bioEducationHistoryModelOld = Lambda.selectFirst(listBioEducationHistoryModel, Lambda.having(Lambda.on(BioEducationHistoryModel.class).getId(), Matchers.equalTo(bioEducationHistoryModel.getId())));
+        			int index = listBioEducationHistoryModel.indexOf(bioEducationHistoryModelOld);
         			
         			if(-1 != index){
-        				listBioRelasiPerusaan.remove(index);
-        				listBioRelasiPerusaan.add(index, bioRelasiPerusahaan);
+        				listBioEducationHistoryModel.remove(index);
+        				listBioEducationHistoryModel.add(index, bioEducationHistoryModel);
         			}
         			
         		}
@@ -900,6 +908,198 @@ public class BioDataRevisionRequestFormController extends BaseController {
 
     /**
      * END BioEducationHistory method
+     */
+    
+    /**
+     * START BioKeahlian method
+     */
+    public void doSelectBioKeahlian(BioKeahlian bioKeahlian) {
+        try {
+            selectedBioKeahlian = bioKeahlian;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioKeahlian() {
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioKeahlianId", Arrays.asList(String.valueOf(selectedBioKeahlian.getId())));
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+		dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+		
+        //Set Object selectedBioKeahlian into SessionMap
+  		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+  		sessionMap.put("selectedBioKeahlian", selectedBioKeahlian);
+      		
+        showDialogBioKahlian(dataToSend);
+
+    }
+
+    public void doAddBioKeahlian() {
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));
+        showDialogBioKahlian(dataToSend);
+    }
+
+    public void doDeleteBioKeahlian() {
+        try {
+        	bioKeahlians.remove(selectedBioKeahlian);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete bioFamilyRelationship", ex);
+        }
+    }
+
+    private void showDialogBioKahlian(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("bio_keahlian_form", options, params);
+    }
+
+    public void onDialogReturnBioKeahlian(SelectEvent event) {
+        try {
+        	BioKeahlian bioKeahlian = (BioKeahlian) event.getObject();
+        	if(ObjectUtils.notEqual(bioKeahlian, null)){
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioKeahlian tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioKeahlian.getId() == 0){
+        			bioKeahlian.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        			bioKeahlians.add(bioKeahlian);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioKeahlian");
+        			
+        			//Replace element dengan return value dari form dialog        			
+        			BioKeahlian bioKeahlianOld = Lambda.selectFirst(bioKeahlians, Lambda.having(Lambda.on(BioKeahlian.class).getId(), Matchers.equalTo(bioKeahlian.getId())));
+        			int index = bioKeahlians.indexOf(bioKeahlianOld);
+        			
+        			if(-1 != index){
+        				bioKeahlians.remove(index);
+        				bioKeahlians.add(index, bioKeahlian);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END BioKeahlian method
+     */
+    
+    /**
+     * START BioSpesifikasiAbility method
+     */
+    public void doSelectBioSpesifikasiAbility(BioSpesifikasiAbility bioSpesifikasiAbility) {
+        try {
+            selectedBioSpesifikasiAbility = bioSpesifikasiAbility;
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void doUpdateBioSpesifikasiAbility() {
+
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioSpecAbiId", Arrays.asList(String.valueOf(selectedBioSpesifikasiAbility.getSpecificationAbility().getId())));
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+		dataToSend.put("isEditOnRevision", Arrays.asList("Yes"));  
+        
+        //Set Object selectedBioKeahlian into SessionMap
+  		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+  		sessionMap.put("selectedBioSpesifikasiAbility", selectedBioSpesifikasiAbility);
+  		
+        showDialogBioSpesifikasiAbility(dataToSend);
+
+    }
+
+    public void doAddBioSpesifikasiAbility() {
+        
+        Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
+        dataToSend.put("isRevision", Arrays.asList("isRevision"));   
+        dataToSend.put("isEditOnRevision", Arrays.asList("No"));
+        
+        showDialogBioSpesifikasiAbility(dataToSend);
+    }
+
+    public void doDeleteBioSpesifikasiAbility() {
+        try {
+        	spesifikasiAbilitys.remove(selectedBioSpesifikasiAbility);
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error when doDelete BioSpesifikasiAbility", ex);
+        }
+    }
+
+    private void showDialogBioSpesifikasiAbility(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 500);
+        options.put("contentHeight", 250);
+        RequestContext.getCurrentInstance().openDialog("bio_spec_ability_form", options, params);
+    }
+
+    public void onDialogReturnBioSpesifikasiAbility(SelectEvent event) {
+        try {
+        	BioSpesifikasiAbility  bioSpesifikasiAbility = (BioSpesifikasiAbility ) event.getObject();
+        	if(ObjectUtils.notEqual(bioSpesifikasiAbility, null)){
+        		
+        		//Jika Id masih kosong maka itu berarti tambah baru
+        		//karena Id BioSpesifikasiAbility tipe nya primitive, sehingga jika tidak di set, nilainya bukan null tapi 0
+        		// http://www.java2s.com/Tutorial/SCJP/0020__Java-Source-And-Data-Type/AutomaticInitializationDefaultValuesforPrimitiveTypes.htm
+        		if(bioSpesifikasiAbility.getId() == null){
+        			bioSpesifikasiAbility.setId(new BioSpesifikasiAbilityId(bioSpesifikasiAbility.getBioData().getId(), bioSpesifikasiAbility.getSpecificationAbility().getId()));
+        			spesifikasiAbilitys.add(bioSpesifikasiAbility);
+                    
+        		}else{//Jika tidak kosong berarti edit data yang sudah ada
+        			
+        			Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        			sessionMap.remove("selectedBioSpesifikasiAbility");
+        			
+        			//Replace element dengan return value dari form dialog        			
+        			BioSpesifikasiAbility bioSpesifikasiAbilityOld = Lambda.selectFirst(spesifikasiAbilitys, Lambda.having(Lambda.on(BioSpesifikasiAbility.class).getId(), Matchers.equalTo(bioSpesifikasiAbility.getId())));
+        			int index = spesifikasiAbilitys.indexOf(bioSpesifikasiAbilityOld);
+        			
+        			if(-1 != index){
+        				spesifikasiAbilitys.remove(index);
+        				spesifikasiAbilitys.add(index, bioSpesifikasiAbility);
+        			}
+        			
+        		}
+        		
+        	}
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    /**
+     * END Bio FamilyRelationship method
      */
     
     public String doApply() {
@@ -934,24 +1134,36 @@ public class BioDataRevisionRequestFormController extends BaseController {
      				break;
      				
      			case HRMConstant.BIO_REV_ADDRESS:
-     				 result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
+     				result = bioDataService.saveBiodataRevisionWithApproval(bioAddresses, selectedJenisData, empData);
      				break;
      				
      			case HRMConstant.BIO_REV_CONTACT:
-    				 result = bioDataService.saveBiodataRevisionWithApproval(dataBioEmergencyContacs, selectedJenisData, empData);
+    				result = bioDataService.saveBiodataRevisionWithApproval(dataBioEmergencyContacs, selectedJenisData, empData);
     				break;
     				
      			case HRMConstant.BIO_REV_ID_CARD:
-   				 result = bioDataService.saveBiodataRevisionWithApproval(bioIdCards, selectedJenisData, empData);
-   				break;
+     				result = bioDataService.saveBiodataRevisionWithApproval(bioIdCards, selectedJenisData, empData);
+     				break;
    				
      			case HRMConstant.BIO_REV_FAMILY:
-      				 result = bioDataService.saveBiodataRevisionWithApproval(bioFamilyRelationships, selectedJenisData, empData);
-      				break;
+  				     result = bioDataService.saveBiodataRevisionWithApproval(bioFamilyRelationships, selectedJenisData, empData);
+  				     break;
       				
      			case HRMConstant.BIO_REV_COMPANY_RELATION:
      				 result = bioDataService.saveBiodataRevisionWithApproval(listBioRelasiPerusaan, selectedJenisData, empData);
+     				 break;
+     				
+     			case HRMConstant.BIO_REV_EDUCATION:
+    				 result = bioDataService.saveBiodataRevisionWithApproval(listBioEducationHistoryModel, selectedJenisData, empData);
+    				 break;
+    			
+     			case HRMConstant.BIO_REV_SKILL:
+     				 result = bioDataService.saveBiodataRevisionWithApproval(bioKeahlians, selectedJenisData, empData);
      				break;
+   				
+     			case HRMConstant.BIO_REV_SPESIFICATION_ABILITY:
+      				 result = bioDataService.saveBiodataRevisionWithApproval(spesifikasiAbilitys, selectedJenisData, empData);
+      				 break;
     				
      			default:
      				break;
@@ -1353,6 +1565,49 @@ public class BioDataRevisionRequestFormController extends BaseController {
 	public void setBioEducationHistoryService(
 			BioEducationHistoryService bioEducationHistoryService) {
 		this.bioEducationHistoryService = bioEducationHistoryService;
+	}
+
+	public BioKeahlian getSelectedBioKeahlian() {
+		return selectedBioKeahlian;
+	}
+
+	public void setSelectedBioKeahlian(BioKeahlian selectedBioKeahlian) {
+		this.selectedBioKeahlian = selectedBioKeahlian;
+	}
+
+	public List<BioKeahlian> getBioKeahlians() {
+		return bioKeahlians;
+	}
+
+	public void setBioKeahlians(List<BioKeahlian> bioKeahlians) {
+		this.bioKeahlians = bioKeahlians;
+	}
+
+	public void setBioKeahlianService(BioKeahlianService bioKeahlianService) {
+		this.bioKeahlianService = bioKeahlianService;
+	}
+
+	public BioSpesifikasiAbility getSelectedBioSpesifikasiAbility() {
+		return selectedBioSpesifikasiAbility;
+	}
+
+	public void setSelectedBioSpesifikasiAbility(
+			BioSpesifikasiAbility selectedBioSpesifikasiAbility) {
+		this.selectedBioSpesifikasiAbility = selectedBioSpesifikasiAbility;
+	}
+
+	public List<BioSpesifikasiAbility> getSpesifikasiAbilitys() {
+		return spesifikasiAbilitys;
+	}
+
+	public void setSpesifikasiAbilitys(
+			List<BioSpesifikasiAbility> spesifikasiAbilitys) {
+		this.spesifikasiAbilitys = spesifikasiAbilitys;
+	}
+
+	public void setBioSpesifikasiAbilityService(
+			BioSpesifikasiAbilityService bioSpesifikasiAbilityService) {
+		this.bioSpesifikasiAbilityService = bioSpesifikasiAbilityService;
 	}
     
     

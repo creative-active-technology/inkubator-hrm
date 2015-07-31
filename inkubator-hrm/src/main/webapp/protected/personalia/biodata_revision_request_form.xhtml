@@ -738,12 +738,10 @@
                          	
                          	<h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'SKILL'}" id="panelGridSkill" >
                          		<p:outputLabel value="Keahlian" styleClass="header_big"/>
-                         		<p:dataTable  id="tableKeahlianId" var="bioKeahlian"  value="#{bioDataController.listBioKeahlian}" lazy="false" paginator="false"
+                         		<p:dataTable  id="tableKeahlianId" var="bioKeahlian"  value="#{bioDataRevisionRequestFormController.bioKeahlians}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 40px"
                                       rowIndexVar="no">
-		                            <!--                            <f:facet name="header">  
-		                                                            <h:outputText value="#{appmsg['biodata.list_of_skill']}"/>
-		                                                        </f:facet>-->
+		                           
 		                            <p:column style="text-align: center;width: 3%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['global.number']}"/>
@@ -767,34 +765,37 @@
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
 		                                                 style="font-size: 10px!important" update=":panelDialogBioKeahlianId" 
-		                                                 action="#{bioDataController.doSelectBioKeahlian()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailKeahlian').show()">                        
-		                                    <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataController.selectedBioKeahlian}" />
+		                                                 action="#{bioDataRevisionRequestFormController.doSelectBioKeahlian(bioKeahlian)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailKeahlian').show()">                        
+		                                    <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataRevisionRequestFormController.selectedBioKeahlian}" />
 		                                </p:commandButton>
-		                                <!--                                - 
-		                                                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-		                                                                                 style="font-size: 10px!important" update=":panelDialogKeahlianConfirmId" 
-		                                                                                 action="#{bioDataController.doSelectBioContact()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmKeahlian').show()">
-		                                                                    <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataController.selectedBioKeahlian}" />
-		                                                                </p:commandButton>
-		                                                                -
-		                                                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-		                                                                                 action="#{bioDataController.doUpdateBioKeahlian()}" >
-		                                                                    <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataController.selectedBioKeahlian}" />
-		                                                                    <p:ajax event="dialogReturn" listener="#{bioDataController.onDialogReturnBioKeahlian}"  update="tableKeahlianId,:growlBioDetailFormId"/>
-		                                                                </p:commandButton>-->
+                                       - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogKeahlianConfirmId" 
+                                                         action="#{bioDataRevisionRequestFormController.doSelectBioKeahlian(bioKeahlian)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmKeahlian').show()">
+                                            <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataRevisionRequestFormController.selectedBioKeahlian}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#{bioDataRevisionRequestFormController.doUpdateBioKeahlian()}" >
+                                            <f:setPropertyActionListener value="#{bioKeahlian}" target="#{bioDataRevisionRequestFormController.selectedBioKeahlian}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioKeahlian}"  update="tableKeahlianId"/>
+                                        </p:commandButton>
 		                            </p:column>
 		                        </p:dataTable>
+		                        <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataRevisionRequestFormController.doAddBioKeahlian()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioKeahlian}" update="tableKeahlianId" />
+                                    </p:commandButton>
+                                </h:panelGrid>
                          	</h:panelGrid>
                          	
                          	<h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'SPESIFICATION_ABILITY'}" id="panelGridSpecificationAbility" >
                          		 <p:outputLabel value="Spesifikasi Kemampuan" styleClass="header_big"/>
 		                   
-		                        <p:dataTable  id="tableSpecAbilityId" var="bioSpecAbi"  value="#{bioDataController.listBioSpesifikasiAbility}" lazy="false" paginator="false"
+		                        <p:dataTable  id="tableSpecAbilityId" var="bioSpecAbi"  value="#{bioDataRevisionRequestFormController.spesifikasiAbilitys}" lazy="false" paginator="false"
 		                                      style="margin-top: 10px;margin-bottom: 40px"
 		                                      rowIndexVar="no">
-		                            <!--                            <f:facet name="header">  
-		                                                            <h:outputText value="#{appmsg['biodata.list_of_spesifikasi_ability']}"/>
-		                                                        </f:facet>-->
 		                            <p:column style="text-align: center;width: 3%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['global.number']}"/>
@@ -816,23 +817,29 @@
 		                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 		                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
 		                                                 style="font-size: 10px!important" update=":panelDialogBioSpesifikasiId" 
-		                                                 action="#{bioDataController.doSelectBioSpesifikasiAbility()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailSpesifikasi').show()">                        
-		                                    <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataController.selectedDioSpesifikasiAbility}" />
+		                                                 action="#{bioDataRevisionRequestFormController.doSelectBioSpesifikasiAbility(bioSpecAbi)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailSpesifikasi').show()">                        
+		                                    <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility}" />
 		                                </p:commandButton>
-		                                <!--                                - 
-		                                                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-		                                                                                 style="font-size: 10px!important" update=":panelDialogSpesifikasiConfirmId" 
-		                                                                                 action="#{bioDataController.doSelectBioSpesifikasiAbility()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmSpesifikasi').show()">
-		                                                                    <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataController.selectedDioSpesifikasiAbility}" />
-		                                                                </p:commandButton>
-		                                                                -
-		                                                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-		                                                                                 action="#{bioDataController.doUpdateBioSpesifikasiAbility()}" ajax="true" immediate="true">
-		                                                                    <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataController.selectedDioSpesifikasiAbility}" />
-		                                                                    <p:ajax event="dialogReturn" listener="#{bioDataController.onDialogReturnBioSpesifikasiAbility}"  update="tableSpecAbilityId,:growlBioDetailFormId"/>
-		                                                                </p:commandButton>-->
+                                       - 
+                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                         style="font-size: 10px!important" update=":panelDialogSpesifikasiConfirmId" 
+                                                         action="#{bioDataRevisionRequestFormController.doSelectBioSpesifikasiAbility(bioSpecAbi)}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmSpesifikasi').show()">
+                                            <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility}" />
+                                        </p:commandButton>
+                                        -
+                                        <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                         action="#bioDataRevisionRequestFormController.doUpdateBioSpesifikasiAbility()}" ajax="true" immediate="true">
+                                            <f:setPropertyActionListener value="#{bioSpecAbi}" target="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility}" />
+                                            <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioSpesifikasiAbility}"  update="tableSpecAbilityId"/>
+                                        </p:commandButton>
 		                            </p:column>
 		                        </p:dataTable>
+		                        <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                     actionListener="#{bioDataRevisionRequestFormController.doAddBioSpesifikasiAbility()}" ajax="true" immediate="true">
+                                        <p:ajax event="dialogReturn" listener="#{bioDataRevisionRequestFormController.onDialogReturnBioSpesifikasiAbility}" update="tableSpecAbilityId" />
+                                    </p:commandButton>
+                                </h:panelGrid>
                          	</h:panelGrid>
                          	
                          	<h:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" rendered="#{bioDataRevisionRequestFormController.selectedJenisData eq 'INTEREST'}" id="panelGridInterest" >
@@ -1339,17 +1346,41 @@
                 </p:dialog>
                 <!-- END Bio EducationHistory DIALOG --> 
                  <!-- START Bio Keahlian DIALOG -->
+                 <p:dialog widgetVar="dialogConfirmKeahlian" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogKeahlianConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['bioIdCard.bioIdCard_type']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioKeahlian.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataRevisionRequestFormController.doDeleteBioKeahlian()}" update="bioDataFormId:tableKeahlianId,:growlBidoDataFormId"
+                                         oncomplete="PF('dialogConfirmKeahlian').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmKeahlian').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
                 <p:dialog widgetVar="dialogDetailKeahlian" header="Keahlian" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioKeahlianId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Nama Keahlian" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioKeahlian.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioKeahlian.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="Tingkat Keahlian" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
-                                <p:outputLabel value="#{bioDataController.selectedBioKeahlian.tingkatKeahlian}" styleClass="label_hrm" >
+                                <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioKeahlian.tingkatKeahlian}" styleClass="label_hrm" >
                                     <f:converter converterId="tingkatKeahlianConverter" />
                                 </p:outputLabel>
                             </p:column>
@@ -1365,17 +1396,41 @@
                 <!-- END Bio Keahlian DIALOG -->
                 
                 <!-- START Bio Spesifikasi Ability DIALOG -->
+                <p:dialog widgetVar="dialogConfirmSpesifikasi" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogSpesifikasiConfirmId"  columns="3">
+                            <p:outputLabel value="Nama Spesifikasi Ability"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility.optionAbility}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataRevisionRequestFormController.doDeleteBioSpesifikasiAbility()}" update="bioDataFormId:tableSpecAbilityId,:growlBidoDataFormI"
+                                         oncomplete="PF('dialogConfirmSpesifikasi').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmSpesifikasi').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
                 <p:dialog widgetVar="dialogDetailSpesifikasi" header="#{appmsg['specAbility.ability']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioSpesifikasiId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['specAbility.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedDioSpesifikasiAbility.specificationAbility.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility.specificationAbility.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['specAbility.score']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
-                                <p:outputLabel value="#{bioDataController.selectedDioSpesifikasiAbility.value}" styleClass="label_hrm" />
+                                <p:outputLabel value="#{bioDataRevisionRequestFormController.selectedBioSpesifikasiAbility.value}" styleClass="label_hrm" />
                             </p:column>
                         </p:row>
 

@@ -27,6 +27,7 @@ public class BioEducationHistoryModel implements Serializable{
      private City city;
      private Boolean isDownload;
      private String isDownloadString;
+     private String pathFoto;
 
     public Long getCityId() {
         return cityId;
@@ -140,6 +141,15 @@ public class BioEducationHistoryModel implements Serializable{
 	public void setIsDownloadString(String isDownloadString) {
 		this.isDownloadString = isDownloadString;
 	}
+
+	public String getPathFoto() {
+		return pathFoto;
+	}
+
+	public void setPathFoto(String pathFoto) {
+		this.pathFoto = pathFoto;
+	}
      
+	
      
 }
