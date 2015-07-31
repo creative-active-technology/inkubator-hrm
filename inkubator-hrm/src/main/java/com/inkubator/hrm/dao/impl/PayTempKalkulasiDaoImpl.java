@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,10 +27,8 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
-import java.math.BigDecimal;
 
 /**
  *
@@ -213,7 +212,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) {
-    
+        System.out.println("masukkkkkkkkkkkkkkkkkkkkk");
         BigDecimal zero = new BigDecimal(0.0);
         final StringBuilder query = new StringBuilder("select D.code as costCenterCode,");
         query.append("D.name AS costCenterName,");
@@ -355,6 +354,17 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
         return (PayTempKalkulasi) criteria.uniqueResult();
     }
+
+	@Override
+	public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+        criteria.add(Restrictions.lt("nominal", nominal));
+		return criteria.list();
+	}
 
     
 }

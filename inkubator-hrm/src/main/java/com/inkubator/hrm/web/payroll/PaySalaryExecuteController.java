@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +22,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -175,6 +178,30 @@ public class PaySalaryExecuteController extends BaseController {
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "salaryCalculation.calculation_process_succesfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    		
+	    		/** cek jika ada karyawan yang total income nya di bawah minimum (25.000), maka kasih warning info */
+	    		try {
+					List<PayTempKalkulasi> incomes = payTempKalkulasiService.getAllDataByTotalIncomeBelow(new BigDecimal(25000));
+					if(incomes.size() > 0){
+						StringBuffer allNik = new StringBuffer();
+						for(PayTempKalkulasi income : incomes){
+							if(StringUtils.isNotEmpty(allNik)){
+								allNik.append(", ");
+							}
+							allNik.append(income.getEmpData().getNik());
+						}							
+						Object[] parameters = new Object[1];
+						parameters[0] = allNik.toString();
+								
+						ResourceBundle bundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+						String message = MessageFormat.format(bundle.getString("salaryCalculation.warning_income_below_minimum"), parameters);
+						FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getString("global.information"), message);
+		                FacesUtil.getFacesContext().addMessage(null, msg);
+	                }
+	    		} catch (Exception ex){
+	    			LOGGER.error("Error ", ex);
+	    		}
+	    		
 	    	} else {
 	    		final List<Throwable> exceptions = jobExecution.getAllFailureExceptions();
                 for (final Throwable throwable : exceptions) {                	
