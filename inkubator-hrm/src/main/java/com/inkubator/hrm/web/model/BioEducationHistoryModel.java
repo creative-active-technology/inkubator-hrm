@@ -8,6 +8,8 @@ import com.inkubator.hrm.entity.City;
 
 import java.io.Serializable;
 
+import org.primefaces.model.UploadedFile;
+
 /**
  *
  * @author Deni
@@ -28,6 +30,7 @@ public class BioEducationHistoryModel implements Serializable{
      private Boolean isDownload;
      private String isDownloadString;
      private String pathFoto;
+     private UploadedFile fotoFile;
 
     public Long getCityId() {
         return cityId;
@@ -149,7 +152,15 @@ public class BioEducationHistoryModel implements Serializable{
 	public void setPathFoto(String pathFoto) {
 		this.pathFoto = pathFoto;
 	}
-     
+
+	public UploadedFile getFotoFile() {
+		return fotoFile;
+	}
+
+	public void setFotoFile(UploadedFile fotoFile) {
+		this.fotoFile = fotoFile;
+	}
+
 	
      
 }

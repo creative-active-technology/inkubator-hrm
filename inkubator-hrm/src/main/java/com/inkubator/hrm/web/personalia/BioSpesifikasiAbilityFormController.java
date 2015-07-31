@@ -55,6 +55,7 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
     private BioSpesifikasiAbilityModel model;
     private Boolean isEdit;
     private String isRevision;
+    private String isEditOnRevision;
     
     //List Dropdown
     private List<SpecificationAbility> specAbility = new ArrayList<SpecificationAbility>();
@@ -90,7 +91,7 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
             //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
             isRevision = FacesUtil.getRequestParameter("isRevision");
             if(StringUtils.isNotBlank(isRevision)){
-            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
             	if(StringUtils.equals(isEditOnRevision, "Yes")){
             		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
             		BioSpesifikasiAbility  bioSpesifikasiAbility = (BioSpesifikasiAbility ) sessionMap.get("selectedBioSpesifikasiAbility");
@@ -152,6 +153,11 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
         if (model.getId() != null) {
 //            bioSpesifikasiAbility.setId(model.getId());
         }
+        
+    	if(StringUtils.equals(isEditOnRevision, "Yes")){
+    		bioSpesifikasiAbility.setId(new BioSpesifikasiAbilityId(bioDataId, model.getSpecId()));
+    	}
+        
         bioSpesifikasiAbility.setBioData(new BioData(bioDataId));
         bioSpesifikasiAbility.setValue(model.getScore());
         bioSpesifikasiAbility.setSpecificationAbility(new SpecificationAbility(model.getSpecId()));

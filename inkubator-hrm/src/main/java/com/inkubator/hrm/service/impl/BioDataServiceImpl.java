@@ -37,6 +37,7 @@ import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.FamilyRelationDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
+import com.inkubator.hrm.dao.InterestTypeDao;
 import com.inkubator.hrm.dao.MajorDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
@@ -53,6 +54,7 @@ import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BioFamilyRelationship;
 import com.inkubator.hrm.entity.BioIdCard;
 import com.inkubator.hrm.entity.BioKeahlian;
+import com.inkubator.hrm.entity.BioPeopleInterest;
 import com.inkubator.hrm.entity.BioRelasiPerusahaan;
 import com.inkubator.hrm.entity.BioSpesifikasiAbility;
 import com.inkubator.hrm.entity.BioSpesifikasiAbilityId;
@@ -63,6 +65,7 @@ import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.InstitutionEducation;
+import com.inkubator.hrm.entity.InterestType;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewType;
@@ -164,6 +167,8 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     private FacultyDao facultyDao;
     @Autowired
     private MajorDao majorDao;
+    @Autowired
+    private InterestTypeDao interestTypeDao;
 
     @Override
     public BioData getEntiyByPK(String id) throws Exception {
@@ -640,6 +645,11 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         			saveOrUpdateBioSpesifikasiAbility(modifiedListBioSpesifikasiAbility, empData.getBioData().getId());
         			break;
         			
+        		case HRMConstant.BIO_REV_INTEREST:
+        			List<BioPeopleInterest> modifiedListBioPeopleInterest = (List<BioPeopleInterest>) modifiedEntity;
+        			saveOrUpdateBioPeopleInterest(modifiedListBioPeopleInterest, empData.getBioData().getId());
+        			break;
+        			
         		default:
     				break;
         	}
@@ -709,6 +719,22 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 				case HRMConstant.BIO_REV_SKILL:
 					List<BioKeahlian> listModifiedBioKeahlian = (List<BioKeahlian>) modifiedEntity;
 					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioKeahlian, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+					
+				case HRMConstant.BIO_REV_SPESIFICATION_ABILITY:
+					List<BioSpesifikasiAbility> listModifiedBioSpesifikasiAbility = (List<BioSpesifikasiAbility>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioSpesifikasiAbility, dataType));
+		            approvalActivity.setTypeSpecific(null);
+		            approvalActivityDao.save(approvalActivity);
+		            result = "success_need_approval";
+					break;
+				
+				case HRMConstant.BIO_REV_INTEREST:
+					List<BioPeopleInterest> listModifiedBioPeopleInterest = (List<BioPeopleInterest>) modifiedEntity;
+					approvalActivity.setPendingData(getJsonPendingData(listModifiedBioPeopleInterest, dataType));
 		            approvalActivity.setTypeSpecific(null);
 		            approvalActivityDao.save(approvalActivity);
 		            result = "success_need_approval";
@@ -786,6 +812,18 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 			case HRMConstant.BIO_REV_SKILL:				
 				JsonArray jsonArrayBioKeahlian = (JsonArray) parser.parse(gson.toJson(entity));
 				jsonObject.add("modifiedEntity", jsonArrayBioKeahlian);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_SPESIFICATION_ABILITY:				
+				JsonArray jsonArrayBioSpesifikasiAbility = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioSpesifikasiAbility);
+				jsonObject.addProperty("dataType", dataType);
+				break;
+				
+			case HRMConstant.BIO_REV_INTEREST:				
+				JsonArray jsonArrayBioPeopleInterest = (JsonArray) parser.parse(gson.toJson(entity));
+				jsonObject.add("modifiedEntity", jsonArrayBioPeopleInterest);
 				jsonObject.addProperty("dataType", dataType);
 				break;
 
@@ -1176,6 +1214,50 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 				 bioSpesifikasiAbilityToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
 				 bioSpesifikasiAbilityToUpdate.setUpdatedOn(new Date());
 				 bioSpesifikasiAbilityDao.update(bioSpesifikasiAbilityToUpdate);
+				 
+			 }
+		 }
+	 }
+	 
+	 private void saveOrUpdateBioPeopleInterest(List<BioPeopleInterest> listBioPeopleInterestRevision, Long bioDataId){
+		 BioData bioData = bioDataDao.getEntiyByPK(bioDataId);
+		 
+		 //Dapatkan List BioPeopleInterest dari DB dari bioDataId yang mengajukan proses Revisi
+		 List<BioPeopleInterest> listBioPeopleInterestFromDb = bioPeopleInterestDao.getAllDataByBioDataId(bioDataId);
+		 
+		 //Looping Data Existing BioPeopleInterest dari database
+		 for(BioPeopleInterest bioPeopleInterestFromDb : listBioPeopleInterestFromDb){
+			 
+			//jika data BioPeopleInterest dari db, tidak ada dalam list BioPeopleInterest dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
+			 if(!Lambda.exists(listBioPeopleInterestRevision, Lambda.having(Lambda.on(BioPeopleInterest.class).getId() == bioPeopleInterestFromDb.getId()))){
+				 bioPeopleInterestDao.delete(bioPeopleInterestFromDb);
+			 }
+		 }
+		 
+		//Looping Data BioPeopleInterest dari list BioPeopleInterest hasil revisi
+		 for(BioPeopleInterest BioPeopleInterestRevision : listBioPeopleInterestRevision){
+			 
+			//Cek apakah data BioPeopleInterest dari proses revisi BioPeopleInterest, sudah ada di database
+			 BioPeopleInterest bioPeopleInterestToUpdate = bioPeopleInterestDao.getEntiyByPK(BioPeopleInterestRevision.getId());
+			 InterestType interestType = interestTypeDao.getEntiyByPK(BioPeopleInterestRevision.getInterestType().getId());
+			 
+			//Jika belum ada, berarti revisinya adalah tambah data baru.
+			 if(ObjectUtils.equals(null, bioPeopleInterestToUpdate)){
+				 
+				 BioPeopleInterestRevision.setInterestType(interestType);
+				 BioPeopleInterestRevision.setBiodata(bioData);
+				 BioPeopleInterestRevision.setCreatedBy(UserInfoUtil.getUserName());
+				 BioPeopleInterestRevision.setCreatedOn(new Date());
+				 bioPeopleInterestDao.save(BioPeopleInterestRevision);
+				 
+			 }else{//Jika sudah ada, berarti revisinya adalah edit data yang sudah ada.
+				 
+				 BeanUtils.copyProperties(BioPeopleInterestRevision, bioPeopleInterestToUpdate, new String[]{"id","bioData","interestType","createdBy","createdOn"});
+				 bioPeopleInterestToUpdate.setInterestType(interestType);
+				 bioPeopleInterestToUpdate.setBiodata(bioData);
+				 bioPeopleInterestToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
+				 bioPeopleInterestToUpdate.setUpdatedOn(new Date());
+				 bioPeopleInterestDao.update(bioPeopleInterestToUpdate);
 				 
 			 }
 		 }

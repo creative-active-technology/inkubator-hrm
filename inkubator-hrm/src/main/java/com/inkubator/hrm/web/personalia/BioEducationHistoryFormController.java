@@ -251,7 +251,7 @@ public class BioEducationHistoryFormController extends BaseController{
 	    		//Transfer File, dan set path-nya ke model, akan tetapi jngn langsung di rename ke foto awal (jika ada) dari BioEducationHistory
 	    		//nanti jika sudah approval, baru di update path foto dari entity BioEducationHistory dengan yang di model
 	    		 if (fotoFile != null) {
-	    			 facesIO.transferFile(fotoFile);
+	    			 model.setFotoFile(fotoFile);
 	    			 model.setPathFoto(facesIO.getPathUpload() + educationHistory.getId() + "_" + fotoFileName);
 	    	     }
 	    		RequestContext.getCurrentInstance().closeDialog(model);
