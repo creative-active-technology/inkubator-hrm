@@ -431,7 +431,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         //Start calculation
         List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(endPeriodDate);
         /*List<EmpData> totalEmployee = new ArrayList<EmpData>();
-         EmpData emp = empDataDao.getEntiyByPK((long)112);
+         EmpData emp = empDataDao.getEntiyByPK((long)130);
          totalEmployee.add(emp);*/
         System.out.println(" Total Employee " + totalEmployee.size());
         for (EmpData empData : totalEmployee) {
@@ -905,9 +905,15 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) {
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) throws Exception {
         return payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, specific);
 
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal) throws Exception {
+    	return payTempKalkulasiDao.getAllDataByTotalIncomeBelow(nominal);
     }
 
 }
