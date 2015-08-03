@@ -17,7 +17,11 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -38,21 +42,29 @@ import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
+import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
+import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.dao.ReimbursmentDao;
+import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BenefitGroupRate;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.entity.PayTempAttendanceStatus;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 import org.hamcrest.Matchers;
@@ -85,6 +97,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private BenefitGroupRateDao benefitGroupRateDao;
     @Autowired
     private PayTempKalkulasiEmpPajakDao payTempKalkulasiEmpPajakDao;
+    @Autowired
+    private PayTempAttendanceStatusDao payTempAttendanceStatusDao;
+    @Autowired
+    private PayTempOvertimeDao payTempOvertimeDao;
+    @Autowired
+    private WtGroupWorkingDao wtGroupWorkingDao;
+    @Autowired
+    private WtScheduleShiftService wtScheduleShiftService;
 
     @Override
     public PayTempKalkulasi getEntiyByPK(String id) throws Exception {
@@ -405,18 +425,30 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         Double lessTime = null;
         Double moreTime = null;
         Double overTIme = null;
-        Double totalDay = null;
+        Double totalDay = this.getDefaultWorkingDay(startPeriodDate, endPeriodDate); //total working day dari kelompok kerja DEFAULT(reguler)
         Double outPut = null;
 
         //Start calculation
         List<EmpData> totalEmployee = empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(endPeriodDate);
         /*List<EmpData> totalEmployee = new ArrayList<EmpData>();
-         EmpData emp = empDataDao.getEntiyByPK((long)112);
+         EmpData emp = empDataDao.getEntiyByPK((long)130);
          totalEmployee.add(emp);*/
         System.out.println(" Total Employee " + totalEmployee.size());
         for (EmpData empData : totalEmployee) {
             LOGGER.info(" ============= EMPLOYEE : " + empData.getBioData().getFirstName() + " =====================");
 
+            /**
+             * Set initial variabel untuk masing2 karyawan, 
+             * yang akan dibutuhkan untuk perhitungan model komponen FORMULA (if any) 
+             * */
+            basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
+            PayTempOvertime payTempOvertime = payTempOvertimeDao.getEntityByEmpDataId(empData.getId());
+            overTIme = payTempOvertime != null ? payTempOvertime.getOvertime() : 0.0;
+            PayTempAttendanceStatus payTempAttendanceStatus = payTempAttendanceStatusDao.getEntityByEmpDataId(empData.getId());
+            workingDay = payTempAttendanceStatus != null ? (double) payTempAttendanceStatus.getTotalAttendance() : 0.0;            
+            lessTime = ((workingDay > 0) && (workingDay < totalDay)) ? totalDay - workingDay : 0.0;
+            moreTime = (workingDay > totalDay) ? workingDay - totalDay : 0.0;
+            
             /**
              * Saat ini totalIncome masih temporary, karena belum dikurangi
              * pajak dan pembulatan CSR Sedangkan untuk final totalIncome (take
@@ -538,14 +570,13 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_FORMULA)) {
                     String formulaOne = paySalaryComponent.getFormula();
-                    if (formulaOne != null) {
-                        basicSalary = Double.parseDouble(empData.getBasicSalaryDecrypted());
+                    if (formulaOne != null) {                        
                         jsEngine.put("bS", basicSalary);
-                        jsEngine.put("wD", 0);// Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("lT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("mT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("oT", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
-                        jsEngine.put("tD", 0);//Kedepannya akandi isin dari database setelah proses absensi karyawan beres
+                        jsEngine.put("wD", workingDay);
+                        jsEngine.put("lT", lessTime);
+                        jsEngine.put("mT", moreTime);
+                        jsEngine.put("oT", overTIme);
+                        jsEngine.put("tD", totalDay);
                         outPut = (Double) jsEngine.eval(formulaOne);
 
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
@@ -657,6 +688,33 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private BigDecimal calculateTotalIncome(BigDecimal totalIncome, PayTempKalkulasi payTempKalkulasi) {
 
         return totalIncome.add((payTempKalkulasi.getNominal().multiply(new BigDecimal(payTempKalkulasi.getFactor()))));
+    }
+    
+    private Double getDefaultWorkingDay(Date startPeriodDate, Date endPeriodDate) throws Exception{
+    	double totalDay = 0.0;
+    	//get DEFAULT kelompok kerja karyawan
+    	WtGroupWorking workingGroup = wtGroupWorkingDao.getByCode(HRMConstant.WORKING_GROUP_CODE_DEFAULT);
+    	
+    	if(workingGroup!= null){
+    		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
+    		
+    		//loop date-nya, check jadwal berdasarkan kelompok kerja		
+    		for(Date loop = startPeriodDate; loop.before(endPeriodDate) || DateUtils.isSameDay(loop, endPeriodDate); loop = DateUtils.addDays(loop, 1)){
+    			TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+    			if(jadwal == null){
+    				//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
+    				List<TempJadwalKaryawan> jadwalKaryawans = wtScheduleShiftService.getAllScheduleForView(workingGroup.getId(), loop, null);
+    				tempJadwalKaryawans.addAll(jadwalKaryawans);
+    				jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+    			}
+    			
+    			//selain "OFF"(hari libur) berarti termasuk jam kerja
+    			if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+    				totalDay++;
+    			}			
+    		}	
+    	}
+    	return totalDay;
     }
 
     @Override
@@ -847,9 +905,15 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) {
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataId, Integer specific) throws Exception {
         return payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, specific);
 
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal) throws Exception {
+    	return payTempKalkulasiDao.getAllDataByTotalIncomeBelow(nominal);
     }
 
 }

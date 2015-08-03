@@ -64,11 +64,11 @@
                                     <p:outputLabel value="   " />
                                     <p:outputLabel value=" #{appmsg['permitClassification.day']}" />
                                     <p:outputLabel value="   " />
-                                    <p:commandButton id="btnEditId" value="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
+                                    <!-- <p:commandButton id="btnEditId" value="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
                                                      action="#{payAttendanceViewController.doEditTotalAttendance()}" update="labelJmlHariKerja"  
                                                      styleClass="label_button" icon="ui-icon-folder-open" ajax="true" immediate="true">
                                         <p:ajax event="dialogReturn"  listener="#{payAttendanceViewController.onDialogTaReturn}"  update="labelJmlHariKerja"/>
-                                    </p:commandButton>
+                                    </p:commandButton> -->
                                     </h:panelGroup>
                                 </p:column>                   
                                 
@@ -94,9 +94,10 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{payAttendanceViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
+                                    <!-- <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{payAttendanceViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
                                         <p:ajax event="dialogReturn"  listener="#{payAttendanceViewController.onDialogReturn}"  update="tableId,labelTotalEmployee"/>
-                                    </p:commandButton>
+                                    </p:commandButton> -->
+                                    <p:commandButton id="btnSyncId" value="#{appmsg['global.synchronization']}" title="#{appmsg['global.synchronization']}" action="#{payAttendanceViewController.doSynchronized()}" onstart="statusDialog.show()" oncomplete="statusDialog.hide()" update="tableId,growlId"  styleClass="label_button" icon="ui-icon-document"/>
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Attendance_Status"/>
                                     </p:commandButton>
@@ -161,9 +162,6 @@
                         </p:blockUI>
                     </h:form>
                 </div>
-                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
-                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

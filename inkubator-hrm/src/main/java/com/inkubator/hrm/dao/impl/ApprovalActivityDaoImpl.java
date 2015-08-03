@@ -116,7 +116,6 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
-        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -139,15 +138,16 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     }
 
     private void doSearchByParam(ApprovalActivitySearchParameter searchParameter, Criteria criteria) {
+    	criteria.createAlias("approvalDefinition", "approvalDefinition", JoinType.INNER_JOIN);
+    	
         if (searchParameter.getRequestBy() != null) {
             criteria.add(Restrictions.like("requestBy", searchParameter.getRequestBy(), MatchMode.START));
         }
         if (searchParameter.getApprovedBy() != null) {
             criteria.add(Restrictions.like("approvedBy", searchParameter.getApprovedBy(), MatchMode.START));
         }
-        if (StringUtils.isNotEmpty(searchParameter.getName())) {
-            criteria.createAlias("approvalDefinition", "ad", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ad.name", searchParameter.getName(), MatchMode.START));
+        if (StringUtils.isNotEmpty(searchParameter.getName())) {            
+            criteria.add(Restrictions.like("approvalDefinition.name", searchParameter.getName(), MatchMode.START));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

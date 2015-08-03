@@ -29,7 +29,7 @@ public interface WtScheduleShiftService extends IService<WtScheduleShift> {
             
     public List<TempJadwalKaryawan> getAllScheduleForView(long approvalActivityId)throws Exception;
     
-    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate)throws Exception;
+    public List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate, String createdBy)throws Exception;
     
     public List<Date> getAllWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception;
 

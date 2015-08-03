@@ -5,18 +5,10 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.PayTempOvertimeDao;
-import com.inkubator.hrm.entity.PayTempOvertime;
-import com.inkubator.hrm.service.PayTempOvertimeService;
-import com.inkubator.hrm.web.model.PaySalaryUploadFileModel;
-import com.inkubator.hrm.web.model.PayTempOvertimeFileModel;
-import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -24,6 +16,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.dao.PayTempOvertimeDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.entity.PayTempOvertime;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.PayTempOvertimeService;
+import com.inkubator.hrm.web.model.PayTempOvertimeFileModel;
+import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -37,6 +46,10 @@ public class PayTempOvertimeServiceImpl extends IServiceImpl implements PayTempO
     private PayTempOvertimeDao payTempOvertimeDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private WtPeriodeDao wtPeriodeDao;
+    @Autowired
+    private LogWtAttendanceRealizationDao logWtAttendanceRealizationDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -152,8 +165,9 @@ public class PayTempOvertimeServiceImpl extends IServiceImpl implements PayTempO
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return payTempOvertimeDao.getTotalData();
     }
 
     @Override
@@ -233,5 +247,33 @@ public class PayTempOvertimeServiceImpl extends IServiceImpl implements PayTempO
     public PayTempOvertime getEntityByPkWithDetail(Long id) throws Exception {
         return payTempOvertimeDao.getEntityByPkWithDetail(id);
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void synchronizedOvertimeStatus() throws Exception {
+		//validate
+		WtPeriode periode = wtPeriodeDao.getEntityByPayrollTypeActive();
+		List<LogWtAttendanceRealization> listAttendanceRealization = logWtAttendanceRealizationDao.getAllDataByPeriodId(periode.getId());
+		if(StringUtils.equals(periode.getAbsen(), HRMConstant.PERIODE_ABSEN_ACTIVE)){
+			throw new BussinessException("payTempAttendanceStatus.error_absent_period_still_active");
+		} else if(listAttendanceRealization.isEmpty()){
+			throw new BussinessException("payTempAttendanceStatus.error_attendance_realization_empty");
+		}
+		
+		//delete all data PayTempOvertime
+		payTempOvertimeDao.deleteAllData();
+		
+		//synchronize All Data based on active payroll wtPeriode		
+		for(LogWtAttendanceRealization attendanceRealization : listAttendanceRealization){
+			EmpData empData = empDataDao.getEntiyByPK(attendanceRealization.getEmpDataId());
+			PayTempOvertime payTempOvertime =  new PayTempOvertime();
+			payTempOvertime.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			payTempOvertime.setEmpData(empData);
+			payTempOvertime.setOvertime((double) attendanceRealization.getOvertime());
+			payTempOvertime.setCreatedBy(UserInfoUtil.getUserName());
+			payTempOvertime.setCreatedOn(new Date());
+			payTempOvertimeDao.save(payTempOvertime);
+		}		
+	}
     
 }

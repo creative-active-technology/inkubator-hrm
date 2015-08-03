@@ -44,6 +44,7 @@ import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -85,7 +86,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     private Integer progress;
     private Date payrollCalculationDate;
     private JobExecution jobExecution;
-   
+    private WtAttendanceCalculationSearchParameter searchParameter;
 
     @PostConstruct
     @Override
@@ -98,7 +99,7 @@ public class WtPeriodEmpDetailController extends BaseController {
             Long periodeId = Long.valueOf(FacesUtil.getRequestParameter("execution").substring(1));           
             model = wtPeriodeService.getWtPeriodEmpByWtPeriodId(periodeId);          
             SimpleDateFormat  dateFormat = new SimpleDateFormat("MMMM yyyy");
-            
+            searchParameter = new WtAttendanceCalculationSearchParameter();
            
         } catch (Exception ex) {
             Logger.getLogger(WtPeriodEmpDetailController.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,7 +132,7 @@ public class WtPeriodEmpDetailController extends BaseController {
     	if(jobExecution == null){ 
 	        try {	        	
 	            
-	            long sleepVariable = tempAttendanceRealizationService.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(model.getWtPeriodId().longValue())* 3;
+	            long sleepVariable = tempAttendanceRealizationService.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, model.getWtPeriodId().longValue())* 3;
 	            JobParameters jobParameters = new JobParametersBuilder()	                    
 	                    .addDate("periodUntillDate", model.getUntilPeriode())
 	                    .addString("createdBy", UserInfoUtil.getUserName())
@@ -214,9 +215,9 @@ public class WtPeriodEmpDetailController extends BaseController {
             
             //if period absen status is Active, get from TempAttendanceRealization, otherwise get from LogAttendanceRealization
             if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_ACTIVE)){
-                lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(tempAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new TempAttendanceRealizationVmLazyDataModel(searchParameter, tempAttendanceRealizationService, model.getWtPeriodId().longValue());
             }else  if(StringUtils.equals(model.getStatus(), HRMConstant.WT_PERIOD_STATUS_VOID)){
-                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(logWtAttendanceRealizationService, model.getWtPeriodId().longValue());
+                lazyDataModel = new LogAttendanceRealizationVmLazyDataModel(searchParameter, logWtAttendanceRealizationService, model.getWtPeriodId().longValue());
             }
             
         }
@@ -312,6 +313,15 @@ public class WtPeriodEmpDetailController extends BaseController {
 
 	public void setTempProcessReadFingerService(TempProcessReadFingerService tempProcessReadFingerService) {
 		this.tempProcessReadFingerService = tempProcessReadFingerService;
+	}
+
+	public WtAttendanceCalculationSearchParameter getSearchParameter() {
+		return searchParameter;
+	}
+
+	public void setSearchParameter(
+			WtAttendanceCalculationSearchParameter searchParameter) {
+		this.searchParameter = searchParameter;
 	}
         
     
