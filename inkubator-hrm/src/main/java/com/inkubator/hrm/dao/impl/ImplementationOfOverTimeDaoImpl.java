@@ -113,5 +113,11 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
 	        criteria.add(Restrictions.le("implementationDate", endDate));
 	        return criteria.list();
 	}
+
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+    }
     
 }
