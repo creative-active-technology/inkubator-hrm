@@ -9,11 +9,12 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
 import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -124,13 +125,19 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         query.append(" wtPeriode.absen as status ");
         query.append(" FROM wt_periode wtPeriode ");
         query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");
+        
+        //filter by search param
+        query.append(doSearchWtPeriodEmpByParam(searchParameter));
+        
         query.append(" GROUP BY  wtPeriode.id ");
+        query.append(" ORDER BY  wtPeriode.from_periode DESC ");
         query.append(" LIMIT  " + firstResult + "," + maxResults);
+        
+        Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        		
+        hbm = this.setValueQueryWtPeriodEmpByParam(hbm, searchParameter);
 
-        return getCurrentSession().createSQLQuery(query.toString())
-                //                    .setParameterList("idDept", departementId)
-                //                    .setParameterList("idEdu", educationId)
-                // .setMaxResults(maxResults).setFirstResult(firstResult)
+        return hbm
                 .setResultTransformer(Transformers.aliasToBean(WtPeriodEmpViewModel.class))
                 .list();
     }
@@ -145,10 +152,48 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         query.append(" wtPeriode.absen as status ");
         query.append(" FROM wt_periode wtPeriode ");
         query.append(" INNER JOIN emp_data empData ON empData.join_date < wtPeriode.until_periode  ");
+        
+        //filter by search param
+        query.append(doSearchWtPeriodEmpByParam(searchParameter));
+        
         query.append(" GROUP BY  wtPeriode.id) as jumlahRow ");
 
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
+        hbm = this.setValueQueryWtPeriodEmpByParam(hbm, searchParameter);
+        
         return Long.valueOf(hbm.uniqueResult().toString());
+    }
+    
+    private String doSearchWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
+    	StringBuilder query = new StringBuilder();
+    	
+    	if(!StringsUtils.equals(searchParameter.getStartPeriod(), null)){
+    		query.append(" WHERE DATE_FORMAT(wtPeriode.from_periode, '%W %M %Y') LIKE :startPeriod ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getEndPeriod(), null)){
+    		query.append(" WHERE DATE_FORMAT(wtPeriode.until_periode, '%W %M %Y') LIKE :endPeriod ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getAbsenStatus(), null)){
+    		query.append(" WHERE wtPeriode.absen LIKE :absenStatus  ");
+    	}    	
+    	
+    	
+    	return query.toString();
+    }
+    
+    private Query setValueQueryWtPeriodEmpByParam(Query hbm, WtPeriodeEmpSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringsUtils.equals(param, "startPeriod")){
+    			hbm.setParameter("startPeriod", "%" + parameter.getStartPeriod() + "%");
+    		} else if(StringsUtils.equals(param, "endPeriod")){
+    			hbm.setParameter("endPeriod", "%" + parameter.getEndPeriod() + "%");
+    		} else if(StringsUtils.equals(param, "absenStatus")){
+    			hbm.setParameter("absenStatus", "%" + parameter.getAbsenStatus() + "%");
+    		} 
+    	}    	
+    	return hbm;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.payroll;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -15,6 +16,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -25,6 +27,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
@@ -285,6 +288,27 @@ public class LogMonthEndPayrollViewController extends BaseController {
 			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				FacesContext.getCurrentInstance().validationFailed();
 			}
+			
+			/** cek jika ada karyawan yang total income nya ada yang di bawah Rp. 0 */
+			List<PayTempKalkulasi> incomes = payTempKalkulasiService.getAllDataByTotalIncomeBelow(new BigDecimal(0));
+			if(incomes.size() > 0){
+				StringBuffer allNik = new StringBuffer();
+				for(PayTempKalkulasi income : incomes){
+					if(StringUtils.isNotEmpty(allNik)){
+						allNik.append(", ");
+					}
+					allNik.append(income.getEmpData().getNik());
+				}							
+				Object[] parameters = new Object[1];
+				parameters[0] = allNik.toString();
+						
+				ResourceBundle bundle = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+				String message = MessageFormat.format(bundle.getString("payroll.error_income_below_zero"), parameters);
+				FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getString("global.error"), message);
+                FacesUtil.getFacesContext().addMessage(null, msg);
+                FacesContext.getCurrentInstance().validationFailed();
+			}
+			
 			progress=0;
 		} catch (Exception e) {
 			LOGGER.error("Error ", e);

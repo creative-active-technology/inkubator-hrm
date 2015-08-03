@@ -7,6 +7,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 /**
 *
@@ -14,9 +15,9 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 */
 public interface LogWtAttendanceRealizationService extends IService<LogWtAttendanceRealization> {
     
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception;
 
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception;
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) throws Exception;
     
     public void deleteByPeriodId(Long periodId) throws Exception;
 
