@@ -5,16 +5,14 @@
  */
 package com.inkubator.hrm.dao;
 
-import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.PayTempAttendanceStatus;
-import com.inkubator.hrm.entity.Reimbursment;
-import com.inkubator.hrm.web.model.InclusionReimbursmentModel;
-import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
-import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
-
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+
+import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.PayTempAttendanceStatus;
+import com.inkubator.hrm.web.model.PayTempAttendanceStatusModel;
+import com.inkubator.hrm.web.search.PayTempAttendanceSearchParameter;
 
 /**
  *
@@ -23,7 +21,12 @@ import org.hibernate.criterion.Order;
 public interface PayTempAttendanceStatusDao extends IDAO<PayTempAttendanceStatus> {
     public List<PayTempAttendanceStatus> getByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model, int firstResult, int maxResults, Order order);
     
-    public Long getTotalResourceTypeByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model);
+    public Long getTotalByParam(PayTempAttendanceSearchParameter parameter, PayTempAttendanceStatusModel model);
     
     public List<PayTempAttendanceStatus> getAllByNik(String nik);
+
+	public void deleteAllData();
+	
+	public PayTempAttendanceStatus getEntityByEmpDataId(Long empDataId);
+	
 }

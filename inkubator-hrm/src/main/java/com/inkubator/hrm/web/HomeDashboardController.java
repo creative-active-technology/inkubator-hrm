@@ -201,14 +201,14 @@ public class HomeDashboardController extends BaseController {
             
             //Get Attendance Percentation per Department on Active Period
             Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByCompanyId(HrmUserInfoUtil.getCompanyId());
-            
+          
             //Looping and render it
             for (Map.Entry<String, List<DepAttendanceRealizationViewModel>> entry : mapResult.entrySet()) {
             	
             	ChartSeries charDepartmentSeries = new ChartSeries();
             	charDepartmentSeries.setLabel(entry.getKey());
-            	
-            	for(DepAttendanceRealizationViewModel depAttendanceModel : entry.getValue()){            		
+            	List<DepAttendanceRealizationViewModel> listDepartmentModel = Lambda.sort(entry.getValue(), Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber());
+            	for(DepAttendanceRealizationViewModel depAttendanceModel : listDepartmentModel){            		
             		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue()*100);
             	}
             	
@@ -278,7 +278,7 @@ public class HomeDashboardController extends BaseController {
     		WtHoliday holiday = wtHolidayService.getEntityByDate(date);
     		if(holiday!=null){
     			//libur holiday
-    			ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+    			ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
     			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("global.information"), holiday.getHolidayName());
     			FacesUtil.getFacesContext().addMessage(null, msg);
     		} else if( Lambda.exists(listHolidayDate, Matchers.equalTo(new DateTime(date).getDayOfMonth()))) {

@@ -103,10 +103,10 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
     @Override
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) {
 
-        final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM hrm.emp_data ep");
-        nativeQuery.append(" JOIN hrm.bio_data bi on ep.bio_data_id=bi.id");
-        nativeQuery.append(" JOIN hrm.bio_bank_account ba on ba.bio_data_id=bi.id");
-        nativeQuery.append(" JOIN hrm.golongan_jabatan go on ep.gol_jab_id=go.id");
+        final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM emp_data ep");
+        nativeQuery.append(" JOIN bio_data bi on ep.bio_data_id=bi.id");
+        nativeQuery.append(" JOIN bio_bank_account ba on ba.bio_data_id=bi.id");
+        nativeQuery.append(" JOIN golongan_jabatan go on ep.gol_jab_id=go.id");
         nativeQuery.append(" WHERE ep.status != :empCondistion");
         if (searchParameter.getEmpName() != null) {
             nativeQuery.append(" AND (bi.first_name like :firstName OR bi.last_name like :lastName)");

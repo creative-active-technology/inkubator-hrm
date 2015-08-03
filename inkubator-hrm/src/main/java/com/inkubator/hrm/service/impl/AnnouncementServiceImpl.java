@@ -46,6 +46,7 @@ import com.inkubator.hrm.dao.CompanyDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.AnnouncementEmpType;
@@ -58,6 +59,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AnnouncementService;
@@ -98,6 +100,8 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
     private FacesIO facesIO;
     @Autowired
     protected JmsTemplate jmsTemplateBroadcastAnnouncement;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -601,5 +605,16 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Announcement getEntityByPkWithDetail(Long id) throws Exception {
 		return announcementDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Announcement announcement = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan pengumuman oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Judul pengumuman " + announcement.getSubject());
+		return detail.toString();
 	}
 }

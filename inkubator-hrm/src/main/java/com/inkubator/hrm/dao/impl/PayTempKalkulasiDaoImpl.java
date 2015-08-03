@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,10 +27,8 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
-import java.math.BigDecimal;
 
 /**
  *
@@ -86,7 +85,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public Long getTotalPayTempKalkulasiByParam(String searchParameter) {
-        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM hrm.pay_temp_kalkulasi A INNER JOIN hrm.pay_salary_component B WHERE A.pay_salary_component_id = B.id");
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name) FROM pay_temp_kalkulasi A INNER JOIN pay_salary_component B WHERE A.pay_salary_component_id = B.id");
 
         if (searchParameter != null) {
             query.append(" AND B.name like :name ");
@@ -213,7 +212,7 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
     @Override
     public List<SalaryJournalModel> getByParamForSalaryJournal(String searchParameter, int firstResult, int maxResults, Order order) {
-    
+        System.out.println("masukkkkkkkkkkkkkkkkkkkkk");
         BigDecimal zero = new BigDecimal(0.0);
         final StringBuilder query = new StringBuilder("select D.code as costCenterCode,");
         query.append("D.name AS costCenterName,");
@@ -261,13 +260,13 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM");
         query.append(" (SELECT count(d.`code`)");
-        query.append(" FROM hrm.pay_temp_kalkulasi a");
-        query.append(" INNER JOIN hrm.pay_salary_component f ON f.id = a.pay_salary_component_id");
-        query.append(" INNER JOIN hrm.pay_salary_jurnal n ON n.id = f.paysalary_jurnal_id");
-        query.append(" INNER JOIN hrm.emp_data b ON a.emp_data_id = b.id");
-        query.append(" INNER JOIN hrm.jabatan x ON x.id = b.jabatan_id");
-        query.append(" INNER JOIN hrm.department c ON c.id = x.departement_id");
-        query.append(" INNER JOIN hrm.cost_center d ON d.id = c.cost_center_id");
+        query.append(" FROM pay_temp_kalkulasi a");
+        query.append(" INNER JOIN pay_salary_component f ON f.id = a.pay_salary_component_id");
+        query.append(" INNER JOIN pay_salary_jurnal n ON n.id = f.paysalary_jurnal_id");
+        query.append(" INNER JOIN emp_data b ON a.emp_data_id = b.id");
+        query.append(" INNER JOIN jabatan x ON x.id = b.jabatan_id");
+        query.append(" INNER JOIN department c ON c.id = x.departement_id");
+        query.append(" INNER JOIN cost_center d ON d.id = c.cost_center_id");
         if (searchParameter != null) {
             query.append(" WHERE d.name like '%" + searchParameter + "%'");
             query.append(" OR d.code like '%" + searchParameter + "%'");
@@ -355,6 +354,17 @@ public class PayTempKalkulasiDaoImpl extends IDAOImpl<PayTempKalkulasi> implemen
 
         return (PayTempKalkulasi) criteria.uniqueResult();
     }
+
+	@Override
+	public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.createAlias("paySalaryComponent.modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_TAKE_HOME_PAY));
+        criteria.add(Restrictions.lt("nominal", nominal));
+		return criteria.list();
+	}
 
     
 }

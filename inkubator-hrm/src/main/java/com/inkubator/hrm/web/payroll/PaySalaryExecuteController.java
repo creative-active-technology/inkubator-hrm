@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +22,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
@@ -33,7 +36,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.PayTempAttendanceStatusService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
+import com.inkubator.hrm.service.PayTempOvertimeService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
@@ -53,6 +58,10 @@ public class PaySalaryExecuteController extends BaseController {
 
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{payTempAttendanceStatusService}")
+    private PayTempAttendanceStatusService payTempAttendanceStatusService;
+    @ManagedProperty(value = "#{payTempOvertimeService}")
+    private PayTempOvertimeService payTempOvertimeService;
     @ManagedProperty(value = "#{payTempKalkulasiService}")
     private PayTempKalkulasiService payTempKalkulasiService;
     private PayTempKalkulasiSearchParameter searchParameter;
@@ -111,6 +120,8 @@ public class PaySalaryExecuteController extends BaseController {
         jobExecution = null;
         wtPeriodePayroll = null;
         wtPeriodeAbsen = null;
+        payTempOvertimeService = null;
+        payTempAttendanceStatusService = null;
     }
 
     public void doSearch() {
@@ -167,6 +178,30 @@ public class PaySalaryExecuteController extends BaseController {
 	    	if(jobExecution.getStatus() == BatchStatus.COMPLETED){
 	    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.information", "salaryCalculation.calculation_process_succesfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	    		
+	    		/** cek jika ada karyawan yang total income nya di bawah minimum (25.000), maka kasih warning info */
+	    		try {
+					List<PayTempKalkulasi> incomes = payTempKalkulasiService.getAllDataByTotalIncomeBelow(new BigDecimal(25000));
+					if(incomes.size() > 0){
+						StringBuffer allNik = new StringBuffer();
+						for(PayTempKalkulasi income : incomes){
+							if(StringUtils.isNotEmpty(allNik)){
+								allNik.append(", ");
+							}
+							allNik.append(income.getEmpData().getNik());
+						}							
+						Object[] parameters = new Object[1];
+						parameters[0] = allNik.toString();
+								
+						ResourceBundle bundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+						String message = MessageFormat.format(bundle.getString("salaryCalculation.warning_income_below_minimum"), parameters);
+						FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getString("global.information"), message);
+		                FacesUtil.getFacesContext().addMessage(null, msg);
+	                }
+	    		} catch (Exception ex){
+	    			LOGGER.error("Error ", ex);
+	    		}
+	    		
 	    	} else {
 	    		final List<Throwable> exceptions = jobExecution.getAllFailureExceptions();
                 for (final Throwable throwable : exceptions) {                	
@@ -203,6 +238,16 @@ public class PaySalaryExecuteController extends BaseController {
     	try {
 			if(empDataService.getTotalByTaxFreeIsNull()>0) {
 				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_employee_does_not_have_ptkp",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			if(payTempAttendanceStatusService.getTotalData()==0) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_attendance_status_empty",
+			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				FacesContext.getCurrentInstance().validationFailed();
+			}
+			if(payTempOvertimeService.getTotalData()==0) {
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.error_paid_overtime_empty",
 			        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				FacesContext.getCurrentInstance().validationFailed();
 			}
@@ -357,6 +402,14 @@ public class PaySalaryExecuteController extends BaseController {
 
 	public void setWtPeriodeAbsen(WtPeriode wtPeriodeAbsen) {
 		this.wtPeriodeAbsen = wtPeriodeAbsen;
+	}
+
+	public void setPayTempAttendanceStatusService(PayTempAttendanceStatusService payTempAttendanceStatusService) {
+		this.payTempAttendanceStatusService = payTempAttendanceStatusService;
+	}
+
+	public void setPayTempOvertimeService(PayTempOvertimeService payTempOvertimeService) {
+		this.payTempOvertimeService = payTempOvertimeService;
 	}
     
 }

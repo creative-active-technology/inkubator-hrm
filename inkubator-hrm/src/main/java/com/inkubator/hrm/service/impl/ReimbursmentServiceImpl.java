@@ -690,4 +690,19 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         //if there is no error, then sending the email notification
         sendingEmailApprovalNotif(appActivity);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		Reimbursment entity = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);
+		
+		detail.append("Pengajuan penggantian oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Skema " + entity.getReimbursmentSchema().getName() + ". ");
+		detail.append("Jumlah " + entity.getQuantity() + ". ");
+		detail.append("Nominal Rp. " + decimalFormat.format(entity.getNominal()));
+		return detail.toString();
+	}
 }

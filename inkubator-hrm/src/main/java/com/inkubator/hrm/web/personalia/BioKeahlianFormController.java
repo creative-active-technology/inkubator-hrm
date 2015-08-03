@@ -4,6 +4,8 @@
  */
 package com.inkubator.hrm.web.personalia;
 
+import java.util.Map;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
@@ -14,12 +16,15 @@ import com.inkubator.hrm.web.model.BioKeahlianModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -39,6 +44,7 @@ public class BioKeahlianFormController extends BaseController {
     private BioKeahlian selected;
     private BioKeahlianModel model;
     private Boolean isEdit;
+    private String isRevision;
 
     @PreDestroy
     private void cleanAndExit() {
@@ -55,20 +61,37 @@ public class BioKeahlianFormController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
+        	
             String biodataId = FacesUtil.getRequestParameter("bioDataId");
             bioDataId = Long.valueOf(biodataId);
             model = new BioKeahlianModel();
             isEdit = Boolean.FALSE;
             
-            String bioKeahlianId = FacesUtil.getRequestParameter("bioKeahlianId");
-            if (StringUtils.isNotEmpty(bioKeahlianId)) {
-                BioKeahlian bioKeahlian = bioKeahlianService.getAllDataByPK(Long.parseLong(bioKeahlianId));
-                if (bioKeahlian != null) {
-                    model = getModelFromEntity(bioKeahlian);
-                    isEdit = Boolean.TRUE;
-                    bioDataId = bioKeahlian.getBiodata().getId();
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		BioKeahlian bioKeahlian = (BioKeahlian) sessionMap.get("selectedBioKeahlian");
+            		if(ObjectUtils.notEqual(bioKeahlian, null)){
+            			model = getModelFromEntity(bioKeahlian);
+                		isEdit = Boolean.TRUE;
+            		}
+            	}
+            	
+            }else{
+            	String bioKeahlianId = FacesUtil.getRequestParameter("bioKeahlianId");
+                if (StringUtils.isNotEmpty(bioKeahlianId)) {
+                    BioKeahlian bioKeahlian = bioKeahlianService.getAllDataByPK(Long.parseLong(bioKeahlianId));
+                    if (bioKeahlian != null) {
+                        model = getModelFromEntity(bioKeahlian);
+                        isEdit = Boolean.TRUE;
+                        bioDataId = bioKeahlian.getBiodata().getId();
+                    }
                 }
             }
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -77,13 +100,22 @@ public class BioKeahlianFormController extends BaseController {
     public void doSave() {
         BioKeahlian bioKeahlian = getEntityFromViewModel(model);
         try {
-            if (isEdit) {
-                bioKeahlianService.update(bioKeahlian);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                bioKeahlianService.save(bioKeahlian);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioAddress yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		RequestContext.getCurrentInstance().closeDialog(bioKeahlian);
+	    	}else{
+	    		 if (isEdit) {
+	                 bioKeahlianService.update(bioKeahlian);
+	                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	             } else {
+	                 bioKeahlianService.save(bioKeahlian);
+	                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	             }
+	    	}
+           
             cleanAndExit();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -159,6 +191,14 @@ public class BioKeahlianFormController extends BaseController {
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
+	}
     
     
 }

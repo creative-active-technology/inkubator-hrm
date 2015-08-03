@@ -19,6 +19,7 @@ import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+
 import java.util.Date;
 
 /**
@@ -213,5 +214,6 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         criteria.add(Restrictions.le("startDate", dateUntill));
         return criteria.list();
 	}
+
 
 }

@@ -9,6 +9,7 @@ import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 /**
  *
@@ -36,9 +37,9 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
 
     public Long gettotalEmpOnSick(long empId);
 
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId);
     
     public void deleteAllData();
 
@@ -51,5 +52,9 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
     public Long getTotalOverTime(long empId);
 
     public TempAttendanceRealization getByEmp(long empId);
+
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalPaidOvertimeByParam();
 
 }

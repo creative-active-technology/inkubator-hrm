@@ -21,10 +21,12 @@ import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioEducationHistoryModel;
+import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,12 +36,15 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -72,6 +77,7 @@ public class BioEducationHistoryFormController extends BaseController{
     private Boolean isEdit;
     private UploadedFile fotoFile;
     private String fotoFileName;
+    private String isRevision;
     
     //List Dropdown
     
@@ -118,6 +124,7 @@ public class BioEducationHistoryFormController extends BaseController{
         facesIO = null;
         listCity = null;
         listCitys = null;
+        isRevision = null;
     }
     
     @PostConstruct
@@ -129,39 +136,59 @@ public class BioEducationHistoryFormController extends BaseController{
         model = new BioEducationHistoryModel();
         
         try {
-            if(param.contains("i")){
-                bioDataId = Long.parseLong(param.substring(1));
-                isEdit = Boolean.FALSE;
+        	
+        	//parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            isRevision = FacesUtil.getRequestParameter("isRevision");
+            if(StringUtils.isNotBlank(isRevision)){
+            	
+            	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
+            	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		
+            		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+            		model = (BioEducationHistoryModel) sessionMap.get("selectedBioEducationHistoryModel");
+            		isEdit = Boolean.TRUE;
+            		bioDataId = model.getBiodataId();
+            	}else{
+            		bioDataId = Long.parseLong(param.substring(1));
+            	}
+            	
+            }else{
+            	if(param.contains("i")){
+                    bioDataId = Long.parseLong(param.substring(1));
+                    isEdit = Boolean.FALSE;
+                }
+                if (param.contains("e")) {
+                    isEdit = Boolean.TRUE;
+                    long educationId = Long.parseLong(param.substring(1));
+                    BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
+                    model.setId(educationHistory.getId());
+                    model.setBiodataId(educationHistory.getBiodata().getId());
+                    if(educationHistory.getEducationLevel() != null){
+                        model.setEducationLevelId(educationHistory.getEducationLevel().getId());
+                    }
+                    if(educationHistory.getInstitutionEducation() != null){
+                        model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
+                    }
+                    if(educationHistory.getFaculty()!=null){
+                        model.setFacultyId(educationHistory.getFaculty().getId());
+                    }
+                    if(educationHistory.getMajor()!=null){
+                        model.setMajorId(educationHistory.getMajor().getId());
+                    }
+                    model.setCertificateNumber(educationHistory.getCertificateNumber());
+                    model.setScore(educationHistory.getScore());
+                    if(educationHistory.getCity() != null ){
+                        model.setCity(educationHistory.getCity());
+                    }
+                    model.setYearIn(educationHistory.getYearIn());
+                    model.setYearOut(educationHistory.getYearOut());
+                    bioDataId = educationHistory.getBiodata().getId();
+                } else {
+                    isEdit = Boolean.FALSE;
+                }
             }
-            if (param.contains("e")) {
-                isEdit = Boolean.TRUE;
-                long educationId = Long.parseLong(param.substring(1));
-                BioEducationHistory educationHistory = educationHistoryService.getAllDataByPK(educationId);
-                model.setId(educationHistory.getId());
-                model.setBiodataId(educationHistory.getBiodata().getId());
-                if(educationHistory.getEducationLevel() != null){
-                    model.setEducationLevelId(educationHistory.getEducationLevel().getId());
-                }
-                if(educationHistory.getInstitutionEducation() != null){
-                    model.setInstitutionEducationId(educationHistory.getInstitutionEducation().getId());
-                }
-                if(educationHistory.getFaculty()!=null){
-                    model.setFacultyId(educationHistory.getFaculty().getId());
-                }
-                if(educationHistory.getMajor()!=null){
-                    model.setMajorId(educationHistory.getMajor().getId());
-                }
-                model.setCertificateNumber(educationHistory.getCertificateNumber());
-                model.setScore(educationHistory.getScore());
-                if(educationHistory.getCity() != null ){
-                    model.setCity(educationHistory.getCity());
-                }
-                model.setYearIn(educationHistory.getYearIn());
-                model.setYearOut(educationHistory.getYearOut());
-                bioDataId = educationHistory.getBiodata().getId();
-            } else {
-                isEdit = Boolean.FALSE;
-            }
+        	
+            
             listDrowDown();
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -216,18 +243,33 @@ public class BioEducationHistoryFormController extends BaseController{
     
         BioEducationHistory educationHistory = getEntityFromViewModel(model);
         try {
-            if (isEdit) {
-                educationHistoryService.update(educationHistory);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                educationHistoryService.save(educationHistory);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
-            if (fotoFile != null) {
-                facesIO.transferFile(fotoFile);
-                File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
-                fotoOldFile.renameTo(new File(educationHistory.getPathFoto()));
-            }
+        	/** jika tidak blank, berarti datangnya dari proses revisi BioEducationHistory, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioEducationHistory yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		//Transfer File, dan set path-nya ke model, akan tetapi jngn langsung di rename ke foto awal (jika ada) dari BioEducationHistory
+	    		//nanti jika sudah approval, baru di update path foto dari entity BioEducationHistory dengan yang di model
+	    		 if (fotoFile != null) {
+	    			 model.setFotoFile(fotoFile);
+	    			 model.setPathFoto(facesIO.getPathUpload() + educationHistory.getId() + "_" + fotoFileName);
+	    	     }
+	    		RequestContext.getCurrentInstance().closeDialog(model);
+	    	}else{
+	    		if (isEdit) {
+	                educationHistoryService.update(educationHistory);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	            } else {
+	                educationHistoryService.save(educationHistory);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	            }
+	            if (fotoFile != null) {
+	                facesIO.transferFile(fotoFile);
+	                File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
+	                fotoOldFile.renameTo(new File(educationHistory.getPathFoto()));
+	            }
+	    	}
+            
             cleanAndExit();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -460,6 +502,14 @@ public class BioEducationHistoryFormController extends BaseController{
     public void setListCity(List<City> listCity) {
         this.listCity = listCity;
     }
+
+	public String getIsRevision() {
+		return isRevision;
+	}
+
+	public void setIsRevision(String isRevision) {
+		this.isRevision = isRevision;
+	}
     
     
 }

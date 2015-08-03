@@ -823,4 +823,18 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return leaveImplementationDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		LeaveImplementation entity = gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);
+		
+		detail.append("Pengajuan cuti oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jenis: " + entity.getLeave().getName() + ". ");
+		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+		return detail.toString();
+	}
 }

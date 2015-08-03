@@ -17,7 +17,9 @@ import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -213,9 +215,9 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
         WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(wtPeriodId);        
-        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logWtAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logWtAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, firstResult, maxResults, orderable);
         for(TempAttendanceRealizationViewModel tempModel : listTempAttendanceRealizationViewModel){
             tempModel.setAbsenStatus(wtPeriode.getAbsen());
         }
@@ -224,8 +226,8 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
-        return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) throws Exception {
+        return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId) ;
     }
 
 	@Override
@@ -292,14 +294,28 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable)
 			throws Exception {
 		
-		return logWtAttendanceRealizationDao.getPaidOvertimeByParam(wtPeriodId, firstResult, maxResults, orderable);
-	}
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        }
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) throws Exception {
 		
-		return logWtAttendanceRealizationDao.getTotalPaidOvertimeByParam(wtPeriodId);
+	    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) throws Exception {
+		System.out.println(logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable).size() + " sizeeeeee");
+		return logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) throws Exception {
+		return logWtAttendanceRealizationDao.getTotalDataByParam(model);
 	}
      
 }

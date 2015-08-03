@@ -115,6 +115,7 @@ public class BioAddressFormController extends BaseController {
 		countryService = null;
 		provinceService = null; 
 		cityService = null;
+		isRevision = null;
 	}
 	
 	public List<Country> getCountries() {

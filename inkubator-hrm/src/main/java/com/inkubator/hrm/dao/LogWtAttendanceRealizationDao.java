@@ -6,7 +6,9 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 /**
 *
@@ -14,14 +16,16 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 */
 public interface LogWtAttendanceRealizationDao extends IDAO<LogWtAttendanceRealization> {
 
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable);
 
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId);
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId);
 
-	public void deleteByPeriodId(Long periodId);
+    public void deleteByPeriodId(Long periodId);
     
-    public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable);
-
-    public Long getTotalPaidOvertimeByParam(Long wtPeriodId);
+    public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult,int maxResults, Order orderable);
+    
+    public Long getTotalDataByParam(LogWtAttendanceRealizationModel model);
+    
+    public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId);
         
 }

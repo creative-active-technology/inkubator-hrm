@@ -5,8 +5,10 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -18,8 +20,13 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 /**
  *
@@ -35,7 +42,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
     }
 
     @Override
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
         final StringBuilder query = new StringBuilder("SELECT logAttendanceRealization.id as id,");
         query.append(" logAttendanceRealization.wtPeriodeId AS wtPeriodId,");
         query.append(" logAttendanceRealization.wtGroupWorkingId AS wtGroupWorkingId,");
@@ -53,22 +60,65 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
         query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
         
-         return getCurrentSession().createQuery(query.toString())
-                    .setParameter("wtPeriodId", wtPeriodId)                   
-                    .setMaxResults(maxResults).setFirstResult(firstResult)                
-                    .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
-                    .list();
+        //filter by search param
+        query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
+        
+        Query hbm = getCurrentSession().createQuery(query.toString())
+        		.setParameter("wtPeriodId", wtPeriodId);
+        hbm = this.setValueQueryLogWtAttendanceCalculationByParam(hbm, searchParameter);
+        
+        return 	hbm                 
+                .setMaxResults(maxResults).setFirstResult(firstResult)                
+                .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
+                .list();
     }
 
     @Override
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) {
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) {
          final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");       
-        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
-        query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
-        
+         query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
+         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
+         
+         //filter by search param
+         query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
+         
           Query hbm = getCurrentSession().createQuery(query.toString())
                         .setParameter("wtPeriodId", wtPeriodId);
+          hbm = this.setValueQueryLogWtAttendanceCalculationByParam(hbm, searchParameter);
+          
         return Long.valueOf(hbm.uniqueResult().toString());
+    }
+    
+    private String doSearchLogWtAttendanceCalculationByParam(WtAttendanceCalculationSearchParameter searchParameter) {
+    	StringBuilder query = new StringBuilder();
+    	
+    	if(!StringsUtils.equals(searchParameter.getNik(), null)){
+    		query.append(" AND logAttendanceRealization.empNik LIKE :nik ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getEmpName(), null)){
+    		query.append(" AND logAttendanceRealization.empName LIKE :empName ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)){
+    		query.append(" AND logAttendanceRealization.wtGroupWorkingName LIKE :wtGroupWorkingName  ");
+    	}    	
+    	
+    	
+    	return query.toString();
+    }
+    
+    private Query setValueQueryLogWtAttendanceCalculationByParam(Query hbm, WtAttendanceCalculationSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "empName")){
+    			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
+    		} else if(StringUtils.equals(param, "nik")){
+    			hbm.setParameter("nik", "%" + parameter.getNik() + "%");
+    		} else if(StringUtils.equals(param, "wtGroupWorkingName")){
+    			hbm.setParameter("wtGroupWorkingName", "%" + parameter.getWtGroupWorkingName() + "%");
+    		} 
+    	}    	
+    	return hbm;
     }
 
 	@Override
@@ -80,20 +130,44 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 	}
 
 	@Override
-	public List<LogWtAttendanceRealization> getPaidOvertimeByParam(Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
+	public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
-        criteria.addOrder(orderable);
-        criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);
-        return criteria.list();
+		return criteria.list();
 	}
 
 	@Override
-	public Long getTotalPaidOvertimeByParam(Long wtPeriodId) {
+	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) {
+		System.out.println(model.getListDeptName() + " dao ieu teh : " + model.getListGolJabName());
+		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
+		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+		if(model.getListDeptName() != null){
+			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+		}
+		if(model.getListGolJabName() != null){
+			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+		}
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+		if(model.getListDeptName() != null){
+			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+		}
+		if(model.getListGolJabName() != null){
+			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+		}
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
-    
+
+
 }
