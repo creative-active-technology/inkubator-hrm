@@ -82,6 +82,7 @@ public class DivisiServiceImpl extends IServiceImpl implements DivisiService{
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Divisi entity) throws Exception {
         long totalDuplicates = divisiDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if(totalDuplicates > 0){
