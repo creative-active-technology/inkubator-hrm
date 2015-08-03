@@ -14,6 +14,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -22,11 +23,13 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -74,6 +77,8 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private JsonConverter jsonConverter;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -425,7 +430,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }else{
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
-        
+        System.out.println(entity.getWtOverTime().getId() + " xxxxxxxxxxx");
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
@@ -452,6 +457,10 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
         if(approvalActivity == null){
+        	//generate number of code
+			String nomor = this.generateOvertimeNumber();	        
+            entity.setCode(nomor);
+            
             implementationOfOverTimeDao.save(entity);			
             message = "success_without_approval";
         } else {
@@ -468,6 +477,16 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
         return message;
     }
+    
+    private String generateOvertimeNumber(){
+		/** generate number form codification, from OVERTIME module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.OVERTIME_KODE);
+        Long currentMaxId = implementationOfOverTimeDao.getCurrentMaxId();
+        System.out.println("xxxxxxxxxxxxxxxxxxxx " + currentMaxId);
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
