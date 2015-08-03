@@ -13,34 +13,47 @@ import com.inkubator.webcore.util.SearchParameter;
  */
 public class WtPeriodeEmpSearchParameter extends SearchParameter {
 
-    private String tahun;
-    private Integer bulan;
-
-    public String getTahun() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("tahun")) {
-                tahun = getParameter();
+	private String startPeriod;
+	private String endPeriod;
+	private String absenStatus;
+    
+    public String getStartPeriod() {
+    	if (getKeyParam() != null) {
+            if (getKeyParam().equalsIgnoreCase("startPeriod")) {
+            	startPeriod = getParameter();
             }
         }
-        return tahun;
-    }
+		return startPeriod;
+	}
 
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
-    }
+	public void setStartPeriod(String startPeriod) {
+		this.startPeriod = startPeriod;
+	}
 
-    public Integer getBulan() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("bulan")) {
-                bulan = Integer.parseInt(getParameter());
+	public String getEndPeriod() {
+		if (getKeyParam() != null) {
+            if (getKeyParam().equalsIgnoreCase("endPeriod")) {
+            	endPeriod = getParameter();
             }
         }
+		return endPeriod;
+	}
 
-        return bulan;
-    }
+	public void setEndPeriod(String endPeriod) {
+		this.endPeriod = endPeriod;
+	}
 
-    public void setBulan(Integer bulan) {
-        this.bulan = bulan;
-    }
+	public String getAbsenStatus() {
+	  if (getKeyParam() != null) {
+            if (getKeyParam().equalsIgnoreCase("absenStatus")) {
+            	absenStatus = getParameter();
+            }
+        }
+		return absenStatus;
+	}
+
+	public void setAbsenStatus(String absenStatus) {
+		this.absenStatus = absenStatus;
+	}
 
 }
