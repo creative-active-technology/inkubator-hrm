@@ -76,6 +76,7 @@ import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 
@@ -467,14 +468,14 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
-        return tempAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
+        return tempAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
-        return tempAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) throws Exception {
+        return tempAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId);
     }
 
     @Override
