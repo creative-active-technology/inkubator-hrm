@@ -85,7 +85,10 @@ public interface EmpDataDao extends IDAO<EmpData> {
     
     
     
-    /** get pageable/paging */
+    /** get pageable/paging
+     * @param companyId
+     * @param searchParameter
+     * @param firstResult */
     public List<EmpData> getAllDataByParam(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter); 
