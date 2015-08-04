@@ -308,7 +308,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -348,14 +348,17 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
         
@@ -472,7 +475,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         message = "success_need_approval";
 
         //sending email notification
-        this.sendingEmailApprovalNotif(approvalActivity);
+        this.sendingApprovalNotification(approvalActivity);
         }
         return message;
     }

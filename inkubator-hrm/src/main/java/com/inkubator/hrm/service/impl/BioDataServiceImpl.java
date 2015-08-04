@@ -534,8 +534,10 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 	}
 
 	@Override
-	protected void sendingEmailApprovalNotif(ApprovalActivity appActivity)	throws Exception {
-		// TODO Auto-generated method stub
+	protected void sendingApprovalNotification(ApprovalActivity appActivity)	throws Exception {
+		//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
 		
 	}
 	
@@ -746,7 +748,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 			}
             
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
 
         return result;

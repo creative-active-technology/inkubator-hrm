@@ -497,7 +497,11 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
 //        //initialization
 //        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");

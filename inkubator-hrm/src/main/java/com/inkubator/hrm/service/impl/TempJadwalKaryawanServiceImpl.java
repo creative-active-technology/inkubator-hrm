@@ -347,7 +347,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             message = "success_need_approval";
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
         return message;
     }
@@ -411,7 +411,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -421,7 +421,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -444,12 +444,16 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
         Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());

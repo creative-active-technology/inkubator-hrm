@@ -304,7 +304,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 	}
 
 	@Override
@@ -330,7 +330,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
         }
         
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 	}
 
 	@Override
@@ -356,11 +356,14 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 	}
 
 	@Override
-	protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
+	protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+        //send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
 		
 	}
 
@@ -423,7 +426,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
             approvalActivityDao.save(approvalActivity);
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
             
             message = "success_need_approval";
 		}    

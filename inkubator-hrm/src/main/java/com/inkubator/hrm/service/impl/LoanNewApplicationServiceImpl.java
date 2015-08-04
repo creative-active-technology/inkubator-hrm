@@ -297,8 +297,12 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
-    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
@@ -406,7 +410,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     private LoanNewApplication convertJsonToEntity(String json) {
@@ -437,7 +441,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -459,7 +463,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -542,7 +546,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             result = "success_need_approval";
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
 
         return result;

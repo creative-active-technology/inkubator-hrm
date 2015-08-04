@@ -456,8 +456,10 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     }
 
     @Override
-    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
     }
 
     @Override

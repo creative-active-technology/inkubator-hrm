@@ -71,7 +71,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     @Autowired
     private JsonConverter jsonConverter;
 
-    protected abstract void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
+    protected abstract void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception;
     
     protected abstract String getDetailSmsContentOfActivity(ApprovalActivity appActivity);
 
@@ -136,9 +136,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		        	
 					//show growl notification for approver
 			    	this.sendApprovalGrowlNotif(appActivity);
-			    	
-			    	//send sms notification to approver
-					this.sendApprovalSmsnotif(appActivity);
 					
 					break; //keluar dari looping
 				}
@@ -283,9 +280,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -344,9 +338,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -409,9 +400,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -590,7 +578,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         
     /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
      *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
-    private void sendApprovalSmsnotif(ApprovalActivity appActivity){
+    protected void sendApprovalSmsnotif(ApprovalActivity appActivity){
     	
     	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){	    	
 	    	/** di cek apakah approver memiliki phoneNumber yang valid */
@@ -745,7 +733,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	approvalActivityDao.update(appActivity);
     	
     	//send email cancellation
-    	this.sendingEmailApprovalNotif(appActivity);
+    	this.sendingApprovalNotification(appActivity);
     }
     
     /**
@@ -788,12 +776,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//show growl notification for requesterUserId
     	this.sendApprovalGrowlNotif(lastAppActivity);
-    	
-    	//send sms notification to requester
-		this.sendApprovalSmsnotif(lastAppActivity);
 		
 		//send email askingRevised
-    	this.sendingEmailApprovalNotif(lastAppActivity);
+    	this.sendingApprovalNotification(lastAppActivity);
 		
     }
 	
@@ -842,12 +827,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//show growl notification for approverUserId
     	this.sendApprovalGrowlNotif(lastAppActivity);
-    	
-    	//send sms notification to approver
-		this.sendApprovalSmsnotif(lastAppActivity); 
 		
 		//send email revised
-    	this.sendingEmailApprovalNotif(lastAppActivity);
+    	this.sendingApprovalNotification(lastAppActivity);
 	
     }
 

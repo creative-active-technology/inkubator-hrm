@@ -351,7 +351,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		approvalActivityDao.save(approvalActivity);
     		
     		//sending email notification
-    		this.sendingEmailApprovalNotif(approvalActivity);
+    		this.sendingApprovalNotification(approvalActivity);
     		
     		message = "success_need_approval";
         }
@@ -429,7 +429,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 
 	@Override
@@ -452,7 +452,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 	
 	@Override
@@ -475,11 +475,15 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 	
 	@Override
-	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
+	public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception{
+		//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
 		//initialization
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
