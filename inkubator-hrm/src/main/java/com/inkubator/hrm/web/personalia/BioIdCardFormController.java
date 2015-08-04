@@ -59,7 +59,7 @@ public class BioIdCardFormController extends BaseController {
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             bioIdCardModel.setBioDataId(Long.parseLong(bioDataId));
             
-          //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
+            //parameter is Revision untuk flag jika ini datangnya dari request perubahan biodata
             isRevision = FacesUtil.getRequestParameter("isRevision");
             if(StringUtils.isNotBlank(isRevision)){
             	
@@ -132,7 +132,7 @@ public class BioIdCardFormController extends BaseController {
         try {
         	
         	/** jika tidak blank, berarti datangnya dari proses revisi biodata, jangan langsung di save / update,
-    	 	cukup di return kembali Object BioAddress yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	cukup di return kembali Object BioIdCard yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
     	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
     	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
 	    	if(StringUtils.isNotBlank(isRevision)){

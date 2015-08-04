@@ -39,7 +39,7 @@ public class PayReceiverAccountReader implements ItemReader<PayReceiverAccountMo
 		return object;
 	}
 	
-	private PayReceiverAccountModel createModel(PayReceiverBankAccount payReceiverBankAccount){
+	private PayReceiverAccountModel createModel(PayReceiverBankAccount payReceiverBankAccount) throws Exception{
 		PayReceiverAccountModel model = new PayReceiverAccountModel();
 		model.setNik(payReceiverBankAccount.getEmpData().getNik());
 		model.setName(payReceiverBankAccount.getEmpData().getBioData().getFullName());

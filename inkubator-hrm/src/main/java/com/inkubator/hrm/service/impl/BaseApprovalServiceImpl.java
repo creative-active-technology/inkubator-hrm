@@ -72,6 +72,8 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     private JsonConverter jsonConverter;
 
     protected abstract void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
+    
+    protected abstract String getDetailSmsContentOfActivity(ApprovalActivity appActivity);
 
     /**
      * <p>
@@ -629,12 +631,12 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     
     protected String getSmsContentOfWaitingApproval(ApprovalActivity appActivity){
     	HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
-    	return "Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
+    	return approver.getRealName() + " tolong di cek Pending Tasks. Ada persetujuan dengan ID=" + appActivity.getId() + " membutuhkan persetujuan anda. " + getDetailSmsContentOfActivity(appActivity) + ". Balas dengan Format:ID#YES/NO/REVISI#COMMENT";
     }
     
     protected String getSmsContentOfWaitingRevised(ApprovalActivity appActivity){
     	HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-    	return "Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
+    	return requester.getRealName() + " tolong di cek Pending Tasks. Ada pengajuan dengan ID=" + appActivity.getId() + " membutuhkan revisi dari anda. Silahkan proses revisi via applikasi web.";
     }
     
     /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId

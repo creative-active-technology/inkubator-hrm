@@ -19,6 +19,7 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
 import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -214,9 +215,9 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) throws Exception {
         WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(wtPeriodId);        
-        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logWtAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, firstResult, maxResults, orderable);
+        List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = logWtAttendanceRealizationDao.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, firstResult, maxResults, orderable);
         for(TempAttendanceRealizationViewModel tempModel : listTempAttendanceRealizationViewModel){
             tempModel.setAbsenStatus(wtPeriode.getAbsen());
         }
@@ -225,8 +226,8 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) throws Exception {
-        return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId);
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) throws Exception {
+        return logWtAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId) ;
     }
 
 	@Override

@@ -25,6 +25,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,9 +34,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.criterion.Order;
@@ -536,5 +539,20 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return businessTravelDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		BusinessTravel entity = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
+		
+		detail.append("Pengajuan perjalanan dinas oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jenis: " + entity.getTravelType().getName() + ". ");
+		detail.append("Tujuan ke " + entity.getDestination() + ". ");
+		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+		return detail.toString();
+	}
 
 }
