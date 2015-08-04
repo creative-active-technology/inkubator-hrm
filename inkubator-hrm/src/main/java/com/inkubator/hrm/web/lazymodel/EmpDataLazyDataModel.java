@@ -43,23 +43,23 @@ public class EmpDataLazyDataModel extends LazyDataModel<EmpData> implements Seri
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId() ,empDataSearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                    empDatadatas = empDataService.getAllDataByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId() ,empDataSearchParameter, first, pageSize, Order.asc(sortField));
+                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.desc(sortField));
-                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                    empDatadatas = empDataService.getAllDataByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.desc(sortField));
+                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                empDatadatas = empDataService.getAllDataByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.asc("nik"));
-                jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParam(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
+                empDatadatas = empDataService.getAllDataByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter, first, pageSize, Order.asc("nik"));
+                jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParamForOnlyEmployee(HrmUserInfoUtil.getCompanyId(), empDataSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
