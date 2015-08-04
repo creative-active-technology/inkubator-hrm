@@ -548,10 +548,10 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		BusinessTravel entity = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
 		
-		detail.append("Pengajuan perjalanan dinas oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
-		detail.append("Jenis: " + entity.getTravelType().getName() + ". ");
-		detail.append("Tujuan ke " + entity.getDestination() + ". ");
-		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+		detail.append("Pengajuan perjalanan dinas oleh ").append(requester.getEmpData().getBioData().getFullName()).append(". ");
+		detail.append("Jenis: ").append(entity.getTravelType().getName()).append(". ");
+		detail.append("Tujuan ke ").append(entity.getDestination()).append(". ");
+		detail.append("Dari tanggal ").append(dateFormat.format(entity.getStartDate())).append(" s/d ").append(dateFormat.format(entity.getEndDate()));
 		return detail.toString();
 	}
 
