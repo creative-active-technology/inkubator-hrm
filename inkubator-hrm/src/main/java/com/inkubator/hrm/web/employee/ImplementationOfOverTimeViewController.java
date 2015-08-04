@@ -9,21 +9,26 @@ import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.web.lazymodel.ImplementationOfOverTimeLazyDataModel;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
+import com.inkubator.webcore.WebCoreConstant;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -124,12 +129,18 @@ public class ImplementationOfOverTimeViewController extends BaseController{
             options.put("contentHeight", 380);
             RequestContext.getCurrentInstance().openDialog("ot_impl_form", options, params);
         }
-    //    @Override
-    //    public void onDialogReturn(SelectEvent event) {
-    //        lazy = null;
-    //       super.onDialogReturn(event);
-    //
-    //    }
+        
+        @Override
+        public void onDialogReturn(SelectEvent event) {
+        	this.doSearch();
+        	super.onDialogReturn(event);
+        	String condition = (String) event.getObject();
+        	if (condition.equalsIgnoreCase(HRMConstant.SAVE_CONDITION_WITH_APPROVAL)) {
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                        FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
+            }
+    
+        }
     //     public void onDelete() {
     //        try {
     //            selected = this.service.getEntiyByPK(selected.getId());

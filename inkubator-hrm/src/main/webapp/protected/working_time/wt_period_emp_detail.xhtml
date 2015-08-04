@@ -82,16 +82,27 @@
                         
                          <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" rendered="#{wtPeriodEmpDetailController.model.status eq 'Active'}"
-                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculateAttendanceRealization()}" >                        
-                                    </p:commandButton>
+                                <h:panelGrid columns="5" >
+                                   <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{wtPeriodEmpDetailController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['menu.workgroup']}" itemValue="wtGroupWorkingName"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="nik"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empName"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{wtPeriodEmpDetailController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{wtPeriodEmpDetailController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                   
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
+                                	 <p:commandButton value="#{appmsg['salaryCalculation.calculation']}" styleClass="label_button" icon="ui-icon-document" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" rendered="#{wtPeriodEmpDetailController.model.status eq 'Active'}"
+                                                     onclick="statusDialog.show()"  oncomplete="if (!args.validationFailed) {detail.show();} else {statusDialog.hide();}" update=":detailPanel,growlId" action="#{wtPeriodEmpDetailController.doInitCalculateAttendanceRealization()}" >                        
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableIdForExport" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Working_Time_Period_Realization"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Working_Time_Period_Realization"/>
                                     </p:commandButton>                                   
                                     <p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" action="#{wtPeriodEmpDetailController.doBack()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
 
@@ -214,7 +225,7 @@
                             </f:facet>  
                         </p:dataTable>
 
-                        <p:blockUI block="formId" trigger="tableId" >
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>

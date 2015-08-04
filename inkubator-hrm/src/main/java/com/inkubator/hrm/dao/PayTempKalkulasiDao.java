@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -12,7 +13,6 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
-import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.model.SalaryJournalModel;
 
 /**
@@ -53,7 +53,8 @@ public interface PayTempKalkulasiDao extends IDAO<PayTempKalkulasi> {
     
     public List<SalaryJournalModel> getByParamForSalaryJournalKredit(String searchParameter);
     
-    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(String searchParameter);    
+    public Long getTotalPayTempKalkulasiForSalaryJournalDebetAndKredit(String searchParameter);
     
+    public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal);    
 
 }

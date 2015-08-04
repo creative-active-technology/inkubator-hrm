@@ -11,10 +11,13 @@ import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
@@ -30,11 +33,12 @@ public class TempAttendanceRealizationVmLazyDataModel extends LazyDataModel<Temp
     private final TempAttendanceRealizationService service;
     private List<TempAttendanceRealizationViewModel> listTempAttendanceRealizationViewModel = new ArrayList<>();
     private Integer jumlahData;
+    private WtAttendanceCalculationSearchParameter searchParameter;
 
-    public TempAttendanceRealizationVmLazyDataModel(TempAttendanceRealizationService service, Long wtPeriodId) {
+    public TempAttendanceRealizationVmLazyDataModel(WtAttendanceCalculationSearchParameter searchParameter, TempAttendanceRealizationService service, Long wtPeriodId) {
         this.wtPeriodId = wtPeriodId;
         this.service = service;
-        
+        this.searchParameter = searchParameter;
     }
     
     @Override
@@ -44,23 +48,23 @@ public class TempAttendanceRealizationVmLazyDataModel extends LazyDataModel<Temp
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.asc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, first, pageSize, Order.asc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             } else {
                 try {
-                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc(sortField));
-                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+                    listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, first, pageSize, Order.desc(sortField));
+                    jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
             }
         } else {
             try {
-                listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId, first, pageSize, Order.desc("bioData.firstName"));
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(wtPeriodId)));
+                listTempAttendanceRealizationViewModel = service.getListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId, first, pageSize, Order.desc("bioData.firstName"));
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
