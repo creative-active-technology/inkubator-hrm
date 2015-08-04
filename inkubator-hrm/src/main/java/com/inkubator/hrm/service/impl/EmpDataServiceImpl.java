@@ -504,7 +504,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalByParam(Long companyId, EmpDataSearchParameter searchParameter) throws Exception {
         return this.empDataDao.getTotalByParam(companyId, searchParameter);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
@@ -1239,11 +1239,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
          * perkiraan kehadiran hari ini = jadwal - (ijin+cuti+dinas)
          */
         Long totalTodaySchedule = tempJadwalKaryawanDao.getTotalByTanggalWaktuKerja(now.toDate(), companyId);
-		Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);		
-		BigDecimal todayAttendance = new BigDecimal(100);
-		if(totalTodaySchedule!=0 && totalTodayAttendance!=0){
-			todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);			
-		}
+        Long totalTodayAttendance = totalTodaySchedule - (todayLeave + todayBusinessTravel + todayPermit);
+        BigDecimal todayAttendance = new BigDecimal(100);
+        if (totalTodaySchedule != 0 && totalTodayAttendance != 0) {
+            todayAttendance = new BigDecimal(totalTodayAttendance).multiply(new BigDecimal(100)).divide(new BigDecimal(totalTodaySchedule), 2, RoundingMode.UP);
+        }
 
         //set value to model
         EmployeeResumeDashboardModel model = new EmployeeResumeDashboardModel();
@@ -1256,10 +1256,22 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return model;
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception {
-		return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) throws Exception {
+        return empDataDao.getAllDataNotTerminateAndJoinDateLowerThan(date);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        return this.empDataDao.getAllDataByParamForOnlyEmployee(companyId, searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter) {
+        return this.empDataDao.getTotalByParamForOnlyEmployee(companyId, searchParameter);
+    }
 
 }
