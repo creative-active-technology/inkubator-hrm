@@ -61,6 +61,11 @@ import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import java.util.Map;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+import org.springframework.jms.core.MessageCreator;
 
 /**
  *
@@ -178,7 +183,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             approvalActivityDao.save(approvalActivity);
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
             message = "success_need_approval";
         }
         return message;
@@ -529,7 +534,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
 //
 //        //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -572,7 +577,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -606,7 +611,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 //        }
 //
 //        //if there is no error, then sending the email notification
-//        sendingEmailApprovalNotif(appActivity);
+//        sendingApprovalNotification(appActivity);
     }
 
     @Override
