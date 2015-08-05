@@ -46,5 +46,7 @@ public interface HrmUserService extends IService<HrmUser> {
     public HrmUser getByEmailAddressInNotLock(String emailAddress) throws Exception;
 
     public HrmUser getByUserIdWithEmpIdAndBioId(String userId) throws Exception;
+    
+    public HrmUser getByEmpDataId(long empDataId) throws Exception;
 
 }

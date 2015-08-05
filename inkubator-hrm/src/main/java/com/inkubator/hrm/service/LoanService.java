@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
+
 import java.util.HashMap;
 
 /**
@@ -35,8 +36,6 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
 
     public Loan getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
     
-    public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception;
-    
     public void executeBatchFileUpload(LoanModel report) throws Exception;
 
     public String updateFileAndDeleteData(UploadedFile file) throws Exception;
@@ -52,4 +51,6 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
         public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
     
     public void cancelled(long approvalActivityId, LoanCanceled loanCancelation) throws Exception;
+    
+    public Long getCurrentMaxId() throws Exception;
 }

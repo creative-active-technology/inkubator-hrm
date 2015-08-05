@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -22,9 +23,11 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 /**
  *
@@ -145,7 +148,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     }
 
     @Override
-    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
+    public List<TempAttendanceRealizationViewModel> getListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId, int firstResult, int maxResults, Order orderable) {
 
         final StringBuilder query = new StringBuilder("SELECT tempAttendanceRealization.id as id,");
         query.append(" wtPeriod.id AS wtPeriodId,");
@@ -168,10 +171,16 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         query.append(" INNER JOIN tempAttendanceRealization.wtGroupWorking wtGroupWorking");
         query.append(" INNER JOIN tempAttendanceRealization.wtPeriod wtPeriod");
         query.append(" WHERE wtPeriod.id = :wtPeriodId ");
+        
+        
+        //filter by search param
+        query.append(doSearchWtAttendanceCalculationByParam(searchParameter));
         query.append("ORDER BY " + orderable);
 
-        return getCurrentSession().createQuery(query.toString())
-                .setParameter("wtPeriodId", wtPeriodId)
+        Query hbm = getCurrentSession().createQuery(query.toString())
+        		.setParameter("wtPeriodId", wtPeriodId);
+        hbm = this.setValueQueryWtAttendanceCalculationByParam(hbm, searchParameter);
+        return hbm
                 .setMaxResults(maxResults).setFirstResult(firstResult)
                 .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
                 .list();
@@ -179,7 +188,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     }
 
     @Override
-    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(Long wtPeriodId) {
+    public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) {
         final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
         query.append(" FROM TempAttendanceRealization tempAttendanceRealization");
         query.append(" INNER JOIN tempAttendanceRealization.empData empData");
@@ -187,11 +196,47 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
         query.append(" INNER JOIN tempAttendanceRealization.wtGroupWorking wtGroupWorking");
         query.append(" INNER JOIN tempAttendanceRealization.wtPeriod wtPeriod");
         query.append(" WHERE wtPeriod.id = :wtPeriodId ");
-
+        
+        //filter by search param
+        query.append(doSearchWtAttendanceCalculationByParam(searchParameter));
+        
         Query hbm = getCurrentSession().createQuery(query.toString())
                 .setParameter("wtPeriodId", wtPeriodId);
+        hbm = this.setValueQueryWtAttendanceCalculationByParam(hbm, searchParameter);
         return Long.valueOf(hbm.uniqueResult().toString());
 
+    }
+    
+    private String doSearchWtAttendanceCalculationByParam(WtAttendanceCalculationSearchParameter searchParameter) {
+    	StringBuilder query = new StringBuilder();
+    	
+    	if(!StringsUtils.equals(searchParameter.getNik(), null)){
+    		query.append(" AND empData.nik LIKE :nik ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getEmpName(), null)){
+    		query.append(" AND ( bioData.firstName LIKE :empName OR  bioData.lastName LIKE :empName ) ");
+    	}
+    	
+    	if(!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)){
+    		query.append(" AND  wtGroupWorking.name LIKE :wtGroupWorkingName  ");
+    	}    	
+    	
+    	
+    	return query.toString();
+    }
+    
+    private Query setValueQueryWtAttendanceCalculationByParam(Query hbm, WtAttendanceCalculationSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "empName")){
+    			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
+    		} else if(StringUtils.equals(param, "nik")){
+    			hbm.setParameter("nik", "%" + parameter.getNik() + "%");
+    		} else if(StringUtils.equals(param, "wtGroupWorkingName")){
+    			hbm.setParameter("wtGroupWorkingName", "%" + parameter.getWtGroupWorkingName() + "%");
+    		} 
+    	}    	
+    	return hbm;
     }
 
 
@@ -236,6 +281,23 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     	hbm.setParameter("wtPeriodId", wtPeriodId);
     	
     	return hbm.list();                
+	}
+    
+    @Override
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalPaidOvertimeByParam() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
     
 }

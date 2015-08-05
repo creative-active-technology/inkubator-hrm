@@ -4,6 +4,23 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
@@ -19,20 +36,6 @@ import com.inkubator.hrm.web.model.ImplementationOfOverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -66,6 +69,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             String implementOfOTId = FacesUtil.getRequestParameter("implementOfOTId");
             isDisableStartAndEndOverTime = Boolean.FALSE;
             model = new ImplementationOfOverTimeModel();
+            model.setImplementationNumber(HRMConstant.OVERTIME_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
             isUpdate = Boolean.FALSE;
             if (StringUtils.isNotEmpty(implementOfOTId)) {
                 ImplementationOfOverTime implementationOfOverTime = implementationOfOverTimeService.getEntityByPkWithDetail(Long.parseLong(implementOfOTId));
@@ -175,10 +179,8 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             } else {
             	String message = implementationOfOverTimeService.save(implementationOfOT, false);
             	if(StringUtils.equals(message, "success_need_approval")){
-            		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-                        
-            	} else {
-                        
+            		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION_WITH_APPROVAL);                        
+            	} else {                        
             		RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             	}
             }

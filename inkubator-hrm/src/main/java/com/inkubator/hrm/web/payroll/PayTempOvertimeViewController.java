@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.payroll;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.service.PayTempOvertimeService;
@@ -13,16 +14,19 @@ import com.inkubator.hrm.web.search.PayTempOvertimeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -121,6 +125,16 @@ public class PayTempOvertimeViewController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+    }
+    
+    public void doSynchronized(){
+    	try {
+    		service.synchronizedOvertimeStatus();
+		} catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
     }
 
     public PayTempOvertimeService getService() {

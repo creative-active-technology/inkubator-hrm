@@ -28,6 +28,10 @@
                         </div> 
                     </div>
                     <div style="clear: both"/>
+                    <div style="background:none repeat scroll 0 0 #ffffff;height: 2px;position: relative;">
+
+                    </div>
+                    
                     <div id="box_bg">
                         <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
@@ -87,7 +91,7 @@
                                     <p:defaultCommand target="loginId" />
                                     <p:watermark for="j_username" value="#{appmsg['loginform.water_mark_user']}" />
                                     <p:watermark for="j_password" value="#{appmsg['loginform.water_mark_password']}" />
-                                    <pe:tooltip for="loginId" value="#{appmsg['loginform.login_tooltip']}" showEffect="slideToggle" 
+                                    <pe:tooltip for="loginId" value="#{appmsg['loginform.login_tooltip2']}" showEffect="slideToggle" 
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                                     <pe:tooltip for="resetPasswordId" value="#{appmsg['loginform.reset_password_tips']}" showEffect="slideToggle" 
                                                 hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
@@ -130,7 +134,7 @@
                         </div>
                         <div style="float: right;margin-right: 20px;margin-top: -5px" >
                             <h:outputLabel value="#{appmsg['global.application_name']}" styleClass="footer_hrm"/>
-                             
+
                         </div>
                     </div> 
                 </div>

@@ -8,9 +8,9 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.LogWtAttendanceRealization;
+import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
+import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaidOvertimeLazyDataModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -25,11 +25,11 @@ public class PaidOvertimeViewController extends BaseController {
 
 	private WtPeriode period;
 	private Long totalEmployee;
-    private LazyDataModel<LogWtAttendanceRealization> lazyDataModel;
+    private LazyDataModel<TempAttendanceRealization> lazyDataModel;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
-    @ManagedProperty(value = "#{logWtAttendanceRealizationService}")
-    private LogWtAttendanceRealizationService logWtAttendanceRealizationService;
+    @ManagedProperty(value = "#{tempAttendanceRealizationService}")
+    private TempAttendanceRealizationService tempAttendanceRealizationService;
 
     @PostConstruct
     @Override
@@ -37,7 +37,7 @@ public class PaidOvertimeViewController extends BaseController {
         super.initialization();
         try {
 			period = wtPeriodeService.getEntityByPayrollTypeActive();
-			totalEmployee = logWtAttendanceRealizationService.getTotalPaidOvertimeByParam(period.getId());
+			totalEmployee = tempAttendanceRealizationService.getTotalPaidOvertimeByParam();
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
@@ -48,7 +48,7 @@ public class PaidOvertimeViewController extends BaseController {
     	period = null;
     	lazyDataModel = null;
     	wtPeriodeService = null;
-    	logWtAttendanceRealizationService = null;
+    	tempAttendanceRealizationService = null;
     	totalEmployee = null;
     }
 
@@ -60,14 +60,14 @@ public class PaidOvertimeViewController extends BaseController {
 		this.period = period;
 	}
 
-	public LazyDataModel<LogWtAttendanceRealization> getLazyDataModel() {
+	public LazyDataModel<TempAttendanceRealization> getLazyDataModel() {
 		if(lazyDataModel == null){
-			lazyDataModel = new PaidOvertimeLazyDataModel(period.getId(), logWtAttendanceRealizationService);
+			lazyDataModel = new PaidOvertimeLazyDataModel(tempAttendanceRealizationService);
 		}
 		return lazyDataModel;
 	}
 
-	public void setLazyDataModel(LazyDataModel<LogWtAttendanceRealization> lazyDataModel) {
+	public void setLazyDataModel(LazyDataModel<TempAttendanceRealization> lazyDataModel) {
 		this.lazyDataModel = lazyDataModel;
 	}
 
@@ -79,12 +79,12 @@ public class PaidOvertimeViewController extends BaseController {
 		this.wtPeriodeService = wtPeriodeService;
 	}
 
-	public LogWtAttendanceRealizationService getLogWtAttendanceRealizationService() {
-		return logWtAttendanceRealizationService;
+	public TempAttendanceRealizationService getTempAttendanceRealizationService() {
+		return tempAttendanceRealizationService;
 	}
 
-	public void setLogWtAttendanceRealizationService(LogWtAttendanceRealizationService logWtAttendanceRealizationService) {
-		this.logWtAttendanceRealizationService = logWtAttendanceRealizationService;
+	public void setTempAttendanceRealizationService(TempAttendanceRealizationService tempAttendanceRealizationService) {
+		this.tempAttendanceRealizationService = tempAttendanceRealizationService;
 	}
 
 	public Long getTotalEmployee() {

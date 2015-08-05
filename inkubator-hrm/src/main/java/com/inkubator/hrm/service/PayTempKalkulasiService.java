@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public interface PayTempKalkulasiService extends IService<PayTempKalkulasi> {
 
     public Long getTotalPayTempKalkulasiForSalaryJournal(String searchParameter) throws Exception;
 
-    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific);    
+    public PayTempKalkulasi getEntityByEmpDataIdAndSpecificModelComponent(Long empDataid, Integer specific) throws Exception;
+
+	public List<PayTempKalkulasi> getAllDataByTotalIncomeBelow(BigDecimal nominal) throws Exception;    
    
 }

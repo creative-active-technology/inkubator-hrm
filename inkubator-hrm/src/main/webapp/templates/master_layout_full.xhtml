@@ -386,6 +386,14 @@
                                                 <p:menuitem value="#{appmsg['jabatan.jabatan']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatan.jabatan']}" url="/protected/organisation/job_title_view.htm" icon="img-job-title"/>
                                                 <p:menuitem value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" url="/protected/organisation/job_description_view.htm" icon="img-job-descriptions"/>
                                                 <p:menuitem value="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['jabatanspesifikasi.jabatanspesifikasi']}" url="/protected/organisation/job_spesifikasi_view.htm" icon="img-job_spek"/>
+                                                <p:submenu label="#{appmsg['report.report']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.organization_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.organization_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.job_grade_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.job_grade_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.organization_structure_changes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.organization_structure_changes_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.employee_per_department_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_per_department_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.vacant_position_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.vacant_position_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.user_defined_organization_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_defined_organization_report']}" url="#" />
+                                                </p:submenu>
                                             </p:submenu> 
                                             <p:submenu label="#{appmsg['menu.working_time_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.presence_status']}" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.presence_status']}" url="/protected/working_time/attendance_status_view.htm" />
@@ -446,6 +454,67 @@
                                             <p:menuitem value="#{appmsg['reimbursment.reimbursment']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursment.reimbursment']}" url="/protected/personalia/reimbursment_view.htm" />
                                             <!--<p:menuitem value="#{appmsg['report.employee_family']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['reportFamilyEmployee.reportFamilyEmployee']}" url="/protected/report/report_emp_fam_view.htm" />-->
 <!--                                            <p:menuitem value="Demografi Sosial Matrix" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="Demografi Sosial Matrix" url="/protected/personalia/demografi_sosial_matrix_view.htm" />-->
+                                            <p:submenu label="#{appmsg['report.personalia_report']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['report.employee_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.mutation_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.mutation_data']}" url="/protected/report/report_emp_mutation_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.recap_emp_edu']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_emp_edu']}" url="/protected/report/report_employee_education.htm" />
+                                                <p:menuitem value="#{appmsg['report.recap_position_emp']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_position_emp']}" url="/protected/report/report_emp_posrecap_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.pension_preparement']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="/protected/report/report_pension_prepare_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.family_recap']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.family_recap']}" url="/protected/report/report_emp_fam_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.employment_matriculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employment_matriculation']}" url="/protected/personalia/demografi_sosial_matrix_view.htm" />
+                                                <p:submenu label="#{appmsg['menu.contract_employee_report']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.contract_employee_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.contract_employee_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.contract_control_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.contract_control_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.end_control_recap']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.end_control_recap']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.custom_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.custom_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.demographic_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.demographic_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.employee_data_report']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.emp_detail_info_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_detail_info_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.emp_child_age_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_child_age_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.emp_insurance_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_insurance_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.emp_position_list']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_position_list']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.emp_child_age_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_child_age_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.employee_uniform_size_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_uniform_size_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.recapitulation_by_age_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.recapitulation_by_age_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.recapitulation_by_education_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.recapitulation_by_education_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.recap_by_job_status_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.recap_by_job_status_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.recap_by_cost_center_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.recap_by_cost_center_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.report_per_employee']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.report_per_employee']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.employee_tax_declaration']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_tax_declaration']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_matrix_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_matrix_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_movement_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_movement_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_survey_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_survey_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employment_history_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employment_history_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.family_dependent_data_change']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.family_dependent_data_change']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.head_count_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.head_count_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.labor_turn_over']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.labor_turn_over']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.log_data_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.log_data_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.login_logout_data_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.login_logout_data_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.man_power_report']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.manpower_monthly_profile']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.manpower_monthly_profile']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.my_approval_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.my_approval_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.nearly_expired_document']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.nearly_expired_employee_document']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.nearly_expired_employee_document']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.nearly_expired_family_document']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.nearly_expired_family_document']}" url="#" />
+                                                </p:submenu>    
+                                                <p:submenu label="#{appmsg['menu.ohsa']}" styleClass="menu_child" icon="img-reporting">   
+                                                    <p:menuitem value="#{appmsg['menu.ohsa_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ohsa_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.ohsa_graphic_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ohsa_graphic_report']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.personal_periodic_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.personal_periodic_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.criteria_based_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.criteria_based_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.request_control_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.request_control_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.service_agreement_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.service_agreement_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.total_employee_by_status_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.total_employee_by_status_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.user_account_management_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_account_management_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.survey_distribution_percentages']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.survey_distribution_percentages']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.user_defined_employee_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_defined_employee_report']}" url="#" />
+                                            
+                                            
+                                            </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.working_time']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-task">
                                             <p:menuitem value="#{appmsg['employee.employee_work_schedule']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_schedule']}" url="/protected/employee/emp_schedule_view.htm" />
@@ -480,6 +549,42 @@
                                                 <p:menuitem value="#{appmsg['workingTime.schedule_realization_detail']}" icon="img-detail_realisasi_jadwal" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.schedule_realization_detail']}" url="/protected/employee/emp_attendance_realization.htm" />
                                                 <p:menuitem value="#{appmsg['workingTime.over_56hours_overtime']}" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.over_56hours_overtime']}" url="#" />
                                                 <p:menuitem value="#{appmsg['payroll.monthEnd']}" icon="img-lembur_56_jam" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.monthEnd']}" url="/protected/working_time/month_end_attendance.htm" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['report.working_time_report']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['report.attendance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.attendance_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.leave_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.leave_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.permit_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.permit_data']}" url="/protected/report/report_permit_hist_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.sick_absent_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.sick_absent_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.working_time_balance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.working_time_balance_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.late_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.late_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.attendance_machine_data_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.attendance_machine_data_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.attendance_statistic_report_per_emp']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.attendance_statistic_report_per_emp']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.laporan_kehadiran_harian']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.laporan_kehadiran_harian']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_attendance_detail_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_attendance_detail_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.emp_lateness_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.emp_lateness_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_shift_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_shift_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['empAttendance.leave']}"  styleClass="menu_child" >
+                                                    <p:menuitem value="#{appmsg['menu.employee_leave_report']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_leave_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.massive_leave_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.massive_leave_report']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.lost_man_days']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.lost_man_days']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.on_duty_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.on_duty_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['global.overtime']}"  styleClass="menu_child" >
+                                                    <p:menuitem value="#{appmsg['menu.ovetime_summary_report']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ovetime_summary_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.overtime_per_unit_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime_per_unit_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.overtime_control_report']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime_control_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.overtime_per_unit_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime_per_unit_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.overtime_calculation_report']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime_calculation_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.overtime_graphic_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.overtime_graphic_report']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.periodic_attendance_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.periodic_attendance_report']}" url="#" />
+                                                <p:submenu label="#{appmsg['global.sick']}"  styleClass="menu_child" >
+                                                    <p:menuitem value="#{appmsg['menu.employee_sickness_report']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_sickness_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.sickness_ratio_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.sickness_ratio_report']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.user_defined_attendance_report']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_defined_attendance_report']}" url="#" />
+                                                
+                                                
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['loan.loan']}" styleClass="menu" icon="img-loan">
@@ -536,8 +641,81 @@
                                                 <p:menuitem value="#{appmsg['payroll.payment']}" icon="img-pay_component_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.payment']}" url="#" /> 
 
                                             </p:submenu>
+                                            <p:submenu label="#{appmsg['report.payroll_report']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['report.payroll_history']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.payroll_history']}" url="/protected/report/report_payroll_hist_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.salary_note']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_note']}" url="/protected/report/report_salarynote_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.bank_transfer_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.bank_transfer_data']}" url="/protected/report/report_banktransfer_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.component_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.component_data']}" url="#" />
+                                                <p:menuitem value="#{appmsg['report.salary_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_journal']}" url="/protected/report/report_salaryjournal_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="/protected/report/report_pph_view.htm" />
+                                                <p:menuitem value="#{appmsg['menu.payroll_listing']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.payroll_listing']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.annual_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.annual_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.basic_salary_differencial_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.basic_salary_differencial_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_bank_differencial_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_bank_differencial_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_payroll_list']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_payroll_list']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_payroll_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_payroll_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.invalid_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.invalid_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.last_payment_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.last_payment_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.user_defined_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.user_defined_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.monthly_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.monthly_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.payroll_component_setting_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.payroll_component_setting_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.payroll_history_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.payroll_history_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.payroll_list']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.payroll_list']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.payroll_variant_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.payroll_variant_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.tax_report_per_location']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.tax_report_per_location']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.salary_comparison_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.salary_comparison_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.severance_pay_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.severance_pay_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.marital_status_tax_and_dependant_comparison_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.marital_status_tax_and_dependant_comparison_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.monthly_report_per_cost_center']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.monthly_report_per_cost_center']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.excel_interface_payroll']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.excel_interface_payroll']}" url="#" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.jamsostek_report']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['menu.jamsostek_calculation_for_payroll']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.jamsostek_calculation_for_payroll']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.employee_jamsostek_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_jamsostek_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.jamsostek_mutation_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.jamsostek_mutation_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.jamsostek_pension_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.jamsostek_pension_report']}" url="#" />
+                                                <p:menuitem value="#{appmsg['menu.jamsostek_new_employee_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.jamsostek_new_employee_report']}" url="#" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['menu.spt']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['menu.spt_setting']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.spt_setting']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.personal']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.form_1770_s']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1770_s']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1770_s_i']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1770_s_i']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1770_s_ii']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1770_s_ii']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1770_ss']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1770_ss']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.dependant_list']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.dependant_list']}" url="#" />
+                                                </p:submenu>
+                                                <p:submenu label="#{appmsg['menu.annualy']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.spt_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.spt_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1721_a1']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1721_a1']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1721_i']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1721_i']}" url="#" />
+                                                </p:submenu>
+                                                <p:submenu label="#{appmsg['menu.monthly']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.spt_masa']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.spt_masa']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.ssp_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.ssp_report']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1721_t']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1721_t']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.form_1721_ii']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.form_1721_ii']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.tax_receipt_form']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.tax_receipt_form']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.tax_receipt_form_non_final']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.tax_receipt_form_non_final']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.tax_receipt_non_final']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.tax_receipt_non_final']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.monthly_spt_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.monthly_spt_report']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.download_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.download_journal']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.edit_past_payroll_data']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.month_to_date_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.month_to_date_data']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.data_tahun_ke_tanggal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.data_tahun_ke_tanggal']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['menu.recalculate_ytd']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.recalculate_ytd']}" url="#" />
+                                                <p:submenu label="#{appmsg['menu.payroll_calculation']}" styleClass="menu_child" icon="img-reporting">
+                                                    <p:menuitem value="#{appmsg['menu.pph21_calculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.pph21_calculation']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.salary_calculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.salary_calculation']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.daily_pph_calculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.daily_pph_calculation']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.employee_income_calculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_income_calculation']}" url="#" />
+                                                </p:submenu>
+                                                
+                                                <p:menuitem value="#{appmsg['menu.multiple_allocation_cost_center']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.multiple_allocation_cost_center']}" url="#" />
+                                            </p:submenu>
 
-<!--<p:menuitem value="#{appmsg['unregSalary.unregSalary']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['unregSalary.unregSalary']}" icon="img-ptkp" url="/protected/payroll/unreg_salary_view.htm"/>--> 
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.reimbursement']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-training">
                                             <!--                                            <p:menuitem value="Price Simulator" icon="img-price-simulator" style="font-size: 12px !important;color: #003366" title="Make Price Simulation" url="/protected/price_simulator.htm" /> 
@@ -558,33 +736,7 @@
                                             <p:menuitem value="Login History" icon="img-button-price" style="font-size: 12px !important;color: #003366" title="Create Offering Price" url="/protected/price_offer.htm" />  
                                         </p:submenu> 
                                         -->
-                                        <p:submenu label="#{appmsg['report.report']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-reporting">
-                                            <p:submenu label="#{appmsg['report.personalia_report']}" styleClass="menu_child" icon="img-reporting">
-                                                <p:menuitem value="#{appmsg['report.employee_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.mutation_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.mutation_data']}" url="/protected/report/report_emp_mutation_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.recap_emp_edu']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_emp_edu']}" url="/protected/report/report_employee_education.htm" />
-                                                <p:menuitem value="#{appmsg['report.recap_position_emp']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_position_emp']}" url="/protected/report/report_emp_posrecap_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.pension_preparement']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="/protected/report/report_pension_prepare_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.family_recap']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.family_recap']}" url="/protected/report/report_emp_fam_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.employment_matriculation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employment_matriculation']}" url="/protected/personalia/demografi_sosial_matrix_view.htm" />
-                                            </p:submenu>
-                                            <p:submenu label="#{appmsg['report.payroll_report']}" styleClass="menu_child" icon="img-reporting">
-                                                <p:menuitem value="#{appmsg['report.payroll_history']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.payroll_history']}" url="/protected/report/report_payroll_hist_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.salary_note']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_note']}" url="/protected/report/report_salarynote_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.bank_transfer_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.bank_transfer_data']}" url="/protected/report/report_banktransfer_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.component_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.component_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.salary_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_journal']}" url="/protected/report/report_salaryjournal_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="/protected/report/report_pph_view.htm" />
-                                            </p:submenu>
-                                            <p:submenu label="#{appmsg['report.working_time_report']}" styleClass="menu_child" icon="img-reporting">
-                                                <p:menuitem value="#{appmsg['report.attendance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.attendance_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.leave_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.leave_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.permit_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.permit_data']}" url="/protected/report/report_permit_hist_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.sick_absent_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.sick_absent_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.working_time_balance_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.working_time_balance_data']}" url="#" />
-                                                <p:menuitem value="#{appmsg['report.late_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.late_data']}" url="#" />
-                                            </p:submenu>
-                                        </p:submenu>
+                                        
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
                                 </h:form>
@@ -630,27 +782,7 @@
             </div>
         </div>
 
-        <script type="text/javascript">
-	        function holidaysDisabled(date) {	          
-	          var arrHoliday = "#{homeDashboardController.listHolidayDate}";
-	          arrHoliday = arrHoliday.replace('[','');
-	          arrHoliday = arrHoliday.replace(']','');
-	          arrHoliday = arrHoliday.split(',');
-	          
-	          var day = date.getDate();
-	          var styleClass = contains(arrHoliday,day) ? 'ui-datepicker-holiday' : '';
-	          alr =false
-	          return [true, styleClass]
-	        }
-	        function contains(array, value) {	        	
-	            var i = array.length;
-	            while (i--) {
-	               if (array[i] == value) {
-	                   return true;
-	               }
-	            }
-	            return false;
-	        }
+        <script type="text/javascript">	        
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {
                     $('#changeUserInfoId').show();
