@@ -52,6 +52,7 @@ public class RecruitHireApply implements java.io.Serializable {
     private String approvalActivityNumber;
     private Integer applicationStatus;
     private Set<RecruitHireApplyDetail> recruitHireApplyDetails = new HashSet<RecruitHireApplyDetail>(0);
+    private Set<RecruitVacancyAdvertisementDetail> recruitVacancyAdvertisementDetails = new HashSet<RecruitVacancyAdvertisementDetail>(0);
 
     public RecruitHireApply() {
     }
@@ -337,7 +338,16 @@ public class RecruitHireApply implements java.io.Serializable {
         this.recruitHireApplyDetails = recruitHireApplyDetails;
     }
 
-    @Column(name = "approval_activity_number", length = 45, unique = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hireApply")
+    public Set<RecruitVacancyAdvertisementDetail> getRecruitVacancyAdvertisementDetails() {
+		return recruitVacancyAdvertisementDetails;
+	}
+
+	public void setRecruitVacancyAdvertisementDetails(Set<RecruitVacancyAdvertisementDetail> recruitVacancyAdvertisementDetails) {
+		this.recruitVacancyAdvertisementDetails = recruitVacancyAdvertisementDetails;
+	}
+
+	@Column(name = "approval_activity_number", length = 45, unique = true)
     public String getApprovalActivityNumber() {
         return approvalActivityNumber;
     }
