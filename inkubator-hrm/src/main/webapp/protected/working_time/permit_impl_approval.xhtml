@@ -102,8 +102,8 @@
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isApprover}" update=":growlId"/>
 							 	<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{permitImplApprovalFormController.doRejected()}"
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isApprover}" update=":growlId"/>
-<!-- 	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{permitImplApprovalFormController.doCancelled()}"
-	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isRequester}" update=":growlId"/> -->
+ 	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{permitImplApprovalFormController.doCancelled()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{permitImplApprovalFormController.isRequester}" update=":growlId"/>
 	                        </h:panelGroup>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{permitImplApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
