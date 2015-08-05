@@ -5,6 +5,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.exception.BussinessException;
@@ -13,6 +14,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.WtOverTimeDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -21,21 +23,26 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
@@ -69,6 +76,8 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private JsonConverter jsonConverter;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -299,7 +308,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -319,7 +328,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -339,14 +348,17 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-        
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
         
@@ -447,6 +459,10 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
         if(approvalActivity == null){
+        	//generate number of code
+			String nomor = this.generateOvertimeNumber();	        
+            entity.setCode(nomor);
+            
             implementationOfOverTimeDao.save(entity);			
             message = "success_without_approval";
         } else {
@@ -459,16 +475,41 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         message = "success_need_approval";
 
         //sending email notification
-        this.sendingEmailApprovalNotif(approvalActivity);
+        this.sendingApprovalNotification(approvalActivity);
         }
         return message;
     }
+    
+    private String generateOvertimeNumber(){
+		/** generate number form codification, from OVERTIME module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.OVERTIME_KODE);
+        Long currentMaxId = implementationOfOverTimeDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber) throws Exception {
         return implementationOfOverTimeDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        ImplementationOfOverTime entity =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
+        
+        detail.append("Pengajuan lembur oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+        detail.append("Jenis: " + entity.getOverTimeName() + ". ");
+        detail.append("Tanggal " + dateFormat.format(entity.getImplementationDate()) + ". ");        
+        detail.append("Dari jam " + timeFormat.format(entity.getStartTime()) + " s/d " + timeFormat.format(entity.getEndTime()));
+        return detail.toString();
+	}
     
     
 }

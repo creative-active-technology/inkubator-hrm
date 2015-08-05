@@ -71,7 +71,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     @Autowired
     private JsonConverter jsonConverter;
 
-    protected abstract void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception;
+    protected abstract void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception;
+    
+    protected abstract String getDetailSmsContentOfActivity(ApprovalActivity appActivity);
 
     /**
      * <p>
@@ -134,9 +136,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 		        	
 					//show growl notification for approver
 			    	this.sendApprovalGrowlNotif(appActivity);
-			    	
-			    	//send sms notification to approver
-					this.sendApprovalSmsnotif(appActivity);
 					
 					break; //keluar dari looping
 				}
@@ -281,9 +280,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -342,9 +338,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -407,9 +400,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 
             //show growl notification for approverUserId
             this.sendApprovalGrowlNotif(nextApproval);
-
-            //send sms notification to approver
-            this.sendApprovalSmsnotif(nextApproval);
         }
 
         return result;
@@ -588,7 +578,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         
     /** jika approvalStatus masih (waiting approval atau waiting revised) dan di approval definition membutuhkan sms approval notif, 
      *  maka kirim notif dalam bentuk sms ke approverUserId/requestUserId */
-    private void sendApprovalSmsnotif(ApprovalActivity appActivity){
+    protected void sendApprovalSmsnotif(ApprovalActivity appActivity){
     	
     	if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL && appActivity.getApprovalDefinition().getSmsNotification()){	    	
 	    	/** di cek apakah approver memiliki phoneNumber yang valid */
@@ -629,12 +619,12 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     
     protected String getSmsContentOfWaitingApproval(ApprovalActivity appActivity){
     	HrmUser approver = hrmUserDao.getByUserId(appActivity.getApprovedBy());
-    	return "Dear " + approver.getRealName() + " please check your pending tasks. There is an approval that needs to be approved by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
+    	return approver.getRealName() + " tolong di cek Pending Tasks. Ada persetujuan dengan ID=" + appActivity.getId() + " membutuhkan persetujuan anda. " + getDetailSmsContentOfActivity(appActivity) + ". Balas dengan Format:ID#YES/NO/REVISI#COMMENT";
     }
     
     protected String getSmsContentOfWaitingRevised(ApprovalActivity appActivity){
     	HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-    	return "Dear " + requester.getRealName() + " please check your pending tasks. There is an activity that needs to be revised by you. #ID=" + appActivity.getId() + ". Reply Format:ID#YES/NO/REVISI#COMMENT";
+    	return requester.getRealName() + " tolong di cek Pending Tasks. Ada pengajuan dengan ID=" + appActivity.getId() + " membutuhkan revisi dari anda. Silahkan proses revisi via applikasi web.";
     }
     
     /** jika approvalStatus masih (waiting approval atau waiting revised), maka kirim notif dalam bentuk growl ke approverUserId/requestUserId
@@ -743,7 +733,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	approvalActivityDao.update(appActivity);
     	
     	//send email cancellation
-    	this.sendingEmailApprovalNotif(appActivity);
+    	this.sendingApprovalNotification(appActivity);
     }
     
     /**
@@ -786,12 +776,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//show growl notification for requesterUserId
     	this.sendApprovalGrowlNotif(lastAppActivity);
-    	
-    	//send sms notification to requester
-		this.sendApprovalSmsnotif(lastAppActivity);
 		
 		//send email askingRevised
-    	this.sendingEmailApprovalNotif(lastAppActivity);
+    	this.sendingApprovalNotification(lastAppActivity);
 		
     }
 	
@@ -840,12 +827,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//show growl notification for approverUserId
     	this.sendApprovalGrowlNotif(lastAppActivity);
-    	
-    	//send sms notification to approver
-		this.sendApprovalSmsnotif(lastAppActivity); 
 		
 		//send email revised
-    	this.sendingEmailApprovalNotif(lastAppActivity);
+    	this.sendingApprovalNotification(lastAppActivity);
 	
     }
 

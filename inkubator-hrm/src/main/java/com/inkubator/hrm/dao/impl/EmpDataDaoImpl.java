@@ -652,7 +652,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         if (StringUtils.isNotEmpty(param.getNikEnd())) {
             criteria.add(Restrictions.le("nik", param.getNikEnd()));
         }
-        
+
         criteria.add(Restrictions.ne("status", HRMConstant.EMP_TERMINATION));
         return criteria;
     }
@@ -860,8 +860,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
-	@Override
-	public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName) {
+    @Override
+    public List<EmpData> getAllDataNotTerminateWithSearchParameter(String nikOrName) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -870,16 +870,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          */
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-    	criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        if (nikOrName!=null) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (nikOrName != null) {
             Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
-	        criteria.add(disjunction);
-        } 
+            disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
+        }
         return criteria.list();
-	}
-    
+    }
+
     @Override
     public List<EmpData> getAllData() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -891,18 +891,18 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         return criteria.list();
     }
-    
+
     @Override
     public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        
-        if(StringUtils.isNotEmpty(nikOrName)) {
-	        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-	        Disjunction disjunction = Restrictions.disjunction();
-	        disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
-	        disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
-	        criteria.add(disjunction);
+
+        if (StringUtils.isNotEmpty(nikOrName)) {
+            criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.ilike("bioData.combineName", nikOrName.toLowerCase(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("nik", nikOrName, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         return criteria.list();
     }
@@ -937,7 +937,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) {    	
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Long companyId, Date date) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -948,7 +948,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.add(Restrictions.le("joinDate", date));
-        
+
         return criteria.list();
     }
 
@@ -1851,18 +1851,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (String) criteria.setProjection(Projections.property("bioData.firstName")).uniqueResult();
     }
 
-    
-	@Override
-	public Boolean isEmpDataWithNullWtGroupWorkingExist() {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);		
-		criteria.add(Restrictions.isNull("wtGroupWorking"));
-		criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-		
-		return !criteria.list().isEmpty();
-	}
+    @Override
+    public Boolean isEmpDataWithNullWtGroupWorkingExist() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.add(Restrictions.isNull("wtGroupWorking"));
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
-
+        return !criteria.list().isEmpty();
+    }
 
     @Override
     public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
@@ -1897,44 +1894,42 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //            }
 //        }
 
-
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResult);
         return criteria.list();
     }
-    
+
     /*
-	 * Query realisasi kehadiran per departemen dalam range date tertentu, 
-	 *  lalu di transform ke class DepAttendanceRealizationViewModel
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill) {
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
-		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
-				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
-				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
-				+ " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
-				+ " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
-				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
-				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
-				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
-				+ " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
-				+ " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
-				+ " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
-				+ " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) +"' "
-				+ " AND wtWorkingHour.code <> 'OFF'"
-				+ " AND jabatan.departement_id =  " + departmentId
-				+ " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
-				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
-		
-		
-		return getCurrentSession().createSQLQuery(query.toString())
+     * Query realisasi kehadiran per departemen dalam range date tertentu, 
+     *  lalu di transform ke class DepAttendanceRealizationViewModel
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill) {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
+                + " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
+                + " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
+                + " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
+                + " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+                + " FROM temp_jadwal_karyawan tempJadwalKaryawan"
+                + " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
+                + " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
+                + " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
+                + " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
+                + " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
+                + " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) + "' "
+                + " AND wtWorkingHour.code <> 'OFF'"
+                + " AND jabatan.departement_id =  " + departmentId
+                + " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
+                + " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
+
+        return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
                 .list();
-	}
+    }
 
     @Override
     public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter) {
@@ -1957,75 +1952,73 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public EmpData getByIdWithBioData(long id) {
+    @Override
+    public EmpData getByIdWithBioData(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         return (EmpData) criteria.uniqueResult();
-	}
-	
-	/*
-	 * Get Id Departemen dengan root parent idDepartment, 
-	 * misal idDepartment = 7,
-	 * maka dia akan mencari id department dengan parent_id = 7, 
-	 * dan begitu seterusnya, masing - masing department tersebut akan di query lagi secara recursive sampai level terbawah.
-	 * return dalam bentuk string : idDep, idDep, idDep (ex : 5,6,8)
-	 * Reference : http://stackoverflow.com/questions/28363893/mysql-select-recursive-get-all-child-with-multiple-level/28366310
-	 */
-	@Override
-	public String getIdChildDepRecursiveByDepartmentId(Long idDepartment) {
-		StringBuilder query = new StringBuilder(" SELECT GROUP_CONCAT(lv SEPARATOR ',') FROM ("
-				+ "	SELECT @parameter \\:=(SELECT GROUP_CONCAT(id SEPARATOR ',') FROM department "
-				+ " WHERE FIND_IN_SET(parent_id, @parameter) ) AS lv FROM department JOIN "
-				+ "	(SELECT @parameter \\:= " + idDepartment + ")tmp"
-				+ "	WHERE parent_id IN (@parameter)) a; ");
-		
-		return (String) getCurrentSession().createSQLQuery(query.toString())
+    }
+
+    /*
+     * Get Id Departemen dengan root parent idDepartment, 
+     * misal idDepartment = 7,
+     * maka dia akan mencari id department dengan parent_id = 7, 
+     * dan begitu seterusnya, masing - masing department tersebut akan di query lagi secara recursive sampai level terbawah.
+     * return dalam bentuk string : idDep, idDep, idDep (ex : 5,6,8)
+     * Reference : http://stackoverflow.com/questions/28363893/mysql-select-recursive-get-all-child-with-multiple-level/28366310
+     */
+    @Override
+    public String getIdChildDepRecursiveByDepartmentId(Long idDepartment) {
+        StringBuilder query = new StringBuilder(" SELECT GROUP_CONCAT(lv SEPARATOR ',') FROM ("
+                + "	SELECT @parameter \\:=(SELECT GROUP_CONCAT(id SEPARATOR ',') FROM department "
+                + " WHERE FIND_IN_SET(parent_id, @parameter) ) AS lv FROM department JOIN "
+                + "	(SELECT @parameter \\:= " + idDepartment + ")tmp"
+                + "	WHERE parent_id IN (@parameter)) a; ");
+
+        return (String) getCurrentSession().createSQLQuery(query.toString())
                 .uniqueResult();
-	}
-	
-	
-	
-	@Override
-	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(
-			String rangeDepId, Date dateFrom, Date dateUntill) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
-				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
-				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
-				+ " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
-				+ " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
-				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
-				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
-				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
-				+ " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
-				+ " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
-				+ " INNER JOIN department department ON jabatan.departement_id = department.id"
-				+ " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
-				+ " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) +"' "
-				+ " AND wtWorkingHour.code <> 'OFF'"				
-				+ " AND department.id in("
-				+ 	rangeDepId
-				+ " )"
-				+ " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
-				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
-		
-		return getCurrentSession().createSQLQuery(query.toString())
+    }
+
+    @Override
+    public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(
+            String rangeDepId, Date dateFrom, Date dateUntill) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
+                + " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
+                + " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
+                + " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
+                + " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+                + " FROM temp_jadwal_karyawan tempJadwalKaryawan"
+                + " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
+                + " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
+                + " INNER JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
+                + " INNER JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
+                + " INNER JOIN department department ON jabatan.departement_id = department.id"
+                + " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
+                + " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) + "' "
+                + " AND wtWorkingHour.code <> 'OFF'"
+                + " AND department.id in("
+                + rangeDepId
+                + " )"
+                + " AND empData.status <> '" + HRMConstant.EMP_TERMINATION + "' "
+                + " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
+
+        return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
                 .list();
-	}
+    }
 
-	@Override
-	public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+    @Override
+    public List<EmpData> getAllDataNotTerminateAndJoinDateLowerThan(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         criteria.add(Restrictions.le("joinDate", date));
-        
+
         return criteria.list();
-	}
-	
-	@Override
+    }
+
+    @Override
     public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
@@ -2052,11 +2045,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     private void doSearchByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
-        
+
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-        
+
         if (dataSearchParameter.getJabatanKode() != null) {
             criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
@@ -2073,5 +2066,49 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
     }
-    
+
+    @Override
+    public List<EmpData> getAllDataByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployee(companyId, searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("taxFree", "taxFree", JoinType.INNER_JOIN);
+        criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
+//        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    private void doSearchByParamOnlyEmployee(Long companyId, EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        if (dataSearchParameter.getJabatanKode() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+        }
+
+        if (dataSearchParameter.getJabatanName() != null) {
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        }
+
+        if (dataSearchParameter.getNIK() != null) {
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
+        }
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (dataSearchParameter.getName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+    }
+
+    @Override
+    public Long getTotalByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployee(companyId, searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

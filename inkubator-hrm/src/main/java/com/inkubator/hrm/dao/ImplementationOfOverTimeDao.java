@@ -31,4 +31,6 @@ public interface ImplementationOfOverTimeDao extends IDAO<ImplementationOfOverTi
     public ImplementationOfOverTime getEntityByApprovalActivityNumberWithDetail(String activityNumber);
     
     public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate);
+    
+    public Long getCurrentMaxId();
 }

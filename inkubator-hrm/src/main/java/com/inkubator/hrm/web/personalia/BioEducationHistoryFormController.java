@@ -143,31 +143,13 @@ public class BioEducationHistoryFormController extends BaseController{
             	
             	String isEditOnRevision = FacesUtil.getRequestParameter("isEditOnRevision");
             	if(StringUtils.equals(isEditOnRevision, "Yes")){
+            		
             		Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
-            		BioEducationHistoryViewModel bioEducationHistoryViewModel = (BioEducationHistoryViewModel) sessionMap.get("selectedBioEducationHistoryViewModel");
+            		model = (BioEducationHistoryModel) sessionMap.get("selectedBioEducationHistoryModel");
             		isEdit = Boolean.TRUE;
-            		 model.setId(bioEducationHistoryViewModel.getId());
-                     model.setBiodataId(Long.parseLong(bioEducationHistoryViewModel.getBiodata()));
-                     if(bioEducationHistoryViewModel.getEducationLevel() != null){
-                         model.setEducationLevelId(Long.parseLong(bioEducationHistoryViewModel.getEducationLevel()));
-                     }
-                     if(bioEducationHistoryViewModel.getInstitutionEducation() != null){
-                         model.setInstitutionEducationId(Long.parseLong(bioEducationHistoryViewModel.getInstitutionEducation()));
-                     }
-                     if(bioEducationHistoryViewModel.getFaculty()!=null){
-                         model.setFacultyId(Long.parseLong(bioEducationHistoryViewModel.getFaculty()));
-                     }
-                     if(bioEducationHistoryViewModel.getMajor()!=null){
-                         model.setMajorId(Long.parseLong(bioEducationHistoryViewModel.getMajor()));
-                     }
-                     model.setCertificateNumber(bioEducationHistoryViewModel.getCertificateNumber());
-                     model.setScore(bioEducationHistoryViewModel.getScore());
-                     /*if(bioEducationHistoryViewModel.getCity() != null ){
-                         model.setCity(bioEducationHistoryViewModel.getCity());
-                     }*/
-                     model.setYearIn(bioEducationHistoryViewModel.getYearIn());
-                     model.setYearOut(bioEducationHistoryViewModel.getYearOut());
-                     //bioDataId = bioEducationHistoryViewModel.getBiodata().getId();
+            		bioDataId = model.getBiodataId();
+            	}else{
+            		bioDataId = Long.parseLong(param.substring(1));
             	}
             	
             }else{
@@ -261,18 +243,33 @@ public class BioEducationHistoryFormController extends BaseController{
     
         BioEducationHistory educationHistory = getEntityFromViewModel(model);
         try {
-            if (isEdit) {
-                educationHistoryService.update(educationHistory);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                educationHistoryService.save(educationHistory);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
-            if (fotoFile != null) {
-                facesIO.transferFile(fotoFile);
-                File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
-                fotoOldFile.renameTo(new File(educationHistory.getPathFoto()));
-            }
+        	/** jika tidak blank, berarti datangnya dari proses revisi BioEducationHistory, jangan langsung di save / update,
+    	 	cukup di return kembali Object BioEducationHistory yang telah di add / edit untuk kemudian di proses kembali di form revisi, 
+    	 	ini dikarenakan proses revisi menggunakan approval sehingga data yang telah di ubah
+    	 	tidak langsung di persist ke table yang bersangkutan, melainkan di tampung dahulu di json pendingData (Approval Activity)*/
+	    	if(StringUtils.isNotBlank(isRevision)){
+	    		//Transfer File, dan set path-nya ke model, akan tetapi jngn langsung di rename ke foto awal (jika ada) dari BioEducationHistory
+	    		//nanti jika sudah approval, baru di update path foto dari entity BioEducationHistory dengan yang di model
+	    		 if (fotoFile != null) {
+	    			 model.setFotoFile(fotoFile);
+	    			 model.setPathFoto(facesIO.getPathUpload() + educationHistory.getId() + "_" + fotoFileName);
+	    	     }
+	    		RequestContext.getCurrentInstance().closeDialog(model);
+	    	}else{
+	    		if (isEdit) {
+	                educationHistoryService.update(educationHistory);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+	            } else {
+	                educationHistoryService.save(educationHistory);
+	                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+	            }
+	            if (fotoFile != null) {
+	                facesIO.transferFile(fotoFile);
+	                File fotoOldFile = new File(facesIO.getPathUpload() + fotoFileName);
+	                fotoOldFile.renameTo(new File(educationHistory.getPathFoto()));
+	            }
+	    	}
+            
             cleanAndExit();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

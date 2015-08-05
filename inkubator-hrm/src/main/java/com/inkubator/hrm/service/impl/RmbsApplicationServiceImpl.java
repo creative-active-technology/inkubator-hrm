@@ -338,7 +338,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 		
 	}
 
@@ -364,7 +364,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 		
 	}
 
@@ -390,7 +390,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
 		
 	}
 	
@@ -470,7 +470,11 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	}
 
 	@Override
-	protected void sendingEmailApprovalNotif(ApprovalActivity appActivity)throws Exception {
+	protected void sendingApprovalNotification(ApprovalActivity appActivity)throws Exception {
+		//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
 		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
@@ -573,7 +577,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
             approvalActivityDao.save(approvalActivity);
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
             
             message = "success_need_approval";
 		}    
@@ -763,6 +767,19 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalUndisbursedByParam() {
 		return rmbsApplicationDao.getTotalUndisbursedByParam();
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		RmbsApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan penggantian oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Tipe " + entity.getRmbsType().getName() + ". ");
+		detail.append("Sejumlah " + decimalFormat.format(entity.getNominal()) + ", mata uang " + entity.getCurrency().getName());
+		return detail.toString();
 	}
 	
 }

@@ -25,6 +25,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,9 +34,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.criterion.Order;
@@ -348,7 +351,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     		approvalActivityDao.save(approvalActivity);
     		
     		//sending email notification
-    		this.sendingEmailApprovalNotif(approvalActivity);
+    		this.sendingApprovalNotification(approvalActivity);
     		
     		message = "success_need_approval";
         }
@@ -426,7 +429,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 
 	@Override
@@ -449,7 +452,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 	
 	@Override
@@ -472,11 +475,15 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		}
 		
 		//if there is no error, then sending the email notification
-		sendingEmailApprovalNotif(appActivity);
+		sendingApprovalNotification(appActivity);
 	}
 	
 	@Override
-	public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception{
+	public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception{
+		//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
 		//initialization
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
@@ -536,5 +543,20 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
     public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return businessTravelDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		BusinessTravel entity = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
+		
+		detail.append("Pengajuan perjalanan dinas oleh ").append(requester.getEmpData().getBioData().getFullName()).append(". ");
+		detail.append("Jenis: ").append(entity.getTravelType().getName()).append(". ");
+		detail.append("Tujuan ke ").append(entity.getDestination()).append(". ");
+		detail.append("Dari tanggal ").append(dateFormat.format(entity.getStartDate())).append(" s/d ").append(dateFormat.format(entity.getEndDate()));
+		return detail.toString();
+	}
 
 }

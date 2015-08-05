@@ -1,18 +1,14 @@
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.inkubator.hrm.entity.RecruitHireApply;
-import com.inkubator.hrm.dao.RecruitHireApplyDao;
-import com.inkubator.hrm.service.RecruitHireApplyService;
-import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,10 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.inkubator.securitycore.util.UserInfoUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
+
+import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
@@ -33,6 +35,7 @@ import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
+import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
@@ -44,18 +47,17 @@ import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
+import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -500,8 +502,10 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     }
 
     @Override
-    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
     }
 
     @Override
@@ -647,4 +651,18 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         return this.recruitHireApplyDao.getEntityWithDetailByActivityNumber(activityNumber);
 
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		RecruitHireApply entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan rekrutmen untuk jabatan " + entity.getJabatan().getName() + ", oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jumlah karyawan " + entity.getCandidateCountRequest() + " orang. ");
+		detail.append("Tanggal efektif " + dateFormat.format(entity.getEfectiveDate()) + ". ");
+		detail.append("Periode MPP " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeStart()) + " s/d " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeEnd()));
+		return detail.toString();
+	}
 }

@@ -1,93 +1,62 @@
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
+import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
+
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.AnnouncementDao;
-import com.inkubator.hrm.dao.AnnouncementEmpTypeDao;
-import com.inkubator.hrm.dao.AnnouncementGoljabDao;
-import com.inkubator.hrm.dao.AnnouncementUnitDao;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.ApprovalDefinitionDao;
-import com.inkubator.hrm.dao.CompanyDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.EmployeeTypeDao;
-import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
-import com.inkubator.hrm.dao.UnitKerjaDao;
-import com.inkubator.hrm.entity.Announcement;
-import com.inkubator.hrm.entity.AnnouncementEmpType;
-import com.inkubator.hrm.entity.AnnouncementEmpTypeId;
-import com.inkubator.hrm.entity.AnnouncementGoljab;
-import com.inkubator.hrm.entity.AnnouncementGoljabId;
-import com.inkubator.hrm.entity.AnnouncementUnit;
-import com.inkubator.hrm.entity.AnnouncementUnitId;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.Company;
-import com.inkubator.hrm.entity.EmployeeType;
-import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
-import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
-import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashSet;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.hamcrest.Matchers;
-import org.primefaces.model.DefaultUploadedFile;
 
 /**
  *
@@ -111,6 +80,8 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     private JabatanDao jabatanDao;
     @Autowired
     private FacesIO facesIO;
+    @Autowired
+    private HrmUserDao hrmUserDao;
 
     @Override
     public RecruitMppApply getEntiyByPK(String string) throws Exception {
@@ -485,8 +456,10 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     }
 
     @Override
-    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
     }
 
     @Override
@@ -630,5 +603,18 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         recruitMppApply.setRecruitMppApplyDetails(setRecruitMppApplyDetail);
         return recruitMppApply;
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		RecruitMppApply entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan perencanaan kebutuhan tenaga kerja oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Nama: " + entity.getRecruitMppApplyName() + ". ");
+		detail.append("Periode " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeStart()) + " s/d " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeEnd()));
+		return detail.toString();
+	}
 
 }

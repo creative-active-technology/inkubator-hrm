@@ -27,10 +27,12 @@ import com.inkubator.hrm.service.AnnouncementLogService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import org.apache.commons.lang3.StringUtils;
 
 
 
@@ -51,15 +53,18 @@ public class HomeController extends BaseController {
     private AnnouncementLogService announcementLogService;
     private AnnouncementLog announcementLog;
     private Boolean isRenderAnnouncement;
+    private String roleUser;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        String role = authorities.toString();
-        role = role.replace("[", "");
-        role = role.replace("]", "");
+//        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//        String role = authorities.toString();
+//        role = role.replace("[", "");
+//        role = role.replace("]", "");
+        roleUser=HrmUserInfoUtil.getRolesString();
+        roleUser=StringsUtils.substringBefore(roleUser, ",");
         /**
          * saving process of User Access History
          */
@@ -159,6 +164,14 @@ public class HomeController extends BaseController {
 
     public HrmUserService getHrmUserService() {
         return hrmUserService;
+    }
+
+    public String getRoleUser() {
+        return roleUser;
+    }
+
+    public void setRoleUser(String roleUser) {
+        this.roleUser = roleUser;
     }
     
     

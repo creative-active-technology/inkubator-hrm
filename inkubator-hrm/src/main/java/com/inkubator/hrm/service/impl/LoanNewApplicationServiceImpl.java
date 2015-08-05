@@ -5,49 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
-
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.HrmUserDao;
-import com.inkubator.hrm.dao.LoanNewApplicationDao;
-import com.inkubator.hrm.dao.LoanNewCancelationDao;
-import com.inkubator.hrm.dao.LoanNewSchemaDao;
-import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
-import com.inkubator.hrm.dao.LoanNewTypeDao;
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.Loan;
-import com.inkubator.hrm.entity.LoanNewApplication;
-import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
-import com.inkubator.hrm.entity.LoanNewCancelation;
-import com.inkubator.hrm.entity.LoanNewSchema;
-import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
-import com.inkubator.hrm.entity.LoanNewType;
-import com.inkubator.hrm.entity.LoanPaymentDetail;
-import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.LoanNewApplicationService;
-import com.inkubator.hrm.util.HRMFinanceLib;
-import com.inkubator.hrm.util.JadwalPembayaran;
-import com.inkubator.hrm.util.LoanPayment;
-import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
-import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
-import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
-import com.inkubator.hrm.web.search.LoanNewSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -74,6 +31,45 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewCancelationDao;
+import com.inkubator.hrm.dao.LoanNewSchemaDao;
+import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
+import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LoanNewCancelation;
+import com.inkubator.hrm.entity.LoanNewSchema;
+import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
+import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.LoanNewApplicationService;
+import com.inkubator.hrm.util.HRMFinanceLib;
+import com.inkubator.hrm.util.JadwalPembayaran;
+import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
+import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -301,8 +297,12 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
-    protected void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
@@ -410,7 +410,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     private LoanNewApplication convertJsonToEntity(String json) {
@@ -441,7 +441,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -463,7 +463,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -546,7 +546,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             result = "success_need_approval";
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
 
         return result;
@@ -776,4 +776,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     public Long getTotalUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter) throws Exception {
         return this.loanNewApplicationDao.getTotalUndisbursedActivityByParam(parameter);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		LoanNewApplication entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan pinjaman oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jenis: " + entity.getLoanNewType().getLoanTypeName() + ". ");
+		detail.append("Sejumlah Rp. " + decimalFormat.format(entity.getNominalPrincipal()) + ", dengan termin " + entity.getTermin() + " kali");
+		return detail.toString();
+	}
 }

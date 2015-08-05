@@ -7,7 +7,7 @@
     <version>2.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>OPTIMA-HR</name>
+    <name>OPTIMA-HR-MASTER</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

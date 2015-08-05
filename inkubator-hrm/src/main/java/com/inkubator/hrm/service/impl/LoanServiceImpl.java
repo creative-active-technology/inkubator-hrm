@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,6 @@ import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.util.HashMap;
 
 /**
  *
@@ -388,7 +388,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
             message = "success_need_approval";
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
 
         return message;
@@ -453,7 +453,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -476,7 +476,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -498,12 +498,16 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
@@ -784,4 +788,17 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         Loan entity = gson.fromJson(json, Loan.class);
         return entity;
     }
+    
+    @Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Loan entity = this.convertJsonToEntity(appActivity.getPendingData());
+		
+		detail.append("Pengajuan pinjaman oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Skema: " + entity.getLoanSchema().getName() + ". ");
+		detail.append("Sejumlah Rp. " + decimalFormat.format(entity.getNominalPrincipal()) + ", dengan termin " + entity.getTermin() + " kali");
+		return detail.toString();
+	}
 }

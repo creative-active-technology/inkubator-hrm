@@ -426,14 +426,17 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             approvalActivityDao.save(approvalActivity);
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
             message = "success_need_approval";
         }
         return message;
     }
 
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
         //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
@@ -524,7 +527,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
             this.save(reimbursment, uploadedFile, true);
             //saveModelJson(reimbursment, , appActivity, true);
         }
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     /*private void saveModelJson(Reimbursment reimbursment, String fileName, ApprovalActivity appActivity, boolean isBypassApprovalChecking) throws Exception {
@@ -639,7 +642,7 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -688,6 +691,21 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		DecimalFormat decimalFormat = new DecimalFormat("###,###");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		Reimbursment entity = gson.fromJson(appActivity.getPendingData(), Reimbursment.class);
+		
+		detail.append("Pengajuan penggantian oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Skema " + entity.getReimbursmentSchema().getName() + ". ");
+		detail.append("Jumlah " + entity.getQuantity() + ". ");
+		detail.append("Nominal Rp. " + decimalFormat.format(entity.getNominal()));
+		return detail.toString();
+	}
 }

@@ -398,7 +398,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -422,7 +422,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
@@ -456,12 +456,16 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         }
 
         //if there is no error, then sending the email notification
-        sendingEmailApprovalNotif(appActivity);
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
-    public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+    public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+    	//send sms notification to approver if need approval OR
+        //send sms notification to requester if need revision
+		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
 
@@ -643,7 +647,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             message = "success_need_approval";
 
             //sending email notification
-            this.sendingEmailApprovalNotif(approvalActivity);
+            this.sendingApprovalNotification(approvalActivity);
         }
 
         return message;
@@ -752,7 +756,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
                 message = "success_need_approval";
 
                 //sending email notification
-                this.sendingEmailApprovalNotif(approvalActivity);
+                this.sendingApprovalNotification(approvalActivity);
             }
         } else {
             this.cancellationProcess(leaveImplementationId, actualLeaves, cancellationLeaves, cancellationDescription);
@@ -823,4 +827,18 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return leaveImplementationDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		LeaveImplementation entity = gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);
+		
+		detail.append("Pengajuan cuti oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		detail.append("Jenis: " + entity.getLeave().getName() + ". ");
+		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+		return detail.toString();
+	}
 }
