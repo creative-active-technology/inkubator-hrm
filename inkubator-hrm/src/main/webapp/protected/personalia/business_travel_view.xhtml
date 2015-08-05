@@ -32,6 +32,7 @@
                     <p:growl id="growlBusinessTravelViewlId" globalOnly="true" showDetail="true" />
 
                     <h:form id="formBusinessTravelViewId">
+                         <p:poll autoStart="true" update=":growlBusinessTravelViewlId" process=":growlBusinessTravelViewlId" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
