@@ -129,6 +129,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.EMP_CORRECTION_ATTENDANCE:
                     redirect = "/protected/working_time/emp_correction_attendance_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.PERMIT:
+                    redirect = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    break;
                 default:
                     break;
             }
@@ -182,6 +185,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.RECRUIT_MPP_APPLY:
                     redirect = "/protected/recruitment/recruit_mpp_apply_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.PERMIT:
+                    redirect = "/protected/working_time/permit_impl_approval.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

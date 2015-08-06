@@ -24,6 +24,7 @@ public class PermitImplementationModel implements Serializable{
 	private String description;
 	private Double actualPermitTaken;
         private String uploadFileName;
+        private String employeeName;
 	
 	public Long getId() {
 		return id;
@@ -100,6 +101,12 @@ public class PermitImplementationModel implements Serializable{
     public void setUploadFileName(String uploadFileName) {
         this.uploadFileName = uploadFileName;
     }
+	public String getEmployeeName() {
+		return employeeName;
+	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
         
         
 }
