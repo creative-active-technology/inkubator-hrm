@@ -39,7 +39,7 @@ public interface PermitImplementationService extends IService<PermitImplementati
 
     public Long getTotalReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter) throws Exception;    
 
-    public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception;
+    public String save(PermitImplementation entity, UploadedFile documentFile) throws Exception;
 
     public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception;
     
