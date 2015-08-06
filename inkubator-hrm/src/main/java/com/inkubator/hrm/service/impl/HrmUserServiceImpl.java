@@ -28,13 +28,16 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -542,4 +545,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         hrmUser.getEmpData().getBioData().getId();
         return hrmUser;
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public HrmUser getByEmpDataId(long empDataId) throws Exception {
+		return hrmUserDao.getByEmpDataId(empDataId);
+	}
 }
