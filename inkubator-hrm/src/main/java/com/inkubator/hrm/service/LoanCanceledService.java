@@ -8,7 +8,9 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.web.search.LoanCanceledSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -22,4 +24,6 @@ public interface LoanCanceledService extends IService<LoanCanceled> {
     public Long getTotalByParam(LoanCanceledSearchParameter searchParameter) throws Exception;
     
     public LoanCanceled getEntityByPkWithDetail(Long id) throws Exception;
+    
+    public Long getCurrentMaxId() throws Exception;
 }

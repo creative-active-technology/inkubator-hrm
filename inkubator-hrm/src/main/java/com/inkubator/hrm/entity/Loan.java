@@ -6,9 +6,11 @@ package com.inkubator.hrm.entity;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,6 +56,7 @@ public class Loan implements java.io.Serializable {
     private Date approvalTime;
     private Double monthlyInstallment;
     private Set<LoanPaymentDetail> loanPaymentDetails = new HashSet<LoanPaymentDetail>(0);
+    private Set<LoanCanceled> loanCanceleds = new HashSet<LoanCanceled>(0);
 
     public Loan() {
     }
@@ -256,5 +259,14 @@ public class Loan implements java.io.Serializable {
 	public void setMonthlyInstallment(Double monthlyInstallment) {
 		this.monthlyInstallment = monthlyInstallment;
 	}
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="loan")
+    public Set<LoanCanceled> getLoanCanceleds() {
+        return this.loanCanceleds;
+    }
+    
+    public void setLoanCanceleds(Set<LoanCanceled> loanCanceleds) {
+        this.loanCanceleds = loanCanceleds;
+    }
     
 }
