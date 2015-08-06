@@ -16,6 +16,7 @@ import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
@@ -25,14 +26,17 @@ import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.service.PermitImplementationService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.PermitImplementationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -57,6 +61,7 @@ public class PermitImplementationFormController extends BaseController {
     @ManagedProperty(value = "#{uploadFilesUtil}")
     private UploadFilesUtil uploadFilesUtil;
     private Boolean isRequiredAttachment;
+    private Boolean isAdmin;
 
     @PostConstruct
     @Override
@@ -67,6 +72,17 @@ public class PermitImplementationFormController extends BaseController {
             model = new PermitImplementationModel();
             isRequiredAttachment = Boolean.TRUE;
             String param = FacesUtil.getRequestParameter("execution");
+            model.setNumberFilling(HRMConstant.PERMIT_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
+            isAdmin = Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
+            
+            if (!isAdmin) { //jika bukan administrator, langsung di set empData berdasarkan yang login
+
+                model.setEmpData(HrmUserInfoUtil.getEmpData());
+                model.setEmployeeName(HrmUserInfoUtil.getEmpData().getNik() + " " + HrmUserInfoUtil.getRealName());
+                //model.setNamakaryawan(HrmUserInfoUtil.getRealName());
+                //this.updateDataPinjamanByEmployee();
+                onChangeEmployee();
+            }
             if (StringUtils.isNotEmpty(param)) {
                 PermitImplementation permitImplementation = permitImplementationService.getEntityByPkWithDetail(Long.parseLong(param.substring(1)));
                 if (permitImplementation != null) {
@@ -94,6 +110,7 @@ public class PermitImplementationFormController extends BaseController {
         empDataService = null;
         documentFile = null;
         isRequiredAttachment = null;
+        isAdmin = null;
     }
 
     public PermitImplementationModel getModel() {
@@ -159,7 +176,16 @@ public class PermitImplementationFormController extends BaseController {
         this.uploadFilesUtil = uploadFilesUtil;
     }
 
-    public void doReset() {
+    
+    public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public void doReset() {
         if (isUpdate) {
             try {
                 PermitImplementation permitImplementation = permitImplementationService.getEntiyByPK(model.getId());
@@ -178,25 +204,28 @@ public class PermitImplementationFormController extends BaseController {
         PermitImplementation permitImplementation = getEntityFromViewModel(model);
 
         try {
-            String message = "";
+            String path = "";
 
             if (isUpdate) {
                 permitImplementationService.update(permitImplementation, documentFile);
+                path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-            	message = permitImplementationService.save(permitImplementation, documentFile, false);
+                String message = permitImplementationService.save(permitImplementation, documentFile);
                 if (StringUtils.equals(message, "success_need_approval")) {
+                    path = "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
                             FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 } else {
+                path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 }
             }
-            cleanAndExit();
-            return "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
+
+            return path;
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -254,9 +283,7 @@ public class PermitImplementationFormController extends BaseController {
 
     public void onChangeEmployee() {
         try {
-        	System.out.println(model.getEmpData().getId() + " employee");
             List<PermitDistribution> permitDistributions = permitDistributionService.getAllDataByEmpIdFetchPermit(model.getEmpData().getId());
-            System.out.println(permitDistributions.size() + " size permit by employee");
             //filter list hanya untuk permit yang isActive = true
             permitDistributions = Lambda.select(permitDistributions, Lambda.having(Lambda.on(PermitDistribution.class).getPermitClassification().getIsActive(), Matchers.equalTo(true)));
             permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
@@ -302,7 +329,7 @@ public class PermitImplementationFormController extends BaseController {
             documentFile = fileUploadEvent.getFile();
             model.setUploadFileName(documentFile.getFileName());
         } else {
-            ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
             String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");
             MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }

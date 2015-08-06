@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
@@ -26,14 +27,20 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.service.LoanCanceledService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -50,10 +57,16 @@ public class LoanCanceledFormController extends BaseController {
 
     @ManagedProperty(value = "#{loanService}")
     private LoanService loanService;
+    @ManagedProperty(value = "#{loanCanceledService}")
+    private LoanCanceledService loanCanceledService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
+    @ManagedProperty(value = "#{hrmUserService}")
+    private HrmUserService hrmUserService;
     private LoanCanceledModel loanCanceledModel;
     private Boolean isAdministator;
     private HashMap<Long, String> listActivity;
@@ -65,8 +78,16 @@ public class LoanCanceledFormController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
+        	
         	loanPaymentDetails = new ArrayList<LoanPaymentDetail>();
             loanCanceledModel = new LoanCanceledModel();
+            
+            TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+            if(!ObjectUtils.equals(transactionCodefication, null)){
+            	Long currentMaxLoanCancelledId = loanCanceledService.getCurrentMaxId();
+                loanCanceledModel.setCode((KodefikasiUtil.getKodefikasi(((int) currentMaxLoanCancelledId.longValue()), transactionCodefication.getCode())));
+            }
+            
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             if(!isAdministator){
             	System.out.println("masuk if");
@@ -74,18 +95,7 @@ public class LoanCanceledFormController extends BaseController {
             	listActivity = loanService.getAllDataNotApprovedYet(UserInfoUtil.getUserName());
             }
             
-            //            String loanId = FacesUtil.getRequestParameter("execution");
-            /*if (StringUtils.isNotEmpty(loanId)) {
-                Loan loan = loanService.getEntityByPkWithDetail(Long.valueOf(loanId.substring(1)));
-                ApprovalActivity approvalActivity = approvalActivityService.getApprovalTimeByApprovalActivityNumber(loan.getApprovalActivityNumber());
-                if (loan != null) {
-                    loanCanceledModel = getModelFromEntity(loan);
-                    loanCanceledModel.setApprovalTime(approvalActivity.getApprovalTime());
-                    loanCanceledModel.setApprovalActivityNumber(approvalActivity.getActivityNumber());
-                    loanCanceledModel.setEmpData(loan.getEmpData().getId());
-                    loanCanceledModel.setLoanSchema(loan.getLoanSchema().getId());
-                }
-            }*/
+            
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -100,6 +110,22 @@ public class LoanCanceledFormController extends BaseController {
 		}
 		return empDatas;
 	}
+    
+    public void onChangeEmployee(){
+    	try {
+    		HrmUser user = hrmUserService.getByEmpDataId(loanCanceledModel.getEmpData().getId());
+    		listActivity = loanService.getAllDataNotApprovedYet(user.getUserId());
+    	} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
+    	this.resetDetailInfo();
+    }
+    
+    private void resetDetailInfo(){
+    	loan = null;
+    	loanPaymentDetails = new ArrayList<LoanPaymentDetail>();
+    	
+    }
     
     @PreDestroy
     public void cleanAndExit() {
@@ -118,40 +144,23 @@ public class LoanCanceledFormController extends BaseController {
     }
     
     public LoanCanceledModel getModelFromEntity(Loan loan) {
-        LoanCanceledModel model = new LoanCanceledModel();
-        model.setId(loan.getId());
-        model.setNomor(loan.getNomor());
-        model.setLoanDate(loan.getLoanDate());
-        model.setLoanName(loan.getLoanSchema().getName());
-        model.setNominalPrincipal(loan.getNominalPrincipal());
-        model.setTermin(loan.getTermin());
-        model.setApprovalTime(loan.getApprovalTime());
-        model.setInterestRate(loan.getInterestRate());
-        model.setTypeOfInterest(loan.getTypeOfInterest());
-        return model;
+    	loanCanceledModel.setId(loan.getId());
+    	loanCanceledModel.setNomor(loan.getNomor());
+    	loanCanceledModel.setLoanDate(loan.getLoanDate());
+    	loanCanceledModel.setLoanName(loan.getLoanSchema().getName());
+    	loanCanceledModel.setNominalPrincipal(loan.getNominalPrincipal());
+    	loanCanceledModel.setTermin(loan.getTermin());
+    	loanCanceledModel.setApprovalTime(loan.getApprovalTime());
+    	loanCanceledModel.setInterestRate(loan.getInterestRate());
+    	loanCanceledModel.setTypeOfInterest(loan.getTypeOfInterest());
+        return loanCanceledModel;
     }
 
-    public String doSave() {
-        
-        try {
-            loanService.UpdateLoanAndsaveLoanCanceled(loanCanceledModel);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-            cleanAndExit();
-            return "/protected/personalia/loan_canceled_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-        return null;
-    }
-    
     public String doCancel() {
 	    LoanCanceled loanCancel = getEntityFromModel(loanCanceledModel);	    	
 	    try {
 	    	loanService.cancelled(loanCanceledModel.getApprovalActivityId(), loanCancel);
+	    	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "loanCanceled.loan_cancelled_successfull", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 	        return "/protected/personalia/loan_view.htm?faces-redirect=true";
 	            
 	    } catch (BussinessException ex) { 
@@ -166,6 +175,7 @@ public class LoanCanceledFormController extends BaseController {
     	LoanCanceled cancelation = new LoanCanceled();
 		cancelation.setCancelledDate(loanCanceledModel.getCancelledDate());
 		cancelation.setReason(loanCanceledModel.getReason());	
+		cancelation.setInterestRate(loanCanceledModel.getInterestRate());
 		return cancelation;
 	}
     
@@ -176,27 +186,9 @@ public class LoanCanceledFormController extends BaseController {
 	        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 	        loan = gson.fromJson(selectedApprovalActivity.getPendingData(), Loan.class);      
 	        
-	        
+	        loanCanceledModel = getModelFromEntity(loan);
 	        loanPaymentDetails = loanService.getAllDataLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), loan.getLoanPaymentDate(), loan.getNominalPrincipal(), loan.getTypeOfInterest());
-	        //relational object
-	        /*EmpData empData = empDataService.getByEmpIdWithDetail(rmbsApplication.getEmpData().getId());
-	        rmbsApplication.setEmpData(empData);
-	        RmbsType rmbsType = rmbsTypeService.getEntiyByPK(rmbsApplication.getRmbsType().getId());
-	        rmbsApplication.setRmbsType(rmbsType);
-	        Currency currency = currencyService.getEntiyByPK(rmbsApplication.getCurrency().getId());
-	        rmbsApplication.setCurrency(currency);
 	        
-	        //additional information
-	        RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(empData.getId());
-	        rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
-	        rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsType.getId(), rmbsSchema.getId()));
-	        totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
-	        listApprover = rmbsApplicationService.getListApproverByEmpDataId(empData.getId());
-	        
-	        //attachment file
-	        JsonObject jsonObject = gson.fromJson(selectedApprovalActivity.getPendingData(), JsonObject.class);            
-	    	JsonElement elReimbursementFileName = jsonObject.get("reimbursementFileName");
-	    	isHaveAttachment = !elReimbursementFileName.isJsonNull();*/
     	} catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -270,5 +262,23 @@ public class LoanCanceledFormController extends BaseController {
 		this.loanPaymentDetails = loanPaymentDetails;
 	}
 
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(
+			TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
+
+	public void setLoanCanceledService(LoanCanceledService loanCanceledService) {
+		this.loanCanceledService = loanCanceledService;
+	}
+
+	public void setHrmUserService(HrmUserService hrmUserService) {
+		this.hrmUserService = hrmUserService;
+	}
+	
+	
     
 }
