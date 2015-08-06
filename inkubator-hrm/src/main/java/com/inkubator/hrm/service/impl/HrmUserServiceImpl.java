@@ -555,4 +555,10 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         hrmUser.getEmpData().getBioData().getId();
         return hrmUser;
     }
+
+    @Override
+    public String getCompanyName(String userId) throws Exception {
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(userId);
+        return hrmUser.getEmpData().getJabatanByJabatanId().getDepartment().getCompany().getName();
+    }
 }

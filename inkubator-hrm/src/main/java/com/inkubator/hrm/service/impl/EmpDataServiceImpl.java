@@ -441,7 +441,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Date now = new Date();
         Date startDate = new Date();
         Date endDate = new Date();
-
         //age less than 26
         startDate = DateTimeUtil.getDateFrom(now, -26, CommonUtilConstant.DATE_FORMAT_YEAR);
         Long lessThan26 = empDataDao.getTotalByAgeLessThan(startDate);
