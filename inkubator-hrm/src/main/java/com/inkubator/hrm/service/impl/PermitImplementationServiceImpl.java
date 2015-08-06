@@ -63,8 +63,8 @@ import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
-import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 
@@ -118,7 +118,84 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     }
 
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
+		String message = "";
+    	EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+		PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+		PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+		Boolean isBypassApprovalChecking = Boolean.FALSE;
+		// check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+        Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
+        if (actualPermit > permitDistribution.getBalance()) {
+            throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+        }
+        
+        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+        
+        String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+        if (approvalActivity == null) {
+        	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        	//Set Kodefikasi pada nomor
+        	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+    		Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+    		if (currentMaxLoanId == null) {
+    			currentMaxLoanId = 0L;
+    		}
+			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+			entity.setEmpData(empData);
+			entity.setPermitClassification(permit);
+
+			entity.setCreatedBy(createdBy);
+			entity.setCreatedOn(createdOn);
+
+			permitImplementationDao.save(entity);
+
+			if (documentFile != null) {
+				String uploadPath = getUploadPath(entity.getId(), documentFile);
+				facesIO.transferFile(documentFile);
+				File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+				file.renameTo(new File(uploadPath));
+
+				entity.setUploadPath(uploadPath);
+				permitImplementationDao.update(entity);
+			}
+			
+			this.creditPermitBalance(permitDistribution, actualPermit);
+			message = "success_without_approvl";
+        }else{
+        	String uploadPath = null;
+            if (documentFile != null) {
+                uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), documentFile);
+                facesIO.transferFile(documentFile);
+                File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                file.renameTo(new File(uploadPath));
+            }
+            entity.setCreatedBy(createdBy);
+            entity.setCreatedOn(createdOn);
+            JsonParser parser = new JsonParser();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+            jsonObject.addProperty("documentFile", uploadPath);
+            //save to approval activity
+            approvalActivity.setPendingData(gson.toJson(jsonObject));
+            approvalActivityDao.save(approvalActivity);
+
+            //sending email notification
+            this.sendingEmailApprovalNotif(approvalActivity);
+            message = "success_need_approval";
+        }
+        return message;
+    }
+    
     @Override
+    public void save(PermitImplementation t) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    /*@Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
@@ -145,7 +222,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
 
 //        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        //Set Kodefikasi pada nomor
+      //Set Kodefikasi pada nomor
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
         Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
         if (currentMaxLoanId == null) {
@@ -175,7 +252,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 //        if (permit.getIsQuotaReduction()) {
         this.creditPermitBalance(permitDistribution, actualPermit);
 //        }
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -422,7 +499,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+    	Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
@@ -438,10 +515,10 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
             //convert to UploadedFile before saving
             UploadedFile uploadedFile = null;
-            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
-            if (!permitImplementationFile.isJsonNull()) {
-                String reimbursmentFilePath = permitImplementationFile.getAsString();
-                File file = new File(reimbursmentFilePath);
+            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
+            if (permitImplementationFile.isJsonNull() != Boolean.TRUE) {
+                String documentFile = permitImplementationFile.getAsString();
+                File file = new File(documentFile);
                 DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
                 InputStream input = new FileInputStream(file);
                 OutputStream os = fileItem.getOutputStream();
@@ -464,7 +541,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
-        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+    	Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
@@ -479,7 +556,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
                 //convert to UploadedFile before saving
                 UploadedFile uploadedFile = null;
-                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
+                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
                 if (!permitImplementationFile.isJsonNull()) {
                     String reimbursmentFilePath = permitImplementationFile.getAsString();
                     File file = new File(reimbursmentFilePath);
@@ -540,38 +617,50 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Override
     public void sendingEmailApprovalNotif(ApprovalActivity appActivity) throws Exception {
-        //initialization
+//        //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-
-        //get all sendCC email address on status approve OR reject
+//
+//        //get all sendCC email address on status approve OR reject
         List<String> ccEmailAddresses = new ArrayList<String>();
         if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
             ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
         }
-
-        //parsing object data to json, for email purpose
+//
+//        //parsing object data to json, for email purpose
         PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
-        PermitClassification permitClassification = permitDao.getEntiyByPK(permitImplementation.getPermitClassification().getId());
+        PermitClassification permit = permitDao.getEntiyByPK(permitImplementation.getPermitClassification().getId());
         String cancellationDate = StringUtils.EMPTY;
         JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
-
+//        if (jsonObject.get("isCancellationProcess") != null) {
+//            List<PermitImplementationDate> cancellations = gson.fromJson(jsonObject.get("cancellationDates"), new TypeToken<List<PermitImplementationDate>>() {
+//            }.getType());
+//            StringBuffer sb = new StringBuffer();
+//            for (PermitImplementationDate li : cancellations) {
+//                if (sb.length() != 0) {
+//                    sb.append(", ");
+//                }
+//                sb.append(dateFormat.format(li.getActualDate()));
+//            }
+//            cancellationDate = sb.toString();
+//        }
+//
         final JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("approvalActivityId", appActivity.getId());
+        	jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(permitImplementation.getCreatedOn()));
             jsonObj.put("startDate", dateFormat.format(permitImplementation.getStartDate()));
             jsonObj.put("endDate", dateFormat.format(permitImplementation.getEndDate()));
             jsonObj.put("fillingDate", dateFormat.format(permitImplementation.getFillingDate()));
-            jsonObj.put("permitClassification", permitClassification.getName());
+            jsonObj.put("permitClassification", permit.getName());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
 
-        //send messaging, to trigger sending email
+//        //send messaging, to trigger sending email
         super.jmsTemplateApproval.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
@@ -887,17 +976,14 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         return uploadPath;
     }
 
-    @Override
-    public void save(PermitImplementation t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void update(PermitImplementation t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-	@Override
+    
+    @Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception{
             String message = "";
@@ -938,6 +1024,8 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
                 permitImplementationDao.save(entity);
                 message = "save_without_approval";
+
+                this.creditPermitBalance(permitDistribution, actualPermit);
             }else{
             	String uploadPath = null;
             	if (documentFile != null) {
@@ -949,7 +1037,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 }
             	
             	entity.setCreatedBy(createdBy);
-            	entity.setCreatedOn(createdOn);
+            	entity.setCreatedBy(createdBy);
             	JsonParser parser = new JsonParser();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
                 JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
@@ -959,13 +1047,11 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 approvalActivityDao.save(approvalActivity);
 
                 //sending email notification
-                this.sendingEmailApprovalNotif(approvalActivity);
+//                this.sendingEmailApprovalNotif(approvalActivity);
                 message = "success_need_approval";
             }
             
 
-            this.creditPermitBalance(permitDistribution, actualPermit);
             return message;
 	}
-    
 }

@@ -93,6 +93,6 @@ public class LoanCanceledDaoImpl extends IDAOImpl<LoanCanceled> implements LoanC
     @Override
     public Long getCurrentMaxId() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
-        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult() ;
     }
 }

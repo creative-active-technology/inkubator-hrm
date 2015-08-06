@@ -55,6 +55,7 @@ public class LoanSchema implements java.io.Serializable {
     private Date updatedOn;
     private List<EmployeeType> employeeTypes = new ArrayList<>(0);
     private Set<LoanSchemaEmployeeType> loanSchemaEmployeeTypes = new HashSet<LoanSchemaEmployeeType>(0);
+    private Set<LoanCanceled> loanCanceleds = new HashSet<LoanCanceled>(0);
     private Set<Loan> loans = new HashSet<Loan>(0);
     
 
@@ -252,6 +253,15 @@ public class LoanSchema implements java.io.Serializable {
 
     public void setLoanSchemaEmployeeTypes(Set<LoanSchemaEmployeeType> loanSchemaEmployeeTypes) {
         this.loanSchemaEmployeeTypes = loanSchemaEmployeeTypes;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="loanSchema")
+    public Set<LoanCanceled> getLoanCanceleds() {
+        return this.loanCanceleds;
+    }
+    
+    public void setLoanCanceleds(Set<LoanCanceled> loanCanceleds) {
+        this.loanCanceleds = loanCanceleds;
     }
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "loanSchema")

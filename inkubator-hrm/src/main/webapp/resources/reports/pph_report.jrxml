@@ -2,11 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pph_report" language="groovy" pageWidth="609" pageHeight="935" columnWidth="569" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86065f5d-0189-4732-addf-bec617b8aecb">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="432"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="emp_data_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[$P{emp_data_id}]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="IMAGE_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select bio.first_name, bio.last_name, bio.npwp, bio.gender, e.nik, e.ptkp_status, e.ptkp_number, p.pangkat_name FROM emp_data e INNER JOIN bio_data bio ON e.bio_data_id = bio.id INNER JOIN golongan_jabatan gj ON e.gol_jab_id = gj.id INNER JOIN pangkat p ON gj.pangkat_id = p.id WHERE e.id = $P{emp_data_id}]]>
 	</queryString>

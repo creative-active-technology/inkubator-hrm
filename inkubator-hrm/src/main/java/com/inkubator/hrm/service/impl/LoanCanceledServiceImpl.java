@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.LoanCanceledDao;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.service.LoanCanceledService;
 import com.inkubator.hrm.web.search.LoanCanceledSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -207,5 +209,12 @@ public class LoanCanceledServiceImpl extends IServiceImpl implements LoanCancele
     public LoanCanceled getEntityByPkWithDetail(Long id) throws Exception {
         return loanCanceledDao.getEntityByPkWithDetail(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getCurrentMaxId() throws Exception {
+		Long currentMaxId = loanCanceledDao.getCurrentMaxId() == null ? 0l : loanCanceledDao.getCurrentMaxId();
+		return currentMaxId;
+	}
     
 }

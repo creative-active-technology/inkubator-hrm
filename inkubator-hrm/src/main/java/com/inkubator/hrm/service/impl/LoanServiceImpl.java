@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
@@ -35,6 +36,9 @@ import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,10 +51,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.faces.application.FacesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -559,7 +567,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
     }
 
-    @Override
+   /* @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void UpdateLoanAndsaveLoanCanceled(LoanCanceledModel loanCanceledModel) throws Exception {
         //change status pencairan ke cancel atau = 2
@@ -571,9 +579,20 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         loanCanceled.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         loanCanceled.setCreatedBy(UserInfoUtil.getUserName());
         loanCanceled.setCreatedOn(new Date());
-        /*loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData()));*/
+        loanCanceled.setCancelledDate(loanCanceledModel.getCancelledDate());
+        loanCanceled.setCode(loanCanceledModel.getCode());
+        loanCanceled.setDescription(loanCanceledModel.getKeterangan());
+        loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData().getId()));
+        loanCanceled.setLoan(loanUpdate);
+        loanCanceled.setInterestRate(loanUpdate.getInterestRate());
+        loanCanceled.setLoanDate(loanUpdate.getLoanDate());
+        loanCanceled.setLoanSchema(loanSchemaDao.getEntiyByPK(loanCanceledModel.getLoanSchema()));
+        
+        
+        //loanCanceled.set
+        loanCanceled.setEmpData(empDataDao.getEntiyByPK(loanCanceledModel.getEmpData()));
         loanCanceledDao.save(loanCanceled);
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -718,6 +737,13 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         if (approvalActivityDao.isAlreadyHaveApprovedStatus(appActivity.getActivityNumber())) {
             throw new BussinessException("approval.error_cancelled_already_approved");
         }
+        
+        //if Transaction codefication for loan cancelation has not been made, throw Bussiness Exception
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+        if(ObjectUtils.equals(transactionCodefication, null)){
+        	throw new BussinessException("loanCanceled.loan_cancelled_codefication_not_found");
+        }
+        
         /**
          * saving entity Loan to DB
          */
@@ -750,9 +776,12 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         //generate number of code
         String nomor = this.generateCancelationLoanNumber();
 
-        cancelation.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         cancelation.setCode(nomor);
+        cancelation.setDescription(cancelation.getReason());
         cancelation.setLoan(application);
+        cancelation.setLoanDate(application.getLoanDate());
+        cancelation.setEmpData(empDataDao.getEntiyByPK(application.getEmpData().getId()));
+        cancelation.setLoanSchema(loanSchemaDao.getEntiyByPK(application.getLoanSchema().getId()));
         cancelation.setCreatedBy(UserInfoUtil.getUserName());
         cancelation.setCreatedOn(new Date());
         loanCanceledDao.save(cancelation);
@@ -760,7 +789,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
     private String generateCancelationLoanNumber() {
         /**
-         * generate cancelation number form codification, from reimbursement
+         * generate cancelation number form codification, from loan
          * module
          */
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
@@ -775,4 +804,10 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         Loan entity = gson.fromJson(json, Loan.class);
         return entity;
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getCurrentMaxId() throws Exception {
+		return loanDao.getCurrentMaxId();
+	}
 }
