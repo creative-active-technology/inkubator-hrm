@@ -2126,6 +2126,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
         criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
         criteria.setFetchMode("taxFree", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
 //        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
