@@ -15,7 +15,7 @@ public class VacancyAdvertisementDetailModel implements java.io.Serializable {
     private Long hireApplyId;
     private String hireApplyCode;
     private String jabatanName;
-    private int staffCount;
+    private Integer staffCount;
     private Double cost;
     private String description;
     private Boolean isUpdate;
@@ -68,10 +68,10 @@ public class VacancyAdvertisementDetailModel implements java.io.Serializable {
 	public void setJabatanName(String jabatanName) {
 		this.jabatanName = jabatanName;
 	}
-	public int getStaffCount() {
+	public Integer getStaffCount() {
 		return staffCount;
 	}
-	public void setStaffCount(int staffCount) {
+	public void setStaffCount(Integer staffCount) {
 		this.staffCount = staffCount;
 	}
 	public Double getCost() {
