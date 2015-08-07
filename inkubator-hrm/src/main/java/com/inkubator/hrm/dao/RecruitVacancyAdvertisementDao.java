@@ -13,9 +13,10 @@ import com.inkubator.hrm.web.search.VacancyAdvertisementSearchParameter;
  * @author rizkykojek
  */
 public interface RecruitVacancyAdvertisementDao extends IDAO<RecruitVacancyAdvertisement> {
-
-	//pageable
+	
 	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter);
+
+	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id);
 }

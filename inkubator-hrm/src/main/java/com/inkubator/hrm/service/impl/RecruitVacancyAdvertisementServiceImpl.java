@@ -40,9 +40,9 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public RecruitVacancyAdvertisement getEntiyByPK(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return recruitVacancyAdvertisementDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -136,9 +136,9 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(RecruitVacancyAdvertisement entity) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		recruitVacancyAdvertisementDao.delete(entity);
 	}
 
 	@Override
@@ -265,14 +265,20 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int first, int pageSize, Order orderable) {
+	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
 		return recruitVacancyAdvertisementDao.getByParam(parameter, first, pageSize, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter) {
+	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter) throws Exception {
 		return recruitVacancyAdvertisementDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) throws Exception {
+		return recruitVacancyAdvertisementDao.getEntityByPkWithDetail(id);
 	}
 
 }

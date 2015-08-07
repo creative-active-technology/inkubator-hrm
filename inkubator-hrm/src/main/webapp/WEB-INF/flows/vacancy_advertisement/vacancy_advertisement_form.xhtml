@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                	<p:focus context="formId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_from_recruitment']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">	                        
+	                        <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="codeId" title="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" value="#{model.vacancyAdvCode}" 
+                                                 readonly="true" required="true" maxlength="45" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="effectiveDateId" value="#{appmsg['vacancy_advertisement.effective_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:calendar id="effectiveDateId" required="true" pattern="dd-MMMM-yyyy" 
+                                            	value="#{model.effectiveDate}"/>
+	                                <p:message for="effectiveDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="advertisementMediaId" value="#{appmsg['vacancy_advertisement.media_sources']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:selectOneMenu id="advertisementMediaId" styleClass="isitext_hrm" required="true"  value="#{model.advertisementMediaId}" style="width:300px;">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{listAdvertisementMedia}" var="advertisementMedia" itemValue="#{advertisementMedia.id}" itemLabel="#{advertisementMedia.name}"/>
+	                                    <p:ajax listener="#{vacancyAdvertisementFormController.onChangeAdvertisementMedia(flowRequestContext)}" update="advertisementMediaAddressId,advertisementMediaPhoneId,advertisementMediaContactId"/>
+	                                </p:selectOneMenu>
+	                                <p:message for="advertisementMediaId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:inputTextarea id="advertisementMediaAddressId" title="#{appmsg['global.address']}" value="#{model.advertisementMediaAddress}" 
+	                                    			 readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['advertismentMedia.noTelp']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:inputText id="advertisementMediaPhoneId" title="#{appmsg['advertismentMedia.noTelp']}" value="#{model.advertisementMediaPhone}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['advertismentMedia.kontak']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:inputText id="advertisementMediaContactId" title="#{appmsg['advertismentMedia.kontak']}" value="#{model.advertisementMediaContact}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>                                        
+	                 	</p:panelGrid>	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="next" update="formId"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{vacancyAdvertisementFormController.doResetAddAdvertisement(flowRequestContext)}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
+	                        				 action="end" immediate="true"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
