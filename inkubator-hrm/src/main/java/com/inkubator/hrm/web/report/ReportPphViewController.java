@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
@@ -23,6 +24,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmployeeTypeService;
 import com.inkubator.hrm.service.GolonganJabatanService;
@@ -58,6 +60,9 @@ public class ReportPphViewController extends BaseController {
     private WtPeriodeService wtPeriodeService;
 	@ManagedProperty(value = "#{employeeTypeService}")
     private EmployeeTypeService employeeTypeService;
+	private String periodeMonth;
+    private String periodeYear;
+    private List<WtPeriode> listPeriodeYears;
 
     @PostConstruct
     @Override
@@ -72,7 +77,7 @@ public class ReportPphViewController extends BaseController {
 	    	golJabDualModel = new DualListModel<String>(Lambda.extract(availableGolonganJabatans, Lambda.on(GolonganJabatan.class).getCode()), new ArrayList<String>());
 	    	departmentDualModel = new DualListModel<Department>(availableDepartments, new ArrayList<Department>());
 	    	empTypeDualModel = new DualListModel<EmployeeType>(availableEmployeeType, new ArrayList<EmployeeType>());
-	    	
+	    	listPeriodeYears = wtPeriodeService.getAllYears();   
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,6 +87,9 @@ public class ReportPphViewController extends BaseController {
 
     @PreDestroy
     private void cleanAndExit() {
+    	listPeriodeYears = null;
+    	periodeMonth = null;
+    	periodeYear = null;
         searchParameter = null;
         lazyDataModel = null;
         service = null;
@@ -99,6 +107,16 @@ public class ReportPphViewController extends BaseController {
     }
 
     public void doSearch() {
+    	Long periodeId = null;
+		try {
+			if(!StringUtils.isEmpty(periodeMonth) && !StringUtils.isEmpty(periodeYear)){
+				WtPeriode p = wtPeriodeService.getEntityByMonthAndYear(Integer.parseInt(periodeMonth), periodeYear);
+				periodeId = p == null ? 0 : p.getId();
+			}
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
+		searchParameter.setPeriodeId(periodeId);
     	searchParameter.setListGolJab(golJabDualModel.getTarget());
 		searchParameter.setListEmpType(Lambda.extract(empTypeDualModel.getTarget(), Lambda.on(EmployeeType.class).getId()));
 		searchParameter.setListDepartment(Lambda.extract(departmentDualModel.getTarget(), Lambda.on(Department.class).getId()));
@@ -108,6 +126,12 @@ public class ReportPphViewController extends BaseController {
     public String doGenerateReportPph(){
         return "/protected/report/generated_pph_report.htm?faces-redirect=true&execution=e" + selectedModel.getEmpDataId();
     }
+    
+    public void onChangeMonth(){
+		if(StringUtils.isEmpty(periodeMonth)){
+			periodeYear = null;
+		}
+	}
     
     public LogMonthEndTaxesService getService() {
         return service;
@@ -207,6 +231,30 @@ public class ReportPphViewController extends BaseController {
 
 	public void setEmployeeTypeService(EmployeeTypeService employeeTypeService) {
 		this.employeeTypeService = employeeTypeService;
+	}
+
+	public String getPeriodeMonth() {
+		return periodeMonth;
+	}
+
+	public void setPeriodeMonth(String periodeMonth) {
+		this.periodeMonth = periodeMonth;
+	}
+
+	public String getPeriodeYear() {
+		return periodeYear;
+	}
+
+	public void setPeriodeYear(String periodeYear) {
+		this.periodeYear = periodeYear;
+	}
+
+	public List<WtPeriode> getListPeriodeYears() {
+		return listPeriodeYears;
+	}
+
+	public void setListPeriodeYears(List<WtPeriode> listPeriodeYears) {
+		this.listPeriodeYears = listPeriodeYears;
 	}
 
 

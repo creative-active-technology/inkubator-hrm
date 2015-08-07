@@ -239,6 +239,16 @@ public class VacancyAdvertisementFormController implements Serializable {
 	public void doResetAddRecruitmentReq(RequestContext context){
 		VacancyAdvertisementDetailModel detailModel = (VacancyAdvertisementDetailModel) context.getFlowScope().get("detailModel");
 		
+		//reset value
+		detailModel.setHireApplyId(null);
+		detailModel.setHireApplyCode(null);
+		detailModel.setJabatanName(null);
+		detailModel.setStaffCount(null);
+		detailModel.setPublishStart(null);
+		detailModel.setPublishEnd(null);
+		detailModel.setCost(null);
+		detailModel.setDescription(null);
+		
 		context.getFlowScope().put("detailModel", detailModel);
 	}
 	

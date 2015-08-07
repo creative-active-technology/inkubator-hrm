@@ -15,6 +15,7 @@ import com.inkubator.webcore.util.SearchParameter;
  * @author Deni
  */
 public class LogMonthEndTaxesSearchParameter extends SearchParameter{
+	private Long periodeId;
 	private List<String> listGolJab =  new ArrayList<String>();
     private List<Long> listDepartment =  new ArrayList<Long>();
     private List<Long> listEmpType =  new ArrayList<Long>();
@@ -36,6 +37,12 @@ public class LogMonthEndTaxesSearchParameter extends SearchParameter{
 	}
 	public void setListEmpType(List<Long> listEmpType) {
 		this.listEmpType = listEmpType;
+	}
+	public Long getPeriodeId() {
+		return periodeId;
+	}
+	public void setPeriodeId(Long periodeId) {
+		this.periodeId = periodeId;
 	}
     
     
