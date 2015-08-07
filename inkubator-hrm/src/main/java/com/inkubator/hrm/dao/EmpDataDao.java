@@ -14,8 +14,6 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -29,7 +27,6 @@ import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
-import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
@@ -150,6 +147,10 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<EmpData> getAllDataByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter);
+
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter);
 
     /**
      * get list

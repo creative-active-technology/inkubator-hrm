@@ -1273,4 +1273,16 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getTotalByParamForOnlyEmployee(companyId, searchParameter);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return this.empDataDao.getAllDataByParamForOnlyEmployeeNotIncludeCompany(searchParameter, firstResult, maxResults, order);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) throws Exception {
+        return this.empDataDao.getTotalByParamForOnlyEmployeeNotIncludeCompany(searchParameter);
+    }
+
 }
