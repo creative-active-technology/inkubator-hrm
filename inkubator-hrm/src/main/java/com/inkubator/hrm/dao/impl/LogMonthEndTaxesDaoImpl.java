@@ -46,10 +46,10 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
                 + "SUM(CASE WHEN taxCompId = 2 THEN nominal END) as pph,"
                 + "SUM(CASE WHEN taxCompId = 17 THEN nominal END) as ptkp"
                 + " from LogMonthEndTaxes A ");
-        query.append(this.getWhereQueryByParamForReportSalaryNote(searchParameter));
+        query.append(this.getWhereQueryByParamForReportPPh(searchParameter));
         
         query.append(" GROUP BY empNik");
-        
+        System.out.println(searchParameter.getPeriodeId() + " periode hohoho");
         Query hbm = getCurrentSession().createQuery(query.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
             	.setResultTransformer(Transformers.aliasToBean(PphReportModel.class));
         hbm = this.setValueQueryByParamForReportSalaryNote(hbm, searchParameter);
@@ -73,7 +73,7 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(distinct empDataId) "
     			+ "FROM LogMonthEndTaxes ");    	
-    	selectQuery.append(this.getWhereQueryByParamForReportSalaryNote(searchParameter));
+    	selectQuery.append(this.getWhereQueryByParamForReportPPh(searchParameter));
     	
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
     	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, searchParameter);
@@ -81,7 +81,7 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
         return Long.valueOf(hbm.uniqueResult().toString());
     }
     
-    private String getWhereQueryByParamForReportSalaryNote(LogMonthEndTaxesSearchParameter parameter) {
+    private String getWhereQueryByParamForReportPPh(LogMonthEndTaxesSearchParameter parameter) {
     	StringBuffer whereQuery = new StringBuffer();
     	
     	if (!parameter.getListGolJab().isEmpty()) {
@@ -102,12 +102,12 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
     		}
     		whereQuery.append("empTypeId IN (:empTypeId) ");
         }
-        /*if (parameter.getPeriodeId() != null) {
+        if (parameter.getPeriodeId() != null) {
         	if(StringUtils.isNotEmpty(whereQuery)){
     			whereQuery.append("AND ");
     		}
         	whereQuery.append("periodeId = :periodeId ");
-        } */      
+        }       
         
         return StringUtils.isNotEmpty(whereQuery) ? "WHERE " + whereQuery.toString() : whereQuery.toString();
     } 
@@ -121,10 +121,9 @@ private Query setValueQueryByParamForReportSalaryNote(Query hbm, LogMonthEndTaxe
     			hbm.setParameterList("empTypeId", parameter.getListEmpType());
     		} else if(StringUtils.equals(param, "departmentId")){
     			hbm.setParameterList("departmentId", parameter.getListDepartment());
-    		} 
-    		/*else if(StringUtils.equals(param, "periodeId")){
+    		} else if(StringUtils.equals(param, "periodeId")){
     			hbm.setParameter("periodeId", parameter.getPeriodeId());
-    		}*/
+    		}
     	}
     	return hbm;
 	}
