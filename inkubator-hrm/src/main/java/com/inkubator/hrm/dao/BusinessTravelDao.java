@@ -37,5 +37,7 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 	public List<BusinessTravel> getListByStartDateBetweenDateAndEmpIdAndNotOff(Long empDataId, Date dateFrom, Date dateUntill);
 
 	public Long getTotalActualBusinessTravel(Date date, Long companyId);
+	
+	public Long getCurrentMaxId();
 
 }
