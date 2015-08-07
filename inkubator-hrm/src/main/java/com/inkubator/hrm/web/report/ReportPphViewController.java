@@ -5,16 +5,29 @@
  */
 package com.inkubator.hrm.web.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
+import ch.lambdaj.Lambda;
+
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
+import com.inkubator.hrm.service.DepartmentService;
+import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.ReportPphLazyDataModel;
 import com.inkubator.hrm.web.model.PphReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndTaxesSearchParameter;
@@ -34,12 +47,37 @@ public class ReportPphViewController extends BaseController {
     private LazyDataModel<PphReportModel> lazyDataModel;
     private PayTempKalkulasiEmpPajak selected;
     private PphReportModel selectedModel;
+	private DualListModel<String> golJabDualModel;
+	private DualListModel<Department> departmentDualModel;
+	private DualListModel<EmployeeType> empTypeDualModel;
+	@ManagedProperty(value = "#{golonganJabatanService}")
+    private GolonganJabatanService golonganJabatanService;
+	@ManagedProperty(value = "#{departmentService}")
+    private DepartmentService departmentService;
+	@ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
+	@ManagedProperty(value = "#{employeeTypeService}")
+    private EmployeeTypeService employeeTypeService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new LogMonthEndTaxesSearchParameter();
+		try {
+			searchParameter = new LogMonthEndTaxesSearchParameter();
+			List<GolonganJabatan> availableGolonganJabatans = golonganJabatanService.getAllData();
+			List<Department> availableDepartments = departmentService.getAllData();
+	    	List<EmployeeType> availableEmployeeType = employeeTypeService.getAllData();
+	    	
+	    	golJabDualModel = new DualListModel<String>(Lambda.extract(availableGolonganJabatans, Lambda.on(GolonganJabatan.class).getCode()), new ArrayList<String>());
+	    	departmentDualModel = new DualListModel<Department>(availableDepartments, new ArrayList<Department>());
+	    	empTypeDualModel = new DualListModel<EmployeeType>(availableEmployeeType, new ArrayList<EmployeeType>());
+	    	
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}        	
+    	
     }
 
     @PreDestroy
@@ -48,9 +86,22 @@ public class ReportPphViewController extends BaseController {
         lazyDataModel = null;
         service = null;
         selected = null;
+        searchParameter = null;
+		lazyDataModel = null;
+		golJabDualModel = null;
+		golonganJabatanService = null;
+		departmentService = null;
+		wtPeriodeService = null;	
+		departmentDualModel = null;
+		empTypeDualModel = null;
+		employeeTypeService = null;
+		selectedModel = null;
     }
 
     public void doSearch() {
+    	searchParameter.setListGolJab(golJabDualModel.getTarget());
+		searchParameter.setListEmpType(Lambda.extract(empTypeDualModel.getTarget(), Lambda.on(EmployeeType.class).getId()));
+		searchParameter.setListDepartment(Lambda.extract(departmentDualModel.getTarget(), Lambda.on(Department.class).getId()));
         lazyDataModel = null;
     }
 
@@ -100,6 +151,63 @@ public class ReportPphViewController extends BaseController {
     public void setSelectedModel(PphReportModel selectedModel) {
         this.selectedModel = selectedModel;
     }
+
+	public DualListModel<String> getGolJabDualModel() {
+		return golJabDualModel;
+	}
+
+	public void setGolJabDualModel(DualListModel<String> golJabDualModel) {
+		this.golJabDualModel = golJabDualModel;
+	}
+
+	public DualListModel<Department> getDepartmentDualModel() {
+		return departmentDualModel;
+	}
+
+	public void setDepartmentDualModel(DualListModel<Department> departmentDualModel) {
+		this.departmentDualModel = departmentDualModel;
+	}
+
+	public DualListModel<EmployeeType> getEmpTypeDualModel() {
+		return empTypeDualModel;
+	}
+
+	public void setEmpTypeDualModel(DualListModel<EmployeeType> empTypeDualModel) {
+		this.empTypeDualModel = empTypeDualModel;
+	}
+
+	public GolonganJabatanService getGolonganJabatanService() {
+		return golonganJabatanService;
+	}
+
+	public void setGolonganJabatanService(
+			GolonganJabatanService golonganJabatanService) {
+		this.golonganJabatanService = golonganJabatanService;
+	}
+
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+
+	public WtPeriodeService getWtPeriodeService() {
+		return wtPeriodeService;
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+
+	public EmployeeTypeService getEmployeeTypeService() {
+		return employeeTypeService;
+	}
+
+	public void setEmployeeTypeService(EmployeeTypeService employeeTypeService) {
+		this.employeeTypeService = employeeTypeService;
+	}
 
 
 }

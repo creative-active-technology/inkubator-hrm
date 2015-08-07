@@ -5,7 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:of="http://omnifaces.org/functions">
     <h:head>
         <title>TODO supply a title</title>
     </h:head>
@@ -26,7 +28,7 @@
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
-                        <p:separator/>
+                        <!-- <p:separator/>
                         <p:growl id="growlId" globalOnly="true" showDetail="true" />
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
@@ -36,7 +38,6 @@
                                     <p:selectOneMenu value="#{reportPphViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
-                                        <f:selectItem itemLabel="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" itemValue="golJab"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{reportPphViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPphViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -52,7 +53,71 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <p:focus for="searchId" />
+                        <p:focus for="searchId" /> -->
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <!-- <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <o:outputLabel value="#{appmsg['salaryJournal.period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="monthId" value="#{reportSalaryNoteViewController.periodeMonth}" filter="true" style="margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{of:getMonths()}" />			
+                                        <p:ajax listener="#{reportSalaryNoteViewController.onChangeMonth()}" update="yearId"/>		                	
+                                    </p:selectOneMenu>
+                                    <p:selectOneMenu id="yearId" value="#{reportSalaryNoteViewController.periodeYear}" disabled="#{empty reportSalaryNoteViewController.periodeMonth}" required="true" requiredMessage="#{appmsg['error.should_not_empty']}" filter="true" style="margin-right: 3px">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{reportSalaryNoteViewController.listPeriodeYears}"/>					                	
+                                    </p:selectOneMenu>
+                                    <p:message for="yearId"/>
+                                </p:column>
+                            </p:row> -->
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['department.department']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:pickList value="#{reportPphViewController.departmentDualModel}" converter="departmentConverter" var="department" itemLabel="#{department.departmentName}" itemValue="#{department}">
+                                        <f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['department.list_of_department']}" styleClass="label_hrm"/></f:facet>
+                                        <f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+                                    </p:pickList>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:pickList value="#{reportPphViewController.golJabDualModel}" var="golJabatan" itemLabel="#{golJabatan}" itemValue="#{golJabatan}">
+                                        <f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['functiongroup.list_of_function_group']}" styleClass="label_hrm"/></f:facet>
+                                        <f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+                                    </p:pickList>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['unregSalary.employeeStatus']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:pickList value="#{reportPphViewController.empTypeDualModel}" converter="employeeTypeConverter" var="empType" itemLabel="#{empType.name}" itemValue="#{empType}">
+                                        <f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['employeetype.list_of_employee_type']}" styleClass="label_hrm"/></f:facet>
+                                        <f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+                                    </p:pickList>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPphViewController.doSearch()}" update="formId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+	                 	
+	                 		                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                         <p:dataTable  var="data"  value="#{reportPphViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -113,14 +178,14 @@
                                                   action="#{reportPphViewController.doGenerateReportPph()}" immediate="true">
                                     <f:setPropertyActionListener value="#{data}" target="#{reportPphViewController.selectedModel}" />    
                                 </p:commandButton> 
-                            </p:column>
+                            </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{reportPphViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                        <p:blockUI block="formId" trigger="tableId, btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
@@ -131,7 +196,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="statusDialog.hide()"
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
@@ -156,7 +221,7 @@
                     </div>
                 </p:dialog>
                 <p:dialog widgetVar="detail" header="#{appmsg['savingType.savingType_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)" dynamic="true">
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
