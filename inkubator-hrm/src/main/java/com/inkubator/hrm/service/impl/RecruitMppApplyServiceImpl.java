@@ -204,8 +204,9 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<RecruitMppApply> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return recruitMppApplyDao.getAllData();
     }
 
     @Override
@@ -397,7 +398,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
                 recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(arrayDetailMpp.size())));
 
             } else {
-                RecruitMppApply recruitMppApply = recruitMppApplyDao.getEntiyByPK(recruitMppApplyViewModel.getRecruitMppApplyId().longValue());
+                RecruitMppApply recruitMppApply = recruitMppApplyDao.getEntityWithDetailById(recruitMppApplyViewModel.getRecruitMppApplyId().longValue());
                 recruitMppApplyViewModel.setApplyDate(recruitMppApply.getApplyDate());
                 recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(recruitMppApply.getRecruitMppApplyDetails().size())));
 
@@ -615,6 +616,12 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 		detail.append("Nama: " + entity.getRecruitMppApplyName() + ". ");
 		detail.append("Periode " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeStart()) + " s/d " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeEnd()));
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus) throws Exception {
+		return recruitMppApplyDao.getListWithDetailByApprovalStatus(approvalStatus);
 	}
 
 }
