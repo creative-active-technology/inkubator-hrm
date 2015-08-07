@@ -33,6 +33,7 @@ public class RecruitHireApplyModel implements Serializable {
     private String gender;
     private Long salaryMin;
     private Long recruitMppId;
+    private Long recruitMppPeriodId;
     private Long currencyId;
     private Long empStatus;
     private Long jabatanId;
@@ -280,6 +281,14 @@ public class RecruitHireApplyModel implements Serializable {
     public void setEmpDataApplier(EmpData empDataApplier) {
         this.empDataApplier = empDataApplier;
     }
+
+	public Long getRecruitMppPeriodId() {
+		return recruitMppPeriodId;
+	}
+
+	public void setRecruitMppPeriodId(Long recruitMppPeriodId) {
+		this.recruitMppPeriodId = recruitMppPeriodId;
+	}
 
     
 }

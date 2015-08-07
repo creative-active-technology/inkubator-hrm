@@ -7,9 +7,10 @@ import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.web.model.RecruitMppApplyModel;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -156,4 +157,13 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
         criteria.add(Restrictions.eq("recruitMppApplyCode", mppCode));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("applicationStatus", approvalStatus));
+        criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+        return criteria.list();
+	}
+	
 }

@@ -49,6 +49,7 @@
                                     <p:selectOneMenu id="mppPeriodeId" required="true" value="#{recruitHireApplyFormController.model.recruitMppId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitHireApplyFormController.mapPeriode}" />
+                                        <p:ajax   listener="#{recruitHireApplyFormController.onChangeMppPeriod()}"  update="jabatanId"/>
                                     </p:selectOneMenu>
                                     <p:message for="mppPeriodeId"/>
                                 </p:column>
@@ -58,7 +59,11 @@
                                     <p:outputLabel for="effectifeDateId" value="#{appmsg['mppRecruitmentHist.effective_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar  id="effectifeDateId" required="true" pattern="dd MMMM yyyy" value="#{recruitHireApplyFormController.model.efectiveDate}" showOn="button"/>
+                                    <p:calendar  id="effectifeDateId" required="true" pattern="dd MMMM yyyy" value="#{recruitHireApplyFormController.model.efectiveDate}" showOn="button">
+                                    	<f:validator validatorId="mppEffectiveDateRangeValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['mppRecruitmentHist.effective_date_must_in_range_selected_mpp_period']}"/>
+                                        <f:attribute name="model" value="#{recruitHireApplyFormController.model}"/>
+                                    </p:calendar>
                                     <p:message for="effectifeDateId"/>
                                 </p:column>
                             </p:row> 
@@ -89,7 +94,11 @@
                                     <p:outputLabel for="requestId" value="#{appmsg['mppRecruitmentHist.number_of_emp_req']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:spinner min="0"  max="100" id="requestId"  size="3" required="true" value="#{recruitHireApplyFormController.model.candidateCountRequest}" />
+                                    <p:spinner min="1"   id="requestId"  size="3" required="true" value="#{recruitHireApplyFormController.model.candidateCountRequest}" >
+                                    	 <f:validator validatorId="mppRequestMaxEmployeeValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['mppRecruitmentHist.max_req_emp_cannot_greater_than_mpp']}"/>
+                                        <f:attribute name="model" value="#{recruitHireApplyFormController.model}"/>
+                                    </p:spinner>
                                     <p:outputLabel value="Orang" style="margin-left: 5px" />
                                     <p:message for="requestId"/>
                                 </p:column>
@@ -249,7 +258,7 @@
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>                   
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true" update="selectionTipeFormId"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true" update="selectionTipeFormId, :growlOrganisasiLevelFormId"
                                              action="#{recruitHireApplyFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"

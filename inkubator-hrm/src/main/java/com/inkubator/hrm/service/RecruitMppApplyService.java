@@ -37,4 +37,6 @@ public interface RecruitMppApplyService extends IService<RecruitMppApply>, BaseA
     
     public UploadedFile convertFileToUploadedFile(String path);
     
+    public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus) throws Exception;
+    
 }

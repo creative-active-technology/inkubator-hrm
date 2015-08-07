@@ -31,5 +31,7 @@ public interface RecruitMppApplyDao extends IDAO<RecruitMppApply> {
         public RecruitMppApply getEntityWithDetailByActivityNumber(String activityNumber);
         
         public Long getTotalDataByMppCode(String mppCode);
+        
+        public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus);
 
 }
