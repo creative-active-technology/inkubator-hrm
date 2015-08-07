@@ -40,124 +40,129 @@ public class EmployeeRestController {
     private EmpDataService empDataService;
     @Autowired
     private BioDataService bioDataService;
-    
-    @RequestMapping(method = RequestMethod.GET, value ="/get_all")
-    public @ResponseBody EmployeeRestHeader getAllData(){
-    	EmployeeRestHeader header = new EmployeeRestHeader();
-    	List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
-    	try {
-    		listEmpData = empDataService.getAllDataRestModel(StringUtils.EMPTY);
-    		header.setStatus(0);
-        	header.setErrorMessage("");
-        	header.setNumberOfProfiles(listEmpData.size());
-        	header.setProfiles(listEmpData);        		        	
-        	
-    	} catch (Exception ex) {
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_all")
+    public @ResponseBody
+    EmployeeRestHeader getAllData() {
+        EmployeeRestHeader header = new EmployeeRestHeader();
+        List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
+        try {
+            listEmpData = empDataService.getAllDataRestModel(StringUtils.EMPTY);
+            header.setStatus(0);
+            header.setErrorMessage("");
+            header.setNumberOfProfiles(listEmpData.size());
+            header.setProfiles(listEmpData);
+
+        } catch (Exception ex) {
             LOGGER.error("error", ex);
             header.setStatus(1);
-   			header.setErrorMessage(ex.getMessage());
+            header.setErrorMessage(ex.getMessage());
         }
-    	return header;
+        return header;
     }
-    
-    @RequestMapping(method = RequestMethod.GET, value ="/get_all/{nikOrName}")
-    public @ResponseBody EmployeeRestHeader getAllData(@PathVariable String nikOrName){
-    	EmployeeRestHeader header = new EmployeeRestHeader();
-    	List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
-    	try {
-    		listEmpData = empDataService.getAllDataRestModel(nikOrName);
-    		if(!listEmpData.isEmpty()){
-    			header.setStatus(0);
-            	header.setErrorMessage("");
-            	header.setNumberOfProfiles(listEmpData.size());
-            	header.setProfiles(listEmpData);
-            	
-    		} else {
-    			header.setStatus(1);
-        		header.setErrorMessage("Tidak terdapat data karyawan untuk nik/name : " + nikOrName);
-        		header.setNumberOfProfiles(0);
-    		}
-    		        		        	
-        	
-    	} catch (Exception ex) {
+
+    @RequestMapping(method = RequestMethod.GET, value = "/get_all/{nikOrName}")
+    public @ResponseBody
+    EmployeeRestHeader getAllData(@PathVariable String nikOrName) {
+        EmployeeRestHeader header = new EmployeeRestHeader();
+        List<EmployeeRestModel> listEmpData = new ArrayList<EmployeeRestModel>();
+        try {
+            listEmpData = empDataService.getAllDataRestModel(nikOrName);
+            if (!listEmpData.isEmpty()) {
+                header.setStatus(0);
+                header.setErrorMessage("");
+                header.setNumberOfProfiles(listEmpData.size());
+                header.setProfiles(listEmpData);
+
+            } else {
+                header.setStatus(1);
+                header.setErrorMessage("Tidak terdapat data karyawan untuk nik/name : " + nikOrName);
+                header.setNumberOfProfiles(0);
+            }
+
+        } catch (Exception ex) {
             LOGGER.error("error", ex);
             header.setStatus(1);
-   			header.setErrorMessage(ex.getMessage());
+            header.setErrorMessage(ex.getMessage());
         }
-    	return header;
+        return header;
     }
-    
+
     @RequestMapping(method = RequestMethod.GET, value = "/get_detail/{nik}")
-    public @ResponseBody EmployeeRestHeader getDetailByNik(@PathVariable String nik) {
+    public @ResponseBody
+    EmployeeRestHeader getDetailByNik(@PathVariable String nik) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
-        	
-        	EmployeeRestModel model = empDataService.getRestModelByNik(nik);
-        	if(model != null) {        		
-        		header.setStatus(0);
-        		header.setErrorMessage("");
-        		header.setNumberOfProfiles(1);
-        		header.setProfile(model);        		
-        		
-        	} else {
-        		header.setStatus(1);
-        		header.setErrorMessage("Tidak terdapat data karyawan untuk nik : " + nik);
-        		header.setNumberOfProfiles(0);
-        	}
-        	
+
+            EmployeeRestModel model = empDataService.getRestModelByNik(nik);
+            if (model != null) {
+                header.setStatus(0);
+                header.setErrorMessage("");
+                header.setNumberOfProfiles(1);
+                header.setProfile(model);
+
+            } else {
+                header.setStatus(1);
+                header.setErrorMessage("Tidak terdapat data karyawan untuk nik : " + nik);
+                header.setNumberOfProfiles(0);
+            }
+
         } catch (Exception ex) {
-        	LOGGER.error("error", ex);
-           	header.setStatus(1);
-   			header.setErrorMessage(ex.getMessage());
+            LOGGER.error("error", ex);
+            header.setStatus(1);
+            header.setErrorMessage(ex.getMessage());
         }
         return header;
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, value = "/upload_photo/{nik}")
-    public @ResponseBody EmployeeRestHeader updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+    public @ResponseBody
+    EmployeeRestHeader updatePhoto(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
-        	bioDataService.updatePhoto(nik, file);
-        	header.setStatus(0);
-    		header.setErrorMessage("");
-    		
+            bioDataService.updatePhoto(nik, file);
+            header.setStatus(0);
+            header.setErrorMessage("");
+
         } catch (Exception ex) {
             LOGGER.error("error", ex);
             header.setStatus(1);
-    		header.setErrorMessage(ex.getMessage());
-         }
+            header.setErrorMessage(ex.getMessage());
+        }
         return header;
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, value = "/upload_signature/{nik}")
-    public @ResponseBody EmployeeRestHeader updateSignature(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+    public @ResponseBody
+    EmployeeRestHeader updateSignature(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
-        	bioDataService.updateSignature(nik, file);
-        	header.setStatus(0);
-    		header.setErrorMessage("");
-    		
+            bioDataService.updateSignature(nik, file);
+            header.setStatus(0);
+            header.setErrorMessage("");
+
         } catch (Exception ex) {
             LOGGER.error("error", ex);
             header.setStatus(1);
-    		header.setErrorMessage(ex.getMessage());
-         }
+            header.setErrorMessage(ex.getMessage());
+        }
         return header;
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, value = "/upload_finger_print/{nik}")
-    public @ResponseBody EmployeeRestHeader updateFingerPrint(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
+    public @ResponseBody
+    EmployeeRestHeader updateFingerPrint(@PathVariable String nik, @RequestParam("file") MultipartFile file) {
         EmployeeRestHeader header = new EmployeeRestHeader();
         try {
-        	bioDataService.updateFingerPrint(nik, file);
-        	header.setStatus(0);
-    		header.setErrorMessage("");
-    		
+            bioDataService.updateFingerPrint(nik, file);
+            header.setStatus(0);
+            header.setErrorMessage("");
+
         } catch (Exception ex) {
             LOGGER.error("error", ex);
             header.setStatus(1);
-    		header.setErrorMessage(ex.getMessage());
-         }
+            header.setErrorMessage(ex.getMessage());
+        }
         return header;
     }
 

@@ -51,4 +51,6 @@ public interface HrmUserService extends IService<HrmUser> {
 
     public HrmUser getByUserIdWithEmpIdAndBioId(String userId) throws Exception;
 
+    public String getCompanyName(String userId) throws Exception;
+
 }

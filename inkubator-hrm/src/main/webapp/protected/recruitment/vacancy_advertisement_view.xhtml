@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Iklan Lowongan" styleClass="header_big" />
-                                <p:outputLabel value="Iklan Lowongan dari Perekrutan" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_from_recruitment']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -38,9 +38,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{vacancyAdvertisementViewController.parameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode Iklan Lowongan" itemValue="vacancyAdvertisementCode"/>
-                                        <f:selectItem itemLabel="Sumber Media" itemValue="advertisementMediaName"/>
-                                        <f:selectItem itemLabel="Tipe Kategori" itemValue="advertisementCategoryName"/>
+                                        <f:selectItem itemLabel="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" itemValue="vacancyAdvertisementCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['vacancy_advertisement.media_sources']}" itemValue="advertisementMediaName"/>
+                                        <f:selectItem itemLabel="#{appmsg['vacancy_advertisement.category_type']}" itemValue="advertisementCategoryName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{vacancyAdvertisementViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{vacancyAdvertisementViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -63,7 +63,7 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Iklan Lowongan"/>
+                                <h:outputText value="#{appmsg['vacancy_advertisement.list_of_vacancy_advertisement']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -73,25 +73,25 @@
                             </p:column>
                             <p:column sortBy="#{data.vacancyAdvCode}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Kode Iklan Lowongan"/>
+                                    <h:outputText value="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.vacancyAdvCode}"/>
                             </p:column>  
                             <p:column sortBy="#{data.advertisementMedia.name}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Sumber Media"/>
+                                    <h:outputText value="#{appmsg['vacancy_advertisement.media_sources']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.advertisementMedia.name}"/>
                             </p:column>
                             <p:column sortBy="#{data.recruitAdvertisementCategory.name}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Tipe Kategori"/>
+                                    <h:outputText value="#{appmsg['vacancy_advertisement.category_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.advertisementMedia.recruitAdvertisementCategory.name}"/>
                             </p:column>
                             <p:column sortBy="#{data.effectiveDate}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Tanggal Efektif"/>
+                                    <h:outputText value="#{appmsg['vacancy_advertisement.effective_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.effectiveDate}">
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
@@ -99,7 +99,7 @@
                             </p:column> 
                             <p:column sortBy="#{data.recruitVacancyAdvertisementDetails}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Pekerjaan"/>
+                                    <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_occupation']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.recruitVacancyAdvertisementDetails.size()}"/>
                             </p:column>   
@@ -149,7 +149,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogDeleteId"  columns="3">
-                            <p:outputLabel value="#{appmsg['rmbs_schema.name']}" styleClass="label_hrm" style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" styleClass="label_hrm" style="font-weight: bold"/>
                             <p:outputLabel value=":" styleClass="label_hrm" style="font-weight: bold"/>
                             <p:outputLabel value="#{vacancyAdvertisementViewController.selected.vacancyAdvCode}" />
                         </h:panelGrid>

@@ -220,8 +220,9 @@ public class RecruitAdvertisementMediaServiceImpl extends IServiceImpl implement
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<RecruitAdvertisementMedia> getAllData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return recruitAdvertisementMediaDao.getAllData();
     }
 
     @Override

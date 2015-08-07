@@ -2111,4 +2111,50 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         doSearchByParamOnlyEmployee(companyId, searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+    @Override
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployeeNotIncludeCompany(searchParameter, criteria);
+        criteria.addOrder(order);
+//        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+
+        criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("taxFree", FetchMode.JOIN);
+//        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployeeNotIncludeCompany(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchByParamOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+//        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
+//        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+//        if (dataSearchParameter.getJabatanKode() != null) {
+//            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+//        }
+//
+//        if (dataSearchParameter.getJabatanName() != null) {
+//            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+//        }
+        criteria.createAlias("taxFree", "taxFree", JoinType.LEFT_OUTER_JOIN);
+        if (dataSearchParameter.getNIK() != null) {
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
+        }
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (dataSearchParameter.getName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+    }
 }

@@ -64,5 +64,14 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
         }
     }
 
+	@Override
+	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails", FetchMode.JOIN);
+		return (RecruitVacancyAdvertisement) criteria.uniqueResult();
+	}
+
 	
 }

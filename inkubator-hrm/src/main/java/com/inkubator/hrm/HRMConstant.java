@@ -381,6 +381,7 @@ public class HRMConstant {
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
     public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
+    public static final String VACANCY_ADVERTISEMENT_KODE = "VAC-ADV";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -429,6 +430,7 @@ public class HRMConstant {
     public static final String SUPER_ADMIN = "SUPER ADMIN";
     public static final String BIODATA_ID = "BIODATA_ID";
     public static final String EMP_DATA_ID = "EMP_DATA_ID";
+    public static final String COMPANY_NAME="COMPANY_NAME";
     /* END */
     
     /* 
