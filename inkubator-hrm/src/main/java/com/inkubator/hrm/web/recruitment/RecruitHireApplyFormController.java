@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.recruitment;
 
 import ch.lambdaj.Lambda;
 import ch.lambdaj.group.Group;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -25,6 +26,8 @@ import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
+import com.inkubator.hrm.entity.RecruitMppApply;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
@@ -37,12 +40,14 @@ import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitMppPeriodService;
 import com.inkubator.hrm.web.model.RecruitHireApplyModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,12 +57,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hamcrest.text.StringContains;
@@ -93,6 +100,8 @@ public class RecruitHireApplyFormController extends BaseController {
     private HrmUserService hrmUserService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{recruitMppApplyService}")
+    private RecruitMppApplyService recruitMppApplyService;
     private Map<String, Long> mapPeriode = new TreeMap<>();
     private Map<String, Long> mapJabatan = new TreeMap<>();
     private Map<String, Long> mapEmployeeType = new TreeMap<>();
@@ -103,25 +112,23 @@ public class RecruitHireApplyFormController extends BaseController {
     private Boolean isEdit = Boolean.FALSE;
     private String activityNumber;
     private ApprovalActivity selectedApprovalActivity;
+    private Integer maxRequestEmp;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
-
+        	
+        	maxRequestEmp = 0;
             model = new RecruitHireApplyModel();
-
-            List<RecruitMppPeriod> dataToshow = recruitMppPeriodService.getAllData();
-            for (RecruitMppPeriod period : dataToshow) {
-                String periodeStart = DateFormatter.getDateAsStringActiveLocale(period.getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-                String periodeEnd = DateFormatter.getDateAsStringActiveLocale(period.getPeriodeEnd(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-                mapPeriode.put(periodeStart + " - " + periodeEnd + "  |  " + period.getName(), period.getId());
+            List<RecruitMppApply> listApprovedMpp = recruitMppApplyService.getListWithDetailByApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
+            
+            for(RecruitMppApply recruit : listApprovedMpp){
+            	String periodeStart = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                String periodeEnd = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeEnd(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                mapPeriode.put(periodeStart + " - " + periodeEnd + "  |  " + recruit.getRecruitMppPeriod().getName(), recruit.getId());
             }
-            List<Jabatan> jabatanToShow = jabatanService.getAllData();
-            for (Jabatan jabatan : jabatanToShow) {
-                mapJabatan.put(jabatan.getName(), jabatan.getId());
-            }
-
+           
             List<EmployeeType> typeToShow = employeeTypeService.getAllData();
             for (EmployeeType employeeType : typeToShow) {
                 mapEmployeeType.put(employeeType.getName(), employeeType.getId());
@@ -220,7 +227,7 @@ public class RecruitHireApplyFormController extends BaseController {
             } else {                
                 recruitHireApplyService.saveRecruitHireWithApproval(recruitHireApply);
             }
-
+            
             cleanAndExit();
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
@@ -232,14 +239,31 @@ public class RecruitHireApplyFormController extends BaseController {
 
         return redirect;
     }
+    
+    public void onChangeMppPeriod() {
+        try {
+        	mapJabatan.clear();
+            Long recruitMppId = model.getRecruitMppId();
+            RecruitMppApply entity = recruitMppApplyService.getEntityWithDetailById(recruitMppId);
+            model.setRecruitMppPeriodId(entity.getRecruitMppPeriod().getId());
+           
+            List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListWithDetailByRecruitMppApplyId(recruitMppId);
+            for(RecruitMppApplyDetail detail : listMppDetail){
+            	 mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(RecruitHireApplyFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void onChangeJabatan() {
         try {
             Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
             model.setActual(totalActual);
-
             if (model.getRecruitMppId() != null) {
-                Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppId());
+            	
+                Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppPeriodId());
                 if (null != totalMpp) {
                     model.setMpp(totalMpp);
                 } else {
@@ -247,6 +271,7 @@ public class RecruitHireApplyFormController extends BaseController {
                 }
 
             }
+            maxRequestEmp = model.getMpp().intValue();
         } catch (Exception ex) {
             Logger.getLogger(RecruitHireApplyFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -297,7 +322,7 @@ public class RecruitHireApplyFormController extends BaseController {
             recruitHireApply.setId(model.getRecruitHireApplyId());
         }
 
-        recruitHireApply.setRecruitMppPeriod(new RecruitMppPeriod(model.getRecruitMppId(), null, null, null, null));
+        recruitHireApply.setRecruitMppPeriod(new RecruitMppPeriod(model.getRecruitMppPeriodId(), null, null, null, null));
         recruitHireApply.setAgeMax(model.getAgeMax());
         recruitHireApply.setAgeMin(model.getAgeMin());
         recruitHireApply.setCandidateCountRequest(model.getCandidateCountRequest());
@@ -485,5 +510,20 @@ public class RecruitHireApplyFormController extends BaseController {
     public void setOrgTypeOfSpecService(OrgTypeOfSpecService orgTypeOfSpecService) {
         this.orgTypeOfSpecService = orgTypeOfSpecService;
     }
+
+	public void setRecruitMppApplyService(
+			RecruitMppApplyService recruitMppApplyService) {
+		this.recruitMppApplyService = recruitMppApplyService;
+	}
+
+	public Integer getMaxRequestEmp() {
+		return maxRequestEmp;
+	}
+
+	public void setMaxRequestEmp(Integer maxRequestEmp) {
+		this.maxRequestEmp = maxRequestEmp;
+	}
+    
+    
 
 }

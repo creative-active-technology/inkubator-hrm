@@ -169,6 +169,7 @@ public class HRMConstant {
     public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
+    public static final String BUSINESS_TRAVEL_CODE = "TRAV";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
     public static final String REIMBURSEMENT_DISBURSEMENT = "REIMBURSEMENT_DISBURSEMENT";
     public static final String ANNOUNCEMENT = "ANNOUNCEMENT";
@@ -380,6 +381,7 @@ public class HRMConstant {
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
     public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
+    public static final String VACANCY_ADVERTISEMENT_KODE = "VAC-ADV";
 
     public static final String APP_NAME = "Web Destop App";
 
