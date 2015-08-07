@@ -15,6 +15,7 @@ import org.springframework.webflow.execution.RequestContext;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
@@ -72,6 +73,9 @@ public class BusinessTravelFormController implements Serializable{
 			if(id != null){			
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
 				model = bindEntityToModel(businessTravel);
+			}else{
+				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				
 			}
 			context.getFlowScope().put("businessTravelModel", model);
 			
