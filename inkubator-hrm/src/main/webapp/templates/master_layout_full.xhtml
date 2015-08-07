@@ -643,7 +643,7 @@
                                                 <p:menuitem value="#{appmsg['recruitment.recruitment_request_inbox']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_inbox']}" url="#" /> 
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['recruitment.vacancy']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['recruitment.vacancy_advertisement']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_advertisement']}" url="#" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.vacancy_advertisement']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_advertisement']}" url="/protected/recruitment/vacancy_advertisement_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.vacancy_list']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_list']}" url="#" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.vacancy_selection_plan']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_selection_plan']}" url="/protected/recruitment/recruit_vacancy_selection_view.htm" /> 
                                             </p:submenu>
@@ -775,14 +775,6 @@
                                                 <p:menuitem value="#{appmsg['workingTime.attendance_status_information']}" icon="img-attendance_status" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.attendance_status_information']}" url="/protected/payroll/pay_attendance_view.htm" />
                                                 <p:menuitem value="#{appmsg['payTempOvertime.payTempOvertime']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payTempOvertime.payTempOvertime']}" icon="img-ptkp" url="/protected/payroll/pay_temp_ot_view.htm"/>
                                             </p:submenu>
-                                            <p:submenu label="#{appmsg['report.payroll_report']}" styleClass="menu_child" icon="img-reporting">
-                                                <p:menuitem value="#{appmsg['report.payroll_history']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.payroll_history']}" url="/protected/report/report_payroll_hist_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.salary_note']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_note']}" url="/protected/report/report_salarynote_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.bank_transfer_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.bank_transfer_data']}" url="/protected/report/report_banktransfer_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.component_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.component_data']}" url="/protected/report/report_data_component_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.salary_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_journal']}" url="/protected/report/report_salaryjournal_view.htm" />
-                                                <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="/protected/report/report_pph_view.htm" />
-                                            </p:submenu>
                                             <p:menuitem value="#{appmsg['payroll.uploadData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.uploadData']}" url="/protected/payroll/pay_salary_upload_view.htm" icon="img-pay_salary_upload"/>
                                             <p:menuitem value="#{appmsg['componentException.componentException']}" icon="img-periode" style="font-size: 12px !important;color: #003366" title="#{appmsg['componentException.componentException']}" url="/protected/payroll/pay_comp_ex_view.htm" />
                                             <p:menuitem value="#{appmsg['payroll.ptkpData']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.ptkpData']}" icon="img-ptkp" url="/protected/employee/emp_ptkp_view.htm"/> 
@@ -798,7 +790,14 @@
                                                 <p:menuitem value="#{appmsg['payroll.exceptionScheme']}" icon="img-exception_scheme" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.exceptionScheme']}" url="/protected/payroll/unreg_specific_scheme_view.htm" />
                                                 <p:menuitem value="#{appmsg['salaryCalculation.calculation']}" icon="img-calculation" style="font-size: 12px !important;color: #003366" title="#{appmsg['salaryCalculation.calculation']}" url="/protected/payroll/unreg_calculation_view.htm" />
                                                 <p:menuitem value="#{appmsg['payroll.payment']}" icon="img-payment" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.payment']}" url="/protected/payroll/unreg_payroll_view.htm" /> 
-
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['report.payroll_report']}" styleClass="menu_child" icon="img-reporting">
+                                                <p:menuitem value="#{appmsg['report.payroll_history']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.payroll_history']}" url="/protected/report/report_payroll_hist_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.salary_note']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_note']}" url="/protected/report/report_salarynote_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.bank_transfer_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.bank_transfer_data']}" url="/protected/report/report_banktransfer_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.component_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.component_data']}" url="/protected/report/report_data_component_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.salary_journal']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.salary_journal']}" url="/protected/report/report_salaryjournal_view.htm" />
+                                                <p:menuitem value="#{appmsg['report.income_taxes_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.income_taxes_report']}" url="/protected/report/report_pph_view.htm" />
                                             </p:submenu>
 
 <!--<p:menuitem value="#{appmsg['unregSalary.unregSalary']}" style="font-size: 12px !important;color: #003366" title="#{appmsg['unregSalary.unregSalary']}" icon="img-ptkp" url="/protected/payroll/unreg_salary_view.htm"/>--> 

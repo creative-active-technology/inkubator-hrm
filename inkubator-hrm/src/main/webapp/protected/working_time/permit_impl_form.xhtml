@@ -38,8 +38,12 @@
                                     <p:outputLabel for="fillingNumberId" value="#{appmsg['permitimplementation.filling_number']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="fillingNumberId" title="#{appmsg['permitClassification.permitClassification_code']}" value="#{permitImplementationFormController.model.numberFilling}" 
-                                                 required="true" disabled="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:287px;" />
+                                    <p:inputText id="fillingNumberId" value="#{permitImplementationFormController.model.numberFilling}" 
+                                                     label="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
+                                                     title="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
+                                                     style="width:250px;"
+                                                     required="true" styleClass="isitext_hrm" readonly="true"  />
+                                    
                                     <p:message for="fillingNumberId"/>
                                 </p:column>
                             </p:row>
@@ -48,7 +52,7 @@
                                     <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                    <p:autoComplete id="employeeAutoCompleteId" rendered="#{permitImplementationFormController.isAdmin}" title="#{appmsg['global.employee']}" 
                                                     value="#{permitImplementationFormController.model.empData}"
                                                     completeMethod="#{permitImplementationFormController.doAutoCompleteEmployee}"                                                
                                                     var="empData"
@@ -58,7 +62,18 @@
                                                     required="true" styleClass="isitext_hrm" size="45">
                                         <p:ajax event="itemSelect" listener="#{permitImplementationFormController.onChangeEmployee}" update="permitId,totalWorkingDaysId"/>
                                     </p:autoComplete>
-                                    <p:message for="employeeId"/>
+                                    
+                                    <p:message for="employeeAutoCompleteId" rendered="#{loanApplicationFormController.isAdmin}"/>  
+                                	
+                                	<p:inputText id="employeeId" value="#{permitImplementationFormController.model.employeeName}" 
+                                                     label="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
+                                                     title="#{appmsg['publicHolidayException.publicHolidayException_emp']}"
+                                                     rendered="#{!permitImplementationFormController.isAdmin}"
+                                                     style="width:250px;"
+                                                     required="true" styleClass="isitext_hrm" readonly="true"  />
+
+                                        <p:message for="employeeId" rendered="#{!permitImplementationFormController.isAdmin}"/>  
+                                
                                 </p:column>
                             </p:row>  
                             <p:row>
