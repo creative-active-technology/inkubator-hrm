@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -18,6 +19,7 @@ import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.dao.NeracaCutiDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
@@ -28,21 +30,26 @@ import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.entity.NeracaCuti;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
@@ -83,6 +90,8 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private LeaveImplementationDateDao leaveImplementationDateDao;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 
     @Override
     public LeaveImplementation getEntiyByPK(String id) throws Exception {
@@ -613,7 +622,15 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         entity.setEmpData(empData);
         entity.setLeave(leave);
         entity.setTemporaryActing(temporaryActing);
-
+       //Set Kodefikasi pada nomor
+    	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LEAVE_CODE);
+		Long currentMaxLoanId = leaveImplementationDao.getCurrentMaxId();
+		if (currentMaxLoanId == null) {
+			currentMaxLoanId = 0L;
+		}
+		entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+		
+        
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
         entity.setCreatedBy(createdBy);

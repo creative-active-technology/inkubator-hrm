@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+
 import java.util.Date;
 
 /**
@@ -46,4 +47,5 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 	
     public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
 	
+    public Long getCurrentMaxId();
 }

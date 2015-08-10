@@ -16,6 +16,7 @@ import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
@@ -65,6 +66,8 @@ public class LeaveImplementationFormController extends BaseController {
                     leaves = Lambda.extract(leaveDistributions, Lambda.on(LeaveDistribution.class).getLeave());
                     isUpdate = Boolean.TRUE;
                 }
+            }else{
+            	model.setNumberFilling(HRMConstant.LEAVE_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
