@@ -43,4 +43,5 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
     
     public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId,	Date dateFrom, Date dateUntill);
 
+    public Long getCurrentMaxId();
 }
