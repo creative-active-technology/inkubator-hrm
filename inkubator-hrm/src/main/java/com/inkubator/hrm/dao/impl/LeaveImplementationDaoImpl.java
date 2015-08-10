@@ -215,5 +215,10 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         return criteria.list();
 	}
 
+    @Override
+public Long getCurrentMaxId() {
+	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+    return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+}
 
 }
