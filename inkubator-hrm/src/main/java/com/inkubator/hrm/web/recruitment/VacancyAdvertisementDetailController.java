@@ -15,8 +15,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -31,10 +33,12 @@ public class VacancyAdvertisementDetailController extends BaseController {
 	
     private RecruitVacancyAdvertisement vacancyAdvertisement;
     private List<RecruitVacancyAdvertisementDetail> listAdvertisementDetail;
+    private ApprovalActivity lastApprovalActivity;
+    
     @ManagedProperty(value = "#{recruitVacancyAdvertisementService}")
     private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
-    @ManagedProperty(value = "#{recruitVacancyAdvertisementDetailService}")
-    private RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetailService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
 
     @PostConstruct
     @Override
@@ -42,7 +46,8 @@ public class VacancyAdvertisementDetailController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            vacancyAdvertisement = recruitVacancyAdvertisementService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            vacancyAdvertisement = recruitVacancyAdvertisementService.getEntityByPkWithDetail(Long.parseLong(id.substring(1)));
+            lastApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(vacancyAdvertisement.getApprovalActivityNumber());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -54,7 +59,8 @@ public class VacancyAdvertisementDetailController extends BaseController {
     	recruitVacancyAdvertisementService = null;
     	listAdvertisementDetail = null;
     	recruitVacancyAdvertisementService = null;
-    	recruitVacancyAdvertisementDetailService = null; 
+    	lastApprovalActivity = null;
+    	approvalActivityService = null;
     }   
 
     public String doBack() {
@@ -64,7 +70,7 @@ public class VacancyAdvertisementDetailController extends BaseController {
     public void doUpdate() {
     	try {
             ExternalContext red = FacesUtil.getExternalContext();
-            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_adverstisement?id=" + vacancyAdvertisement.getId());
+            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_advertisement?id=" + vacancyAdvertisement.getId());
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
         }
@@ -94,14 +100,20 @@ public class VacancyAdvertisementDetailController extends BaseController {
 		this.recruitVacancyAdvertisementService = recruitVacancyAdvertisementService;
 	}
 
-	public RecruitVacancyAdvertisementDetail getRecruitVacancyAdvertisementDetailService() {
-		return recruitVacancyAdvertisementDetailService;
+	public ApprovalActivity getLastApprovalActivity() {
+		return lastApprovalActivity;
 	}
 
-	public void setRecruitVacancyAdvertisementDetailService(RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetailService) {
-		this.recruitVacancyAdvertisementDetailService = recruitVacancyAdvertisementDetailService;
+	public void setLastApprovalActivity(ApprovalActivity lastApprovalActivity) {
+		this.lastApprovalActivity = lastApprovalActivity;
 	}
-    
-    
+
+	public ApprovalActivityService getApprovalActivityService() {
+		return approvalActivityService;
+	}
+
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
 	
 }
