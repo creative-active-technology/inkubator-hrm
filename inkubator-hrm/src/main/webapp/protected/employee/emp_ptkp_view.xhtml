@@ -107,12 +107,12 @@
                                 </f:facet>
                                  <h:outputLabel value= "#{ptkpView.ptkpNumberLabel}" />
                             </p:column>
-                            <p:column style="width: 15%;">
+                            <p:column style="width: 15%;" sortBy="taxFree">
                                 <f:facet name="header">  
                                     <h:outputText value="Nominal"/>
                                 </f:facet>
                                 <div style="text-align: left">
-                                    <h:outputLabel value= "#{ptkpView.taxFree.freeNominal}">
+                                    <h:outputLabel value="#{ptkpView.taxFree.freeNominal}">
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
                                 </div>
