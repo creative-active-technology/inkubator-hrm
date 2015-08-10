@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.web.search.VacancyAdvertisementSearchParameter;
 
 /**

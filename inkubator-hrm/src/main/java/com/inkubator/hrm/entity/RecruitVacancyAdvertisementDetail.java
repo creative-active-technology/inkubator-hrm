@@ -39,6 +39,10 @@ public class RecruitVacancyAdvertisementDetail implements java.io.Serializable {
     private Date updatedOn;
     
 
+    public RecruitVacancyAdvertisementDetail() {
+    	
+    }
+    
     public RecruitVacancyAdvertisementDetail(Long id) {
         this.id = id;
     }

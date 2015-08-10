@@ -1,8 +1,10 @@
-package com.inkubator.hrm.web.flow;
 
+package com.inkubator.hrm.web.flow;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 
@@ -16,11 +18,13 @@ import org.springframework.webflow.execution.RequestContext;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.RecruitAdvertisementMedia;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
+import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.service.RecruitAdvertisementMediaService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
@@ -60,7 +64,7 @@ public class VacancyAdvertisementFormController implements Serializable {
 			model.setVacancyAdvCode(HRMConstant.VACANCY_ADVERTISEMENT_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
 			if(id != null){			
 				RecruitVacancyAdvertisement entity = recruitVacancyAdvertisementService.getEntityByPkWithDetail(id);
-				model = bindEntityToModel(entity);				
+				model = getModelFromEntity(entity);				
 			}
 			context.getFlowScope().put("model", model);
 			
@@ -154,11 +158,64 @@ public class VacancyAdvertisementFormController implements Serializable {
 		context.getFlowScope().put("model", model);
 	}
 	
-	public void doSave(RequestContext context){
+	public String doSave(RequestContext context){
+		String message = "error";
 		
+		VacancyAdvertisementModel model = (VacancyAdvertisementModel) context.getFlowScope().get("model");
+		RecruitVacancyAdvertisement entity = getEntityFromModel(model);
+        try {
+        	if(entity.getId() == null) {
+	            message = recruitVacancyAdvertisementService.saveWithApproval(entity);
+	            if (StringUtils.equals(message, "success_need_approval")) {                
+	                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            } else {
+	                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            }
+	            
+	            //tujuannya agar waktu redirect dari flow ke detail, sudah didapatkan id-nya
+				model.setId(entity.getId());
+				context.getFlowScope().put("model", model);
+				
+        	} else {
+        		recruitVacancyAdvertisementService.update(entity);
+        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        		
+        		message = "success_without_approval";
+        	}
+
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
 	}
 	
-	private VacancyAdvertisementModel bindEntityToModel(RecruitVacancyAdvertisement entity){
+	private RecruitVacancyAdvertisement getEntityFromModel(VacancyAdvertisementModel model){
+		RecruitVacancyAdvertisement vacancyAdvertisement = new RecruitVacancyAdvertisement();
+		vacancyAdvertisement.setId(model.getId());
+		vacancyAdvertisement.setVacancyAdvCode(model.getVacancyAdvCode());
+		vacancyAdvertisement.setEffectiveDate(model.getEffectiveDate());
+		vacancyAdvertisement.setAdvertisementMedia(new RecruitAdvertisementMedia(model.getAdvertisementMediaId()));
+		
+		Set<RecruitVacancyAdvertisementDetail> listAdvertisementDetail =  new HashSet<RecruitVacancyAdvertisementDetail>();
+		for(VacancyAdvertisementDetailModel detailModel:model.getListAdvertisementDetail()){
+			RecruitVacancyAdvertisementDetail advertisementDetail =  new RecruitVacancyAdvertisementDetail();
+			advertisementDetail.setId(advertisementDetail.getId());
+			advertisementDetail.setVacancyAdvertisement(vacancyAdvertisement);
+			advertisementDetail.setHireApply(new RecruitHireApply(detailModel.getHireApplyId()));
+			advertisementDetail.setCost(detailModel.getCost());
+			advertisementDetail.setPublishStart(detailModel.getPublishStart());
+			advertisementDetail.setPublishEnd(detailModel.getPublishEnd());
+			
+			listAdvertisementDetail.add(advertisementDetail);
+		}
+		vacancyAdvertisement.setRecruitVacancyAdvertisementDetails(listAdvertisementDetail);
+		
+		return vacancyAdvertisement;
+	}
+	
+	private VacancyAdvertisementModel getModelFromEntity(RecruitVacancyAdvertisement entity){
 		VacancyAdvertisementModel model = new VacancyAdvertisementModel();
 		model.setId(entity.getId());
 		model.setVacancyAdvCode(entity.getVacancyAdvCode());

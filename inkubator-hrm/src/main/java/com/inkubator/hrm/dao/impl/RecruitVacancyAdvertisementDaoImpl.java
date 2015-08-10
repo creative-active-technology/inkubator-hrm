@@ -70,7 +70,15 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
 		criteria.setFetchMode("recruitVacancyAdvertisementDetails", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails.hireApply", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails.hireApply.jabatan", FetchMode.JOIN);
 		return (RecruitVacancyAdvertisement) criteria.uniqueResult();
+	}
+	
+	@Override
+	public Long getCurrentMaxId(){
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
 	}
 
 	

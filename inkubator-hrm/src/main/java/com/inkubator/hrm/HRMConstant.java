@@ -180,6 +180,7 @@ public class HRMConstant {
     public static final String LEAVE = "LEAVE";
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";
     public static final String OVERTIME = "OVERTIME";
+    public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -456,5 +457,10 @@ public class HRMConstant {
     public static final String BIO_REV_SPESIFICATION_ABILITY = "SPESIFICATION_ABILITY";
     public static final String BIO_REV_INTEREST = "INTEREST";
     
-    
+    /* 
+     * Constant for Vacancy Advertisement Module */
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_APPROVED = 0;
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_REJECTED = 1;
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_CANCELLED = 2;
+    /* END */
 }

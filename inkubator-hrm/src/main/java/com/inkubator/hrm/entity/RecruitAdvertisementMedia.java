@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 )
 public class RecruitAdvertisementMedia implements java.io.Serializable {
 
-    private long id;
+    private Long id;
     private RecruitAdvertisementCategory recruitAdvertisementCategory;
     private String code;
     private String name;
@@ -48,13 +48,17 @@ public class RecruitAdvertisementMedia implements java.io.Serializable {
 
     public RecruitAdvertisementMedia() {
     }
+    
+    public RecruitAdvertisementMedia(Long id) {
+    	this.id = id;
+    }
 
-    public RecruitAdvertisementMedia(long id, RecruitAdvertisementCategory recruitAdvertisementCategory) {
+    public RecruitAdvertisementMedia(Long id, RecruitAdvertisementCategory recruitAdvertisementCategory) {
         this.id = id;
         this.recruitAdvertisementCategory = recruitAdvertisementCategory;
     }
 
-    public RecruitAdvertisementMedia(long id, RecruitAdvertisementCategory recruitAdvertisementCategory, String code, String name, String mediaAddress, String phone, String address, String contactPerson, String description, Integer typeOfMedia) {
+    public RecruitAdvertisementMedia(Long id, RecruitAdvertisementCategory recruitAdvertisementCategory, String code, String name, String mediaAddress, String phone, String address, String contactPerson, String description, Integer typeOfMedia) {
         this.id = id;
         this.recruitAdvertisementCategory = recruitAdvertisementCategory;
         this.code = code;
@@ -70,11 +74,11 @@ public class RecruitAdvertisementMedia implements java.io.Serializable {
     @Id
 
     @Column(name = "id", unique = true, nullable = false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
