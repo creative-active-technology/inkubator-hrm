@@ -17,19 +17,19 @@
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
                     <h:form id="userViewId">
-                    <!--<p:panel style="margin: 10px" >-->
-                    <h:panelGrid style="margin-bottom: 5px" columns="2">
-                        <p:graphicImage library="images" name="ptkp.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
-                            <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['ptkp.ptkp']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['ptkp.ptkp_header']}" styleClass="header_small_no_bold" />
-                            </h:panelGrid>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                    <p:separator/>
-                    <p:growl id="empDataGrowlId" globalOnly="true" showDetail="true" />
-                    
+                        <!--<p:panel style="margin: 10px" >-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="ptkp.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['ptkp.ptkp']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['ptkp.ptkp_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="empDataGrowlId" globalOnly="true" showDetail="true" />
+
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5">
@@ -79,7 +79,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{ptkpView.nik}"/>
                             </p:column>
-                           <p:column sortBy="#{ptkpView.bioData.firstName}" style="width: 18%;">
+                            <p:column sortBy="#{ptkpView.bioData.firstName}" style="width: 18%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
@@ -89,23 +89,23 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
-                               <h:outputLabel value= "#{ptkpView.bioData.gender}">
+                                <h:outputLabel value= "#{ptkpView.bioData.gender}">
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="#{ptkpView.ptkpStatus}" style="width: 10%;">
+                            <p:column sortBy="#{ptkpView.ptkpStatus}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{ptkpView.ptkpStatus}">
-                                     <f:converter converterId="mariedMessageConverter" />
+                                <h:outputLabel value= "#{ptkpView.ptkpStatus}">
+                                    <f:converter converterId="mariedMessageConverter" />
                                 </h:outputLabel>
                             </p:column>
-                             <p:column sortBy="#{ptkpView.ptkpNumber}" style="width: 10%;">
+                            <p:column sortBy="#{ptkpView.ptkpNumber}" style="width: 10%;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{ptkpView.ptkpNumberLabel}" />
+                                <h:outputLabel value= "#{ptkpView.ptkpNumberLabel}" />
                             </p:column>
                             <p:column style="width: 10%;" sortBy="#{ptkpView.taxFree.freeNominal}">
                                 <f:facet name="header">  
@@ -117,7 +117,7 @@
                                     </p:outputLabel>
                                 </div>
                             </p:column>
-                            
+
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
@@ -132,9 +132,9 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
                             </f:facet>  
                         </p:dataTable>
-                        
+
                         <!-- 
-                        	hide datatable, used for reporting expand 
+                                hide datatable, used for reporting expand 
                         -->
                         <p:dataTable  var="empViewData" rendered="false"  value="#{empPtkpViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -172,7 +172,7 @@
                                     <h:outputText value="#{appmsg['global.birth_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.dateOfBirth}">
-                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -180,7 +180,7 @@
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.gender}">
-                                	<f:converter converterId="genderConverter" />
+                                    <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -188,7 +188,7 @@
                                     <h:outputText value="#{appmsg['biodata.blood_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.bloodType}">
-                                	<f:converter converterId="blodTypeConverter"/>
+                                    <f:converter converterId="blodTypeConverter"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -239,8 +239,32 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.unit']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
+                                <p:outputLabel value="#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
                             </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.tfStatus}">
+                                    <f:converter converterId="mariedMessageConverterAsString" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tax Nominal"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.freeNominal}">
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.incPerson}"/>
+                            </p:column>
+
+
                         </p:dataTable>
                         <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
