@@ -35,6 +35,7 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
 	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.setFetchMode("recruitVacancyAdvertisementDetails", FetchMode.JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		this.doSearchByParam(parameter, criteria);
 		criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -74,6 +75,17 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
 		criteria.setFetchMode("recruitVacancyAdvertisementDetails.hireApply.jabatan", FetchMode.JOIN);
 		return (RecruitVacancyAdvertisement) criteria.uniqueResult();
 	}
+	
+	@Override
+    public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
+        criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails.hireApply", FetchMode.JOIN);
+		criteria.setFetchMode("recruitVacancyAdvertisementDetails.hireApply.jabatan", FetchMode.JOIN);
+        return (RecruitVacancyAdvertisement) criteria.uniqueResult();
+    }
 	
 	@Override
 	public Long getCurrentMaxId(){

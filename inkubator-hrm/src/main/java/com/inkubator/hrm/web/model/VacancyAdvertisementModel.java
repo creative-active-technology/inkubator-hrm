@@ -3,12 +3,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
+
 /**
 *
 * @author rizkykojek
 */
 public class VacancyAdvertisementModel implements java.io.Serializable {
 
+	//for approval(revision) purpose
+	private Boolean isRevised;
+	private ApprovalActivity currentActivity;
+    private ApprovalActivity askingRevisedActivity;
+	
+    //data model
     private Long id;
     private String vacancyAdvCode;
     private Date effectiveDate;
@@ -73,5 +81,24 @@ public class VacancyAdvertisementModel implements java.io.Serializable {
 	public void setListAdvertisementDetail(List<VacancyAdvertisementDetailModel> listAdvertisementDetail) {
 		this.listAdvertisementDetail = listAdvertisementDetail;
 	}
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+	public ApprovalActivity getCurrentActivity() {
+		return currentActivity;
+	}
+	public void setCurrentActivity(ApprovalActivity currentActivity) {
+		this.currentActivity = currentActivity;
+	}
+	public ApprovalActivity getAskingRevisedActivity() {
+		return askingRevisedActivity;
+	}
+	public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+		this.askingRevisedActivity = askingRevisedActivity;
+	}
+	
 	
 }

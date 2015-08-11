@@ -108,7 +108,7 @@
 	                    	<p:commandButton value="#{appmsg['global.edit']}" rendered="#{detailModel.isUpdate}" label="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
 	                    					 icon="ui-icon-folder-open" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                    					 ajax="true" action="update" update="formId"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{vacancyAdvertisementFormController.doResetAddRecruitmentReq(flowRequestContext)}"
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{vacancyAdvertisementFormController.doResetAddRecruitmentRequest(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formId" />  
 	                        </p:commandButton>

@@ -64,7 +64,33 @@
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{model.advertisementMediaContact}"/>                            	
 	                            </p:column>
-	                        </p:row>                  
+	                        </p:row>
+	                        <p:row rendered="#{model.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{model.askingRevisedActivity.approvedBy}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{model.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{model.askingRevisedActivity.approvalStatus}">
+                                        <f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{model.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{model.askingRevisedActivity.approvalCommment}"/>
+                                </p:column>
+                            </p:row>                  
 	                 	</p:panelGrid>
 	                 	
 	                 	<p:dataTable  id="tableId" var="data"  value="#{model.listAdvertisementDetail}" lazy="false" paginator="#{loanModel.isPaginator}" pageLinks="7"
@@ -147,7 +173,10 @@
 	                        				 action="back" immediate="true"/>                       
 	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
-                                             ajax="true" action="save" update=":growlId" />
+                                             ajax="true" action="save" update=":growlId" rendered="#{not model.isRevised}" />
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                        				 label="#{appmsg['global.apply_revision']}" icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"
+                                             ajax="true" action="revised" update=":growlId" rendered="#{model.isRevised}"/>
                             <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
 	                        				 action="end" immediate="true"/>
 	                    </div>
