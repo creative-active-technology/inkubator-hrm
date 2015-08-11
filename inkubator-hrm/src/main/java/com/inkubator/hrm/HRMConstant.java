@@ -75,6 +75,7 @@ public class HRMConstant {
     public static final String LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE = "2";
     public static final String LEAVE_END_OF_PERIOD_MONTH = "0";
     public static final String LEAVE_END_OF_PERIOD_REST_OF_LEAVE = "1";
+    public static final String LEAVE_CODE = "CUTI";
     /* END */
 
     /* 
@@ -169,6 +170,7 @@ public class HRMConstant {
     public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
+    public static final String BUSINESS_TRAVEL_CODE = "TRAV";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
     public static final String PERMIT = "PERMIT";
     public static final String LOAN = "LOAN";
