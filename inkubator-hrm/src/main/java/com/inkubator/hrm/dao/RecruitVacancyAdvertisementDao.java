@@ -21,4 +21,6 @@ public interface RecruitVacancyAdvertisementDao extends IDAO<RecruitVacancyAdver
 	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id);
 
 	public Long getCurrentMaxId();
+
+	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
 }

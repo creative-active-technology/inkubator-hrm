@@ -21,6 +21,7 @@ import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
@@ -53,6 +54,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	private AnnouncementService announcementService;
 	@Autowired
 	private WtEmpCorrectionAttendanceService wtEmpCorrectionAttendanceService;
+	@Autowired
+	private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
 	
 	
 	@Override
@@ -106,6 +109,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 							wtEmpCorrectionAttendanceService.approved(approvalActivity.getId(), null, null);
 							break;
+						case HRMConstant.VACANCY_ADVERTISEMENT:
+							recruitVacancyAdvertisementService.approved(approvalActivity.getId(), null, null);
+							break;
 						default:
 							break;
 					}
@@ -140,6 +146,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 							break;
 						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 							wtEmpCorrectionAttendanceService.diverted(approvalActivity.getId());
+							break;
+						case HRMConstant.VACANCY_ADVERTISEMENT:
+							recruitVacancyAdvertisementService.diverted(approvalActivity.getId());
 							break;
 						default:
 							break;

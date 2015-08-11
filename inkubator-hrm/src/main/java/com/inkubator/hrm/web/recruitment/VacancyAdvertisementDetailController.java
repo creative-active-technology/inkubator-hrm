@@ -15,6 +15,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
@@ -45,8 +47,16 @@ public class VacancyAdvertisementDetailController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            String id = FacesUtil.getRequestParameter("execution");
-            vacancyAdvertisement = recruitVacancyAdvertisementService.getEntityByPkWithDetail(Long.parseLong(id.substring(1)));
+            String execution = FacesUtil.getRequestParameter("execution");
+            String param = execution.substring(0, 1);
+            if(StringUtils.equals(param, "e")){
+            	/* parameter (id) ini datangnya dari loan Flow atau View */
+            	vacancyAdvertisement = recruitVacancyAdvertisementService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
+            } else {
+            	/* parameter (activityNumber) ini datangnya dari home approval request history View */
+            	vacancyAdvertisement = recruitVacancyAdvertisementService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+            }
+            
             lastApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(vacancyAdvertisement.getApprovalActivityNumber());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

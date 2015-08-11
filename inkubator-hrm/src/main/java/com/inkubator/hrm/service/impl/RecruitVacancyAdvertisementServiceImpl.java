@@ -477,5 +477,12 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) throws Exception {
 		return recruitVacancyAdvertisementDao.getEntityByPkWithDetail(id);
 	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception {
+		return recruitVacancyAdvertisementDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
+	}
+	
 
 }

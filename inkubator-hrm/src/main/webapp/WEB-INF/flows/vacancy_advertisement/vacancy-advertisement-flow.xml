@@ -8,68 +8,71 @@
       	
     <on-start>
     	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+    	<set name="flowScope.activity" value="requestParameters.activity" type="java.lang.Long" />
       	<evaluate expression="vacancyAdvertisementFormController.initialProcessFlow(flowRequestContext)"/>
 	</on-start>
 
     <view-state id="add_advertisement" view="vacancy_advertisement_form.xhtml">
-		<transition on="next" to="doAdvertisementValidation"/>
+		<transition on="next" to="view_recruitment_request"/>
 		<transition on="end" to="end"/>
     </view-state>
     
-    <view-state id="view_recruitment_req" view="vacancy_recruitment_req_view.xhtml">    
-    	<transition on="add" to="doAddRecruitmentReq"/>
-    	<transition on="update" to="doUpdateRecruitmentReq"/>
-    	<transition on="delete" to="doDeleteRecruitmentReq"/>
+    <view-state id="view_recruitment_request" view="vacancy_recruitment_request_view.xhtml">        
+    	<transition on="add" to="initAddRecruitmentRequest"/>
+    	<transition on="update" to="initUpdateRecruitmentRequest"/>
+    	<transition on="delete" to="doDeleteRecruitmentRequest"/>
     	<transition on="save" to="doSave"/>
+    	<transition on="revised" to="doRevised"/>
     	<transition on="back" to="add_advertisement"/>
     	<transition on="end" to="end"/>
     </view-state>
     
-    <view-state id="add_recruitment_req" view="vacancy_recruitment_req_form.xhtml">
-    	<transition on="back" to="view_recruitment_req"/>
-		<transition on="add" to="doAddRecruitmentReqValidation"/>
-		<transition on="update" to="doUpdateRecruitmentReqValidation"/>
+    <view-state id="recruitment_request_form" view="vacancy_recruitment_request_form.xhtml">
+    	<transition on="back" to="view_recruitment_request"/>
+		<transition on="add" to="doAddRecruitmentRequestValidation"/>
+		<transition on="update" to="doUpdateRecruitmentRequestValidation"/>
 		<transition on="end" to="end"/>
     </view-state>	
     
-    <action-state id="doAdvertisementValidation">
-        <evaluate expression="vacancyAdvertisementFormController.doAdvertisementValidation(flowRequestContext)"/>
-        <transition on="success" to="view_recruitment_req"/>
-        <transition on="error" to="add_advertisement"/>
+    <action-state id="doAddRecruitmentRequestValidation">
+        <evaluate expression="vacancyAdvertisementFormController.doAddRecruitmentRequestValidation(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
+        <transition on="error" to="recruitment_request_form"/>
     </action-state>
     
-    <action-state id="doAddRecruitmentReqValidation">
-        <evaluate expression="vacancyAdvertisementFormController.doAddRecruitmentReqValidation(flowRequestContext)"/>        
-        <transition on="success" to="view_recruitment_req"/>
-        <transition on="error" to="add_recruitment_req"/>
+    <action-state id="doUpdateRecruitmentRequestValidation">
+        <evaluate expression="vacancyAdvertisementFormController.doUpdateRecruitmentRequestValidation(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
+        <transition on="error" to="recruitment_request_form"/>
     </action-state>
     
-    <action-state id="doUpdateRecruitmentReqValidation">
-        <evaluate expression="vacancyAdvertisementFormController.doUpdateRecruitmentReqValidation(flowRequestContext)"/>        
-        <transition on="success" to="view_recruitment_req"/>
-        <transition on="error" to="add_recruitment_req"/>
+    <action-state id="initAddRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.initAddRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="recruitment_request_form"/>
     </action-state>
     
-    <action-state id="doAddRecruitmentReq">
-        <evaluate expression="vacancyAdvertisementFormController.doAddRecruitmentReq(flowRequestContext)"/>        
-        <transition on="success" to="add_recruitment_req"/>
+    <action-state id="initUpdateRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.initUpdateRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="recruitment_request_form"/>
     </action-state>
     
-    <action-state id="doUpdateRecruitmentReq">
-        <evaluate expression="vacancyAdvertisementFormController.doUpdateRecruitmentReq(flowRequestContext)"/>        
-        <transition on="success" to="add_recruitment_req"/>
-    </action-state>
-    
-    <action-state id="doDeleteRecruitmentReq">
-        <evaluate expression="vacancyAdvertisementFormController.doDeleteRecruitmentReq(flowRequestContext)"/>        
-        <transition on="success" to="view_recruitment_req"/>
+    <action-state id="doDeleteRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.doDeleteRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
     </action-state>
     
 	<action-state id="doSave">
         <evaluate expression="vacancyAdvertisementFormController.doSave(flowRequestContext)"/>
         <transition on="success_need_approval" to="end"/>
         <transition on="success_without_approval" to="end_detail"/>
-        <transition on="error" to="view_recruitment_req"/>
+        <transition on="error" to="view_recruitment_request"/>
+    </action-state >
+    
+    <action-state id="doRevised">
+        <evaluate expression="vacancyAdvertisementFormController.doRevised(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="view_recruitment_request"/>
     </action-state >
 
     <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_detail.htm?execution=e#{flowScope.vacancyAdvertisementModel.id}"/>

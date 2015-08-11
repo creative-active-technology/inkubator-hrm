@@ -6,7 +6,6 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
-import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.web.search.VacancyAdvertisementSearchParameter;
 
 /**
@@ -25,4 +24,6 @@ public interface RecruitVacancyAdvertisementService extends IService<RecruitVaca
 	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter) throws Exception;
 
 	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) throws Exception;
+
+	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
 }

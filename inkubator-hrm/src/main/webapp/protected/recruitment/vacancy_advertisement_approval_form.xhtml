@@ -37,7 +37,7 @@
 	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.vacancyAdvCode}" />
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.vacancyAdvCode}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -45,7 +45,7 @@
 	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.effective_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.effectiveDate}">
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.effectiveDate}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -55,7 +55,7 @@
 	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.media_sources']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.name}" />
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.advertisementMedia.name}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -63,7 +63,7 @@
 	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.address}" />
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.advertisementMedia.address}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -71,7 +71,7 @@
 	                                <p:outputLabel value="#{appmsg['advertismentMedia.noTelp']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.phone}" />
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.advertisementMedia.phone}" />
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -79,31 +79,37 @@
 	                                <p:outputLabel value="#{appmsg['advertismentMedia.kontak']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.contactPerson}" />
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.advertisementMedia.contactPerson}" />
 	                            </p:column>
 	                        </p:row>
-	                        <p:row rendered="#{vacancyAdvertisementDetailController.lastApprovalActivity != null}">
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['global.status']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">	                            	
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.lastApprovalActivity.approvalStatus}">	      
-	                            		<f:converter converterId="approvalStatusConverter" />                      		
-	                            	</p:outputLabel>
-	                            </p:column>
-	                        </p:row>		
-	                        <p:row rendered="#{vacancyAdvertisementDetailController.lastApprovalActivity != null}">
+	                        <p:row rendered="#{vacancyAdvertisementApprovalFormController.isWaitingApproval}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%">	                            	
-	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.lastApprovalActivity.approvalCommment}">	                            		
-	                            	</p:outputLabel>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{vacancyAdvertisementApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
-	                        </p:row>                                                 
+	                        </p:row>
+	                        <p:row rendered="#{vacancyAdvertisementApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.requesting_revised_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{vacancyAdvertisementApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementApprovalFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                        </p:row>                                               
 	                 	</p:panelGrid>
 	                 	
-	                 	<p:dataTable  id="tableId" var="data"  value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.recruitVacancyAdvertisementDetails}" lazy="false" paginator="false" pageLinks="7"
+	                 	<p:dataTable  id="tableId" var="data"  value="#{vacancyAdvertisementApprovalFormController.vacancyAdvertisement.recruitVacancyAdvertisementDetails}" lazy="false" paginator="false" pageLinks="7"
 	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
 	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
 	                                      rowIndexVar="no"> 
@@ -167,7 +173,19 @@
 	                    
 	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{vacancyAdvertisementDetailController.doBack()}" immediate="true"
+	                        <h:panelGroup rendered="#{vacancyAdvertisementApprovalFormController.isWaitingApproval}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{vacancyAdvertisementApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{vacancyAdvertisementApprovalFormController.isApprover}" update=":growlId"/>
+								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{vacancyAdvertisementApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{vacancyAdvertisementApprovalFormController.isApprover}" update=":growlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{vacancyAdvertisementApprovalFormController.doAskingRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{vacancyAdvertisementApprovalFormController.isApprover}" update=":growlId"/>
+	                        </h:panelGroup>
+	                        <h:panelGroup rendered="#{vacancyAdvertisementApprovalFormController.isWaitingRevised}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{vacancyAdvertisementApprovalFormController.doRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{vacancyAdvertisementApprovalFormController.isRequester}" update=":growlId"/>		                        
+	                        </h:panelGroup>
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{vacancyAdvertisementApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>
