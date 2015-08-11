@@ -262,13 +262,13 @@ public class LogMonthEndPayrollViewController extends BaseController {
                 for (final Throwable throwable : exceptions) {                	
                 	if (throwable instanceof BussinessException) {
                 		BussinessException bussinessException = (BussinessException) throwable;
-                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
                         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
                         FacesUtil.getFacesContext().addMessage(null, msg);                		
                     
                 	}else if (throwable.getCause() instanceof BussinessException) {
                 		BussinessException bussinessException = (BussinessException) throwable.getCause();
-                		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                		ResourceBundle messages = ResourceBundle.getBundle("messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
                         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), bussinessException.getMessage());
                         FacesUtil.getFacesContext().addMessage(null, msg); 
                     }                	
