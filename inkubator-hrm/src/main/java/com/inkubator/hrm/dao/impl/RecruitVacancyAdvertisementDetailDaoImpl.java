@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,11 @@ public class RecruitVacancyAdvertisementDetailDaoImpl extends IDAOImpl<RecruitVa
 		return RecruitVacancyAdvertisementDetail.class;
 	}
 
+	@Override
+	public void deleteByVacancyAdvertisementId(Long vacancyAdvertisementId){
+		Query query = getCurrentSession().createQuery("DELETE FROM RecruitVacancyAdvertisementDetail temp WHERE temp.vacancyAdvertisement.id = :vacancyAdvertisementId")
+				.setLong("vacancyAdvertisementId", vacancyAdvertisementId);
+        query.executeUpdate();
+	}
 	
 }
