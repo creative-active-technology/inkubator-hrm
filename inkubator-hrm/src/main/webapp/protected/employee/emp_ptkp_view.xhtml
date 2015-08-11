@@ -134,7 +134,7 @@
                         </p:dataTable>
                         
                         <!-- 
-                        	hide datatable, used for reporting expand 
+                                hide datatable, used for reporting expand 
                         -->
                         <p:dataTable  var="empViewData" rendered="false"  value="#{empPtkpViewController.empDataLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -172,7 +172,7 @@
                                     <h:outputText value="#{appmsg['global.birth_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.dateOfBirth}">
-                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -180,7 +180,7 @@
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.gender}">
-                                	<f:converter converterId="genderConverter" />
+                                    <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -188,7 +188,7 @@
                                     <h:outputText value="#{appmsg['biodata.blood_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{empViewData.bioData.bloodType}">
-                                	<f:converter converterId="blodTypeConverter"/>
+                                    <f:converter converterId="blodTypeConverter"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column>
@@ -239,8 +239,32 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.unit']}"/>
                                 </f:facet>
-                                <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
+                                <p:outputLabel value="#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
                             </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.tfStatus}">
+                                    <f:converter converterId="mariedMessageConverterAsString" />
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tax Nominal"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.freeNominal}">
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column  exportable="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
+                                </f:facet>
+                                <p:outputLabel value="#{empViewData.taxFree.incPerson}"/>
+                            </p:column>
+
+
                         </p:dataTable>
                         <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
