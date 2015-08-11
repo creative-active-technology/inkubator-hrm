@@ -101,7 +101,7 @@
                                 <p:calendar  id="effectiveDataId" pattern="dd MMMM yyyy" label="#{appmsg['terminate.effective_date']}" value="#{terminationFormController.model.effectiveDate}"
                                              required="true" navigator="true" size="19">
                                     <f:validator validatorId="birthDateValidator"  />
-                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['global.date_cannot_greater_from_now']}"/>
                                 </p:calendar>
                             </p:column>
                         </p:row>
