@@ -55,6 +55,7 @@ public class BusinessTravelFormController implements Serializable{
 	private TravelZoneService travelZoneService;
 	@Autowired 
 	private TravelTypeService travelTypeService;
+	private String endResult;
 	
 	
 	public void initBusinessTravelProcessFlow(RequestContext context){
@@ -172,10 +173,13 @@ public class BusinessTravelFormController implements Serializable{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-		
+		endResult = message;
 		return message;
 	}
 	
+	public String doEndVerification(){
+		return endResult;
+	}
 	public List<EmpData> doAutoCompletEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
@@ -269,4 +273,14 @@ public class BusinessTravelFormController implements Serializable{
 		
 		return model;
 	}
+
+	public String getEndResult() {
+		return endResult;
+	}
+
+	public void setEndResult(String endResult) {
+		this.endResult = endResult;
+	}
+	
+	
 }
