@@ -35,7 +35,7 @@ public class BussinessException extends Exception {
 	@Override
 	public String getMessage() {
 		String message = StringUtils.EMPTY;
-		ResourceBundle bundle = ResourceBundle.getBundle("Messages", LocaleContextHolder.getLocale());
+		ResourceBundle bundle = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 		message = (parameters != null) ? MessageFormat.format(bundle.getString(errorKeyMessage), parameters) : bundle.getString(errorKeyMessage);		
 		return message;
 	}
