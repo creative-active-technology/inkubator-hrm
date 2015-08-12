@@ -56,6 +56,10 @@ public class RecruitHireApply implements java.io.Serializable {
 
     public RecruitHireApply() {
     }
+    
+    public RecruitHireApply(Long id) {
+    	this.id = id;
+    }
 
     public RecruitHireApply(long id, EmployeeType employeeType, Jabatan jabatan, RecruitMppPeriod recruitMppPeriod, Date efectiveDate, String reqHireCode, int candidateCountRequest) {
         this.id = id;

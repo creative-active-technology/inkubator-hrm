@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">     
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>         
+                <h:form id="formId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_detail']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_from_recruitment']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                    	<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.vacancy_advertisement_code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.vacancyAdvCode}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.effective_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.effectiveDate}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.media_sources']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.name}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.address}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['advertismentMedia.noTelp']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.phone}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['advertismentMedia.kontak']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.advertisementMedia.contactPerson}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{vacancyAdvertisementDetailController.lastApprovalActivity != null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">	                            	
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.lastApprovalActivity.approvalStatus}">	      
+	                            		<f:converter converterId="approvalStatusConverter" />                      		
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>		
+	                        <p:row rendered="#{vacancyAdvertisementDetailController.lastApprovalActivity != null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">	                            	
+	                            	<p:outputLabel value="#{vacancyAdvertisementDetailController.lastApprovalActivity.approvalCommment}">	                            		
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>                                                 
+	                 	</p:panelGrid>
+	                 	
+	                 	<p:dataTable  id="tableId" var="data"  value="#{vacancyAdvertisementDetailController.vacancyAdvertisement.recruitVacancyAdvertisementDetails}" lazy="false" paginator="false" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no"> 
+	                            <p:column style="text-align: center;width: 5%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['vacancy_advertisement.code_request']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{data.hireApply.reqHireCode}"/>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['employee.staff']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.hireApply.candidateCountRequest}"/>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.hireApply.jabatan.name}"/>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['vacancy_advertisement.start_publish']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.publishStart}">
+	                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+	                                </h:outputLabel>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['vacancy_advertisement.end_publish']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.publishEnd}">
+	                                	<f:convertDateTime pattern="dd-MMMM-yyyy" />
+	                                </h:outputLabel>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['vacancy_advertisement.cost']}"/>
+	                                </f:facet>
+	                                <p:outputLabel value="Rp. "/>
+	                                <h:outputLabel value= "#{data.cost}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>	                                
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.description']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.description}"/>	                                
+	                            </p:column>  
+	                            
+	                    </p:dataTable>
+	                    
+	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{vacancyAdvertisementDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

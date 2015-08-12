@@ -380,7 +380,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
         Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
         String reqHireCode = "RCRQ-" + RandomNumberUtil.getRandomNumber(6);
-
+        
         //If Approval Defintion for RECRUITMENT_REQUEST Process have not been created, throw Exception
         if (totalRecruitApprovalDef <= 0) {
             throw new BussinessException("mppRecruitmentHist.error_approval_def_not_found");
@@ -390,14 +390,13 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         while (isRecruitmentHireCodeDuplicate(reqHireCode, null)) {
             reqHireCode = "RCRQ-" + RandomNumberUtil.getRandomNumber(6);
         }
-
+        
         String createdBy = StringUtils.isEmpty(recruitHireApply.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getCreatedBy();
         Date createdOn = recruitHireApply.getCreatedOn() == null ? new Date() : recruitHireApply.getCreatedOn();
-
+        
         recruitHireApply.setReqHireCode(reqHireCode);
         recruitHireApply.setCreatedBy(createdBy);
         recruitHireApply.setCreatedOn(createdOn);
-
         //parsing recruitHireApply to json 
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
@@ -405,7 +404,6 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
         jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
         String jsonPendingData = gson.toJson(jsonObject);
-
         ////set json pendingData and save activity
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUITMENT_REQUEST, createdBy);
         approvalActivity.setPendingData(jsonPendingData);
@@ -462,7 +460,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
         Long totalDuplicateFromEntity = this.recruitHireApplyDao.getTotalDataByReqHireCode(reqHireCode);
         Long totalDuplicateFormWaitingApprovalActivity = 0l;
-
+        
         //Get List waiting approval activity
         List<ApprovalActivity> listWaitingApproval = this.approvalActivityDao.getAllDataWaitingStatusApprovalFetchedApprovalDef();
 

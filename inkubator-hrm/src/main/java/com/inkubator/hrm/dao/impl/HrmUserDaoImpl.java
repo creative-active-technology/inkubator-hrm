@@ -177,6 +177,4 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
 		return (HrmUser) criteria.uniqueResult();
 	}
 
-    
-
 }

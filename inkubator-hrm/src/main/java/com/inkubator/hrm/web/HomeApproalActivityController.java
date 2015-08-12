@@ -132,6 +132,13 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.PERMIT:
                     redirect = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                     break;
+                case HRMConstant.VACANCY_ADVERTISEMENT:
+                	if (ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_REJECTED, selectedApprovalActivity.getApprovalStatus())) { 
+                		redirect = "/protected/recruitment/vacancy_advertisement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                	} else {
+                		redirect = "/protected/recruitment/vacancy_advertisement_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                	}
+                    break;
                 default:
                     break;
             }
@@ -188,6 +195,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.PERMIT:
                     redirect = "/protected/working_time/permit_impl_approval.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.VACANCY_ADVERTISEMENT:                    
+                	redirect = "/protected/recruitment/vacancy_advertisement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

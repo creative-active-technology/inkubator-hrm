@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	start-state="add_advertisement">      	
+      	
+    <on-start>
+    	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+    	<set name="flowScope.activity" value="requestParameters.activity" type="java.lang.Long" />
+      	<evaluate expression="vacancyAdvertisementFormController.initialProcessFlow(flowRequestContext)"/>
+	</on-start>
+
+    <view-state id="add_advertisement" view="vacancy_advertisement_form.xhtml">
+		<transition on="next" to="view_recruitment_request"/>
+		<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="view_recruitment_request" view="vacancy_recruitment_request_view.xhtml">        
+    	<transition on="add" to="initAddRecruitmentRequest"/>
+    	<transition on="update" to="initUpdateRecruitmentRequest"/>
+    	<transition on="delete" to="doDeleteRecruitmentRequest"/>
+    	<transition on="save" to="doSave"/>
+    	<transition on="revised" to="doRevised"/>
+    	<transition on="back" to="add_advertisement"/>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="recruitment_request_form" view="vacancy_recruitment_request_form.xhtml">
+    	<transition on="back" to="view_recruitment_request"/>
+		<transition on="add" to="doAddRecruitmentRequestValidation"/>
+		<transition on="update" to="doUpdateRecruitmentRequestValidation"/>
+		<transition on="end" to="end"/>
+    </view-state>	
+    
+    <action-state id="doAddRecruitmentRequestValidation">
+        <evaluate expression="vacancyAdvertisementFormController.doAddRecruitmentRequestValidation(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
+        <transition on="error" to="recruitment_request_form"/>
+    </action-state>
+    
+    <action-state id="doUpdateRecruitmentRequestValidation">
+        <evaluate expression="vacancyAdvertisementFormController.doUpdateRecruitmentRequestValidation(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
+        <transition on="error" to="recruitment_request_form"/>
+    </action-state>
+    
+    <action-state id="initAddRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.initAddRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="recruitment_request_form"/>
+    </action-state>
+    
+    <action-state id="initUpdateRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.initUpdateRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="recruitment_request_form"/>
+    </action-state>
+    
+    <action-state id="doDeleteRecruitmentRequest">
+        <evaluate expression="vacancyAdvertisementFormController.doDeleteRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="view_recruitment_request"/>
+    </action-state>
+    
+	<action-state id="doSave">
+        <evaluate expression="vacancyAdvertisementFormController.doSave(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="view_recruitment_request"/>
+    </action-state >
+    
+    <action-state id="doRevised">
+        <evaluate expression="vacancyAdvertisementFormController.doRevised(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="view_recruitment_request"/>
+    </action-state >
+
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_detail.htm?execution=e#{flowScope.model.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_view.htm" />
+    
+</flow>

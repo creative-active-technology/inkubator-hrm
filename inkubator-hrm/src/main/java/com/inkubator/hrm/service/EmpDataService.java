@@ -174,4 +174,8 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getAllDataByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter);
+
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) throws Exception;
 }

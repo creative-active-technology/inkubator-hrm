@@ -75,6 +75,7 @@ public class HRMConstant {
     public static final String LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE = "2";
     public static final String LEAVE_END_OF_PERIOD_MONTH = "0";
     public static final String LEAVE_END_OF_PERIOD_REST_OF_LEAVE = "1";
+    public static final String LEAVE_CODE = "CUTI";
     /* END */
 
     /* 
@@ -169,6 +170,7 @@ public class HRMConstant {
     public static final String BIO_CONTACT_EDIT = "BIO_CONTACT_EDIT";
     public static final String BIO_SKILL_EDIT = "BIO_SKILL_EDIT";
     public static final String BUSINESS_TRAVEL = "BUSINESS_TRAVEL";
+    public static final String BUSINESS_TRAVEL_CODE = "TRAV";
     public static final String REIMBURSEMENT = "REIMBURSEMENT";
     public static final String REIMBURSEMENT_DISBURSEMENT = "REIMBURSEMENT_DISBURSEMENT";
     public static final String ANNOUNCEMENT = "ANNOUNCEMENT";
@@ -179,6 +181,7 @@ public class HRMConstant {
     public static final String LEAVE = "LEAVE";
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";
     public static final String OVERTIME = "OVERTIME";
+    public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -380,6 +383,7 @@ public class HRMConstant {
     public static final String LOAN_DISBURSEMENT_KODE = "LDIS";
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
     public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
+    public static final String VACANCY_ADVERTISEMENT_KODE = "VAC-ADV";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -428,6 +432,7 @@ public class HRMConstant {
     public static final String SUPER_ADMIN = "SUPER ADMIN";
     public static final String BIODATA_ID = "BIODATA_ID";
     public static final String EMP_DATA_ID = "EMP_DATA_ID";
+    public static final String COMPANY_NAME="COMPANY_NAME";
     /* END */
     
     /* 
@@ -453,5 +458,10 @@ public class HRMConstant {
     public static final String BIO_REV_SPESIFICATION_ABILITY = "SPESIFICATION_ABILITY";
     public static final String BIO_REV_INTEREST = "INTEREST";
     
-    
+    /* 
+     * Constant for Vacancy Advertisement Module */
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_APPROVED = 0;
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_REJECTED = 1;
+    public static final Integer VACANCY_ADVERTISEMENT_STATUS_CANCELLED = 2;
+    /* END */
 }

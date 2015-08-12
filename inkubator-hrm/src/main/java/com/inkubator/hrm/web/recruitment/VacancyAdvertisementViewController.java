@@ -63,7 +63,7 @@ public class VacancyAdvertisementViewController extends BaseController {
     public void doAdd() {
         try {
             ExternalContext red = FacesUtil.getExternalContext();
-            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_adverstisement");
+            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_advertisement");
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
         }
@@ -72,7 +72,7 @@ public class VacancyAdvertisementViewController extends BaseController {
     public void doUpdate() {
     	try {
             ExternalContext red = FacesUtil.getExternalContext();
-            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_adverstisement?id=" + selected.getId());
+            red.redirect(red.getRequestContextPath() + "/flow-protected/vacancy_advertisement?id=" + selected.getId());
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
         }

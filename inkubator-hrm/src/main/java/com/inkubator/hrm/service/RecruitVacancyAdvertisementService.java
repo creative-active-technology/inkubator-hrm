@@ -19,7 +19,11 @@ public interface RecruitVacancyAdvertisementService extends IService<RecruitVaca
 		
 	public String saveWithRevised(RecruitVacancyAdvertisement entity, Long approvalActivityId) throws Exception;
 
-	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int first, int pageSize, Order orderable);
+	public List<RecruitVacancyAdvertisement> getByParam(VacancyAdvertisementSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 
-	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter);
+	public Long getTotalByParam(VacancyAdvertisementSearchParameter parameter) throws Exception;
+
+	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) throws Exception;
+
+	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
 }

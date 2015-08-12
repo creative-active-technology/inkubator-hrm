@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                     
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="laporan.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['report.report']} #{appmsg['report.leave_data']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['report.leave_data']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+
+                    <h:form id="formId">
+                    	<p:focus context="formId"/>
+                        
+                        
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <o:outputLabel value="#{appmsg['global.date']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%;margin-left:5px">
+                                	 <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" title="#{appmsg['global.start_date']}" label="#{appmsg['global.start_date']}" value="#{reportLeaveDataViewController.searchParameter.startDate}" style="width: 100px" styleClass="isitext_hrm"/>
+                                	  <o:outputLabel value="#{appmsg['global.to']}" styleClass="label_hrm" style="margin-left: 5px;margin-right: 5px" />
+                                	 <p:calendar id="endDateId" required="true"  pattern="dd MMMM yyyy" title="#{appmsg['publicHoliday.publicHoliday_end']}" label="#{appmsg['publicHoliday.publicHoliday_end']}" value="#{reportLeaveDataViewController.searchParameter.endDate}" style="width: 100px" styleClass="isitext_hrm"/>
+		                    		<p:message for="startDateId"/>
+		                    		<p:message for="endDateId"/>
+                                </p:column>
+                            </p:row>
+                            
+                             <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['department.department']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:pickList value="#{reportLeaveDataViewController.departmentDualModel}" var="department" itemValue="#{department}" converter="departmentConverter" id="picklistDepartmentId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['department.department']}" styleClass="isitext_hrm"
+                                        itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}">
+                                        	<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['department.list_of_department']}" styleClass="label_hrm"/></f:facet>
+        									<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+                                        </p:pickList>
+                                        <p:message for="picklistDepartmentId" />
+	                            
+	                            </p:column>
+	                        </p:row>
+	                        
+                            <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:pickList id="picklistGolJabatanId" value="#{reportLeaveDataViewController.golJabDualModel}" label="#{appmsg['functiongroup.function_group']}" required="true" var="golJabatan" itemLabel="#{golJabatan}" itemValue="#{golJabatan}">
+	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['functiongroup.list_of_function_group']}" styleClass="label_hrm"/></f:facet>
+        								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+	                            	</p:pickList>
+	                            	 <p:message for="picklistGolJabatanId" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" ajax="true" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportLeaveDataViewController.doSearch()}" update="formId,tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+                            
+                        </p:panelGrid>
+                        
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                            	</p:panelGrid>
+                            </p:toolbarGroup>
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Data_Cuti"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportLeaveDataViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable  id="tableReportId" var="data" value="#{reportLeaveDataViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['report.list_leave_data']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="#{data.leaveDate}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.date']}"  />
+                                </f:facet>
+                                <h:outputLabel value= "#{data.leaveDate}" >
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.firstName}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.nik} #{data.firstName} #{data.lastName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.leaveName}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['leavebalance.leave_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.leaveName}"/>
+                            </p:column>   
+                            <p:column sortBy="#{data.numberFilling}" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['overTimeImplementation.implementation_number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.numberFilling}"/>
+                            </p:column>
+                            <p:column  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalActivity.lastApprover']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.lastApproverNik} #{data.lastApproverName}"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportLeaveDataViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableReportId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

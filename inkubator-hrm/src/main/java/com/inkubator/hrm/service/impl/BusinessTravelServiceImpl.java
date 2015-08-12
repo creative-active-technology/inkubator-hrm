@@ -12,6 +12,7 @@ import com.inkubator.hrm.dao.BusinessTravelComponentDao;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.TravelTypeDao;
 import com.inkubator.hrm.dao.TravelZoneDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -19,10 +20,12 @@ import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -74,6 +77,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	private ApprovalActivityDao approvalActivityDao;
 	@Autowired
 	private HrmUserDao hrmUserDao;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 
 	@Override
 	public BusinessTravel getEntiyByPK(String id) throws Exception {
@@ -331,7 +336,15 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 				
 		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
-        if(approvalActivity == null){
+		//Set Kodefikasi pada nomor
+    	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.BUSINESS_TRAVEL_CODE);
+		Long currentMaxBussinessTravId = businessTravelDao.getCurrentMaxId();
+		if (currentMaxBussinessTravId == null) {
+			currentMaxBussinessTravId = 0L;
+		}
+		entity.setBusinessTravelNo(KodefikasiUtil.getKodefikasi(((int)currentMaxBussinessTravId.longValue()), transactionCodefication.getCode()));
+		
+		if(approvalActivity == null){
         	businessTravelDao.save(entity);
         	message = "success_without_approval";
         } else {
