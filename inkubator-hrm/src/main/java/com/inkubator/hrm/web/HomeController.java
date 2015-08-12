@@ -14,6 +14,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,6 +35,7 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -125,6 +129,19 @@ public class HomeController extends BaseController {
             LOGGER.error(ex, ex);
         }
     }
+    
+	public String doChangeLanguageSession() {
+		try {
+			String languange = FacesUtil.getRequestParameter("languange");
+			FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
+			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+		} catch (Exception ex) {
+			LOGGER.error(ex, ex);
+		}
+
+		return null;
+	}
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
