@@ -62,7 +62,7 @@ public class MecineFingerDaoImpl extends IDAOImpl<MecineFinger> implements Mecin
         }
 
         if (parameter.getMethodType() != null) {
-            criteria.add(Restrictions.like("methodType", parameter.getMethodType(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.eq("mecineMethode", Integer.parseInt(parameter.getMethodType())));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
