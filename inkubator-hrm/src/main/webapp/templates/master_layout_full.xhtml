@@ -245,12 +245,20 @@
 
                         <div style="float: right"> 
                             <h:form>                                
-                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <!--<p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />-->
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
+                                    <h:commandLink id="englishId" title="#{appmsg['global.changed_language_to_english']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="en"/>
+                                        <p:graphicImage library="images" name="England.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
+                                    <h:commandLink id="indonesiaId" title="#{appmsg['global.changed_language_to_indonesian']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="id"/>
+                                        <p:graphicImage library="images" name="Indonesia.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
                                         <p:graphicImage library="images" name="check_in_out.png"  height="22" id="ima" cache="true" />
                                     </p:commandLink>
