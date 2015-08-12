@@ -40,4 +40,6 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public List<HrmUser> getAllDataByNameOrNik(String param);
 
     public HrmUser getByEmailAddressInNotLock(String emailAddress);
+    
+    public HrmUser getByUserIdWithDetail(String userId);
 }

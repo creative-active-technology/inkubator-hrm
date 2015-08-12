@@ -143,4 +143,9 @@ public interface EmpDataService extends IService<EmpData> {
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;
 
     public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard();
+    
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) throws Exception;
+
 }

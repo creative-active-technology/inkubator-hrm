@@ -15,6 +15,7 @@ import org.springframework.webflow.execution.RequestContext;
 import ch.lambdaj.Lambda;
 
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
@@ -54,6 +55,7 @@ public class BusinessTravelFormController implements Serializable{
 	private TravelZoneService travelZoneService;
 	@Autowired 
 	private TravelTypeService travelTypeService;
+	private String endResult;
 	
 	
 	public void initBusinessTravelProcessFlow(RequestContext context){
@@ -72,6 +74,9 @@ public class BusinessTravelFormController implements Serializable{
 			if(id != null){			
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
 				model = bindEntityToModel(businessTravel);
+			}else{
+				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				
 			}
 			context.getFlowScope().put("businessTravelModel", model);
 			
@@ -168,10 +173,13 @@ public class BusinessTravelFormController implements Serializable{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-		
+		endResult = message;
 		return message;
 	}
 	
+	public String doEndVerification(){
+		return endResult;
+	}
 	public List<EmpData> doAutoCompletEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
@@ -265,4 +273,14 @@ public class BusinessTravelFormController implements Serializable{
 		
 		return model;
 	}
+
+	public String getEndResult() {
+		return endResult;
+	}
+
+	public void setEndResult(String endResult) {
+		this.endResult = endResult;
+	}
+	
+	
 }

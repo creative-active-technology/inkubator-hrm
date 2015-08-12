@@ -1221,8 +1221,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
 				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
 				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
-				+ " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
-				+ " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+				+ " COUNT(tempProcessReadFinger.finger_in) as attendanceReal,"
+				+ " (COUNT(tempProcessReadFinger.finger_in) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
 				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
 				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
 				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
@@ -1239,6 +1239,52 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 .list();
 	}
 	
-	
+	@Override
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployeeNotIncludeCompany(searchParameter, criteria);
+        criteria.addOrder(order);
+//        criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
+
+        criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.unitKerja", FetchMode.JOIN);
+        criteria.setFetchMode("taxFree", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+//        criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParamOnlyEmployeeNotIncludeCompany(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchByParamOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+//        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
+//        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+//        if (dataSearchParameter.getJabatanKode() != null) {
+//            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+//        }
+//
+//        if (dataSearchParameter.getJabatanName() != null) {
+//            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+//        }
+        criteria.createAlias("taxFree", "taxFree", JoinType.LEFT_OUTER_JOIN);
+        if (dataSearchParameter.getNIK() != null) {
+            criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
+        }
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        if (dataSearchParameter.getName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+    }
 
 }
