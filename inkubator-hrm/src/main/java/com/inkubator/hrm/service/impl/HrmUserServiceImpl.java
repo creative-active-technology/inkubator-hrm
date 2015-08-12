@@ -557,8 +557,22 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public String getCompanyName(String userId) throws Exception {
         HrmUser hrmUser = this.hrmUserDao.getByUserId(userId);
         return hrmUser.getEmpData().getJabatanByJabatanId().getDepartment().getCompany().getName();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public HrmUser getByNameWithRoles(String userId) throws Exception {
+        HrmUser hrmUser = this.hrmUserDao.getByUserId(userId);
+        List<HrmRole> hrmRoles = new ArrayList<>();
+        for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(hrmUser.getId())) {
+            hrmRoles.add(hrmRole.getHrmRole());
+        }
+        System.out.println(" jumlahnya "+hrmRoles.size());
+        hrmUser.setRoles(hrmRoles);
+        return hrmUser;
     }
 }
