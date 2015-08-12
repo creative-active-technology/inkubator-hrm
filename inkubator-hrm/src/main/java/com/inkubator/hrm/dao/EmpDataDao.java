@@ -138,5 +138,12 @@ public interface EmpDataDao extends IDAO<EmpData> {
 	public List<EmpData> getAllDataWithoutJoinCompany(String nikOrName);
 
 	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill);
+
+    public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter);
+
+	
+	
 }
 	

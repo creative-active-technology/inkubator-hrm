@@ -8,10 +8,12 @@ package com.inkubator.hrm.web.lazymodel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
@@ -40,8 +42,8 @@ public class EmpDataPtkpLazyDataModel extends LazyDataModel<EmpData> implements 
         if (sortField != null) {
             if (sortOrder == SortOrder.ASCENDING) {
                 try {
-                    empDatadatas = empDataService.getByParam(empDataSearchParameter, first, pageSize, Order.asc(sortField));
-                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalEmpDataByParam(empDataSearchParameter)));
+                    empDatadatas = empDataService.getAllDataByParamForOnlyEmployeeNotIncludeCompany(empDataSearchParameter, first, pageSize, Order.asc(sortField));
+                    jumlah = Integer.parseInt(String.valueOf(empDataService.getTotalByParamForOnlyEmployeeNotIncludeCompany(empDataSearchParameter)));
                 } catch (Exception ex) {
                     LOGGER.error("Error", ex);
                 }
