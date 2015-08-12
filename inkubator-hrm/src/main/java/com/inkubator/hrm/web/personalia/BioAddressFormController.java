@@ -176,7 +176,8 @@ public class BioAddressFormController extends BaseController {
             }
         } else {
             model = new BioAddressModel();
-            provinces.clear();
+            countries = null;
+            provinces = null;
             cities.clear();            
         }
     }
