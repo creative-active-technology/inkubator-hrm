@@ -229,7 +229,7 @@
                 <div id="art-page-background-glare-image">
                     <div id="art-main">
                         <div style="float:left">
-                            <h:panelGrid style="margin-left: 50px;padding-top: 4px" columns="2">
+                            <h:panelGrid style="margin-left: 50px;padding-top: 9px" columns="2">
                                 <p:commandLink >
                                       <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
@@ -245,20 +245,12 @@
 
                         <div style="float: right"> 
                             <h:form>                                
-                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <!--<p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />-->
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
-                                    <h:commandLink id="englishId" title="#{appmsg['global.changed_language_to_english']}" action="#{homeController.doChangeLanguageSession()}">
-                                    	<f:param name="languange" value="en"/>
-                                        <p:graphicImage library="images" name="England.png" width="22" height="22"  cache="true"/> 
-                                    </h:commandLink>
-                                    <h:commandLink id="indonesiaId" title="#{appmsg['global.changed_language_to_indonesian']}" action="#{homeController.doChangeLanguageSession()}">
-                                    	<f:param name="languange" value="id"/>
-                                        <p:graphicImage library="images" name="Indonesia.png" width="22" height="22"  cache="true"/> 
-                                    </h:commandLink>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
                                         <p:graphicImage library="images" name="check_in_out.png"  height="22" id="ima" cache="true" />
                                     </p:commandLink>
@@ -597,13 +589,12 @@
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_implementation']}" icon="img-leave_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_implementation']}" url="/protected/working_time/leave_impl_form.htm" />
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_history']}" icon="img-leave_history" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_history']}" url="/protected/working_time/leave_impl_view.htm" />
                                                 <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_ex_view.htm" />
-                                                <p:menuitem value="Resume Cuti Karyawan" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="Resume Cuti Karyawan" url="/protected/working_time/resume_leave_employee.htm" />
+                                            	<p:menuitem value="Resume Cuti Karyawan" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="Resume Cuti Karyawan" url="/protected/working_time/resume_leave_employee.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.permit_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['permitdistribution.permit_distribution']}" icon="img-permit_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitdistribution.permit_distribution']}" url="/protected/employee/permit_distribution_view.htm" />
                                                 <p:menuitem value="#{appmsg['permitbalance.permitbalance']}" icon="img-permit_balance" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitbalance.permitbalance']}" url="/protected/employee/neraca_permit_view.htm" />
-                                                <p:menuitem value="#{appmsg['permit.permit_implementation']}" icon="img-permit_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['permit.permit_implementation']}" url="/protected/working_time/permit_impl_form.htm" />
-                                                <p:menuitem value="#{appmsg['permit.permit_history']}" icon="img-permit_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['permit.permit_history']}" url="/protected/working_time/permit_impl_view.htm" />
+                                                <p:menuitem value="#{appmsg['permitbalance.permit_implementation']}" icon="img-permit_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitbalance.permit_implementation']}" url="/protected/working_time/permit_impl_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.overtime_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['overtimedistribution.overtime_distribution']}" icon="img-overtime_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['overtimedistribution.overtime_distribution']}" url="/protected/employee/ot_distribution_view.htm" />
@@ -625,11 +616,10 @@
                                                 <p:menuitem value="#{appmsg['payroll.monthEnd']}" icon="img-detail_realisasi_jadwal" style="font-size: 12px !important;color: #003366" title="#{appmsg['payroll.monthEnd']}" url="/protected/working_time/month_end_attendance.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.loan_report']}"  styleClass="menu_child" >
-                                            	 <p:menuitem value="#{appmsg['report.leave_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.leave_data']}" url="/protected/report/report_leave_view.htm" />
                                                 <p:menuitem value="#{appmsg['leave.leave_history_report']}" icon="img-leave_history_report" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave_history_report']}" url="/protected/report/report_leave_hist_view.htm" />
                                                 <p:menuitem value="#{appmsg['leave.permit_history_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.permit_history_report']}" url="/protected/report/report_permit_hist_view.htm" />
                                                 <p:menuitem value="#{appmsg['reportEmployeeAttendance.report_employee_attendance']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['reportEmployeeAttendance.report_employee_attendance']}" url="/protected/report/report_attendance_view.htm" />
-
+                                            
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.recruitment']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
@@ -858,14 +848,12 @@
                                 </h:form>
                                 <div class="art-header" id="logoId">
                                     <div class="art-header-jpeg"></div>
-                                    <div class="art-logo" style="float: left">
+                                    <div class="art-logo" style="float: right">
                                         <h:panelGrid >
-                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI - #{COMPANY_NAME}"  styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
+                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI" styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
                                             <p:outputLabel value="Gedung Manhattan, Lantai 16. Cilandak, Jakarta Selatan - Indonesia" styleClass="header_hrm" style="font-size: 14px !important;padding-top: -5px!important;color: #036 !important;"/>
                                         </h:panelGrid>
                                     </div>
-                                   
-
                                 </div>
 
                                 <div class="art-content-layout">
