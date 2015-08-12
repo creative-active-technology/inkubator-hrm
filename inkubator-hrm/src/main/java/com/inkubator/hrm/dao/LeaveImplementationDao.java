@@ -9,8 +9,10 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.web.model.ReportLeaveDataViewModel;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportLeaveDataSearchParameter;
 
 import java.util.Date;
 
@@ -44,8 +46,11 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
 
     public LeaveImplementation getByEmpStardDateEndDate(long empId, Date doDate);
 
-	
     public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill);
+    
+    public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+    
+    public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter);
 	
     public Long getCurrentMaxId();
 }
