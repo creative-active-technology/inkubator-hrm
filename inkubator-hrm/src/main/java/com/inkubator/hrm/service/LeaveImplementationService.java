@@ -9,8 +9,10 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
+import com.inkubator.hrm.web.model.ReportLeaveDataViewModel;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportLeaveDataSearchParameter;
 
 /**
  *
@@ -43,4 +45,8 @@ public interface LeaveImplementationService extends IService<LeaveImplementation
         public List<LeaveImplementation> getReportHistoryByParam(LeaveImplementationReportSearchParameter parameter, List<String> activityNumbers, Long empDataId) throws Exception;
         
         public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception;
+        
+        public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+        
+        public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter) throws Exception;
 }
