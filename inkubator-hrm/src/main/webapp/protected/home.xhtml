@@ -89,8 +89,8 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="lemburId" value="#">
-                                                    <p:graphicImage library="images" name="overtime.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="lemburId" value="${request.contextPath}/protected/working_time/over_time_form.htm">
+                                                    <p:graphicImage library="images" name="overtime.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_quick"/>
                                             </h:panelGrid>
@@ -98,17 +98,17 @@
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
                                                 <h:outputLink id="broadcastId" value="#">
-                                                    <p:graphicImage library="images" name="broadcast.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                    <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="#{appmsg['menu.broadcast_info']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="izinId" value="#">
-                                                    <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="izinId" value="${request.contextPath}/protected/working_time/permit_impl_form.htm">
+                                                    <p:graphicImage library="images" name="broadcast.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
-                                                <h:outputLabel value="#{appmsg['home.permit_and_sick']}" styleClass="label_quick"/>
+                                                <h:outputLabel value="#{appmsg['empAttendance.permit']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
 
