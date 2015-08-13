@@ -70,6 +70,22 @@
                             </p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="width: 29%" >
+                                <p:outputLabel for="typeId" value="#{appmsg['global.type']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="typeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 70%">
+                                <p:selectOneMenu id="typeId" value="#{hospitalFormController.hospitalModel.type}" required="false" style="width: 250px">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
+                                    <f:selectItem itemLabel="#{appmsg['hospital.government']}" itemValue="GOVERNMENT" />
+                                    <f:selectItem itemLabel="#{appmsg['hospital.private']}" itemValue="PRIVATE" />
+                                    <f:selectItem itemLabel="#{appmsg['hospital.institution']}" itemValue="INSTITUTION" />
+                                </p:selectOneMenu>
+                            </p:column>                            
+                        </p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="phoneId" value="#{appmsg['hospital.hospital_phone']}" styleClass="label_hrm"/>
                             </p:column>
@@ -131,7 +147,7 @@
                                                  style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{hospitalFormController.countrys}"  />
-                                    <p:ajax update="provinceIdA, provinceId" event="change" />
+                                    <p:ajax update="provinceIdA, provinceId, cityIdA, cityId, postalCodeId" event="change" />
                                 </p:selectOneMenu>
                             </p:column>                            
                         </p:row>
@@ -152,7 +168,7 @@
                                                  style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{hospitalFormController.disabledProvince}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{hospitalFormController.provinces}"  />
-                                    <p:ajax update="cityIdA, cityId" event="change" />
+                                    <p:ajax update="cityIdA, cityId, postalCodeId" event="change" />
                                 </p:selectOneMenu>                                
                             </p:column>
                         </p:row>
@@ -183,6 +199,19 @@
                             <p:column colspan="3">
                                 <p:message id="cityId" for="cityId"/>
                                 <p:message for="cityIdA"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="postalCodeId" value="#{appmsg['global.postal_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="postalCodeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                <p:inputText id="postalCodeId" title="#{appmsg['global.postal_code']}" value="#{hospitalFormController.hospitalModel.postalCode}" 
+                                             required="false" maxlength="10" styleClass="isitext_hrm" style="width:100px;" disabled="#{hospitalFormController.disabledCity}"/>
+
                             </p:column>
                         </p:row> 
                     </p:panelGrid>

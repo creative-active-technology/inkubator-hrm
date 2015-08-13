@@ -90,6 +90,7 @@ public class InterestTypeServiceImpl  extends IServiceImpl implements InterestTy
         }
         InterestType update = this.interestTypeDao.getEntiyByPK(entity.getId());
         update.setName(entity.getName());
+        update.setWeightInterest(entity.getWeightInterest());
         update.setDescription(entity.getDescription());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());

@@ -90,7 +90,7 @@ public class InterestTypeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 450);
-        options.put("contentHeight", 350);
+        options.put("contentHeight", 390);
         RequestContext.getCurrentInstance().openDialog("interest_type_form", options, null);
     }
     
@@ -100,7 +100,7 @@ public class InterestTypeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 410);
-        options.put("contentHeight", 360);
+        options.put("contentHeight", 390);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
