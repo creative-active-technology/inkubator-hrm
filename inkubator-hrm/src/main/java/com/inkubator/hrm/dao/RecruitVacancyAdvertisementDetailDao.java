@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
  */
 public interface RecruitVacancyAdvertisementDetailDao extends IDAO<RecruitVacancyAdvertisementDetail> {
 
+	public void deleteByVacancyAdvertisementId(Long vacancyAdvertisementId);
+
 }

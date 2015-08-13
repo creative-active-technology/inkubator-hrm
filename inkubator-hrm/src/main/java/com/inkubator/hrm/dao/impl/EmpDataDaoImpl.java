@@ -1984,11 +1984,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(
             String rangeDepId, Date dateFrom, Date dateUntill) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+              
         StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
                 + " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
                 + " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
-                + " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
-                + " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+                + " COUNT(tempProcessReadFinger.finger_in) as attendanceReal,"
+                + " (COUNT(tempProcessReadFinger.finger_in) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
                 + " FROM temp_jadwal_karyawan tempJadwalKaryawan"
                 + " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
                 + " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"

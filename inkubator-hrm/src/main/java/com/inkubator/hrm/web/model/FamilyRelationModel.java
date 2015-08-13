@@ -18,6 +18,7 @@ public class FamilyRelationModel implements Serializable{
     private String code;
     private String description;
     private Boolean isActive;
+    private Boolean isDependent;
 
     public Long getId() {
         return id;
@@ -58,6 +59,13 @@ public class FamilyRelationModel implements Serializable{
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
-    
+
+    public Boolean getIsDependent() {
+        return isDependent;
+    }
+
+    public void setIsDependent(Boolean isDependent) {
+        this.isDependent = isDependent;
+    }
     
 }

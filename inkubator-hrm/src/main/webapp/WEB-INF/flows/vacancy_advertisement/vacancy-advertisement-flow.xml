@@ -75,7 +75,7 @@
         <transition on="error" to="view_recruitment_request"/>
     </action-state >
 
-    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_detail.htm?execution=e#{flowScope.vacancyAdvertisementModel.id}"/>
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_detail.htm?execution=e#{flowScope.model.id}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/recruitment/vacancy_advertisement_view.htm" />
     
 </flow>

@@ -464,4 +464,11 @@ public class HRMConstant {
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_REJECTED = 1;
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_CANCELLED = 2;
     /* END */
+    
+    /* 
+     * Constant for Hospital Module */
+    public static final String HOSPITAL_TYPE_GOVERNMENT = "GOVERNMENT";
+    public static final String HOSPITAL_TYPE_PRIVATE = "PRIVATE";
+    public static final String HOSPITAL_TYPE_INSTITUTION = "INSTITUTION";
+    /* END */
 }

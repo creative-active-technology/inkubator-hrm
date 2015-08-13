@@ -56,6 +56,7 @@ public class InterestTypeFormController extends BaseController {
                 InterestType interestType = service.getEntiyByPK(Long.parseLong(param));
                 model.setId(interestType.getId());
                 model.setName(interestType.getName());
+                model.setWeightInterest(interestType.getWeightInterest());
                 model.setDescription(interestType.getDescription());
             } else {
                 isEdit = Boolean.FALSE;
@@ -93,6 +94,7 @@ public class InterestTypeFormController extends BaseController {
             interestType.setId(model.getId());
         }
         interestType.setName(model.getName());
+        interestType.setWeightInterest(model.getWeightInterest());
         interestType.setDescription(model.getDescription());
         return interestType;
     }

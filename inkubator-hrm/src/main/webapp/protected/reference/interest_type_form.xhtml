@@ -52,6 +52,23 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 48%">
+                                <p:outputLabel for="weight" value="#{appmsg['interesttype.weight']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="weight" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 51%">
+                            	<p:spinner id="weight" value="#{interestTypeFormController.model.weightInterest}" 
+                            			   stepFactor="1" size="4" min="0" max="100" styleClass="isitext_hrm" required="true"/>                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="weight"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 48%">
                                 <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">

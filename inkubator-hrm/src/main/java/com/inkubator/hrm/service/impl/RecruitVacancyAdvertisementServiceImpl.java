@@ -25,6 +25,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.RecruitAdvertisementMediaDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDao;
+import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDetailDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.HrmUser;
@@ -49,6 +50,8 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 
 	@Autowired
 	private RecruitVacancyAdvertisementDao recruitVacancyAdvertisementDao;
+	@Autowired
+	private RecruitVacancyAdvertisementDetailDao recruitVacancyAdvertisementDetailDao;
 	@Autowired
 	private RecruitAdvertisementMediaDao recruitAdvertisementMediaDao;
 	@Autowired
@@ -85,9 +88,34 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void update(RecruitVacancyAdvertisement entity) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		
+		RecruitAdvertisementMedia advertisementMedia =  recruitAdvertisementMediaDao.getEntiyByPK(entity.getAdvertisementMedia().getId());
+		RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(entity.getId());
+		vacancyAdvertisement.setAdvertisementMedia(advertisementMedia);
+		vacancyAdvertisement.setEffectiveDate(entity.getEffectiveDate());
+		vacancyAdvertisement.setUpdatedBy(UserInfoUtil.getUserName());
+		vacancyAdvertisement.setUpdatedOn(new Date());		
+		recruitVacancyAdvertisementDao.update(vacancyAdvertisement);
+		
+		/** update child list, with step is remove All first, then insert All new */
+		recruitVacancyAdvertisementDetailDao.deleteByVacancyAdvertisementId(vacancyAdvertisement.getId());		
+		for(RecruitVacancyAdvertisementDetail p : entity.getRecruitVacancyAdvertisementDetails()){
+        	RecruitHireApply hireApply =  recruitHireApplyDao.getEntiyByPK(p.getHireApply().getId());
+        	
+        	RecruitVacancyAdvertisementDetail detail =  new RecruitVacancyAdvertisementDetail();
+        	detail.setVacancyAdvertisement(vacancyAdvertisement);
+        	detail.setHireApply(hireApply);
+        	detail.setCost(p.getCost());
+        	detail.setDescription(p.getDescription());
+        	detail.setPublishEnd(p.getPublishEnd());
+        	detail.setPublishStart(p.getPublishStart());
+        	detail.setCreatedBy(UserInfoUtil.getUserName());
+        	detail.setCreatedOn(new Date());
+        	recruitVacancyAdvertisementDetailDao.save(detail);
+        }
+		
 	}
 
 	@Override
@@ -286,13 +314,13 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
              * kalau status akhir sudah di reject dan tidak ada next approval,
              * berarti langsung insert ke database
              */
-        	RecruitVacancyAdvertisement entity = this.convertJsonToEntity(appActivity.getPendingData());
-            entity.setApplicationStatus(HRMConstant.VACANCY_ADVERTISEMENT_STATUS_REJECTED); //set rejected application status
-            entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        	//RecruitVacancyAdvertisement entity = this.convertJsonToEntity(appActivity.getPendingData());
+            //entity.setApplicationStatus(HRMConstant.VACANCY_ADVERTISEMENT_STATUS_REJECTED); //set rejected application status
+            //entity.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
             
             
             /** saving to DB */
-            this.save(entity, Boolean.TRUE);
+            //this.save(entity, Boolean.TRUE);
         }
 
         //if there is no error, then sending the email notification

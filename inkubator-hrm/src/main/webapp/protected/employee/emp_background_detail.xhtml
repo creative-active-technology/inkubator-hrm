@@ -403,7 +403,7 @@
                                         <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
                                     </p:column>
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
-                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:commandButton disabled="#{bioDocumentData.uploadFileName == ''}" ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                             <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
                                             <f:param name="id" value="#{bioDocumentData.id}"/>
                                         </p:commandButton>
