@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class InterestTypeModel implements Serializable{
     private Long id;
     private String name;
+    private Integer weightInterest;
     private String description;
 
     public Long getId() {
@@ -31,7 +32,15 @@ public class InterestTypeModel implements Serializable{
         this.name = name;
     }
 
-    public String getDescription() {
+    public Integer getWeightInterest() {
+		return weightInterest;
+	}
+
+	public void setWeightInterest(Integer weightInterest) {
+		this.weightInterest = weightInterest;
+	}
+
+	public String getDescription() {
         return description;
     }
 
