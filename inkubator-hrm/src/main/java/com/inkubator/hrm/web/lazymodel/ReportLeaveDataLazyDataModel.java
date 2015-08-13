@@ -43,7 +43,7 @@ public class ReportLeaveDataLazyDataModel extends LazyDataModel<ReportLeaveDataV
 	        if (sortField != null) {
 	        	orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.asc("leaveImplementationDate.id");
+	        	orderable = Order.asc("firstName");
 	        }
 	        
 	        //Pengecekan ini untuk mencegah data di load ketika pertama kali membuka halaman, karena di requirement dari FSD-nya, 

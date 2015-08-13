@@ -847,13 +847,19 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		
 		List<ReportLeaveDataViewModel> listReport = leaveImplementationDao.getAllDataLeaveReport(parameter, firstResult, maxResults, orderable);
 		for(ReportLeaveDataViewModel reportModel : listReport){
+			
 			if(null != reportModel.getActivityNumber()){
-				String userId = approvalActivityDao.getAllDataByActivityNumberWithDetail(reportModel.getActivityNumber(), Order.desc("sequence")).get(0).getApprovedBy();
-				HrmUser hrmUser = hrmUserDao.getByUserId(userId);
-				reportModel.setLastApproverName(hrmUser.getRealName());
-				
+				List<ApprovalActivity> listApproval = approvalActivityDao.getAllDataByActivityNumberWithDetail(reportModel.getActivityNumber(), Order.desc("sequence"));
+				if(listApproval.isEmpty()){
+					reportModel.setLastApproverName("-");
+				}else{
+					HrmUser hrmUser = hrmUserDao.getByUserIdWithDetail(listApproval.get(0).getApprovedBy());
+					reportModel.setLastApproverNik(hrmUser.getEmpData().getNik());
+					reportModel.setLastApproverName(hrmUser.getRealName());
+				}
 			}
 			
 		}

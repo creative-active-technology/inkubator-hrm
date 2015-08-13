@@ -147,9 +147,5 @@ public class ReportLeaveDataViewController extends BaseController {
 		this.leaveImplementationService = leaveImplementationService;
 	}
 
-
-	
-
-	
 		
 }
