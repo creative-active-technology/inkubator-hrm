@@ -246,6 +246,7 @@ public class HospitalServiceImpl extends IServiceImpl implements HospitalService
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Hospital b) throws Exception {
+    	
         // check duplicate name
         long totalDuplicates = hospitalDao.getTotalByCodeAndNotId(b.getCode(), b.getId());
         if (totalDuplicates > 0) {
@@ -265,6 +266,8 @@ public class HospitalServiceImpl extends IServiceImpl implements HospitalService
         hospital.setPhone(b.getPhone());
         hospital.setAddress(b.getAddress());
         hospital.setCity(city);
+        hospital.setType(b.getType());
+        hospital.setPostalCode(b.getPostalCode());
         hospital.setUpdatedBy(UserInfoUtil.getUserName());
         hospital.setUpdatedOn(new Date());
         hospitalDao.update(hospital);
