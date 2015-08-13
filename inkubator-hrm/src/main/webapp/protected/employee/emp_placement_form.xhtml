@@ -171,7 +171,7 @@
                                     <p:outputLabel  value="#{appmsg['paysalarygrade.paysalarygrade']}"  for="salaryGrade" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 158px" id="salaryGrade" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;" id="salaryGrade" filter="true" required="true"
                                                       value="#{empDataFormController.empDataModel.paySalaryGradeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{empDataFormController.mapPaySalary}" />

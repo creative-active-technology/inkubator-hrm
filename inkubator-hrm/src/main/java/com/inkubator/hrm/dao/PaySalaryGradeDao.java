@@ -23,4 +23,7 @@ public interface PaySalaryGradeDao extends IDAO<PaySalaryGrade> {
     public PaySalaryGrade getByPaySalaryGradeId(Long id);
 
     public PaySalaryGrade getByGradeNumber(int number);
+    
+    public List<PaySalaryGrade> getAllDataOrderAscMinSalary();
+    
 }
