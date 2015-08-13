@@ -12,16 +12,24 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import ch.lambdaj.Lambda;
+import ch.lambdaj.function.convert.Converter;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.web.model.ReportLeaveDataViewModel;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportLeaveDataSearchParameter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -220,8 +228,108 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
     }
     
     @Override
-public Long getCurrentMaxId() {
-	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
-    return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
-}
+	public Long getCurrentMaxId() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+	    return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+	}
+
+	@Override
+	public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+		 final StringBuilder query = new StringBuilder("select leaveImplementationDate.id AS id,");
+	        query.append(" leaveImplementationDate.actualDate AS leaveDate,");
+	        query.append(" leaveImplementation.id AS leaveImplementationId,");
+	        query.append(" empData.nik AS nik,");
+	        query.append(" bioData.firstName AS firstName,");
+	        query.append(" bioData.lastName AS lastName,");
+	        query.append(" leave.id AS leaveId,");
+	        query.append(" leave.name AS leaveName,");
+	        query.append(" leaveImplementation.numberFilling AS numberFilling,");
+	        query.append(" leaveImplementation.approvalActivityNumber AS activityNumber");
+	        query.append(" FROM LeaveImplementationDate leaveImplementationDate");
+	        query.append(" INNER JOIN leaveImplementationDate.leaveImplementation leaveImplementation");
+	        query.append(" INNER JOIN leaveImplementation.leave leave");
+	        query.append(" INNER JOIN leaveImplementation.empData empData");
+	        query.append(" INNER JOIN empData.bioData bioData ");
+	        query.append(" INNER JOIN empData.jabatanByJabatanId jabatanByJabatanId");
+	        query.append(" INNER JOIN jabatanByJabatanId.department department");
+	        query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
+	        
+	        //Implement Filter
+	        query.append(doFilterLeaveReport(parameter));
+	        List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
+	        //List<Long> listDepartmentId =  Lambda.convert(parameter.getListDepartment(), new DepartmentIdConverter());
+	        //List<Long> listDepartmentId = getListIdDepartment(parameter.getListDepartment());
+	        
+	        return getCurrentSession().createQuery(query.toString())
+	        		.setParameter("startDate", parameter.getStartDate())
+	        		.setParameter("endDate", parameter.getEndDate())
+                    .setParameterList("listDepartmentId", listDepartmentId)
+                    .setParameterList("listGolJabatan", parameter.getListGolJab())
+                    .setMaxResults(maxResults).setFirstResult(firstResult)
+                    .setResultTransformer(Transformers.aliasToBean(ReportLeaveDataViewModel.class))
+                    .list();
+	        
+	}
+	
+
+	@Override
+	public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter) {
+		
+		final StringBuilder query = new StringBuilder("SELECT COUNT(*)  ");
+        query.append(" FROM LeaveImplementationDate leaveImplementationDate");
+        query.append(" INNER JOIN leaveImplementationDate.leaveImplementation leaveImplementation");
+        query.append(" INNER JOIN leaveImplementation.leave leave");
+        query.append(" INNER JOIN leaveImplementation.empData empData");
+        query.append(" INNER JOIN empData.bioData bioData ");
+        query.append(" INNER JOIN empData.jabatanByJabatanId jabatanByJabatanId");
+        query.append(" INNER JOIN jabatanByJabatanId.department department");
+        query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
+        
+        //Implement Filter
+        query.append(doFilterLeaveReport(parameter));
+        List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
+        //List<Long> listDepartmentId =  Lambda.convert(parameter.getListDepartment(), new DepartmentIdConverter());
+        //List<Long> listDepartmentId = getListIdDepartment(parameter.getListDepartment());
+       // query.append(" ) AS jumlahRow ");   
+        System.out.println("Query total : " + query.toString());
+        return (Long) getCurrentSession().createQuery(query.toString())
+        		.setParameter("startDate", parameter.getStartDate())
+        		.setParameter("endDate", parameter.getEndDate())
+                .setParameterList("listDepartmentId", listDepartmentId)
+                .setParameterList("listGolJabatan", parameter.getListGolJab())
+                .uniqueResult();
+        
+        //return Long.valueOf(getCurrentSession().createQuery(query.toString()).uniqueResult().toString());
+	}
+	
+	private String doFilterLeaveReport( ReportLeaveDataSearchParameter  parameter){
+		StringBuilder query = new StringBuilder();
+		
+		query.append(" WHERE leaveImplementationDate.actualDate >= :startDate AND  leaveImplementationDate.actualDate <= :endDate ");
+		
+		if(!parameter.getListDepartment().isEmpty()){
+			
+			query.append(" AND department.id IN :listDepartmentId");
+		}
+		
+		if(!parameter.getListGolJab().isEmpty()){
+			query.append(" AND golonganJabatan.code IN :listGolJabatan");
+		}
+		
+		return query.toString();
+	}
+	
+	class DepartmentIdConverter implements Converter<Department, Long> {
+	    public Long convert(Department department) {
+	        return new Long(department.getId());
+	    }
+	}
+	
+	public List<Long> getListIdDepartment(List<Department> listDepartment){
+		List<Long> listIdDepartment = new ArrayList<Long>();
+		for(Department department : listDepartment){
+			listIdDepartment.add(new Long(department.getId()));
+		}
+		return listIdDepartment;
+	}
 }
