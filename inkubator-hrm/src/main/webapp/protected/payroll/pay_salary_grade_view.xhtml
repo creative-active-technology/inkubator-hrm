@@ -76,22 +76,28 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <!-- <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
                                 <p:selectOneMenu style="width: 60px" value="#{data.gradeSalary}" id="selectId">
                                     <f:selectItems value="#{paySalaryGradeController.dataToShow}"/>
                                     <p:ajax update="tableId"  process="@this" listener="#{paySalaryGradeController.doChangeLevel(data)}"/>
                                 </p:selectOneMenu>
-                            </p:column>
-<!--                            <p:column sortBy="gradeSalary" style="text-align: center; width: 10%">
+                            </p:column> -->
+                           <p:column sortBy="gradeSalary" style="text-align: center; width: 10%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['paysalarygrade.grade']}"/>
+                                    <h:outputText value="#{appmsg['payroll.grade_level']}"/>
                                 </f:facet>
                                 <div style="text-align: center;">
                                     <h:outputLabel value= "#{data.gradeSalary}" >
                                         <f:converter converterId="romanovConverter" />
                                     </h:outputLabel>
                                 </div>
-                            </p:column>-->
-                            <p:column sortBy="minSalary" style="width: 20%;text-align: center;">
+                            </p:column>
+                            <p:column sortBy="minSalary" style="width: 15%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.min_salary']}"/>
                                 </f:facet>
@@ -101,7 +107,7 @@
                                     </h:outputLabel>
                                 </div>
                             </p:column>
-                            <p:column sortBy="mediumSalary" style="width: 20%;text-align: center;">
+                            <p:column sortBy="mediumSalary" style="width: 15%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.medium_salary']}"/>
                                 </f:facet>
@@ -111,7 +117,7 @@
                                     </h:outputLabel>
                                 </div>
                             </p:column>
-                            <p:column sortBy="maxSalary" style="width: 20%;text-align: center;">
+                            <p:column sortBy="maxSalary" style="width: 15%;text-align: center;">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['paysalarygrade.max_salary']}"/>
                                 </f:facet>

@@ -13,8 +13,10 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.PaySalaryGradeService;
 import com.inkubator.hrm.web.search.PaySalaryGradeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -72,6 +74,9 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.paySalaryGradeDao.save(entity);
+        
+        //re-order based on GradeSalary
+        this.reOrderGradeSalary();
     }
 
     @Override
@@ -85,6 +90,21 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.paySalaryGradeDao.update(update);
+        
+        //re-order based on GradeSalary
+        this.reOrderGradeSalary();
+    }
+    
+    private void reOrderGradeSalary(){
+    	List<PaySalaryGrade> grades = paySalaryGradeDao.getAllDataOrderAscMinSalary();
+    	int i = 1;
+    	for(PaySalaryGrade paySalaryGrade : grades){
+    		if(i != paySalaryGrade.getGradeSalary().intValue()){
+    			paySalaryGrade.setGradeSalary(i);
+    			paySalaryGradeDao.update(paySalaryGrade);
+    		}
+    		i++;
+    	}
     }
 
     @Override
@@ -260,5 +280,11 @@ public class PaySalaryGradeServiceImpl extends IServiceImpl implements PaySalary
         this.paySalaryGradeDao.update(targetChageLast);
 
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<PaySalaryGrade> getAllDataOrderAscMinSalary() throws Exception {
+		return paySalaryGradeDao.getAllDataOrderAscMinSalary();
+	}
 
 }
