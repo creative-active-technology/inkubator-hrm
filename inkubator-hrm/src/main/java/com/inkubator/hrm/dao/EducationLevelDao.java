@@ -2,10 +2,13 @@ package com.inkubator.hrm.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 
 /**
@@ -29,5 +32,11 @@ public interface EducationLevelDao extends IDAO<EducationLevel> {
         public List<EducationLevel> getAllDataOrderByLevel();
         
         public List<EducationLevel> getAllNameOrderByLevel();
+        
+        public EducationLevel getByGradeNumber(int number);
+        
+        public void saveAndMarge(EducationLevel entity);
+        
+    	public Integer getCurrentMaxLevel();
 
 }

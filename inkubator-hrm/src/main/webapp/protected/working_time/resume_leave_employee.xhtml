@@ -75,7 +75,7 @@
 						<p:tab title="Konsumsi Cuti">
 							
 									<p:dataTable id="tableKonsumsiCuti" var="data"
-										value="#{resumeLeaveEmployeeViewController.listLeaveDistribution}"
+										value="#{resumeLeaveEmployeeViewController.listLeaveImplementationDateModel}"
 										lazy="false" paginator="false"
 										style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 
@@ -92,20 +92,63 @@
 											<f:facet name="header">
 												<h:outputText value="Nama Cuti" />
 											</f:facet>
-											<h:outputLabel value="#{data.leave.name}" />
+											<h:outputLabel value="#{data.leaveDistributionName}" />
 										</p:column>
-										<p:column style="text-align: center;width: 20%">
+										 <p:column style="text-align: center;width: 20%">
 											<f:facet name="header">
 												<h:outputText value="Konsumsi" />
 											</f:facet>
-											<h:outputLabel value=" / #{data.balance}" />
+											<h:outputLabel value="#{data.totalPakai} / #{data.balance}" />
 										</p:column>
 										<p:column style="text-align: center;width: 77%">
 											<f:facet name="header">
 												<h:outputText value="Nama Cuti" />
 											</f:facet>
-											<p:progressBar value="100" labelTemplate="90%" displayOnly="true"/>
+											<p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
 										</p:column>
+									</p:dataTable>
+
+						</p:tab>
+					</p:tabView>
+					
+					<p:tabView id="tabView2" dynamic="true" cache="true"
+						styleClass="tabview_hrm"
+						style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px"
+						scrollable="true">
+						<p:tab title="Konsumsi Cuti">
+							
+									<p:dataTable id="tableListCuti" var="data"
+										value="#{resumeLeaveEmployeeViewController.listLeaveImplementationDate}"
+										lazy="false" paginator="false"
+										style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+
+										<f:facet name="header">
+											<h:outputText value="#{appmsg['bioaddress.list_of_adress']}" />
+										</f:facet>
+										<p:column style="text-align: center;width: 3%">
+											<f:facet name="header">
+												<h:outputText value="#{appmsg['global.number']}" />
+											</f:facet>
+											<h:outputLabel value="#{no+1}." />
+										</p:column>
+										<p:column style="text-align: center;width: 20%">
+											<f:facet name="header">
+												<h:outputText value="Nama Cuti" />
+											</f:facet>
+											<h:outputLabel value="#{data.leaveImplementation.leave.name}" />
+										</p:column>
+										 <!-- <p:column style="text-align: center;width: 20%">
+											<f:facet name="header">
+												<h:outputText value="Konsumsi" />
+											</f:facet>
+											<h:outputLabel value="#{data.totalPakai} / #{data.balance}" />
+										</p:column>
+										<p:column style="text-align: center;width: 77%">
+											<f:facet name="header">
+												<h:outputText value="Nama Cuti" />
+											</f:facet>
+											<p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
+										</p:column> -->
 									</p:dataTable>
 
 						</p:tab>
