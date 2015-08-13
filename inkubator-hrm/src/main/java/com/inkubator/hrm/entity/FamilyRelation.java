@@ -34,6 +34,7 @@ public class FamilyRelation implements java.io.Serializable {
     private String code;
     private String description;
     private Boolean isActive;
+    private Boolean isDependent;
 
     public FamilyRelation() {
     }
@@ -42,7 +43,7 @@ public class FamilyRelation implements java.io.Serializable {
         this.id = id;
     }
 
-    public FamilyRelation(long id, String relasiName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String description, Boolean isActive) {
+    public FamilyRelation(long id, String relasiName, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String description, Boolean isActive, Boolean isDependent) {
         this.id = id;
         this.relasiName = relasiName;
         this.createdBy = createdBy;
@@ -52,6 +53,7 @@ public class FamilyRelation implements java.io.Serializable {
         this.code = code;
         this.description = description;
         this.isActive = isActive;
+        this.isDependent = isDependent;
     }
 
     @Id
@@ -167,5 +169,12 @@ public class FamilyRelation implements java.io.Serializable {
         this.isActive = isActive;
     }
 
+    @Column(name = "is_dependent")
+    public Boolean getIsDependent(){
+        return isDependent;
+    }
     
+    public void setIsDependent(Boolean isDependent){
+        this.isDependent = isDependent;
+    }
 }

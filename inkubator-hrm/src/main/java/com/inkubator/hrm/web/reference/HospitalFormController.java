@@ -92,6 +92,8 @@ public class HospitalFormController extends BaseController {
                     hospitalModel.setCountryId(hospital.getCity().getProvince().getCountry().getId());
                     hospitalModel.setProvinceId(hospital.getCity().getProvince().getId());
                     hospitalModel.setCityId(hospital.getCity().getId());
+                    hospitalModel.setType(hospital.getType());
+                    hospitalModel.setPostalCode(hospital.getPostalCode());
                     List<Province> listProvinces = provinceService.getByCountryIdWithDetail(hospitalModel.getCountryId());
                     for (Province province : listProvinces) {
                         provinces.put(province.getProvinceName(), province.getId());
@@ -165,6 +167,8 @@ public class HospitalFormController extends BaseController {
             hospitalModel.setCountryId(hospital.getCity().getProvince().getCountry().getId());
             hospitalModel.setProvinceId(hospital.getCity().getProvince().getId());
             hospitalModel.setCityId(hospital.getCity().getId());
+            hospitalModel.setType(hospital.getType());
+            hospitalModel.setPostalCode(hospital.getPostalCode());
         }else{
             disabledCity = Boolean.TRUE;
             disabledProvince = Boolean.TRUE;
@@ -176,6 +180,8 @@ public class HospitalFormController extends BaseController {
             hospitalModel.setCountryId(null);
             hospitalModel.setProvinceId(null);
             hospitalModel.setCityId(null);
+            hospitalModel.setType(null);
+            hospitalModel.setPostalCode(null);
         }
     }
 
@@ -275,6 +281,8 @@ public class HospitalFormController extends BaseController {
         hospital.setAddress(hospitalModel.getAddress());
         hospital.setPhone(hospitalModel.getPhone());
         hospital.setCity(new City(hospitalModel.getCityId()));
+        hospital.setType(hospitalModel.getType());
+        hospital.setPostalCode(hospitalModel.getPostalCode());
         return hospital;
     }
 
@@ -296,9 +304,13 @@ public class HospitalFormController extends BaseController {
                 for (Province province : listProvinces) {
                     provinces.put(province.getProvinceName(), province.getId());
                 }
-
                 MapUtil.sortByValue(provinces);
             }
+            
+            disabledCity = Boolean.TRUE;
+            hospitalModel.setProvinceId(null);
+            hospitalModel.setCityId(null);
+            hospitalModel.setPostalCode(null);
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -323,8 +335,10 @@ public class HospitalFormController extends BaseController {
                 for (City city : listCities) {
                     citys.put(city.getCityName(), city.getId());
                 }
-
                 MapUtil.sortByValue(citys);
+                
+                hospitalModel.setCityId(null);
+                hospitalModel.setPostalCode(null);
             }
 
         } catch (Exception ex) {

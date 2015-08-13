@@ -31,6 +31,7 @@ public class InterestType implements java.io.Serializable {
     private long id;
     private Integer version;
     private String name;
+    private Integer weightInterest;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -88,7 +89,16 @@ public class InterestType implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name="created_by", length=45)
+    @Column(name="weight_interest", nullable = false)
+    public Integer getWeightInterest() {
+		return weightInterest;
+	}
+
+	public void setWeightInterest(Integer weightInterest) {
+		this.weightInterest = weightInterest;
+	}
+
+	@Column(name="created_by", length=45)
     public String getCreatedBy() {
         return createdBy;
     }
