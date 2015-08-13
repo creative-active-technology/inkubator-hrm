@@ -10,7 +10,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -157,5 +159,13 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
         return (HrmUser) criteria.uniqueResult();
         
     }
+
+	@Override
+	public HrmUser getByUserIdWithDetail(String userId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("userId", userId));
+        return (HrmUser) criteria.uniqueResult();
+	}
 
 }

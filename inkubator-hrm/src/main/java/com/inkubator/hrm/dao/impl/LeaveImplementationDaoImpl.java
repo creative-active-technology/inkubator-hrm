@@ -254,11 +254,12 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 	        query.append(" INNER JOIN jabatanByJabatanId.department department");
 	        query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
 	        
+	        
 	        //Implement Filter
 	        query.append(doFilterLeaveReport(parameter));
 	        List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
-	        //List<Long> listDepartmentId =  Lambda.convert(parameter.getListDepartment(), new DepartmentIdConverter());
-	        //List<Long> listDepartmentId = getListIdDepartment(parameter.getListDepartment());
+	        
+	        query.append(" ORDER BY  "  + getRealFieldLeaveReport(orderable.getPropertyName()) + (!orderable.isAscending() ? " DESC" : "  "));
 	        
 	        return getCurrentSession().createQuery(query.toString())
 	        		.setParameter("startDate", parameter.getStartDate())
@@ -266,6 +267,7 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
                     .setParameterList("listDepartmentId", listDepartmentId)
                     .setParameterList("listGolJabatan", parameter.getListGolJab())
                     .setMaxResults(maxResults).setFirstResult(firstResult)
+                    
                     .setResultTransformer(Transformers.aliasToBean(ReportLeaveDataViewModel.class))
                     .list();
 	        
@@ -288,10 +290,7 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         //Implement Filter
         query.append(doFilterLeaveReport(parameter));
         List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
-        //List<Long> listDepartmentId =  Lambda.convert(parameter.getListDepartment(), new DepartmentIdConverter());
-        //List<Long> listDepartmentId = getListIdDepartment(parameter.getListDepartment());
-       // query.append(" ) AS jumlahRow ");   
-        System.out.println("Query total : " + query.toString());
+      
         return (Long) getCurrentSession().createQuery(query.toString())
         		.setParameter("startDate", parameter.getStartDate())
         		.setParameter("endDate", parameter.getEndDate())
@@ -299,7 +298,6 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
                 .setParameterList("listGolJabatan", parameter.getListGolJab())
                 .uniqueResult();
         
-        //return Long.valueOf(getCurrentSession().createQuery(query.toString()).uniqueResult().toString());
 	}
 	
 	private String doFilterLeaveReport( ReportLeaveDataSearchParameter  parameter){
@@ -319,17 +317,31 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 		return query.toString();
 	}
 	
-	class DepartmentIdConverter implements Converter<Department, Long> {
-	    public Long convert(Department department) {
-	        return new Long(department.getId());
-	    }
-	}
-	
-	public List<Long> getListIdDepartment(List<Department> listDepartment){
-		List<Long> listIdDepartment = new ArrayList<Long>();
-		for(Department department : listDepartment){
-			listIdDepartment.add(new Long(department.getId()));
+	public String getRealFieldLeaveReport(String orderField){
+		String realOrderField = StringUtils.EMPTY;
+		System.out.println("orderField : " + orderField);
+		switch (orderField) {
+		
+		case "leaveDate":
+			realOrderField = "leaveImplementationDate.actualDate";
+			break;
+			
+		case "firstName":
+			realOrderField = "bioData.firstName";
+			break;
+			
+		case "leaveName":
+			realOrderField = "leave.name";
+			break;
+			
+		case "numberFilling":
+			realOrderField = "leaveImplementation.numberFilling";
+			break;
+
+		default:
+			break;
 		}
-		return listIdDepartment;
+		return realOrderField;
 	}
+
 }
