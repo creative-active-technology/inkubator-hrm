@@ -45,6 +45,7 @@ public class FamilyRelationFormController extends BaseController {
                     familyRelationModel.setRelationName(religion.getRelasiName());
                     familyRelationModel.setDescription(religion.getDescription());
                     familyRelationModel.setIsActive(religion.getIsActive());
+                    familyRelationModel. setIsDependent(religion.getIsDependent());
                     familyRelationModel.setCode(religion.getCode());
                     isUpdate = Boolean.TRUE;
                 }
@@ -88,6 +89,7 @@ public class FamilyRelationFormController extends BaseController {
         familyRelation.setCode(religionModel.getCode());
         familyRelation.setDescription(religionModel.getDescription());
         familyRelation.setIsActive(religionModel.getIsActive());
+        familyRelation.setIsDependent(religionModel.getIsDependent());
         return familyRelation;
     }
 
