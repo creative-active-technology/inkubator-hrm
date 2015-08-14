@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *
@@ -20,6 +21,9 @@ public class PlacementOfEmployeeWorkScheduleModel implements Serializable{
     private Long golonganJabatanId;
     private Integer sortBy;
     private Integer orderBy;
+    private Date startDate;
+    private Date endDate;
+    
 
     public Long getWorkingGroupId() {
         return workingGroupId;
@@ -91,6 +95,22 @@ public class PlacementOfEmployeeWorkScheduleModel implements Serializable{
 
     public void setOrderBy(Integer orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     

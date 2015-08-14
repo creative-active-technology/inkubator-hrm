@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -47,10 +49,10 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     @ManagedProperty(value = "#{tempJadwalKaryawanService}")
     private TempJadwalKaryawanService tempJadwalKaryawanService;
     private Map<String, Long> workingGroupDropDown = new HashMap<String, Long>();
-    
+
     private List<WtGroupWorking> workingGroupList = new ArrayList<>();
     private Map<String, Long> golonganJabatanDropDown = new TreeMap<String, Long>();
-    
+
     private List<GolonganJabatan> golonganJabatanList = new ArrayList<>();
     private DualListModel<EmpData> dualListModel = new DualListModel<>();
     private PlacementOfEmployeeWorkScheduleModel model;
@@ -176,10 +178,10 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     }
 
     public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
-		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
-	}
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+    }
 
-	public String doSave() {
+    public String doSave() {
 
         try {
             List<EmpData> dataToSave = dualListModel.getTarget();
@@ -192,6 +194,19 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
             LOGGER.error("Error", ex);
         }
         return null;
+    }
+
+    public String doSaveException() {
+        List<EmpData> dataToSave = dualListModel.getTarget();
+        try {
+            tempJadwalKaryawanService.saveMassPenempatanJadwal(dataToSave, model.getWorkingGroupId());
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            Logger.getLogger(PlacementOfEmployeeWorkScheduleFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 
     public void doReset() {

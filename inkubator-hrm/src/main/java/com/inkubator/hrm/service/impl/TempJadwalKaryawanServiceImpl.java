@@ -90,7 +90,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
-    
+
     @Override
     public TempJadwalKaryawan getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -315,7 +315,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-            System.out.println(" Tanggal nya "+jadwalKaryawan.getTanggalWaktuKerja());
+            System.out.println(" Tanggal nya " + jadwalKaryawan.getTanggalWaktuKerja());
             this.tempJadwalKaryawanDao.saveOrUpdateAndMerge(jadwalKaryawan);
             i++;
         }
@@ -364,7 +364,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             empData.setWtGroupWorking(wtGroupWorkingDao.getEntiyByPK(groupWorkingId));
             this.empDataDao.update(empData);
         }
-        
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         String dataToJson = jsonConverter.getJson(data.toArray(new Long[data.size()]));
         final JsonObject jsonObject = new JsonObject();
@@ -449,11 +449,11 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
 
     @Override
     public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
-    	//send sms notification to approver if need approval OR
+        //send sms notification to approver if need approval OR
         //send sms notification to requester if need revision
-		super.sendApprovalSmsnotif(appActivity);
-		
-		//initialization
+        super.sendApprovalSmsnotif(appActivity);
+
+        //initialization
         SimpleDateFormat jsonDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
         Date createdOn = jsonDateFormat.parse(jsonObject.get("createDate").getAsString());
@@ -503,15 +503,20 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         return tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
     }
 
-	@Override
-	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
-		StringBuffer detail = new StringBuffer();
-		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-		JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
-		WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(jsonObject.get("groupWorkingId").getAsLong());
-		
-		detail.append("Pengajuan perubahan jadwal kerja bersama oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
-		detail.append("Kelompok Kerja " + groupWorking.getName());
-		return detail.toString();
-	}
+    @Override
+    protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+        StringBuffer detail = new StringBuffer();
+        HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+        JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
+        WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(jsonObject.get("groupWorkingId").getAsLong());
+
+        detail.append("Pengajuan perubahan jadwal kerja bersama oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+        detail.append("Kelompok Kerja " + groupWorking.getName());
+        return detail.toString();
+    }
+
+    @Override
+    public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
