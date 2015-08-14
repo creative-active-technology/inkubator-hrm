@@ -21,7 +21,7 @@
                         <p:graphicImage library="images" name="employee_type.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['employeetype.employee_type']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['organization.job_status']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['employeetype.employee_type_data_from_reference']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -49,6 +49,24 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="directTaskId" value="#{appmsg['employeetype.direct_task']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="directTaskId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                <p:focus for ="directTaskId">
+                                	<p:selectBooleanCheckbox id="directTaskId" value="#{employeeTypeFormController.employeeTypeModel.directTask}"></p:selectBooleanCheckbox>
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="directTaskId"/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>

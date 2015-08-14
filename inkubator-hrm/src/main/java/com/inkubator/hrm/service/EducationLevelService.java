@@ -28,5 +28,9 @@ public interface EducationLevelService extends IService<EducationLevel> {
         public List<EmpDataMatrixModel> getAllNameOrderByLevelWithModel() throws Exception;
         
         public List<EmpDataMatrixModel> getAllNameByGenderOrderByLevelWithModel() throws Exception;
+        
+        public void doChangerLevel(int newLevel, long oldId) throws Exception;
+        
+        public Integer getCurrentMaxLevel() throws Exception;
 
 }

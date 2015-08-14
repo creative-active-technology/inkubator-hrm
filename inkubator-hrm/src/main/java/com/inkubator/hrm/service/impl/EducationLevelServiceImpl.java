@@ -19,10 +19,12 @@ import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.dao.JabatanEdukasiDao;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.JabatanEdukasi;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.ArrayList;
 
 /**
@@ -43,7 +45,15 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(EducationLevel educationLevel) throws Exception {
-        educationLevelDao.delete(educationLevel);
+    	long totalData = this.educationLevelDao.getTotalData();
+        if (educationLevel.getLevel() < totalData) {
+            throw new BussinessException("paysalarygrade.error_delete");
+        } else if(educationLevel.getLevel() == null) {
+        	this.educationLevelDao.delete(educationLevel);
+        } else {
+            this.educationLevelDao.delete(educationLevel);
+        }
+        //educationLevelDao.delete(educationLevel);
     }
 
     @Override
@@ -98,6 +108,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
 
     }
 
+    
     @Override
     public EducationLevel getEntityByPkIsActive(String arg0, Integer arg1)
             throws Exception {
@@ -180,8 +191,9 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalData() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+    	return educationLevelDao.getTotalData();
 
     }
 
@@ -221,6 +233,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         educationLevel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         educationLevel.setCreatedBy(UserInfoUtil.getUserName());
         educationLevel.setCreatedOn(new Date());
+        educationLevel.setIsActive(educationLevel.getIsActive());
         educationLevelDao.save(educationLevel);
     }
 
@@ -262,14 +275,27 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         if (totalDuplicateCode > 0) {
             throw new BussinessException("educationlevel.error_duplicate_code");
         }
+        //delete old data
         EducationLevel educationLevel = educationLevelDao.getEntiyByPK(edu.getId());
-        educationLevel.setName(edu.getName());
-        educationLevel.setLevel(edu.getLevel());
-        educationLevel.setDescription(edu.getDescription());
-        educationLevel.setCode(edu.getCode());
-        educationLevel.setUpdatedBy(UserInfoUtil.getUserName());
-        educationLevel.setUpdatedOn(new Date());
-        educationLevelDao.update(educationLevel);
+        educationLevelDao.delete(educationLevel);
+        
+        //saving new entity
+        edu.setName(edu.getName());
+        edu.setDescription(edu.getDescription());
+        edu.setCode(edu.getCode());
+        edu.setUpdatedBy(UserInfoUtil.getUserName());
+        edu.setUpdatedOn(new Date());
+        edu.setIsActive(edu.getIsActive());
+        /*
+         * if isActive = false, set level to null
+         */
+        if(edu.getIsActive()){
+            edu.setLevel(edu.getLevel());
+        }else{
+        	edu.setLevel(null);
+        }
+        System.out.println("update with save");
+        educationLevelDao.save(edu);
     }
 
     @Override
@@ -387,5 +413,34 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         }
         return listDataModel;
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void doChangerLevel(int newLevel, long oldId) throws Exception {
+		EducationLevel targetChage = this.educationLevelDao.getByGradeNumber(newLevel);
+		targetChage.setLevel(0);
+        targetChage.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChage.setUpdatedOn(new Date());
+        this.educationLevelDao.saveAndMarge(targetChage);
+
+        EducationLevel newChange = this.educationLevelDao.getEntiyByPK(oldId);
+        int gradeNumberOld = newChange.getLevel();
+        newChange.setLevel(newLevel);
+        newChange.setUpdatedBy(UserInfoUtil.getUserName());
+        newChange.setUpdatedOn(new Date());
+        this.educationLevelDao.update(newChange);
+
+        EducationLevel targetChageLast = this.educationLevelDao.getByGradeNumber(0);
+        targetChageLast.setLevel(gradeNumberOld);
+        targetChageLast.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChageLast.setUpdatedOn(new Date());
+        this.educationLevelDao.update(targetChageLast);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Integer getCurrentMaxLevel() throws Exception {
+		return educationLevelDao.getCurrentMaxLevel();
+	}
 
 }

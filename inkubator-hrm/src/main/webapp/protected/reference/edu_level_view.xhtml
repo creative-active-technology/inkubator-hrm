@@ -74,9 +74,14 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['educationlevel.level']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{educationLevelData.level}">
+                                <!-- <h:outputLabel value= "#{educationLevelData.level}">
                                     <f:converter converterId="romanovConverter" />
-                                </h:outputLabel>
+                                </h:outputLabel> -->
+                                
+                                <p:selectOneMenu rendered="#{educationLevelData.isRendered}" style="width: 60px" value="#{educationLevelData.level}" id="selectId">
+                                    <p:ajax update="tableEducationLevelId"  process="@this" listener="#{educationLevelViewController.doChangeLevel(educationLevelData)}" partialSubmit="true"/>
+                                    <f:selectItems value="#{educationLevelViewController.dataToShow}"/>
+                                </p:selectOneMenu>
                             </p:column>
                             <p:column sortBy="#{educationLevelData.code}"  style="width: 30%">
                                 <f:facet name="header">  

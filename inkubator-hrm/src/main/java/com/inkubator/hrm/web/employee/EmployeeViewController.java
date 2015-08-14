@@ -46,7 +46,7 @@ public class EmployeeViewController extends BaseController {
         empDataSearchParameter = new EmpDataSearchParameter();
 
     }
-    
+
     public void doEmployeeTimeSchedule() {
         List<String> values = new ArrayList<>();
         values.add(String.valueOf(selectedEmpData.getId()));
@@ -74,17 +74,21 @@ public class EmployeeViewController extends BaseController {
     public String doDetailRenumeration() {
         return "/protected/payroll/basic_renumeration_detail.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
-    
+
     public String doDetailShedule() {
         return "/protected/employee/emp_schedule_detail.htm?faces-redirect=true&execution=r" + selectedEmpData.getId();
     }
-    
+
     public String doPlacementOfEmployee() {
         return "/protected/employee/work_schedule_form.htm?faces-redirect=true";
     }
 
+    public String doExceptionWorkSchedule() {
+        return "/protected/employee/schedule_exception_form.htm?faces-redirect=true";
+    }
+
     public void doSearch() {
-    	empDataLazyDataModel = null;
+        empDataLazyDataModel = null;
     }
 
     public EmpData getSelectedEmpData() {
@@ -94,7 +98,7 @@ public class EmployeeViewController extends BaseController {
     public void setSelectedEmpData(EmpData selectedEmpData) {
         this.selectedEmpData = selectedEmpData;
     }
-    
+
     public EmpDataSearchParameter getEmpDataSearchParameter() {
         return empDataSearchParameter;
     }
@@ -108,10 +112,10 @@ public class EmployeeViewController extends BaseController {
     }
 
     public EmpDataService getEmpDataService() {
-		return empDataService;
-	}
+        return empDataService;
+    }
 
-	public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
+    public LazyDataModel<EmpData> getEmpDataLazyDataModel() {
         if (empDataLazyDataModel == null) {
             empDataLazyDataModel = new EmployeeLazyDataModel(empDataSearchParameter, empDataService);
         }
@@ -120,5 +124,5 @@ public class EmployeeViewController extends BaseController {
 
     public void setEmpDataLazyDataModel(LazyDataModel<EmpData> empDataLazyDataModel) {
         this.empDataLazyDataModel = empDataLazyDataModel;
-    }    
+    }
 }

@@ -65,6 +65,7 @@ import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
@@ -788,5 +789,12 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 		detail.append("Jenis: " + entity.getLoanNewType().getLoanTypeName() + ". ");
 		detail.append("Sejumlah Rp. " + decimalFormat.format(entity.getNominalPrincipal()) + ", dengan termin " + entity.getTermin() + " kali");
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LoanHistoryViewModel> getListLoanHistoryByEmpDataId(Long empDataId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

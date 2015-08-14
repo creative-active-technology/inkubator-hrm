@@ -113,6 +113,21 @@
                                 <p:message for="descriptionId"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="isActiveId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                                    <p:selectBooleanButton id="isActiveId" disabled="#{educationLevelFormController.educationLevelModel.isActiveEditable}" value="#{educationLevelFormController.educationLevelModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" styleClass="label_button">
+                                    	<p:ajax update="levelId"  process="@this" listener="#{educationLevelFormController.doChangeLevel()}" partialSubmit="true"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                        </p:row>
+                        
 
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>

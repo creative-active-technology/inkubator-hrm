@@ -2,18 +2,21 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.web.model.EducationLevelModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -41,11 +44,19 @@ public class EducationLevelFormController extends BaseController {
             try {
                 EducationLevel educationLevel = educationLevelService.getEntiyByPK(Long.parseLong(param));
                 if (educationLevel != null) {
+                	Integer maxLevel = educationLevelService.getCurrentMaxLevel();
                     educationLevelModel.setId(educationLevel.getId());
                     educationLevelModel.setName(educationLevel.getName());
                     educationLevelModel.setLevel(educationLevel.getLevel());
                     educationLevelModel.setCode(educationLevel.getCode());
                     educationLevelModel.setDescription(educationLevel.getDescription());
+                    educationLevelModel.setIsActive(educationLevel.getIsActive());
+                    System.out.println(educationLevelModel.getLevel() + " = " + maxLevel);
+                    if(maxLevel == educationLevel.getLevel() || educationLevel.getLevel() == null){
+                		educationLevelModel.setIsActiveEditable(Boolean.FALSE);
+                    }else{
+                    	educationLevelModel.setIsActiveEditable(Boolean.TRUE);
+                    }
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -61,6 +72,13 @@ public class EducationLevelFormController extends BaseController {
         isUpdate = null;
     }
 
+    public void doChangeLevel() throws Exception{
+    	if(educationLevelModel.getIsActive() && educationLevelModel.getLevel() == null){
+    		Integer maxLevel = educationLevelService.getCurrentMaxLevel();
+    		educationLevelModel.setLevel(maxLevel + 1);
+    	}
+    }
+    
     public EducationLevelModel getEducationLevelModel() {
         return educationLevelModel;
     }
@@ -108,6 +126,7 @@ public class EducationLevelFormController extends BaseController {
         educationLevel.setLevel(model.getLevel());
         educationLevel.setCode(model.getCode());
         educationLevel.setDescription(model.getDescription());
+        educationLevel.setIsActive(model.getIsActive());
         return educationLevel;
     }
 }
