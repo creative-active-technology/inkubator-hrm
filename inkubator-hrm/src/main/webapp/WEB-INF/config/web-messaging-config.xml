@@ -142,7 +142,7 @@
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
     </bean>
-    
+    <bean id="jadwalKerjaMassMessagesListenerException" class="com.inkubator.hrm.service.impl.JadwalKerjaMassExceptionMessagesListener" lazy-init="true" />
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
         
