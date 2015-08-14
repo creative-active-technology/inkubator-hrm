@@ -125,7 +125,7 @@ public class EmployeeTypeViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 250);
+        options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("employee_type_form", options, params);
     }
     

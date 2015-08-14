@@ -30,6 +30,7 @@ public class EmployeeType implements java.io.Serializable {
     private String name;
     private String updatedBy;
     private Date updatedOn;
+    private Integer directTask;
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
@@ -47,11 +48,12 @@ public class EmployeeType implements java.io.Serializable {
         this.name = name;
     }
 
-    public EmployeeType(Long id, String createdBy, Date createdOn, String name, String updatedBy, Date updatedOn) {
+    public EmployeeType(Long id, String createdBy, Date createdOn, String name, Integer directTask, String updatedBy, Date updatedOn) {
         this.id = id;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.name = name;
+        this.directTask = directTask;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
     }
@@ -159,7 +161,17 @@ public class EmployeeType implements java.io.Serializable {
         this.listEmployeeTypes = listEmployeeTypes;
     }
     
-    @Override
+    
+    @Column(name = "direct_task")
+    public Integer getDirectTask() {
+		return directTask;
+	}
+
+	public void setDirectTask(Integer directTask) {
+		this.directTask = directTask;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(this.id);
@@ -167,6 +179,7 @@ public class EmployeeType implements java.io.Serializable {
         hash = 37 * hash + Objects.hashCode(this.createdBy);
         hash = 37 * hash + Objects.hashCode(this.createdOn);
         hash = 37 * hash + Objects.hashCode(this.name);
+        hash = 37 * hash + Objects.hashCode(this.directTask);
         hash = 37 * hash + Objects.hashCode(this.updatedBy);
         hash = 37 * hash + Objects.hashCode(this.updatedOn);
         return hash;
@@ -196,6 +209,9 @@ public class EmployeeType implements java.io.Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
+        if (!Objects.equals(this.directTask, other.directTask)) {
+            return false;
+        }
         if (!Objects.equals(this.updatedBy, other.updatedBy)) {
             return false;
         }
@@ -204,5 +220,6 @@ public class EmployeeType implements java.io.Serializable {
         }
         return true;
     }
+    
 
 }

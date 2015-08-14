@@ -36,6 +36,7 @@ public class EmployeeTypeFormController extends BaseController {
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         employeeTypeModel = new EmployeeTypeModel();
+        employeeTypeModel.setDirectTask(Boolean.FALSE);
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
             try {
@@ -43,6 +44,7 @@ public class EmployeeTypeFormController extends BaseController {
                 if (employeeType != null) {
                     employeeTypeModel.setId(employeeType.getId());
                     employeeTypeModel.setName(employeeType.getName());
+                    employeeTypeModel.setDirectTask((employeeType.getDirectTask() == null || employeeType.getDirectTask() == 0 ? Boolean.FALSE : Boolean.TRUE));
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -102,6 +104,7 @@ public class EmployeeTypeFormController extends BaseController {
             employeeType.setId(employeeTypeModel.getId());
         }
         employeeType.setName(employeeTypeModel.getName());
+        employeeType.setDirectTask(employeeTypeModel.getDirectTask() ? 1 : 0);
         return employeeType;
     }
 }
