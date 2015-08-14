@@ -156,6 +156,7 @@
         <jms:listener destination="notificationBroadcastPolicy" ref="notificationBroadcastPolicyMessagesListener" method="onMessage"  />
         <jms:listener destination="notificationBroadcastAnnouncement" ref="notificationBroadcastAnnouncementMessagesListener" method="onMessage"  />
         <jms:listener destination="senderSmsGateway" ref="notificationApproverSmsMessagesListener" method="onMessage"  />
+        <jms:listener destination="notificationMassJadwalKerjaException" ref="jadwalKerjaMassMessagesListenerException" method="onMessage"  />
     </jms:listener-container>
     
     <bean id="jsmTransaction" class="org.springframework.jms.connection.JmsTransactionManager">
