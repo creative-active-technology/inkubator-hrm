@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="specification.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['specificationability.specification_ability_data_from_reference']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['ratingability.rating_ability']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['ratingability.rating_ability_header']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -39,7 +39,7 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{specAbilityViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['specificationability.specification_ability']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['ratingability.rating_ability']}" itemValue="name"/>
                                         <f:selectItem itemLabel="#{appmsg['specificationability.option']}" itemValue="optionAbility"/>
                                         <f:selectItem itemLabel="#{appmsg['specificationability.scale_value']}" itemValue="scaleValue"/>
                                     </p:selectOneMenu>
@@ -64,7 +64,7 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['specificationability.list_of_specification_ability']}"/>
+                                <h:outputText value="#{appmsg['ratingability.rating_ability_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -74,7 +74,7 @@
                             </p:column>
                             <p:column sortBy="#{specAbilityData.name}"  style="width: 31%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['specificationability.specification_ability']}"/>
+                                    <h:outputText value="#{appmsg['ratingability.rating_ability']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{specAbilityData.name}"/>
                             </p:column>
@@ -137,7 +137,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['specificationability.specification_ability']}"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['ratingability.rating_ability']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -147,11 +147,11 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmSpecAbilityLevel').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailSpecAbilityLevel" header="#{appmsg['specificationability.detail_dialog']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailSpecAbilityLevel" header="#{appmsg['ratingability.rating_ability_detail']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['ratingability.rating_ability']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:60%;"><p:outputLabel value="#{specAbilityViewController.selectedSpecificationAbility.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
@@ -164,7 +164,7 @@
                         </p:row>
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['specificationability.specification_ability']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['menu.data_reference']} - #{appmsg['ratingability.rating_ability']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

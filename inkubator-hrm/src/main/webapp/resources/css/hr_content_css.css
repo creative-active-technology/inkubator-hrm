@@ -401,6 +401,11 @@ div.art-logo {
 	background-size: 80% auto;
 	padding-right: 2px
 }
+.img-task-exception {
+	background-image: url(../images/schedule_ico.png) !important;
+	background-size: 80% auto;
+	padding-right: 2px
+}
 
 .img-marital-status {
 	background-image: url(../images/marital_status_ico.png) !important;
