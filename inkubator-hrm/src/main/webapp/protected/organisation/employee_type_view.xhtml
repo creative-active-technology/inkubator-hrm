@@ -67,11 +67,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{employeeTypeData.name}"  style="width: 87%">
+                            <p:column sortBy="#{employeeTypeData.name}"  style="width: 70%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{employeeTypeData.name}"/>
+                            </p:column>  
+                            <p:column sortBy="#{employeeTypeData.directTask}"  style="width: 17%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employeetype.direct_task']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{employeeTypeData.directTask}" >
+                                	<f:converter  converterId="directStatusConverter"></f:converter>
+                                </h:outputLabel>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -138,12 +146,12 @@
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['employeetype.employee_type_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{employeeTypeViewController.selectedEmployeeType.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:35%"><p:outputLabel value="#{appmsg['employeetype.employee_type_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:65%;"><p:outputLabel value="#{employeeTypeViewController.selectedEmployeeType.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['employeetype.direct_task']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:35%"><p:outputLabel value="#{appmsg['employeetype.direct_task']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:65%;">
                             	<p:outputLabel value="#{employeeTypeViewController.selectedEmployeeType.directTask}" styleClass="label_hrm" >
                             		<f:converter  converterId="directStatusConverter"></f:converter>
                             	</p:outputLabel>

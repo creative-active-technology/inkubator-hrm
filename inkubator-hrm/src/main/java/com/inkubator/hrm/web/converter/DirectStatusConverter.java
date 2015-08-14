@@ -25,9 +25,9 @@ public class DirectStatusConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object obj) {
-		Integer result = (Integer) obj;
+		Boolean result = (Boolean) obj;
 		ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-		return result == null || result == 0  ? messages.getString("global.no"):messages.getString("global.yes");
+		return !result  ? messages.getString("global.no"):messages.getString("global.yes");
 	}
 
 }

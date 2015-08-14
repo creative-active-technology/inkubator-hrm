@@ -68,6 +68,18 @@
                                 </p:column>
 
                             </p:row>
+                            
+                             <p:row>
+                            	<p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}"  for="descriptionId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:inputTextarea value="#{groupWorkingModel.descriptions}" styleClass="isitext_hrm" label="#{appmsg['global.description']}" 
+                                                 style="width: 290px"  id="descriptionId"  />
+                                    <p:message for="descriptionId"/>
+                                </p:column>
+                            </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_start_date']}"  for="tglMulaiId" styleClass="label_hrm" />
@@ -104,6 +116,18 @@
                                 </p:column>
 
                             </p:row>
+                            
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.active']}"  for="activeId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:selectBooleanCheckbox id="activeId" value="#{groupWorkingModel.isActive}" />
+                                    <p:message for="activeId"/>
+                                </p:column>
+                            </p:row>
+                            
+                           
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_hour']}"  for="perDayWorkId" styleClass="label_hrm" />

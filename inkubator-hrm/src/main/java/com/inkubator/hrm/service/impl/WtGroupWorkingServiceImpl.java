@@ -256,7 +256,8 @@ public class WtGroupWorkingServiceImpl extends IServiceImpl implements WtGroupWo
         groupWorking.setCreatedOn(new Date());
         groupWorking.setEndTime(model.getEndTime());
         groupWorking.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        groupWorking.setIsActive(Boolean.FALSE);
+        groupWorking.setIsActive(model.getIsActive());
+        groupWorking.setDescriptions(model.getDescriptions());
         groupWorking.setIsPeriodic(model.getIsPeriodic());
         groupWorking.setName(model.getName());
         groupWorking.setOvertimeBasedOnAttendance(model.getOvertimeBasedOnAttendance());

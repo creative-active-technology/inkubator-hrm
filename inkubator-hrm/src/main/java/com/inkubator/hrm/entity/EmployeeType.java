@@ -30,7 +30,7 @@ public class EmployeeType implements java.io.Serializable {
     private String name;
     private String updatedBy;
     private Date updatedOn;
-    private Integer directTask;
+    private Boolean directTask;
     private Set<ReimbursmentSchemaEmployeeType> reimbursmentSchemaEmployeeTypes = new HashSet<ReimbursmentSchemaEmployeeType>(0);
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
     private Set<PaySalaryEmpType> paySalaryEmpTypes = new HashSet<PaySalaryEmpType>(0);
@@ -48,7 +48,7 @@ public class EmployeeType implements java.io.Serializable {
         this.name = name;
     }
 
-    public EmployeeType(Long id, String createdBy, Date createdOn, String name, Integer directTask, String updatedBy, Date updatedOn) {
+    public EmployeeType(Long id, String createdBy, Date createdOn, String name, Boolean directTask, String updatedBy, Date updatedOn) {
         this.id = id;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
@@ -163,11 +163,11 @@ public class EmployeeType implements java.io.Serializable {
     
     
     @Column(name = "direct_task")
-    public Integer getDirectTask() {
+    public Boolean getDirectTask() {
 		return directTask;
 	}
 
-	public void setDirectTask(Integer directTask) {
+	public void setDirectTask(Boolean directTask) {
 		this.directTask = directTask;
 	}
 

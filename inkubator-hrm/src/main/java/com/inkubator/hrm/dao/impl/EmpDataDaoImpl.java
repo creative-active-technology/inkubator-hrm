@@ -297,6 +297,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
         disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
         criteria.add(disjunction);
+        criteria.setMaxResults(20);
         return criteria.list();
     }
 
