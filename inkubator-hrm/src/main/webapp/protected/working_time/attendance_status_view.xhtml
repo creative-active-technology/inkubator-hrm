@@ -187,6 +187,13 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['attedance.attend']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.isPresentAsLabel}"/> </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.active']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{attendanceStatusViewController.selecedAttendanceStatus.isActive}">
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
                         <f:facet name="footer">
                             <p:row>
                                 <p:column colspan="2"><p:outputLabel value="#{appmsg['attedance.attedance_status']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>

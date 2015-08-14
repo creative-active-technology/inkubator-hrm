@@ -60,6 +60,7 @@ public class AttendanceStatusFormController extends BaseController {
                 attendanceStatusModel.setDescription(attendanceStatus.getDescription());
                 attendanceStatusModel.setKodeStatus(attendanceStatus.getCode());
                 attendanceStatusModel.setNamaStatus(attendanceStatus.getStatusKehadrian());
+                attendanceStatusModel.setIsActive(attendanceStatus.getIsActive());
 
                 if (attendanceStatus.getIsPay() == 1) {
                     attendanceStatusModel.setIsPay(Boolean.TRUE);
@@ -129,6 +130,7 @@ public class AttendanceStatusFormController extends BaseController {
             attendanceStatus.setIsPresent(0);
         }
         attendanceStatus.setStatusKehadrian(attendanceStatusModel.getNamaStatus());
+        attendanceStatus.setIsActive(attendanceStatusModel.getIsActive());
         return attendanceStatus;
     }
 

@@ -42,6 +42,7 @@ public class AttendanceStatus  implements java.io.Serializable {
      private Date upatedOn;
      private Set<Leave> leaves = new HashSet<Leave>(0);
      private Set<WtWorkingHour> wtWorkingHours = new HashSet<WtWorkingHour>(0);
+     private Boolean isActive;
 
     public AttendanceStatus() {
     }
@@ -50,7 +51,7 @@ public class AttendanceStatus  implements java.io.Serializable {
     public AttendanceStatus(long id) {
         this.id = id;
     }
-    public AttendanceStatus(long id, String code, String statusKehadrian, String description, Integer isPresent, Integer isPay, String createdBy, Date createdOn, String updatedBy, Date upatedOn) {
+    public AttendanceStatus(long id, String code, String statusKehadrian, String description, Integer isPresent, Integer isPay, String createdBy, Date createdOn, String updatedBy, Date upatedOn, Boolean isActive) {
        this.id = id;
        this.code = code;
        this.statusKehadrian = statusKehadrian;
@@ -61,6 +62,7 @@ public class AttendanceStatus  implements java.io.Serializable {
        this.createdOn = createdOn;
        this.updatedBy = updatedBy;
        this.upatedOn = upatedOn;
+       this.isActive = isActive;
     }
    
      @Id 
@@ -220,9 +222,15 @@ public class AttendanceStatus  implements java.io.Serializable {
 		this.wtWorkingHours = wtWorkingHours;
 	}
 	
-	
+    @Column(name = "is_active")
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
-
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+    
 }
 
 

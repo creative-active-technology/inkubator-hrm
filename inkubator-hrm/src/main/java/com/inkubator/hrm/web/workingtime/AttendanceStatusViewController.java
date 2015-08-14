@@ -116,7 +116,7 @@ public class AttendanceStatusViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 470);
         RequestContext.getCurrentInstance().openDialog("attendance_status_form", options, null);
     }
 
@@ -126,7 +126,7 @@ public class AttendanceStatusViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 440);
+        options.put("contentHeight", 470);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selecedAttendanceStatus.getId()));
