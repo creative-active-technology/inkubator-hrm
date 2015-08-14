@@ -79,6 +79,7 @@ public class AttendanceStatusServiceImpl extends IServiceImpl implements Attenda
         attendanceStatus.setStatusKehadrian(entity.getStatusKehadrian());
         attendanceStatus.setUpdatedBy(UserInfoUtil.getUserName());
         attendanceStatus.setUpatedOn(new Date());
+        attendanceStatus.setIsActive(entity.getIsActive());
         this.attendanceStatusDao.update(attendanceStatus);
     }
 

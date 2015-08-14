@@ -119,6 +119,24 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.active']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%" >
+                                    <h:outputLabel  value="#{groupWorkingDetilController.selectedWtGroupWorking.isActive}" >
+                                        <f:converter converterId="booleanMessageConverter"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column style="width: 17%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 34%" >
+                                    <p:outputLabel value="#{groupWorkingDetilController.selectedWtGroupWorking.descriptions}" >
+                                       
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
 
                         <p:dataTable  var="workingGroupData"  value="#{groupWorkingDetilController.wtScheduleShiftLazyDataModel}" lazy="true" paginator="true" pageLinks="7" 

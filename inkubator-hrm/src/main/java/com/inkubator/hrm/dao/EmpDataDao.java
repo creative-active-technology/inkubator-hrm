@@ -154,6 +154,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     /**
      * get list
+     * @param param
+     * @return 
      */
     public List<EmpData> getAllDataByNameOrNik(String param);
 

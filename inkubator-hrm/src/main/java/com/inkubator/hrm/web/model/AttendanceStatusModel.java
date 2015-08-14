@@ -19,6 +19,7 @@ public class AttendanceStatusModel implements Serializable{
     private String description;
     private Boolean isPay;
     private Boolean isPresent;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -67,4 +68,13 @@ public class AttendanceStatusModel implements Serializable{
     public void setIsPresent(Boolean isPresent) {
         this.isPresent = isPresent;
     }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+    
 }
