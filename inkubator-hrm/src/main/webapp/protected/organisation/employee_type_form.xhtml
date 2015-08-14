@@ -51,6 +51,24 @@
                                 <p:message for="nameId"/>
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="directTaskId" value="#{appmsg['employeetype.direct_task']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="directTaskId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                <p:focus for ="directTaskId">
+                                	<p:selectBooleanCheckbox id="directTaskId" value="#{employeeTypeFormController.employeeTypeModel.directTask}"></p:selectBooleanCheckbox>
+                                </p:focus>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="directTaskId"/>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">

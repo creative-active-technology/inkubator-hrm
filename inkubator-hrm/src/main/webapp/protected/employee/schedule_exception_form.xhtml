@@ -20,7 +20,7 @@
                     <div id="box_bg" style="margin: 10px">
                         <!--<p:panel style="margin: 10px">-->
                         <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="task.png" height="36" width="36" />
+                            <p:graphicImage library="images" name="schedule.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
                                     <p:outputLabel value="Penambahan Pengecualian Jadwal" styleClass="header_big" />
@@ -165,10 +165,11 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="End Date"  styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_end_date']}"  styleClass="label_hrm" />
                                 </p:column> 
                                 <p:column style="width: 80%">
-                                    <p:calendar required="true" binding="#{endDateParam}" id="endDateParam" value="#{placementOfEmployeeWorkScheduleFormController.model.endDate}" pattern="dd MMMM yyyy"/>
+                                    <p:calendar required="true" binding="#{endDateParam}" id="endDateParam" value="#{placementOfEmployeeWorkScheduleFormController.model.endDate}"
+                                                pattern="dd MMMM yyyy" title="#{appmsg['workinggroup.working_group_end_date']}"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
@@ -194,7 +195,7 @@
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSubmitId" onclick="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()"
-                                             action="#{placementOfEmployeeWorkScheduleFormController.doSave()}" styleClass="label_button" 
+                                             action="#{placementOfEmployeeWorkScheduleFormController.doSaveException()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>

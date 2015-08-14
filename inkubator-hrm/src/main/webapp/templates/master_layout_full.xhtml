@@ -492,12 +492,12 @@
                                                     <p:menuitem value="#{appmsg['currency.currency']}" icon="img-currency" style="font-size: 12px !important;color: #003366" title="#{appmsg['currency.currency']}" url="/protected/reference/currency_view.htm" />
                                                     <p:menuitem value="#{appmsg['savingType.savingType']}" icon="img-saving_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['savingType.savingType']}" url="/protected/reference/saving_type_view.htm" />
                                                     <p:menuitem value="#{appmsg['financialNonBanking.financialNonBanking']}" icon="img-finance_non_banking" style="font-size: 12px !important;color: #003366" title="#{appmsg['financialNonBanking.financialNonBanking']}" url="/protected/reference/fin_non_bank_view.htm" />
+                                                    <p:menuitem value="#{appmsg['assetgroup.asset_group']}" icon="img-resource_name" style="font-size: 12px !important;color: #003366" title="#{appmsg['assetgroup.asset_group']}" url="/protected/reference/resource_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['asset.asset']}" icon="img-resource_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['asset.asset']}" url="/protected/reference/resource_name_view.htm" />
                                                 </p:submenu>
                                                 <p:submenu label="#{appmsg['menu.miscellaneous']}"  styleClass="menu_child" >
                                                     <p:menuitem value="#{appmsg['hospital.hospital']}" icon="img-hospital" style="font-size: 12px !important;color: #003366" title="#{appmsg['hospital.hospital']}" url="/protected/reference/hospital_view.htm" />
                                                     <p:menuitem value="#{appmsg['disease.disease']}" icon="img-hospital" style="font-size: 12px !important;color: #003366" title="#{appmsg['disease.disease']}" url="/protected/reference/disease_view.htm" />
-                                                    <p:menuitem value="#{appmsg['resourceType.resourceType']}" icon="img-resource_name" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceType.resourceType']}" url="/protected/reference/resource_type_view.htm" />
-                                                    <p:menuitem value="#{appmsg['resourceName.resourceName']}" icon="img-resource_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['resourceName.resourceName']}" url="/protected/reference/resource_name_view.htm" />
                                                 </p:submenu>
                                             </p:submenu> 
                                             <p:submenu label="#{appmsg['menu.employee_information']}"  styleClass="menu_child" >
@@ -577,7 +577,7 @@
                                                 <p:menuitem value="#{appmsg['mechineFinger.mechineFinger']}" icon="img-finger-print" style="font-size: 12px !important;color: #003366" title="#{appmsg['mechineFinger.mechineFinger']}" url="/protected/working_time/mecine_finger_view.htm" /> 
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['employee.employee_work_schedule']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_schedule']}" url="/protected/employee/emp_schedule_view.htm" />
-                                            <p:menuitem value="#{appmsg['employee.employee_work_exception']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_exception']}" url="/protected/employee/schedule_exception_view.htm" />
+                                            <p:menuitem value="#{appmsg['employee.employee_work_exception']}" icon="img-task-exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_exception']}" url="/protected/employee/schedule_exception_view.htm" />
                                             <p:menuitem value="#{appmsg['fingerException.fingerExceptionMenu']}" icon="img-wt_finger_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['fingerException.fingerExceptionMenu']}" url="/protected/working_time/wt_finger_ex_view.htm" />
                                             <p:menuitem value="#{appmsg['report.employee_working_group']}" icon="img-employee_working_group" style="font-size: 12px !important;width:190px;color: #003366" title="#{appmsg['report.employee_working_group']}" url="/protected/report/report_emp_wg_view.htm" />
                                             <p:menuitem value="#{appmsg['medicalcare.medical_care']}" icon="img-medical_care" style="font-size: 12px !important;color: #003366" title="#{appmsg['medicalcare.medical_care']}" url="/protected/working_time/medical_care_view.htm" />
@@ -859,7 +859,7 @@
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">
                                         <h:panelGrid >
-                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI" styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
+                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI - #{COMPANY_NAME}" styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
                                             <p:outputLabel value="Gedung Manhattan, Lantai 16. Cilandak, Jakarta Selatan - Indonesia" styleClass="header_hrm" style="font-size: 14px !important;padding-top: -5px!important;color: #036 !important;"/>
                                         </h:panelGrid>
                                     </div>

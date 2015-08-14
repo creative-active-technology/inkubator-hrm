@@ -247,6 +247,7 @@ public class EmployeeTypeServiceImpl extends IServiceImpl implements EmployeeTyp
 
         EmployeeType employeeType = employeeTypeDao.getEntiyByPK(e.getId());
         employeeType.setName(e.getName());
+        employeeType.setDirectTask(e.getDirectTask());
         employeeType.setUpdatedBy(UserInfoUtil.getUserName());
         employeeType.setUpdatedOn(new Date());
         employeeTypeDao.update(employeeType);
