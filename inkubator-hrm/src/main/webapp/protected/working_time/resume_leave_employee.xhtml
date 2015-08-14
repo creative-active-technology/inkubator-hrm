@@ -23,10 +23,10 @@
 							height="36" width="36" />
 						<h:panelGroup layout="block">
 							<h:panelGrid>
-								<p:outputLabel value="Resume Cuti Karyawan"
+								<p:outputLabel value="#{appmsg['resumeLeaveEmployee.resume_leave_employees']}"
 									styleClass="header_big" />
 								<p:outputLabel
-									value="#{appmsg['reimbursment.reimbursment_header']}"
+									value="#{appmsg['resumeLeaveEmployee.resume_leave_employees_header']}"
 									styleClass="header_small_no_bold" />
 							</h:panelGrid>
 						</h:panelGroup>
@@ -57,11 +57,12 @@
 						</p:row>
 						<p:row>
 							<p:column style="width: 20%;background-color: #e1f0f0!important">
-								<p:outputLabel value="TMB" styleClass="label_hrm" />
+								<p:outputLabel value="#{appmsg['bankTransferDistribution.workDate']}" styleClass="label_hrm" />
 							</p:column>
 							<p:column style="width: 80%">
-								<p:outputLabel
-									value="#{resumeLeaveEmployeeViewController.selectedEmpData.joinDate}" />
+								<p:outputLabel value="#{resumeLeaveEmployeeViewController.selectedEmpData.joinDate}" >
+									<f:convertDateTime pattern="dd MMMM yyyy"/>
+								</p:outputLabel>
 							</p:column>
 						</p:row>
 
@@ -72,7 +73,7 @@
 						styleClass="tabview_hrm"
 						style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px"
 						scrollable="true">
-						<p:tab title="Konsumsi Cuti">
+						<p:tab title="#{appmsg['resumeLeaveEmployee.leave_usage']}">
 							
 									<p:dataTable id="tableKonsumsiCuti" var="data"
 										value="#{resumeLeaveEmployeeViewController.listLeaveImplementationDateModel}"
@@ -80,7 +81,7 @@
 										style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 
 										<f:facet name="header">
-											<h:outputText value="#{appmsg['bioaddress.list_of_adress']}" />
+											<h:outputText value="" />
 										</f:facet>
 										<p:column style="text-align: center;width: 3%">
 											<f:facet name="header">
@@ -90,19 +91,19 @@
 										</p:column>
 										<p:column style="text-align: center;width: 20%">
 											<f:facet name="header">
-												<h:outputText value="Nama Cuti" />
+												<h:outputText value="#{appmsg['leave.name']}" />
 											</f:facet>
 											<h:outputLabel value="#{data.leaveDistributionName}" />
 										</p:column>
 										 <p:column style="text-align: center;width: 20%">
 											<f:facet name="header">
-												<h:outputText value="Konsumsi" />
+												<h:outputText value="#{appmsg['leave.usage']}" />
 											</f:facet>
 											<h:outputLabel value="#{data.totalPakai} / #{data.balance}" />
 										</p:column>
 										<p:column style="text-align: center;width: 77%">
 											<f:facet name="header">
-												<h:outputText value="Nama Cuti" />
+												<h:outputText value="#{appmsg['leave.percentage']}" />
 											</f:facet>
 											<p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
 										</p:column>
@@ -115,7 +116,7 @@
 						styleClass="tabview_hrm"
 						style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px"
 						scrollable="true">
-						<p:tab title="Konsumsi Cuti">
+						<p:tab title="#{appmsg['global.detail']}">
 							
 									<p:dataTable id="tableListCuti" var="data"
 										value="#{resumeLeaveEmployeeViewController.listLeaveImplementationDate}"
@@ -123,7 +124,7 @@
 										style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
 
 										<f:facet name="header">
-											<h:outputText value="#{appmsg['bioaddress.list_of_adress']}" />
+											<h:outputText value="" />
 										</f:facet>
 										<p:column style="text-align: center;width: 3%">
 											<f:facet name="header">
@@ -133,22 +134,25 @@
 										</p:column>
 										<p:column style="text-align: center;width: 20%">
 											<f:facet name="header">
-												<h:outputText value="Nama Cuti" />
+												<h:outputText value="#{appmsg['global.date']}" />
+											</f:facet>
+											<h:outputLabel value="#{data.leaveImplementation.fillingDate}" >
+												<f:convertDateTime pattern="dd MMMM yyyy"/>
+											</h:outputLabel>
+										</p:column>
+										<p:column style="text-align: center;width: 20%">
+											<f:facet name="header">
+												<h:outputText value="#{appmsg['leave.name']}" />
 											</f:facet>
 											<h:outputLabel value="#{data.leaveImplementation.leave.name}" />
 										</p:column>
-										 <!-- <p:column style="text-align: center;width: 20%">
+										<p:column style="text-align: center;width: 20%">
 											<f:facet name="header">
-												<h:outputText value="Konsumsi" />
+												<h:outputText value="#{appmsg['permitimplementation.filling_number']}" />
 											</f:facet>
-											<h:outputLabel value="#{data.totalPakai} / #{data.balance}" />
+											<h:outputLabel value="#{data.leaveImplementation.numberFilling}" />
 										</p:column>
-										<p:column style="text-align: center;width: 77%">
-											<f:facet name="header">
-												<h:outputText value="Nama Cuti" />
-											</f:facet>
-											<p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
-										</p:column> -->
+										 
 									</p:dataTable>
 
 						</p:tab>
