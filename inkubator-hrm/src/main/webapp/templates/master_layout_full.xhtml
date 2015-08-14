@@ -245,12 +245,20 @@
 
                         <div style="float: right"> 
                             <h:form>                                
-                                <h:panelGrid columns="7" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <!--<p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" />-->
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
+                                    <h:commandLink id="englishId" title="#{appmsg['global.changed_language_to_english']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="en"/>
+                                        <p:graphicImage library="images" name="England.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
+                                    <h:commandLink id="indonesiaId" title="#{appmsg['global.changed_language_to_indonesian']}" action="#{homeController.doChangeLanguageSession()}">
+                                    	<f:param name="languange" value="id"/>
+                                        <p:graphicImage library="images" name="Indonesia.png" width="22" height="22"  cache="true"/> 
+                                    </h:commandLink>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
                                         <p:graphicImage library="images" name="check_in_out.png"  height="22" id="ima" cache="true" />
                                     </p:commandLink>
@@ -569,7 +577,7 @@
                                                 <p:menuitem value="#{appmsg['mechineFinger.mechineFinger']}" icon="img-finger-print" style="font-size: 12px !important;color: #003366" title="#{appmsg['mechineFinger.mechineFinger']}" url="/protected/working_time/mecine_finger_view.htm" /> 
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['employee.employee_work_schedule']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_schedule']}" url="/protected/employee/emp_schedule_view.htm" />
-                                            <p:menuitem value="#{appmsg['employee.employee_work_exception']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_exception']}" url="/protected/employee/schedule_exception_view.htm" />
+                                            <p:menuitem value="#{appmsg['employee.employee_work_exception']}" icon="img-task-exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_exception']}" url="/protected/employee/schedule_exception_view.htm" />
                                             <p:menuitem value="#{appmsg['fingerException.fingerExceptionMenu']}" icon="img-wt_finger_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['fingerException.fingerExceptionMenu']}" url="/protected/working_time/wt_finger_ex_view.htm" />
                                             <p:menuitem value="#{appmsg['report.employee_working_group']}" icon="img-employee_working_group" style="font-size: 12px !important;width:190px;color: #003366" title="#{appmsg['report.employee_working_group']}" url="/protected/report/report_emp_wg_view.htm" />
                                             <p:menuitem value="#{appmsg['medicalcare.medical_care']}" icon="img-medical_care" style="font-size: 12px !important;color: #003366" title="#{appmsg['medicalcare.medical_care']}" url="/protected/working_time/medical_care_view.htm" />
@@ -851,7 +859,7 @@
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">
                                         <h:panelGrid >
-                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI" styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
+                                            <p:outputLabel value="PT. INDONESIA INKUBATOR TEKNOLOGI - #{COMPANY_NAME}" styleClass="header_hrm" style="font-size: 26px !important;color: #cff !important;"/>
                                             <p:outputLabel value="Gedung Manhattan, Lantai 16. Cilandak, Jakarta Selatan - Indonesia" styleClass="header_hrm" style="font-size: 14px !important;padding-top: -5px!important;color: #036 !important;"/>
                                         </h:panelGrid>
                                     </div>

@@ -86,81 +86,81 @@ public class JadwalKerjaMassExceptionMessagesListener extends IServiceImpl imple
             String listEmp = jSONObject.getString("listEmpId");
             Date createOn = new SimpleDateFormat("dd-MM-yyyy hh:mm").parse(jSONObject.getString("createDate"));
             String createBy = jSONObject.getString("createBy");
-
-            Gson gson = new GsonBuilder().create();
-//            List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
-            TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
-            };
-            List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
-            //Date now = new Date();
-            WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
-            Date startDate = groupWorking.getBeginTime();//tidak ditempatkan di dalam loop karena untuk groupworking yang sama
-            Date endDate = groupWorking.getEndTime();
-            int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
-            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, createOn) + 1;
-            int num = numberOfDay + 1;
-            int hasilBagi = (totalDateDif) / (num);
-            Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
-//        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
-//        String dayNow = new SimpleDateFormat("EEEE").format(now);
-            Date beginScheduleDate;
-            if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
-                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
-            } else {
-                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
-            }
-            List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
-            TempJadwalKaryawan jadwalKaryawan;
-            for (Long id : dataEmpId) {
-//                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id)); for bussiner process Sake so must be close
-                List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
-//                Collections.sort(dataScheduleShift, shortByDate1);
-                List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
-                int i = 0;
-                for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
-                    String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-                    Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
-                    jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(id, olnyDate);
-                    if (jadwalKaryawan != null) {
-                        jadwalKaryawan.setUpdatedBy(createBy);
-                        jadwalKaryawan.setUpdatedOn(new Date());
-//                jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
-                    } else {
-                        jadwalKaryawan = new TempJadwalKaryawan();
-                        jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                        jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
-                        jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-                        jadwalKaryawan.setCreatedBy(createBy);
-                        jadwalKaryawan.setCreatedOn(createOn);
-                       
-                    }
-//                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
-//                    jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
-//                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
-//                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
-                    WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-                    if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
-                        jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
-                    } else {
-                        jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
-                    }
-//                    WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
-//                    if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
-//                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+//
+//            Gson gson = new GsonBuilder().create();
+////            List<TempJadwalKaryawan> dataToDelete = new ArrayList<>();
+//            TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
+//            };
+//            List<Long> dataEmpId = gson.fromJson(listEmp, token.getType());
+//            //Date now = new Date();
+//            WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
+//            Date startDate = groupWorking.getBeginTime();//tidak ditempatkan di dalam loop karena untuk groupworking yang sama
+//            Date endDate = groupWorking.getEndTime();
+//            int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
+//            int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, createOn) + 1;
+//            int num = numberOfDay + 1;
+//            int hasilBagi = (totalDateDif) / (num);
+//            Date tanggalAkhirJadwal = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - 1, CommonUtilConstant.DATE_FORMAT_DAY);
+////        String dayBegin = new SimpleDateFormat("EEEE").format(endDate);
+////        String dayNow = new SimpleDateFormat("EEEE").format(now);
+//            Date beginScheduleDate;
+//            if (new SimpleDateFormat("ddMMyyyy").format(tanggalAkhirJadwal).equals(new SimpleDateFormat("ddMMyyyy").format(new Date()))) {
+//                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num) - num, CommonUtilConstant.DATE_FORMAT_DAY);
+//            } else {
+//                beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
+//            }
+//            List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
+//            TempJadwalKaryawan jadwalKaryawan;
+//            for (Long id : dataEmpId) {
+////                dataToDelete.addAll(tempJadwalKaryawanDao.getAllByEmpId(id)); for bussiner process Sake so must be close
+//                List<WtScheduleShift> dataScheduleShift = new ArrayList<>(groupWorking.getWtScheduleShifts());
+////                Collections.sort(dataScheduleShift, shortByDate1);
+//                List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
+//                int i = 0;
+//                for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
+//                    String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+//                    Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
+//                    jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(id, olnyDate);
+//                    if (jadwalKaryawan != null) {
+//                        jadwalKaryawan.setUpdatedBy(createBy);
+//                        jadwalKaryawan.setUpdatedOn(new Date());
+////                jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(empData.getId(), olnyDate);
 //                    } else {
-//                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+//                        jadwalKaryawan = new TempJadwalKaryawan();
+//                        jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+//                        jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
+//                        jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+//                        jadwalKaryawan.setCreatedBy(createBy);
+//                        jadwalKaryawan.setCreatedOn(createOn);
+//                       
 //                    }
-                    jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-                    dataToSave.add(jadwalKaryawan);
-                    i++;
-                }
-
-            }
-//            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
-            tempJadwalKaryawanDao.saveBatch(dataToSave);
-            
-            //sending email process
-            this.sendingEmailJadwalKaryawan(dataToSave, jSONObject.getString("locale"));
+////                    TempJadwalKaryawan jadwalKaryawan = new TempJadwalKaryawan();
+////                    jadwalKaryawan.setEmpData(empDataDao.getEntiyByPK(id));
+////                    jadwalKaryawan.setTanggalWaktuKerja(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
+////                    jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
+//                    WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+//                    if (holiday != null && groupWorking.getTypeSequeace().equals(HRMConstant.NORMAL_SCHEDULE)) {
+//                        jadwalKaryawan.setWtWorkingHour(wtWorkingHourDao.getByCode("OFF"));
+//                    } else {
+//                        jadwalKaryawan.setWtWorkingHour(wtScheduleShift.getWtWorkingHour());
+//                    }
+////                    WtHoliday holiday = wtHolidayDao.getWtHolidayByDate(jadwalKaryawan.getTanggalWaktuKerja());
+////                    if (holiday != null || wtScheduleShift.getWtWorkingHour().getCode().equalsIgnoreCase("OFF")) {
+////                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("OFF"));
+////                    } else {
+////                        jadwalKaryawan.setAttendanceStatus(attendanceStatusDao.getByCode("HD1"));
+////                    }
+//                    jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
+//                    dataToSave.add(jadwalKaryawan);
+//                    i++;
+//                }
+//
+//            }
+////            tempJadwalKaryawanDao.deleteBacth(dataToDelete);
+//            tempJadwalKaryawanDao.saveBatch(dataToSave);
+//            
+//            //sending email process
+//            this.sendingEmailJadwalKaryawan(dataToSave, jSONObject.getString("locale"));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
