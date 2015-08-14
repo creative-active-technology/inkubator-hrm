@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">     
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>         
+                <h:form id="formId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['vacancy.detail_of_vacancy']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['vacancy.vacancy_from_recruitment']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    
+	                    <p:outputLabel value="#{appmsg['vacancy.advertisement']}" styleClass="header_big" />                     
+                      	<p:separator/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom: 20px">
+	                    	<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['advertismentMedia.advertismentMedia']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.vacancyAdvertisement.advertisementMedia.name}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy.publish_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.publishStart}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            	<p:outputLabel value=" - " styleClass="label_hrm"/>
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.publishEnd}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy_advertisement.cost']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="Rp. "/>
+	                                <h:outputLabel value= "#{vacancyDetailController.vacancy.cost}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
+	                            </p:column>
+	                        </p:row>                                              
+	                 	</p:panelGrid>
+	                 	
+	                 	<p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="header_big" style="margin-top: 40px"/>                     
+                      	<p:separator/>
+	                 	<p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                    	<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan_code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.jabatan.code}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.jabatan.name}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.recruitMppPeriod.periodeStart}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            	<p:outputLabel value=" - " styleClass="label_hrm"/>
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.recruitMppPeriod.periodeEnd}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.employeeType.name}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['mppRecruitmentHist.salary_range']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="Rp. "/>
+	                                <h:outputLabel value= "#{vacancyDetailController.vacancy.hireApply.salaryMin}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
+	                                <p:outputLabel value=" - " styleClass="label_hrm"/>
+	                                <p:outputLabel value="Rp. "/>
+	                                <h:outputLabel value= "#{vacancyDetailController.vacancy.hireApply.salaryMax}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['vacancy.number_of_request']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{vacancyDetailController.vacancy.hireApply.candidateCountRequest}" />
+	                            </p:column>
+	                        </p:row>    
+	                                                                 
+	                 	</p:panelGrid>
+	                    
+	                 	<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{vacancyDetailController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
