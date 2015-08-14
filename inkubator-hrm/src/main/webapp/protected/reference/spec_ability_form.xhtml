@@ -24,8 +24,8 @@
                             <p:graphicImage library="images" name="specification.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['specificationability.form_specification_ability']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['specificationability.specification_ability_data_from_reference']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['ratingability.rating_ability']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['ratingability.rating_ability_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,11 +33,11 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="nameId" value="#{appmsg['specificationability.specification_ability']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="nameId" value="#{appmsg['ratingability.rating_ability']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                	<p:inputText id="nameId" title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.name}" 
-                                                 required="true" requiredMessage="#{appmsg['specificationability.specification_ability_name_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
+                                	<p:inputText id="nameId" title="#{appmsg['ratingability.rating_ability']}" value="#{specAbilityFormController.specAbilityModel.name}" 
+                                                     required="true" requiredMessage="#{appmsg['ratingability.rating_ability_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="nameId"/>
                                 </p:column>
                             </p:row>
@@ -66,7 +66,7 @@
                                                      required="true" requiredMessage="#{appmsg['specificationability.option_name_should_not_be_empty']}" 
                                                      maxlength="30" styleClass="isitext_hrm"  style="width:190px;"/>
                                         <p:outputLabel value="&nbsp;/&nbsp;"/>
-                                        <p:inputText title="#{appmsg['specificationability.specification_ability']}" value="#{specAbilityFormController.specAbilityModel.scaleValue[i]}" 
+                                        <p:inputText title="#{appmsg['ratingability.rating_ability']}" value="#{specAbilityFormController.specAbilityModel.scaleValue[i]}" 
                                                      maxlength="30" readonly="true" styleClass="isitext_disabled_hrm" style="width:50px;" />
                                         <p:message for="${'optionId'.concat(i)}"/>
                                     </p:column>
