@@ -3,8 +3,12 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.EducationLevelDao;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -98,5 +102,24 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
         return criteria.list();
 
     }
+
+	@Override
+	public EducationLevel getByGradeNumber(int number) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("level", number));
+        return (EducationLevel) criteria.uniqueResult();
+	}
+	
+	@Override
+    public void saveAndMarge(EducationLevel entity) {
+        getCurrentSession().update(entity);
+        getCurrentSession().flush();
+    }
+	
+	@Override
+	public Integer getCurrentMaxLevel() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Integer) criteria.setProjection(Projections.max("level")).uniqueResult();
+	}
 
 }

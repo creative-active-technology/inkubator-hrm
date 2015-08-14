@@ -13,6 +13,8 @@ public class EducationLevelModel implements Serializable {
         private String code;
         private String description;
 	private Integer level;
+	private Boolean isActive;
+	private Boolean isActiveEditable;
 	
 	public Long getId() {
 		return id;
@@ -48,6 +50,18 @@ public class EducationLevelModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public Boolean getIsActiveEditable() {
+		return isActiveEditable;
+	}
+	public void setIsActiveEditable(Boolean isActiveEditable) {
+		this.isActiveEditable = isActiveEditable;
+	}
 	
 	
 }

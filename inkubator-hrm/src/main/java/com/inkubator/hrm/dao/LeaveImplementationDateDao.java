@@ -1,9 +1,11 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
-
-import java.util.Date;
+import com.inkubator.hrm.web.model.LeaveImplementationDateModel;
 
 /**
  *
@@ -15,4 +17,8 @@ public interface LeaveImplementationDateDao extends IDAO<LeaveImplementationDate
 	
 	public Long getTotalActualLeave(Date date, Long companyId);
 	
+	public List<LeaveImplementationDateModel> getAllDataWithTotalTakenLeaveByEmpDataId(Long empDataId);
+	
+	public List<LeaveImplementationDate> getAllDataByEmpDataId(Long empDataId);
+
 }
