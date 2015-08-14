@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['resourceName.resourceName']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['resourceName.resourceName_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['asset.asset']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['asset.asset_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -37,7 +37,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
-                                        <f:selectItem itemLabel="#{appmsg['resourceType.resourceType']}" itemValue="resourceType"/>
+                                        <f:selectItem itemLabel="#{appmsg['assetgroup.asset_group']}" itemValue="resourceType"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{resourceNameViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{resourceNameViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -62,7 +62,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['resourceName.resourceName_list']}"/>
+                                <h:outputText value="#{appmsg['asset.asset_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -84,7 +84,7 @@
                             </p:column>
                             <p:column sortBy="#{data.resourceType.resourceType}" style="width: 18%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['resourceType.resourceType']}"/>
+                                    <h:outputText value="#{appmsg['assetgroup.asset_group']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.resourceType.resourceType}" />
                             </p:column>
@@ -161,7 +161,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['resourceName.resourceName_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['asset.asset_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -181,7 +181,7 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['resourceType.resourceType']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['assetgroup.asset_group']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{resourceNameViewController.selected.resourceType.resourceType}"/> </p:column>
                         </p:row>
                         <p:row>
@@ -191,7 +191,7 @@
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['resourceName.resourceName_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['asset.asset_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>
