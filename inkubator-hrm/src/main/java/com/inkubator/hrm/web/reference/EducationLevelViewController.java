@@ -1,23 +1,28 @@
 package com.inkubator.hrm.web.reference;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.web.lazymodel.EducationLevelLazyDataModel;
 import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -37,6 +42,7 @@ public class EducationLevelViewController extends BaseController {
     private EducationLevel selectedEducationLevel;
     @ManagedProperty(value = "#{educationLevelService}")
     private EducationLevelService educationLevelService;
+    private List<Integer> dataToShow;
 
     @PostConstruct
     @Override
@@ -51,10 +57,32 @@ public class EducationLevelViewController extends BaseController {
         searchParameter = null;
         lazyDataEducationLevel = null;
         selectedEducationLevel = null;
+        dataToShow = null;
     }
 
+    public void doChangeLevel(EducationLevel level) {
+
+        try {
+            int newLevel = level.getLevel();
+            Long idOldData = level.getId();
+            educationLevelService.doChangerLevel(newLevel, idOldData);
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+
+    }
+    
     public LazyDataModel<EducationLevel> getLazyDataEducationLevel() {
-        if (lazyDataEducationLevel == null) {
+    	try {
+            dataToShow = new ArrayList<>();
+            Long totalData = educationLevelService.getTotalData();
+            for (int i = 1; i < totalData + 1; i++) {
+                dataToShow.add(i);
+            }
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    	if (lazyDataEducationLevel == null) {
             lazyDataEducationLevel = new EducationLevelLazyDataModel(searchParameter, educationLevelService);
         }
         return lazyDataEducationLevel;
@@ -101,7 +129,10 @@ public class EducationLevelViewController extends BaseController {
             educationLevelService.delete(selectedEducationLevel);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+        }catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error when doDelete educationLevel ", ex);
         } catch (Exception ex) {
@@ -137,4 +168,14 @@ public class EducationLevelViewController extends BaseController {
         doSearch();
         super.onDialogReturn(event);
     }
+
+	public List<Integer> getDataToShow() {
+		return dataToShow;
+	}
+
+	public void setDataToShow(List<Integer> dataToShow) {
+		this.dataToShow = dataToShow;
+	}
+    
+    
 }

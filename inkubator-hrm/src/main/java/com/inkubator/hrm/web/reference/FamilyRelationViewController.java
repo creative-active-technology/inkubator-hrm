@@ -121,7 +121,7 @@ public class FamilyRelationViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 480);
-        options.put("contentHeight", 370);
+        options.put("contentHeight", 400);
         RequestContext.getCurrentInstance().openDialog("family_relation_form", options, params);
     }
 

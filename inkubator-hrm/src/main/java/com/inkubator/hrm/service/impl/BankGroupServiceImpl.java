@@ -76,6 +76,7 @@ public class BankGroupServiceImpl extends IServiceImpl implements BankGroupServi
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BankGroup entity) throws Exception {
         long totalDuplicates = bankGroupDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0){

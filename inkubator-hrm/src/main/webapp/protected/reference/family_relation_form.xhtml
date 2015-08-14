@@ -98,6 +98,22 @@
                         </p:row>
                         <p:row>
                             <p:column style="width: 40%">
+                                <p:outputLabel for="isDependent" value="#{appmsg['familyrelation.dependent']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="isDependent" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:selectBooleanCheckbox id="isDependent" value="#{familyRelationFormController.familyRelationModel.isDependent}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="isDependent"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">

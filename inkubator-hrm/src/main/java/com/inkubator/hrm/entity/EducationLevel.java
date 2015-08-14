@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,11 +36,13 @@ public class EducationLevel implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Boolean isActive;
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
     private Set<BioFamilyRelationship> bioFamilyRelationships = new HashSet<BioFamilyRelationship>(0);
     private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<JabatanEdukasi>(0);
      private Set<InstitutionEducation> institutionEducations = new HashSet<InstitutionEducation>(0);
     private List<EducationLevel> listEducationLevels = new ArrayList<>(0);
+    private Boolean isRendered;
 
     public EducationLevel() {
 
@@ -249,11 +252,26 @@ public class EducationLevel implements Serializable {
         this.description = description;
     }
 
-    
-    
-    
+    @Column(name="is_active", length = 1)
+	public Boolean getIsActive() {
+		return isActive;
+	}
 
-    
-    
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Boolean getIsRendered() {
+		System.out.println( level + " educationLEvel");
+		isRendered = Boolean.TRUE;
+		if(level == null){
+			isRendered = Boolean.FALSE;
+		}
+		return isRendered;
+	}
+
+	public void setIsRendered(Boolean isRendered) {
+		this.isRendered = isRendered;
+	}
 
 }

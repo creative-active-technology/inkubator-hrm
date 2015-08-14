@@ -10,9 +10,12 @@ import javax.faces.bean.ViewScoped;
 
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LeaveDistributionService;
+import com.inkubator.hrm.service.LeaveImplementationDateService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.LeaveImplementationDateModel;
 import com.inkubator.webcore.controller.BaseController;
 
 @ManagedBean(name = "resumeLeaveEmployeeViewController")
@@ -22,8 +25,12 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{leaveDistributionService}")
     private LeaveDistributionService leaveDistributionService;
+    @ManagedProperty(value = "#{leaveImplementationDateService}")
+    private LeaveImplementationDateService leaveImplementationDateService;
     private EmpData selectedEmpData;
     private List<LeaveDistribution> listLeaveDistribution;
+    private List<LeaveImplementationDateModel> listLeaveImplementationDateModel;
+    private List<LeaveImplementationDate> listLeaveImplementationDate;
     
     @PostConstruct
     @Override
@@ -32,8 +39,9 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
             super.initialization();
             Long empDataId = HrmUserInfoUtil.getEmpId();
 			selectedEmpData = empDataService.getByIdWithDetail(empDataId);
-			listLeaveDistribution = leaveDistributionService.getAllDataByEmpDataId(selectedEmpData.getId());
-			System.out.println(listLeaveDistribution.size() + " leavelolololo");
+			listLeaveImplementationDateModel = leaveImplementationDateService.getAllDataWithTotalTakenLeaveByEmpDataId(selectedEmpData.getId());
+			listLeaveImplementationDate = leaveImplementationDateService.getAllDataByEmpDataId(empDataId);
+			System.out.println(listLeaveImplementationDate.size() + " hoho");
         } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,6 +54,7 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
     	selectedEmpData = null;
     	leaveDistributionService = null;
     	listLeaveDistribution = null;
+    	leaveImplementationDateService = null;
     }
 
 	public EmpDataService getEmpDataService() {
@@ -78,6 +87,33 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
 
 	public void setListLeaveDistribution(List<LeaveDistribution> listLeaveDistribution) {
 		this.listLeaveDistribution = listLeaveDistribution;
+	}
+
+	public LeaveImplementationDateService getLeaveImplementationDateService() {
+		return leaveImplementationDateService;
+	}
+
+	public void setLeaveImplementationDateService(
+			LeaveImplementationDateService leaveImplementationDateService) {
+		this.leaveImplementationDateService = leaveImplementationDateService;
+	}
+
+	public List<LeaveImplementationDateModel> getListLeaveImplementationDateModel() {
+		return listLeaveImplementationDateModel;
+	}
+
+	public void setListLeaveImplementationDateModel(
+			List<LeaveImplementationDateModel> listLeaveImplementationDateModel) {
+		this.listLeaveImplementationDateModel = listLeaveImplementationDateModel;
+	}
+
+	public List<LeaveImplementationDate> getListLeaveImplementationDate() {
+		return listLeaveImplementationDate;
+	}
+
+	public void setListLeaveImplementationDate(
+			List<LeaveImplementationDate> listLeaveImplementationDate) {
+		this.listLeaveImplementationDate = listLeaveImplementationDate;
 	}
     
     

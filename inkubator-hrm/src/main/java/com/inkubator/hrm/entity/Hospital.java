@@ -35,6 +35,8 @@ public class Hospital implements java.io.Serializable {
     private String name;
     private String address;
     private String phone;
+    private String type;
+    private String postalCode;
 
     public Hospital() {
     }
@@ -165,5 +167,25 @@ public class Hospital implements java.io.Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @Column(name = "type")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Column(name = "postal_code", length = 10)
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+    
+    
 
 }

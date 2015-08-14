@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
 import com.inkubator.hrm.entity.LeaveImplementationDate;
 import com.inkubator.hrm.service.LeaveImplementationDateService;
+import com.inkubator.hrm.web.model.LeaveImplementationDateModel;
 
 /**
  *
@@ -239,6 +240,30 @@ public class LeaveImplementationDateServiceImpl implements LeaveImplementationDa
 			throws Exception {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
 
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<LeaveImplementationDateModel> getAllDataWithTotalTakenLeaveByEmpDataId(Long empDataId) throws Exception {
+		List<LeaveImplementationDateModel> listLeaveImplDateModel =  leaveImplementationDateDao.getAllDataWithTotalTakenLeaveByEmpDataId(empDataId);
+		Double percentage = 0.0;
+		Double totalPakai;
+		for(LeaveImplementationDateModel model : listLeaveImplDateModel){
+			totalPakai = model.getTotalPakai().doubleValue();
+			//get total leave per each employee from balance + totalPakai
+			model.setBalance(model.getBalance() + totalPakai);
+			//count percentage
+			percentage = (totalPakai / model.getBalance()) * 100;
+			model.setPercentage(percentage);
+		}
+		
+		return  listLeaveImplDateModel;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<LeaveImplementationDate> getAllDataByEmpDataId(Long empDataId) {
+		return leaveImplementationDateDao.getAllDataByEmpDataId(empDataId);
 	}
 
 }

@@ -16,6 +16,8 @@ public class HospitalModel implements Serializable {
     private Long countryId;
     private Long provinceId;
     private Long cityId;
+    private String type;
+    private String postalCode;
 
     public Long getId() {
         return id;
@@ -81,6 +83,20 @@ public class HospitalModel implements Serializable {
         this.cityId = cityId;
     }
 
-    
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
 
 }
