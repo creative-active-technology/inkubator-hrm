@@ -10,6 +10,7 @@ public class EmployeeTypeModel implements Serializable {
 
 	private Long id;
 	private String name;
+	private Boolean directTask;
 	
 	public Long getId() {
 		return id;
@@ -23,6 +24,14 @@ public class EmployeeTypeModel implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Boolean getDirectTask() {
+		return directTask;
+	}
+	public void setDirectTask(Boolean directTask) {
+		this.directTask = directTask;
+	}
+	
+	
 	
 	
 }
