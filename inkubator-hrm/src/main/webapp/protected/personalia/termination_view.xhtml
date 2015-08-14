@@ -35,7 +35,7 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{terminationViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['terminate.code_termination']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['terminate.termination_type']}" itemValue="terminationType"/>
                                         <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="empData"/>
                                     </p:selectOneMenu>
@@ -105,7 +105,7 @@
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":confirmDeletePanel" 
-                                                                 action="#{terminationViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('deleteDialog').show()">
+                                                                 action="#{terminationViewController.doSelectEntityWithAllRelation()}" onclick="PF('statusDialog').show()"  oncomplete="PF('deleteDialog').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{terminationViewController.selected}" />
                                 </p:commandButton>
                                 -
@@ -148,7 +148,7 @@
                         <h:panelGrid id="confirmDeletePanel"  columns="3">
                             <p:outputLabel value="#{appmsg['personachievement.employee_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{terminationViewController.selected.code}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{terminationViewController.selected.empData.bioData.fullName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{terminationViewController.doDelete()}" update="formId"
