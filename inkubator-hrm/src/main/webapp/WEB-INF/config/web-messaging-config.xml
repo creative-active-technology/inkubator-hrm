@@ -78,6 +78,13 @@
         <property name="defaultDestinationName" value="notificationMassJadwalKerja"/>
         
     </bean> 
+    <bean id="jmsTemplateMassJadwalKerjaExcection" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="notificationMassJadwalKerjaException"/>
+        
+    </bean> 
+    
     <bean id="jmsTemplateSMS" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
         <property name="sessionTransacted" value="true"/>
