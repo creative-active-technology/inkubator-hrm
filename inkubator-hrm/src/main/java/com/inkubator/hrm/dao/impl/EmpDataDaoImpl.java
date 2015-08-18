@@ -5,16 +5,15 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -32,7 +31,6 @@ import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -41,6 +39,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
@@ -658,8 +657,37 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria;
     }
 
-    @Override
+/*    DetachedCriteria listEmp = DetachedCriteria.forClass(LeaveDistribution.class)
+            .setProjection(Property.forName("empData.id"))
+            .createAlias("leave", "lv", JoinType.INNER_JOIN)
+            .add(Restrictions.eq("lv.id", model.getLeaveSchemeId()));
+    Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    *//**
+     * automatically get relations of jabatanByJabatanId, department,
+     * company don't create alias for that entity, or will get error :
+     * duplicate association path
+     *//*
+    criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+    criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+
+//    criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
+    criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
+    criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+    criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+    criteria.add(Property.forName("id").notIn(listEmp));
+    //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
+//    if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
+//        Disjunction disjunction = Restrictions.disjunction();
+//        disjunction.add(Restrictions.isNull("lv.empData"));
+//        disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
+//        criteria.add(disjunction);
+//    }
+*/    @Override
     public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model) {
+    	DetachedCriteria listEmp = DetachedCriteria.forClass(PermitDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("permitClassification", "pc", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("pc.id", model.getPermitId()));
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -673,13 +701,15 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getPermitId() != 0 || model.getPermitId() != null) {
+        /*if (model.getPermitId() != 0 || model.getPermitId() != null) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.isNull("lv.empData"));
+            disjunction.add(Restrictions.isNull("permitDistributions"));
             disjunction.add(Restrictions.not(Restrictions.eq("lv.permitClassification.id", model.getPermitId())));
+            //disjunction.add(Restrictions.sqlRestriction(sql, values, types));
             criteria.add(disjunction);
-        }
+        }*/
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -719,6 +749,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
