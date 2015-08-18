@@ -28,5 +28,7 @@ public interface WtOverTimeService extends IService<WtOverTime> {
     public void update(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception;
     
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
+
+	public WtOverTime getEntityByPkWithDetail(Long id) throws Exception;
     
 }

@@ -37,7 +37,7 @@ public class OverTimeDetailController extends BaseController{
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
-            selectedWtOverTime = wtOverTimeService.getEntiyByPK(Long.parseLong(id.substring(1)));
+            selectedWtOverTime = wtOverTimeService.getEntityByPkWithDetail(Long.parseLong(id.substring(1)));
             selectedApprovalDefinitionOT = approvalDefinitionOTService.getByOverTimeId(Long.parseLong(id.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

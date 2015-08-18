@@ -85,7 +85,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(WtOverTime entity) throws Exception {
-        long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
+    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	
+    	/*long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("over_time.error_code_duplicate");
         }
@@ -103,7 +105,7 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         overTime.setValuePrice(entity.getValuePrice());
         overTime.setUpdatedBy(UserInfoUtil.getUserName());
         overTime.setUpdatedOn(new Date());
-        wtOverTimeDao.update(overTime);
+        wtOverTimeDao.update(overTime);*/
         
     }
     
@@ -210,8 +212,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     }
     
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<WtOverTime> getAllData(Boolean isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wtOverTimeDao.getAllData(isActive);
     }
     
     @Override
@@ -302,6 +305,7 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         overTime.setOverTimeCalculation(entity.getOverTimeCalculation());
         overTime.setStartTimeFactor(entity.getStartTimeFactor());
         overTime.setValuePrice(entity.getValuePrice());
+        overTime.setIsActive(entity.getIsActive());
         overTime.setUpdatedBy(UserInfoUtil.getUserName());
         overTime.setUpdatedOn(new Date());
         wtOverTimeDao.update(overTime);
@@ -329,4 +333,10 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
         return wtOverTimeDao.getEntityByPkFetchApprovalDefinition(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtOverTime getEntityByPkWithDetail(Long id) throws Exception {
+		return wtOverTimeDao.getEntityByPkWithDetail(id);
+	}
 }

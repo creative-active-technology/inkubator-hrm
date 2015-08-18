@@ -25,6 +25,7 @@ public class OverTimeModel implements Serializable {
     private Date startTimeFactor;
     private Date finishTimeFactor;
     private Double valuePrice;
+    private Boolean isActive;
     private Long wtHitungLemburID;
 
     public Long getId() {
@@ -115,7 +116,15 @@ public class OverTimeModel implements Serializable {
         this.valuePrice = valuePrice;
     }
 
-    public Long getWtHitungLemburID() {
+    public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Long getWtHitungLemburID() {
         return wtHitungLemburID;
     }
 

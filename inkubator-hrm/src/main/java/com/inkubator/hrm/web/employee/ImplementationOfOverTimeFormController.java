@@ -102,7 +102,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     
     public void listDrowDown() throws Exception {
         //cost center
-        listWtOverTime = wtOverTimeService.getAllData();
+        listWtOverTime = wtOverTimeService.getAllData(Boolean.TRUE);
         for (WtOverTime wtOverTime : listWtOverTime) {
             wtOverTimeDropDown.put(wtOverTime.getName(), wtOverTime.getId());
         }

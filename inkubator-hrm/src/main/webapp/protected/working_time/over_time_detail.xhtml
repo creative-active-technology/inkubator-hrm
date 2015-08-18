@@ -47,42 +47,18 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.count_method']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.wtHitungLembur.metodeHitung}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.description}"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['overtime.overtime_minimum']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']}"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['overtime.overtime_maximum']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']}"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.startTimeFactor}"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.finishTimeFactor}"/>                         
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -102,13 +78,61 @@
                                     </p:outputLabel>                             
                                 </p:column>
                             </p:row>
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['overtime.minimum_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.minimumTime} #{appmsg['global.satuan_jam']}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.maximum_time']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.maximumTime} #{appmsg['global.satuan_jam']}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel value="#{appmsg['overtime.factor_setting']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.startTimeFactor}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.finishTimeFactor}"/>                         
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm" style="margin-left:30px;"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.valuePrice}"/>  	                                
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.isActive}">
+                                    	<f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>  	                                
                                 </p:column>
                             </p:row>
 

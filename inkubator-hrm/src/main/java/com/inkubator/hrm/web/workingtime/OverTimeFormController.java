@@ -59,30 +59,18 @@ public class OverTimeFormController extends BaseController {
     @ManagedProperty(value = "#{wtHitungLemburService}")
     private WtHitungLemburService wtHitungLemburService;
     
-    private List<WtHitungLembur> listWtHitungLembur = new ArrayList<WtHitungLembur>();
-    private Map<String, Long> dropDownWtHitungLembur = new TreeMap<String, Long>();
-
-    public WtOverTime getSelectedWtOverTime() {
-        return selectedWtOverTime;
-    }
-
-    public void setSelectedWtOverTime(WtOverTime selectedWtOverTime) {
-        this.selectedWtOverTime = selectedWtOverTime;
-    }
-
-    public void setWtOverTimeService(WtOverTimeService wtOverTimeService) {
-        this.wtOverTimeService = wtOverTimeService;
-    }
+    public List<WtHitungLembur> listWtHitungLembur = new ArrayList<WtHitungLembur>();
 
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
-
-        String param = FacesUtil.getRequestParameter("execution");
-        overTimeModel = new OverTimeModel();
+        super.initialization();       
         try {
+        	listWtHitungLembur = wtHitungLemburService.getAllData();
             appDefs = new ArrayList<ApprovalDefinition>(); 
+            
+            String param = FacesUtil.getRequestParameter("execution");
+            overTimeModel = new OverTimeModel();
             if (param != null) {
 
                 isEdit = Boolean.TRUE;
@@ -98,6 +86,8 @@ public class OverTimeFormController extends BaseController {
                 overTimeModel.setOverTimeCalculation(wtOverTime.getOverTimeCalculation());
                 overTimeModel.setStartTimeFactor(wtOverTime.getStartTimeFactor());
                 overTimeModel.setValuePrice(wtOverTime.getValuePrice());
+                overTimeModel.setWtHitungLemburID(wtOverTime.getWtHitungLembur() != null ? wtOverTime.getWtHitungLembur().getId() : null);
+                overTimeModel.setIsActive(wtOverTime.getIsActive());
                 Set<ApprovalDefinitionOT> approvalDefinitionOTs = wtOverTime.getApprovalDefinitionOTs();
                     for(ApprovalDefinitionOT appDefOverTime : approvalDefinitionOTs){
                     	appDefs.add(appDefOverTime.getApprovalDefinition());
@@ -105,7 +95,7 @@ public class OverTimeFormController extends BaseController {
             } else {
                 isEdit = Boolean.FALSE;
             }
-            doSelectOneMenuWtHitungLembur();
+            
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -154,6 +144,7 @@ public class OverTimeFormController extends BaseController {
         overTime.setOverTimeCalculation(overTimeModel.getOverTimeCalculation());
         overTime.setStartTimeFactor(overTimeModel.getStartTimeFactor());
         overTime.setValuePrice(overTimeModel.getValuePrice());
+        overTime.setIsActive(overTimeModel.getIsActive());
         overTime.setWtHitungLembur(new WtHitungLembur(overTimeModel.getWtHitungLemburID()));
         return overTime;
     }
@@ -166,6 +157,7 @@ public class OverTimeFormController extends BaseController {
         isEdit = null;
         selectedAppDef = null;
         appDefs = null;
+        listWtHitungLembur = null;
     }
 
     public List<ApprovalDefinition> getAppDefs() {
@@ -271,19 +263,24 @@ public class OverTimeFormController extends BaseController {
         this.wtHitungLemburService = wtHitungLemburService;
     }
 
-    public Map<String, Long> getDropDownWtHitungLembur() {
-        return dropDownWtHitungLembur;
+	public List<WtHitungLembur> getListWtHitungLembur() {
+		return listWtHitungLembur;
+	}
+
+	public void setListWtHitungLembur(List<WtHitungLembur> listWtHitungLembur) {
+		this.listWtHitungLembur = listWtHitungLembur;
+	}
+
+	public WtOverTime getSelectedWtOverTime() {
+        return selectedWtOverTime;
     }
 
-    public void setDropDownWtHitungLembur(Map<String, Long> dropDownWtHitungLembur) {
-        this.dropDownWtHitungLembur = dropDownWtHitungLembur;
+    public void setSelectedWtOverTime(WtOverTime selectedWtOverTime) {
+        this.selectedWtOverTime = selectedWtOverTime;
     }
-   
-    public void doSelectOneMenuWtHitungLembur() throws Exception{
-        listWtHitungLembur = wtHitungLemburService.getAllData();
-        for(WtHitungLembur list : listWtHitungLembur){
-            dropDownWtHitungLembur.put(list.getMetodeHitung(), list.getId());
-        }
+
+    public void setWtOverTimeService(WtOverTimeService wtOverTimeService) {
+        this.wtOverTimeService = wtOverTimeService;
     }
     
 }
