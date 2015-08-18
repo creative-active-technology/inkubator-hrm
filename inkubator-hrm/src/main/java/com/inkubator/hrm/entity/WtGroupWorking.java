@@ -41,6 +41,7 @@ public class WtGroupWorking implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Boolean isActive;
+    private String descriptions;
     private Set<WtScheduleShift> wtScheduleShifts = new HashSet<WtScheduleShift>(0);
     private Integer typeSequeace;
     private Set<EmpData> empDatas = new HashSet<EmpData>(0);
@@ -53,7 +54,7 @@ public class WtGroupWorking implements java.io.Serializable {
         this.id = id;
     }
 
-    public WtGroupWorking(long id, String code, String name, Date beginTime, Date endTime, Boolean isPeriodic, Double workingTimePerday, Double workingTimePerweek, Boolean overtimeBasedOnAttendance, Boolean overtimeBasedOnRequest, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public WtGroupWorking(long id, String code, String name, Date beginTime, Date endTime, Boolean isPeriodic, Double workingTimePerday, Double workingTimePerweek, Boolean overtimeBasedOnAttendance, Boolean overtimeBasedOnRequest, String descriptions, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -64,10 +65,12 @@ public class WtGroupWorking implements java.io.Serializable {
         this.workingTimePerweek = workingTimePerweek;
         this.overtimeBasedOnAttendance = overtimeBasedOnAttendance;
         this.overtimeBasedOnRequest = overtimeBasedOnRequest;
+        this.descriptions = descriptions;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        
     }
 
     @Id
@@ -260,4 +263,15 @@ public class WtGroupWorking implements java.io.Serializable {
     public void setTempAttendanceRealizations(Set<TempAttendanceRealization> tempAttendanceRealizations) {
         this.tempAttendanceRealizations = tempAttendanceRealizations;
     }
+    
+    @Column(name = "descriptions")
+	public String getDescriptions() {
+		return descriptions;
+	}
+
+	public void setDescriptions(String descriptions) {
+		this.descriptions = descriptions;
+	}
+    
+    
 }

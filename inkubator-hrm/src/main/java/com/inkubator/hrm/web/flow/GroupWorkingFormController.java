@@ -90,6 +90,8 @@ public class GroupWorkingFormController implements Serializable {
                 groupWorkingModel.setWorkingTimePerday(groupWorking.getWorkingTimePerday());
                 groupWorkingModel.setWorkingTimePerweek(groupWorking.getWorkingTimePerweek());
                 groupWorkingModel.setKondisiSchedule(groupWorking.getTypeSequeace());
+                groupWorkingModel.setIsActive(groupWorking.getIsActive());
+                groupWorkingModel.setDescriptions(groupWorking.getDescriptions());
 
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

@@ -42,6 +42,8 @@ public class GroupWorkingModel implements Serializable {
     private int pageNumber;
     private Boolean isDisable;
     private Integer kondisiSchedule;
+    private Boolean isActive;
+    private String descriptions;
 
     public Long getId() {
         return id;
@@ -213,6 +215,24 @@ public class GroupWorkingModel implements Serializable {
     public void setKondisiSchedule(Integer kondisiSchedule) {
         this.kondisiSchedule = kondisiSchedule;
     }
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public String getDescriptions() {
+		return descriptions;
+	}
+
+	public void setDescriptions(String descriptions) {
+		this.descriptions = descriptions;
+	}
+    
+    
 
     
 }
