@@ -10,10 +10,12 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -252,4 +254,49 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     	
         return Long.valueOf(hbm.uniqueResult().toString());
     }
+
+	@Override
+	public List<LoanHistoryViewModel> getListLoanHistoryByEmpDataId(
+			Long empDataId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			" SELECT loanNewApplication.id AS loanNewApplicationId, " +
+    			" loanNewApplication.applicationDate AS tglPengajuan, " +
+				" loanNewApplication.loanStatus AS loanStatus, " +
+				" loanNewType.id AS loanNewTypeId, " +
+				" loanNewType.loanTypeName AS loanNewTypeName, " +
+				" loanNewApplication.nominalPrincipal AS loanNominal, " +
+				" loanNewApplication.termin AS totalNumberOfInstallment, " +
+				" loanNewType.interestMethod AS typeOfInterest, " +
+				" loanNewType.interest AS loanInterestRate, " +
+				" loanNewApplication.dibursementDate AS loanPaymentDate, " +
+				" loanNewApplication.bufferTime AS buffer " +
+    			" FROM LoanNewApplication loanNewApplication " +
+    			" INNER JOIN loanNewApplication.empData empData  " +
+    			" INNER JOIN loanNewApplication.loanNewType loanNewType  " +
+    			" INNER JOIN loanNewApplication.loanNewSchema loanNewSchema  " +
+    			" WHERE empData.id = :empDataId ") ;
+    		
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+    			.setParameter("empDataId", empDataId)    		
+    			.setResultTransformer(Transformers.aliasToBean(LoanHistoryViewModel.class));
+    	
+    	return hbm.list();
+	}
+
+	@Override
+	public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewTypeId(Long empDataId, Long loanNewTypeId) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+	        criteria.setFetchMode("empData", FetchMode.JOIN);
+	        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+	        criteria.add(Restrictions.eq("empData.id", empDataId));
+	        criteria.add(Restrictions.eq("loanNewType.id", loanNewTypeId));
+
+	        Disjunction disjunction = Restrictions.disjunction();
+	        disjunction.add(Restrictions.eq("loanStatus", HRMConstant.LOAN_DISBURSED));
+	        disjunction.add(Restrictions.eq("loanStatus", HRMConstant.LOAN_PAID));
+	        criteria.add(disjunction);
+
+	        return criteria.list();
+	}
 }

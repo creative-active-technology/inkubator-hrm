@@ -5,18 +5,25 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
+import com.inkubator.hrm.web.model.LoanUsageHistoryViewModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -39,6 +46,8 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     private LoanNewSchemaDao loanNewSchemaDao;
     @Autowired
     private LoanNewTypeDao loanNewTypeDao;
+    @Autowired
+    private LoanNewApplicationDao loanNewApplicationDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -322,5 +331,18 @@ public class LoanNewSchemaListOfTypeServiceImpl extends IServiceImpl implements 
     public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId) throws Exception {
         return loanNewSchemaListOfTypeDao.getEntityByLoanNewTypeIdWithDetail(loanNewTypeId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LoanUsageHistoryViewModel> getListLoanUsageHistoryByLoanNewSchemaAndEmpDataIdWhereStatusActive(Long loanNewSchemaId, Long empDataId) throws Exception {
+		List<LoanUsageHistoryViewModel> listLoanUsageHistory = loanNewSchemaListOfTypeDao.getListLoanUsageHistoryByLoanNewSchemaWhereStatusActive(loanNewSchemaId);
+		for(LoanUsageHistoryViewModel loanUsageModel : listLoanUsageHistory){
+			List<LoanNewApplication> listLoanNewApplication = loanNewApplicationDao.getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewTypeId(empDataId, loanUsageModel.getLoanNewTypeId());
+			Double totalUsage = Lambda.sum(listLoanNewApplication, Lambda.on(LoanNewApplication.class).getNominalPrincipal());
+			loanUsageModel.setTotalNominalUsed(totalUsage);
+			loanUsageModel.setChartPersentation((int) ((totalUsage / loanUsageModel.getMaximumAllocation()) * 100));
+		}
+		return listLoanUsageHistory;
+	}
 
 }

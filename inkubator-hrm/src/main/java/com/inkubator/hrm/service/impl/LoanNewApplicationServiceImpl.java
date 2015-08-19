@@ -21,7 +21,9 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matchers;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.transform.Transformers;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -44,6 +48,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.dao.LoanNewCancelationDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
@@ -96,6 +101,9 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private LoanNewCancelationDao LoanNewCancelationDao;
+    @Autowired
+    private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    
 
     @Override
     public LoanNewApplication getEntiyByPK(String string) throws Exception {
@@ -794,7 +802,18 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<LoanHistoryViewModel> getListLoanHistoryByEmpDataId(Long empDataId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		List<LoanHistoryViewModel> listLoanHistory = loanNewApplicationDao.getListLoanHistoryByEmpDataId(empDataId);
+		for(LoanHistoryViewModel loanHistModel : listLoanHistory){
+			
+			List<LoanNewApplicationInstallment> listInstallment = calculateLoanNewApplicationInstallment(loanHistModel.getLoanInterestRate().doubleValue(), loanHistModel.getTotalNumberOfInstallment(), DateTimeUtil.getDateFrom(loanHistModel.getLoanPaymentDate(), loanHistModel.getBuffer(), CommonUtilConstant.DATE_FORMAT_MONTH), loanHistModel.getLoanNominal().doubleValue(), loanHistModel.getTypeOfInterest());
+			LoanNewApplicationInstallment installmentMax = Lambda.selectMax(listInstallment, Lambda.on(LoanNewApplicationInstallment.class).getTotalPayment());
+			LoanNewApplicationInstallment lastInstallment = Lambda.selectMax(listInstallment, Lambda.on(LoanNewApplicationInstallment.class).getInstallmentDate());
+			loanHistModel.setInstallmentNominal(installmentMax.getTotalPayment());
+			loanHistModel.setLastPaymentDate(lastInstallment.getInstallmentDate());
+			
+			Long totalAlreadyPaidInstallment = loanNewApplicationInstallmentDao.getTotalInstallmentByLoanNewApplicationId(loanHistModel.getLoanNewApplicationId());
+			loanHistModel.setTotalAlreadyPaidInstallment(totalAlreadyPaidInstallment == null ? 0 : totalAlreadyPaidInstallment.intValue());
+		}
+		return listLoanHistory;
 	}
 }
