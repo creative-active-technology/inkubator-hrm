@@ -44,7 +44,7 @@ public class NotificationJadwalKerjaEmailMessagesListener extends IServiceImpl i
     private VelocityTemplateSender velocityTemplateSender;
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
     public void onMessage(Message message) {
         try {
@@ -54,20 +54,20 @@ public class NotificationJadwalKerjaEmailMessagesListener extends IServiceImpl i
             JsonObject jsonObject = (JsonObject) gson.fromJson(json, JsonObject.class);
             String locale = jsonObject.get("locale").getAsString();
             String userEmail = jsonObject.get("userEmail").getAsString();
-            
+
             List<String> toSend = new ArrayList<>();
             List<String> toSentCC = new ArrayList<String>();
             List<String> toSentBCC = new ArrayList<String>();
             toSend.add(userEmail);
             toSentCC.add("rizky.maulana@incubatechnology.com");
             toSentCC.add("rizkykojek@gmail.com");
-            
+            toSentCC.add("rizal2_dfhr@yahoo.com");
             VelocityTempalteModel vtm = new VelocityTempalteModel();
-            vtm.setFrom(ownerEmail);            
+            vtm.setFrom(ownerEmail);
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
-            
+
             Map maptoSend = new HashMap();
             maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
@@ -77,16 +77,17 @@ public class NotificationJadwalKerjaEmailMessagesListener extends IServiceImpl i
             maptoSend.put("ownerCompany", ownerCompany);
             maptoSend.put("applicationUrl", applicationUrl);
             maptoSend.put("applicationName", applicationName);
-            List<String> listSchedule = gson.fromJson(jsonObject.get("listSchedule").getAsString(), new TypeToken<List<String>>(){}.getType());
+            List<String> listSchedule = gson.fromJson(jsonObject.get("listSchedule").getAsString(), new TypeToken<List<String>>() {
+            }.getType());
             maptoSend.put("listSchedule", listSchedule);
-            if (StringUtils.equals(locale, "en")) {                
-            	vtm.setSubject("Employee Working Schedule");
+            if (StringUtils.equals(locale, "en")) {
+                vtm.setSubject("Employee Working Schedule");
                 vtm.setTemplatePath("email_employee_working_schedule_en.vm");
             } else {
-            	vtm.setSubject("Jadwal Kerja Karyawan");
+                vtm.setSubject("Jadwal Kerja Karyawan");
                 vtm.setTemplatePath("email_employee_working_schedule.vm");
             }
-                
+
             velocityTemplateSender.sendMail(vtm, maptoSend);
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
