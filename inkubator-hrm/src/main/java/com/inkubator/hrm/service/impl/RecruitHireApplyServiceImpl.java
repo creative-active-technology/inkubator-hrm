@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,11 +8,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -46,6 +54,8 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.Loan;
+import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
@@ -504,6 +514,42 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
     	//send sms notification to approver if need approval OR
         //send sms notification to requester if need revision
 		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+
+        //parsing object data to json, for email purpose
+        RecruitHireApply recruitHireApply = gson.fromJson(appActivity.getPendingData(), RecruitHireApply.class);
+
+
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(recruitHireApply.getCreatedOn()));
+            jsonObj.put("periodeStart", recruitHireApply.getRecruitMppPeriod().getPeriodeStart());
+            jsonObj.put("periodeEnd", recruitHireApply.getRecruitMppPeriod().getPeriodeEnd());
+
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
     }
 
     @Override
