@@ -208,7 +208,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
             Logger.getLogger(PlacementOfEmployeeWorkScheduleFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return "/protected/employee/schedule_exception_view..htm?faces-redirect=true";
+        return "/protected/employee/schedule_exception_view.htm?faces-redirect=true";
     }
 
     public void doReset() {

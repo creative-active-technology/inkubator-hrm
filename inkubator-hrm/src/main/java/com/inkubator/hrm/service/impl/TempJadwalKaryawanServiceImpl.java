@@ -518,6 +518,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId, Date startDate, Date endDate) throws Exception {
         List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
         WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
@@ -537,8 +538,8 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         jsonObject.addProperty("groupWorkingId", groupWorkingId);
         jsonObject.addProperty("createDate", dateFormat.format(new Date()));
         jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
-        jsonObject.addProperty("startDate", new SimpleDateFormat().format(startDate));
-        jsonObject.addProperty("endDate", new SimpleDateFormat().format(endDate));
+        jsonObject.addProperty("startDate", dateFormat.format(startDate));
+        jsonObject.addProperty("endDate", dateFormat.format(endDate));
         jsonObject.addProperty("locale", FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 
         this.jmsTemplateMassJadwalKerjaExcection.send(new MessageCreator() {
