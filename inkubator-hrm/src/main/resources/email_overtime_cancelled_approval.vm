@@ -15,8 +15,8 @@
 			Adapun cuti yang dimaksud yaitu: <br /><br />
 			Definisi Lembur : ${overTimeName}<br />
 			Tanggal Lembur : ${overTimeDate}<br />
-			Jam Mulai: ${startTime}<br />
-			Jam Selesai : ${endTime}<br />
+			Total Jam : ${hour}<br />
+			Total Menit : ${minute}<br />
 			<br />
 			
 			Status : <b>${statusDesc}</b><br />			

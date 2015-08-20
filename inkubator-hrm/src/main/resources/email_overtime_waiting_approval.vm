@@ -15,8 +15,8 @@
 			Adapun lembur yang dimaksud yaitu: <br /><br />
 			Definisi Lembur : ${overTimeName}<br />
 			Tanggal Lembur : ${overTimeDate}<br />
-			Jam Mulai: ${startTime}<br />
-			Jam Selesai : ${endTime}<br />
+			Total Jam : ${hour}<br />
+			Total Menit : ${minute}<br />
 			<br />
 			
             Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a>

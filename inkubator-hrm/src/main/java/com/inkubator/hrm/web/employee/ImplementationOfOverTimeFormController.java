@@ -5,10 +5,7 @@
 package com.inkubator.hrm.web.employee;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -18,6 +15,9 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+import org.joda.time.Minutes;
 import org.primefaces.context.RequestContext;
 
 import com.inkubator.common.util.RandomNumberUtil;
@@ -31,7 +31,6 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtOverTimeService;
-import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ImplementationOfOverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -52,14 +51,10 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     private ImplementationOfOverTimeService implementationOfOverTimeService;
     @ManagedProperty(value = "#{tempJadwalKaryawanService}")
     private TempJadwalKaryawanService tempJadwalKaryawanService;
+    
     private Boolean isUpdate;
-    private Map<String, Long> wtOverTimeDropDown = new TreeMap<String, Long>();
     private List<WtOverTime> listWtOverTime = new ArrayList<>();
     private ImplementationOfOverTimeModel model;
-    private Long empId;
-    private Date startTime;
-    private Date endTime;
-    private Boolean isDisableStartAndEndOverTime;
     
     @PostConstruct
     @Override
@@ -67,7 +62,6 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         super.initialization();
         try{
             String implementOfOTId = FacesUtil.getRequestParameter("implementOfOTId");
-            isDisableStartAndEndOverTime = Boolean.FALSE;
             model = new ImplementationOfOverTimeModel();
             model.setImplementationNumber(HRMConstant.OVERTIME_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
             isUpdate = Boolean.FALSE;
@@ -75,11 +69,10 @@ public class ImplementationOfOverTimeFormController extends BaseController {
                 ImplementationOfOverTime implementationOfOverTime = implementationOfOverTimeService.getEntityByPkWithDetail(Long.parseLong(implementOfOTId));
                 if(implementOfOTId != null){
                     model = getModelFromEntity(implementationOfOverTime);
+                    listWtOverTime = wtOverTimeService.getAllDataByEmpDataIdAndIsActive(model.getEmpData().getId(), Boolean.TRUE);
                     isUpdate = Boolean.TRUE;
                 }
             }
-            
-            listDrowDown();
         }catch (Exception e){
             LOGGER.error("Error", e);
         }
@@ -88,25 +81,12 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         listWtOverTime = null;
-        wtOverTimeDropDown = null;
         isUpdate = null;
         wtOverTimeService = null;
         model = null;
         empDataService = null;
         tempJadwalKaryawanService = null;
-        isDisableStartAndEndOverTime = null;
-        empId = null;
-        startTime = null;
-        endTime = null;
-    }
-    
-    public void listDrowDown() throws Exception {
-        //cost center
-        listWtOverTime = wtOverTimeService.getAllData(Boolean.TRUE);
-        for (WtOverTime wtOverTime : listWtOverTime) {
-            wtOverTimeDropDown.put(wtOverTime.getName(), wtOverTime.getId());
-        }
-        MapUtil.sortByValue(wtOverTimeDropDown);
+        implementationOfOverTimeService = null;
     }
     
     public List<EmpData> doAutoCompletEmployee(String param) {
@@ -119,10 +99,37 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         return empDatas;
     }
     
+    public void onChangeEmployee() {
+    	try {    		
+	    	listWtOverTime = wtOverTimeService.getAllDataByEmpDataIdAndIsActive(model.getEmpData().getId(), Boolean.TRUE);
+	    	this.onChangeImplDate();
+    	} catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void onChangeImplDate() throws Exception{
+    	if(model.getEmpData() != null && model.getImplementationDate() != null) {
+	        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(model.getEmpData().getId(), model.getImplementationDate());
+	        if(jadwalKaryawan != null && jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
+	        	model.setWtOverTimeId(jadwalKaryawan.getWtWorkingHour().getWtOverTime().getId());
+                model.setStartTime(jadwalKaryawan.getWtWorkingHour().getStartOvertime());
+                model.setEndTime(jadwalKaryawan.getWtWorkingHour().getEndOvertime());
+                model.setCalculationMethod(0);
+                model = this.setRelativeHourAndMinute(model);
+	        }else{
+	            model.setStartTime(null);
+	            model.setEndTime(null);
+	            model.setWtOverTimeId(null);
+	            model.setRelativeHour(null);
+	            model.setRelativeMinute(null);
+	        }    
+    	}        
+    }
+    
     private ImplementationOfOverTimeModel getModelFromEntity(ImplementationOfOverTime entity) {
         ImplementationOfOverTimeModel model = new ImplementationOfOverTimeModel();
         model.setId(entity.getId());
-        model.setEmpDataId(entity.getEmpData().getId());
         if (entity.getEmpData() != null) {
             model.setEmpData(entity.getEmpData());
         }
@@ -131,6 +138,14 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         model.setEndTime(entity.getEndTime());
         model.setImplementationDate(entity.getImplementationDate());
         model.setImplementationNumber(entity.getCode());
+        model.setDescription(entity.getDescription());
+        model.setRelativeHour(entity.getRelativeHour());
+        model.setRelativeMinute(entity.getRelativeMinute());
+        if(model.getStartTime() != null  && model.getEndTime() != null){
+        	model.setCalculationMethod(0);
+        } else {
+        	model.setCalculationMethod(1);
+        }
         return model;
     }
 
@@ -140,49 +155,46 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             implementationOfOT.setId(model.getId());
         }
         implementationOfOT.setEmpData(model.getEmpData());
-        implementationOfOT.setWtOverTime(new WtOverTime(model.getWtOverTimeId()));
-        implementationOfOT.setStartTime(model.getStartTime());
-        implementationOfOT.setEndTime(model.getEndTime());
+        implementationOfOT.setWtOverTime(new WtOverTime(model.getWtOverTimeId()));        
         implementationOfOT.setImplementationDate(model.getImplementationDate());
         implementationOfOT.setCode(model.getImplementationNumber());
-        return implementationOfOT;
-    }
-    
-    public void doSave() {
+        implementationOfOT.setDescription(model.getDescription());
         
-        ImplementationOfOverTime implementationOfOT = getEntityFromViewModel(model);
-        try {
-            if (isUpdate) {
-                implementationOfOverTimeService.update(implementationOfOT);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                implementationOfOverTimeService.save(implementationOfOT);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
-            cleanAndExit();
-        } catch (BussinessException ex) { 
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
+        if(model.getCalculationMethod() == 0){        	
+        	model = this.setRelativeHourAndMinute(model);   
+        	
+        	implementationOfOT.setRelativeHour(model.getRelativeHour());
+        	implementationOfOT.setRelativeMinute(model.getRelativeMinute());
+        	implementationOfOT.setStartTime(model.getStartTime());
+            implementationOfOT.setEndTime(model.getEndTime());
+            
+        } else {
+        	implementationOfOT.setRelativeHour(model.getRelativeHour());
+        	implementationOfOT.setRelativeMinute(model.getRelativeMinute());
+        	implementationOfOT.setStartTime(null);
+        	implementationOfOT.setEndTime(null);
         }
+        
+        return implementationOfOT;
     }
     
     public void doResetData() {
         model.setEmpData(null);
         model.setImplementationDate(null);
-        model.setImplementationNumber(null);
         model.setStartTime(null);
         model.setWtOverTimeId(null);
         model.setStartTime(null);
         model.setEndTime(null);
+        model.setRelativeHour(null);
+        model.setRelativeMinute(null);
+        model.setDescription(null);
+        model.setCalculationMethod(null);
     }
     
     public void doSaved() {
         ImplementationOfOverTime implementationOfOT = getEntityFromViewModel(model);
         
-        try {
-        	String path = "";
-        	
+        try {        	
             if (isUpdate) {
                 implementationOfOverTimeService.update(implementationOfOT);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
@@ -202,64 +214,17 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         }
     }
     
-    public void dateChange() throws Exception{
-        TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(empId, model.getImplementationDate());
-            
-            if(jadwalKaryawan != null){
-                if(jadwalKaryawan.getWtWorkingHour().getIsManageOvertime()){
-                    model.setWtOverTimeId(jadwalKaryawan.getWtWorkingHour().getWtOverTime().getId());
-                    model.setStartTime(jadwalKaryawan.getWtWorkingHour().getStartOvertime());
-                    model.setEndTime(jadwalKaryawan.getWtWorkingHour().getEndOvertime());
-                    isDisableStartAndEndOverTime = Boolean.TRUE;
-                }else{
-                    isDisableStartAndEndOverTime = Boolean.FALSE;
-                    
-                }
-            }else{
-                isDisableStartAndEndOverTime = Boolean.FALSE;
-                model.setStartTime(null);
-                model.setEndTime(null);
-                model.setWtOverTimeId(null);
-            }
-        
-    }
-    
-    public void pickStartTime(){
-        
-        startTime = model.getStartTime();
-    }
-    
-    public void pickEndTime(){
-        
-        endTime = model.getEndTime();
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-    
-    public void doSelectEmployee(){
-        empId = model.getEmpData().getId();
-    }
-
-    public Long getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(Long empId) {
-        this.empId = empId;
-    }
-
-    public Boolean getIsDisableStartAndEndOverTime() {
-        return isDisableStartAndEndOverTime;
-    }
-
-    public void setIsDisableStartAndEndOverTime(Boolean isDisableStartAndEndOverTime) {
-        this.isDisableStartAndEndOverTime = isDisableStartAndEndOverTime;
+    private ImplementationOfOverTimeModel setRelativeHourAndMinute(ImplementationOfOverTimeModel mo){
+    	DateTime startDT = new DateTime(mo.getStartTime());
+    	DateTime endDT = new DateTime(mo.getEndTime());
+    	
+    	Integer relativeHour = Hours.hoursBetween(startDT, endDT).getHours();
+    	Integer relativeMinute = Minutes.minutesBetween(startDT.plusHours(relativeHour), endDT).getMinutes();
+    	
+    	mo.setRelativeHour(relativeHour);
+    	mo.setRelativeMinute(relativeMinute);
+    	
+    	return mo;
     }
     
     public WtOverTimeService getWtOverTimeService() {
@@ -284,14 +249,6 @@ public class ImplementationOfOverTimeFormController extends BaseController {
 
     public void setIsUpdate(Boolean isUpdate) {
         this.isUpdate = isUpdate;
-    }
-
-    public Map<String, Long> getWtOverTimeDropDown() {
-        return wtOverTimeDropDown;
-    }
-
-    public void setWtOverTimeDropDown(Map<String, Long> wtOverTimeDropDown) {
-        this.wtOverTimeDropDown = wtOverTimeDropDown;
     }
 
     public List<WtOverTime> getListWtOverTime() {
@@ -324,15 +281,6 @@ public class ImplementationOfOverTimeFormController extends BaseController {
 
     public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
         this.tempJadwalKaryawanService = tempJadwalKaryawanService;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-    
+    }    
     
 }

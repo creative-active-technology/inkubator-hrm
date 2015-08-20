@@ -5,24 +5,25 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.OverTimeDistributionDao;
 import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.entity.OverTimeDistributionId;
 import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
-import java.util.List;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.sql.JoinType;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -118,5 +119,14 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         criteria.add(Restrictions.eq("id", object));
         return (OverTimeDistribution) criteria.uniqueResult();
     }
+
+	@Override
+	public List<OverTimeDistribution> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("wtOverTime.isActive", isActive));
+		return criteria.list();
+	}
 
 }
