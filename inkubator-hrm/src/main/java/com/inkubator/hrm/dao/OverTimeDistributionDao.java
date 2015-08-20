@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.entity.OverTimeDistributionId;
 import com.inkubator.hrm.web.search.OverTimeDistributionSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
-import java.util.List;
 /**
  *
  * @author Deni Husni FR
@@ -29,4 +30,7 @@ public interface OverTimeDistributionDao extends IDAO<OverTimeDistribution>{
     public void saveBatch(List<OverTimeDistribution> data);
     
     public OverTimeDistribution getById(OverTimeDistributionId object);
+
+	public List<OverTimeDistribution> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive);
+	
 }

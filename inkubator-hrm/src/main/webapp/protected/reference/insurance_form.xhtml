@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['insurance.insurance_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['insurance.insurance_data_from_reference']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                           
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.bank_code']}"  for="code" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="code" value="#{insuranceFormController.insuranceModel.code}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="code"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bank.bank_name']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="name" value="#{insuranceFormController.insuranceModel.name}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="name"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.description']}"  for="descriptionId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="descriptionId" title="#{appmsg['global.address']}" value="#{insuranceFormController.insuranceModel.description}" 
+                                                 required="true" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="descriptionId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.address']}"  for="addressId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputTextarea id="addressId" title="#{appmsg['global.address']}" value="#{insuranceFormController.insuranceModel.address}" 
+                                                 required="true" maxlength="500" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="addressId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['country.country']}"  for="countryId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="countryId" required="true" filter="true" styleClass="isitext_hrm" value="#{insuranceFormController.insuranceModel.countryId}" style="width:245px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{insuranceFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
+	                                <p:ajax listener="#{insuranceFormController.onChangeCountries()}" update="provinceId,cityId"/>
+	                            </p:selectOneMenu>
+                                    <p:message for="countryId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['province.province']}"  for="provinceId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="provinceId" required="true" filter="true" styleClass="isitext_hrm" value="#{insuranceFormController.insuranceModel.provinceId}" style="width:245px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{insuranceFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
+	                                <p:ajax listener="#{insuranceFormController.onChangeProvinces()}" update="cityId"/>
+	                            </p:selectOneMenu>
+                                    <p:message for="provinceId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['city.city']}"  for="cityId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="cityId" required="true" filter="true" styleClass="isitext_hrm" value="#{insuranceFormController.insuranceModel.cityId}" style="width:245px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{insuranceFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>
+	                            </p:selectOneMenu>
+                                    <p:message for="cityId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.postal_code']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="postalCode" value="#{insuranceFormController.insuranceModel.postalCode}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="postalCode"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['insuranceData.polisNo']}"  for="name" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="noPolis" value="#{insuranceFormController.insuranceModel.polisNo}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="noPolis"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['insuranceData.insuranceProduct']}"  for="productInsurance" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:inputText id="productInsurance" value="#{insuranceFormController.insuranceModel.insuranceProduct}" 
+                                             required="true" styleClass="isitext_hrm" style="width:270px;" />
+                                    <p:message for="productInsurance"/>
+                                </p:column>
+                            </p:row>
+                            
+                        </p:panelGrid>
+                        <p:focus context="formId" />
+                        <!--<p:separator style="margin-top: 20px;margin-bottom: 10px"/>-->
+                        
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{insuranceFormController.doSave()}"
+                                             styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId,growlId "
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{insuranceFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{insuranceFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

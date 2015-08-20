@@ -50,7 +50,7 @@
 	                                <p:outputLabel value="#{appmsg['overTimeImplementation.overtime_name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.overTimeName}">
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.wtOverTime.name}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -67,25 +67,57 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
+	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime}">
-	                            		
-	                            	</p:outputLabel>
+                                   	<p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.description}"/>                                        
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.time_calculation']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                   	<p:outputLabel rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime != null}" value="#{appmsg['overTimeImplementation.static']}"/>
+                            		<p:outputLabel rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime == null}" value="#{appmsg['overTimeImplementation.relative']}"/>                                        
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime != null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime}">
+                                            <f:convertDateTime pattern="HH:mm" />
+                                        </p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.endTime != null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.endTime}">
-	                            		
-	                            	</p:outputLabel>
+	                            	<p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.endTime}">
+                                            <f:convertDateTime pattern="HH:mm" />
+                                        </p:outputLabel>
 	                            </p:column>
 	                        </p:row>
-	                        
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.startTime == null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+                                        <p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.relativeHour}"/>                                        
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.endTime == null}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.minute']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{implementationOfOverTimeDetailController.selectedImplementationOfOverTime.relativeMinute}"/>                                        
+	                            </p:column>
+	                        </p:row>	                        
 	                        <p:row rendered="#{implementationOfOverTimeDetailController.isHaveApprovalActivity}">
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>

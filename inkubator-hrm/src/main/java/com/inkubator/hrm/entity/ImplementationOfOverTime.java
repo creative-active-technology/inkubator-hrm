@@ -5,6 +5,7 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,12 +41,14 @@ public class ImplementationOfOverTime implements java.io.Serializable {
      private Date implementationDate;
      private Date startTime;
      private Date endTime;
+     private Integer relativeHour;
+     private Integer relativeMinute;
      private String approvalActivityNumber;
+     private String description;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
-     private String overTimeName;
 
     public ImplementationOfOverTime() {
     }
@@ -130,7 +133,7 @@ public class ImplementationOfOverTime implements java.io.Serializable {
         this.implementationDate = implementationDate;
     }
     @Temporal(TemporalType.TIME)
-    @Column(name="start_time", nullable=false, length=8)
+    @Column(name="start_time", length=8)
     public Date getStartTime() {
         return this.startTime;
     }
@@ -139,16 +142,34 @@ public class ImplementationOfOverTime implements java.io.Serializable {
         this.startTime = startTime;
     }
     @Temporal(TemporalType.TIME)
-    @Column(name="end_time", nullable=false, length=8)
+    @Column(name="end_time", length=8)
     public Date getEndTime() {
         return this.endTime;
     }
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }    
     
-    @Column(name="created_by", length=45)
+    @Column(name = "relative_hour", nullable = false, length = 3)
+    public Integer getRelativeHour() {
+		return relativeHour;
+	}
+
+	public void setRelativeHour(Integer relativeHour) {
+		this.relativeHour = relativeHour;
+	}
+
+	@Column(name = "relative_minute", nullable = false, length = 3)
+	public Integer getRelativeMinute() {
+		return relativeMinute;
+	}
+
+	public void setRelativeMinute(Integer relativeMinute) {
+		this.relativeMinute = relativeMinute;
+	}
+
+	@Column(name="created_by", length=45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -192,14 +213,14 @@ public class ImplementationOfOverTime implements java.io.Serializable {
     public void setApprovalActivityNumber(String approvalActivityNumber) {
         this.approvalActivityNumber = approvalActivityNumber;
     }
-
-    public String getOverTimeName() {
-        return overTimeName;
-    }
-
-    public void setOverTimeName(String overTimeName) {
-        this.overTimeName = overTimeName;
-    }
     
+    @Column(name = "description", length = 65535, columnDefinition = "Text", nullable =  false)
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}    
     
 }

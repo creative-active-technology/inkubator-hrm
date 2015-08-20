@@ -125,8 +125,8 @@ public class ImplementationOfOverTimeViewController extends BaseController{
             options.put("modal", true);
             options.put("draggable", true);
             options.put("resizable", false);
-            options.put("contentWidth", 450);
-            options.put("contentHeight", 380);
+            options.put("contentWidth", 480);
+            options.put("contentHeight", 500);
             RequestContext.getCurrentInstance().openDialog("ot_impl_form", options, params);
         }
         
