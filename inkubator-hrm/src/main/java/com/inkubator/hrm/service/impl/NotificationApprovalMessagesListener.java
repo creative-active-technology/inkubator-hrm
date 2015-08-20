@@ -94,7 +94,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              }*/
             toSend.add("deni.arianto24@yahoo.com");
 //            toSend.add("rizal2_dhfr@yahoo.com");
-//            toSentCC.add("rizkykojek@gmail.com");
+            toSentCC.add("rizkykojek@gmail.com");
 //            toSentCC.add("amjadicky@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
@@ -209,8 +209,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
-                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
-                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
+                            maptoSend.put("hour", jsonObject.get("hour").getAsString());
+                            maptoSend.put("minute", jsonObject.get("minute").getAsString());
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             break;
@@ -344,8 +344,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
-                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
-                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
+                            maptoSend.put("hour", jsonObject.get("hour").getAsString());
+                            maptoSend.put("minute", jsonObject.get("minute").getAsString());
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
@@ -465,8 +465,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("nik", requesterUser.getEmpData().getNik());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("overTimeName", jsonObject.get("overTimeName").getAsString());
-                            maptoSend.put("startTime", jsonObject.get("startTime").getAsString());
-                            maptoSend.put("endTime", jsonObject.get("endTime").getAsString());
+                            maptoSend.put("hour", jsonObject.get("hour").getAsString());
+                            maptoSend.put("minute", jsonObject.get("minute").getAsString());
                             maptoSend.put("overTimeDate", jsonObject.get("overTimeDate").getAsString());
                             maptoSend.put("implementationNumber", jsonObject.get("implementationNumber").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));

@@ -188,16 +188,36 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column>
-                        </p:row>
-                        
+                        </p:row>                        
                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.description}"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.time_calculation']}" styleClass="label_hrm"/></p:column>
+                            <p:column>
+                            	<p:outputLabel rendered="#{implementationOfOverTimeViewController.selected.startTime != null}" value="#{appmsg['overTimeImplementation.static']}"/>
+                            	<p:outputLabel rendered="#{implementationOfOverTimeViewController.selected.startTime == null}" value="#{appmsg['overTimeImplementation.relative']}"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{implementationOfOverTimeViewController.selected.startTime != null}">
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.startTime}"/> 
                             </p:column>
                         </p:row>
-                        <p:row>
+                        <p:row rendered="#{implementationOfOverTimeViewController.selected.endTime != null}">
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.endTime}" /></p:column>
+                        </p:row>
+                        <p:row rendered="#{implementationOfOverTimeViewController.selected.startTime == null}">
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.relativeHour}"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{implementationOfOverTimeViewController.selected.endTime == null}">
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.minute']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{implementationOfOverTimeViewController.selected.relativeMinute}" /></p:column>
                         </p:row>
 
                         <f:facet name="footer">

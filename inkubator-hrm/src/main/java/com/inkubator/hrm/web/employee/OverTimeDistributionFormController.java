@@ -63,7 +63,7 @@ public class OverTimeDistributionFormController extends BaseController {
 //        String param = FacesUtil.getRequestParameter("param");
         ovetTimeModel = new DistributionOvetTimeModel();
         try {
-            listWtOverTime = wtOverTimeService.getAllData();
+            listWtOverTime = wtOverTimeService.getAllData(Boolean.TRUE);
 
             for (WtOverTime wtOverTime : listWtOverTime) {
                 otListDown.put(wtOverTime.getName(), wtOverTime.getId());

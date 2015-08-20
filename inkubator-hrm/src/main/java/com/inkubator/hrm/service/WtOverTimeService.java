@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -28,5 +29,9 @@ public interface WtOverTimeService extends IService<WtOverTime> {
     public void update(WtOverTime entity, List<ApprovalDefinition> appDefs) throws Exception;
     
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception;
+
+	public WtOverTime getEntityByPkWithDetail(Long id) throws Exception;
+
+	public List<WtOverTime> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive);
     
 }

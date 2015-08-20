@@ -5,12 +5,13 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -29,5 +30,7 @@ public interface WtOverTimeDao extends IDAO<WtOverTime> {
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id);
     
     public WtOverTime getEntityByPkWithDetail(Long id);
+
+	public List<WtOverTime> getAllDataActive();
     
 }

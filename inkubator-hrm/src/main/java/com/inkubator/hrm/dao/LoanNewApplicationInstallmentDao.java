@@ -24,5 +24,7 @@ public interface LoanNewApplicationInstallmentDao extends IDAO<LoanNewApplicatio
 
 	public LoanNewApplicationInstallment getEntityByIdWithDetail(Long id);	
 	
+	public Long getTotalInstallmentByLoanNewApplicationId(Integer loanNewApplicationId);
+	
 
 }

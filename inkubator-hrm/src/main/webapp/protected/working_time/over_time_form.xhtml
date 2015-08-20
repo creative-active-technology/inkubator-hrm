@@ -59,12 +59,12 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important;">
-                                    <p:outputLabel for="metodeHitungId" value="Metode Hitung" styleClass="label_hrm"/>
+                                    <p:outputLabel for="metodeHitungId" value="#{appmsg['overtime.count_method']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <p:selectOneMenu id="metodeHitungId" value="#{overTimeFormController.overTimeModel.wtHitungLemburID}" style="width: 156px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                            <f:selectItems value="#{overTimeFormController.dropDownWtHitungLembur}"/>
+                                            <f:selectItems value="#{overTimeFormController.listWtHitungLembur}" var="hitungLembur" itemValue="#{hitungLembur.id}" itemLabel="#{hitungLembur.metodeHitung}" />
                                     </p:selectOneMenu>
                                         <p:message for="metodeHitungId"/>
                                 </p:column>
@@ -133,7 +133,14 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important;">
-                                    <p:outputLabel for="faktorMulai" value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['overtime.factor_setting']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="faktorMulai" value="#{appmsg['overtime.start_time']}" styleClass="label_hrm" style="margin-left:30px;"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker id="faktorMulai" value="#{overTimeFormController.overTimeModel.startTimeFactor}" required="true"
@@ -147,7 +154,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important;">
-                                    <p:outputLabel for="faktorAkhir" value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="faktorAkhir" value="#{appmsg['overtime.end_time']}" styleClass="label_hrm" style="margin-left:30px;"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:timePicker id="faktorAkhir" value="#{overTimeFormController.overTimeModel.finishTimeFactor}" required="true"
@@ -157,12 +164,21 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important;">
-                                    <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm" style="margin-left:30px;"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <pe:inputNumber value="#{overTimeFormController.overTimeModel.valuePrice}" required="true"
                                                     id="valuePrice" styleClass="isitext_hrm"  style="width: 210px;text-align: right" decimalPlaces="2" />
                                     <p:message for="valuePrice"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="isActive" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:selectBooleanButton id="isActive" value="#{overTimeFormController.overTimeModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close" />
                                 </p:column>
                             </p:row>
 

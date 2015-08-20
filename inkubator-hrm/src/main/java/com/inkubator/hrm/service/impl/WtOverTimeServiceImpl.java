@@ -5,25 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.ApprovalDefinitionDao;
-import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
-import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
-import com.inkubator.hrm.dao.WtHitungLemburDao;
-import com.inkubator.hrm.dao.WtOverTimeDao;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
-import com.inkubator.hrm.entity.ApprovalDefinitionOT;
-import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.entity.WtHitungLembur;
-import com.inkubator.hrm.entity.WtOverTime;
-import com.inkubator.hrm.service.WtOverTimeService;
-import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +15,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.Lambda;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
+import com.inkubator.hrm.dao.OverTimeDistributionDao;
+import com.inkubator.hrm.dao.WtHitungLemburDao;
+import com.inkubator.hrm.dao.WtOverTimeDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionOT;
+import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
+import com.inkubator.hrm.entity.OverTimeDistribution;
+import com.inkubator.hrm.entity.WtHitungLembur;
+import com.inkubator.hrm.entity.WtOverTime;
+import com.inkubator.hrm.service.WtOverTimeService;
+import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -51,6 +51,8 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     private ApprovalDefinitionOTDao approvalDefinitionOTDao;
     @Autowired
     private WtHitungLemburDao wtHitungLemburDao;
+    @Autowired
+    private OverTimeDistributionDao overTimeDistributionDao;
     
     @Override
     public WtOverTime getEntiyByPK(String id) throws Exception {
@@ -85,7 +87,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(WtOverTime entity) throws Exception {
-        long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
+    	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	
+    	/*long totalDuplicates = wtOverTimeDao.getTotalDuplicaByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("over_time.error_code_duplicate");
         }
@@ -103,7 +107,7 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         overTime.setValuePrice(entity.getValuePrice());
         overTime.setUpdatedBy(UserInfoUtil.getUserName());
         overTime.setUpdatedOn(new Date());
-        wtOverTimeDao.update(overTime);
+        wtOverTimeDao.update(overTime);*/
         
     }
     
@@ -210,8 +214,9 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     }
     
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<WtOverTime> getAllData(Boolean isActive) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return wtOverTimeDao.getAllData(isActive);
     }
     
     @Override
@@ -302,6 +307,7 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         overTime.setOverTimeCalculation(entity.getOverTimeCalculation());
         overTime.setStartTimeFactor(entity.getStartTimeFactor());
         overTime.setValuePrice(entity.getValuePrice());
+        overTime.setIsActive(entity.getIsActive());
         overTime.setUpdatedBy(UserInfoUtil.getUserName());
         overTime.setUpdatedOn(new Date());
         wtOverTimeDao.update(overTime);
@@ -329,4 +335,17 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     public WtOverTime getEntityByPkFetchApprovalDefinition(Long id) throws Exception {
         return wtOverTimeDao.getEntityByPkFetchApprovalDefinition(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public WtOverTime getEntityByPkWithDetail(Long id) throws Exception {
+		return wtOverTimeDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<WtOverTime> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive) {
+		List<OverTimeDistribution> listDistributions = overTimeDistributionDao.getAllDataByEmpDataIdAndIsActive(empDataId, isActive);		
+		return Lambda.extract(listDistributions, Lambda.on(OverTimeDistribution.class).getWtOverTime());
+	}
 }

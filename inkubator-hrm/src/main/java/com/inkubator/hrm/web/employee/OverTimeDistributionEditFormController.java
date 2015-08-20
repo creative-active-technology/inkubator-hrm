@@ -58,7 +58,7 @@ public class OverTimeDistributionEditFormController extends BaseController{
         
         model = new OverTimeDistributionModel();
         try {
-            wtOverTimeList = wtOverTimeService.getAllData();
+            wtOverTimeList = wtOverTimeService.getAllData(Boolean.TRUE);
             if (empDataId != null && overTimeId != null) {
                 
                 isEdit = Boolean.TRUE;
