@@ -6,8 +6,14 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -28,5 +34,13 @@ public class LoanNewApplicationInstallmentDaoImpl extends IDAOImpl<LoanNewApplic
     public LoanNewApplicationInstallment getEntityByIdWithDetail(Long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	public Long getTotalInstallmentByLoanNewApplicationId(Integer loanNewApplicationId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("loanNewApplication", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("loanNewApplication.id", loanNewApplicationId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
     
 }

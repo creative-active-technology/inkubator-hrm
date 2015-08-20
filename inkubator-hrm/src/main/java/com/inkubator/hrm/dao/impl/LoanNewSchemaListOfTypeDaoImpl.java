@@ -8,13 +8,19 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfTypeDao;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.web.model.LoanHistoryViewModel;
+import com.inkubator.hrm.web.model.LoanUsageHistoryViewModel;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -113,5 +119,22 @@ public class LoanNewSchemaListOfTypeDaoImpl extends IDAOImpl<LoanNewSchemaListOf
         criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
         return (LoanNewSchemaListOfType) criteria.uniqueResult();
     }
+
+	@Override
+	public List<LoanUsageHistoryViewModel> getListLoanUsageHistoryByLoanNewSchemaWhereStatusActive(Long loanNewSchemaId) {
+		final StringBuilder query = new StringBuilder("SELECT loanNewType.id AS loanNewTypeId,");
+        query.append(" loanNewType.loanTypeName AS loanNewTypeName,");
+        query.append(" loanNewSchemaListOfType.maximumAllocation AS maximumAllocation ");
+        query.append(" FROM LoanNewSchemaListOfType loanNewSchemaListOfType ");
+        query.append(" INNER JOIN loanNewSchemaListOfType.loanNewSchema loanNewSchema ");
+        query.append(" INNER JOIN loanNewSchemaListOfType.loanNewType loanNewType ");
+        query.append(" WHERE loanNewSchema.id = :loanNewSchemaId ");
+        
+        Query hbm = getCurrentSession().createQuery(query.toString())
+    			.setParameter("loanNewSchemaId", loanNewSchemaId)    		
+    			.setResultTransformer(Transformers.aliasToBean(LoanUsageHistoryViewModel.class));
+    	
+    	return hbm.list();
+	}
 
 }
