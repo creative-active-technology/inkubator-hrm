@@ -1206,34 +1206,34 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.isNull("wtGroupWorking"));
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         return !criteria.list().isEmpty();
-    }
-
-    /*
-     * Query realisasi kehadiran per departemen dalam range date tertentu, 
-     *  lalu di transform ke class DepAttendanceRealizationViewModel
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill) {
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
-                + " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
-                + " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
-                + " COUNT(tempProcessReadFinger.working_hour_id) as attendanceReal,"
-                + " (COUNT(tempProcessReadFinger.working_hour_id) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
-                + " FROM temp_jadwal_karyawan tempJadwalKaryawan"
-                + " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
-                + " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
-                + " JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
-                + " JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
-                + " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
-                + " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) + "' "
-                + " AND wtWorkingHour.code <> 'OFF'"
-                + " AND jabatan.departement_id =  " + departmentId
-                + " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
-
-        return getCurrentSession().createSQLQuery(query.toString())
+	}
+	
+	/*
+	 * Query realisasi kehadiran per departemen dalam range date tertentu, 
+	 *  lalu di transform ke class DepAttendanceRealizationViewModel
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DepAttendanceRealizationViewModel> getListDepAttendanceByDepartmentIdAndRangeDate(Long departmentId, Date dateFrom, Date dateUntill) {
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		StringBuilder query = new StringBuilder(" SELECT  jabatan.departement_id AS departmentId, "
+				+ " WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) AS weekNumber,"
+				+ " COUNT(tempJadwalKaryawan.working_our_id) as attendanceSchedule ,"
+				+ " COUNT(tempProcessReadFinger.finger_in) as attendanceReal,"
+				+ " (COUNT(tempProcessReadFinger.finger_in) / COUNT(tempJadwalKaryawan.working_our_id)) as attendancePercentage"
+				+ " FROM temp_jadwal_karyawan tempJadwalKaryawan"
+				+ " LEFT JOIN temp_process_read_finger tempProcessReadFinger ON tempProcessReadFinger.emp_data_id = tempJadwalKaryawan.emp_id"
+				+ " AND tempProcessReadFinger.schedule_date = tempJadwalKaryawan.tanggal_waktu_kerja"
+				+ " JOIN emp_data empData ON tempJadwalKaryawan.emp_id = empData.id"
+				+ " JOIN jabatan jabatan ON empData.jabatan_id = jabatan.id"
+				+ " INNER JOIN wt_working_hour wtWorkingHour ON tempJadwalKaryawan.working_our_id = wtWorkingHour.id"
+				+ " WHERE tempJadwalKaryawan.tanggal_waktu_kerja BETWEEN '" + dateFormat.format(dateFrom) + "' AND '" + dateFormat.format(dateUntill) +"' "
+				+ " AND wtWorkingHour.code <> 'OFF'"
+				+ " AND jabatan.departement_id =  " + departmentId
+				+ " GROUP BY WEEK(tempJadwalKaryawan.tanggal_waktu_kerja) , jabatan.departement_id ; ");
+		
+		return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(DepAttendanceRealizationViewModel.class))
                 .list();
     }

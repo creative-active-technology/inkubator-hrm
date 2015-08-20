@@ -212,7 +212,7 @@
                                          action="#{bioAddressFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioAddressFormId"
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{bioAddressFormController.doReset()}" process="@this" update="formBioAddressFormId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formBioAddressFormId" />  
                         </p:commandButton>

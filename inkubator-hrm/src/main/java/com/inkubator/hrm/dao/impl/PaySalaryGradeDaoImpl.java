@@ -101,4 +101,11 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
         return (PaySalaryGrade) criteria.uniqueResult();
     }
 
+	@Override
+	public List<PaySalaryGrade> getAllDataOrderAscMinSalary() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.addOrder(Order.asc("minSalary"));
+		return criteria.list();
+	}
+
 }

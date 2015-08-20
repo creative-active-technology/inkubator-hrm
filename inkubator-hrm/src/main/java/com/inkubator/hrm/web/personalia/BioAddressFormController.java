@@ -169,15 +169,16 @@ public class BioAddressFormController extends BaseController {
                 if (bioAddress != null) {
                     model = getModelFromEntity(bioAddress);
                     provinces = provinceService.getByCountryId(model.getCountryId());
-            		cities = cityService.getByProvinceId(model.getProvinceId());
+                    cities = cityService.getByProvinceId(model.getProvinceId());
                 }
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
         } else {
             model = new BioAddressModel();
-            provinces.clear();
-            cities.clear();            
+            countries = null;
+            provinces = null;
+            cities.clear();
         }
     }
 	

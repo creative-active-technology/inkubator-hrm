@@ -5,7 +5,26 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
+
+import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
+import com.inkubator.common.util.NumberFormatter;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
@@ -21,22 +40,11 @@ import com.inkubator.hrm.service.EmployeeTypeService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.PaySalaryGradeService;
+import com.inkubator.hrm.util.RomanovUtil;
 import com.inkubator.hrm.web.model.EmpDataModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -50,7 +58,7 @@ public class EmpDataFormController extends BaseController {
     private Map<String, Long> mapDepartements = new HashMap<String, Long>();
     private Map<String, Long> mapJabatans = new HashMap<String, Long>();
     private Map<String, Long> mapStatusKaryawan = new HashMap<String, Long>();
-    private Map<Integer, Long> mapPaySalary = new HashMap<Integer, Long>();
+    private Map<String, Long> mapPaySalary = new LinkedHashMap<String, Long>();
     private Map<String, Long> mapGolonganJabatan = new HashMap<String, Long>();
 
 //    private HrmUserSearchParameter hrmUserSearchParameter;
@@ -103,9 +111,12 @@ public class EmpDataFormController extends BaseController {
                 mapStatusKaryawan.put(employeeType.getName(), employeeType.getId());
             }
 
-            List<PaySalaryGrade> paysSalarys = paySalaryGradeService.getAllData();
+            List<PaySalaryGrade> paysSalarys = paySalaryGradeService.getAllDataOrderAscMinSalary();
             for (PaySalaryGrade paySalaryGrade : paysSalarys) {
-                mapPaySalary.put(paySalaryGrade.getGradeSalary(), paySalaryGrade.getId());
+            	String min = NumberFormatter.getNumberAsStringActiveLocale(paySalaryGrade.getMinSalary(), new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()), CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, 2, 0);
+                String max = NumberFormatter.getNumberAsStringActiveLocale(paySalaryGrade.getMaxSalary(), new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()), CommonUtilConstant.NUMBER_FORMAT_NUMBER_TYPE, 2, 0);
+                String temp = this.convertToRomawi(paySalaryGrade.getGradeSalary()) + " -- " + min + " - " + max;
+                mapPaySalary.put(temp, paySalaryGrade.getId());
             }
             if (empId != null) {
                 isEdit = Boolean.TRUE;
@@ -148,6 +159,14 @@ public class EmpDataFormController extends BaseController {
 
     }
 
+    private String convertToRomawi(int number){
+    	StringBuffer romawi = new StringBuffer();
+    	
+    	romawi.append(RomanovUtil.convertToRoman(number));
+    	
+    	return romawi.toString();
+    }
+    
     public String doAdd() {
         return "/protected/employee/emp_placement_form.htm?faces-redirect=true";
     }
@@ -200,11 +219,11 @@ public class EmpDataFormController extends BaseController {
         this.paySalaryGradeService = paySalaryGradeService;
     }
 
-    public Map<Integer, Long> getMapPaySalary() {
+    public Map<String, Long> getMapPaySalary() {
         return mapPaySalary;
     }
 
-    public void setMapPaySalary(Map<Integer, Long> mapPaySalary) {
+    public void setMapPaySalary(Map<String, Long> mapPaySalary) {
         this.mapPaySalary = mapPaySalary;
     }
 
