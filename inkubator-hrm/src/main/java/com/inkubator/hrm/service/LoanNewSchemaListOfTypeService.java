@@ -7,6 +7,8 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.web.model.LoanUsageHistoryViewModel;
+
 import java.util.List;
 
 /**
@@ -26,4 +28,6 @@ public interface LoanNewSchemaListOfTypeService extends IService<LoanNewSchemaLi
     public List<LoanNewSchemaListOfType> getEntityByLoanNewSchemaWhereStatusActive(Long loanNewSchema) throws Exception;
     
     public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId)throws Exception;
+    
+    public List<LoanUsageHistoryViewModel> getListLoanUsageHistoryByLoanNewSchemaAndEmpDataIdWhereStatusActive(Long loanNewSchemaId, Long empDataId) throws Exception;
 }
