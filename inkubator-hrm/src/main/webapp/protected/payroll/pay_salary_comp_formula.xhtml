@@ -69,39 +69,39 @@
 
                         <!--<p:separator style="margin-left: 5px"/>-->
                         <h:panelGrid columns="3">
-                            <p:commandButton value="Basic Salary" action="#{paySalaryComponentFormulaController.doAddBasicSalary()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px"/>
-                            <p:commandButton value="Working Day" action="#{paySalaryComponentFormulaController.doAddWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
-                            <p:commandButton value="Total Day" action="#{paySalaryComponentFormulaController.doAddTotalWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
-                            <p:commandButton value="Over Time" action="#{paySalaryComponentFormulaController.doAddOverTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
-                            <p:commandButton value="Less Time" action="#{paySalaryComponentFormulaController.doAddLessTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
-                            <p:commandButton value="More Time" action="#{paySalaryComponentFormulaController.doAddMoreTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
+                            <p:commandButton value="#{appmsg['modelComponent.modelComponent_basic']}" action="#{paySalaryComponentFormulaController.doAddBasicSalary()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px"/>
+                            <p:commandButton value="#{appmsg['leave.working_days']}" action="#{paySalaryComponentFormulaController.doAddWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
+                            <p:commandButton value="#{appmsg['leavescheme.total_days']}" action="#{paySalaryComponentFormulaController.doAddTotalWorkingDay()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
+                            <p:commandButton value="#{appmsg['global.overtime']}" action="#{paySalaryComponentFormulaController.doAddOverTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
+                            <p:commandButton value="#{appmsg['global.less_time']}" action="#{paySalaryComponentFormulaController.doAddLessTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
+                            <p:commandButton value="#{appmsg['global.more_time']}" action="#{paySalaryComponentFormulaController.doAddMoreTime()}" update=":formulaOneId" partialSubmit="true" process="@this" style="width: 100px" />
 
                         </h:panelGrid>
 
 
                         <h:panelGrid columns="9" id="panelFormId"> 
-                            <p:outputLabel value="Basic Salary" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['modelComponent.modelComponent_basic']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.basicSalary}" decimalPlaces="2" style="width: 40px" required="true" label="Basic Salary" />
 
 
-                            <p:outputLabel value="Working Day" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['leave.working_days']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.workingDay}" decimalPlaces="2" style="width: 40px" required="true" label="Working Day" />
 
-                            <p:outputLabel value="Total Day" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['leavescheme.total_days']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.totalDay}" decimalPlaces="2" style="width: 40px" required="true" label="Total Day" />
 
-                            <p:outputLabel value="Over Time" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.overTIme}" decimalPlaces="2" style="width: 40px" required="true" label="Over Time" />
 
-                            <p:outputLabel value="Less Time" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['global.less_time']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.lessTime}" decimalPlaces="2" style="width: 40px" required="true" label="Less Time" />
 
-                            <p:outputLabel value="More Time" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['global.more_time']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <pe:inputNumber value="#{paySalaryComponentFormulaController.moreTime}" decimalPlaces="2" style="width: 40px" required="true" label="More Time" />
 
@@ -110,7 +110,7 @@
 
 
                         <h:panelGrid columns="3">
-                            <p:outputLabel value="Hasil" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{appmsg['global.result']}" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
                             <h:panelGroup>
                                 <p:outputLabel value="#{paySalaryComponentFormulaController.outPut}" id="ouPutId"/>
