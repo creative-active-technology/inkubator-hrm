@@ -22,7 +22,7 @@ public class BirthDateValidator implements Validator {
         if (birthDate == null) {
             return; // Let required="true" do its job.
         }
-        System.out.println(" nili tanggal lagir "+birthDate);
+     
         // Check if begin time is bigger/equal with end time
         if (birthDate.after(new Date()) || birthDate.equals(new Date())) {
             String validatorMessage = (String) component.getAttributes().get("validatorMessage");

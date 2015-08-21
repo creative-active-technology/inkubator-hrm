@@ -169,7 +169,7 @@ public class DivisiFormController extends BaseController{
     
     public void doSelectOneMenuDepartment() throws Exception{
         department = departmentService.getAllData();
-        System.out.println(department + " jkasdjkfkjsa");
+    
         for(Department departments : department){
             dropDownDepartment.put(departments.getDepartmentName(), departments.getId());
         }

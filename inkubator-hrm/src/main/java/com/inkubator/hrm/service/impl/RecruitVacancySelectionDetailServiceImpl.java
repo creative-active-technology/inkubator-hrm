@@ -278,7 +278,7 @@ public class RecruitVacancySelectionDetailServiceImpl extends IServiceImpl imple
 			
 		}
 		recruitVacancySelectionDetail.setListEmpData(listEmployee);
-		System.out.println(recruitVacancySelectionDetail.getListEmpData().size()  +  " size di entity");
+		
 		return recruitVacancySelectionDetail;
 	}
 

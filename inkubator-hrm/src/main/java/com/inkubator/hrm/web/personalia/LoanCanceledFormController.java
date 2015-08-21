@@ -66,7 +66,7 @@ public class LoanCanceledFormController extends BaseController {
             loanCanceledModel = new LoanCanceledModel();
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             if(!isAdministator){
-            	System.out.println("masuk if");
+            
             	loanCanceledModel.setEmpData(HrmUserInfoUtil.getEmpData());
             	listActivity = loanService.getAllDataNotApprovedYet(UserInfoUtil.getUserName());
             }

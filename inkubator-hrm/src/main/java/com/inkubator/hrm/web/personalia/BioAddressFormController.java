@@ -240,7 +240,7 @@ public class BioAddressFormController extends BaseController {
 	
 	private BioAddress getEntityFromViewModel(BioAddressModel model) {
 		BioAddress bioAddress = new BioAddress();
-		System.out.println("getEntityFromViewModel, model.getId() :  " + model.getId());
+		
 		if(model.getId() != null){
 			bioAddress.setId(model.getId());
 		}
@@ -255,7 +255,7 @@ public class BioAddressFormController extends BaseController {
 		bioAddress.setSubDistrict(model.getSubDistrict());
 		bioAddress.setVillage(model.getVillage());
 		bioAddress.setNotes(model.getNotes());
-		System.out.println("getEntityFromViewModel, bioAddress.getId() :  " + bioAddress.getId());
+		
 	    return bioAddress;
 	}
 	

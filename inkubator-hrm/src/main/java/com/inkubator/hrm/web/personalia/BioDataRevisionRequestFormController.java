@@ -1078,7 +1078,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
     }
 
     public void doUpdateBioSpesifikasiAbility() {
-    	System.out.println("masuk doUpdateBioSpesifikasiAbility");
+    
         Map<String, List<String>> dataToSend = new HashMap<>();
         dataToSend.put("bioSpecAbiId", Arrays.asList(String.valueOf(selectedBioSpesifikasiAbility.getSpecificationAbility().getId())));
         dataToSend.put("bioDataId", Arrays.asList(String.valueOf(selectedBioData.getId())));
@@ -1129,8 +1129,7 @@ public class BioDataRevisionRequestFormController extends BaseController {
         try {
         	BioSpesifikasiAbility  bioSpesifikasiAbility = (BioSpesifikasiAbility ) event.getObject();
         	if(ObjectUtils.notEqual(bioSpesifikasiAbility, null)){
-        		System.out.println("bioSpesifikasiAbility.getSpecificationAbility() null ? " + (bioSpesifikasiAbility.getSpecificationAbility() == null));
-        		System.out.println("specificationAbilityService null ? " + (specificationAbilityService == null));
+        		
         		SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(bioSpesifikasiAbility.getSpecificationAbility().getId());
         		bioSpesifikasiAbility.setSpecificationAbility(specificationAbility);
         		

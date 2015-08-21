@@ -256,7 +256,7 @@ public class RecruitSelectionTypeTemplatesServiceImpl extends IServiceImpl imple
             rstt.setCode("ROOT");
             rstt.setName("ROOT");
             rstt.setTargetNilai(0.0);
-            System.out.println(" ini di keseskkseeksk");
+         
             rstt.setCreatedBy(UserInfoUtil.getUserName());
             rstt.setCreatedOn(new Date());
             recruitSelectionTypeTemplatesDao.save(rstt);

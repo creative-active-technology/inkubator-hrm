@@ -143,7 +143,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     }
 
     public void doSelectEntity() {
-        System.out.println("hoho");
+   
         try {
             selectedLoanNewSchemaListOfType = this.loanNewSchemaListOfTypeService.getEntityByIdWithDetail(selectedLoanNewSchemaListOfType.getId());
         } catch (Exception ex) {
@@ -157,7 +157,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     }
     
     public void doDelete() {
-        System.out.println("masuk delete");
+      
         try {
             this.loanNewSchemaListOfTypeService.softDelete(selectedLoanNewSchemaListOfType);
             listOfLoanNewType = loanNewSchemaListOfTypeService.getEntityByLoanNewSchema(selectedLoanSchema.getId());
@@ -282,7 +282,7 @@ public class LoanNewSchemaDetailController extends BaseController {
         try {
             listAppDef = Lambda.extract(approvalDefinitionLoanService.getByLoanId(selectedLoanSchema.getId()), Lambda.on(ApprovalDefinitionLoan.class).getApprovalDefinition());
             super.onDialogReturn(event);
-            System.out.println(listAppDef.size() + " hohohohohohoho");
+           
         } catch (Exception ex) {
             LOGGER.error("Error ", ex);
         }
@@ -294,7 +294,7 @@ public class LoanNewSchemaDetailController extends BaseController {
     public void onDialogReturnAddAppDef(SelectEvent event) {
         ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
         appDefs.add(appDef);
-        System.out.println(appDefs.size());
+     
     }
 
     public void onDialogReturnEditAppDef(SelectEvent event) {

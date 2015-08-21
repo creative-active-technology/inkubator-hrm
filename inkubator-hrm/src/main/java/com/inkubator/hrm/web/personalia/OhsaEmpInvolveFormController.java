@@ -123,11 +123,11 @@ public class OhsaEmpInvolveFormController extends BaseController {
 
         try {
             if (isUpdate) {
-                System.out.println("masuk doSave, isUpdate == true");
+              
                 ohsaEmpInvolveService.update(ohsaEmpInvolve);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-                System.out.println("masuk doSave, isUpdate == false");
+              
                 ohsaEmpInvolveService.save(ohsaEmpInvolve);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }

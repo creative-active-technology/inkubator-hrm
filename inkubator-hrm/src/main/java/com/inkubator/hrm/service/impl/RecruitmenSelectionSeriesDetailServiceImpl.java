@@ -255,13 +255,13 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void doChangerListOrder(int newGradeLevel, Long selectionType, Long selectionSeries, Long recSelectionSeriesId) throws Exception {
-        System.out.println(recSelectionSeriesId + " CHANGE LIST ORDER " + newGradeLevel);
+    
     	RecruitmenSelectionSeriesDetail targetChage = this.recruitmenSelectionSeriesDetailDao.getByListOrderAndRecSelectionSeriesId(newGradeLevel, recSelectionSeriesId);
         targetChage.setListOrder(0);
         targetChage.setUpdatedOn(UserInfoUtil.getUserName());
         targetChage.setUpdatedBy(new Date());
         this.recruitmenSelectionSeriesDetailDao.update(targetChage);
-        System.out.println(targetChage.getListOrder() + " " + targetChage.getRecruitmenSelectionSeries().getCode());
+     
         RecruitmenSelectionSeriesDetail newChange = this.recruitmenSelectionSeriesDetailDao.getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(selectionType, selectionSeries);
         int gradeNumberOld = newChange.getListOrder();
         newChange.setListOrder(newGradeLevel);

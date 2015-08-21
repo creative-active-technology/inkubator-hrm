@@ -166,7 +166,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
     public String doSave() {
         String redirect = null;
         if (isEdit) {
-             System.out.println(" editiitit mode");
+         
             try {
                 Set<RecruitSelectionTypeTemplatesJobTitle> templatesJobTitles = new HashSet<>();
                 List<Jabatan> listSelectedJabatan = selectionTypeModel.getDualListModel().getTarget();
@@ -190,7 +190,7 @@ public class RecruitSelectionTypeTemplatesFormController extends BaseController 
             }
         } else {
             try {
-                System.out.println(" Sveeeeeee mode");
+             
                 Set<RecruitSelectionTypeTemplatesJobTitle> templatesJobTitles = new HashSet<>();
                 List<Jabatan> listSelectedJabatan = selectionTypeModel.getDualListModel().getTarget();
                 RecruitSelectionTypeTemplates rstt = getEntityFromViewModel(selectionTypeModel);

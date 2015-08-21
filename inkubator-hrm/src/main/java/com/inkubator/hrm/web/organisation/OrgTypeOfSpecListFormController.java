@@ -176,7 +176,7 @@ public class OrgTypeOfSpecListFormController extends BaseController{
     
     public void doSelectOneMenuOrgTypeOfSpecList() throws Exception{
        orgTypeOfSpec = orgTypeOfSpecService.getAllData();
-        System.out.println(orgTypeOfSpec + "asdfadfds");
+     
        for(OrgTypeOfSpec orgTypeOfSpecs : orgTypeOfSpec){
            dropDownOrgTypeOfSpec.put(orgTypeOfSpecs.getName(), orgTypeOfSpecs.getId());
        }
