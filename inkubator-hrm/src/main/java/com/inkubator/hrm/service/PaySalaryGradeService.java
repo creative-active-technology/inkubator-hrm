@@ -23,5 +23,7 @@ public interface PaySalaryGradeService extends IService<PaySalaryGrade>{
     
     public void doChangerGradeSalary(int newGradeLevel, long oldId) throws Exception;
     
+    public List<PaySalaryGrade> getAllDataOrderAscMinSalary() throws Exception;
+    
    
 }
