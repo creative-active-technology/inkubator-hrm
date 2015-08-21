@@ -7,7 +7,10 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.JabatanEdukasiDao;
 import com.inkubator.hrm.entity.JabatanEdukasi;
+import com.inkubator.hrm.entity.JabatanEdukasiId;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
@@ -18,7 +21,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Deni
  */
-@Repository
+@Repository(value = "jabatanEdukasiDao")
 @Lazy
 public class JabatanEdukasiDaoImpl extends IDAOImpl<JabatanEdukasi> implements JabatanEdukasiDao{
 
@@ -46,6 +49,12 @@ public class JabatanEdukasiDaoImpl extends IDAOImpl<JabatanEdukasi> implements J
         int deletedJabatanMajor = getCurrentSession().createQuery( hqlDeleteJabatanMajor ).setString( "jabatanId", String.valueOf(jabatanId) ).executeUpdate();
         int deletedJabatanFaculty = getCurrentSession().createQuery( hqlDeleteJabatanFaculty ).setString( "jabatanId", String.valueOf(jabatanId) ).executeUpdate();
         int deletedJabatanOccupation = getCurrentSession().createQuery( hqlDeleteJabatanOccupation ).setString( "jabatanId", String.valueOf(jabatanId) ).executeUpdate();
-    }   
+    }
+
+	@Override
+	public JabatanEdukasi getEntityByJabatanEdukasiId(JabatanEdukasiId jabatanEdukasiId) {
+		// TODO Auto-generated method stub
+		return null;
+	}   
     
 }

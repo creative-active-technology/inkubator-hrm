@@ -6,6 +6,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.JabatanEdukasi;
+import com.inkubator.hrm.entity.JabatanEdukasiId;
+
 import java.util.List;
 
 /**
@@ -16,4 +18,6 @@ public interface JabatanEdukasiDao extends IDAO<JabatanEdukasi>{
     public List<JabatanEdukasi> getAllDataByJabatanId(Long jabatanId);
     
     public void deleteAllDataByJabatanId(Long jabatanId);
+    
+    public JabatanEdukasi getEntityByJabatanEdukasiId(JabatanEdukasiId jabatanEdukasiId);
 }
