@@ -210,7 +210,7 @@ public class BioSertifikasiFormController extends BaseController {
 		if(StringUtils.equals(results.get("result"),"true")){
 			documentFile = fileUploadEvent.getFile();
 			model.setUploadFileName(documentFile.getFileName());
-                        System.out.println("fileName ; " + documentFile.getFileName());
+                     
 		} else {
 			ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 			String errorMsg = messages.getString("global.file_size_should_not_bigger_than") + " " + results.get("sizeMax");

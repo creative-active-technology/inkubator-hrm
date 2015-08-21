@@ -263,7 +263,7 @@ public class BioDataFormController extends BaseController {
     public String doSave() {
         String paramRedirect = null;
         try {
-            System.out.println(" proses1");
+        
             BioData bioData = getEntityFromView(bioDataModel);
             if (isEdit) {
                 bioDataService.update(bioData);

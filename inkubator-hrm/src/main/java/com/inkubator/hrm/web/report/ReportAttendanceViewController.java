@@ -83,7 +83,7 @@ public class ReportAttendanceViewController extends BaseController {
 		}
 		modelSearchParameter.setListDeptName(listDeptName);
 		modelSearchParameter.setListGolJabName(listGolJabName);
-		System.out.println(modelSearchParameter.getListDeptName() + " ukurang : " + modelSearchParameter.getListGolJabName());
+		
 		lazyDataModel = new ReportAttendanceLazyDataModel(modelSearchParameter, logWtAttendanceRealizationService);
     }
 	

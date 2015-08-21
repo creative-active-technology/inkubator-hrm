@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import java.io.IOException;
+
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.JabatanService;
@@ -13,12 +15,15 @@ import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -77,8 +82,16 @@ public class JabatanViewController extends BaseController {
         return "/protected/organisation/job_title_detil.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
-    public String doAdd() {
-        return "/protected/organisation/job_title_form.htm?faces-redirect=true";
+    public void doAdd() {
+    	
+        //return "/protected/organisation/job_title_form.htm?faces-redirect=true";
+    	//return "/flow-protected/job";
+    	 try {
+             ExternalContext red = FacesUtil.getExternalContext();
+             red.redirect(red.getRequestContextPath() + "/flow-protected/job");
+         } catch (IOException ex) {
+           LOGGER.error("Erorr", ex);
+         }
     }
 
     public String doEdit() {

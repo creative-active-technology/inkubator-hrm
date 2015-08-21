@@ -41,7 +41,7 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
 			selectedEmpData = empDataService.getByIdWithDetail(empDataId);
 			listLeaveImplementationDateModel = leaveImplementationDateService.getAllDataWithTotalTakenLeaveByEmpDataId(selectedEmpData.getId());
 			listLeaveImplementationDate = leaveImplementationDateService.getAllDataByEmpDataId(empDataId);
-			System.out.println(listLeaveImplementationDate.size() + " hoho");
+			
         } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -317,7 +317,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
             jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
-            System.out.println(" Tanggal nya " + jadwalKaryawan.getTanggalWaktuKerja());
+       
             this.tempJadwalKaryawanDao.saveOrUpdateAndMerge(jadwalKaryawan);
             i++;
         }
@@ -518,7 +518,8 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
     }
 
     @Override
-    public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId) throws Exception {
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId, Date startDate, Date endDate) throws Exception {
         List<Long> listIdEmp = Lambda.extract(data, Lambda.on(EmpData.class).getId());
         WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(groupWorkingId);
         groupWorking.setIsActive(Boolean.TRUE);
@@ -531,12 +532,14 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-        String dataToJson = jsonConverter.getJson(data.toArray(new Long[data.size()]));
+        String dataToJson = jsonConverter.getJson(listIdEmp.toArray(new Long[listIdEmp.size()]));
         final JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("listEmpId", dataToJson);
         jsonObject.addProperty("groupWorkingId", groupWorkingId);
         jsonObject.addProperty("createDate", dateFormat.format(new Date()));
         jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
+        jsonObject.addProperty("startDate", dateFormat.format(startDate));
+        jsonObject.addProperty("endDate", dateFormat.format(endDate));
         jsonObject.addProperty("locale", FacesUtil.getFacesContext().getViewRoot().getLocale().toString());
 
         this.jmsTemplateMassJadwalKerjaExcection.send(new MessageCreator() {

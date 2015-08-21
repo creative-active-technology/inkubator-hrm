@@ -34,7 +34,7 @@ public class RecruitVacancySelectionDetailPicDaoImpl extends IDAOImpl<RecruitVac
 	@Override
 	public List<RecruitVacancySelectionDetailPic> getAllDataByRecruitVacancySelectionDetailId(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		System.out.println(id + " idnya");
+		
 		criteria.createAlias("recruitVacancySelectionDetail", "recruitVacancySelectionDetail", JoinType.INNER_JOIN);
 		criteria.createAlias("recruitVacancySelectionDetail.recruitVacancySelection", "recruitVacancySelection", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("recruitVacancySelectionDetail.id", id));

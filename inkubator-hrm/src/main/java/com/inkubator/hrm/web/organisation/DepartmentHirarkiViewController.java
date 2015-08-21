@@ -164,7 +164,7 @@ public class DepartmentHirarkiViewController extends BaseController {
     }
 
     public String doCreateDiagaram() {
-        System.out.println(" hahhahaah");
+     
         return "/protected/organisation/level_organisasi_diagram.htm?faces-redirect=true&execution=e" + selectedOrganisasi;
     }
 }

@@ -459,7 +459,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         
         //save new photo to disk
 		String pathPhoto = facesIO.getPathUpload() + bioData.getId() + "_" + multipart.getOriginalFilename();
-		System.out.println(pathPhoto);
+		
 		File file = new File(pathPhoto);
 		multipart.transferTo(file);		
 		

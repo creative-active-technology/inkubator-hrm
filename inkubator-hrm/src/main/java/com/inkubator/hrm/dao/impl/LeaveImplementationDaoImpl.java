@@ -319,7 +319,7 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 	
 	public String getRealFieldLeaveReport(String orderField){
 		String realOrderField = StringUtils.EMPTY;
-		System.out.println("orderField : " + orderField);
+	
 		switch (orderField) {
 		
 		case "leaveDate":

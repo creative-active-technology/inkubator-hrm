@@ -71,11 +71,11 @@ public class BusinessTravelFormController implements Serializable{
 			Long id = context.getFlowScope().getLong("id");	
 			BusinessTravelModel model = new BusinessTravelModel();
 			if(id != null){			
-				System.out.println("if hohoho");
+				
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
 				model = bindEntityToModel(businessTravel);
 			}else{
-				System.out.println("else hohoho");
+				
 				//if id = null create temp codefication
 				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
 			}
@@ -167,7 +167,7 @@ public class BusinessTravelFormController implements Serializable{
 		try {
 			if(businessTravel.getId() == null) {
 				message = businessTravelService.save(businessTravel, model.getBusinessTravelComponents(), false);
-				System.out.println("message : " + message);
+				
 				if (StringUtils.equals(message, "success_need_approval")) {
 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				}else if (StringUtils.equals(message, "success_without_approval")) {

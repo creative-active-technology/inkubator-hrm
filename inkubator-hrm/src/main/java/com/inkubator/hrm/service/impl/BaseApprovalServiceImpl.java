@@ -185,7 +185,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				throw new BussinessException("loan.approver_still_not_have_account");
 			}
 			if(!empData.getHrmUsers().isEmpty()){ //if not empty
-				System.out.println("getApproverByJabatanId empData.getHrmUsers() is not empty ");
+				
 				HrmUser approver = empData.getHrmUsers().iterator().next();
 				userId = approver.getUserId();					
 			}

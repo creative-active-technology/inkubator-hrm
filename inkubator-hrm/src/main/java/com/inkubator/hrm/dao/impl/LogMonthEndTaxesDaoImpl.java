@@ -49,7 +49,7 @@ public class LogMonthEndTaxesDaoImpl extends IDAOImpl<LogMonthEndTaxes> implemen
         query.append(this.getWhereQueryByParamForReportPPh(searchParameter));
         
         query.append(" GROUP BY empNik");
-        System.out.println(searchParameter.getPeriodeId() + " periode hohoho");
+    
         Query hbm = getCurrentSession().createQuery(query.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
             	.setResultTransformer(Transformers.aliasToBean(PphReportModel.class));
         hbm = this.setValueQueryByParamForReportSalaryNote(hbm, searchParameter);

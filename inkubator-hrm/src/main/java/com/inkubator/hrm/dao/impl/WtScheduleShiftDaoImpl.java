@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.WtScheduleShiftDao;
 import com.inkubator.hrm.entity.WtScheduleShift;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -84,6 +85,23 @@ public class WtScheduleShiftDaoImpl extends IDAOImpl<WtScheduleShift> implements
         criteria.createAlias("wtGroupWorking", "wg");
         criteria.add(Restrictions.eq("wg.id", workingGroupId));
         return criteria.list();
+    }
+
+    @Override
+    public WtScheduleShift getBywtGroupWorkingIdAndscheduleDate(long id, Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wtGroup", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("wtGroup.id", id));
+        criteria.add(Restrictions.eq("scheduleDate", date));
+        return (WtScheduleShift) criteria.uniqueResult();
+    }
+
+    @Override
+    public WtScheduleShift getByWtGroupWorkingId(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("wtGroupWorking", "wtGroup", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("wtGroup.id", id));
+        return (WtScheduleShift) criteria.uniqueResult();
     }
 
 }

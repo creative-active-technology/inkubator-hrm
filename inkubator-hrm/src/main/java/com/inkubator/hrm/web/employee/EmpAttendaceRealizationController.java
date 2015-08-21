@@ -44,7 +44,7 @@ public class EmpAttendaceRealizationController extends BaseController {
             List<WorkingTimeDeviation> deviations = tempAttendanceRealizationService.getWorkingHourDeviation(tempAttendanceRealizationSearchParameter, 0, 10, null);
 
             for (WorkingTimeDeviation deviation : deviations) {
-                System.out.println(deviation);
+             
             }
         } catch (Exception ex) {
             LOGGER.error(ex, ex);

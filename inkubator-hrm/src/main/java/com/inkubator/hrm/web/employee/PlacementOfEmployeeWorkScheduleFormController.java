@@ -197,16 +197,18 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     }
 
     public String doSaveException() {
+      
         List<EmpData> dataToSave = dualListModel.getTarget();
+      
         try {
-            tempJadwalKaryawanService.saveMassPenempatanJadwalException(dataToSave, model.getWorkingGroupId());
+            tempJadwalKaryawanService.saveMassPenempatanJadwalException(dataToSave, model.getWorkingGroupId(), model.getStartDate(), model.getEndDate());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             Logger.getLogger(PlacementOfEmployeeWorkScheduleFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
+        return "/protected/employee/schedule_exception_view.htm?faces-redirect=true";
     }
 
     public void doReset() {
@@ -222,4 +224,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
         return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 
+    public String doBackException() {
+        return "/protected/employee/schedule_exception_view.htm?faces-redirect=true";
+    }
 }

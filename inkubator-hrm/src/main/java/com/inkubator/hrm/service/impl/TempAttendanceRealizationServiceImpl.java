@@ -380,8 +380,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 //        List<TempProcessReadFinger> presentAteendace = tempProcessReadFingerDao.getAllDataByEmpDataIdAndScheduleDate(empId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
         List<DetilAttendateRelaization> dataToShow = new ArrayList<>();
         for (TempJadwalKaryawan tempJadwal : dataToCalculate) {
-//            System.out.println("kayarannna " + empId);
-//            System.out.println("jadwalnya " + tempJadwal.getTanggalWaktuKerja());
+
             TempProcessReadFinger finger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empId, tempJadwal.getTanggalWaktuKerja());
             DetilAttendateRelaization attendateRelaization = new DetilAttendateRelaization();
 
@@ -439,17 +438,17 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
             attendanceModel.setDataToShow(dataToShow);
 //            Date temp1 = tempJadwal.getTanggalWaktuKerja();
 //            Date temp2;
-//            System.out.println(" tanggalalgla nya 1" + temp1);
+//          
 //
 //            if (i <= sizePresentDay) {
 //                temp2 = presentAteendace.get(i).getScheduleDate();
-//                System.out.println(" tanggalalgla nya 2" + temp2);
+//               
 //                if (temp1.equals(temp2)) {
-//                    System.out.println("tanggal nya samaaaa");
+//                 
 //                }
 //            }
 //            i++;
-            System.out.println(" Waktu kerjanya adalaha :" + tempJadwal.getTanggalWaktuKerja());
+          
             if (tempJadwal.getTanggalWaktuKerja().equals(new Date())) {
                 break;
             }
@@ -683,8 +682,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         		throw new BussinessException("workingTime.attendance_realization_calc_error_overtime_with_null_wt_hitung_lembur_found");
         	}
         	
-        	System.out.println("otImpl.getWtOverTime().getId()  : " + otImpl.getWtOverTime().getId());
-        	System.out.println("otImpl.getWtOverTime().getWtHitungLembur() null : " + (otImpl.getWtOverTime().getWtHitungLembur() == null));
+        	
             List<WtHitungLemburJam> listWtHitungLemburJam = wtHitungLemburJamDao.getListByWtHitungLemburId(otImpl.getWtOverTime().getWtHitungLembur().getId());
 
             Boolean isImplementedOnScheduleHoliday = Collections.binarySearch(listDateLibur, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;

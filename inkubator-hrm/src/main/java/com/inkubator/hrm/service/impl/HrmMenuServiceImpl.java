@@ -454,7 +454,7 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
                     listChildTogenerate.addAll(listChild);
                 }
             }
-            System.out.println(" ukuran menu nya " + listChildTogenerate.size());
+    
             List<HrmMenu> onlyOneMenus = new ArrayList<>(listChildTogenerate);
             onlyOneMenus = Lambda.sort(onlyOneMenus, Lambda.on(HrmMenu.class).getOrderLevelMenu());
             for (HrmMenu turunan : onlyOneMenus) {

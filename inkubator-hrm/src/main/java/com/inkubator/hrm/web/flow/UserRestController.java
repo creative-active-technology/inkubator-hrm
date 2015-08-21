@@ -41,7 +41,7 @@ public class UserRestController {
             LOGGER.info("searching user by username " + userName);
 
             HrmUser user = hrmUserService.getByNameWithRoles(userName);
-            System.out.println(" Nilinya " + user.getPhoneNumber());
+        
 //            if (user != null) {
             model.setUserName(user.getUserId());
             model.setPhoneNumber(user.getPhoneNumber());
@@ -59,7 +59,7 @@ public class UserRestController {
                 dataToSend.add(roleModel);
             }
             model.setRoles(dataToSend);
-            System.out.println("Ini adalah Role nya " + user.getRoles());
+       
 //            }
 
         } catch (Exception ex) {

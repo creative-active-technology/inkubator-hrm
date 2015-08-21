@@ -30,7 +30,7 @@ public class WtHitungLemburJamDaoImpl extends IDAOImpl<WtHitungLemburJam> implem
 	public List<WtHitungLemburJam> getListByWtHitungLemburId(Long wtHitungLemburId) {
 		
 		try {
-			System.out.println("masuk WtHitungLemburJamDaoImpl, getListByWtHitungLemburId, wtHitungLemburId : " + wtHitungLemburId);
+			
 			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 			criteria.setFetchMode("wtHitungLembur", FetchMode.JOIN);
 			criteria.add(Restrictions.eq("wtHitungLembur.id", wtHitungLemburId));        
