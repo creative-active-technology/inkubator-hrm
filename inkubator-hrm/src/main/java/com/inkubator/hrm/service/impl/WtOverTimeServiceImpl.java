@@ -5,25 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.ApprovalDefinitionDao;
-import com.inkubator.hrm.dao.ApprovalDefinitionLeaveDao;
-import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
-import com.inkubator.hrm.dao.WtHitungLemburDao;
-import com.inkubator.hrm.dao.WtOverTimeDao;
-import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.ApprovalDefinitionLeave;
-import com.inkubator.hrm.entity.ApprovalDefinitionOT;
-import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.entity.WtHitungLembur;
-import com.inkubator.hrm.entity.WtOverTime;
-import com.inkubator.hrm.service.WtOverTimeService;
-import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +15,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.Lambda;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ApprovalDefinitionDao;
+import com.inkubator.hrm.dao.ApprovalDefinitionOTDao;
+import com.inkubator.hrm.dao.OverTimeDistributionDao;
+import com.inkubator.hrm.dao.WtHitungLemburDao;
+import com.inkubator.hrm.dao.WtOverTimeDao;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionOT;
+import com.inkubator.hrm.entity.ApprovalDefinitionOTId;
+import com.inkubator.hrm.entity.OverTimeDistribution;
+import com.inkubator.hrm.entity.WtHitungLembur;
+import com.inkubator.hrm.entity.WtOverTime;
+import com.inkubator.hrm.service.WtOverTimeService;
+import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -51,6 +51,8 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
     private ApprovalDefinitionOTDao approvalDefinitionOTDao;
     @Autowired
     private WtHitungLemburDao wtHitungLemburDao;
+    @Autowired
+    private OverTimeDistributionDao overTimeDistributionDao;
     
     @Override
     public WtOverTime getEntiyByPK(String id) throws Exception {
@@ -338,5 +340,12 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public WtOverTime getEntityByPkWithDetail(Long id) throws Exception {
 		return wtOverTimeDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<WtOverTime> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive) {
+		List<OverTimeDistribution> listDistributions = overTimeDistributionDao.getAllDataByEmpDataIdAndIsActive(empDataId, isActive);		
+		return Lambda.extract(listDistributions, Lambda.on(OverTimeDistribution.class).getWtOverTime());
 	}
 }

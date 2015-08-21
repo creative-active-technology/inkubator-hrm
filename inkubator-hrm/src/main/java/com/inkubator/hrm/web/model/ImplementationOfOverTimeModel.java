@@ -14,13 +14,16 @@ import java.util.Date;
  */
 public class ImplementationOfOverTimeModel implements Serializable {
     private Long id;
-    private Long empDataId;
     private EmpData empData;
     private Long wtOverTimeId;
     private String implementationNumber;
     private Date implementationDate;
     private Date startTime;
     private Date endTime;
+    private Integer relativeHour;
+    private Integer relativeMinute;
+    private Integer calculationMethod;
+    private String description;
 
     public Long getId() {
         return id;
@@ -36,15 +39,6 @@ public class ImplementationOfOverTimeModel implements Serializable {
 
     public void setEmpData(EmpData empData) {
         this.empData = empData;
-    }
-    
-    
-    public Long getEmpDataId() {
-        return empDataId;
-    }
-
-    public void setEmpDataId(Long empDataId) {
-        this.empDataId = empDataId;
     }
 
     public Long getWtOverTimeId() {
@@ -86,6 +80,37 @@ public class ImplementationOfOverTimeModel implements Serializable {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
-    
-    
+
+	public Integer getRelativeHour() {
+		return relativeHour;
+	}
+
+	public void setRelativeHour(Integer relativeHour) {
+		this.relativeHour = relativeHour;
+	}
+
+	public Integer getRelativeMinute() {
+		return relativeMinute;
+	}
+
+	public void setRelativeMinute(Integer relativeMinute) {
+		this.relativeMinute = relativeMinute;
+	}
+
+	public Integer getCalculationMethod() {
+		return calculationMethod;
+	}
+
+	public void setCalculationMethod(Integer calculationMethod) {
+		this.calculationMethod = calculationMethod;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }

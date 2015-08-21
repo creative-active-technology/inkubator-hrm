@@ -31,5 +31,5 @@ public interface TempJadwalKaryawanService extends IService<TempJadwalKaryawan>,
 
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId) throws Exception;
 
-    public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId) throws Exception;
+    public void saveMassPenempatanJadwalException(List<EmpData> data, long groupWorkingId, Date startDate, Date endDate) throws Exception;
 }

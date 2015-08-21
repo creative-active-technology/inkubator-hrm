@@ -76,7 +76,7 @@ public class JadwalKerjaMassMessagesListener extends IServiceImpl implements Mes
     private HrmUserDao hrmUserDao;
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW,
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED,
             isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
     public void onMessage(Message message) {
         try {
