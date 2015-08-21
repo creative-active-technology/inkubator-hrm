@@ -332,7 +332,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
 	public List<LeaveDistribution> getAllDataByEmpDataId(Long empDataId) throws Exception {
 		List<LeaveDistribution> listLeaveDist =  leaveDistributionDao.getAllDataByEmpDataId(empDataId);
 		List<LeaveImplementation> leaveImplementation = leaveImplementationDao.getAllDataByEmpDataId(empDataId);
-		System.out.println(leaveImplementation.size() + " id leave implementation");
+		
 		int i = 0;
 		int consume;
 		for(LeaveDistribution ld : listLeaveDist){

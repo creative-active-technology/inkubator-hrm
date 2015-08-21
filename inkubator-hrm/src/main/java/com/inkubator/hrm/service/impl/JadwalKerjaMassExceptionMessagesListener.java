@@ -101,7 +101,7 @@ public class JadwalKerjaMassExceptionMessagesListener extends IServiceImpl imple
             WtGroupWorking groupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
             Date startDate = groupWorking.getBeginTime();//tidak ditempatkan di dalam loop karena untuk groupworking yang sama
             Date endDate = groupWorking.getEndTime();
-            System.out.println(" begin working " + groupWorking.getBeginTime());
+        
             int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
             int totalDateDif = DateTimeUtil.getTotalDayDifference(startDate, startProposeDate) + 1;
             int num = numberOfDay + 1;
@@ -115,7 +115,7 @@ public class JadwalKerjaMassExceptionMessagesListener extends IServiceImpl imple
             } else {
                 beginScheduleDate = DateTimeUtil.getDateFrom(startDate, (hasilBagi * num), CommonUtilConstant.DATE_FORMAT_DAY);
             }
-            System.out.println(" Mulai Jadwal nya " + beginScheduleDate);
+          
             List<TempJadwalKaryawan> dataToSave = new ArrayList<>();
             TempJadwalKaryawan jadwalKaryawan;
             for (Long id : dataEmpId) {

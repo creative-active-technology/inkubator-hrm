@@ -35,7 +35,7 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
 
     @Override
     public List<TravelComponentCostRate> getAllDataWithAllRelation(TravelComponentCostRateSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-        System.out.println(order.toString() + " order");
+    
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchTravelComponentCostRateByParam(searchParameter, criteria);
 //        criteria.setFetchMode("costCenter", FetchMode.JOIN);

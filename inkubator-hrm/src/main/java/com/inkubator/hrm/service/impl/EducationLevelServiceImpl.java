@@ -294,7 +294,7 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         }else{
         	edu.setLevel(null);
         }
-        System.out.println("update with save");
+    
         educationLevelDao.save(edu);
     }
 

@@ -56,12 +56,12 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
     }
 
     private void doSearchByParam(LoanSearchParameter parameter, Criteria criteria) {
-    	System.out.println(parameter.getLoanSchema() + " LOAN SCHEMAA");
-                            criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-            criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
 
-        if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {        
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
+
+        if (StringUtils.isNotEmpty(parameter.getLoanSchema())) {
 //            criteria.createAlias("loanSchema", "loanSchema", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("loanSchema.name", parameter.getLoanSchema(), MatchMode.ANYWHERE));
         }
@@ -104,19 +104,19 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.add(Restrictions.eq("empData.id", empDataId));
         return criteria.list();
     }
-    
+
     @Override
-	public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) {
-    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_DISBURSED));
         criteria.setFetchMode("loanSchema", FetchMode.JOIN);
         return criteria.list();
-	}
+    }
 
     @Override
     public Long getCurrentMaxId() {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
 
@@ -127,7 +127,7 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.setFetchMode("loanSchema", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));       
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -140,8 +140,6 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         doSearchByParam(parameter, criteria);
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }    
+    }
 
 }
-
-

@@ -262,7 +262,7 @@ public class EducationLevel implements Serializable {
 	}
 
 	public Boolean getIsRendered() {
-		System.out.println( level + " educationLEvel");
+	
 		isRendered = Boolean.TRUE;
 		if(level == null){
 			isRendered = Boolean.FALSE;

@@ -279,8 +279,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
      Double overTIme = null;
      Double totalDay = null;
      Double outPut;
-     System.out.println(" Jumlah Component " + totalPayComponet.size());
-     System.out.println(" Jumlah Employye " + totalEmployee.size());
+     
      int i = 1;
      for (EmpData empData : totalEmployee) {
      List<PayComponentDataException> totalPayComponentException = payComponentDataExceptionDao.getAllByEmpId(empData.getId());

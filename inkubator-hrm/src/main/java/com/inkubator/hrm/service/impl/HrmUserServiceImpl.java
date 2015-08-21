@@ -571,7 +571,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(hrmUser.getId())) {
             hrmRoles.add(hrmRole.getHrmRole());
         }
-        System.out.println(" jumlahnya "+hrmRoles.size());
+    
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
     }
