@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.WtScheduleShift;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -25,5 +26,9 @@ public interface WtScheduleShiftDao extends IDAO<WtScheduleShift> {
     public void saveBatach(List<WtScheduleShift> dataToBacth);
 
     public List<WtScheduleShift> getAllByWorkingGroupId(long workingGroupId);
+
+    public WtScheduleShift getBywtGroupWorkingIdAndscheduleDate(long id, Date date);
+
+    public WtScheduleShift getByWtGroupWorkingId(long id);
 
 }

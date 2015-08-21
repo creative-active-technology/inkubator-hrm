@@ -31,8 +31,6 @@
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        
-                        
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="implementationNumber" value="#{appmsg['overTimeImplementation.implementation_number']}" styleClass="label_hrm"/>
@@ -42,7 +40,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="implementationNumber"  value="#{implementationOfOverTimeFormController.model.implementationNumber}"
-                                             readonly="true" required="true" styleClass="isitext_hrm" style="width:230px;" />
+                                             readonly="true" required="true" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -50,6 +48,7 @@
                                 <p:message for="implementationNumber"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                                 <p:column style="width: 40%;" >
                                     <p:outputLabel for="employeeId" value="#{appmsg['personachievement.employee_name']}" styleClass="label_hrm"/>
@@ -61,6 +60,7 @@
                                     <p:autoComplete id="employeeId" 
                                                 title="#{appmsg['personachievement.employee_name']}" 
                                                 value="#{implementationOfOverTimeFormController.model.empData}"
+                                                disabled="#{implementationOfOverTimeFormController.isUpdate}"
                                                 completeMethod="#{implementationOfOverTimeFormController.doAutoCompletEmployee}"
                                                 scrollHeight="100"
                                                 required="true"
@@ -70,10 +70,8 @@
                                                 converter="empDataConverter"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
                                                 styleClass="isitext_hrm" size="32">
-                                        <!--<p:ajax update="startTime" process="@this" listener="#{implementationOfOverTimeFormController.doValidateStartAndEndTime()}"/>-->
-                                        <p:ajax event="itemSelect" listener="#{implementationOfOverTimeFormController.doSelectEmployee}" />
+                                    	<p:ajax event="itemSelect" listener="#{implementationOfOverTimeFormController.onChangeEmployee()}" update="overtimeName, calculationMethod, groupOvertimeCalculation"/>
                                     </p:autoComplete>
-                                    
                                 </p:column>
                         </p:row>
                         <p:row>
@@ -91,10 +89,8 @@
                             </p:column>
                             <p:column style="width: 50%">
                                 <p:calendar  id="implementationDate" size="32" pattern="dd MMMM yyyy" label="#{appmsg['overTimeImplementation.implementation_date']}" value="#{implementationOfOverTimeFormController.model.implementationDate}"
-                                         required="true" navigator="true">
-<!--                                    <f:validator validatorId="birthDateValidator"  />
-                                    <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>-->
-                                    <p:ajax event="dateSelect" listener="#{implementationOfOverTimeFormController.dateChange}" update="startTime, endTime, overtimeName"/>
+                                         	 disabled="#{implementationOfOverTimeFormController.isUpdate}" required="true" navigator="true">
+                                    <p:ajax event="dateSelect" listener="#{implementationOfOverTimeFormController.onChangeImplDate}" update="overtimeName, calculationMethod, groupOvertimeCalculation"/>
                                 </p:calendar>
                             </p:column>
                         </p:row>
@@ -112,9 +108,9 @@
                                 <h:outputLabel for="overtimeName" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="overtimeName" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}" value="#{implementationOfOverTimeFormController.model.wtOverTimeId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="overtimeName" disabled="#{implementationOfOverTimeFormController.isUpdate}" required="true" value="#{implementationOfOverTimeFormController.model.wtOverTimeId}" style="width: 150px;margin-right: 3px" >
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{implementationOfOverTimeFormController.wtOverTimeDropDown}"/>
+                                    <f:selectItems value="#{implementationOfOverTimeFormController.listWtOverTime}" var="overtime" itemValue="#{overtime.id}" itemLabel="#{overtime.name}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -126,20 +122,62 @@
                         
                         <p:row>
                             <p:column style="width: 40%;">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:inputTextarea id="description" rows="5" cols="32" counter="counterDesc" maxlength="1000" value="#{implementationOfOverTimeFormController.model.description}" 
+                                                     counterTemplate="#{appmsg['global.remaining']}" autoResize="true" required="true"
+                                                     label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                <h:outputText id="counterDesc" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="description"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%;">
+                                <p:outputLabel for="calculationMethod" value="#{appmsg['overTimeImplementation.time_calculation']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="calculationMethod" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                            	<p:selectOneRadio id="calculationMethod" styleClass="isitext_hrm" required="true" value="#{implementationOfOverTimeFormController.model.calculationMethod}">
+                                	<!--Cek HRM Constanta..-->
+                                    <f:selectItem itemLabel="#{appmsg['overTimeImplementation.static']}" itemValue="0" />
+                                    <f:selectItem itemLabel="#{appmsg['overTimeImplementation.relative']}" itemValue="1" /> 
+                                    <p:ajax update="groupOvertimeCalculation"/>       
+                            	</p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="calculationMethod"/>
+                            </p:column>
+                        </p:row>
+                	</p:panelGrid>
+                        
+                    <p:panelGrid id="groupOvertimeCalculation" styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row rendered="#{implementationOfOverTimeFormController.model.calculationMethod == 0}">
+                            <p:column style="width: 40%;">
                                 <p:outputLabel for="startTime" value="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="startTime" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker  id="startTime" locale="in" value="#{implementationOfOverTimeFormController.model.startTime}"
-                                                label="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="isitext_hrm" required="true" disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
+                                <pe:timePicker  id="startTime" mode="popup" value="#{implementationOfOverTimeFormController.model.startTime}"
+                                                label="#{appmsg['overTimeImplementation.start_overtime']}" styleClass="isitext_hrm" required="true">
                                     <f:validator validatorId="timeBetweenValidator"  />
                                     <f:attribute name="endTime" value="#{endTime}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['over_time.minimum_time_is_geater']}"/>
-                                    <p:ajax event="timeSelect" listener="#{implementationOfOverTimeFormController.pickStartTime}"/>
-                                </pe:timePicker>  
-                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                </pe:timePicker>                                  
                             </p:column>
                         </p:row>
                         <p:row>
@@ -148,7 +186,7 @@
                             </p:column>
                         </p:row>
                         
-                        <p:row>
+                        <p:row rendered="#{implementationOfOverTimeFormController.model.calculationMethod == 0}">
                             <p:column style="width: 40%;">
                                 <p:outputLabel for="endTime" value="#{appmsg['overTimeImplementation.end_overtime']}" styleClass="label_hrm"/>
                             </p:column>
@@ -156,13 +194,8 @@
                                 <h:outputLabel for="endTime" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:timePicker id="endTime" value="#{implementationOfOverTimeFormController.model.endTime}" binding="#{endTime}"
-                                               label="#{appmsg['overTimeImplementation.end_overtime']}"  styleClass="isitext_hrm"  required="true" 
-                                               disabled="#{implementationOfOverTimeFormController.isDisableStartAndEndOverTime}">
-                                    <p:ajax event="timeSelect" listener="#{implementationOfOverTimeFormController.pickEndTime}"/>
-                                </pe:timePicker>
-                                               
-                                <p:outputLabel value="#{appmsg['global.hour']}" styleClass="label_hrm" style="margin-left: 7px;font-weight: normal!important"/>
+                                <pe:timePicker id="endTime" mode="popup" value="#{implementationOfOverTimeFormController.model.endTime}" binding="#{endTime}"
+                                               label="#{appmsg['overTimeImplementation.end_overtime']}"  styleClass="isitext_hrm"  required="true"/>                                                                                                               
                             </p:column>
                         </p:row>
                         <p:row>
@@ -170,7 +203,40 @@
                                 <p:message for="endTime"/>
                             </p:column>
                         </p:row>
+                                 
+                        <p:row rendered="#{implementationOfOverTimeFormController.model.calculationMethod == 1}">
+                            <p:column style="width: 40%;">
+                                <p:outputLabel for="hour" value="#{appmsg['global.hour']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="hour" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:spinner id="hour" required="true" min="0" max="47" size="3" value="#{implementationOfOverTimeFormController.model.relativeHour}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="hour"/>
+                            </p:column>
+                        </p:row>   
                         
+                        <p:row rendered="#{implementationOfOverTimeFormController.model.calculationMethod == 1}">
+                            <p:column style="width: 40%;">
+                                <p:outputLabel for="minute" value="#{appmsg['global.minute']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="minute" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 50%">
+                                <p:spinner id="minute" required="true" min="0" max="60" size="3" value="#{implementationOfOverTimeFormController.model.relativeMinute}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="minute"/>
+                            </p:column>
+                        </p:row>         
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>

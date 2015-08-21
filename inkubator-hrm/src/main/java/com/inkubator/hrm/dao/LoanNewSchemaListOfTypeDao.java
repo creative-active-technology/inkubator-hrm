@@ -7,6 +7,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.web.model.LoanUsageHistoryViewModel;
+
 import java.util.List;
 
 /**
@@ -31,4 +33,6 @@ public interface LoanNewSchemaListOfTypeDao extends IDAO<LoanNewSchemaListOfType
     public List<LoanNewSchemaListOfType> getAllDataByLoanSchemaId(Long loanSchemaId);
     
     public LoanNewSchemaListOfType getEntityByLoanNewTypeIdWithDetail(Long loanNewTypeId);
+    
+    public List<LoanUsageHistoryViewModel> getListLoanUsageHistoryByLoanNewSchemaWhereStatusActive(Long loanNewSchemaId);
 }

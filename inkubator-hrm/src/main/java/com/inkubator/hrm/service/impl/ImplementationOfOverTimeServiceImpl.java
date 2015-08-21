@@ -144,12 +144,15 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
         }
         ImplementationOfOverTime update = implementationOfOverTimeDao.getEntiyByPK(entity.getId());
-        update.setWtOverTime(wtOverTimeDao.getEntiyByPK(entity.getWtOverTime().getId()));
-        update.setCode(entity.getCode());
-        update.setEmpData(entity.getEmpData());
-        update.setImplementationDate(entity.getImplementationDate());
+        //update.setWtOverTime(wtOverTimeDao.getEntiyByPK(entity.getWtOverTime().getId()));
+        //update.setCode(entity.getCode());
+        //update.setEmpData(entity.getEmpData());
+        //update.setImplementationDate(entity.getImplementationDate());
+        update.setDescription(entity.getDescription());
         update.setStartTime(entity.getStartTime());
         update.setEndTime(entity.getEndTime());
+        update.setRelativeHour(entity.getRelativeHour());
+        update.setRelativeMinute(entity.getRelativeMinute());
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.implementationOfOverTimeDao.update(update);
@@ -390,9 +393,9 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(implementationOfOverTime.getCreatedOn()));
-            jsonObj.put("overTimeName", implementationOfOverTime.getOverTimeName());
-            jsonObj.put("startTime", timeFormat.format(implementationOfOverTime.getStartTime()));
-            jsonObj.put("endTime", timeFormat.format(implementationOfOverTime.getEndTime()));
+            jsonObj.put("overTimeName", implementationOfOverTime.getWtOverTime().getName());
+            jsonObj.put("hour", implementationOfOverTime.getRelativeHour());
+            jsonObj.put("minute", implementationOfOverTime.getRelativeMinute());
             jsonObj.put("overTimeDate", dateFormat.format(implementationOfOverTime.getImplementationDate()));
             jsonObj.put("implementationNumber", implementationOfOverTime.getCode());
             jsonObj.put("empName", implementationOfOverTime.getEmpData().getBioData().getFirstName() + " " + implementationOfOverTime.getEmpData().getBioData().getLastName());
@@ -425,7 +428,9 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         // check apakah terdapat temporary jadwal karyawan atau tidak
         if(jadwalKaryawan != null){
             // check jika request start time dan end timenya terdapat dalam waktu kerjanya
-            if(entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())){
+            if(entity.getStartTime() != null && entity.getEndTime() != null && 
+            		entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && 
+            		entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
                
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
@@ -437,18 +442,12 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
         Date createdOn = wtOverTime.getCreatedOn() == null ? new Date() : wtOverTime.getCreatedOn();
-          
-        
-        String overTimeName = wtOverTime.getName();
+                  
         entity.setEmpData(empData);
         entity.setWtOverTime(wtOverTime);
-        entity.setCode(entity.getCode());
-        entity.setImplementationDate(entity.getImplementationDate());
-        entity.setStartTime(entity.getStartTime());
-        entity.setEndTime(entity.getEndTime());
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
-        entity.setOverTimeName(overTimeName);
+        
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         List<ApprovalDefinition> appDefs = Lambda.extract(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition());
         
@@ -498,16 +497,15 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 	@Override
 	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
 		StringBuffer detail = new StringBuffer();
 		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
 		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         ImplementationOfOverTime entity =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
         
         detail.append("Pengajuan lembur oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
-        detail.append("Jenis: " + entity.getOverTimeName() + ". ");
+        detail.append("Jenis: " + entity.getWtOverTime().getName() + ". ");
         detail.append("Tanggal " + dateFormat.format(entity.getImplementationDate()) + ". ");        
-        detail.append("Dari jam " + timeFormat.format(entity.getStartTime()) + " s/d " + timeFormat.format(entity.getEndTime()));
+        detail.append("Total " + entity.getRelativeHour() + " jam, " + entity.getRelativeMinute() + " menit");
         return detail.toString();
 	}
     

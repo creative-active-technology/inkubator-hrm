@@ -5,12 +5,8 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.WtOverTimeDao;
-import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.entity.WtOverTime;
-import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -19,6 +15,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.WtOverTimeDao;
+import com.inkubator.hrm.entity.WtOverTime;
+import com.inkubator.hrm.web.search.WtOverTimeSearchParameter;
 
 /**
  *
@@ -96,6 +97,14 @@ public class WtOverTimeDaoImpl extends IDAOImpl<WtOverTime> implements WtOverTim
     public WtOverTime getEntityByPkWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("wtHitungLembur", FetchMode.JOIN);
         return (WtOverTime) criteria.uniqueResult();
     }
+
+	@Override
+	public List<WtOverTime> getAllDataActive() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());	
+		criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+		return criteria.list();
+	}
 }

@@ -208,6 +208,7 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
         
         /** kirim sms balik ke sender untuk notifikasi messagenya */
     	final SMSSend mSSend = new SMSSend();
+    	LOGGER.error("Info SMS " + notifMessage);
 		mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
 		mSSend.setDestination("+"+approverNumber);
 		mSSend.setContent(notifMessage);

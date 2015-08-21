@@ -71,11 +71,11 @@ public class LeaveImplementationDateDaoImpl extends IDAOImpl<LeaveImplementation
 		final StringBuilder query = new StringBuilder("SELECT l.name as leaveDistributionName, ld.balance as balance,"); 
 		query.append(" (SELECT count(*) from leave_implementation li ");
 		query.append(" INNER JOIN leave_implementation_date lid ON li.id = lid.leave_implementation_id");
-		query.append(" WHERE li.emp_data_id = 101 AND li.leave_id = l.id) as totalPakai");
+		query.append(" WHERE li.emp_data_id = 101 AND li.leave_id = l.id AND lid.is_cancelled = " + 0 +  " ) as totalPakai");
 		query.append(" FROM hrm.leave_distribution ld");
 		query.append(" INNER JOIN hrm.`leave` l ON ld.leave_id = l.id");
 		query.append(" INNER JOIN hrm.emp_data emp ON ld.emp_data_id = emp.id");
-		query.append(" WHERE emp.id = " + empDataId + " AND li.is_cancelled = " + 0 );
+		query.append(" WHERE emp.id = " + empDataId);
 		
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(LeaveImplementationDateModel.class))
@@ -90,7 +90,7 @@ public class LeaveImplementationDateDaoImpl extends IDAOImpl<LeaveImplementation
 		criteria.createAlias("leaveImplementation.empData", "empData", JoinType.INNER_JOIN);
 		criteria.setFetchMode("leaveImplementation.leave", FetchMode.JOIN);
 		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.add(Restrictions.eq("isCancelled", 0));
+		criteria.add(Restrictions.eq("isCancelled", Boolean.FALSE));
 		return criteria.list();
 	}
 
