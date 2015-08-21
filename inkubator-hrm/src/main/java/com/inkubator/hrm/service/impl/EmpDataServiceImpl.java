@@ -191,7 +191,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         String basicSalaryDecript = AESUtil.getAESDescription(entity.getBasicSalary(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO);
         double valueDecript = Double.parseDouble(basicSalaryDecript);
         if (valueDecript > max || valueDecript < min) {
-            throw new BussinessException("emp_data.error_salary_range");
+            throw new BussinessException("emp_data.error_salary_range"); 
         }
         entity.setRotasiDate(entity.getJoinDate());
         empDataDao.save(entity);

@@ -5,16 +5,26 @@
  */
 package com.inkubator.hrm.web.employee;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmpPersonAchievement;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.PersonalDiscipline;
+import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.BusinessTravelComponentService;
+import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.hrm.service.LeaveSchemeService;
+import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.service.LoanService;
 import com.inkubator.hrm.service.PersonalDisciplineService;
 import com.inkubator.webcore.controller.BaseController;
@@ -63,6 +73,26 @@ public class EmpDataDetilController extends BaseController {
     private LoanService loanService;
     private List<Loan> listLoan;
     
+    //bussiness travel history
+    private  BusinessTravel selectedBusinessTravel;
+    private List<BusinessTravel> businessTravelList;
+    @ManagedProperty(value = "#{businessTravelService}")
+    private BusinessTravelService businessTravelService;
+    @ManagedProperty(value = "#{businessTravelComponentService}")
+    private BusinessTravelComponentService businessTravelComponentService;
+    
+    //leave history
+    private LeaveImplementation selectedLeaveImplementation;
+    private List<LeaveImplementation> leaveImplementations;
+    @ManagedProperty(value = "#{leaveImplementationService}")
+    private LeaveImplementationService leaveImplementationService;
+    @ManagedProperty(value = "#{leaveService}")
+    private LeaveService leaveService;
+    @ManagedProperty(value = "#{leaveSchemeService}")
+    private LeaveSchemeService leaveSchemeService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -77,10 +107,41 @@ public class EmpDataDetilController extends BaseController {
             listPersonalDiscipline = personalDisciplineService.getAllDataByEmployeeId(selectedEmpData.getId());
             listPersonAchievement = empPersonAchievementService.getAllDataByEmployeeId(selectedEmpData.getId());
             listLoan = loanService.getAllDataByEmpDataIdAndStatusDisbursed(selectedEmpData.getId());
+            
+            //Inisialisasi Riwayat Dinas
+            businessTravelList = businessTravelService.getAllDataByEmpDataId(selectedEmpData.getId());
+            
+            //Looping List Dinas dan hitung Total Biaya dari masing - masing Dinas
+            for(BusinessTravel businessTravel : businessTravelList){
+                countTotalAmoutOfBusinessTravel(businessTravel);
+            }
+            
+            //Inisialisasi Riwayat Cuti
+            leaveImplementations = leaveImplementationService.getAllDataByEmpDataId(selectedEmpData.getId());
+            for(LeaveImplementation lv : leaveImplementations){
+                if(null != lv.getApprovalActivityNumber()){
+                    setLeaveApprovalOfficer(lv);
+                }
+            }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
 
+    }
+    
+    //Hitung Total Biaya Perjalanan dari masing-masing perjalanan
+    public void countTotalAmoutOfBusinessTravel(BusinessTravel businessTravel) throws Exception{
+        List<BusinessTravelComponent> businessTravelComponents = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());            
+        Double totalAmount = 0.0;
+        for(BusinessTravelComponent btc :businessTravelComponents){
+            	totalAmount = totalAmount + btc.getPayByAmount();
+            }
+        businessTravel.setTotalAmount(totalAmount);
+    }
+    
+    public void setLeaveApprovalOfficer(LeaveImplementation leaveImplementation) throws Exception{
+        ApprovalActivity selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(leaveImplementation.getApprovalActivityNumber());
+        leaveImplementation.setApprovedBy(selectedApprovalActivity.getApprovedBy());
     }
 
     public String getId() {
@@ -195,8 +256,90 @@ public class EmpDataDetilController extends BaseController {
 
 	public void setLoanService(LoanService loanService) {
 		this.loanService = loanService;
-	}
+        }
 
+    public BusinessTravel getSelectedBusinessTravel() {
+        return selectedBusinessTravel;
+    }
+
+    public void setSelectedBusinessTravel(BusinessTravel selectedBusinessTravel) {
+        this.selectedBusinessTravel = selectedBusinessTravel;
+    }
+
+    public List<BusinessTravel> getBusinessTravelList() {
+        return businessTravelList;
+    }
+
+    public void setBusinessTravelList(List<BusinessTravel> businessTravelList) {
+        this.businessTravelList = businessTravelList;
+    }
+
+    public BusinessTravelService getBusinessTravelService() {
+        return businessTravelService;
+    }
+
+    public void setBusinessTravelService(BusinessTravelService businessTravelService) {
+        this.businessTravelService = businessTravelService;
+    }
+
+    public BusinessTravelComponentService getBusinessTravelComponentService() {
+        return businessTravelComponentService;
+    }
+
+    public void setBusinessTravelComponentService(BusinessTravelComponentService businessTravelComponentService) {
+        this.businessTravelComponentService = businessTravelComponentService;
+    }
+
+    public LeaveImplementation getSelectedLeaveImplementation() {
+        return selectedLeaveImplementation;
+    }
+
+    public void setSelectedLeaveImplementation(LeaveImplementation selectedLeaveImplementation) {
+        this.selectedLeaveImplementation = selectedLeaveImplementation;
+    }
+
+    public List<LeaveImplementation> getLeaveImplementations() {
+        return leaveImplementations;
+    }
+
+    public void setLeaveImplementations(List<LeaveImplementation> leaveImplementations) {
+        this.leaveImplementations = leaveImplementations;
+    }
+
+    public LeaveImplementationService getLeaveImplementationService() {
+        return leaveImplementationService;
+    }
+
+    public void setLeaveImplementationService(LeaveImplementationService leaveImplementationService) {
+        this.leaveImplementationService = leaveImplementationService;
+    }
+
+    public LeaveService getLeaveService() {
+        return leaveService;
+    }
+
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
+    }
+
+    public LeaveSchemeService getLeaveSchemeService() {
+        return leaveSchemeService;
+    }
+
+    public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
+        this.leaveSchemeService = leaveSchemeService;
+    }
+
+    public ApprovalActivityService getApprovalActivityService() {
+        return approvalActivityService;
+    }
+
+    public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+        this.approvalActivityService = approvalActivityService;
+    }
+        
+    
+        
 	@PreDestroy
     public void cleanAndExit() {
         empDataService = null;
@@ -212,6 +355,12 @@ public class EmpDataDetilController extends BaseController {
         listPersonAchievement = null;
         loanService = null;
         listLoan = null;
+        businessTravelList = null;
+        businessTravelService = null;
+        leaveImplementations = null;
+        leaveService = null;
+        leaveService = null;
+        
     }
 
 }

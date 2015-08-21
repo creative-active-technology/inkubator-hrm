@@ -55,7 +55,7 @@
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_model']}"  for="name" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="componentModel"  style="margin-right: 3px;width: 257px" value="#{paySalaryComponentFormController.model.modelComponentId}" >
+                                    <p:selectOneMenu id="componentModel"  style="margin-right: 3px;width: 257px" value="#{paySalaryComponentFormController.model.modelComponentId}" required="true" requiredMessage="#{appmsg['salarycomponent.component_model_should_be_filled']}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{paySalaryComponentFormController.dropDownModelComponent}"/>
                                         <p:ajax update="modelReferensi" listener="#{paySalaryComponentFormController.doCangeComponentModel()}" partialSubmit="true" process="@this" />
@@ -63,6 +63,7 @@
                                     <p:message for="componentModel"/>
                                 </p:column>
                             </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}"  for="modelReferensi" styleClass="label_hrm" />
@@ -72,7 +73,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{paySalaryComponentFormController.dropDownModelRef}"/>
                                     </p:selectOneMenu>
-                                    <p:message for="componentModel"/>
+                                    <p:message for="modelReferensi"/>
                                 </p:column>
                             </p:row>
 
@@ -117,6 +118,7 @@
                                     <p:spinner id="hariMinTmb" value="#{paySalaryComponentFormController.model.activeFromTmb}" size="4" min="0" max="365" styleClass="isitext_hrm" required="true">
 
                                     </p:spinner>
+                                    <p:message for="hariMinTmb"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -192,7 +194,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{paySalaryComponentFormController.dualListModel}" var="role" itemValue="#{role}" converter="employeeTypeConverter" id="picklistUserRoleId"
-                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                required="true" requiredMessage="#{appmsg['salarycomponent.employee_type_must_be_filled_or_choosen']}" style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
                                                 itemLabel="#{role.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                                 removeLabel="#{appmsg['global.remove']}"/>
                                     <p:message for="picklistUserRoleId" />
