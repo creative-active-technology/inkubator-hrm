@@ -199,7 +199,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
     public String doSaveException() {
         System.out.println(" Here save exception");
         List<EmpData> dataToSave = dualListModel.getTarget();
-        System.out.println(" ukuran employeenya" +dataToSave.size());
+        System.out.println(" ukuran employeenya" + dataToSave.size());
         try {
             tempJadwalKaryawanService.saveMassPenempatanJadwalException(dataToSave, model.getWorkingGroupId(), model.getStartDate(), model.getEndDate());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
@@ -224,4 +224,7 @@ public class PlacementOfEmployeeWorkScheduleFormController extends BaseControlle
         return "/protected/employee/emp_schedule_view.htm?faces-redirect=true";
     }
 
+    public String doBackException() {
+        return "/protected/employee/schedule_exception_view.htm?faces-redirect=true";
+    }
 }
