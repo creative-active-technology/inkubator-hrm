@@ -89,26 +89,26 @@
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="lemburId" value="#">
-                                                    <p:graphicImage library="images" name="overtime.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="lemburId" value="${request.contextPath}/protected/working_time/over_time_form.htm">
+                                                    <p:graphicImage library="images" name="overtime.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
                                                 <h:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="broadcastId" value="#">
-                                                    <p:graphicImage library="images" name="broadcast.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="izinId" value="${request.contextPath}/protected/working_time/permit_impl_form.htm">
+                                                    <p:graphicImage library="images" name="broadcast.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
-                                                <h:outputLabel value="#{appmsg['menu.broadcast_info']}" styleClass="label_quick"/>
+                                                <h:outputLabel value="#{appmsg['empAttendance.permit']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
                                         <h:panelGroup layout="block">
                                             <h:panelGrid columns="1" style="text-align: center">
-                                                <h:outputLink id="izinId" value="#">
-                                                    <p:graphicImage library="images" name="nurse.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                <h:outputLink id="broadcastId" value="${request.contextPath}/protected/organisation/announcement_form.htm">
+                                                    <p:graphicImage library="images" name="nurse.png" style="width: 60px;height: 60px;" cache="true" /> 
                                                 </h:outputLink>
-                                                <h:outputLabel value="#{appmsg['home.permit_and_sick']}" styleClass="label_quick"/>
+                                                <h:outputLabel value="#{appmsg['menu.broadcast_info']}" styleClass="label_quick"/>
                                             </h:panelGrid>
                                         </h:panelGroup>
 
@@ -607,13 +607,13 @@
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="payrollId" value="Pay Calculation View" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="lemburId" value="Available on version 1.2" showEffect="slideToggle"
+                <pe:tooltip for="lemburId" value="#{appmsg['overTimeImplementation.request_overtime']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="broadcastId" value="Available on version 1.2" showEffect="slideToggle"
+                <pe:tooltip for="broadcastId" value="#{appmsg['announcement.announcement_form']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="cutiId" value="Available on version 1.2" showEffect="slideToggle"
+                <pe:tooltip for="cutiId" value="#{appmsg['leaveimplementation.request_leave']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
-                <pe:tooltip for="izinId" value="Available on version 1.2" showEffect="slideToggle"
+                <pe:tooltip for="izinId" value="#{appmsg['permitimplementation.request_permit']}" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
                 <pe:tooltip for="laporanId" value="Available on version 1.2" showEffect="slideToggle"
                             hideEffect="slideToggle" showDelay="1" myPosition="top center" atPosition="bottom center"/>
