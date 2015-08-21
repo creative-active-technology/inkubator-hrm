@@ -122,8 +122,8 @@ public class ReportStreamController extends BaseController {
         StreamedContent file = null;
         if (param != null) {
             params.put("emp_data_id", Integer.valueOf(param));
-            params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\reports\\"));
-            params.put("IMAGE_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\images\\"));
+            params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/"));
+            params.put("IMAGE_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/"));
 
         }
         if (param == null) {

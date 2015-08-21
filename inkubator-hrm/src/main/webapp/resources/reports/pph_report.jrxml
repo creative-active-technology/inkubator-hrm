@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pph_report" language="groovy" pageWidth="609" pageHeight="935" columnWidth="569" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86065f5d-0189-4732-addf-bec617b8aecb">
 	<property name="ireport.zoom" value="1.3310000000000015"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="emp_data_id" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[$P{emp_data_id}]]></defaultValueExpression>
 	</parameter>
@@ -39,7 +39,7 @@
 		<band height="117" splitType="Stretch">
 			<image>
 				<reportElement x="27" y="5" width="74" height="74" uuid="dfd88f3b-129d-4bbc-9456-7dfb2b9129b9"/>
-				<imageExpression><![CDATA[$P{IMAGE_DIR} + "\\Logo_Depkeu.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{IMAGE_DIR} + "/Logo_Depkeu.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="6" y="79" width="117" height="14" uuid="d0dcbd7f-6459-42f8-a0e0-13e2f773018c"/>

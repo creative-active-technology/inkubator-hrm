@@ -21,11 +21,13 @@ import com.inkubator.hrm.entity.NeracaPermit;
 import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -236,7 +238,15 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
         PermitClassification permit = this.permitDao.getEntiyByPK(permitId);
         List<PermitDistribution> listDistribution = new ArrayList<>();
         List<NeracaPermit> listNeracaPermit = new ArrayList<>();
-
+        
+        Date dateNow = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateNow);
+        int year = cal.get(Calendar.YEAR);
+        int yearToInput = year + 1;
+        String tanggal0101 = "01-01-" + yearToInput;
+        Date tanggalToInput0101 = new SimpleDateFormat("dd-MM-yyyy").parse(tanggal0101);
+        
         for (EmpData empData : data) {
         	
         	/** calculation of start and end date */
@@ -284,6 +294,7 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
             PermitDistribution distribution = new PermitDistribution();
             distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             distribution.setBalance(startBalance);
+            System.out.println(dtStart + " - " + dtEnd + " hoohooohoh");
             distribution.setStartDate(dtStart.toDate());
             distribution.setEndDate(dtEnd.toDate());
             distribution.setEmpData(empData);
