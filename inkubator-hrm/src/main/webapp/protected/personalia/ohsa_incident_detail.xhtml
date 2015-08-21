@@ -253,7 +253,7 @@
                         <h:panelGrid id="panelDialogOhsaIncidentDocConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['ohsa.ohsa_attachment_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{ohsaIncidentDetailController.selectedOhsaIncidentDocument.documentLabel}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{ohsaIncidentDetailController.selectedOhsaIncidentDocument.documentName}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{ohsaIncidentDetailController.doDeleteOhsaIncidentDocument()}" 
