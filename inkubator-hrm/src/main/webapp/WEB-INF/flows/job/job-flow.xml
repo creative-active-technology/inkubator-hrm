@@ -31,7 +31,25 @@
     <view-state id="add_job_jabatan_profesi" view="job_jabatan_profesi_form.xhtml">
     
     	<transition on="back" to="add_job_jabatan_edukasi"/>
-    	<!-- <transition on="next" to="add_job_jabatan_profesi">
+    	<transition on="next" to="add_job_jabatan_major">
+			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_major" view="job_jabatan_major_form.xhtml">
+    
+    	<transition on="back" to="add_job_jabatan_profesi"/>
+    	<transition on="next" to="add_job_jabatan_faculty">
+			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_faculty" view="job_jabatan_faculty_form.xhtml">
+    
+    	<transition on="back" to="add_job_jabatan_major"/>
+    	<!-- <transition on="next" to="add_job_jabatan_major">
 			<evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/> 
 		</transition> -->
     	<transition on="end" to="end"/>
@@ -45,6 +63,6 @@
     </action-state > -->
 
     <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.businessTravelNo}"/>
-    <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm" />
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/organisation/job_title_view.htm" />
     
 </flow>

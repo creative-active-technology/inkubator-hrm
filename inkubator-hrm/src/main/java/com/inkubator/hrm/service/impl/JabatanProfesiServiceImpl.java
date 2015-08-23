@@ -6,6 +6,9 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.JabatanProfesiDao;
@@ -227,6 +230,12 @@ public class JabatanProfesiServiceImpl extends IServiceImpl implements JabatanPr
 	public JabatanProfesi updateData(JabatanProfesi arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<JabatanProfesi> getAllDataByJabatanId(Long jabatanId) throws Exception {
+		return jabatanProfesiDao.getAllDataByJabatanId(jabatanId);
 	}
 
 }
