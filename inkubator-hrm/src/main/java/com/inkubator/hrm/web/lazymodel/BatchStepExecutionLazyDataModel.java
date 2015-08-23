@@ -60,9 +60,7 @@ public class BatchStepExecutionLazyDataModel extends LazyDataModel<BatchStepExec
                 LOGGER.error("Error", ex);
             }
         }
-        System.out.println(pageSize + " asdfadf");
-        System.out.println(messageList.size() + " asdfadsf");
-        System.out.println(jumlah + " asfasdf");
+        
         setPageSize(pageSize);
         setRowCount(jumlah);
         return messageList;

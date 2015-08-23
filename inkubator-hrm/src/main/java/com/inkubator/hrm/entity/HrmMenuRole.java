@@ -95,7 +95,7 @@ public class HrmMenuRole implements java.io.Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        System.out.println(" perbandingan duplicate");
+   
         if (obj == null) {
             return false;
         }

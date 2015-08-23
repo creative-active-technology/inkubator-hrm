@@ -51,7 +51,7 @@ public class EducationLevelFormController extends BaseController {
                     educationLevelModel.setCode(educationLevel.getCode());
                     educationLevelModel.setDescription(educationLevel.getDescription());
                     educationLevelModel.setIsActive(educationLevel.getIsActive());
-                    System.out.println(educationLevelModel.getLevel() + " = " + maxLevel);
+                
                     if(maxLevel == educationLevel.getLevel() || educationLevel.getLevel() == null){
                 		educationLevelModel.setIsActiveEditable(Boolean.FALSE);
                     }else{

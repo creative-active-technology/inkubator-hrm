@@ -112,18 +112,18 @@ public class ReportStreamController extends BaseController {
     }
 
     public StreamedContent getFilePph() {
-        System.out.println("masuk cv");
+    
         FacesContext context = FacesUtil.getFacesContext();
         String param = context.getExternalContext().getRequestParameterMap().get("id");
-        System.out.println(param + " par param");
+      
         Map<String, Object> params = new HashMap<>();
 
         List<String> attachments = new ArrayList<String>();
         StreamedContent file = null;
         if (param != null) {
             params.put("emp_data_id", Integer.valueOf(param));
-            params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\reports\\"));
-            params.put("IMAGE_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("\\resources\\images\\"));
+            params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/"));
+            params.put("IMAGE_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/images/"));
 
         }
         if (param == null) {

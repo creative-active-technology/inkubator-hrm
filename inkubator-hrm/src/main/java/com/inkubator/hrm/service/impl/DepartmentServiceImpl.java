@@ -488,10 +488,10 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
                     ddm.connect(new Connection(child.getEndPoints().get(1), chElement.getEndPoints().get(0), connector));
                 }
                 for (Department depLevelDeV2 : depLevelDeV1.getDepartments()) {
-                    System.out.println(" hehheheh" + depLevelDeV2);
+                
                     Element chElement2 = new Element(depLevelDeV2.getDepartmentName(), (jarak2 + 2) + "em", (y + 35) + "em");
                     jarak2 = jarak2 + (depLevelDeV2.getDepartmentName().length() / 2) + 2;
-                    System.out.println(" jarakkna " + jarak2);
+              
                     chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
                     if (!depLevelDeV2.getDepartments().isEmpty()) {
                         chElement2.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
@@ -520,7 +520,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
     }
 
     private DefaultDiagramModel doCreate(Department department, DefaultDiagramModel diagramModel, Element element, int jarak) {
-//        System.out.println(" kepanggil beeberapa akalai " + department.getDepartmentName());
+
         StraightConnector connector = new StraightConnector();
         connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:3}");
         connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
@@ -529,17 +529,17 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
         int x = 40;
         int y = 6;
 
-//        System.out.println(" tekeksusus");
+
         Element child = null;
         for (Department data1 : data) {
-//            System.out.println(" nili organisan leel ua " + data1.getOrgLevel());
+
             if (data1.getOrgLevel().equals("DEP")) {
 
                 child = new Element(data1.getDepartmentName(), (jarak + 10) + "em", (y + 10) + "em");
                 jarak = jarak + data1.getDepartmentName().length() / 2 + 10;
             }
             if (data1.getOrgLevel().equals("DEV")) {
-                System.out.println(" Jaral unutk dev  " + jarak + 5);
+              
                 child = new Element(data1.getDepartmentName(), (jarak + 5) + "em", (y + 20) + "em");
                 jarak = jarak + (data1.getDepartmentName().length()) + 10;
             }
@@ -554,7 +554,7 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
             child.addEndPoint(new DotEndPoint(EndPointAnchor.TOP));
             child.addEndPoint(new DotEndPoint(EndPointAnchor.BOTTOM));
-//            System.out.println(" jarakanya " + (jarak));
+//        
 
             diagramModel.addElement(child);
 //            diagramModel.connect(new Connection(element.getEndPoints().get(0), child.getEndPoints().get(0), connector));

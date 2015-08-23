@@ -222,15 +222,25 @@ public class RecruitHireApplyFormController extends BaseController {
             }
 
             recruitHireApply.setRecruitHireApplyDetails(setRecruitHireApplyDetails);
+            String message = "";
             if (isEdit) {                
                 recruitHireApplyService.updateRecruitHireWithApproval(recruitHireApply, selectedApprovalActivity.getActivityNumber());
             } else {                
-                recruitHireApplyService.saveRecruitHireWithApproval(recruitHireApply);
+                message = recruitHireApplyService.saveRecruitHireWithApproval(recruitHireApply);
             }
             
             cleanAndExit();
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+            if(StringUtils.equals(message, "success_need_approval")){
+            	redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }else{
+            	redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            /*MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";*/
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {

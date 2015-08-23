@@ -287,7 +287,7 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     
     public void onRowEdit(RowEditEvent event) {
     	try { 
-	    	System.out.println("masuk coy");
+	    
 	    	EmpCorrectionAttendanceDetailModel detail = (EmpCorrectionAttendanceDetailModel) event.getObject();
 	    	WtWorkingHour workingHour = wtWorkingHourService.getEntiyByPK(detail.getWorkingHour().getId()); 
 	    	detail.setWorkingHour(workingHour);

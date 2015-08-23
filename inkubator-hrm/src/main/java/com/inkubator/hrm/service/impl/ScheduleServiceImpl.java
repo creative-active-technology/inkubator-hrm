@@ -88,7 +88,7 @@ public class ScheduleServiceImpl extends IServiceImpl implements ScheduleService
             DateTime monthAndYearBefore = new DateTime(wtHoliday.getHolidayDate());
             //jika tahun di database lebih kecil tahun sekarang
             if (monthAndYearBefore.getYear() < monthAndYearNow.getYear() && monthAndYearBefore.getMonthOfYear() >= monthAndYearNow.getMonthOfYear()) {
-//                System.out.println("asup");
+//           
                 //cari nama + tahun, jika sudah ada skip, karena unik
                 totalDuplicat = wtHolidayDao.getTotalWtHolidayByHolidayName(wtHoliday.getHolidayName() + " " + monthAndYearNow.getYear());
                 if (totalDuplicat == 0) {

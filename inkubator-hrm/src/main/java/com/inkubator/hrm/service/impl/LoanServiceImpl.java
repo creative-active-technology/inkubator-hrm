@@ -753,7 +753,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     }
     
     private void savingCancelation(LoanCanceled cancelation, Loan application, String activityNumber) throws BussinessException {
-        System.out.println("saving cancelation");
+  
         // check duplicate code
         Long totalDuplicates = loanCanceledDao.getTotalByCode(cancelation.getCode());
         if (totalDuplicates > 0) {

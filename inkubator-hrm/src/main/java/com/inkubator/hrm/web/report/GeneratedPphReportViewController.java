@@ -27,7 +27,7 @@ public class GeneratedPphReportViewController extends BaseController{
         super.initialization();
         String param = FacesUtil.getRequestParameter("execution");
         empDataId = Long.parseLong(param.substring(1));
-        System.out.println(empDataId + " emp data id");
+     
     }
     
     @PreDestroy

@@ -83,7 +83,7 @@ public class JabatanViewController extends BaseController {
     }
 
     public void doAdd() {
-    	System.out.println("Masuk doAdd");
+    	
         //return "/protected/organisation/job_title_form.htm?faces-redirect=true";
     	//return "/flow-protected/job";
     	 try {

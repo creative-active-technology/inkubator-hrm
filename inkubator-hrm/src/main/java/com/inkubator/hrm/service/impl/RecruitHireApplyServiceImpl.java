@@ -387,8 +387,9 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 //    }
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
-        Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
+    public String saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
+    	String message = "";
+    	Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
         String reqHireCode = "RCRQ-" + RandomNumberUtil.getRandomNumber(6);
         
         //If Approval Defintion for RECRUITMENT_REQUEST Process have not been created, throw Exception
@@ -404,20 +405,45 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         String createdBy = StringUtils.isEmpty(recruitHireApply.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getCreatedBy();
         Date createdOn = recruitHireApply.getCreatedOn() == null ? new Date() : recruitHireApply.getCreatedOn();
         
-        recruitHireApply.setReqHireCode(reqHireCode);
+        /*recruitHireApply.setReqHireCode(reqHireCode);
         recruitHireApply.setCreatedBy(createdBy);
-        recruitHireApply.setCreatedOn(createdOn);
+        recruitHireApply.setCreatedOn(createdOn);*/
         //parsing recruitHireApply to json 
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+/*        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
         JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
         jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
-        String jsonPendingData = gson.toJson(jsonObject);
+        String jsonPendingData = gson.toJson(jsonObject);*/
         ////set json pendingData and save activity
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUITMENT_REQUEST, createdBy);
-        approvalActivity.setPendingData(jsonPendingData);
-        approvalActivityDao.save(approvalActivity);
+        /*approvalActivity.setPendingData(jsonPendingData);*/
+    	recruitHireApply.setCreatedBy(createdBy);
+        recruitHireApply.setCreatedOn(createdOn);
+    	recruitHireApply.setReqHireCode(reqHireCode);
+    	recruitHireApply.setCurrency(currencyDao.getEntiyByPK(recruitHireApply.getCurrency().getId()));
+    	recruitHireApply.setJabatan(jabatanDao.getEntiyByPK(recruitHireApply.getJabatan().getId()));
+    	recruitHireApply.setEmployeeType(employeeTypeDao.getEntiyByPK(recruitHireApply.getEmployeeType().getId()));
+        recruitHireApply.setRecruitMppPeriod(recruitMppPeriodDao.getEntiyByPK(recruitHireApply.getRecruitMppPeriod().getId()));
+        
+        if(approvalActivity == null){
+        	recruitHireApplyDao.save(recruitHireApply);
+            message = "save_without_approval";
+        }else{
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
+            JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
+            jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
+            String jsonPendingData = gson.toJson(jsonObject);
+        	approvalActivity.setPendingData(jsonPendingData);
+            approvalActivityDao.save(approvalActivity);
+            
+            //sending email notification
+            this.sendingApprovalNotification(approvalActivity);
+            message = "success_need_approval";
+        }
+        return message;
     }
 
     @Override
@@ -536,9 +562,13 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(recruitHireApply.getCreatedOn()));
-            jsonObj.put("periodeStart", recruitHireApply.getRecruitMppPeriod().getPeriodeStart());
-            jsonObj.put("periodeEnd", recruitHireApply.getRecruitMppPeriod().getPeriodeEnd());
-
+            jsonObj.put("periodeStart", dateFormat.format(recruitHireApply.getRecruitMppPeriod().getPeriodeStart()));
+            jsonObj.put("periodeEnd", dateFormat.format(recruitHireApply.getRecruitMppPeriod().getPeriodeEnd()));
+            jsonObj.put("jabatan", recruitHireApply.getJabatan().getName());
+            jsonObj.put("mppName", recruitHireApply.getRecruitMppPeriod().getName());
+            jsonObj.put("salaryMin", recruitHireApply.getSalaryMin());
+            jsonObj.put("salaryMax", recruitHireApply.getSalaryMax());
+            jsonObj.put("candidateCountRequest", recruitHireApply.getCandidateCountRequest());
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }

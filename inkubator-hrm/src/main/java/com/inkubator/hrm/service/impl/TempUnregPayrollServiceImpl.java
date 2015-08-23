@@ -296,7 +296,7 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public List<TempUnregPayroll> getAllDataCalculatedPayment(Long unregSalaryId, Date createdOn, String createdBy) throws Exception {
-		System.out.println("=============================================START " + new Date());
+		
 		
 		//initial        
         List<TempUnregPayroll> datas = new ArrayList<TempUnregPayroll>(); 
@@ -402,7 +402,7 @@ public class TempUnregPayrollServiceImpl extends IServiceImpl implements TempUnr
 			datas = this.defaultUnregPayrollComp(datas, unregSalary, empData, ceilComponent, taxComponent, totalIncomeComponent, totalIncome, createdBy, createdOn);
 		}		
 		
-		System.out.println("=============================================End " + new Date());
+	
 		return datas;
 	}
 	

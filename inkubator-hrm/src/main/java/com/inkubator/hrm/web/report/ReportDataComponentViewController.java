@@ -142,7 +142,7 @@ public class ReportDataComponentViewController extends BaseController {
         if(!dualListSalaryComponent.getTarget().isEmpty()){
             List<PaySalaryComponent> listPaySalaryComponents = dualListSalaryComponent.getTarget();
            for(PaySalaryComponent component : listPaySalaryComponents){
-               System.out.println("dalam fillId, masuk looping listPaySalaryCompId, component  : " + component.getName());
+             
                listPaySalaryCompId.add(component.getId());
            }
         }
@@ -164,7 +164,7 @@ public class ReportDataComponentViewController extends BaseController {
         }
         
         //set to searchParameter
-        System.out.println("dalam fillId, listPaySalaryCompId.size : " + listPaySalaryCompId.size());
+     
         searchParameter.setListDepartmentId(listDepartmentId);
         searchParameter.setListPaySalaryCompId(listPaySalaryCompId);
         searchParameter.setListGolJabatanId(listGolJabatanId);

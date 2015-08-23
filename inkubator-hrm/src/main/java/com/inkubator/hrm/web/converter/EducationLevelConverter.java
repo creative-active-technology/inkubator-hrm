@@ -53,7 +53,7 @@ public class EducationLevelConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-    	System.out.println("object value null : " + (value == null));
+    	
         return String.valueOf((( EducationLevel) value).getId());
     }
     

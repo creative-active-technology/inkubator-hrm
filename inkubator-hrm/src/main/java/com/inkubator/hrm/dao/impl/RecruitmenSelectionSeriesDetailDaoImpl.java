@@ -108,7 +108,7 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
 	@Override
 	public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(
 			Long recruitSelectionType, Long recruitSelectionSeries) {
-		System.out.println(recruitSelectionType + " hahahoho " + recruitSelectionSeries);
+		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.createAlias("recruitSelectionType", "recruitSelectionType", JoinType.INNER_JOIN);
 		criteria.createAlias("recruitmenSelectionSeries", "recruitmenSelectionSeries", JoinType.INNER_JOIN);
