@@ -13,44 +13,64 @@
 	</on-start>
 
     <view-state id="add_job_jabatan" view="job_jabatan_form.xhtml">
-
-		<transition on="next" to="add_job_jabatan_edukasi">
-			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
-		</transition>
+		<transition on="next" to="add_job_jabatan_edukasi" />
 		<transition on="end" to="end"/>
     </view-state>
     
     <view-state id="add_job_jabatan_edukasi" view="job_jabatan_education_form.xhtml">
-    
-    	<transition on="back" to="add_job_jabatan"/>
+    	<transition on="back" to="add_job_jabatan"  />
     	<transition on="next" to="add_job_jabatan_profesi">
-			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
+			<evaluate expression="jobJabatanFormController.setListEdukasiToFlow(flowRequestContext)" /> 
 		</transition>
     	<transition on="end" to="end"/>
     </view-state>
-    <view-state id="add_job_jabatan_profesi" view="job_jabatan_profesi_form.xhtml">
     
-    	<transition on="back" to="add_job_jabatan_edukasi"/>
+    <view-state id="add_job_jabatan_profesi" view="job_jabatan_profesi_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_edukasi" >
+    		<evaluate  expression="jobJabatanFormController.getListEdukasiFromFlow(flowRequestContext)" /> 
+		</transition>
     	<transition on="next" to="add_job_jabatan_major">
-			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
+			<evaluate expression="jobJabatanFormController.setListOccupationTypeToFlow(flowRequestContext)" /> 
 		</transition>
     	<transition on="end" to="end"/>
     </view-state>
     
     <view-state id="add_job_jabatan_major" view="job_jabatan_major_form.xhtml">
-    
-    	<transition on="back" to="add_job_jabatan_profesi"/>
+    	<transition on="back" to="add_job_jabatan_profesi" >
+    		<evaluate  expression="jobJabatanFormController.getListOccupationTypeFromFlow(flowRequestContext)" /> 
+		</transition>
     	<transition on="next" to="add_job_jabatan_faculty">
-			<!-- <evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/>  -->
+			<evaluate expression="jobJabatanFormController.setListMajorToFlow(flowRequestContext)" /> 
 		</transition>
     	<transition on="end" to="end"/>
     </view-state>
     
     <view-state id="add_job_jabatan_faculty" view="job_jabatan_faculty_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_major" >
+    		<evaluate  expression="jobJabatanFormController.getListMajorFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_classification">
+			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
     
-    	<transition on="back" to="add_job_jabatan_major"/>
-    	<!-- <transition on="next" to="add_job_jabatan_major">
-			<evaluate expression="businessTravelFormController.setBusinessTravelComponents(flowRequestContext)" result="flowScope.businessTravelModel"/> 
+    <view-state id="add_job_jabatan_classification" view="job_jabatan_classification_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_faculty" >
+    		<evaluate  expression="jobJabatanFormController.getListFacultyFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_description">
+			<evaluate expression="jobJabatanFormController.setListKlasifikasiKerjaToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_description" view="job_jabatan_description_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_classification" >
+    		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<!-- <transition on="next" to="add_job_jabatan_classification">
+			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
 		</transition> -->
     	<transition on="end" to="end"/>
     </view-state>

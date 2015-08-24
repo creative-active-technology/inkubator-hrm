@@ -35,7 +35,7 @@
                        
                         <p:separator/>
                         <div align="center">
-                            <p:pickList value="#{dualListModelEducationLevel}" var="educationLevel" itemValue="#{educationLevel}" converter="educationLevelConverter" id="picklistJabatanEducationId"
+                            <p:pickList value="#{jobJabatanFormController.dualListModelEducationLevel}" var="educationLevel" itemValue="#{educationLevel}" converter="educationLevelConverter" id="picklistJabatanEducationId"
                                         required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['educationhistory.education_level']}" styleClass="isitext_hrm"
                                         itemLabel="#{educationLevel.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
