@@ -1,5 +1,32 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -26,34 +53,9 @@ import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
-
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.jms.core.MessageCreator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -570,6 +572,44 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		detail.append("Tujuan ke ").append(entity.getDestination()).append(". ");
 		detail.append("Dari tanggal ").append(dateFormat.format(entity.getStartDate())).append(" s/d ").append(dateFormat.format(entity.getEndDate()));
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<BusinessTravelViewModel> getAllActivityByParam(BusinessTravelSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		Date now = DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH);
+		
+		List<BusinessTravelViewModel> list = businessTravelDao.getAllActivityByParam(parameter, first, pageSize, orderable);
+		for(BusinessTravelViewModel model : list){					
+			if(model.getApprovalStatus().equals(HRMConstant.APPROVAL_STATUS_APPROVED)){
+				/** jika sudah di approved, maka di cek status perjalanan dinasnya, 
+				 *  apakah "menunggu dilaksanakan", "sedang dilaksanakan", "sudah dilaksanakan" */
+				if(now.before(model.getStartDate())){
+					model.setBusinessTravelStatus(HRMConstant.BUSINESS_TRAVEL_STATUS_WAITING);
+				} else if(now.after(model.getEndDate())) {
+					model.setBusinessTravelStatus(HRMConstant.BUSINESS_TRAVEL_STATUS_DONE);
+				} else {
+					model.setBusinessTravelStatus(HRMConstant.BUSINESS_TRAVEL_STATUS_ON_GOING);
+				}
+			} else {
+				/** binding json to object */
+				BusinessTravel entity = gson.fromJson(model.getJsonData(), BusinessTravel.class);
+				
+				/** set value from json */
+				model.setDestination(entity.getDestination());
+				model.setBusinessTravelNo(entity.getBusinessTravelNo());				
+				model.setBusinessTravelStatus(model.getApprovalStatus());;
+			}
+		}
+		
+		return list;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter) throws Exception {
+		return businessTravelDao.getTotalActivityByParam(parameter);
 	}
 
 }

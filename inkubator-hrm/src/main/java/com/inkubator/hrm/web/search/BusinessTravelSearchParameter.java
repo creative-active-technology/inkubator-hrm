@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -9,12 +10,30 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class BusinessTravelSearchParameter extends SearchParameter {
 
+	private String userId;
+	private Long companyId;
     private String businessTravelNumber;
     private String employee;
-    private String destination;	
+    private String destination;
+    
 	
-	
-    public String getBusinessTravelNumber() {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getBusinessTravelNumber() {
     	if (StringUtils.equalsIgnoreCase(getKeyParam(), "businessTravelNumber")) {
     		businessTravelNumber = getParameter();
         } else {

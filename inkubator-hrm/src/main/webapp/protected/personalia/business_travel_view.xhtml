@@ -40,9 +40,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{businessTravelViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['businesstravel.business_travel_number']}" itemValue="businessTravelNumber"/>
+                                        <!-- <f:selectItem itemLabel="#{appmsg['businesstravel.business_travel_number']}" itemValue="businessTravelNumber"/> -->
                                         <f:selectItem itemLabel="#{appmsg['businesstravel.employee']}" itemValue="employee"/>
-                                        <f:selectItem itemLabel="#{appmsg['businesstravel.destination']}" itemValue="destination"/>
+                                        <!-- <f:selectItem itemLabel="#{appmsg['businesstravel.destination']}" itemValue="destination"/> -->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{businessTravelViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{businessTravelViewController.doSearch()}" update="tableBusinessTravelId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -73,45 +73,55 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{businessTravelData.businessTravelNo}"  style="width: 15%">
+                            <p:column style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.business_travel_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.businessTravelNo}"/>
                             </p:column>   
-                            <p:column sortBy="#{businessTravelData.bioData.firstName}"  style="width: 37%">
+                            <p:column sortBy="#{businessTravelData.empName}"  style="width: 27%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.employee']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{businessTravelData.empData.nik} #{businessTravelData.empData.bioData.fullName}"/>
+                                <h:outputLabel value= "#{businessTravelData.empNik} #{businessTravelData.empName}"/>
                             </p:column> 
-                            <p:column sortBy="#{businessTravelData.destination}"  style="width: 30%">
+                            <p:column style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.destination}"/>
+                            </p:column>
+                            <p:column style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{businessTravelData.businessTravelStatus}">
+                                	<f:converter converterId="businessTravelStatusConverter"/>
+                                </h:outputLabel>
                             </p:column>   
                             
                             <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+                            	<!-- 
                             	<p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
                                 				 style="font-size: 10px!important" update=":formPrintId" 
                                 				 action="#{businessTravelViewController.doBeforePrint()}"  onclick="PF('statusDialog').show()"  oncomplete="PF('dialogPrint').show()">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
-                                -
+                                - 
+                                -->
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{businessTravelViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
-                                - 
+                                <h:outputLabel value= "&nbmp;&nbmp;-&nbmp;&nbmp;" rendered="#{businessTravelData.isRemoveable &amp;&amp; businessTravelViewController.isAdministrator}"/> 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{businessTravelViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBusinessTravel').show()">
+                                				 rendered="#{businessTravelData.isRemoveable &amp;&amp; businessTravelViewController.isAdministrator}" style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 onclick="PF('statusDialog').show()" oncomplete="PF('dialogConfirmBusinessTravel').show()">
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
-                                -
+                                <h:outputLabel value= "&nbmp;&nbmp;-&nbmp;&nbmp;" rendered="#{businessTravelData.isEditable &amp;&amp; businessTravelViewController.isAdministrator}"/>
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{businessTravelViewController.doUpdate()}" >
+                                                 rendered="#{businessTravelData.isEditable &amp;&amp; businessTravelViewController.isAdministrator}" action="#{businessTravelViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{businessTravelData}" target="#{businessTravelViewController.selectedBusinessTravel}" />
                                 </p:commandButton>
                             </p:column>                        
