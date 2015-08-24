@@ -65,7 +65,33 @@
 	                            <p:column  style="width: 80%">
 	                            	<p:outputLabel value="#{businessTravelModel.empData.golonganJabatan.code} - #{businessTravelModel.empData.golonganJabatan.pangkat.pangkatName}"/>
 	                            </p:column>
-	                        </p:row>	                              
+	                        </p:row>
+	                        <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvedBy}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvalStatus}">
+                                        <f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvalCommment}"/>
+                                </p:column>
+                            </p:row>	                              
 	                 	</p:panelGrid>
 	                 	<div style="margin-bottom: 20px;margin-left: 5px">
                             <p:outputLabel value="*)#{appmsg['businesstravel.business_number_flow_message']}" style="font-size: 10px"/>
@@ -141,9 +167,13 @@
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formBusinessTravelComponentFormId" />  
 	                        </p:commandButton>                        
-	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" rendered="#{not businessTravelModel.isRevised}"
 	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
                                              ajax="true" action="save" update=":growlBusinessTravelComponentFormlId" />
+                            <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formBusinessTravelComponentFormId,:growlBusinessTravelComponentFormlId" rendered="#{businessTravelModel.isRevised}"
+                                             action="revised" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/>
                             <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
 	                        				 action="end" immediate="true"/>
 	                    </div>

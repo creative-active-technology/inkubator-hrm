@@ -63,6 +63,9 @@ public class BusinessTravelViewModel implements Serializable {
 		this.approvalStatus = approvalStatus;
 	}
 	public Integer getBusinessTravelStatus() {
+		if(businessTravelStatus == null){
+			businessTravelStatus = approvalStatus;
+		}
 		return businessTravelStatus;
 	}
 	public void setBusinessTravelStatus(Integer businessTravelStatus) {
@@ -94,7 +97,7 @@ public class BusinessTravelViewModel implements Serializable {
 	}
 	public Boolean getIsEditable() {
 		/** hanya bisa di edit, jika statusnya sudah di approved tapi masih menunggu pelaksanaanya */
-		boolean isEditable = businessTravelStatus.equals(HRMConstant.BUSINESS_TRAVEL_STATUS_WAITING); 		
+		boolean isEditable = businessTravelStatus != null && businessTravelStatus.equals(HRMConstant.BUSINESS_TRAVEL_STATUS_WAITING); 		
 		return isEditable;
 	}
 	public void setIsEditable(Boolean isEditable) {

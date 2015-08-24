@@ -53,7 +53,7 @@
                                                 itemValue="#{empData}"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
-                                                required="true" styleClass="isitext_hrm" size="46">
+                                                readonly="#{not (businessTravelModel.isAdministator and not businessTravelModel.isRevised)}" required="true" styleClass="isitext_hrm" size="46">
                                     	<p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" />
                                     </p:autoComplete>
                               		<p:message for="employeeId"/>
@@ -134,7 +134,33 @@
 	                                <p:inputTextarea title="#{appmsg['global.description']}" value="#{businessTravelModel.description}" 
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
-	                        </p:row>                      	                             
+	                        </p:row>
+	                        <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approved_by']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvedBy}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvalStatus}">
+                                        <f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{businessTravelModel.isRevised}">
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_comment']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{businessTravelModel.askingRevisedActivity.approvalCommment}"/>
+                                </p:column>
+                            </p:row>                      	                             
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

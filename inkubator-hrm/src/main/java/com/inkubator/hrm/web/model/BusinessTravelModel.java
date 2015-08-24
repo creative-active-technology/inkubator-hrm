@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
 
@@ -27,6 +28,12 @@ public class BusinessTravelModel implements Serializable {
 	private String golonganJabatanName;
 	private Double totalAmount;
 	private List<BusinessTravelComponent> businessTravelComponents;
+	
+	//additional
+	private Boolean isAdministator;
+    private Boolean isRevised;
+    private ApprovalActivity currentActivity;
+    private ApprovalActivity askingRevisedActivity;
 	
 	public BusinessTravelModel(){
 		businessTravelComponents = new ArrayList<BusinessTravelComponent>();
@@ -112,6 +119,30 @@ public class BusinessTravelModel implements Serializable {
 	
 	public Boolean getIsPaginator(){
 		return businessTravelComponents.size() > 11;
+	}
+	public Boolean getIsAdministator() {
+		return isAdministator;
+	}
+	public void setIsAdministator(Boolean isAdministator) {
+		this.isAdministator = isAdministator;
+	}
+	public Boolean getIsRevised() {
+		return isRevised;
+	}
+	public void setIsRevised(Boolean isRevised) {
+		this.isRevised = isRevised;
+	}
+	public ApprovalActivity getCurrentActivity() {
+		return currentActivity;
+	}
+	public void setCurrentActivity(ApprovalActivity currentActivity) {
+		this.currentActivity = currentActivity;
+	}
+	public ApprovalActivity getAskingRevisedActivity() {
+		return askingRevisedActivity;
+	}
+	public void setAskingRevisedActivity(ApprovalActivity askingRevisedActivity) {
+		this.askingRevisedActivity = askingRevisedActivity;
 	}
 	
 }
