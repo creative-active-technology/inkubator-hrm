@@ -5,9 +5,9 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.BioProject;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
+import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 
 /**
@@ -30,5 +30,9 @@ public interface BusinessTravelService extends IService<BusinessTravel>,BaseAppr
 
 	public BusinessTravel getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
         
-        public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+	public List<BusinessTravel> getAllDataByEmpDataId(Long empDataId) throws Exception;
+
+	public List<BusinessTravelViewModel> getAllActivityByParam(BusinessTravelSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
+
+	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter) throws Exception;
 }

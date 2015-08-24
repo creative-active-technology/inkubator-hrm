@@ -116,6 +116,12 @@ public class HRMConstant {
     public static final Integer ZONE_DOMESTICS = 0;
     public static final Integer ZONE_OVERSEAS = 1;
     /* END */
+    
+    /* Constant for Business Travel */
+    public static final Integer BUSINESS_TRAVEL_STATUS_WAITING = 10;
+    public static final Integer BUSINESS_TRAVEL_STATUS_ON_GOING = 11;
+    public static final Integer BUSINESS_TRAVEL_STATUS_DONE = 12;
+    /* END */
 
     /* Constant for BIO Medical Module */
     public static final Integer BIOMEDICAL_HEALED = 0;
@@ -471,4 +477,6 @@ public class HRMConstant {
     public static final String HOSPITAL_TYPE_PRIVATE = "PRIVATE";
     public static final String HOSPITAL_TYPE_INSTITUTION = "INSTITUTION";
     /* END */
+    
+    
 }
