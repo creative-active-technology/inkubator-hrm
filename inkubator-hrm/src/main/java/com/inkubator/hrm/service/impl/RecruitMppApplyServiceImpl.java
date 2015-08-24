@@ -419,7 +419,12 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
                 recruitMppApplyViewModel.setRecruitMppApplyCode(recruitMppApplyTemp.getRecruitMppApplyCode());
                 recruitMppApplyViewModel.setRecruitMppApplyName(recruitMppApplyTemp.getRecruitMppApplyName());
                 recruitMppApplyViewModel.setApplyDate(recruitMppApplyTemp.getApplyDate());
-                recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(arrayDetailMpp.size())));
+                if(arrayDetailMpp != null){
+                	recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(arrayDetailMpp.size())));
+                }else{
+                	recruitMppApplyViewModel.setJobPositionTotal(0l);
+                }
+                
 
             } else {
                 RecruitMppApply recruitMppApply = recruitMppApplyDao.getEntityWithDetailById(recruitMppApplyViewModel.getRecruitMppApplyId().longValue());

@@ -35,7 +35,7 @@
                        
                         <p:separator/>
                         <div align="center">
-                            <p:pickList value="#{dualListModelOccupationType}"  var="occupationType" itemValue="#{occupationType}" converter="occupationTypeConverter" id="picklistJabatanProfesiId"
+                            <p:pickList value="#{jobJabatanFormController.dualListModelOccupationType}"  var="occupationType" itemValue="#{occupationType}" converter="occupationTypeConverter" id="picklistJabatanProfesiId"
                                         required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['occupationType.occupationType']}" styleClass="isitext_hrm"
                                         itemLabel="#{occupationType.occupationTypeName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
