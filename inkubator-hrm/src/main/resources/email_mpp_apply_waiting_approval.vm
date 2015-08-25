@@ -14,18 +14,18 @@
             Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permintaan tenaga kerja, dengan detail sebagai berikut :<br />
 			<br />
 			Nama Acara : ${recruitMppApplyName}<br />
-			Tanggal : ${startDate} - ${endDate}<br />
+			Tanggal : ${startDate} s/d ${endDate}<br /><br />
 			Jabatan yang di minta adalah sebagai berikut :
-			<br /><br />
-			#if (!$listJabatans.isEmpty())
+			<br />
+			#if (!$listNamaJabatan.isEmpty())
 				<br />
 	            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
 		            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
-		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Tipe Karyawan</th>
-		            #foreach($jabatan in $listJabatans)
+		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Jabatan</th>
+		            #foreach($namaJabatan in $listNamaJabatan)
 		            <tr>
 		                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
-		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${jabatan}</td>
+		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${namaJabatan}</td>
 		            </tr>
 		            #end
 	            </table>

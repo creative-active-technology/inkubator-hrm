@@ -5,6 +5,22 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,19 +34,7 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.HrmUser;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 
 /**
  *
@@ -254,7 +258,10 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("candidateCountRequest", jsonObject.get("candidateCountRequest").getAsString());
                             break;
                         case HRMConstant.RECRUIT_MPP_APPLY:
-                        	vtm.setSubject("PERSETUJUAN RENCANA KETENAGAKERJAAN");
+                        	TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                        	List<String> listNamaJabatan = gson.fromJson(jsonObject.get("listNamaJabatan"), token.getType());
+                            
+                            vtm.setSubject("PERSETUJUAN RENCANA KETENAGAKERJAAN");
                             vtm.setTemplatePath("email_mpp_apply_waiting_approval.vm");
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
@@ -264,7 +271,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
                             maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
                             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
-                            maptoSend.put("listJabatan", jsonObject.get("listJabatan").getAsString());
+                            maptoSend.put("listNamaJabatan", listNamaJabatan);
                             break;
                         default:
                             break;
