@@ -299,7 +299,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
-
+        entity.setListRecruitMppApplyDetail(listDetailRecruitMppApply);
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
         
         
@@ -310,8 +310,8 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
-            jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);
+/*            JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
+            jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);*/
             String jsonPendingData = gson.toJson(jsonObject);
         	approvalActivity.setPendingData(jsonPendingData);
         	approvalActivityDao.save(approvalActivity);
@@ -499,8 +499,8 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         //parsing object data to json, for email purpose
         RecruitMppApply recruitMppApply = gson.fromJson(appActivity.getPendingData(), RecruitMppApply.class);
-
-
+        List<RecruitMppApplyDetail> listJabatan = recruitMppApplyDetailDao.getListWithDetailByRecruitMppApplyId(recruitMppApply.getId());
+        System.out.println("list jabatan " + listJabatan.size());
         final JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
@@ -509,8 +509,10 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
             jsonObj.put("proposeDate", dateFormat.format(recruitMppApply.getCreatedOn()));
             jsonObj.put("recruitMppApplyName", recruitMppApply.getRecruitMppApplyName());
             jsonObj.put("applyDate", dateFormat.format(recruitMppApply.getApplyDate()));
-            jsonObj.put("reason", recruitMppApply.getReason());
-            jsonObj.put("periode", recruitMppApply.getRecruitMppPeriod().getName());
+            jsonObj.put("startDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeStart()));
+            jsonObj.put("endDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeEnd()));
+            jsonObj.put("startDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeStart()));
+            jsonObj.put("listJabatan", recruitMppApply.getListRecruitMppApplyDetail());
             
             
 

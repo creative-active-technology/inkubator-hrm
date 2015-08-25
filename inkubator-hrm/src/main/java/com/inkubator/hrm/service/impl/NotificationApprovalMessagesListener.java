@@ -262,8 +262,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("recruitMppApplyName", jsonObject.get("recruitMppApplyName").getAsString());
                             maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
-                            maptoSend.put("reason", jsonObject.get("reason").getAsString());
-                            maptoSend.put("periode", jsonObject.get("periode").getAsString());
+                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("listJabatan", jsonObject.get("listJabatan").getAsString());
                             break;
                         default:
                             break;

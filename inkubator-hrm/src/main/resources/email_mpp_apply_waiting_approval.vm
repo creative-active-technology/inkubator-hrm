@@ -14,10 +14,22 @@
             Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permintaan tenaga kerja, dengan detail sebagai berikut :<br />
 			<br />
 			Nama Acara : ${recruitMppApplyName}<br />
-			Tanggal : ${applyDate}<br />
-			Periode : ${periode}<br />
-			Deskripsi : ${reason}<br />
+			Tanggal : ${startDate} - ${endDate}<br />
+			Jabatan yang di minta adalah sebagai berikut :
 			<br /><br />
+			#if (!$listJabatans.isEmpty())
+				<br />
+	            <table  cellspacing="4" cellpadding="1" style="border: 1px solid white; width: 100%; margin-bottom: 10px;margin-top:10px;margin-left: -25px">
+		            <th style="width: 5%; background: #72b9d7; text-align: center; padding: 4px; color: white;">No.</th>
+		            <th style="width: 89%; background: #72b9d7; text-align: left; padding: 4px; color: white;">Tipe Karyawan</th>
+		            #foreach($jabatan in $listJabatans)
+		            <tr>
+		                <td style="background: #91d5f2; width: 5%; padding: 4px;text-align: center">$velocityCount</td>
+		                <td style="background: #91d5f2; width: 89%; padding: 4px;">${jabatan}</td>
+		            </tr>
+		            #end
+	            </table>
+            #end
 			Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a>
             <br />
  			<br />
