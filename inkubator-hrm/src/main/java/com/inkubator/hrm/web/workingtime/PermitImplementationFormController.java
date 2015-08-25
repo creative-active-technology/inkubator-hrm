@@ -213,7 +213,7 @@ public class PermitImplementationFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-                String message = permitImplementationService.save(permitImplementation, documentFile);
+                String message = permitImplementationService.save(permitImplementation, documentFile, Boolean.FALSE);
                 if (StringUtils.equals(message, "success_need_approval")) {
                     path = "/protected/working_time/permit_impl_view.htm?faces-redirect=true";
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
