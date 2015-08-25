@@ -45,6 +45,8 @@ public class ApprovalStatusConverter implements Converter {
         	messages = resourceBundle.getString("approvalactivity.waiting_for_revised");
         } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_REVISED)){
         	messages = resourceBundle.getString("approvalactivity.revised");
+        } else if(Objects.equals(data, HRMConstant.APPROVAL_STATUS_DELETED)){
+        	messages = resourceBundle.getString("approvalactivity.deleted");
         }
         return messages;
 

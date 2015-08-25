@@ -95,7 +95,11 @@ public class HomeApproalActivityController extends BaseController {
             selectedApprovalActivity = approvalActivityService.getEntityByPkWithDetail(selectedApprovalActivity.getId());
             switch (selectedApprovalActivity.getApprovalDefinition().getName()) {
                 case HRMConstant.BUSINESS_TRAVEL:
-                    redirect = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                	if (ObjectUtils.equals(HRMConstant.APPROVAL_STATUS_DELETED, selectedApprovalActivity.getApprovalStatus())) {
+                        redirect = "/protected/personalia/business_travel_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    } else {
+                    	redirect = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
+                    }
                     break;
                 case HRMConstant.LOAN:
                     redirect = "/protected/personalia/loan_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
