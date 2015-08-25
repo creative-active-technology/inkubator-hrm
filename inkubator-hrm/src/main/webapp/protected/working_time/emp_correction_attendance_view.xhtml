@@ -71,7 +71,7 @@
                             </p:column>
                             <p:column sortBy="#{data.requestDate}" style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['loan.apply_by']}"/>
+                                    <h:outputText value="#{appmsg['loan.apply_on_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.requestDate}">
                                 	<f:convertDateTime pattern="dd-MMMM-yyyy" />
