@@ -65,7 +65,7 @@
     	<transition on="end" to="end"/>
     </view-state>
     
-    <view-state id="add_job_jabatan_description" view="job_jabatan_description_form.xhtml">
+    <view-state id="add_job_jabatan_description" view="job_jabatan_description_view.xhtml">
     	<transition on="back" to="add_job_jabatan_classification" >
     		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
 		</transition>
