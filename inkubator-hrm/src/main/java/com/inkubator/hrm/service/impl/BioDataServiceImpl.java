@@ -81,6 +81,7 @@ import com.inkubator.webcore.util.FacesIO;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1268,8 +1269,70 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 
 	@Override
 	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		StringBuffer detail = new StringBuffer();
+		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+		String revisionAt = StringUtils.EMPTY;
+		detail.append("Pengajuan Revisi Biodata oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+		
+		String pendingData = appActivity.getPendingData();
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();		
+		
+		// dapatkan nilai dataType (jenis kelompok formulir biodata) dari pending approval activity
+		JsonElement jsonElementDataType = gson.fromJson(pendingData, JsonObject.class).get("dataType");
+	        if (!jsonElementDataType.isJsonNull()) {
+	        	
+	        	String dataType = jsonElementDataType.getAsString();
+	        	
+	        	switch (dataType) {
+	        	
+        		case HRMConstant.BIO_REV_DETAIL_BIO_DATA:
+        			revisionAt = "Data Detail Biodata";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_ADDRESS:
+        			revisionAt = "Data Alamat";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_CONTACT:
+        			revisionAt = "Data Kontak";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_ID_CARD:
+        			revisionAt = "Data Kartu Identitas";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_FAMILY:
+        			revisionAt = "Data Keluarga";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_COMPANY_RELATION:
+        			revisionAt = "Data Relasi Perusahaan";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_EDUCATION:
+        			revisionAt = "Data Pendidikan";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_SKILL:
+        			revisionAt = "Data Keahlian";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_SPESIFICATION_ABILITY:
+        			revisionAt = "Data Spesifikasi Kemampuan";
+        			break;
+        			
+        		case HRMConstant.BIO_REV_INTEREST:
+        			revisionAt = "Data Minat";
+        			break;
+        			
+        		default:
+    				break;
+	        	}
+	        	
+	        }
+	        
+	    detail.append("Jenis kelompok Biodata : " + revisionAt + ". ");
+		return detail.toString();
 	}
 
 	

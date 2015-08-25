@@ -8,7 +8,9 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.web.search.JabatanDeskripsiSearcParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -20,4 +22,6 @@ public interface JabatanDeskripsiDao extends IDAO<JabatanDeskripsi> {
     public List<JabatanDeskripsi> getByParam(JabatanDeskripsiSearcParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalJabatanByParam(JabatanDeskripsiSearcParameter searchParameter);
+    
+    public List<JabatanDeskripsi> getAllDataByJabatanId(Long jabatanId);
 }

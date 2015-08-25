@@ -53,6 +53,7 @@ import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
@@ -206,7 +207,12 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(BusinessTravel entity) throws Exception {
 		BusinessTravel businessTravel = businessTravelDao.getEntiyByPK(entity.getId());
-		businessTravelDao.delete(businessTravel);
+		
+		//update last approval activity status to DELETED
+		super.deleted(businessTravel.getApprovalActivityNumber(), HrmUserInfoUtil.getUserName());
+				
+		//remove object
+		businessTravelDao.delete(businessTravel);	
 	}
 
 	@Override

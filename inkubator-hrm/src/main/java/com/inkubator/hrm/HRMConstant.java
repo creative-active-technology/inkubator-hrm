@@ -200,6 +200,7 @@ public class HRMConstant {
     public static final Integer APPROVAL_STATUS_WAITING_REVISED = 6;
     public static final Integer APPROVAL_STATUS_REVISED = 7;
     public static final Integer APPROVAL_STATUS_DRAFT = 8;
+    public static final Integer APPROVAL_STATUS_DELETED = 9;
     public static final String SHIFT_SCHEDULE = "SHIFT_SCHEDULE";
     public static final String EMP_CORRECTION_ATTENDANCE = "EMP_CORRECTION_ATTENDANCE";
     /* END */

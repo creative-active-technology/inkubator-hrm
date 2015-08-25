@@ -12,15 +12,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.application.FacesMessage;
+
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.Department;
@@ -28,6 +33,7 @@ import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanEdukasi;
 import com.inkubator.hrm.entity.JabatanFakulty;
 import com.inkubator.hrm.entity.JabatanMajor;
@@ -42,6 +48,7 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.hrm.service.GolonganJabatanService;
+import com.inkubator.hrm.service.JabatanDeskripsiService;
 import com.inkubator.hrm.service.JabatanEdukasiService;
 import com.inkubator.hrm.service.JabatanFacultyService;
 import com.inkubator.hrm.service.JabatanMajorService;
@@ -56,6 +63,8 @@ import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.hrm.web.model.JobJabatanModel;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -95,6 +104,8 @@ public class JobJabatanFormController implements Serializable {
 	private JabatanFacultyService jabatanFacultyService;
 	@Autowired
 	private KlasifikasiKerjaJabatanService klasifikasiKerjaJabatanService;
+	@Autowired
+	private JabatanDeskripsiService jabatanDeskripsiService;
 	
 	private Boolean isDisable;
 	private Boolean isEdit;
@@ -109,6 +120,8 @@ public class JobJabatanFormController implements Serializable {
 	private DualListModel<OccupationType> dualListModelOccupationType = new DualListModel<>();
 	private DualListModel<Major> dualListModelMajor = new DualListModel<>();
 	private DualListModel<Faculty> dualListModelFaculty = new DualListModel<>();
+	private JabatanDeskripsi selectedJabatanDeskripsi;
+	
 	private JobJabatanModel jobJabatanModel;
 	
 
@@ -152,6 +165,9 @@ public class JobJabatanFormController implements Serializable {
 			    List<KlasifikasiKerja> listTargetKlasifikasiKerja = Lambda.extract(listTargetKlasifikasiKerjaJabatan, Lambda.on(KlasifikasiKerjaJabatan.class).getKlasifikasiKerja());
 			    listSourceKlasifikasiKerja.removeAll(listTargetKlasifikasiKerja);
 			    dualListModelKlasifikasiKerja = new DualListModel<KlasifikasiKerja>(listSourceKlasifikasiKerja, listTargetKlasifikasiKerja);
+			    
+			    List<JabatanDeskripsi> listJabatanDeskripsi = jabatanDeskripsiService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    jobJabatanModel.setListJabatanDeskripsi(listJabatanDeskripsi);
                 
 			}else{
 				
@@ -175,6 +191,8 @@ public class JobJabatanFormController implements Serializable {
 	            
 	            List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
 	            dualListModelKlasifikasiKerja.setSource(listSourceKlasifikasiKerja);
+	            
+	            jobJabatanModel.setListJabatanDeskripsi(new ArrayList<JabatanDeskripsi>());
 			}
 			
 			context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
@@ -467,6 +485,41 @@ public class JobJabatanFormController implements Serializable {
 	}
 	 
 	 /* End method KlasifikasiKerjaJabatan */
+	 
+	 /* Start Deskripsi Jabatan*/
+	 
+	 public void doSelectJabatanDeskripsi() {
+	        try {
+	            selectedJabatanDeskripsi = this.jabatanDeskripsiService.getEntiyByPK(selectedJabatanDeskripsi.getId());
+	        } catch (Exception ex) {
+	            LOGGER.error("Error", ex);
+	        }
+	    }
+	 
+	 public void doDeleteJabatanDeskripsi() {
+	        try {
+	            this.jabatanDeskripsiService.delete(selectedJabatanDeskripsi);
+	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+	        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            LOGGER.error("Error", ex);
+	        } catch (Exception ex) {
+	            LOGGER.error("Error", ex);
+	        }
+	    }
+	 
+	 public void doAddJabatanDeskripsi(){
+		Map<String, List<String>> dataToSend = new HashMap<>();
+		List<String> dataIsi = new ArrayList<>();
+		dataIsi.add(String.valueOf(jobJabatanModel.getId()));
+		dataToSend.put("jabatanId", dataIsi);
+		//showDialog(dataToSend);
+	 }
+	 
+	 /* End Deskripsi Jabatan*/
 
 	public Boolean getIsDisable() {
 		return isDisable;
@@ -527,5 +580,17 @@ public class JobJabatanFormController implements Serializable {
 		this.dualListModelFaculty = dualListModelFaculty;
 	}
 
+	public JabatanDeskripsi getSelectedJabatanDeskripsi() {
+		return selectedJabatanDeskripsi;
+	}
+
+	public void setSelectedJabatanDeskripsi(
+			JabatanDeskripsi selectedJabatanDeskripsi) {
+		this.selectedJabatanDeskripsi = selectedJabatanDeskripsi;
+	}
+
+	
+	
+	
 	
 }

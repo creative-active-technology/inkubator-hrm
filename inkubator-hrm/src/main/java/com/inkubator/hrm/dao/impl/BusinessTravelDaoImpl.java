@@ -214,7 +214,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     			"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
     			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
-    			"AND approvalDefinition.name = :appDefinitionName ");    	
+    			"AND approvalActivity.approval_status != :approvalStatus " +
+				"AND approvalDefinition.name = :appDefinitionName ");    	
     	selectQuery.append(this.setWhereQueryActivityByParam(parameter));
     	selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY " + orderable);
@@ -241,6 +242,7 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     	    	"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     	    	"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
     	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
+    	    	"AND approvalActivity.approval_status != :approvalStatus " +
     	    	"AND approvalDefinition.name = :appDefinitionName ");    	
     	selectQuery.append(this.setWhereQueryActivityByParam(parameter));
     	
@@ -277,8 +279,10 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     			hbm.setParameter("userId", parameter.getUserId());
     		} else if(StringUtils.equals(param, "appDefinitionName")){
     			hbm.setParameter("appDefinitionName", HRMConstant.BUSINESS_TRAVEL);
-    		}else if(StringUtils.equals(param, "companyId")){
+    		} else if(StringUtils.equals(param, "companyId")){
     			hbm.setParameter("companyId", parameter.getCompanyId());
+    		}  else if(StringUtils.equals(param, "approvalStatus")){
+    			hbm.setParameter("approvalStatus", HRMConstant.APPROVAL_STATUS_DELETED);
     		}
     	}    	
     	return hbm;
