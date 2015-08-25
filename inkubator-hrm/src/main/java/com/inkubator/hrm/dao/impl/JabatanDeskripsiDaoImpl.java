@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.JabatanDeskripsiDao;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.web.search.JabatanDeskripsiSearcParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -63,4 +65,12 @@ public class JabatanDeskripsiDaoImpl extends IDAOImpl<JabatanDeskripsi> implemen
         }
 
     }
+
+	@Override
+	public List<JabatanDeskripsi> getAllDataByJabatanId(Long jabatanId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jb");
+        criteria.add(Restrictions.eq("jb.id", jabatanId));
+        return criteria.list();
+	}
 }

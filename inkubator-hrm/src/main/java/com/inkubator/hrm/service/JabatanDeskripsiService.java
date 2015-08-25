@@ -8,7 +8,9 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.web.search.JabatanDeskripsiSearcParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -20,4 +22,6 @@ public interface JabatanDeskripsiService extends IService<JabatanDeskripsi> {
     public List<JabatanDeskripsi> getByParam(JabatanDeskripsiSearcParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalJabatanByParam(JabatanDeskripsiSearcParameter searchParameter) throws Exception;
+    
+    public List<JabatanDeskripsi> getAllDataByJabatanId(Long jabatanId) throws Exception;
 }

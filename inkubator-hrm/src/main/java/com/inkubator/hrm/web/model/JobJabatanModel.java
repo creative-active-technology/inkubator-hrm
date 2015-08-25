@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
@@ -37,6 +38,7 @@ public class JobJabatanModel implements Serializable {
     private List<OccupationType> listOccupationType = new ArrayList<OccupationType>();
     private List<Major> listMajor = new ArrayList<Major>();
     private List<Faculty> listFaculties = new ArrayList<Faculty>();
+    private List<JabatanDeskripsi> listJabatanDeskripsi = new ArrayList<JabatanDeskripsi>();
 
     public Long getId() {
         return id;
@@ -171,6 +173,14 @@ public class JobJabatanModel implements Serializable {
 
 	public void setListFaculties(List<Faculty> listFaculties) {
 		this.listFaculties = listFaculties;
+	}
+
+	public List<JabatanDeskripsi> getListJabatanDeskripsi() {
+		return listJabatanDeskripsi;
+	}
+
+	public void setListJabatanDeskripsi(List<JabatanDeskripsi> listJabatanDeskripsi) {
+		this.listJabatanDeskripsi = listJabatanDeskripsi;
 	}
 	
 	
