@@ -17,6 +17,8 @@ public interface BaseApprovalService {
 	
 	public void cancelled(long approvalActivityId, String comment) throws Exception;
 	
+	public void deleted(String activityNumber, String deletedBy) throws Exception;
+	
 	public void askingRevised(long approvalActivityId, String comment) throws Exception;
 	
 	public void revised(long approvalActivityId, String pendingDataUpdate) throws Exception;

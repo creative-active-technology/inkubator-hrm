@@ -737,6 +737,38 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     }
     
     /**
+     * <p>Method untuk mendelete suatu activity. 
+     * Tidak ada pengecekan next approval dan tidak ada delete row, karena method ini hanya update status activity
+     * </p>
+     *
+     * <pre>
+     * super.deleted(approvalActivityId);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     */
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleted(String activityNumber, String deletedBy) throws Exception {
+    	ApprovalActivity appActivity = approvalActivityDao.getEntityByActivityNumberAndLastSequence(activityNumber);
+    	
+    	//check only approval status which is APPROVED that can be process
+    	if(!(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+    	ApprovalActivity lastAppActivity = new ApprovalActivity();
+    	BeanUtils.copyProperties(appActivity, lastAppActivity, new String[]{"id","sequence","approvalTime","createdTime","approvalStatus","approvedBy"});
+    	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9))); 
+    	lastAppActivity.setSequence(appActivity.getSequence()+1); //increment +1
+    	lastAppActivity.setApprovalTime(new Date());
+    	lastAppActivity.setApprovedBy(deletedBy);
+    	lastAppActivity.setCreatedTime(new Date());
+    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DELETED);       	
+    	approvalActivityDao.save(lastAppActivity);   	
+    }
+    
+    /**
      * <p>Method untuk meng-asking revised(memintan untuk direvisi) suatu activity. 
      * Tidak ada pengecekan next approval, karena method ini ditujukan untuk requester(requestBy) yang mana sudah terdapat di approvalActivity sebelumnya.
      * </p>
