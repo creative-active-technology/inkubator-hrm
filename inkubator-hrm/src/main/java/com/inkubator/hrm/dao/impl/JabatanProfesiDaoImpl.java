@@ -1,5 +1,11 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +24,15 @@ public class JabatanProfesiDaoImpl extends IDAOImpl<JabatanProfesi> implements J
 	@Override
 	public Class<JabatanProfesi> getEntityClass() {
 		return JabatanProfesi.class;
+	}
+
+	@Override
+	public List<JabatanProfesi> getAllDataByJabatanId(Long jabatanId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jabatan");
+        criteria.setFetchMode("educationLevel", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        return criteria.list();
 	}
 
 }

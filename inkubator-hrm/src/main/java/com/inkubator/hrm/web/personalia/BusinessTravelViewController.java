@@ -13,18 +13,23 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import ch.lambdaj.Lambda;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
-import com.inkubator.hrm.util.TerbilangUtil;
-import com.inkubator.hrm.web.lazymodel.BusinessTravelLazyDataModel;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.lazymodel.BusinessTravelActivityLazyDataModel;
+import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -42,8 +47,11 @@ public class BusinessTravelViewController extends BaseController {
 	private String totalAmountTerbilang;
 	private List<BusinessTravelComponent> businessTravelComponents;
     private BusinessTravelSearchParameter searchParameter;
-    private LazyDataModel<BusinessTravel> lazyDataBusinessTravel;
-    private BusinessTravel selectedBusinessTravel;
+    private LazyDataModel<BusinessTravelViewModel> lazyDataBusinessTravel;
+    private BusinessTravelViewModel selectedBusinessTravel;
+    private Boolean isAdministrator;
+    
+    
     @ManagedProperty(value = "#{businessTravelService}")
     private BusinessTravelService businessTravelService;
     @ManagedProperty(value = "#{businessTravelComponentService}")
@@ -54,6 +62,11 @@ public class BusinessTravelViewController extends BaseController {
     public void initialization() {
         super.initialization();
         searchParameter = new BusinessTravelSearchParameter();
+        searchParameter.setCompanyId(HrmUserInfoUtil.getCompanyId());
+        isAdministrator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
+        if(!isAdministrator){ //kalo bukan administrator, maka set userId di parameter searchingnya
+        	searchParameter.setUserId(UserInfoUtil.getUserName());
+        }
     }
 
     @PreDestroy
@@ -67,16 +80,17 @@ public class BusinessTravelViewController extends BaseController {
         businessTravelComponents = null;
         businessTravelComponentService = null;
         printDate = null;
+        isAdministrator = null;
     }    
 
-	public LazyDataModel<BusinessTravel> getLazyDataBusinessTravel() {
+	public LazyDataModel<BusinessTravelViewModel> getLazyDataBusinessTravel() {
 		if(lazyDataBusinessTravel == null){
-			lazyDataBusinessTravel = new BusinessTravelLazyDataModel(searchParameter, businessTravelService);
+			lazyDataBusinessTravel = new BusinessTravelActivityLazyDataModel(searchParameter, businessTravelService);
 		}
 		return lazyDataBusinessTravel;
 	}
 
-	public void setLazyDataBusinessTravel(LazyDataModel<BusinessTravel> lazyDataBusinessTravel) {
+	public void setLazyDataBusinessTravel(LazyDataModel<BusinessTravelViewModel> lazyDataBusinessTravel) {
 		this.lazyDataBusinessTravel = lazyDataBusinessTravel;
 	}
 
@@ -88,11 +102,11 @@ public class BusinessTravelViewController extends BaseController {
 		this.searchParameter = searchParameter;
 	}
 
-	public BusinessTravel getSelectedBusinessTravel() {
+	public BusinessTravelViewModel getSelectedBusinessTravel() {
 		return selectedBusinessTravel;
 	}
 
-	public void setSelectedBusinessTravel(BusinessTravel selectedBusinessTravel) {
+	public void setSelectedBusinessTravel(BusinessTravelViewModel selectedBusinessTravel) {
 		this.selectedBusinessTravel = selectedBusinessTravel;
 	}
 
@@ -138,15 +152,37 @@ public class BusinessTravelViewController extends BaseController {
 		this.totalAmountTerbilang = totalAmountTerbilang;
 	}
 
+	public Boolean getIsAdministrator() {
+		return isAdministrator;
+	}
+
+	public void setIsAdministrator(Boolean isAdministrator) {
+		this.isAdministrator = isAdministrator;
+	}
+
+	public BusinessTravelService getBusinessTravelService() {
+		return businessTravelService;
+	}
+
+	public BusinessTravelComponentService getBusinessTravelComponentService() {
+		return businessTravelComponentService;
+	}
+
 	public void doSearch() {
         lazyDataBusinessTravel = null;
     }
 
     public String doDetail() {
-        return "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getBusinessTravelNo();
+    	String path = StringUtils.EMPTY;
+    	if(selectedBusinessTravel.getBusinessTravelId() != null){
+    		path = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getBusinessTravelNo();
+    	} else {
+    		path = "/protected/personalia/business_travel_appr_form.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getApprovalActivityId();
+    	}
+        return path;
     }
 
-    public void doSelectEntity() {
+    /*public void doSelectEntity() {
         try {
             selectedBusinessTravel = this.businessTravelService.getEntiyByPK(selectedBusinessTravel.getId());
         } catch (Exception ex) {
@@ -171,11 +207,12 @@ public class BusinessTravelViewController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-    }
+    }*/
 
     public void doDelete() {
         try {
-            businessTravelService.delete(selectedBusinessTravel);
+        	BusinessTravel entity = businessTravelService.getEntiyByPK((long)selectedBusinessTravel.getBusinessTravelId().intValue());
+            businessTravelService.delete(entity);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -198,7 +235,7 @@ public class BusinessTravelViewController extends BaseController {
     public void doUpdate() {
     	try {
             ExternalContext red = FacesUtil.getExternalContext();
-            red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel?id=" + selectedBusinessTravel.getId());
+            red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel?id=" + selectedBusinessTravel.getBusinessTravelId());
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
         }

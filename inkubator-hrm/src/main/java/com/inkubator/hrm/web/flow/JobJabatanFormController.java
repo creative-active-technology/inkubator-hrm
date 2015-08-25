@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -24,20 +25,31 @@ import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanEdukasi;
+import com.inkubator.hrm.entity.JabatanFakulty;
+import com.inkubator.hrm.entity.JabatanMajor;
+import com.inkubator.hrm.entity.JabatanProfesi;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.CostCenterService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EducationLevelService;
+import com.inkubator.hrm.service.FacultyService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanEdukasiService;
+import com.inkubator.hrm.service.JabatanFacultyService;
+import com.inkubator.hrm.service.JabatanMajorService;
 import com.inkubator.hrm.service.JabatanProfesiService;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.service.KlasifikasiKerjaJabatanService;
 import com.inkubator.hrm.service.KlasifikasiKerjaService;
+import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.util.MapUtil;
@@ -73,6 +85,16 @@ public class JobJabatanFormController implements Serializable {
 	private OccupationTypeService occupationTypeService;
 	@Autowired
 	private JabatanProfesiService jabatanProfesiService;
+	@Autowired
+	private MajorService majorService;
+	@Autowired
+	private JabatanMajorService jabatanMajorService;
+	@Autowired
+	private FacultyService facultyService;
+	@Autowired
+	private JabatanFacultyService jabatanFacultyService;
+	@Autowired
+	private KlasifikasiKerjaJabatanService klasifikasiKerjaJabatanService;
 	
 	private Boolean isDisable;
 	private Boolean isEdit;
@@ -85,6 +107,8 @@ public class JobJabatanFormController implements Serializable {
 	private DualListModel<KlasifikasiKerja> dualListModelKlasifikasiKerja = new DualListModel<>();
 	private DualListModel<EducationLevel> dualListModelEducationLevel = new DualListModel<>();
 	private DualListModel<OccupationType> dualListModelOccupationType = new DualListModel<>();
+	private DualListModel<Major> dualListModelMajor = new DualListModel<>();
+	private DualListModel<Faculty> dualListModelFaculty = new DualListModel<>();
 	private JobJabatanModel jobJabatanModel;
 	
 
@@ -99,16 +123,35 @@ public class JobJabatanFormController implements Serializable {
 				Jabatan jabatan = jabatanService.getByIdWithKlasifikasiKerja(id);
 				jobJabatanModel = getJabatanModelFromEntity(jabatan);
 				
-				List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
-                List<KlasifikasiKerja> target = jabatan.getKerjaJabatans();
-                listSourceKlasifikasiKerja.removeAll(target);
-                dualListModelKlasifikasiKerja = new DualListModel<>(listSourceKlasifikasiKerja, target);
-                
                 List<EducationLevel> listSourceEducationLevel = educationLevelService.getAllData();
                 List<JabatanEdukasi> listTargetJabatanEdukasi = jabatanEdukasiService.getAllDataByJabatanId(jabatan.getId());
                 List<EducationLevel> listTargetEducationLevel = Lambda.extract(listTargetJabatanEdukasi, Lambda.on(JabatanEdukasi.class).getEducationLevel());
                 listSourceEducationLevel.removeAll(listTargetEducationLevel);
                 dualListModelEducationLevel = new DualListModel<EducationLevel>(listSourceEducationLevel, listTargetEducationLevel);
+                
+                List<OccupationType> listSourceOccupationType = occupationTypeService.getAllData();
+                List<JabatanProfesi> listTargetJabatanProfesi = jabatanProfesiService.getAllDataByJabatanId(jabatan.getId());
+                List<OccupationType> listTargetOccupationType = Lambda.extract(listTargetJabatanProfesi, Lambda.on(JabatanProfesi.class).getOccupationType());
+                listSourceOccupationType.removeAll(listTargetOccupationType);
+                dualListModelOccupationType = new DualListModel<OccupationType>(listSourceOccupationType, listTargetOccupationType);
+                
+                List<Major> listSourceMajor = majorService.getAllData();
+                List<JabatanMajor> listTargetJabatanMajor = jabatanMajorService.getAllDataByJabatanId(jabatan.getId());
+                List<Major> listTargetMajor = Lambda.extract(listTargetJabatanMajor, Lambda.on(JabatanMajor.class).getMajor());
+                listSourceMajor.removeAll(listTargetMajor);
+                dualListModelMajor = new DualListModel<Major>(listSourceMajor, listTargetMajor);
+                
+                List<Faculty> listSourceFaculty = facultyService.getAllData();
+                List<JabatanFakulty> listTargetJabatanFakulty = jabatanFacultyService.getAllDataByJabatanId(jabatan.getId());
+                List<Faculty> listTargetFaculty = Lambda.extract(listTargetJabatanFakulty, Lambda.on(JabatanFakulty.class).getFaculty());
+                listSourceFaculty.removeAll(listTargetFaculty);
+                dualListModelFaculty = new DualListModel<Faculty>(listSourceFaculty, listTargetFaculty);
+                
+                List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
+			    List<KlasifikasiKerjaJabatan> listTargetKlasifikasiKerjaJabatan = klasifikasiKerjaJabatanService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    List<KlasifikasiKerja> listTargetKlasifikasiKerja = Lambda.extract(listTargetKlasifikasiKerjaJabatan, Lambda.on(KlasifikasiKerjaJabatan.class).getKlasifikasiKerja());
+			    listSourceKlasifikasiKerja.removeAll(listTargetKlasifikasiKerja);
+			    dualListModelKlasifikasiKerja = new DualListModel<KlasifikasiKerja>(listSourceKlasifikasiKerja, listTargetKlasifikasiKerja);
                 
 			}else{
 				
@@ -120,11 +163,21 @@ public class JobJabatanFormController implements Serializable {
 	            
 	            List<EducationLevel> listSourceEducationLevel = educationLevelService.getAllData();
 	            dualListModelEducationLevel.setSource(listSourceEducationLevel);
+	            
+	            List<OccupationType> listSourceOccupationType = occupationTypeService.getAllData();
+	            dualListModelOccupationType.setSource(listSourceOccupationType);
+	            
+	            List<Major> listSourceMajor = majorService.getAllData();
+	            dualListModelMajor.setSource(listSourceMajor);
+	            
+	            List<Faculty> listSourceFaculty = facultyService.getAllData();
+	            dualListModelFaculty.setSource(listSourceFaculty);
+	            
+	            List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
+	            dualListModelKlasifikasiKerja.setSource(listSourceKlasifikasiKerja);
 			}
 			
 			context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
-			context.getFlowScope().put("dualListModelKlasifikasiKerja", dualListModelKlasifikasiKerja);
-			context.getFlowScope().put("dualListModelEducationLevel", dualListModelEducationLevel);
 			
 			//Inisialisasi List Departemen
 			List<Department> listDepartemens = departmentService.getAllData();
@@ -181,7 +234,6 @@ public class JobJabatanFormController implements Serializable {
 	            jbm.setJabatanAtasanId(jabatan.getJabatan().getId());
 	        }
 	        jbm.setKodeJabatan(jabatan.getCode());
-//	        jbm.setLevelJabatan(jabatan.getLevelJabatan());
 	        jbm.setNamaJabatan(jabatan.getName());
 	        jbm.setPosBiayaId(jabatan.getCostCenter().getId());
 	        jbm.setTujuanJabatan(jabatan.getTujuanJabatan());
@@ -218,10 +270,23 @@ public class JobJabatanFormController implements Serializable {
 		
 		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 	}
+	
+	 /* Start method JabatanEdukasi */
+	 
+	 public void setListEdukasiToFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 jobJabatanModel.setListEducationLevel(dualListModelEducationLevel.getTarget());
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	 }
+	 
+	 public void getListEdukasiFromFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<EducationLevel> listModelEducationLevel =  jobJabatanModel.getListEducationLevel();
+		 dualListModelEducationLevel.setTarget(listModelEducationLevel);
+	 }
 	 
 	 public void doResetJobJabatanEdukasiForm(RequestContext context){
-		 DualListModel<EducationLevel> dualListModelEducationLevel = (DualListModel<EducationLevel>) context.getFlowScope().get("dualListModelEducationLevel");
-		 
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
 		try {
 			if(jobJabatanModel.getId() == null){
 				 List<EducationLevel> listSourceEducationLevel = educationLevelService.getAllData();
@@ -239,9 +304,169 @@ public class JobJabatanFormController implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		context.getFlowScope().put("dualListModelEducationLevel", dualListModelEducationLevel);
+		jobJabatanModel.setListEducationLevel(new ArrayList<EducationLevel>());
+		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 	}
+	 
+	 /* End method JabatanEdukasi */
+	 
+	 /* Start method JabatanProfesi */
+	 public void setListOccupationTypeToFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 jobJabatanModel.setListOccupationType(dualListModelOccupationType.getTarget());
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	 }
+	 
+	 public void getListOccupationTypeFromFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<OccupationType> listOccupationType =  jobJabatanModel.getListOccupationType();
+		 dualListModelOccupationType.setTarget(listOccupationType);
+	 }
+	 
+	 public void doResetJobJabatanProfesiForm(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 
+		try {
+			if(jobJabatanModel.getId() == null){
+				 List<OccupationType> listSourceOccupationType = occupationTypeService.getAllData();
+			     dualListModelOccupationType.setSource(listSourceOccupationType);
+			     dualListModelOccupationType.setTarget(new ArrayList<OccupationType>());
+			} else {
+				
+				List<OccupationType> listSourceEducationLevel = occupationTypeService.getAllData();
+			    List<JabatanProfesi> listTargetJabatanProfesi = jabatanProfesiService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    List<OccupationType> listTargetOccupationType = Lambda.extract(listTargetJabatanProfesi, Lambda.on(JabatanProfesi.class).getOccupationType());
+			    listSourceEducationLevel.removeAll(listTargetOccupationType);
+			    dualListModelOccupationType = new DualListModel<OccupationType>(listSourceEducationLevel, listTargetOccupationType);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		jobJabatanModel.setListOccupationType(new ArrayList<OccupationType>());
+		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	}
+	 
+	 /* End method JabatanProfesi */
+	 
+	 /* Start method JabatanMajor */
+	 
+	 public void setListMajorToFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 jobJabatanModel.setListMajor(dualListModelMajor.getTarget());
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	 }
+	 
+	 public void getListMajorFromFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<Major> listMajor =  jobJabatanModel.getListMajor();
+		 dualListModelMajor.setTarget(listMajor);
+	 }
+	 
+	 public void doResetJobJabatanMajorForm(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 
+		try {
+			if(jobJabatanModel.getId() == null){
+				 List<Major> listSourceMajor = majorService.getAllData();
+			     dualListModelMajor.setSource(listSourceMajor);
+			     dualListModelMajor.setTarget(new ArrayList<Major>());
+			} else {
+				
+				List<Major> listSourceMajor = majorService.getAllData();
+			    List<JabatanMajor> listTargetJabatanMajor = jabatanMajorService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    List<Major> listTargetMajor = Lambda.extract(listTargetJabatanMajor, Lambda.on(JabatanMajor.class).getMajor());
+			    listSourceMajor.removeAll(listTargetMajor);
+			    dualListModelMajor = new DualListModel<Major>(listSourceMajor, listTargetMajor);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		jobJabatanModel.setListMajor(new ArrayList<Major>());
+		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	}
+	 
+	 /* End method JabatanMajor */
+	 
+	 /* Start method JabatanFaculty */
+	 public void setListFacultyToFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 jobJabatanModel.setListFaculties(dualListModelFaculty.getTarget());
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	 }
+	 
+	 public void getListFacultyFromFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<Faculty> listFaculties =  jobJabatanModel.getListFaculties();
+		 dualListModelFaculty.setTarget(listFaculties);
+	 }
+	 
+	 public void doResetJobJabatanFacultyForm(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		try {
+			if(jobJabatanModel.getId() == null){
+				 List<Faculty> listSourceFaculty = facultyService.getAllData();
+			     dualListModelFaculty.setSource(listSourceFaculty);
+			     dualListModelFaculty.setTarget(new ArrayList<Faculty>());
+			} else {
+				
+				List<Faculty> listSourceFaculty = facultyService.getAllData();
+			    List<JabatanFakulty> listTargetJabatanFakulty = jabatanFacultyService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    List<Faculty> listTargetFaculty = Lambda.extract(listTargetJabatanFakulty, Lambda.on(JabatanFakulty.class).getFaculty());
+			    listSourceFaculty.removeAll(listTargetFaculty);
+			    dualListModelFaculty = new DualListModel<Faculty>(listSourceFaculty, listTargetFaculty);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		jobJabatanModel.setListFaculties(new ArrayList<Faculty>());
+		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	}
+	 
+	 /* End method JabatanFaculty */
+	 
+	 /* Start method KlasifikasiKerjaJabatan */
+	 
+	 public void setListKlasifikasiKerjaToFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 jobJabatanModel.setListKlasifikasiKerja(dualListModelKlasifikasiKerja.getTarget());
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	 }
+	 
+	 public void getListKlasifikasiKerjaFromFlow(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<KlasifikasiKerja> listKlasifikasiKerja =  jobJabatanModel.getListKlasifikasiKerja();
+		 dualListModelKlasifikasiKerja.setTarget(listKlasifikasiKerja);
+	 }
+	 
+	 public void doResetJobJabatanKlasifikasiKerjaForm(RequestContext context){
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		try {
+			if(jobJabatanModel.getId() == null){
+				 List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
+				 dualListModelKlasifikasiKerja.setSource(listSourceKlasifikasiKerja);
+				 dualListModelKlasifikasiKerja.setTarget(new ArrayList<KlasifikasiKerja>());
+			} else {
+				
+				List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
+			    List<KlasifikasiKerjaJabatan> listTargetKlasifikasiKerjaJabatan = klasifikasiKerjaJabatanService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    List<KlasifikasiKerja> listTargetKlasifikasiKerja = Lambda.extract(listTargetKlasifikasiKerjaJabatan, Lambda.on(KlasifikasiKerjaJabatan.class).getKlasifikasiKerja());
+			    listSourceKlasifikasiKerja.removeAll(listTargetKlasifikasiKerja);
+			    dualListModelKlasifikasiKerja = new DualListModel<KlasifikasiKerja>(listSourceKlasifikasiKerja, listTargetKlasifikasiKerja);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		jobJabatanModel.setListKlasifikasiKerja(new ArrayList<KlasifikasiKerja>());
+		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	}
+	 
+	 /* End method KlasifikasiKerjaJabatan */
 
 	public Boolean getIsDisable() {
 		return isDisable;
@@ -259,5 +484,48 @@ public class JobJabatanFormController implements Serializable {
 		this.isEdit = isEdit;
 	}
 
-	 
+	public DualListModel<EducationLevel> getDualListModelEducationLevel() {
+		return dualListModelEducationLevel;
+	}
+
+	public void setDualListModelEducationLevel(
+			DualListModel<EducationLevel> dualListModelEducationLevel) {
+		this.dualListModelEducationLevel = dualListModelEducationLevel;
+	}
+
+	public DualListModel<KlasifikasiKerja> getDualListModelKlasifikasiKerja() {
+		return dualListModelKlasifikasiKerja;
+	}
+
+	public void setDualListModelKlasifikasiKerja(
+			DualListModel<KlasifikasiKerja> dualListModelKlasifikasiKerja) {
+		this.dualListModelKlasifikasiKerja = dualListModelKlasifikasiKerja;
+	}
+
+	public DualListModel<OccupationType> getDualListModelOccupationType() {
+		return dualListModelOccupationType;
+	}
+
+	public void setDualListModelOccupationType(
+			DualListModel<OccupationType> dualListModelOccupationType) {
+		this.dualListModelOccupationType = dualListModelOccupationType;
+	}
+
+	public DualListModel<Major> getDualListModelMajor() {
+		return dualListModelMajor;
+	}
+
+	public void setDualListModelMajor(DualListModel<Major> dualListModelMajor) {
+		this.dualListModelMajor = dualListModelMajor;
+	}
+
+	public DualListModel<Faculty> getDualListModelFaculty() {
+		return dualListModelFaculty;
+	}
+
+	public void setDualListModelFaculty(DualListModel<Faculty> dualListModelFaculty) {
+		this.dualListModelFaculty = dualListModelFaculty;
+	}
+
+	
 }

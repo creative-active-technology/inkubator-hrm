@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +21,11 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BusinessTravelDao;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.BusinessTravelViewModel;
+import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
+import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 /**
  *
@@ -183,4 +189,98 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
 	}
+
+	@Override
+	public List<BusinessTravelViewModel> getAllActivityByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT approvalActivity.id AS approvalActivityId, " +
+    			"businessTravel.id AS businessTravelId, " +
+    			"empData.nik AS empNik, " +
+    			"CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
+    			"approvalActivity.approval_status AS approvalStatus, " +
+    			"approvalActivity.pending_data AS jsonData, " +
+    			"businessTravel.start_date AS startDate, " +
+    			"businessTravel.end_date AS endDate, " +
+    			"businessTravel.destination AS destination, " +
+    			"businessTravel.business_travel_no AS businessTravelNo " +
+    			"FROM approval_activity approvalActivity " +
+    			"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+    			"LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    			"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    			"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+    			"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN company AS company ON department.company_id = company.id  " +
+    			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+    			"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
+    			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
+    			"AND approvalDefinition.name = :appDefinitionName ");    	
+    	selectQuery.append(this.setWhereQueryActivityByParam(parameter));
+    	selectQuery.append("GROUP BY approvalActivity.activity_number ");
+    	selectQuery.append("ORDER BY " + orderable);
+        
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
+                	.setResultTransformer(Transformers.aliasToBean(BusinessTravelViewModel.class));
+    	hbm = this.setValueQueryActivityByParam(hbm, parameter);
+    	
+    	return hbm.list();
+	}
+
+	@Override
+	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT count(*) " +
+    	    	"FROM approval_activity approvalActivity " +
+    	    	"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+    	    	"LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    	    	"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    	    	"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+    	    	"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+    	        "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+    	        "INNER JOIN company AS company ON department.company_id = company.id  " +
+    	    	"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+    	    	"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
+    	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
+    	    	"AND approvalDefinition.name = :appDefinitionName ");    	
+    	selectQuery.append(this.setWhereQueryActivityByParam(parameter));
+    	
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
+    	hbm = this.setValueQueryActivityByParam(hbm, parameter);
+    	
+        return Long.valueOf(hbm.uniqueResult().toString());
+	}
+	
+	private String setWhereQueryActivityByParam(BusinessTravelSearchParameter parameter) {
+    	StringBuffer whereQuery = new StringBuffer();    	
+    	     
+        if (StringUtils.isNotEmpty(parameter.getEmployee())) {
+        	whereQuery.append("AND (bioData.first_name LIKE :employee OR bioData.last_name LIKE :employee OR empData.nik LIKE :employee) ");
+        }    
+        
+        if (StringUtils.isNotEmpty(parameter.getUserId())) {
+        	whereQuery.append("AND (requester.user_id = :userId " +
+        			"OR (approver.user_id = :userId AND approvalActivity.approval_status = 0)) ");
+        }
+        
+        if (parameter.getCompanyId() != null) {
+        	whereQuery.append("AND company.id = :companyId ");
+        }
+        
+        return whereQuery.toString();
+    }
+    
+    private Query setValueQueryActivityByParam(Query hbm, BusinessTravelSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "employee")){
+    			hbm.setParameter("employee", "%" + parameter.getEmployee() + "%");
+    		} else if(StringUtils.equals(param, "userId")){
+    			hbm.setParameter("userId", parameter.getUserId());
+    		} else if(StringUtils.equals(param, "appDefinitionName")){
+    			hbm.setParameter("appDefinitionName", HRMConstant.BUSINESS_TRAVEL);
+    		}else if(StringUtils.equals(param, "companyId")){
+    			hbm.setParameter("companyId", parameter.getCompanyId());
+    		}
+    	}    	
+    	return hbm;
+    }
 }

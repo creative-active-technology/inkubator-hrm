@@ -31,24 +31,23 @@
                         <p:separator/>
 
                         <p:focus context="jobTitleFormId" />
-                        <p:outputLabel value="#{appmsg['educationhistory.education_level']}" styleClass="header_big" />
+                        <p:outputLabel value="#{appmsg['employeeCertification.major']}" styleClass="header_big" />
                        
                         <p:separator/>
                         <div align="center">
-                            <p:pickList value="#{jobJabatanFormController.dualListModelEducationLevel}" var="educationLevel" itemValue="#{educationLevel}" converter="educationLevelConverter" id="picklistJabatanEducationId"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['educationhistory.education_level']}" styleClass="isitext_hrm"
-                                        itemLabel="#{educationLevel.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                            <p:pickList value="#{jobJabatanFormController.dualListModelMajor}" var="major" itemValue="#{major}" converter="majorConverter" id="picklistJabatanMajorId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['employeeCertification.major']}" styleClass="isitext_hrm"
+                                        itemLabel="#{major.majorName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
                                         removeLabel="#{appmsg['global.remove']}"/>
-                            <p:message for="picklistJabatanEducationId" />
+                            <p:message for="picklistJabatanMajorId" />
                         </div>  
-                        <!--</p:panel>-->
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                         	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
                                              styleClass="label_button"/>
                             
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jobJabatanFormController.doResetJobJabatanEdukasiForm(flowRequestContext)}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jobJabatanFormController.doResetJobJabatanMajorForm(flowRequestContext)}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="jobTitleFormId" />  
                             </p:commandButton>

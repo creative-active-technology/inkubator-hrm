@@ -11,156 +11,158 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.JabatanProfesiDao;
-import com.inkubator.hrm.entity.JabatanProfesi;
-import com.inkubator.hrm.service.JabatanProfesiService;
+import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
+import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.service.KlasifikasiKerjaJabatanService;
 
 /**
 *
 * @author Ahmad Mudzakkir Amal
 */
-@Service(value = "jabatanProfesiService")
+@Service(value = "klasifikasiKerjaJabatanService")
 @Lazy
-public class JabatanProfesiServiceImpl extends IServiceImpl implements JabatanProfesiService {
+public class KlasifikasiKerjaJabatanServiceImpl extends IServiceImpl implements KlasifikasiKerjaJabatanService {
 	
 	@Autowired
-	private JabatanProfesiDao jabatanProfesiDao;
+    private KlasifikasiKerjaJabatanDao klasifikasiKerjaJabatanDao;
 
 	@Override
-	public void delete(JabatanProfesi arg0) throws Exception {
+	public void delete(KlasifikasiKerjaJabatan arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllData() throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllData() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllData(Boolean arg0) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllData(Boolean arg0)
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllData(Integer arg0) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllData(Integer arg0)
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllData(Byte arg0) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllData(Byte arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllDataPageAble(int arg0, int arg1,
+	public List<KlasifikasiKerjaJabatan> getAllDataPageAble(int arg0, int arg1,
 			Order arg2) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllDataPageAbleIsActive(int arg0, int arg1,
-			Order arg2, Boolean arg3) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllDataPageAbleIsActive(int arg0,
+			int arg1, Order arg2, Boolean arg3) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllDataPageAbleIsActive(int arg0, int arg1,
-			Order arg2, Integer arg3) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllDataPageAbleIsActive(int arg0,
+			int arg1, Order arg2, Integer arg3) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<JabatanProfesi> getAllDataPageAbleIsActive(int arg0, int arg1,
-			Order arg2, Byte arg3) throws Exception {
+	public List<KlasifikasiKerjaJabatan> getAllDataPageAbleIsActive(int arg0,
+			int arg1, Order arg2, Byte arg3) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(String arg0, Integer arg1)
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(String arg0,
+			Integer arg1) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(String arg0, Byte arg1)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(String arg0, Byte arg1)
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(String arg0,
+			Boolean arg1) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Integer arg0,
+			Integer arg1) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Integer arg0, Byte arg1)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(String arg0, Boolean arg1)
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Integer arg0,
+			Boolean arg1) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Long arg0, Integer arg1)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(Integer arg0, Integer arg1)
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Long arg0, Byte arg1)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(Integer arg0, Byte arg1)
+	public KlasifikasiKerjaJabatan getEntityByPkIsActive(Long arg0, Boolean arg1)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(Integer arg0, Boolean arg1)
-			throws Exception {
+	public KlasifikasiKerjaJabatan getEntiyByPK(String arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(Long arg0, Integer arg1)
-			throws Exception {
+	public KlasifikasiKerjaJabatan getEntiyByPK(Integer arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public JabatanProfesi getEntityByPkIsActive(Long arg0, Byte arg1)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JabatanProfesi getEntityByPkIsActive(Long arg0, Boolean arg1)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JabatanProfesi getEntiyByPK(String arg0) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JabatanProfesi getEntiyByPK(Integer arg0) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public JabatanProfesi getEntiyByPK(Long arg0) throws Exception {
+	public KlasifikasiKerjaJabatan getEntiyByPK(Long arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -190,52 +192,54 @@ public class JabatanProfesiServiceImpl extends IServiceImpl implements JabatanPr
 	}
 
 	@Override
-	public void save(JabatanProfesi arg0) throws Exception {
+	public void save(KlasifikasiKerjaJabatan arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public JabatanProfesi saveData(JabatanProfesi arg0) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void saveOrUpdate(JabatanProfesi arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public JabatanProfesi saveOrUpdateData(JabatanProfesi arg0)
+	public KlasifikasiKerjaJabatan saveData(KlasifikasiKerjaJabatan arg0)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void softDelete(JabatanProfesi arg0) throws Exception {
+	public void saveOrUpdate(KlasifikasiKerjaJabatan arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void update(JabatanProfesi arg0) throws Exception {
+	public KlasifikasiKerjaJabatan saveOrUpdateData(KlasifikasiKerjaJabatan arg0)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void softDelete(KlasifikasiKerjaJabatan arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public JabatanProfesi updateData(JabatanProfesi arg0) throws Exception {
+	public void update(KlasifikasiKerjaJabatan arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public KlasifikasiKerjaJabatan updateData(KlasifikasiKerjaJabatan arg0)
+			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public List<JabatanProfesi> getAllDataByJabatanId(Long jabatanId) throws Exception {
-		return jabatanProfesiDao.getAllDataByJabatanId(jabatanId);
+	public List<KlasifikasiKerjaJabatan> getAllDataByJabatanId(Long jabatanId) throws Exception {
+		return klasifikasiKerjaJabatanDao.getByJabatanId(jabatanId);
 	}
 
 }

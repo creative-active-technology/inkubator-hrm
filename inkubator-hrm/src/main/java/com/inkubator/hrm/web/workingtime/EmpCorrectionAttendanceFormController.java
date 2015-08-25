@@ -136,7 +136,12 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     }
 
     public void doReset() {
-        
+    	model.setWorkingGroupName(null);
+        model.setStartDate(null);
+        model.setEndDate(null);
+        model.setListDetail(null);
+        model.setEmpData(null);
+        model.setListDetail(null);
     }
     
     public void doSearchSchedule(){
