@@ -128,7 +128,7 @@ public class TransactionCodeficationViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 450);
+        options.put("contentWidth", 470);
         options.put("contentHeight", 390);
         RequestContext.getCurrentInstance().openDialog("codefication_form", options, params);
     }
