@@ -112,7 +112,7 @@ public class RmbsApplicationApprovalFormController extends BaseController {
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(empData.getId());
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsType.getId(), rmbsSchema.getId()));
-            totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
+            totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(rmbsApplication.getApplicationDate(), empData.getId(), rmbsType.getId());
             
 	        //attachment file
             JsonObject jsonObject = gson.fromJson(currentActivity.getPendingData(), JsonObject.class);            

@@ -48,7 +48,9 @@
                                     <p:outputLabel for="applicationDateId" value="#{appmsg['rmbs_application.request_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}" maxdate="#{now}"/>
+                                    <p:calendar id="applicationDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsApplicationFormController.model.applicationDate}" maxdate="#{now}">
+                                    	<p:ajax event="dateSelect" listener="#{rmbsApplicationFormController.onChangeApplicationDate()}" update="totalRequestedId" />
+                                    </p:calendar>
                                     <p:message for="applicationDateId"/>
                                 </p:column>
                             </p:row>

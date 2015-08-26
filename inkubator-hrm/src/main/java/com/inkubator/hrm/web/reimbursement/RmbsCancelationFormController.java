@@ -197,7 +197,7 @@ public class RmbsCancelationFormController extends BaseController {
 	        RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(empData.getId());
 	        rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
 	        rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsType.getId(), rmbsSchema.getId()));
-	        totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(empData.getId(), rmbsType.getId());
+	        totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(rmbsApplication.getApplicationDate(), empData.getId(), rmbsType.getId());
 	        listApprover = rmbsApplicationService.getListApproverByEmpDataId(empData.getId());
 	        
 	        //attachment file
