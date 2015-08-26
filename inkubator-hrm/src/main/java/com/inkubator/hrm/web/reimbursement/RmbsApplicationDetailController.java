@@ -61,7 +61,7 @@ public class RmbsApplicationDetailController extends BaseController {
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(rmbsApplication.getEmpData().getId());
             rmbsSchema =  rmbsSchemaListOfEmp.getRmbsSchema();
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(rmbsApplication.getRmbsType().getId(), rmbsSchema.getId()));
-            totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(rmbsApplication.getEmpData().getId(), rmbsApplication.getRmbsType().getId());
+            totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(rmbsApplication.getApplicationDate(), rmbsApplication.getEmpData().getId(), rmbsApplication.getRmbsType().getId());
             isHaveAttachment = rmbsApplication.getReceiptAttachment() != null && rmbsApplication.getReceiptAttachment().length > 0;
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

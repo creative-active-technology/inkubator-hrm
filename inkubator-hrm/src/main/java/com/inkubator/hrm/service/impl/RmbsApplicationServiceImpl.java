@@ -24,7 +24,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.primefaces.json.JSONException;
@@ -611,7 +611,12 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
     	RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(new RmbsSchemaListOfTypeId(entity.getRmbsType().getId(), rmbsSchema.getId()));
 		if(entity.getNominal().doubleValue() > rmbsSchemaListOfType.getLimitPerClaim()){
     		throw new BussinessException("rmbs_application.error_nominal_exceed");
-    	}				        
+    	}
+		//check total nominal this month + nominal, should not exceed maxPerMonth	
+    	BigDecimal totalPerMonth = this.getTotalNominalForOneMonth(entity.getApplicationDate(), entity.getEmpData().getId(), rmbsType.getId());
+		if(entity.getNominal().add(totalPerMonth).doubleValue() > rmbsSchemaListOfType.getMaxPerMonth()){
+    		throw new BussinessException("rmbs_application.error_nominal_per_month_exceed");
+    	}
         
         //set data        
         entity.setEmpData(empData);
@@ -690,12 +695,40 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception {
-		DateTime now = new DateTime();
-		DateTime startDate = new DateTime(now.getYear(), now.getMonthOfYear(), now.dayOfMonth().getMinimumValue(), 0, 0);
-		DateTime endDate = new DateTime(now.getYear(), now.getMonthOfYear(), now.dayOfMonth().getMaximumValue(), 23, 59);
-		return rmbsApplicationDao.getTotalNominalByEmpDataIdAndRmbsTypeIdAndDateBetween(empDataId, rmbsTypeId, startDate.toDate() , endDate.toDate());
+	public BigDecimal getTotalNominalForOneMonth(Date date, Long empDataId, Long rmbsTypeId) throws Exception {
+		BigDecimal total = new BigDecimal(0);
 		
+		if(date != null && empDataId != null && rmbsTypeId != null) {
+			DateTime dt = new DateTime(date);
+			DateTime startDate = new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.dayOfMonth().getMinimumValue(), 0, 0);
+			DateTime endDate = new DateTime(dt.getYear(), dt.getMonthOfYear(), dt.dayOfMonth().getMaximumValue(), 23, 59);
+			
+			/** getTotal Nominal yg sudah disetujui */
+			BigDecimal nominalAlreadyApproved = rmbsApplicationDao.getTotalNominalByEmpDataIdAndRmbsTypeIdAndDateBetween(empDataId, rmbsTypeId, startDate.toDate() , endDate.toDate());
+			
+			/** getTotal Nominal yg masih menunggu persetujuan */
+			BigDecimal nominalWaitingApproval = new BigDecimal(0);
+			HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+			List<ApprovalActivity> listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.REIMBURSEMENT);
+			for(ApprovalActivity appActivity : listApprovalActivities){
+				RmbsApplication application = this.convertJsonToEntity(appActivity.getPendingData());
+				
+				/** dapatkan nominal berdasarkan type nya
+				 * DAN hanya yang diantara startDate dan endDate*/
+				dt = new DateTime(application.getApplicationDate());
+				if( application.getRmbsType().getId().intValue() == rmbsTypeId &&
+						(startDate.isBefore(dt) || DateUtils.isSameDay(startDate.toDate(), dt.toDate()))  && 
+						(endDate.isAfter(dt) ||  DateUtils.isSameDay(endDate.toDate(), dt.toDate()))) {
+					nominalWaitingApproval = nominalWaitingApproval.add(application.getNominal());
+				}
+			}
+			
+			/** jumlahkan total yg sudah disetujui dan yang masih menunggu persetujuan */
+			total = nominalAlreadyApproved.add(nominalWaitingApproval);
+		}
+		
+		
+		return total;
 	}
 
 	@Override
