@@ -388,6 +388,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_APPROVED));
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_CANCELLED));
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_REJECTED));
+        disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_DELETED));
         subQueryNotApprovedYet.add(disjuntionStatus);
         ProjectionList projectionNotApprovedYet = Projections.projectionList();
         projectionNotApprovedYet.add(Property.forName("id"));
