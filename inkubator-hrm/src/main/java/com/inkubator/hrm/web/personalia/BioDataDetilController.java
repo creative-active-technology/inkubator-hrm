@@ -1152,7 +1152,7 @@ public class BioDataDetilController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 480);
+        options.put("contentWidth", 470);
         options.put("contentHeight", 435);
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();

@@ -38,7 +38,7 @@ public class YearIntegerNumberBetweenValidator implements Validator {
             // convert to integer if numeric
             Integer endNumber = Integer.parseInt(data);
             //check if begin number greater than end number
-            if (beginNumber > endNumber) {
+            if (beginNumber > endNumber) { 
                 String validatorMessage = (String) component.getAttributes().get("validatorMessage");
                 throw new ValidatorException(new FacesMessage(validatorMessage));
             }
