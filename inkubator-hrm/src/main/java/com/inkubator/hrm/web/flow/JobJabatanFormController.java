@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.flow;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,7 @@ import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
+import com.inkubator.hrm.web.model.JabatanDeskripsiModel;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.webcore.util.FacesUtil;
@@ -121,7 +123,6 @@ public class JobJabatanFormController implements Serializable {
 	private DualListModel<Major> dualListModelMajor = new DualListModel<>();
 	private DualListModel<Faculty> dualListModelFaculty = new DualListModel<>();
 	private JabatanDeskripsi selectedJabatanDeskripsi;
-	
 	private JobJabatanModel jobJabatanModel;
 	
 
@@ -194,6 +195,9 @@ public class JobJabatanFormController implements Serializable {
 	            
 	            jobJabatanModel.setListJabatanDeskripsi(new ArrayList<JabatanDeskripsi>());
 			}
+			
+			JabatanDeskripsiModel jabatanDeskripsiModel = new JabatanDeskripsiModel();
+			context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
 			
 			context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 			
@@ -511,13 +515,33 @@ public class JobJabatanFormController implements Serializable {
 	        }
 	    }
 	 
+	/* public void initAddRecruitmentRequest(RequestContext context){
+		 
+	 }*/
+	 
+	 public void initialAddJabatanDeskripsiFlow(RequestContext context) {
+		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
+		 jabatanDeskripsiModel = new JabatanDeskripsiModel();
+		 context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
+	 }
+	 
 	 public void doAddJabatanDeskripsi(){
 		Map<String, List<String>> dataToSend = new HashMap<>();
-		List<String> dataIsi = new ArrayList<>();
-		dataIsi.add(String.valueOf(jobJabatanModel.getId()));
-		dataToSend.put("jabatanId", dataIsi);
-		//showDialog(dataToSend);
+		/*List<String> dataIsi = new ArrayList<>();
+		dataIsi.add(String.valueOf(jobJabatanModel.getId()));*/
+		dataToSend.put("jabatanId", Arrays.asList(String.valueOf(jobJabatanModel.getId())));
+		showDialog(dataToSend);
 	 }
+	 
+	 private void showDialog(Map<String, List<String>> params) {
+	        Map<String, Object> options = new HashMap<>();
+	        options.put("modal", true);
+	        options.put("draggable", true);
+	        options.put("resizable", false);
+	        options.put("contentWidth", 430);
+	        options.put("contentHeight", 330);
+	        org.primefaces.context.RequestContext.getCurrentInstance().openDialog("/protected/organisation/job_jabatan_description_form", options, params);
+	    }
 	 
 	 /* End Deskripsi Jabatan*/
 
@@ -588,6 +612,8 @@ public class JobJabatanFormController implements Serializable {
 			JabatanDeskripsi selectedJabatanDeskripsi) {
 		this.selectedJabatanDeskripsi = selectedJabatanDeskripsi;
 	}
+
+	
 
 	
 	

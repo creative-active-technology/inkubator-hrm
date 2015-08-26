@@ -65,15 +65,31 @@
     	<transition on="end" to="end"/>
     </view-state>
     
-    <view-state id="add_job_jabatan_description" view="job_jabatan_description_view.xhtml">
+    <view-state id="add_job_jabatan_description"  view="job_jabatan_description_view.xhtml">
     	<transition on="back" to="add_job_jabatan_classification" >
     		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
+		</transition>
+		<transition  on="add_new" to="add_new_jabatan_desc" >
+    		<!-- <evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" />  -->
 		</transition>
     	<!-- <transition on="next" to="add_job_jabatan_classification">
 			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
 		</transition> -->
     	<transition on="end" to="end"/>
     </view-state>
+    <view-state id="add_new_jabatan_desc" view="job_jabatan_description_form.xhtml">
+    	<on-entry> <evaluate expression="jobJabatanFormController.initialAddJabatanDeskripsiFlow(flowRequestContext)"></evaluate> </on-entry>
+    	<transition on="back" to="add_job_jabatan_description" >
+		</transition>
+    </view-state>
+   <!--  <action-state id="add_new_jabatan_desc">
+    	 <evaluate expression="jobJabatanFormController.doSave(flowRequestContext)"/>
+    </action-state> -->
+    
+   <!--  <action-state id="initAddJabatanDescription">
+        <evaluate expression="jobJabatanFormController.initAddRecruitmentRequest(flowRequestContext)"/>        
+        <transition on="success" to="recruitment_request_form"/>
+    </action-state> -->
 
 	<!-- <action-state id="save_verification">
         <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
