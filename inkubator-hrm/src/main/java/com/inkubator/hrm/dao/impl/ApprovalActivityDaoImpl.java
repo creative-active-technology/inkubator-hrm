@@ -388,6 +388,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_APPROVED));
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_CANCELLED));
         disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_REJECTED));
+        disjuntionStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_DELETED));
         subQueryNotApprovedYet.add(disjuntionStatus);
         ProjectionList projectionNotApprovedYet = Projections.projectionList();
         projectionNotApprovedYet.add(Property.forName("id"));
@@ -408,5 +409,14 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
         return criteria.list();
     }
+
+	@Override
+	public ApprovalActivity getEntityByActivityNumberAndLastSequence(String activityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("activityNumber", activityNumber));
+		criteria.addOrder(Order.desc("sequence"));
+		criteria.setMaxResults(1);
+		return (ApprovalActivity) criteria.uniqueResult();
+	}
 	
 }

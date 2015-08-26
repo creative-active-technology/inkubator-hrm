@@ -13,8 +13,10 @@ import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.service.JabatanDeskripsiService;
 import com.inkubator.hrm.web.search.JabatanDeskripsiSearcParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -224,5 +226,11 @@ public class JabatanDeskripsiServiceImpl extends IServiceImpl implements Jabatan
     public Long getTotalJabatanByParam(JabatanDeskripsiSearcParameter searchParameter) throws Exception {
         return this.jabatanDeskripsiDao.getTotalJabatanByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<JabatanDeskripsi> getAllDataByJabatanId(Long jabatanId)	throws Exception {
+		return jabatanDeskripsiDao.getAllDataByJabatanId(jabatanId);
+	}
 
 }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,16 +13,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -48,6 +56,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
@@ -292,10 +301,25 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
 
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
-        approvalActivity.setPendingData(convertToJsonData(entity, recruitMppApplyFile, listDetailRecruitMppApply));
-        approvalActivityDao.save(approvalActivity);
-
-        result = "success_need_approval";
+        
+        
+        if(approvalActivity == null){
+        	recruitMppApplyDao.save(entity);
+        	result = "save_without_approval";
+        }else{
+        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+            JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
+            jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);
+            String jsonPendingData = gson.toJson(jsonObject);
+        	approvalActivity.setPendingData(jsonPendingData);
+        	approvalActivityDao.save(approvalActivity);
+        	
+        	//sending email notification
+            this.sendingApprovalNotification(approvalActivity);
+            result = "success_need_approval";
+        }
 
         return result;
     }
@@ -395,7 +419,12 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
                 recruitMppApplyViewModel.setRecruitMppApplyCode(recruitMppApplyTemp.getRecruitMppApplyCode());
                 recruitMppApplyViewModel.setRecruitMppApplyName(recruitMppApplyTemp.getRecruitMppApplyName());
                 recruitMppApplyViewModel.setApplyDate(recruitMppApplyTemp.getApplyDate());
-                recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(arrayDetailMpp.size())));
+                if(arrayDetailMpp != null){
+                	recruitMppApplyViewModel.setJobPositionTotal(Long.parseLong(String.valueOf(arrayDetailMpp.size())));
+                }else{
+                	recruitMppApplyViewModel.setJobPositionTotal(0l);
+                }
+                
 
             } else {
                 RecruitMppApply recruitMppApply = recruitMppApplyDao.getEntityWithDetailById(recruitMppApplyViewModel.getRecruitMppApplyId().longValue());
@@ -461,6 +490,46 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     	//send sms notification to approver if need approval OR
         //send sms notification to requester if need revision
 		super.sendApprovalSmsnotif(appActivity);
+		
+		//initialization
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
+
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+
+        //parsing object data to json, for email purpose
+        RecruitMppApply recruitMppApply = gson.fromJson(appActivity.getPendingData(), RecruitMppApply.class);
+
+
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("proposeDate", dateFormat.format(recruitMppApply.getCreatedOn()));
+            jsonObj.put("recruitMppApplyName", recruitMppApply.getRecruitMppApplyName());
+            jsonObj.put("applyDate", dateFormat.format(recruitMppApply.getApplyDate()));
+            jsonObj.put("reason", recruitMppApply.getReason());
+            jsonObj.put("periode", recruitMppApply.getRecruitMppPeriod().getName());
+            
+            
+
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
     }
 
     @Override

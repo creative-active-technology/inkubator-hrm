@@ -9,6 +9,7 @@
       	
     <on-start>
     	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+    	<set name="flowScope.activity" value="requestParameters.activity" type="java.lang.Long" />
       	<evaluate expression="businessTravelFormController.initBusinessTravelProcessFlow(flowRequestContext)"/>
 	</on-start>
 
@@ -24,11 +25,19 @@
     
     	<transition on="back" to="add_business_travel"/>
     	<transition on="save" to="save_verification"/>
+    	<transition on="revised" to="revised_verification"/>
     	<transition on="end" to="end"/>
     </view-state>
 
 	<action-state id="save_verification">
         <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="add_business_travel_component"/>
+    </action-state >
+    
+    <action-state id="revised_verification">
+        <evaluate expression="businessTravelFormController.doRevised(flowRequestContext)"/>
         <transition on="success_need_approval" to="end"/>
         <transition on="success_without_approval" to="end_detail"/>
         <transition on="error" to="add_business_travel_component"/>

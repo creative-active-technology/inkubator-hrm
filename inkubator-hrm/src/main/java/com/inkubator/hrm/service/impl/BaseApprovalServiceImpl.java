@@ -185,7 +185,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				throw new BussinessException("loan.approver_still_not_have_account");
 			}
 			if(!empData.getHrmUsers().isEmpty()){ //if not empty
-				System.out.println("getApproverByJabatanId empData.getHrmUsers() is not empty ");
+				
 				HrmUser approver = empData.getHrmUsers().iterator().next();
 				userId = approver.getUserId();					
 			}
@@ -734,6 +734,38 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
     	
     	//send email cancellation
     	this.sendingApprovalNotification(appActivity);
+    }
+    
+    /**
+     * <p>Method untuk mendelete suatu activity. 
+     * Tidak ada pengecekan next approval dan tidak ada delete row, karena method ini hanya update status activity
+     * </p>
+     *
+     * <pre>
+     * super.deleted(approvalActivityId);
+     * </pre>
+     *
+     * @param appActivityId  Approval Activity id
+     * @param comment String
+     */
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleted(String activityNumber, String deletedBy) throws Exception {
+    	ApprovalActivity appActivity = approvalActivityDao.getEntityByActivityNumberAndLastSequence(activityNumber);
+    	
+    	//check only approval status which is APPROVED that can be process
+    	if(!(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)){
+    		throw new BussinessException("approval.error_status_already_changed");
+    	}
+    	
+    	ApprovalActivity lastAppActivity = new ApprovalActivity();
+    	BeanUtils.copyProperties(appActivity, lastAppActivity, new String[]{"id","sequence","approvalTime","createdTime","approvalStatus","approvedBy"});
+    	lastAppActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9))); 
+    	lastAppActivity.setSequence(appActivity.getSequence()+1); //increment +1
+    	lastAppActivity.setApprovalTime(new Date());
+    	lastAppActivity.setApprovedBy(deletedBy);
+    	lastAppActivity.setCreatedTime(new Date());
+    	lastAppActivity.setApprovalStatus(HRMConstant.APPROVAL_STATUS_DELETED);       	
+    	approvalActivityDao.save(lastAppActivity);   	
     }
     
     /**

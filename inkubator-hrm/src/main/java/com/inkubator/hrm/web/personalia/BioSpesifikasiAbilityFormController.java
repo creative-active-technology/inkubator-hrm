@@ -194,7 +194,7 @@ public class BioSpesifikasiAbilityFormController extends BaseController{
             
             cleanAndExit();
         } catch (BussinessException ex) { 
-            System.out.println("errorrrrrrrrr");
+         
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

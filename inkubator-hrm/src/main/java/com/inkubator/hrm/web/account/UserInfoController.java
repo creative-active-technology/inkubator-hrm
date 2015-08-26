@@ -45,8 +45,7 @@ public class UserInfoController extends BaseController {
         super.initialization();
         userModel = new UserModel();
         Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        System.out.println("HOHOOHOHOHO");
-        System.out.println(authorities);
+       
     }
 
     @PreDestroy

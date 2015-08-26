@@ -8,6 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -20,10 +25,13 @@ import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -43,6 +51,8 @@ import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -61,11 +71,6 @@ import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import java.util.Map;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import org.springframework.jms.core.MessageCreator;
 
 /**
  *
@@ -131,7 +136,12 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
         
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+        List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+        // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
+        if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+            throw new BussinessException("permitimplementation.error_still_have_waiting_status");
+        }        
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
         
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -1009,7 +1019,12 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             
             
             HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+            List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+            // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
+            if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+                throw new BussinessException("permitimplementation.error_still_have_waiting_status");
+            }        
+            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
             
             String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
             Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();

@@ -23,7 +23,9 @@ public interface RecruitHireApplyService extends IService<RecruitHireApply>, Bas
         
     public Long getTotalRecruitmentReqActivityByParam(RecruitReqHistorySearchParameter parameter) throws Exception;
     
-    public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
+//    public void saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
+    
+    public String saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception;
     
     public RecruitHireApply getEntityByPkWithDetail(Long id) throws Exception;
 

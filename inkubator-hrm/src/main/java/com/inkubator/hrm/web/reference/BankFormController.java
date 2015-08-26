@@ -140,9 +140,9 @@ public class BankFormController extends BaseController {
     }
 
     public String doSave() {
-        System.out.println("masuk method");
+      
         Bank bank = getEntityFromViewModel(bankModel);
-        System.out.println("berhasil bikin object");
+      
         try {
             if (isUpdate) {
                 bankService.update(bank);

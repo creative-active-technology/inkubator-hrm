@@ -32,6 +32,7 @@ public class BatchStepExecutionServiceImpl extends IServiceImpl implements Batch
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<BatchStepExecution> getExitMessageByJobId(Long id) {
+  
         return batchStepExecutionDao.getExitMessageByJobId(id);
     }
 

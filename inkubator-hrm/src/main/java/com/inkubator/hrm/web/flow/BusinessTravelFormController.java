@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -14,23 +15,31 @@ import org.springframework.webflow.execution.RequestContext;
 
 import ch.lambdaj.Lambda;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TravelComponentCostRate;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TravelComponentCostRateService;
 import com.inkubator.hrm.service.TravelTypeService;
 import com.inkubator.hrm.service.TravelZoneService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
+import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
@@ -55,6 +64,8 @@ public class BusinessTravelFormController implements Serializable{
 	private TravelZoneService travelZoneService;
 	@Autowired 
 	private TravelTypeService travelTypeService;
+	@Autowired
+	private ApprovalActivityService approvalActivityService;
 	
 	
 	public void initBusinessTravelProcessFlow(RequestContext context){
@@ -68,18 +79,36 @@ public class BusinessTravelFormController implements Serializable{
 			context.getFlowScope().put("travelTypes", travelTypes);
 			
 			//binding value to model
-			Long id = context.getFlowScope().getLong("id");	
+			Boolean isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
 			BusinessTravelModel model = new BusinessTravelModel();
-			if(id != null){			
-				System.out.println("if hohoho");
-				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
-				model = bindEntityToModel(businessTravel);
-			}else{
-				System.out.println("else hohoho");
-				//if id = null create temp codefication
-				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
-			}
 			
+			Long id = context.getFlowScope().getLong("id");	
+			Long appActivityId = context.getFlowScope().getLong("activity");
+			if(id != null){	
+				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
+				List<BusinessTravelComponent> listBusinessTravelComponent = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());
+				model = getModelFromEntity(businessTravel, listBusinessTravelComponent);
+				
+			} else if(appActivityId != null){
+				//jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json 
+                ApprovalActivity currentActivity = approvalActivityService.getEntityByPkWithDetail(appActivityId);
+                model = this.getModelFromJson(currentActivity.getPendingData());
+                ApprovalActivity askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
+                        currentActivity.getSequence() - 1);
+                
+                model.setIsRevised(Boolean.TRUE);
+                model.setCurrentActivity(currentActivity);
+                model.setAskingRevisedActivity(askingRevisedActivity);
+                
+			} else {
+				//set default random business travel number
+				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				
+				if(!isAdministator) { 
+					//jika bukan administrator, langsung di set empData berdasarkan yang login
+					model.setEmpData(HrmUserInfoUtil.getEmpData());
+				}
+			}		
             
 			context.getFlowScope().put("businessTravelModel", model);
 			
@@ -152,22 +181,12 @@ public class BusinessTravelFormController implements Serializable{
 		String message = "error";
 		
 		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		BusinessTravel businessTravel = new BusinessTravel();
-		businessTravel.setId(model.getId());
-		businessTravel.setBusinessTravelNo(model.getBusinessTravelNo());
-		businessTravel.setDescription(model.getDescription());
-		businessTravel.setEmpData(new EmpData(model.getEmpData().getId()));
-		businessTravel.setProposeDate(model.getProposeDate());
-		businessTravel.setStartDate(model.getStart());
-		businessTravel.setEndDate(model.getEnd());
-		businessTravel.setTravelType(new TravelType(model.getTravelTypeId()));
-		businessTravel.setTravelZone(new TravelZone(model.getTravelZoneId()));
-		businessTravel.setDestination(model.getDestination());
+		BusinessTravel businessTravel = this.getEntityFromModel(model);
 		
 		try {
 			if(businessTravel.getId() == null) {
-				message = businessTravelService.save(businessTravel, model.getBusinessTravelComponents(), false);
-				System.out.println("message : " + message);
+				message = businessTravelService.saveWithApproval(businessTravel, model.getBusinessTravelComponents());
+				
 				if (StringUtils.equals(message, "success_need_approval")) {
 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				}else if (StringUtils.equals(message, "success_without_approval")) {
@@ -185,6 +204,34 @@ public class BusinessTravelFormController implements Serializable{
 		
 		return message;
 	}
+	
+	public String doRevised(RequestContext context) {
+		String message = "error";
+		
+		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
+		BusinessTravel businessTravel = this.getEntityFromModel(model);
+		
+		try {
+			if(businessTravel.getId() == null) {
+				message = businessTravelService.saveWithRevised(businessTravel, model.getBusinessTravelComponents(), model.getCurrentActivity().getId());
+				
+				if (StringUtils.equals(message, "success_need_approval")) {
+					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				}else if (StringUtils.equals(message, "success_without_approval")) {
+					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				}
+			} else {
+				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
+				message = "success_without_approval";
+			}
+		} catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+		
+		return message;
+    }
 	
 	public List<EmpData> doAutoCompletEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
@@ -209,7 +256,8 @@ public class BusinessTravelFormController implements Serializable{
 		} else {
 			try {
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(model.getId());
-				model = bindEntityToModel(businessTravel);
+				List<BusinessTravelComponent> listBusinessTravelComponent = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());
+				model = getModelFromEntity(businessTravel, listBusinessTravelComponent);
 			} catch (Exception e) {
 				LOGGER.error("Error", e);
 			}
@@ -255,7 +303,7 @@ public class BusinessTravelFormController implements Serializable{
 		return totalAmount;
 	}
 	
-	private BusinessTravelModel bindEntityToModel(BusinessTravel businessTravel) throws Exception{
+	private BusinessTravelModel getModelFromEntity(BusinessTravel businessTravel, List<BusinessTravelComponent> listBusinessTravelComponent) throws Exception{
 		//bind business travel to model		
 		BusinessTravelModel model = new BusinessTravelModel();
 		model.setId(businessTravel.getId());
@@ -269,8 +317,7 @@ public class BusinessTravelFormController implements Serializable{
 		model.setEnd(businessTravel.getEndDate());
 		model.setDescription(businessTravel.getDescription());
 		
-		//get business travel components
-		List<BusinessTravelComponent> listBusinessTravelComponent = businessTravelComponentService.getAllDataByBusinessTravelId(businessTravel.getId());
+		//set business travel components		
 		model.setBusinessTravelComponents(listBusinessTravelComponent);
 		
 		//calculate total amount
@@ -278,5 +325,33 @@ public class BusinessTravelFormController implements Serializable{
 		model.setTotalAmount(totalAmount);
 		
 		return model;
+	}
+	
+	private BusinessTravelModel getModelFromJson(String json) throws Exception{
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		JsonObject jsonObject =  gson.fromJson(json, JsonObject.class);
+		
+		List<BusinessTravelComponent> businessTravelComponents = gson.fromJson(jsonObject.get("businessTravelComponents"), new TypeToken<List<BusinessTravelComponent>>(){}.getType());
+		BusinessTravel businessTravel = gson.fromJson(json, BusinessTravel.class);
+		EmpData empData = empDataService.getByEmpIdWithDetail(businessTravel.getEmpData().getId());
+		businessTravel.setEmpData(empData);
+		
+		return this.getModelFromEntity(businessTravel, businessTravelComponents);
+	}
+	
+	private BusinessTravel getEntityFromModel(BusinessTravelModel model){
+		BusinessTravel businessTravel = new BusinessTravel();
+		businessTravel.setId(model.getId());
+		businessTravel.setBusinessTravelNo(model.getBusinessTravelNo());
+		businessTravel.setDescription(model.getDescription());
+		businessTravel.setEmpData(new EmpData(model.getEmpData().getId()));
+		businessTravel.setProposeDate(model.getProposeDate());
+		businessTravel.setStartDate(model.getStart());
+		businessTravel.setEndDate(model.getEnd());
+		businessTravel.setTravelType(new TravelType(model.getTravelTypeId()));
+		businessTravel.setTravelZone(new TravelZone(model.getTravelZoneId()));
+		businessTravel.setDestination(model.getDestination());
+		
+		return businessTravel;
 	}
 }

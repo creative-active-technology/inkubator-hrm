@@ -138,7 +138,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 
 	@Override
 	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) {
-		System.out.println(model.getListDeptName() + " dao ieu teh : " + model.getListGolJabName());
+		
 		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));

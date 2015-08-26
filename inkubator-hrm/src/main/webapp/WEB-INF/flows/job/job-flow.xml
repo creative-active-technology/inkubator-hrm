@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	start-state="add_job_jabatan">
+      	
+      	
+    <on-start>
+    	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+      	<evaluate expression="jobJabatanFormController.initJabatanProcessFlow(flowRequestContext)"/>
+	</on-start>
+
+    <view-state id="add_job_jabatan" view="job_jabatan_form.xhtml">
+		<transition on="next" to="add_job_jabatan_edukasi" />
+		<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_edukasi" view="job_jabatan_education_form.xhtml">
+    	<transition on="back" to="add_job_jabatan"  />
+    	<transition on="next" to="add_job_jabatan_profesi">
+			<evaluate expression="jobJabatanFormController.setListEdukasiToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_profesi" view="job_jabatan_profesi_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_edukasi" >
+    		<evaluate  expression="jobJabatanFormController.getListEdukasiFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_major">
+			<evaluate expression="jobJabatanFormController.setListOccupationTypeToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_major" view="job_jabatan_major_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_profesi" >
+    		<evaluate  expression="jobJabatanFormController.getListOccupationTypeFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_faculty">
+			<evaluate expression="jobJabatanFormController.setListMajorToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_faculty" view="job_jabatan_faculty_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_major" >
+    		<evaluate  expression="jobJabatanFormController.getListMajorFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_classification">
+			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_classification" view="job_jabatan_classification_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_faculty" >
+    		<evaluate  expression="jobJabatanFormController.getListFacultyFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="next" to="add_job_jabatan_description">
+			<evaluate expression="jobJabatanFormController.setListKlasifikasiKerjaToFlow(flowRequestContext)" /> 
+		</transition>
+    	<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_job_jabatan_description" view="job_jabatan_description_view.xhtml">
+    	<transition on="back" to="add_job_jabatan_classification" >
+    		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
+		</transition>
+    	<!-- <transition on="next" to="add_job_jabatan_classification">
+			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
+		</transition> -->
+    	<transition on="end" to="end"/>
+    </view-state>
+
+	<!-- <action-state id="save_verification">
+        <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
+        <transition on="success_need_approval" to="end"/>
+        <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="add_business_travel_component"/>
+    </action-state > -->
+
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.businessTravelNo}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/organisation/job_title_view.htm" />
+    
+</flow>

@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.BusinessTravel;
+import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 
 import java.util.Date;
@@ -39,5 +40,9 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 	public Long getTotalActualBusinessTravel(Date date, Long companyId);
 	
 	public Long getCurrentMaxId();
+
+	public List<BusinessTravelViewModel> getAllActivityByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter);
 
 }

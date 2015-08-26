@@ -227,7 +227,7 @@ public class RmbsApplicationFormController extends BaseController {
             rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
             listRmbsType = Lambda.extract(rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId()), Lambda.on(RmbsSchemaListOfType.class).getRmbsType());
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(model.getRmbsTypeId(), rmbsSchema.getId()));
-            totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(model.getEmpData().getId(), model.getRmbsTypeId());
+            totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(model.getApplicationDate(), model.getEmpData().getId(), model.getRmbsTypeId());
 
             //get file attachment
             JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
@@ -256,6 +256,10 @@ public class RmbsApplicationFormController extends BaseController {
 
     public void onChangeEmployee() {
         try {
+        	model.setRmbsTypeId(null);
+        	rmbsSchemaListOfType = null;
+        	totalRequestThisMoth = new BigDecimal(0);
+        	
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(model.getEmpData().getId());
             if (rmbsSchemaListOfEmp != null) {
                 rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
@@ -274,7 +278,15 @@ public class RmbsApplicationFormController extends BaseController {
     public void onChangeRmbsType() {
         try {
             rmbsSchemaListOfType = rmbsSchemaListOfTypeService.getEntityByPk(new RmbsSchemaListOfTypeId(model.getRmbsTypeId(), rmbsSchema.getId()));
-            totalRequestThisMoth = rmbsApplicationService.getTotalNominalByThisMonth(model.getEmpData().getId(), model.getRmbsTypeId());
+            totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(model.getApplicationDate(), model.getEmpData().getId(), model.getRmbsTypeId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    public void onChangeApplicationDate() {
+        try {
+            totalRequestThisMoth = rmbsApplicationService.getTotalNominalForOneMonth(model.getApplicationDate(), model.getEmpData().getId(), model.getRmbsTypeId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

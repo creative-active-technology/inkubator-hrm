@@ -194,7 +194,7 @@ public class LoanApplicationFormController extends BaseController {
 
             try {
                 String message = loanNewApplicationService.saveWithRevised(loanNewApplication, currentActivity.getId(), currentActivity.getActivityNumber());
-                System.out.println("akhir  proses revisi, message : " + message);
+             
                 if (StringUtils.equals(message, "success_need_approval")) {
                     path = "/protected/personalia/loan_application_form.htm?faces-redirect=true";
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -512,7 +512,7 @@ public class LoanApplicationFormController extends BaseController {
 
     private void convertJsonToModel(String json) {
         try {
-            System.out.println("json : " + json);
+         
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             LoanNewApplication entity = gson.fromJson(json, LoanNewApplication.class);
 
@@ -529,7 +529,7 @@ public class LoanApplicationFormController extends BaseController {
 
             //Assign loanNewTypeId with LoanNewType id to trigger selectedLoanNewSchemeListOfType on method updateDataPinjamanByLoanNewType
             loanNewTypeId = entity.getLoanNewType().getId();
-            System.out.println("loanNewTypeId : " + loanNewTypeId);
+         
             this.updateDataPinjamanByEmployee();
             this.updateDataPinjamanByLoanNewType();
             this.doCalculateInstallmentSchedule();

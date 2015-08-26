@@ -25,7 +25,9 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     
     public ApprovalActivity getApprovalTimeByApprovalActivityNumber(String activityNumber);
     
-    public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence);	
+    public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence);
+    
+    public ApprovalActivity getEntityByActivityNumberAndLastSequence(String activityNumber);
 	
 	
     /** get Total */

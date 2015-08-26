@@ -308,7 +308,7 @@ public class LogWtAttendanceRealizationServiceImpl extends IServiceImpl implemen
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) throws Exception {
-		System.out.println(logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable).size() + " sizeeeeee");
+		
 		return logWtAttendanceRealizationDao.getAllDataByParam(model, firstResult, maxResults, orderable);
 	}
 

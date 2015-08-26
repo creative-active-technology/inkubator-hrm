@@ -255,12 +255,12 @@ public class RecruitVacancySelectionDetailServiceImpl extends IServiceImpl imple
 		for(RecruitVacancySelectionDetail data : listRecruitVacancySelection){
 			listEmpData = new ArrayList<EmpData>();
 			listRecruitVacancySelectionPic = recruitVacancySelectionDetailPicDao.getAllDataByRecruitVacancySelectionDetailId(data.getId());
-			System.out.println(listRecruitVacancySelectionPic + " list Recruit Pic");
+			
 			for(RecruitVacancySelectionDetailPic dataEmployee : listRecruitVacancySelectionPic){
 				
 				listEmpData.add(dataEmployee.getEmpData());
 			}
-			System.out.println(listEmpData.size() + "sizenya nih");
+			
 			data.setListEmpData(listEmpData);
 		}
 		return listRecruitVacancySelection;
@@ -278,7 +278,7 @@ public class RecruitVacancySelectionDetailServiceImpl extends IServiceImpl imple
 			
 		}
 		recruitVacancySelectionDetail.setListEmpData(listEmployee);
-		System.out.println(recruitVacancySelectionDetail.getListEmpData().size()  +  " size di entity");
+		
 		return recruitVacancySelectionDetail;
 	}
 

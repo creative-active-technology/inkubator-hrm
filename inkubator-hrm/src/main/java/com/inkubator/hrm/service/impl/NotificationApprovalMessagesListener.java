@@ -94,7 +94,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              }*/
             toSend.add("deni.arianto24@yahoo.com");
 //            toSend.add("rizal2_dhfr@yahoo.com");
-            toSentCC.add("rizkykojek@gmail.com");
+//            toSentCC.add("rizkykojek@gmail.com");
 //            toSentCC.add("amjadicky@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
@@ -238,7 +238,33 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
                             maptoSend.put("permitClassification", jsonObject.get("permitClassification").getAsString());
                             break;
-                        
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                        	vtm.setSubject("PENGAJUAN PERMINTAAN TENAGA KERJA");
+                            vtm.setTemplatePath("email_recruitment_request_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("periodeStart", jsonObject.get("periodeStart").getAsString());
+                            maptoSend.put("periodeEnd", jsonObject.get("periodeEnd").getAsString());
+                            maptoSend.put("jabatan", jsonObject.get("jabatan").getAsString());
+                            maptoSend.put("mppName", jsonObject.get("mppName").getAsString());
+                            maptoSend.put("salaryMin", jsonObject.get("salaryMin").getAsString());
+                            maptoSend.put("salaryMax", jsonObject.get("salaryMax").getAsString());
+                            maptoSend.put("candidateCountRequest", jsonObject.get("candidateCountRequest").getAsString());
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                        	vtm.setSubject("PERSETUJUAN RENCANA KETENAGAKERJAAN");
+                            vtm.setTemplatePath("email_mpp_apply_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("recruitMppApplyName", jsonObject.get("recruitMppApplyName").getAsString());
+                            maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+                            maptoSend.put("reason", jsonObject.get("reason").getAsString());
+                            maptoSend.put("periode", jsonObject.get("periode").getAsString());
+                            break;
                         default:
                             break;
                     }

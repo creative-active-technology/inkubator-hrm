@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['jabtan.jabatan_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:focus context="jobTitleFormId" />
+                        <p:outputLabel value="#{appmsg['faculty.faculty']}" styleClass="header_big" />
+                       
+                        <p:separator/>
+                        <div align="center">
+                            <p:pickList value="#{jobJabatanFormController.dualListModelFaculty}" var="faculty" itemValue="#{faculty}" converter="facultyConverter" id="picklistJabatanFacultyId"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['faculty.faculty']}" styleClass="isitext_hrm"
+                                        itemLabel="#{faculty.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            <p:message for="picklistJabatanFacultyId" />
+                        </div>  
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                        	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
+                                             styleClass="label_button"/>
+                            
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jobJabatanFormController.doResetJobJabatanFacultyForm(flowRequestContext)}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="jobTitleFormId" />  
+                            </p:commandButton>
+                            
+                             <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="next" update="jobTitleFormId"/>
+                            
+                        </div>
+
+                    </div>
+
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

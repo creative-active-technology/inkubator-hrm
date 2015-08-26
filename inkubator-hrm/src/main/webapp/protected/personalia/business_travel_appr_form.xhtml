@@ -114,11 +114,25 @@
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
 	                            </p:column>
-	                            <p:column  style="width: 80%" colspan="3">
+	                            <p:column  style="width: 30%">
 	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{businessTravelApprovalFormController.comment}" 
 	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
 	                            </p:column>
-	                        </p:row>	                        	                              
+	                        </p:row>
+	                        <p:row rendered="#{businessTravelApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.requesting_revised_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{businessTravelApprovalFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 30%">
+	                            	<p:outputLabel value="#{businessTravelApprovalFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                        </p:row>	   	                        	                              
 	                 	</p:panelGrid>
 	                 	
 	                 	<p:dataTable  id="tableBusinessTravelComponentId" var="businessTravelComponentData"  value="#{businessTravelApprovalFormController.businessTravelComponents}" lazy="false" paginator="#{businessTravelApprovalFormController.isPaginator}" pageLinks="7"
@@ -149,18 +163,22 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.quantity']}"/>
 	                                </f:facet>
-	                                <p:spinner value="#{businessTravelComponentData.quantity}" size="4" min="0" styleClass="isitext_hrm" required="true">
+	                                <h:outputLabel value= "#{businessTravelComponentData.quantity}"/>	                                
+	                                <!-- <p:spinner value="#{businessTravelComponentData.quantity}" size="4" min="0" styleClass="isitext_hrm" required="true">
 	                               		<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelApprovalFormId:totalAmountId" process="@this" listener="#{businessTravelApprovalFormController.doAdjustPayByAmount()}"/>
-	                               	</p:spinner>
+	                               	</p:spinner> -->
 	                            </p:column>
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['businesstravel.earned_per_quatity']}"/>
 	                                </f:facet>
-	                                <pe:inputNumber title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{businessTravelComponentData.earnedPerQuantity}" 
+	                                <h:outputLabel value= "#{businessTravelComponentData.earnedPerQuantity}">
+	                                	<f:convertNumber pattern="###,###" type="currency"/>
+	                                </h:outputLabel>
+	                                <!-- <pe:inputNumber title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{businessTravelComponentData.earnedPerQuantity}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:190px;">
 	                                	<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelApprovalFormId:totalAmountId" process="@this" listener="#{businessTravelApprovalFormController.doAdjustPayByAmount()}"/>
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
 	                            </p:column>
 	                            <p:column style="text-align: center;width: 10%">
 	                                <f:facet name="header">  
@@ -180,6 +198,12 @@
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isApprover}" update=":growlBusinessTravelApprovalFormlId"/>
 	                            <p:commandButton value="#{appmsg['approvalactivity.cancelled']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.cancelled']}" action="#{businessTravelApprovalFormController.doCancelled()}"
 	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isRequester}" update=":growlBusinessTravelApprovalFormlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{businessTravelApprovalFormController.doAskingRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{rmbsApplicationApprovalFormController.isApprover}" update=":growlBusinessTravelApprovalFormlId"/>
+	                        </h:panelGroup>
+	                        <h:panelGroup rendered="#{businessTravelApprovalFormController.isWaitingRevised}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{businessTravelApprovalFormController.doRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{businessTravelApprovalFormController.isRequester}" update=":growlBusinessTravelApprovalFormlId"/>		                        
 	                        </h:panelGroup>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{businessTravelApprovalFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>

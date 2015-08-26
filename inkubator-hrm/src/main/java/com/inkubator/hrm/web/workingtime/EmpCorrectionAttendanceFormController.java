@@ -136,7 +136,12 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     }
 
     public void doReset() {
-        
+    	model.setWorkingGroupName(null);
+        model.setStartDate(null);
+        model.setEndDate(null);
+        model.setListDetail(null);
+        model.setEmpData(null);
+        model.setListDetail(null);
     }
     
     public void doSearchSchedule(){
@@ -287,7 +292,7 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     
     public void onRowEdit(RowEditEvent event) {
     	try { 
-	    	System.out.println("masuk coy");
+	    
 	    	EmpCorrectionAttendanceDetailModel detail = (EmpCorrectionAttendanceDetailModel) event.getObject();
 	    	WtWorkingHour workingHour = wtWorkingHourService.getEntiyByPK(detail.getWorkingHour().getId()); 
 	    	detail.setWorkingHour(workingHour);
