@@ -48,7 +48,7 @@ public class LeaveImplementationFormController extends BaseController {
     private LeaveDistributionService leaveDistributionService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
-
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -67,7 +67,7 @@ public class LeaveImplementationFormController extends BaseController {
                     isUpdate = Boolean.TRUE;
                 }
             }else{
-            	model.setNumberFilling(HRMConstant.LEAVE_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+            	 model.setNumberFilling(HRMConstant.LEAVE_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -132,7 +132,22 @@ public class LeaveImplementationFormController extends BaseController {
                 LOGGER.error("Error", ex);
             }
         } else {
-            model = new LeaveImplementationModel();
+//            model = new LeaveImplementationModel();
+            model.setNumberFilling(HRMConstant.LEAVE_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+            model.setEmpData(null);
+            model.setActualLeaveTaken(null);
+            model.setAddress(null);
+            model.setDescription(null);
+            model.setEndDate(null);
+            model.setFillingDate(null);
+            model.setId(null);
+            model.setLatestLeaveDate(null);
+            model.setLeaveId(null);
+            model.setMaterialJobsAbandoned(null);
+            model.setMobilePhone(null);
+            model.setRemainingLeave(null);
+            model.setStartDate(null);
+            model.setTemporaryActing(null);
         }
     }
 
