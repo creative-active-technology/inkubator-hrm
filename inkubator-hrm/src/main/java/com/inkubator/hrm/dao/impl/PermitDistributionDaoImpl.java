@@ -41,9 +41,6 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
     public List<PermitDistribution> getByParamWithDetail(PermitDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearch(searchParameter, criteria);
-        criteria.createAlias("empData", "empData");
-        criteria.createAlias("empData.bioData", "bioData");
-        criteria.createAlias("permitClassification", "permitClassification");
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -58,21 +55,21 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
     }
 
     private void doSearch(PermitDistributionSearchParameter searchParameter, Criteria criteria) {
+    	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("permitClassification", "permitClassification", JoinType.INNER_JOIN);
+        
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.createAlias("ed.bioData", "bio", JoinType.INNER_JOIN);
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
             criteria.add(disjunction);
         }
-        if (StringUtils.isNotEmpty(searchParameter.getPermitClassification())) {
-            criteria.createAlias("permitClassification", "p", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("p.name", searchParameter.getPermitClassification(), MatchMode.START));
+        if (StringUtils.isNotEmpty(searchParameter.getPermitClassification())) {            
+            criteria.add(Restrictions.like("permitClassification.name", searchParameter.getPermitClassification(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getNik()!= null) {
-            criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("ed.nik", searchParameter.getNik(), MatchMode.START));
+        if (searchParameter.getNik() != null) {            
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
