@@ -131,7 +131,7 @@
                                 <p:column  style="width: 80%">
                                     <p:row>
                                         <p:column>
-                                            <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                            <p:selectBooleanButton required="true" requiredMessage="#{appmsg['medicalcare.hospital_must_be_filled']}" value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                                    offIcon="ui-icon-close" styleClass="label_button" >
                                                 <p:ajax update="hospitalId" listener="#{medicalCareFormController.onChangeHospitalCheckbox()}" />
                                             </p:selectBooleanButton>
@@ -147,7 +147,7 @@
                                         </p:column>
                                         &nbsp;
                                         <p:column>
-                                            <p:selectOneMenu id="hospitalId" value="#{medicalCareFormController.model.hospital}" disabled="#{!medicalCareFormController.disabledHospital}" style="width: 156px;margin-bottom: -9px;" >
+                                            <p:selectOneMenu id="hospitalId" required="true" requiredMessage="#{appmsg['medicalcare.hospital_must_be_filled']}" value="#{medicalCareFormController.model.hospital}" disabled="#{!medicalCareFormController.disabledHospital}" style="width: 156px;margin-bottom: -9px;" >
                                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                                 <f:selectItems value="#{medicalCareFormController.dropDownHospital}"/>
                                             </p:selectOneMenu>
@@ -161,15 +161,16 @@
                                     <p:outputLabel for="attachmentId" value="#{appmsg['global.file_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{medicalCareFormController.handingFileUpload}"
+                                    <p:fileUpload required="true" requiredMessage="#{appmsg['medicalcare.file_must_be_filled']}" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{medicalCareFormController.handingFileUpload}"
                                                   mode="advanced"  id="attachmentId"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
                                                   dragDropSupport="true" multiple="false" update="fileNameId,:growlMedicalCareFormId"
                                                   allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
                                     <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                     <p:outputLabel value="#{medicalCareFormController.model.uploadPath}" id="fileNameId"/>  
-                                    <p:message for="attachmentId"/>
+                                <p:message for="attachmentId"/>
                                 </p:column>
                             </p:row>
+                                
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel for="diseaseId" value="#{appmsg['disease.disease']}" styleClass="label_hrm" />
@@ -184,7 +185,7 @@
                                                     converter="diseaseConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>-->
-                                    <p:selectOneMenu id="diseaseId" value="#{medicalCareFormController.model.disease}" style="width: 156px;" >
+                                    <p:selectOneMenu required="true" requiredMessage="#{appmsg['medicalcare.disease_must_be_filled']}" id="diseaseId" value="#{medicalCareFormController.model.disease}" style="width: 156px;" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{medicalCareFormController.dropDownDisease}"/>
                                     </p:selectOneMenu>

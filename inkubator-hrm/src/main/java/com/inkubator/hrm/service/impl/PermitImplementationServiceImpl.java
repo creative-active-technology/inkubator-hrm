@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -49,6 +51,8 @@ import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 //import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -132,7 +136,12 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
         
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+        List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+        // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
+        if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+            throw new BussinessException("permitimplementation.error_still_have_waiting_status");
+        }        
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
         
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -1006,7 +1015,12 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             
             
             HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.PERMIT, requestUser.getUserId());
+            List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+            // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
+            if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+                throw new BussinessException("permitimplementation.error_still_have_waiting_status");
+            }        
+            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
             
             String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
             Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();

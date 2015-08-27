@@ -35,8 +35,10 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.model.ReportLeaveDataViewModel;
 import com.inkubator.hrm.web.search.LeaveImplementationReportSearchParameter;
 import com.inkubator.hrm.web.search.LeaveImplementationSearchParameter;
+import com.inkubator.hrm.web.search.ReportLeaveDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 import java.text.SimpleDateFormat;
@@ -841,4 +843,32 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
     public List<LeaveImplementation> getAllDataByEmpDataId(Long empDataId) throws Exception {
         return leaveImplementationDao.getAllDataByEmpDataId(empDataId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		
+		List<ReportLeaveDataViewModel> listReport = leaveImplementationDao.getAllDataLeaveReport(parameter, firstResult, maxResults, orderable);
+		for(ReportLeaveDataViewModel reportModel : listReport){
+			
+			if(null != reportModel.getActivityNumber()){
+				List<ApprovalActivity> listApproval = approvalActivityDao.getAllDataByActivityNumberWithDetail(reportModel.getActivityNumber(), Order.desc("sequence"));
+				if(listApproval.isEmpty()){
+					reportModel.setLastApproverName("-");
+				}else{
+					HrmUser hrmUser = hrmUserDao.getByUserIdWithDetail(listApproval.get(0).getApprovedBy());
+					reportModel.setLastApproverNik(hrmUser.getEmpData().getNik());
+					reportModel.setLastApproverName(hrmUser.getRealName());
+				}
+			}
+			
+		}
+		return listReport;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter) throws Exception {
+		return leaveImplementationDao.getTotalLeaveDataReport(parameter);
+	}
 }

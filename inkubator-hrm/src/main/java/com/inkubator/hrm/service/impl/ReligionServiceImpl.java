@@ -205,6 +205,11 @@ public class ReligionServiceImpl extends IServiceImpl implements ReligionService
         if (totalDuplicates > 0) {
             throw new BussinessException("religion.error_duplicate_religion_name");
         }
+        //check duplicate code
+        long codeDuplicates = religionDao.getTotalByCode(religion.getCode());
+        if (codeDuplicates > 0){
+            throw new BussinessException("marital.error_duplicate_marital_code");
+        }
 
         religion.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         religion.setCreatedBy(UserInfoUtil.getUserName());
