@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,7 @@ import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
+import com.inkubator.hrm.web.model.RmbsHistoryViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 /**
@@ -208,6 +210,49 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public List<RmbsApplication> getReimbursementHistoryByParam(Long empDataId, int first, int pageSize, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.createAlias("rmbsType", "rmbsType", JoinType.INNER_JOIN);
+		
+		criteria.addOrder(orderable);
+        criteria.setFirstResult(first);
+        criteria.setMaxResults(pageSize);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalReimbursementHistoryByParam(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@Override
+	public List<RmbsHistoryViewModel> getAllDataHistoryBetweenDate(Long empDataId, Date startDate, Date endDate){
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT rmbsType.id AS rmbsTypeId, "
+    			+ "rmbsType.name AS rmbsTypeName, "
+    			+ "SUM(rmbsApplication.nominal) AS totalNominal "
+    			+ "FROM RmbsApplication AS rmbsApplication "
+    			+ "INNER JOIN rmbsApplication.rmbsType AS rmbsType "
+    			+ "INNER JOIN rmbsApplication.empData AS empData "
+    			+ "WHERE empData.id = :empDataId "
+    			+ "AND rmbsApplication.applicationStatus = :applicationStatus "
+    			+ "AND rmbsApplication.applicationDate >= :startDate "
+    			+ "AND rmbsApplication.applicationDate <= :endDate ");    	
+    	selectQuery.append("GROUP BY rmbsType.id ");
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(RmbsHistoryViewModel.class));    	
+    	hbm.setParameter("empDataId", empDataId);
+    	hbm.setParameter("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED);
+    	hbm.setParameter("startDate", startDate);
+    	hbm.setParameter("endDate", endDate);
+    	
+    	return hbm.list();
 	}
 	
 }

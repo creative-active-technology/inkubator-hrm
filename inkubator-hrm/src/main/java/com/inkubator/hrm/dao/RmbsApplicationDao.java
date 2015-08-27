@@ -9,6 +9,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
+import com.inkubator.hrm.web.model.RmbsHistoryViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 /**
@@ -23,6 +24,8 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 	
 	public RmbsApplication getEntityByPkWithDetail(Long id);
 	
+	public List<RmbsHistoryViewModel> getAllDataHistoryBetweenDate(Long empDataId, Date startDate, Date endDate);
+	
 	
 	//pageable
 	public List<RmbsApplicationUndisbursedViewModel> getUndisbursedActivityByParam(RmbsApplicationUndisbursedSearchParameter parameter, int firstResult, int maxResults, Order orderable);
@@ -32,5 +35,9 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalUndisbursedByParam();
+
+	public List<RmbsApplication> getReimbursementHistoryByParam(Long empDataId, int first, int pageSize, Order orderable);
+
+	public Long getTotalReimbursementHistoryByParam(Long empDataId);
 
 }
