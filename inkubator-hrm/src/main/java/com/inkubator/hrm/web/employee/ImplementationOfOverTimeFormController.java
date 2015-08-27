@@ -178,17 +178,23 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         return implementationOfOT;
     }
     
-    public void doResetData() {
-        model.setEmpData(null);
-        model.setImplementationDate(null);
-        model.setStartTime(null);
-        model.setWtOverTimeId(null);
-        model.setStartTime(null);
-        model.setEndTime(null);
-        model.setRelativeHour(null);
-        model.setRelativeMinute(null);
-        model.setDescription(null);
-        model.setCalculationMethod(null);
+    public void doResetData() throws Exception {
+        if(isUpdate){
+        	ImplementationOfOverTime implementationOfOverTime = implementationOfOverTimeService.getEntityByPkWithDetail(model.getId());
+    		model = getModelFromEntity(implementationOfOverTime);
+
+    	}else{
+            model.setEmpData(null);
+            model.setImplementationDate(null);
+            model.setStartTime(null);
+            model.setWtOverTimeId(null);
+            model.setStartTime(null);
+            model.setEndTime(null);
+            model.setRelativeHour(null);
+            model.setRelativeMinute(null);
+            model.setDescription(null);
+            model.setCalculationMethod(null);
+    	}
     }
     
     public void doSaved() {
