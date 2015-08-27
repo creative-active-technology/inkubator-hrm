@@ -71,6 +71,7 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
         if (searchParameter.getNik() != null) {            
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
+        
         criteria.add(Restrictions.isNotNull("id"));
     }
 
