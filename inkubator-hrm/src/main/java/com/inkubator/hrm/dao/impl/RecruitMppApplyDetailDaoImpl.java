@@ -6,6 +6,7 @@ import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -67,5 +68,14 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         }
 
     }
+
+	@Override
+	public RecruitMppApplyDetail getEntityByPkWithDetail(Long recruitMppApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan.department", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", recruitMppApplyId));
+        return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
 
 }

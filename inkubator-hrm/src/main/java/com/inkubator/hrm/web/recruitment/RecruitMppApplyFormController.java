@@ -126,7 +126,7 @@ public class RecruitMppApplyFormController extends BaseController {
     }
 
     public String doSave() {
-
+    	System.out.println(listMppDetail.size() + " list dari form");
         try {
             String result = StringUtils.EMPTY;
             RecruitMppApply recruitMppApply = getEntityFromViewModel(recruitMppApplyModel);
@@ -139,10 +139,12 @@ public class RecruitMppApplyFormController extends BaseController {
             cleanAndExit();
 
             if (StringUtils.equals(result, "success_need_approval")) {
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            } else {
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }
+            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        	} else {
+        		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		}
 
             return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {

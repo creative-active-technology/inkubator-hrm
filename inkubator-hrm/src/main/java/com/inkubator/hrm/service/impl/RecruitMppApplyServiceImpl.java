@@ -42,6 +42,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -54,6 +55,7 @@ import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.RecruitHireApply;
@@ -299,7 +301,6 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
-
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
         
         
@@ -312,6 +313,14 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
             JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
             jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);
+    		JsonArray arrayComponents = new JsonArray();
+    		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
+    			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
+    			arrayComponents.add(component);
+    		}
+    		jsonObject.add("listMppDetail", arrayComponents);
+            
+            
             String jsonPendingData = gson.toJson(jsonObject);
         	approvalActivity.setPendingData(jsonPendingData);
         	approvalActivityDao.save(approvalActivity);
@@ -504,24 +513,24 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         //parsing object data to json, for email purpose
         RecruitMppApply recruitMppApply = gson.fromJson(appActivity.getPendingData(), RecruitMppApply.class);
+        JsonObject jsonObject = (JsonObject) gson.fromJson(appActivity.getPendingData(), JsonObject.class);  
 
-
+        List<RecruitMppApplyDetail> listJabatan = gson.fromJson(jsonObject.get("listMppDetail"), new TypeToken<List<RecruitMppApplyDetail>>() {}.getType());
+        List<String> listNamaJabatan = new ArrayList<String>();
+		for(RecruitMppApplyDetail rmad : listJabatan){
+			listNamaJabatan.add(rmad.getJabatan().getName());
+		}
         final JSONObject jsonObj = new JSONObject();
-        try {
-            jsonObj.put("approvalActivityId", appActivity.getId());
-            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
-            jsonObj.put("locale", appActivity.getLocale());
-            jsonObj.put("proposeDate", dateFormat.format(recruitMppApply.getCreatedOn()));
-            jsonObj.put("recruitMppApplyName", recruitMppApply.getRecruitMppApplyName());
-            jsonObj.put("applyDate", dateFormat.format(recruitMppApply.getApplyDate()));
-            jsonObj.put("reason", recruitMppApply.getReason());
-            jsonObj.put("periode", recruitMppApply.getRecruitMppPeriod().getName());
-            
-            
-
-        } catch (JSONException e) {
-            LOGGER.error("Error when create json Object ", e);
-        }
+        jsonObj.put("approvalActivityId", appActivity.getId());
+		jsonObj.put("ccEmailAddresses",  ccEmailAddresses);
+		jsonObj.put("locale", appActivity.getLocale());
+		jsonObj.put("proposeDate", dateFormat.format(recruitMppApply.getCreatedOn()));
+		jsonObj.put("recruitMppApplyName", recruitMppApply.getRecruitMppApplyName());
+		jsonObj.put("applyDate", dateFormat.format(recruitMppApply.getApplyDate()));
+		jsonObj.put("startDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeStart()));
+		jsonObj.put("endDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeEnd()));
+		jsonObj.put("startDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeStart()));
+		jsonObj.put("listNamaJabatan", listNamaJabatan);
 
         //send messaging, to trigger sending email
         super.jmsTemplateApproval.send(new MessageCreator() {
@@ -572,6 +581,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println(appActivity.getPendingData() + " pending data approve");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
@@ -595,7 +605,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
             List<RecruitMppApplyDetail> listDetail = new ArrayList<>(entity.getRecruitMppApplyDetails());
             entity = recruitMppApplyDao.saveData(entity);
             
-
+//            List<RecruitMppApplyDetail> listDetailRecruitMppApply = new ArrayList<RecruitMppApplyDetail>();
             for (RecruitMppApplyDetail detail : listDetail) {
                 Jabatan jabatan = jabatanDao.getEntiyByPK(detail.getJabatan().getId());
                 detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -604,8 +614,18 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
                 detail.setCreatedBy(createdBy);
                 detail.setCreatedOn(createdOn);
                 recruitMppApplyDetailDao.save(detail);
+//                listDetailRecruitMppApply.add(detail);
             }
+            
+           /* JsonArray arrayComponents = new JsonArray();
+    		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
+    			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
+    			arrayComponents.add(component);
+    		}
+    		jsonObject.add("listJabatan", arrayComponents);*/
         }
+        
+        this.sendingApprovalNotification(appActivity);
     }
 
     @Override
