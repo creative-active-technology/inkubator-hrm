@@ -80,10 +80,7 @@
 	                    	<p:commandButton value="#{appmsg['global.add']}" rendered="#{!detailModel.isUpdate}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
 	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId" />
-	                    	<p:commandButton value="#{appmsg['global.edit']}" rendered="#{detailModel.isUpdate}" label="#{appmsg['global.edit']}" title="#{appmsg['global.edit']}" 
-	                    					 icon="ui-icon-folder-open" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                    					 ajax="true" action="update" update="formJabatanDescriptionFormId"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{vacancyAdvertisementFormController.doResetAddRecruitmentRequest(flowRequestContext)}"
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetAddJabatanDeskripsi(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formJabatanDescriptionFormId" />  
 	                        </p:commandButton>
