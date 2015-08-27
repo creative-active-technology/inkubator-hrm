@@ -41,14 +41,21 @@
                                 <h:outputLabel for="ohsaCatSelectId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 65%">                                
-                                <p:selectOneMenu id="ohsaCatSelectId" value="#{ohsaIncidentFormController.ohsaCategoryId}" filter="true" required="false"
+                                <p:selectOneMenu id="ohsaCatSelectId" required="true" value="#{ohsaIncidentFormController.ohsaCategoryId}" filter="true" 
                                                     
                                                      style="width: 100%;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{ohsaIncidentFormController.mapOhsaCategory}"  />                                                                                
                                 </p:selectOneMenu>
                             </p:column>
-                        </p:row>                       
+                        </p:row>  
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="ohsaCatSelectId"/>
+                            </p:column>
+                        </p:row>
+                        
                         <p:row>
                             <p:column style="width: 49%">
                                 <p:outputLabel for="incidentDate" value="#{appmsg['ohsa.ohsa_incident_date_and_time']}" styleClass="label_hrm"/>

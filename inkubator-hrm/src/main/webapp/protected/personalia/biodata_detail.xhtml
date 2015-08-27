@@ -628,7 +628,7 @@
                                         <h:outputLabel value= "#{bioDocumentData.uploadFileExtension}"/>
                                     </p:column>
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
-                                        <p:commandButton ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                                        <p:commandButton disabled="#{bioDocumentData.uploadFileName == ''}" ajax="false" title="Download" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
                                             <p:fileDownload value="#{imageBioDataStreamerController.documentFile}" />
                                             <f:param name="id" value="#{bioDocumentData.id}"/>
                                         </p:commandButton>
@@ -1733,7 +1733,7 @@
                         <h:panelGrid id="panelDialogBioMedicalHistoryConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioMedicalHistory()}" update="formBioDetailFormId:tabView:tableBioMedicalHistoryId,:growlBioDetailFormId"
