@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	
             
 	//return entity/property
-	public BigDecimal getTotalNominalByThisMonth(Long empDataId, Long rmbsTypeId) throws Exception;
+	public BigDecimal getTotalNominalForOneMonth(Date date, Long empDataId, Long rmbsTypeId) throws Exception;
 
 	public UploadedFile convertFileToUploadedFile(String pendingData);
 	

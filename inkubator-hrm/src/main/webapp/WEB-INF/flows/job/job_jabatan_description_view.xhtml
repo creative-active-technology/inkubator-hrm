@@ -34,7 +34,7 @@
                         <p:outputLabel value="#{appmsg['jabatandeskripsi.jabatandeskripsi']}" styleClass="header_big" />
                        
                         <p:separator/>
-                        <div align="center">
+                        <div align="left">
                             <p:dataTable value="#{jobJabatanModel.listJabatanDeskripsi}" var="listJobDeskrpsi" rowIndexVar="no" id="jobDesTableId"
                                              >
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
@@ -75,10 +75,10 @@
                                
                           			</p:column> 
                                 </p:dataTable> 
-                                  <h:panelGrid columns="2">
+                                  <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
-                                                     actionListener="#{jobJabatanFormController.doAddJabatanDeskripsi()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSpesifikasiAbility}" update="jobDesTableId,:growlUserFormId" />
+                                                      ajax="true" action="add_new">
+                                        <!-- actionListener="#{jobJabatanFormController.doAddJabatanDeskripsi()}" <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSpesifikasiAbility}" update="jobDesTableId,:growlUserFormId" /> -->
                                     </p:commandButton>
                                 </h:panelGrid>
                         </div>  
