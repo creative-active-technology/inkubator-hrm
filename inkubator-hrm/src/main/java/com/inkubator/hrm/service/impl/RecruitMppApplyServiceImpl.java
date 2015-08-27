@@ -311,14 +311,14 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            System.out.println(listDetailRecruitMppApply.size() + " hoohoho");
-            
+            JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
+            jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);
     		JsonArray arrayComponents = new JsonArray();
     		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
     			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
     			arrayComponents.add(component);
     		}
-    		jsonObject.add("listJabatan", arrayComponents);
+    		jsonObject.add("listMppDetail", arrayComponents);
             
             
             String jsonPendingData = gson.toJson(jsonObject);
@@ -515,7 +515,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         RecruitMppApply recruitMppApply = gson.fromJson(appActivity.getPendingData(), RecruitMppApply.class);
         JsonObject jsonObject = (JsonObject) gson.fromJson(appActivity.getPendingData(), JsonObject.class);  
 
-        List<RecruitMppApplyDetail> listJabatan = gson.fromJson(jsonObject.get("listJabatan"), new TypeToken<List<RecruitMppApplyDetail>>() {}.getType());
+        List<RecruitMppApplyDetail> listJabatan = gson.fromJson(jsonObject.get("listMppDetail"), new TypeToken<List<RecruitMppApplyDetail>>() {}.getType());
         List<String> listNamaJabatan = new ArrayList<String>();
 		for(RecruitMppApplyDetail rmad : listJabatan){
 			listNamaJabatan.add(rmad.getJabatan().getName());
@@ -581,6 +581,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        System.out.println(appActivity.getPendingData() + " pending data approve");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
@@ -604,7 +605,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
             List<RecruitMppApplyDetail> listDetail = new ArrayList<>(entity.getRecruitMppApplyDetails());
             entity = recruitMppApplyDao.saveData(entity);
             
-
+//            List<RecruitMppApplyDetail> listDetailRecruitMppApply = new ArrayList<RecruitMppApplyDetail>();
             for (RecruitMppApplyDetail detail : listDetail) {
                 Jabatan jabatan = jabatanDao.getEntiyByPK(detail.getJabatan().getId());
                 detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -613,8 +614,18 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
                 detail.setCreatedBy(createdBy);
                 detail.setCreatedOn(createdOn);
                 recruitMppApplyDetailDao.save(detail);
+//                listDetailRecruitMppApply.add(detail);
             }
+            
+           /* JsonArray arrayComponents = new JsonArray();
+    		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
+    			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
+    			arrayComponents.add(component);
+    		}
+    		jsonObject.add("listJabatan", arrayComponents);*/
         }
+        
+        this.sendingApprovalNotification(appActivity);
     }
 
     @Override

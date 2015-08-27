@@ -54,8 +54,6 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.Loan;
-import com.inkubator.hrm.entity.LoanPaymentDetail;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
@@ -629,7 +627,9 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 recruitHireApplyDetailDao.save(detail);
             }
         }
-
+        
+        this.sendingApprovalNotification(appActivity);
+        
     }
 
     @Override
@@ -680,6 +680,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
                 recruitHireApplyDetailDao.save(detail);
             }
         }
+        this.sendingApprovalNotification(appActivity);
     }
 
     @Override

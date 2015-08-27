@@ -416,6 +416,40 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("permitClassification", jsonObject.get("permitClassification").getAsString());
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
                             break;
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                        	vtm.setSubject("PERSETUJUAN PERMINTAAN TENAGA KERJA");
+                            vtm.setTemplatePath("email_recruitment_request_approved_or_reject_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("periodeStart", jsonObject.get("periodeStart").getAsString());
+                            maptoSend.put("periodeEnd", jsonObject.get("periodeEnd").getAsString());
+                            maptoSend.put("jabatan", jsonObject.get("jabatan").getAsString());
+                            maptoSend.put("mppName", jsonObject.get("mppName").getAsString());
+                            maptoSend.put("salaryMin", jsonObject.get("salaryMin").getAsString());
+                            maptoSend.put("salaryMax", jsonObject.get("salaryMax").getAsString());
+                            maptoSend.put("candidateCountRequest", jsonObject.get("candidateCountRequest").getAsString());
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                        	TypeToken<List<String>> tokens = new TypeToken<List<String>>() {};
+                        	List<String> listNamaJabatan = gson.fromJson(jsonObject.get("listNamaJabatan"), tokens.getType());
+                            
+                            vtm.setSubject("PERSETUJUAN RENCANA KETENAGAKERJAAN");
+                            vtm.setTemplatePath("email_mpp_apply_approved_or_rejected_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("recruitMppApplyName", jsonObject.get("recruitMppApplyName").getAsString());
+                            maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+                            maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+                            maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+                            maptoSend.put("listNamaJabatan", listNamaJabatan);
+                            maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            
+                            break;
                         default:
                             break;
                     }
