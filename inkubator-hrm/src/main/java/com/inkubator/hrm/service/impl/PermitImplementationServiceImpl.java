@@ -1027,7 +1027,6 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         	entity.setCreatedBy(createdBy);
         	entity.setCreatedOn(createdOn);
         	if(approvalActivity == null){
-        		System.out.println("masuk if");
             	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
                 entity.setEmpData(empData);
                 entity.setPermitClassification(permit);
@@ -1044,7 +1043,6 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
                 this.creditPermitBalance(permitDistribution, actualPermit);
             }else{
-            	System.out.println("masuk else");
             	String uploadPath = null;
             	if (documentFile != null) {
                     uploadPath = getUploadPath(entity.getId(), documentFile);
