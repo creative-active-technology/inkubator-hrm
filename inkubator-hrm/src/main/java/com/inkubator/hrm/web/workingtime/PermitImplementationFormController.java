@@ -196,7 +196,9 @@ public class PermitImplementationFormController extends BaseController {
                 LOGGER.error("Error", ex);
             }
         } else {
+        	String tempNumberFilling = model.getNumberFilling();
             model = new PermitImplementationModel();
+            model.setNumberFilling(tempNumberFilling);
         }
     }
 

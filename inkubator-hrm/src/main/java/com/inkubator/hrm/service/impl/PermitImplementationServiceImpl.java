@@ -187,7 +187,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             JsonParser parser = new JsonParser();
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            jsonObject.addProperty("documentFile", uploadPath);
+            jsonObject.addProperty("permitImplementationFile", uploadPath);
             //save to approval activity
             approvalActivity.setPendingData(gson.toJson(jsonObject));
             approvalActivityDao.save(approvalActivity);
@@ -524,8 +524,8 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
             //convert to UploadedFile before saving
             UploadedFile uploadedFile = null;
-            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
-            if (permitImplementationFile.isJsonNull() != Boolean.TRUE) {
+            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
+            if (!permitImplementationFile.isJsonNull()) {
                 String documentFile = permitImplementationFile.getAsString();
                 File file = new File(documentFile);
                 DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem("fileData", "text/plain", true, file.getName());
@@ -565,7 +565,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
                 //convert to UploadedFile before saving
                 UploadedFile uploadedFile = null;
-                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
+                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
                 if (!permitImplementationFile.isJsonNull()) {
                     String reimbursmentFilePath = permitImplementationFile.getAsString();
                     File file = new File(reimbursmentFilePath);
@@ -1028,8 +1028,17 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             
             String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
             Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+        	entity.setCreatedBy(createdBy);
+        	entity.setCreatedOn(createdOn);
             if(approvalActivity == null){
             	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            	//Set Kodefikasi pada nomor
+            	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+        		Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+        		if (currentMaxLoanId == null) {
+        			currentMaxLoanId = 0L;
+        		}
+    			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
                 entity.setEmpData(empData);
                 entity.setPermitClassification(permit);
                 if (documentFile != null) {
@@ -1054,8 +1063,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                     entity.setUploadPath(uploadPath);
                 }
             	
-            	entity.setCreatedBy(createdBy);
-            	entity.setCreatedBy(createdBy);
+
             	JsonParser parser = new JsonParser();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
                 JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
@@ -1065,7 +1073,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 approvalActivityDao.save(approvalActivity);
 
                 //sending email notification
-//                this.sendingEmailApprovalNotif(approvalActivity);
+                this.sendingApprovalNotification(approvalActivity);
                 message = "success_need_approval";
             }
             
