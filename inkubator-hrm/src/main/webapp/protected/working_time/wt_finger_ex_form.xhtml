@@ -85,7 +85,7 @@
                                     <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}"  for="golonganJabatan" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu required="true" id="golonganJabatan" value="#{wtFingerExceptionFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
+                                    <p:selectOneMenu id="golonganJabatan" value="#{wtFingerExceptionFormController.model.golonganJabatanId}" style="min-width: 300px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
                                         <f:selectItems value="#{wtFingerExceptionFormController.golonganJabatanDropDown}"/>
                                     </p:selectOneMenu>
@@ -115,7 +115,7 @@
                                 <p:column style="width: 80%">
                                     <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{wtFingerExceptionFormController.doSearchEmployee()}" 
                                                      styleClass="isitext_hrm" 
-                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId2:picklistUserRoleId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update=":formSubmitId,:formSubmitId2:picklistUserRoleId"
                                                      icon="ui-icon-search" title="#{appmsg['global.search']}">    
                                     </p:commandButton>
                                 </p:column>
@@ -185,9 +185,8 @@
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="formSubmitId" action="#{wtFingerExceptionFormController.doReset()}"
-                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
-                                <p:resetInput target="formSubmitId" />  
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":formSubmitId2,:formSubmitId" action="#{wtFingerExceptionFormController.doReset()}"
+                                             process="@this" icon="ui-icon-refresh" styleClass="label_button"  style="margin-right: 5px" immediate="true">                                   
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{wtFingerExceptionFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
