@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="employee-rotation_ico.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['rmbs_application.reimbursement_history']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_application.reimbursement_history_from_reimbursement']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+	<h:form id="formId">
+					<p:panelGrid styleClass="grid_border3"
+						style="width:100%;margin-left: 0px;margin-right: 0px">
+						<p:row>
+							<p:column style="width: 20%;background-color: #e1f0f0!important">
+								<p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm" />
+							</p:column>
+							<p:column style="width: 80%">
+								<p:outputLabel value="#{rmbsHistoryViewController.employee.bioData.firstName} #{rmbsHistoryViewController.employee.bioData.lastName}" 
+											   rendered="#{not rmbsHistoryViewController.isAdministrator}" />
+								
+								<p:autoComplete title="#{appmsg['global.employee']}" value="#{rmbsHistoryViewController.employee}"
+                                                completeMethod="#{rmbsHistoryViewController.doAutoCompleteEmployee}"                                                
+                                                var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                required="false" rendered="#{rmbsHistoryViewController.isAdministrator}">
+                                        <p:ajax event="itemSelect" listener="#{rmbsHistoryViewController.onChangeEmployee()}" update="formId"/>
+                                </p:autoComplete>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width: 20%;background-color: #e1f0f0!important">
+								<p:outputLabel value="#{appmsg['global.nik']}"
+									styleClass="label_hrm" />
+							</p:column>
+							<p:column style="width: 80%">
+								<p:outputLabel id="nik" value="#{rmbsHistoryViewController.employee.nik}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="width: 20%;background-color: #e1f0f0!important">
+								<p:outputLabel value="#{appmsg['bankTransferDistribution.workDate']}" styleClass="label_hrm" />
+							</p:column>
+							<p:column style="width: 80%">
+								<p:outputLabel id="joinDate" value="#{rmbsHistoryViewController.employee.joinDate}" >
+									<f:convertDateTime pattern="dd MMMM yyyy"/>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					
+					
+	                    <p:tabView id="tab1" dynamic="true" cache="true" styleClass="tabview_hrm" 
+	                    	style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true">
+							<p:tab title="#{appmsg['rmbs_application.list_of_reimbursement_history']}">
+	                        
+		                        <p:dataTable  id="tableId" var="data"  value="#{rmbsHistoryViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+		                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+		                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+		                                      rowIndexVar="no"> 
+		                            <p:column style="text-align: center;width: 3%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['global.number']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value="#{no+1}." />
+		                            </p:column>
+		                            <p:column sortBy="#{data.applicationDate}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['rmbs_application.request_date']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{data.applicationDate}">
+		                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+		                                </h:outputLabel>
+		                            </p:column>
+		                            <p:column sortBy="#{data.applicationStatus}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['loan.last_status']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{data.applicationStatus}">
+		                                	<f:converter converterId="rmbsApplicationStatusConverter" />
+		                                </h:outputLabel>
+		                            </p:column>
+		                            <p:column sortBy="#{data.rmbsType.name}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value="#{data.rmbsType.name}"/>
+		                            </p:column>
+		                            <p:column sortBy="#{data.nominal}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+		                                </f:facet>
+		                                <p:outputLabel value="Rp. "/>
+		                                <h:outputLabel value= "#{data.nominal}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </h:outputLabel>
+		                            </p:column> 
+		                            <p:column  style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['rmbs_disbursement.disbursement_date']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value= "#{data.disbursementDate}">
+		                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+		                                </h:outputLabel>
+		                            </p:column>                                               
+		                            <f:facet name="footer">
+		                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+		                                <p:outputLabel value="#{rmbsHistoryViewController.lazyData.rowCount}"/>
+		                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+		                            </f:facet>  
+		                        </p:dataTable>
+		                        <p:blockUI block="formId" trigger="tableId" >
+		                            <h:panelGrid columns="2" styleClass="grid_no_border">
+		                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+		                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+		                            </h:panelGrid>
+		                        </p:blockUI>
+	               			</p:tab>
+	                	</p:tabView>
+                        
+                        <p:tabView id="tab2" dynamic="true" cache="true" styleClass="tabview_hrm" 
+	                    	style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true">
+							<p:tab title="#{appmsg['rmbs_application.total_reimbursement_in_year']}">
+                        
+		                        <p:dataTable  var="data" value="#{rmbsHistoryViewController.listHistoryInYear}" lazy="false" paginator="false" 
+				                              id="tableHistoryInYearId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+				                 	
+				                 	<p:column style="text-align: center;width: 25px">
+				                    	<f:facet name="header">  
+				                        	<h:outputText value="#{appmsg['global.number']}"  />
+				                      	</f:facet>            
+				                        <h:outputLabel value="#{no+1}." />
+				                  	</p:column>    
+				                  	<p:column sortBy="#{data.rmbsTypeName}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
+		                                </f:facet>
+		                                <h:outputLabel value="#{data.rmbsTypeName}"/>
+		                            </p:column>
+		                            <p:column sortBy="#{data.totalNominal}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['rmbs_application.submitted_limit']}"/>
+		                                </f:facet>
+		                                <p:outputLabel value="Rp. "/>
+		                                <h:outputLabel value= "#{data.maxNominal}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </h:outputLabel>
+		                            </p:column>
+		                            <p:column sortBy="#{data.maxNominal}" style="width: 10%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{appmsg['loan.total_usage']}"/>
+		                                </f:facet>
+		                                <p:outputLabel value="Rp. "/>
+		                                <h:outputLabel value= "#{data.totalNominal}">
+		                                	<f:convertNumber pattern="###,###" type="currency"/>
+		                                </h:outputLabel>
+		                            </p:column>
+		                            <p:column style="text-align: center;width: 30%">
+										<f:facet name="header">
+											<h:outputText value="#{appmsg['leave.percentage']}" />
+										</f:facet>
+										<p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
+									</p:column>
+		                                      
+				            	</p:dataTable>
+		                    </p:tab>
+	                	</p:tabView>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

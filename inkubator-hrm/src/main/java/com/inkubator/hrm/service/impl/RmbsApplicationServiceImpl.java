@@ -74,6 +74,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
+import com.inkubator.hrm.web.model.RmbsHistoryViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -813,6 +814,48 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
 		detail.append("Tipe " + entity.getRmbsType().getName() + ". ");
 		detail.append("Sejumlah " + decimalFormat.format(entity.getNominal()) + ", mata uang " + entity.getCurrency().getName());
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RmbsApplication> getReimbursementHistoryByParam(Long empDataId, int first, int pageSize, Order orderable) {
+		List<RmbsApplication> listApplications = rmbsApplicationDao.getReimbursementHistoryByParam(empDataId, first, pageSize, orderable);
+		for(RmbsApplication application : listApplications) {
+			if(application.getRmbsApplicationDisbursements().size() != 0){
+				Date disbursementDate = application.getRmbsApplicationDisbursements().iterator().next().getRmbsDisbursement().getDisbursementDate();
+				application.setDisbursementDate(disbursementDate);
+			}
+		}
+		return listApplications;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalReimbursementHistoryByParam(Long empDataId) {
+		return rmbsApplicationDao.getTotalReimbursementHistoryByParam(empDataId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<RmbsHistoryViewModel> getAllDataHistoryThisYear(Long empDataId) {
+		DateTime now = DateTime.now();
+		int month = now.getMonthOfYear();
+		DateTime startYear = new DateTime(now.getYear(), 1, 1, 0, 0);
+		DateTime endYear = new DateTime(now.getYear(), 12, 31, 23, 59);
+		
+		List<RmbsHistoryViewModel> listViewModel = rmbsApplicationDao.getAllDataHistoryBetweenDate(empDataId, startYear.toDate(), endYear.toDate());
+		
+		for(RmbsHistoryViewModel viewModel : listViewModel){
+			RmbsSchema rmbsSchema = rmbsSchemaListOfEmpDao.getAllDataByEmpDataId(empDataId).get(0).getRmbsSchema();
+			RmbsSchemaListOfType rmbsSchemaListOfType = rmbsSchemaListOfTypeDao.getEntityByPk(new RmbsSchemaListOfTypeId(viewModel.getRmbsTypeId(), rmbsSchema.getId()));
+			double maxNominal = 0L;
+			if(rmbsSchemaListOfType != null){
+				maxNominal = rmbsSchemaListOfType.getMaxPerMonth() * month;
+			}
+			viewModel.setMaxNominal(new BigDecimal(maxNominal));
+		}
+		
+		return listViewModel;
 	}
 	
 }

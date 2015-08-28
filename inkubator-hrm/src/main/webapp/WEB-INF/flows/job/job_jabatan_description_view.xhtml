@@ -68,9 +68,8 @@
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                
 		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-		                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-		                                                                 action="#{jobJabatanFormController.doSelectJabatanDeskripsi()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
-		                                    <f:setPropertyActionListener value="#{data}" target="#{jobJabatanFormController.selectedJabatanDeskripsi}" />
+		                                		style="font-size: 10px!important" update=":panelDialogConfirmId" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
+		                                    	<f:setPropertyActionListener value="#{no}" target="#{jobJabatanFormController.selectedIndexJabatanDeskripsi}" />
 		                                </p:commandButton>
                                
                           			</p:column> 
@@ -78,12 +77,27 @@
                                   <h:panelGrid columns="1">
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
                                                       ajax="true" action="add_new">
-                                        <!-- actionListener="#{jobJabatanFormController.doAddJabatanDeskripsi()}" <p:ajax event="dialogReturn" listener="#{bioDataDetilController.onDialogReturnBioSpesifikasiAbility}" update="jobDesTableId,:growlUserFormId" /> -->
                                     </p:commandButton>
                                 </h:panelGrid>
                         </div>  
-                        
-                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                        	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
+                                             styleClass="label_button"/>
+                            
+                            
+                             <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="next" update="jobTitleFormId"/>
+                            
+                        </div>
+
+                    </div>
+
+                </h:form>
+                
+                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                 </p:dialog>
                 <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
@@ -102,35 +116,14 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['global.description']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{jobJabatanFormController.selectedJabatanDeskripsi.description}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{jobJabatanModel.listJabatanDeskripsi.get(jobJabatanFormController.selectedIndexJabatanDeskripsi).description}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{recruitAdvertisementCategoryViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="delete" update=":jobTitleFormId:jobDesTableId, :growlUserFormId"
                                          oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-
-                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-                        <div style="margin-bottom: 5px">
-                        	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
-                                             styleClass="label_button"/>
-                            
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="jobTitleFormId" action="#{jobJabatanFormController.doResetJobJabatanFacultyForm(flowRequestContext)}"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
-                                <p:resetInput target="jobTitleFormId" />  
-                            </p:commandButton>
-                            
-                             <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
-	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                    					 ajax="true" action="next" update="jobTitleFormId"/>
-                            
-                        </div>
-
-                    </div>
-
-
-                </h:form>
             </ui:define>
 
         </ui:composition>

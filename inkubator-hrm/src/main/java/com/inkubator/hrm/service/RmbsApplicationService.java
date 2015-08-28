@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsCancelation;
 import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
+import com.inkubator.hrm.web.model.RmbsHistoryViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 /**
@@ -43,6 +44,8 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	
 	public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
 	
+	public List<RmbsHistoryViewModel> getAllDataHistoryThisYear(Long empDataId);
+	
 	
 	
 	//pageable
@@ -53,6 +56,10 @@ public interface RmbsApplicationService extends IService<RmbsApplication>, BaseA
 	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalUndisbursedByParam();
+
+	public List<RmbsApplication> getReimbursementHistoryByParam(Long empDataId, int first, int pageSize, Order orderable);
+
+	public Long getTotalReimbursementHistoryByParam(Long empDataId);	
 
 }
 	
