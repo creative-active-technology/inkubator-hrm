@@ -187,7 +187,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             JsonParser parser = new JsonParser();
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            jsonObject.addProperty("documentFile", uploadPath);
+            jsonObject.addProperty("permitImplementationFile", uploadPath);
             //save to approval activity
             approvalActivity.setPendingData(gson.toJson(jsonObject));
             approvalActivityDao.save(approvalActivity);
@@ -524,7 +524,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
             //convert to UploadedFile before saving
             UploadedFile uploadedFile = null;
-            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
+            JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
             if (permitImplementationFile.isJsonNull() != Boolean.TRUE) {
                 String documentFile = permitImplementationFile.getAsString();
                 File file = new File(documentFile);
@@ -565,7 +565,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 permitImplementation.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose			
                 //convert to UploadedFile before saving
                 UploadedFile uploadedFile = null;
-                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("documentFile");
+                JsonElement permitImplementationFile = gson.fromJson(pendingData, JsonObject.class).get("permitImplementationFile");
                 if (!permitImplementationFile.isJsonNull()) {
                     String reimbursmentFilePath = permitImplementationFile.getAsString();
                     File file = new File(reimbursmentFilePath);
@@ -1024,7 +1024,10 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             
             String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
             Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-            if(approvalActivity == null){
+        	entity.setCreatedBy(createdBy);
+        	entity.setCreatedOn(createdOn);
+        	if(approvalActivity == null){
+        		System.out.println("masuk if");
             	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
                 entity.setEmpData(empData);
                 entity.setPermitClassification(permit);
@@ -1041,6 +1044,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
                 this.creditPermitBalance(permitDistribution, actualPermit);
             }else{
+            	System.out.println("masuk else");
             	String uploadPath = null;
             	if (documentFile != null) {
                     uploadPath = getUploadPath(entity.getId(), documentFile);
@@ -1050,8 +1054,6 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                     entity.setUploadPath(uploadPath);
                 }
             	
-            	entity.setCreatedBy(createdBy);
-            	entity.setCreatedBy(createdBy);
             	JsonParser parser = new JsonParser();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
                 JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
@@ -1061,7 +1063,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                 approvalActivityDao.save(approvalActivity);
 
                 //sending email notification
-//                this.sendingEmailApprovalNotif(approvalActivity);
+                this.sendingEmailApprovalNotif(approvalActivity);
                 message = "success_need_approval";
             }
             
