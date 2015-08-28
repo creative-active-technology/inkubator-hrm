@@ -622,15 +622,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
         entity.setEmpData(empData);
         entity.setLeave(leave);
-        entity.setTemporaryActing(temporaryActing);
-        //Set Kodefikasi pada nomor
-    	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LEAVE_CODE);
-		Long currentMaxLoanId = leaveImplementationDao.getCurrentMaxId();
-		if (currentMaxLoanId == null) {
-			currentMaxLoanId = 0L;
-		}
-		entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-		
+        entity.setTemporaryActing(temporaryActing);		
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
@@ -647,6 +639,14 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
         if (approvalActivity == null) {
+        	//Set Kodefikasi pada nomor
+        	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LEAVE_CODE);
+    		Long currentMaxLoanId = leaveImplementationDao.getCurrentMaxId();
+    		if (currentMaxLoanId == null) {
+    			currentMaxLoanId = 0L;
+    		}
+    		entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+    		
             //save entity dan detail-nya
             leaveImplementationDao.save(entity);
             this.saveLeaveImplementationDate(entity, actualLeaves);
