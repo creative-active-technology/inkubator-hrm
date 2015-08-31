@@ -7,6 +7,7 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PermitImplementation;
 import com.inkubator.hrm.web.model.ReportPermitHistoryModel;
 import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
@@ -44,6 +45,4 @@ public interface PermitImplementationService extends IService<PermitImplementati
     public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception;
     
     public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception;
-
-
 }

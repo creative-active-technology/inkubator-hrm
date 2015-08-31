@@ -18,6 +18,7 @@ public class JabatanDeskripsiModel implements Serializable {
     private Integer typeWaktu;
     private String deskripsi;
     private Long jabatanId;
+    private Boolean isUpdate;
 
     public Long getId() {
         return id;
@@ -58,6 +59,14 @@ public class JabatanDeskripsiModel implements Serializable {
     public void setJabatanId(Long jabatanId) {
         this.jabatanId = jabatanId;
     }
+
+	public Boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(Boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
     
     
     

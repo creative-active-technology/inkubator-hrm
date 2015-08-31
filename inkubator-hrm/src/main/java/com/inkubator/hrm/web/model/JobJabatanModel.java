@@ -39,6 +39,7 @@ public class JobJabatanModel implements Serializable {
     private List<Major> listMajor = new ArrayList<Major>();
     private List<Faculty> listFaculties = new ArrayList<Faculty>();
     private List<JabatanDeskripsi> listJabatanDeskripsi = new ArrayList<JabatanDeskripsi>();
+    private List<JabatanDeskripsiModel> listJabatanDeskripsiModel = new ArrayList<JabatanDeskripsiModel>();
 
     public Long getId() {
         return id;
@@ -174,7 +175,7 @@ public class JobJabatanModel implements Serializable {
 	public void setListFaculties(List<Faculty> listFaculties) {
 		this.listFaculties = listFaculties;
 	}
-
+	
 	public List<JabatanDeskripsi> getListJabatanDeskripsi() {
 		return listJabatanDeskripsi;
 	}
@@ -182,7 +183,16 @@ public class JobJabatanModel implements Serializable {
 	public void setListJabatanDeskripsi(List<JabatanDeskripsi> listJabatanDeskripsi) {
 		this.listJabatanDeskripsi = listJabatanDeskripsi;
 	}
-	
+
+	public List<JabatanDeskripsiModel> getListJabatanDeskripsiModel() {
+		return listJabatanDeskripsiModel;
+	}
+
+	public void setListJabatanDeskripsiModel(
+			List<JabatanDeskripsiModel> listJabatanDeskripsiModel) {
+		this.listJabatanDeskripsiModel = listJabatanDeskripsiModel;
+	}
+
 	
     
 }

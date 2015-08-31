@@ -65,22 +65,35 @@
     	<transition on="end" to="end"/>
     </view-state>
     
-    <view-state id="add_job_jabatan_description" view="job_jabatan_description_view.xhtml">
+    <view-state id="add_job_jabatan_description"  view="job_jabatan_description_view.xhtml">
     	<transition on="back" to="add_job_jabatan_classification" >
     		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
 		</transition>
-    	<!-- <transition on="next" to="add_job_jabatan_classification">
-			<evaluate expression="jobJabatanFormController.setListFacultyToFlow(flowRequestContext)" /> 
-		</transition> -->
+		<transition  on="add_new" to="add_new_jabatan_desc" >
+    		<!-- <evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" />  -->
+		</transition>
+		<transition  on="delete" to="doDeleteJabatanDescription" />
     	<transition on="end" to="end"/>
     </view-state>
-
-	<!-- <action-state id="save_verification">
-        <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
-        <transition on="success_need_approval" to="end"/>
-        <transition on="success_without_approval" to="end_detail"/>
-        <transition on="error" to="add_business_travel_component"/>
-    </action-state > -->
+    <view-state id="add_new_jabatan_desc" view="job_jabatan_description_form.xhtml">
+    	<on-entry> 
+    		<evaluate expression="jobJabatanFormController.initialAddJabatanDeskripsiFlow(flowRequestContext)" />
+    	 </on-entry>
+    	<transition on="back" to="add_job_jabatan_description" />
+		<transition on="add" to="doAddJabatanDescription" />
+    </view-state>
+    
+     <action-state id="doAddJabatanDescription">
+        <evaluate expression="jobJabatanFormController.doAddJabatanDescription(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_description"/>
+        <transition on="error" to="add_new_jabatan_desc"/>
+    </action-state>
+   	
+   	 <action-state id="doDeleteJabatanDescription">
+        <evaluate expression="jobJabatanFormController.doDeleteJabatanDeskripsi(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_description"/>
+        <transition on="error" to="add_new_jabatan_desc"/>
+    </action-state>
 
     <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.businessTravelNo}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/organisation/job_title_view.htm" />

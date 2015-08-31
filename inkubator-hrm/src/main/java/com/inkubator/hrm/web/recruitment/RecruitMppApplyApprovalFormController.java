@@ -160,7 +160,7 @@ public class RecruitMppApplyApprovalFormController extends BaseController {
         try {
             recruitMppApplyService.approved(selectedApprovalActivity.getId(), null, comment);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.approval_info", "global.approved_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+            return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception e) {

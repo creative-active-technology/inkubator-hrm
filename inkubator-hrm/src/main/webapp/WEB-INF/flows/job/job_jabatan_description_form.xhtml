@@ -10,13 +10,14 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+        <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
 
             </ui:define>
             <ui:define name="center">
-                <p:growl id="growlBankFormlId" globalOnly="true" showDetail="true"/>
-                <h:form id="formBankFormId">
+                <p:growl id="growlJabatanDescriptionFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formJabatanDescriptionFormId">
+                	<div id="box_bg" style="margin: 10px">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -27,179 +28,66 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="categoryTaskId" value="#{appmsg['jabatan.category_task']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="categoryTaskId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="categoryTaskId">
-                                	<p:selectOneRadio id="categoryTaskId" styleClass="isitext_hrm" required="true" value="#{bioBankAccountFormController.bioBankAccountModel.defaultAccount}" label="#{appmsg['bioBankAccount.bioBankAccount_default']}">
+                    
+                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                    	<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="categoryTaskId" value="#{appmsg['jabatan.category_task']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                                <p:selectOneRadio id="categoryTaskId" styleClass="isitext_hrm" required="true" value="#{jabatanDeskripsiModel.categoryTugas}" label="#{appmsg['jabatan.category_task']}">
                                     <!--Cek HRM Constanta..-->
-                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_default_yes']}" itemValue="0" />
-                                    <f:selectItem itemLabel="#{appmsg['bioBankAccount.bioBankAccount_default_no']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.primer_taks']}" itemValue="1" />
+                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.sekunder_task']}" itemValue="2" />
                                 </p:selectOneRadio>
-                                   <!--  <p:inputText id="categoryTaskId" title="#{appmsg['jabatan.category_task']}" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeCode}" 
-                                                 required="true" requiredMessage="#{appmsg['loantype.loan_code_should_not_be_empty']}" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:270px;" /> -->
-                                </p:focus>
-                            </p:column>
-                        </p:row>
+	                                <p:message for="categoryTaskId"/>
+	                            </p:column>
+	                    </p:row>
+	                    
+	                    <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="timeTypeId" value="#{appmsg['jabatan.type_time']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                               <p:selectOneRadio id="timeTypeId" styleClass="isitext_hrm" required="true" value="#{jabatanDeskripsiModel.typeWaktu}" label="#{appmsg['jabatan.type_time']}">
+	                                    <!--Cek HRM Constanta..-->
+	                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_daily']}" itemValue="1" />
+	                                    <f:selectItem itemLabel="#{appmsg['jobs_desk.time_monthly']}" itemValue="2" />
+                                	</p:selectOneRadio>
+	                                <p:message for="timeTypeId"/>
+	                            </p:column>
+	                    </p:row>	    
+                       
                         <p:row>
-                            <p:column colspan="3">
-                                <p:message for="categoryTaskId"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="loanTypeName" value="#{appmsg['loantype.loantype_name']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="loanTypeName" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="loanTypeName">
-                                    <p:inputText id="loanTypeName" title="loanTypeName" value="#{loanNewTypeFormController.loanNewTypeModel.loanTypeName}" 
-                                                 required="true" requiredMessage="#{appmsg['loantype.loan_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:270px;" />
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="loanTypeName"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="currencyCode" value="#{appmsg['currency.currency']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="currencyCode" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 59%">
-                                <p:focus for ="currencyCode">
-                                     <p:selectOneMenu id="currencyCode" value="#{loanNewTypeFormController.currencyId}" filter="true" 
-                                                 style="width: 90%;" required="true" requiredMessage="#{appmsg['loantype.currency_should_not_be_empty']}"> 
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{loanNewTypeFormController.mapCurrency}"  />                                                                                
-                                    </p:selectOneMenu>
-                                </p:focus>                               
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="currencyCode"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="interestMethod" value="#{appmsg['loantype.interest_method']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="interestMethod" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:focus for ="interestMethod">
-                                    <p:selectOneMenu id="interestMethod" value="#{loanNewTypeFormController.loanNewTypeModel.interestMethod}"
-                                                 style="width: 90%;" required="true" requiredMessage="#{appmsg['loantype.interest_method_should_not_be_empty']}"> 
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.flat']}" itemValue="1"/>
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.annuity']}" itemValue="0"/>
-                                        <f:selectItem itemLabel="#{appmsg['loanschema.floating']}" itemValue="2"/>                                                                                                                      
-                                    </p:selectOneMenu>
-                                    
-                                </p:focus>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="interestMethod"/>
-                            </p:column>
-                        </p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                               <p:inputTextarea id="description"  title="#{appmsg['global.description']}" value="#{jabatanDeskripsiModel.deskripsi}" 
+                                                 required="true" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
+                                   <p:outputLabel  for="counter" styleClass="label_hrm" />
+                                   <h:outputText id="counter" />
+                                   <p:message for="description"/>
+	                            </p:column>
+	                    </p:row>	
                         
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="interest" value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="interest" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">                                
-                                <p:spinner id="interest" required="true" value="#{loanNewTypeFormController.loanNewTypeModel.interest}" size="2" min="0.25" stepFactor="0.25" max="100" styleClass="isitext_hrm" />                                
-                                 <h:outputLabel  value="  %" styleClass="label_hrm"/>
-                            </p:column>
-                          
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="interest"/>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="roundingStatus" value="#{appmsg['loantype.rounding']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="roundingStatus" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">                                           
-                                <p:selectBooleanButton value="#{loanNewTypeFormController.rounding}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           offIcon="ui-icon-close"  id="roundingStatus" styleClass="label_button" >                                        
-                                 </p:selectBooleanButton>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="roundingStatus"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">
-                                <p:inputTextarea id="description" title="#{appmsg['global.description']}" value="#{loanNewTypeFormController.loanNewTypeModel.description}" 
-                                                 required="false" maxlength="255" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:270px;" />
-                            
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="width: 29%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 1%;" >
-                                <p:outputLabel  for="counter" styleClass="label_hrm" />
-                            </p:column>
-                            <p:column style="width: 70%">
-                                <h:outputText id="counter" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="description"/>
-                            </p:column>
-                        </p:row>
-
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
-                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBankFormId,:growlBankFormlId"
-                                         action="#{loanNewTypeFormController.doSave()}" styleClass="isitext_hrm"
-                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBankFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" disabled="#{loanTypeFormController.isUpdate}"  >  
-                            <p:resetInput target="formBankFormId" />  
-                        </p:commandButton>
-                    </h:panelGrid>
+                   
+                     <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" icon="ui-icon-arrow-1-w" 
+	                        				 action="back" immediate="true"/>
+	                    	<p:commandButton value="#{appmsg['global.add']}" rendered="#{!detailModel.isUpdate}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
+	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId" />
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetAddJabatanDeskripsi(flowRequestContext)}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formJabatanDescriptionFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
+	                        				 action="end" immediate="true"/>
+	                    </div>
+	                    </div>
                 </h:form>
             </ui:define>
 

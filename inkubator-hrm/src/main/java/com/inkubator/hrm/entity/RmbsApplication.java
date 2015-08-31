@@ -19,6 +19,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -47,6 +48,9 @@ public class RmbsApplication implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Set<RmbsApplicationDisbursement> rmbsApplicationDisbursements = new HashSet<RmbsApplicationDisbursement>(0);
+    
+    //transient
+    private Date disbursementDate;
 
     public RmbsApplication() {
     }
@@ -116,7 +120,7 @@ public class RmbsApplication implements java.io.Serializable {
         this.currency = currency;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "application_date", length = 19, nullable = false)
     public Date getApplicationDate() {
         return applicationDate;
@@ -234,6 +238,15 @@ public class RmbsApplication implements java.io.Serializable {
 
 	public void setRmbsApplicationDisbursements(Set<RmbsApplicationDisbursement> rmbsApplicationDisbursements) {
 		this.rmbsApplicationDisbursements = rmbsApplicationDisbursements;
+	}
+
+	@Transient
+	public Date getDisbursementDate() {
+		return disbursementDate;
+	}
+
+	public void setDisbursementDate(Date disbursementDate) {
+		this.disbursementDate = disbursementDate;
 	}
     
     

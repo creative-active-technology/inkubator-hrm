@@ -2,9 +2,12 @@ package com.inkubator.hrm.entity;
 // Generated Apr 22, 2015 3:42:31 PM by Hibernate Tools 4.3.1
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,6 +49,7 @@ public class RecruitMppApply  implements java.io.Serializable {
      private String approvalActivityNumber;
      private Integer applicationStatus;
      private Set<RecruitMppApplyDetail> recruitMppApplyDetails = new HashSet<RecruitMppApplyDetail>(0);
+     private List<RecruitMppApplyDetail> listRecruitMppApplyDetail = new ArrayList<RecruitMppApplyDetail>();
 
     public RecruitMppApply() {
     }
@@ -229,6 +233,18 @@ public class RecruitMppApply  implements java.io.Serializable {
         this.applicationStatus = applicationStatus;
     }
 
+    @Transient
+	public List<RecruitMppApplyDetail> getListRecruitMppApplyDetail() {
+		return listRecruitMppApplyDetail;
+	}
+
+
+	public void setListRecruitMppApplyDetail(
+			List<RecruitMppApplyDetail> listRecruitMppApplyDetail) {
+		this.listRecruitMppApplyDetail = listRecruitMppApplyDetail;
+	}
+
+    
 }
 
 
