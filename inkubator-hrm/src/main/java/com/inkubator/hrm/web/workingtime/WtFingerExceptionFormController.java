@@ -141,7 +141,12 @@ public class WtFingerExceptionFormController extends BaseController{
         model.setDepartmentLikeOrEqual(null);
         model.setDepartmentLikeOrEqual(3);
         model.setEmployeeTypeLikeOrEqual(3);
-        model.setGolonganJabatanId(Long.parseLong("0"));
+        model.setGolonganJabatanId(null);
+        model.setDepartmentName(null);
+        model.setEmployeeTypeName(null);
+        model.setStartDate(null);
+        model.setEndDate(null);
+        model.setExtendException(false);
         dualListModel = new DualListModel<>();
     }
     
