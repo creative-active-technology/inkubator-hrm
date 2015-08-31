@@ -160,7 +160,7 @@
                         </p:dataTable>
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="Tambah"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button">
+                            <p:commandButton value="#{appmsg['global.add']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{jabatanDeskripsInputController.doAdd()}" styleClass="label_button">
                                 <p:ajax event="dialogReturn" listener="#{jabatanDeskripsInputController.onDialogReturn}"  update="jobTitleViewId,:userViewGrowlId"/>
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanDeskripsInputController.doBack()}" styleClass="label_button"/>
