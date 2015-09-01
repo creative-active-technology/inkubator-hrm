@@ -17,23 +17,23 @@ import com.inkubator.hrm.entity.Jabatan;
 public class ApprovalDefinitionModel implements Serializable {
 
     private Long id;
-    
+
     private HrmUser hrmUserByApproverIndividual;
     private Long hrmUserByApproverIndividualId;
     private String hrmUserByApproverIndividualName;
-    
+
     private HrmUser hrmUserByOnBehalfIndividual;
     private Long hrmUserByOnBehalfIndividualId;
-    private String hrmUserByOnBehalfIndividualName;    
-    
+    private String hrmUserByOnBehalfIndividualName;
+
     private Jabatan jabatanByApproverPosition;
     private Long jabatanByApproverPositionId;
     private String jabatanByApproverPositionName;
-    
+
     private Jabatan jabatanByOnBehalfPosition;
     private Long jabatanByOnBehalfPositionId;
     private String jabatanByOnBehalfPositionName;
-    
+
     private String name;
     private String specificName;
     private Integer sequence = 1;
@@ -45,8 +45,9 @@ public class ApprovalDefinitionModel implements Serializable {
     private String onBehalfType;
     private Boolean autoApproveOnDelay;
     private Boolean escalateOnDelay;
-    private Integer delayTime=1;
+    private Integer delayTime = 1;
     private Boolean smsNotification;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -95,16 +96,16 @@ public class ApprovalDefinitionModel implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getSpecificName() {
-		return specificName;
-	}
+        return specificName;
+    }
 
-	public void setSpecificName(String specificName) {
-		this.specificName = specificName;
-	}
+    public void setSpecificName(String specificName) {
+        this.specificName = specificName;
+    }
 
-	public Integer getSequence() {
+    public Integer getSequence() {
         return sequence;
     }
 
@@ -221,44 +222,52 @@ public class ApprovalDefinitionModel implements Serializable {
         this.delayTime = delayTime;
     }
 
-	public HrmUser getHrmUserByApproverIndividual() {
-		return hrmUserByApproverIndividual;
-	}
+    public HrmUser getHrmUserByApproverIndividual() {
+        return hrmUserByApproverIndividual;
+    }
 
-	public void setHrmUserByApproverIndividual(HrmUser hrmUserByApproverIndividual) {
-		this.hrmUserByApproverIndividual = hrmUserByApproverIndividual;
-	}
+    public void setHrmUserByApproverIndividual(HrmUser hrmUserByApproverIndividual) {
+        this.hrmUserByApproverIndividual = hrmUserByApproverIndividual;
+    }
 
-	public HrmUser getHrmUserByOnBehalfIndividual() {
-		return hrmUserByOnBehalfIndividual;
-	}
+    public HrmUser getHrmUserByOnBehalfIndividual() {
+        return hrmUserByOnBehalfIndividual;
+    }
 
-	public void setHrmUserByOnBehalfIndividual(HrmUser hrmUserByOnBehalfIndividual) {
-		this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
-	}
+    public void setHrmUserByOnBehalfIndividual(HrmUser hrmUserByOnBehalfIndividual) {
+        this.hrmUserByOnBehalfIndividual = hrmUserByOnBehalfIndividual;
+    }
 
-	public Jabatan getJabatanByApproverPosition() {
-		return jabatanByApproverPosition;
-	}
+    public Jabatan getJabatanByApproverPosition() {
+        return jabatanByApproverPosition;
+    }
 
-	public void setJabatanByApproverPosition(Jabatan jabatanByApproverPosition) {
-		this.jabatanByApproverPosition = jabatanByApproverPosition;
-	}
+    public void setJabatanByApproverPosition(Jabatan jabatanByApproverPosition) {
+        this.jabatanByApproverPosition = jabatanByApproverPosition;
+    }
 
-	public Jabatan getJabatanByOnBehalfPosition() {
-		return jabatanByOnBehalfPosition;
-	}
+    public Jabatan getJabatanByOnBehalfPosition() {
+        return jabatanByOnBehalfPosition;
+    }
 
-	public void setJabatanByOnBehalfPosition(Jabatan jabatanByOnBehalfPosition) {
-		this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
-	}
+    public void setJabatanByOnBehalfPosition(Jabatan jabatanByOnBehalfPosition) {
+        this.jabatanByOnBehalfPosition = jabatanByOnBehalfPosition;
+    }
 
-	public Boolean getSmsNotification() {
-		return smsNotification;
-	}
+    public Boolean getSmsNotification() {
+        return smsNotification;
+    }
 
-	public void setSmsNotification(Boolean smsNotification) {
-		this.smsNotification = smsNotification;
-	}
-    
+    public void setSmsNotification(Boolean smsNotification) {
+        this.smsNotification = smsNotification;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }
