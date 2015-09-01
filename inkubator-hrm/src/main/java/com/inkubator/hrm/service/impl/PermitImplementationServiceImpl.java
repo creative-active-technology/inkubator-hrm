@@ -1038,6 +1038,14 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
                     entity.setUploadPath(uploadPath);
                 }
 
+                //Set Kodefikasi pada nomor
+            	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+        		Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+        		if (currentMaxLoanId == null) {
+        			currentMaxLoanId = 0L;
+        		}
+    			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+    			
                 permitImplementationDao.save(entity);
                 message = "save_without_approval";
 
