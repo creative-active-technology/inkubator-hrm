@@ -11,10 +11,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.DualListModel;
@@ -23,10 +27,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
+import org.springframework.webflow.execution.RequestContextHolder;
 
 import ch.lambdaj.Lambda;
 
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.Department;
@@ -39,10 +45,12 @@ import com.inkubator.hrm.entity.JabatanEdukasi;
 import com.inkubator.hrm.entity.JabatanFakulty;
 import com.inkubator.hrm.entity.JabatanMajor;
 import com.inkubator.hrm.entity.JabatanProfesi;
+import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
+import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.CostCenterService;
 import com.inkubator.hrm.service.DepartmentService;
@@ -55,15 +63,18 @@ import com.inkubator.hrm.service.JabatanFacultyService;
 import com.inkubator.hrm.service.JabatanMajorService;
 import com.inkubator.hrm.service.JabatanProfesiService;
 import com.inkubator.hrm.service.JabatanService;
+import com.inkubator.hrm.service.JabatanSpesifikasiService;
 import com.inkubator.hrm.service.KlasifikasiKerjaJabatanService;
 import com.inkubator.hrm.service.KlasifikasiKerjaService;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.service.OccupationTypeService;
+import com.inkubator.hrm.service.SpecificationAbilityService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.hrm.web.model.JabatanDeskripsiModel;
 import com.inkubator.hrm.web.model.JabatanModel;
+import com.inkubator.hrm.web.model.JabatanSpesifikasiModel;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.model.VacancyAdvertisementDetailModel;
 import com.inkubator.webcore.util.FacesUtil;
@@ -109,6 +120,10 @@ public class JobJabatanFormController implements Serializable {
 	private KlasifikasiKerjaJabatanService klasifikasiKerjaJabatanService;
 	@Autowired
 	private JabatanDeskripsiService jabatanDeskripsiService;
+	@Autowired
+	private JabatanSpesifikasiService jabatanSpesifikasiService;
+	@Autowired
+	private SpecificationAbilityService specificationAbilityService;
 	
 	private Boolean isDisable;
 	private Boolean isEdit;
@@ -118,12 +133,15 @@ public class JobJabatanFormController implements Serializable {
 	private Map<String, Long> golJabatans = new TreeMap<>();
 	private Map<String, Long> posBiayas = new TreeMap<>();
 	private Map<String, Long> jabatanAtasans = new TreeMap<>();
+	private Map<String, Long> specAbilities = new TreeMap<>();
+	private Map<String, String> optionAbilities = new TreeMap<>();
 	private DualListModel<KlasifikasiKerja> dualListModelKlasifikasiKerja = new DualListModel<>();
 	private DualListModel<EducationLevel> dualListModelEducationLevel = new DualListModel<>();
 	private DualListModel<OccupationType> dualListModelOccupationType = new DualListModel<>();
 	private DualListModel<Major> dualListModelMajor = new DualListModel<>();
 	private DualListModel<Faculty> dualListModelFaculty = new DualListModel<>();
 	private Integer selectedIndexJabatanDeskripsi;
+	private Integer selectedIndexJabatanSpesifikasi;
 	private JobJabatanModel jobJabatanModel;
 	
 
@@ -170,6 +188,9 @@ public class JobJabatanFormController implements Serializable {
 			    
 			    List<JabatanDeskripsi> listJabatanDeskripsi = jabatanDeskripsiService.getAllDataByJabatanId(jobJabatanModel.getId());
 			    jobJabatanModel.setListJabatanDeskripsi(listJabatanDeskripsi);
+			    
+			    List<JabatanSpesifikasi> listJabatanSpesifikasi = jabatanSpesifikasiService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    jobJabatanModel.setListJabatanSpesifikasi(listJabatanSpesifikasi);
                 
 			}else{
 				
@@ -195,10 +216,14 @@ public class JobJabatanFormController implements Serializable {
 	            dualListModelKlasifikasiKerja.setSource(listSourceKlasifikasiKerja);
 	            
 	            jobJabatanModel.setListJabatanDeskripsi(new ArrayList<JabatanDeskripsi>());
+	            jobJabatanModel.setListJabatanSpesifikasi(new ArrayList<JabatanSpesifikasi>());
 			}
 			
 			JabatanDeskripsiModel jabatanDeskripsiModel = new JabatanDeskripsiModel();
 			context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
+			
+			JabatanSpesifikasiModel jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
+			context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
 			
 			context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 			
@@ -241,6 +266,16 @@ public class JobJabatanFormController implements Serializable {
             }
 			MapUtil.sortByValue(jabatanAtasans);
 			context.getFlowScope().put("jabatanAtasans", jabatanAtasans);
+			
+			//Inisialisasi SpesificationAbility
+			List<SpecificationAbility> listSpecificationAbilities = specificationAbilityService.getAllData();
+			for (SpecificationAbility specificationAbility : listSpecificationAbilities) {
+                specAbilities.put(specificationAbility.getName(), specificationAbility.getId());
+            }
+			MapUtil.sortByValue(specAbilities);
+			context.getFlowScope().put("specAbilities", specAbilities);
+			
+			context.getFlowScope().put("optionAbilities", optionAbilities);
 			
 			
 		}catch(Exception e){
@@ -491,7 +526,7 @@ public class JobJabatanFormController implements Serializable {
 	 
 	 /* End method KlasifikasiKerjaJabatan */
 	 
-	 /* Start Deskripsi Jabatan*/
+	 /* Start Method JabatanDeskripsi */
 	 
 	 
 	 public void doDeleteJabatanDeskripsi(RequestContext context) {
@@ -511,9 +546,6 @@ public class JobJabatanFormController implements Serializable {
 	        }
 	    }
 	 
-	/* public void initAddRecruitmentRequest(RequestContext context){
-		 
-	 }*/
 	 
 	 public void initialAddJabatanDeskripsiFlow(RequestContext context) {
 		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
@@ -552,7 +584,117 @@ public class JobJabatanFormController implements Serializable {
 		 return jabatanDeskripsi;
 	 }
 	 
-	 /* End Deskripsi Jabatan*/
+	 /* End Method JabatanDeskripsi */
+	 
+	 /* Start Method JabatanSpesifikasi */
+	 
+	 public void initialAddJabatanSpesificationFlow(RequestContext context) {
+		 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+		 jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
+		 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
+	 }
+	 
+	 public String doAddJabatanSpesification(RequestContext context){
+
+		 JabatanSpesifikasiModel jabatanSpesifikasiModel =  (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<JabatanSpesifikasi> listJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi();
+		 
+		 //Filter jika sudah ada, munculkan message error
+		 if(!listJabatanSpesifikasi.isEmpty()){
+			 List<SpecificationAbility> listSpecificationAbilities = Lambda.extract(listJabatanSpesifikasi, Lambda.on(JabatanSpesifikasi.class).getSpecificationAbility());
+			 for(SpecificationAbility specAbility : listSpecificationAbilities){
+				 if(ObjectUtils.equals(specAbility.getId(),  jabatanSpesifikasiModel.getSpecId())){
+					 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "specificationability.indication_ability_already_exist", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					 return "error";
+				 }
+			 }
+		 }
+		 
+		 
+		 JabatanSpesifikasi jabatanSpesifikasi = convertJabatanSpesifikasiModelToEntity(jabatanSpesifikasiModel);
+		 
+		 listJabatanSpesifikasi.add(jabatanSpesifikasi);
+		 jobJabatanModel.setListJabatanSpesifikasi(listJabatanSpesifikasi);
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+		 return "success";
+	 } 
+	 
+	 public void doDeleteJabatanSpesification(RequestContext context) {
+	        try {
+	        	JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+	        	List<JabatanSpesifikasi> listJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi();
+	        	listJabatanSpesifikasi.remove(selectedIndexJabatanSpesifikasi.intValue());
+	        	jobJabatanModel.setListJabatanSpesifikasi(listJabatanSpesifikasi);
+	        	context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+	        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+	            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	            LOGGER.error("Error", ex);
+	        } catch (Exception ex) {
+	            LOGGER.error("Error", ex);
+	        }
+	    }
+	 
+	 public void doUpdateListNilaiSpesification(){
+		 try{
+			 
+			 RequestContext context = RequestContextHolder.getRequestContext();
+			 optionAbilities.clear();
+			 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+			 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(jabatanSpesifikasiModel.getSpecId());
+			 String rawScaleValue = specificationAbility.getScaleValue();
+			 String rawOptionAbility = specificationAbility.getOptionAbility();
+			 List<String> listScaleValue = Arrays.asList(StringUtils.split(rawScaleValue, "|"));
+			 List<String> listOptionAbility = Arrays.asList(StringUtils.split(rawOptionAbility, "|"));
+			 
+			 for(int i=0; i<listOptionAbility.size();i++){
+				 optionAbilities.put(listScaleValue.get(i), listOptionAbility.get(i));
+			 }
+			 
+			 context.getFlowScope().put("optionAbilities", optionAbilities);
+			 
+		 }catch(Exception ex){
+			 LOGGER.error("Error", ex);
+		 }
+		 
+		 
+	 }
+	 
+	 public void doSetValueByOptionAbility(){
+		 try{
+			 
+			 RequestContext context = RequestContextHolder.getRequestContext();
+			 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+			 for(Entry<String, String> entry : optionAbilities.entrySet()){
+				 if(StringUtils.equals(entry.getValue(), jabatanSpesifikasiModel.getOptionAbility())){
+					 jabatanSpesifikasiModel.setValue(entry.getKey());
+					 break;
+				 }
+			 }
+			 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
+			 
+		 }catch(Exception ex){
+			 LOGGER.error("Error", ex);
+		 }
+	 }
+	 
+	 public JabatanSpesifikasi convertJabatanSpesifikasiModelToEntity(JabatanSpesifikasiModel jabatanSpesifikasiModel){
+		 try {
+			JabatanSpesifikasi jabatanSpesifikasi = new JabatanSpesifikasi();
+			 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(jabatanSpesifikasiModel.getSpecId());
+			 jabatanSpesifikasi.setSpecificationAbility(specificationAbility);
+			 jabatanSpesifikasi.setValue(jabatanSpesifikasiModel.getValue());
+			 jabatanSpesifikasi.setOptionAbility(jabatanSpesifikasiModel.getOptionAbility());
+			 return jabatanSpesifikasi;
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+			return null;
+		}
+	 }
+	 
+	 /* End Method JabatanSpesifikasi */
 
 	public Boolean getIsDisable() {
 		return isDisable;
@@ -621,5 +763,16 @@ public class JobJabatanFormController implements Serializable {
 			Integer selectedIndexJabatanDeskripsi) {
 		this.selectedIndexJabatanDeskripsi = selectedIndexJabatanDeskripsi;
 	}
+
+	public Integer getSelectedIndexJabatanSpesifikasi() {
+		return selectedIndexJabatanSpesifikasi;
+	}
+
+	public void setSelectedIndexJabatanSpesifikasi(
+			Integer selectedIndexJabatanSpesifikasi) {
+		this.selectedIndexJabatanSpesifikasi = selectedIndexJabatanSpesifikasi;
+	}
+	
+	
 
 }
