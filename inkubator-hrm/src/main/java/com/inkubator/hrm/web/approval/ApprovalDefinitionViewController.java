@@ -111,6 +111,10 @@ public class ApprovalDefinitionViewController extends BaseController {
         return "/protected/approval/approval_definition_form.htm?faces-redirect=true&execution=e" + selectedApprovalDefinition.getId();
     }
 
+    public String doEditStatus(){
+         return "/protected/approval/approval_definition_status.htm?faces-redirect=true&execution=e" + selectedApprovalDefinition.getId();
+    }
+    
     public String doAdd() {
         return "/protected/approval/approval_definition_form.htm?faces-redirect=true";
     }
