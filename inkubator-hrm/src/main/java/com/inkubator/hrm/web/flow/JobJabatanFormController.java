@@ -50,6 +50,8 @@ import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
+import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.CostCenterService;
@@ -68,6 +70,9 @@ import com.inkubator.hrm.service.KlasifikasiKerjaJabatanService;
 import com.inkubator.hrm.service.KlasifikasiKerjaService;
 import com.inkubator.hrm.service.MajorService;
 import com.inkubator.hrm.service.OccupationTypeService;
+import com.inkubator.hrm.service.OrgTypeOfSpecJabatanService;
+import com.inkubator.hrm.service.OrgTypeOfSpecListService;
+import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.SpecificationAbilityService;
 import com.inkubator.hrm.service.UnitKerjaService;
 import com.inkubator.hrm.util.MapUtil;
@@ -76,6 +81,7 @@ import com.inkubator.hrm.web.model.JabatanDeskripsiModel;
 import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.hrm.web.model.JabatanSpesifikasiModel;
 import com.inkubator.hrm.web.model.JobJabatanModel;
+import com.inkubator.hrm.web.model.OrgTypeOfSpecJabatanModel;
 import com.inkubator.hrm.web.model.VacancyAdvertisementDetailModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -124,6 +130,12 @@ public class JobJabatanFormController implements Serializable {
 	private JabatanSpesifikasiService jabatanSpesifikasiService;
 	@Autowired
 	private SpecificationAbilityService specificationAbilityService;
+	@Autowired
+	private OrgTypeOfSpecService orgTypeOfSpecService;
+	@Autowired
+	private OrgTypeOfSpecListService orgTypeOfSpecListService;
+	@Autowired
+	private OrgTypeOfSpecJabatanService orgTypeOfSpecJabatanService;
 	
 	private Boolean isDisable;
 	private Boolean isEdit;
@@ -135,13 +147,16 @@ public class JobJabatanFormController implements Serializable {
 	private Map<String, Long> jabatanAtasans = new TreeMap<>();
 	private Map<String, Long> specAbilities = new TreeMap<>();
 	private Map<String, String> optionAbilities = new TreeMap<>();
+	private Map<String, Long> orgTypeofSpecs = new TreeMap<>();
 	private DualListModel<KlasifikasiKerja> dualListModelKlasifikasiKerja = new DualListModel<>();
 	private DualListModel<EducationLevel> dualListModelEducationLevel = new DualListModel<>();
 	private DualListModel<OccupationType> dualListModelOccupationType = new DualListModel<>();
 	private DualListModel<Major> dualListModelMajor = new DualListModel<>();
 	private DualListModel<Faculty> dualListModelFaculty = new DualListModel<>();
+	private DualListModel<OrgTypeOfSpecList> dualListModelOrgTypeOfSpecList = new DualListModel<>();
 	private Integer selectedIndexJabatanDeskripsi;
 	private Integer selectedIndexJabatanSpesifikasi;
+	private Integer selectedIndexJabatanTypeSpec;
 	private JobJabatanModel jobJabatanModel;
 	
 
@@ -225,6 +240,9 @@ public class JobJabatanFormController implements Serializable {
 			JabatanSpesifikasiModel jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
 			context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
 			
+			OrgTypeOfSpecJabatanModel orgTypeOfSpecJabatanModel = new OrgTypeOfSpecJabatanModel();
+			context.getFlowScope().put("orgTypeOfSpecJabatanModel", orgTypeOfSpecJabatanModel);
+			
 			context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 			
 			//Inisialisasi List Departemen
@@ -274,6 +292,16 @@ public class JobJabatanFormController implements Serializable {
             }
 			MapUtil.sortByValue(specAbilities);
 			context.getFlowScope().put("specAbilities", specAbilities);
+			
+			//Inisialisasi OrgTypeOfSpec
+			List<OrgTypeOfSpec> listOrgTypeOfSpecs = orgTypeOfSpecService.getAllData();
+			for (OrgTypeOfSpec orgTypeOfSpec : listOrgTypeOfSpecs) {
+				orgTypeofSpecs.put(orgTypeOfSpec.getName(), orgTypeOfSpec.getId());
+            }
+			MapUtil.sortByValue(orgTypeofSpecs);
+			context.getFlowScope().put("orgTypeofSpecs", orgTypeofSpecs);
+			
+			
 			
 			context.getFlowScope().put("optionAbilities", optionAbilities);
 			
@@ -695,6 +723,33 @@ public class JobJabatanFormController implements Serializable {
 	 }
 	 
 	 /* End Method JabatanSpesifikasi */
+	 
+	 /* Start Method JabatanTypeSpec */
+	 
+	 public void initialAddJabatanTypeSpecFlow(RequestContext context) {
+		 OrgTypeOfSpecJabatanModel orgTypeOfSpecJabatanModel = (OrgTypeOfSpecJabatanModel) context.getFlowScope().get("orgTypeOfSpecJabatanModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 orgTypeOfSpecJabatanModel = new OrgTypeOfSpecJabatanModel();
+		 orgTypeOfSpecJabatanModel.setJabatanName(jobJabatanModel.getNamaJabatan());
+		 orgTypeOfSpecJabatanModel.setJabatanCode(jobJabatanModel.getKodeJabatan());
+		 context.getFlowScope().put("orgTypeOfSpecJabatanModel", orgTypeOfSpecJabatanModel);
+	 }
+	 
+	 public void doUpdateTypeSpecList(){
+		 try{
+			 RequestContext context = RequestContextHolder.getRequestContext();
+			 OrgTypeOfSpecJabatanModel orgTypeOfSpecJabatanModel = (OrgTypeOfSpecJabatanModel) context.getFlowScope().get("orgTypeOfSpecJabatanModel");
+			 List<OrgTypeOfSpecList> listSourceTypeOfSpecList = orgTypeOfSpecListService.getAllDataByOrgTypeOfSpecIdAndOrderByCode(orgTypeOfSpecJabatanModel.getOrgTypeOfSpecId());
+			 dualListModelOrgTypeOfSpecList.setSource(listSourceTypeOfSpecList);
+			 dualListModelOrgTypeOfSpecList.setTarget(new ArrayList<OrgTypeOfSpecList>());
+			 
+			 context.getFlowScope().put("optionAbilities", optionAbilities);
+		 }catch(Exception e){
+			 
+		 }
+	 }
+	 
+	 /* End Method JabatanTypeSpec */
 
 	public Boolean getIsDisable() {
 		return isDisable;
@@ -771,6 +826,23 @@ public class JobJabatanFormController implements Serializable {
 	public void setSelectedIndexJabatanSpesifikasi(
 			Integer selectedIndexJabatanSpesifikasi) {
 		this.selectedIndexJabatanSpesifikasi = selectedIndexJabatanSpesifikasi;
+	}
+
+	public Integer getSelectedIndexJabatanTypeSpec() {
+		return selectedIndexJabatanTypeSpec;
+	}
+
+	public void setSelectedIndexJabatanTypeSpec(Integer selectedIndexJabatanTypeSpec) {
+		this.selectedIndexJabatanTypeSpec = selectedIndexJabatanTypeSpec;
+	}
+
+	public DualListModel<OrgTypeOfSpecList> getDualListModelOrgTypeOfSpecList() {
+		return dualListModelOrgTypeOfSpecList;
+	}
+
+	public void setDualListModelOrgTypeOfSpecList(
+			DualListModel<OrgTypeOfSpecList> dualListModelOrgTypeOfSpecList) {
+		this.dualListModelOrgTypeOfSpecList = dualListModelOrgTypeOfSpecList;
 	}
 	
 	

@@ -17,6 +17,7 @@ public class OrgTypeOfSpecJabatanModel implements Serializable {
     private String jabatanName;
     private Long jabatanId;
     private Long orgTypeOfSpecListId;
+    private Long orgTypeOfSpecId;
 
     public Long getJabatanId() {
         return jabatanId;
@@ -49,6 +50,14 @@ public class OrgTypeOfSpecJabatanModel implements Serializable {
     public void setJabatanName(String jabatanName) {
         this.jabatanName = jabatanName;
     }
+
+	public Long getOrgTypeOfSpecId() {
+		return orgTypeOfSpecId;
+	}
+
+	public void setOrgTypeOfSpecId(Long orgTypeOfSpecId) {
+		this.orgTypeOfSpecId = orgTypeOfSpecId;
+	}
     
     
 }
