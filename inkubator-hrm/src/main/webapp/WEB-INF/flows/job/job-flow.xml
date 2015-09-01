@@ -85,6 +85,7 @@
     	<transition on="back" to="add_job_jabatan_description" />
     	<transition  on="add_new" to="add_new_jabatan_spec" />
 		<transition  on="delete" to="doDeleteJabatanSpesification" />
+		<transition on="next" to="add_job_jabatan_type_spec" />
     </view-state>
     <view-state id="add_new_jabatan_spec" view="job_jabatan_spesification_form.xhtml">
     	<on-entry> 
@@ -92,6 +93,18 @@
     	</on-entry>
     	<transition on="back" to="add_job_jabatan_spesification" />
 		<transition on="add" to="doAddJabatanSpesification" />
+    </view-state>
+    <view-state id="add_job_jabatan_type_spec"  view="job_jabatan_type_spec_view.xhtml">
+    	<transition on="back" to="add_job_jabatan_spesification" />
+    	<transition  on="add_new" to="add_new_jabatan_type_spec" />
+		<!-- <transition  on="delete" to="doDeleteJabatanSpesification" /> -->
+    </view-state>
+    <view-state id="add_new_jabatan_type_spec" view="job_jabatan_type_spec_form.xhtml">
+    	<on-entry> 
+    		<evaluate expression="jobJabatanFormController.initialAddJabatanTypeSpecFlow(flowRequestContext)" />
+    	</on-entry>
+    	<!-- <transition on="back" to="add_job_jabatan_spesification" />
+		<transition on="add" to="doAddJabatanSpesification" /> -->
     </view-state>
     
      <action-state id="doAddJabatanDescription">
