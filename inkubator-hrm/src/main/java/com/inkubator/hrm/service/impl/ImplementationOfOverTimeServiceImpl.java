@@ -430,7 +430,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }else{
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
-        System.out.println(entity.getWtOverTime().getId() + " xxxxxxxxxxx");
+        
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();

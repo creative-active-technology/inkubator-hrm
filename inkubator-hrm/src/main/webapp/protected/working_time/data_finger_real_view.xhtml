@@ -65,7 +65,7 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
+                                <h:outputText value="#{appmsg['dataFinger.list_of_employee_finger']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -105,13 +105,13 @@
                             </p:column>
                             <p:column style="text-align: center;width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['dataFinger.check_web']} #{appmsg['global.out']}"/>
+                                    <h:outputText value="#{appmsg['dataFinger.check_in_data']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.webCheckIn} %"/>
                             </p:column>
                             <p:column style="text-align: center;width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['dataFinger.check_web']} #{appmsg['global.out']}"/>
+                                    <h:outputText value="#{appmsg['dataFinger.check_out_data']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.webCheckOut} %"/>
                             </p:column> 
