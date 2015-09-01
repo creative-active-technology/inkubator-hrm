@@ -52,5 +52,7 @@ public interface TempAttendanceRealizationDao extends IDAO<TempAttendanceRealiza
 	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalPaidOvertimeByParam();
+        
+        public TempAttendanceRealization getByEmp(long empId);
 
 }

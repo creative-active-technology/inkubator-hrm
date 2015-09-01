@@ -226,4 +226,32 @@ public class TempProcessReadFingerDaoImpl extends IDAOImpl<TempProcessReadFinger
 		criteria.add(Restrictions.le("scheduleDate", endDate));
 		return criteria.list().isEmpty();
 	}
+        
+        @Override
+	public List<TempProcessReadFinger> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.workingGroup", FetchMode.JOIN);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalOvertimeAndReadFingerByEmpDataId(long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+        
+        @Override
+    public Long getTotalTimeDeviation(long empid) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empid));
+        return (Long) criteria.setProjection(Projections.sum("totalMarginInMarginOut")).uniqueResult();
+
+    }
 }

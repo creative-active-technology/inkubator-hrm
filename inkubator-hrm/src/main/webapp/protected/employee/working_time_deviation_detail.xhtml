@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Role View
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="koreksi_realisasi.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workingTime.working_time_difference_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
+                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="fromPeriod" value="#{appmsg['workingTime.proses_period']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="fromPeriod" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.fromPeriod}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                                -
+                                <p:outputLabel id="toPeriod" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.toPeriod}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="nikAndName" value="#{appmsg['global.nik']} - #{appmsg['biodata.fullname']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="nikAndName" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.nikAndFullName}" />
+							</p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="totalWorkingTime" value="#{appmsg['workingTime.total_working_hour']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+                                <p:outputLabel id="totalWorkingTime" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalWorkingTime} Jam" />
+							</p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel value="#{appmsg['workingTime.margin_working_hour']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 75%">
+<!--                                 <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginHour} Jam " />
+                                <p:outputLabel id="totalMarginTimeMinutes" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalMarginMinutes} Menit" /> -->
+                                <p:outputLabel id="totalMarginTimeHours" value="#{workingTimeDeviationDetailController.workingTimeDeviationDetailModel.totalPlusMinus}" >
+                                	<f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </p:outputLabel>
+							</p:column>
+                        </p:row> 
+                        
+                    </p:panelGrid>
+                    
+					<p:dataTable  var="timeRealization"  value="#{workingTimeDeviationDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" 
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableEmpDataId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['workingTime.list_difference_working_time']}" styleClass="label_hrm"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.date']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.workingDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinggroup.working_group_name_of_working_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.workingGroupName}"/>
+                            </p:column>
+
+							<p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinggroup.check_in']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.fingerIn}"/>
+                            </p:column>
+                            
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinggroup.check_out']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.fingerOut}"/>
+                            </p:column>
+                            
+                            <p:column style="width: 20%" sortBy="#{timeRealization.workingGroupName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['workinggroup.diff_time']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{timeRealization.deviationTime}">
+                                	<f:converter converterId="minuteDeviationHumanReaderPositif" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 17%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" 
+                                                 action="#{workingTimeDeviationController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{timeRealization}" target="#{workingTimeDeviationController.selectedWorkingTimeDeviation}" />
+                                </p:commandButton>
+
+                            </p:column>          
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : " styleClass="label_hrm" />
+                                <p:outputLabel value="#{workingTimeDeviationDetailController.lazyDataModel.rowCount}" styleClass="label_hrm"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px" styleClass="label_hrm"/>
+                            </f:facet>  
+                        </p:dataTable>
+                </div>
+
+				
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

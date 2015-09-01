@@ -71,6 +71,8 @@ import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -93,40 +95,40 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     private TempProcessReadFingerDao tempProcessReadFingerDao;
     @Autowired
     private TempJadwalKaryawanDao tempJadwalKaryawanDao;
-    
+
     @Autowired
     private ImplementationOfOverTimeDao implementationOfOverTimeDao;
-    
+
     @Autowired
     private WtOverTimeDao wtOverTimeDao;
-    
+
     @Autowired
     private WtHitungLemburDao wtHitungLemburDao;
-    
+
     @Autowired
     private WtHitungLemburJamDao wtHitungLemburJamDao;
-    
+
     @Autowired
     private WtHolidayDao wtHolidayDao;
-    
+
     @Autowired
     private LeaveImplementationDao leaveImplementationDao;
-    
+
     @Autowired
     private LeaveImplementationDateDao leaveImplementationDateDao;
-  
+
     @Autowired
     private WtWorkingHourDao wtWorkingHourDao;
-    
+
     @Autowired
     private PermitImplementationDao permitImplementationDao;
-    
+
     @Autowired
     private BusinessTravelDao businessTravelDao;
-    
+
     @Autowired
     private MedicalCareDao medicalCareDao;
-    
+
     @Autowired
     private WtGroupWorkingDao wtGroupWorkingDao;
 
@@ -480,579 +482,570 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) throws Exception {
         return tempAttendanceRealizationDao.getTotalListTempAttendanceRealizationViewModelByWtPeriodId(searchParameter, wtPeriodId);
     }
-    
+
     @Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void deleteAllData() throws Exception {
-		tempAttendanceRealizationDao.deleteAllData();
-	}
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteAllData() throws Exception {
+        tempAttendanceRealizationDao.deleteAllData();
+    }
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception {		
-		
-		TempAttendanceRealizationViewModel tempAttendanceRealizationViewModel = new TempAttendanceRealizationViewModel();
-		EmpData empData = empDataDao.getByEmpIdWithDetail(empDataId);	
-		String religionCode = empData.getBioData().getReligion().getCode();
-		
-		WtGroupWorking wtGroupWorking = wtGroupWorkingDao.getEntiyByPK(empData.getWtGroupWorking().getId());
-		WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(wtPeriodId);
-		
-		List<MedicalCare> listMedicalCares = medicalCareDao.getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<ImplementationOfOverTime> listImplementationOfOverTime = implementationOfOverTimeDao.getAllEmpOtImplBetweenStartDateAndEndDate(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<LeaveImplementation> listLeaveImplementation = leaveImplementationDao.getListByStartDateBetweenDateAndEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<PermitImplementation> listPermitImplementation = permitImplementationDao.getListByStartDateBetweenDateAndEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<BusinessTravel> listBusinessTravel = businessTravelDao.getListByStartDateBetweenDateAndEmpIdAndNotOff(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		
-		Integer attendanceDaysSchedule = this.getTotalWorkingDaysBetween(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		Integer attendanceDaysPresent = tempProcessReadFingerDao.getEmpTotalAttendanceBetweenDateFromAndDateUntill(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode()).intValue();	
-		Integer sick = calculateAndCheckTotalSick(listMedicalCares, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);		
-		Integer leave = calculateAndCheckTotalLeave(listLeaveImplementation, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);		
-		Integer permit = calculateAndCheckTotalPermit(listPermitImplementation, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
-		Integer duty = calculateAndCheckTotalDuty(listBusinessTravel, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
-		Float overtime = calculateAndCheckTotalOverTime(listImplementationOfOverTime, wtPeriode, empDataId, religionCode);		
-		
-		tempAttendanceRealizationViewModel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		tempAttendanceRealizationViewModel.setAbsenStatus(HRMConstant.WT_PERIOD_STATUS_ACTIVE);
-		tempAttendanceRealizationViewModel.setAttendanceDaysPresent(attendanceDaysPresent);
-		tempAttendanceRealizationViewModel.setAttendanceDaysSchedule(attendanceDaysSchedule);
-		tempAttendanceRealizationViewModel.setDuty(duty);
-		tempAttendanceRealizationViewModel.setEmpId(empDataId);
-		tempAttendanceRealizationViewModel.setEmpName(empData.getBioData().getFullName());
-		tempAttendanceRealizationViewModel.setLeaves(leave);
-		tempAttendanceRealizationViewModel.setNik(empData.getNik());
-		tempAttendanceRealizationViewModel.setOverTime(overtime);
-		tempAttendanceRealizationViewModel.setPermit(permit);
-		tempAttendanceRealizationViewModel.setSick(sick);
-		tempAttendanceRealizationViewModel.setWtGroupWorkingId(wtGroupWorking.getId());
-		tempAttendanceRealizationViewModel.setWtGroupWorkingName(wtGroupWorking.getName());
-		tempAttendanceRealizationViewModel.setWtPeriodId(wtPeriodId);
-		
-		return tempAttendanceRealizationViewModel;
-	}
-	
-	
-	private Integer calculateAndCheckTotalSick(List<MedicalCare> listMedicalCares, Date dateFrom, Date dateUntill, Long empDataId){
-		Integer totalSick = 0;
-		
-		List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
-		List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateUntill);
-		List<Date> listEmpOffDate = new ArrayList<Date>();
-		
-		if(!listEmpOffSchedule.isEmpty()){
-			listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
-			Collections.sort(listEmpOffDate);
-		}	
-		
-		//Get List Public Holiday Schedule
-		List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate( dateFrom, dateFrom);
-		List<Date> listPublicHolidayDate = new ArrayList<Date>();
-		
-		if(!listPublicHoliday.isEmpty()){
-			listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
-			Collections.sort(listPublicHolidayDate);	
-		}
-				
-		//Looping List MedicalCare
-		for(MedicalCare medicalCare : listMedicalCares){
-			
-			//get total sickDays and list sickDates
-			int totalSickDaysPerRecord = medicalCare.getTotalDays();			
-			List<Date> listSickDates = getRangeOfDates(medicalCare.getStartDate(), medicalCare.getEndDate());
-			Collections.sort(listSickDates);
-			
-			//Check whether sick startDate and end Date is in Period date
-			Boolean isSickStartDateInPeriodRange = isDateIsBetWeenTwoDates(medicalCare.getStartDate(), dateFrom, dateUntill);
-			Boolean isSickEndDateInPeriodRange = isDateIsBetWeenTwoDates(medicalCare.getEndDate(), dateFrom, dateUntill);
-			
-			//if sick startDate and end Date is in Period date, loop the list and check one By One
-			if(isSickStartDateInPeriodRange && isSickEndDateInPeriodRange){
-				
-				for(Date sickDate : listSickDates){
-					
-					//Check if Sick was on public holiday
-					Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
-					Boolean isSickOnOffSchedule = Boolean.FALSE;
-					
-					if(!listEmpOffSchedule.isEmpty()){		
-						
-						//Check if Sick was on Off day Schedule
-						isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
-						
-						
-					}
-					
-					//if sick was on off day schedule, or on public holiday, decrement totalSickDaysPerRecord because actually it didn't affect on employee total Attendance 
-					if(isSickOnOffSchedule || isSickOnPublicHoliday){
-						totalSickDaysPerRecord --;
-					}	
-				}
-				
-			}else{
-				
-				for(Date sickDate : listSickDates){
-					
-					//Check if Sick is in period list date
-					Boolean isSickDateInPeriod = isDateIsInListDate(sickDate, listDateInSelectedPeriod);					
-					
-					if(isSickDateInPeriod){
-						
-						//Check if Sick was on public holiday
-						Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
-						Boolean isSickOnOffSchedule = Boolean.FALSE;
-						
-						if(!listEmpOffSchedule.isEmpty()){		
-							
-							//Check if Sick was on Off day Schedule
-							isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
-							
-							
-						}
-						
-						//if sick was on off day schedule, or on public holiday, decrement totalSickDaysPerRecord because actually it didn't affect on employee total Attendance 
-						if(isSickOnOffSchedule || isSickOnPublicHoliday){
-							totalSickDaysPerRecord --;
-						}	
-						
-					}else{
-						// no need to check, just decrement, bacause sick date is out of list period date
-						totalSickDaysPerRecord --;
-					}
-					
-				}
-			}
-			
-			//increment totalSick with each totalSickDaysPerRecord
-			totalSick += totalSickDaysPerRecord;
-		}
-		
-		//return totalSick
-		return totalSick;
-	}
-	
-	private Float calculateAndCheckTotalOverTime(List<ImplementationOfOverTime> listImplementationOfOverTime, WtPeriode wtPeriode, Long empDataId,String religionCode){
-		Float totalOvertime = 0f;
-		
-		//Get List Holiday Schedule
-		List<TempJadwalKaryawan> listJadwalLibur = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<Date> listDateLibur = Lambda.extract(listJadwalLibur, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
-		Collections.sort(listDateLibur);	
-		
-		//Get List Public Non Religion Holiday Schedule
-		List<WtHoliday> listPublicNonReligionHoliday = wtHolidayDao.getListPublicNonReligionHolidayBetweenDate( wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
-		List<Date> listPublicNonReligionHolidayDate = Lambda.extract(listPublicNonReligionHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
-		Collections.sort(listPublicNonReligionHolidayDate);	
-		
-		//Get List Public Religion Holiday Schedule
-		List<WtHoliday> listPublicReligionHoliday = wtHolidayDao.getListPublicReligionHolidayByReligionCodeAndBetweenDate( wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), religionCode);
-		List<Date> listPublicReligionHolidayDate = Lambda.extract(listPublicReligionHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
-		Collections.sort(listPublicReligionHolidayDate);	
-		
-		//Looping List Overtime Implementation
-		for(ImplementationOfOverTime otImpl : listImplementationOfOverTime){					
-				
-				List<WtHitungLemburJam> listWtHitungLemburJam = wtHitungLemburJamDao.getListByWtHitungLemburId(otImpl.getWtOverTime().getWtHitungLembur().getId());
-				
-				Boolean isImplementedOnScheduleHoliday = Collections.binarySearch(listDateLibur, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
-				Boolean isImplementedOnPublicNonReligionHoliday = Collections.binarySearch(listPublicNonReligionHolidayDate, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
-				Boolean isImplementedOnPublicReligionHoliday = Collections.binarySearch(listPublicReligionHolidayDate, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
-				
-				//get total Overtime in hours
-				Float totalHoursOvertime = DateTimeUtil.getTotalHoursDifference(otImpl.getStartTime(), otImpl.getEndTime()).floatValue();
-				
-				//Initialize real total hours overtime
-				Float realTotalOverTime = 0f;
-				
-				//Check implementOn and calculate real total hours based on implementOn
-				if(isImplementedOnScheduleHoliday || isImplementedOnPublicNonReligionHoliday){					
-					realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "schduleOrPublicNonReligionHoliday");
-				}else if(isImplementedOnPublicReligionHoliday){					
-					realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "publicReligionHoliday");
-				}else{					
-					realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "workingDay");
-				}
-				
-				//increment totalOvertime with each realTotalOvertime record
-				totalOvertime += realTotalOverTime;
-				
-		}
-		
-		//if totalOvertime Is Not A Number than reinitialize to 0
-		if(totalOvertime.isNaN()){			
-			totalOvertime = 0f;
-		}
-		
-		//return totalOvertime of employee during period active
-		return totalOvertime;
-	}
-	
-	private Float countRealOverTime(Float totalOverTime, List<WtHitungLemburJam> listWtHitungLemburJam, String implementOn){
-		
-		//Initialize totalRealOvertime
-		Float totalRealOvertime = 0f;
-				
-		/* separate rounding value and decimal value from totalOvertime */
-		Integer overtimeRounded = Math.round(totalOverTime);	
-		Float sisa = totalOverTime - overtimeRounded;				
-		
-		/*Filter list WtHitungLemburJam, only record with field 'jamKe' value less or equal to overtimeRounded that will be invoke inside calculation process*/
-		listWtHitungLemburJam = Lambda.select(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.lessThanOrEqualTo(overtimeRounded)));
-		
-		WtHitungLemburJam wtHitungLemburJamSisa = null;
-		Float realTotalOtFromWtHitungLemburJam = 0f;
-		Float realSisa = 0f;
-		
-		//check implementOn
-		switch (implementOn) {
-		
-		case "workingDay":
-			
-			/*if overtime was implemented on WorkingDay,
-			//sum real OverTime Value from field 'hariKerja' in listWtHitungLemburJam,
-			//and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-			realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariKerja().floatValue());
-			wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
-			if(null != wtHitungLemburJamSisa){
-				realSisa = sisa * wtHitungLemburJamSisa.getHariKerja().floatValue();
-			}			
-			
-			break;
-			
-		case "publicReligionHoliday":
-			
-			/*if overtime was implemented on public Religion Holiday (from table WtHoliday with religion is not Null),
-			//sum real OverTime Value from field 'hariRaya' in listWtHitungLemburJam,
-			//and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-			realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariRaya().floatValue());
-			wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
-			if(null != wtHitungLemburJamSisa){
-				realSisa = sisa * wtHitungLemburJamSisa.getHariRaya().floatValue();
-			}	
-			
-			break;
-			
-		case "schduleOrPublicNonReligionHoliday":
-			
-			/*if overtime was implemented on public holiday but not related to religion (ex Independence Day, 17 August) from table WtHoliday  or HolidaySchedule from table TempJadwalKaryawan,
-			//sum real OverTime Value from field 'hariLibur' in listWtHitungLemburJam,
-			//and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-			realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariLibur().floatValue());
-			wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
-			if(null != wtHitungLemburJamSisa){
-				realSisa = sisa * wtHitungLemburJamSisa.getHariLibur().floatValue();
-			}
-			
-			break;
-			
-		default:
-			break;
-		}	
-		
-		//sum realTotalOtFromWtHitungLemburJam and realSisa to get totalRealOvertime
-		totalRealOvertime = realTotalOtFromWtHitungLemburJam + realSisa;
-		
-		// return totalRealOvertime
-		return totalRealOvertime;
-	}
-	
-	private Integer calculateAndCheckTotalLeave(List<LeaveImplementation> listLeaveImplementation, Date dateFrom, Date dateUntill, Long empDataId){
-		
-		Integer totalLeave = 0;
-		List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
-		
-		// Get List Public Holiday Schedule
-		List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateFrom);
-		List<Date> listEmpOffDate = new ArrayList<Date>();
-		
-		if(!listEmpOffSchedule.isEmpty()){
-			listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
-			Collections.sort(listEmpOffDate);
-		}		
-		
-		// Get List Public Holiday Schedule
-		List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate(dateFrom, dateFrom);
-		List<Date> listPublicHolidayDate = new ArrayList<Date>();
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public TempAttendanceRealizationViewModel calculateEmpTempAttendanceRealization(Long empDataId, Long wtPeriodId) throws Exception {
 
-		if (!listPublicHoliday.isEmpty()) {
-			listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
-			Collections.sort(listPublicHolidayDate);
-		}
-				
-		//Looping leaveImplementation
-		for(LeaveImplementation leaveImpl : listLeaveImplementation){
-			
-			// get totalLeaveDays, and list leaves date of each record
-			int totalLeaveDaysPerRecord = getRangeOfDates(leaveImpl.getStartDate(), leaveImpl.getEndDate()).size();
-			List<Date> listLeaveImplDate = getRangeOfDates(leaveImpl.getStartDate(), leaveImpl.getEndDate());
-			Collections.sort(listLeaveImplDate);
-			
-			//check, whether leave startDate and end Date is in Period date
-			Boolean isLeaveStartDateInPeriodRange = isDateIsBetWeenTwoDates(leaveImpl.getStartDate(), dateFrom, dateUntill);
-			Boolean isLeaveEndDateInPeriodRange = isDateIsBetWeenTwoDates(leaveImpl.getEndDate(), dateFrom, dateUntill);	
-			
-			//if leave startDate and end Date is in Period date, loop the list and check one By One
-			if(isLeaveStartDateInPeriodRange && isLeaveEndDateInPeriodRange){
-				
-				// If Leave dayType equal to HRMConstant.LEAVE_DAY_TYPE_WORKING, check again leave
-				if(StringUtils.equals(HRMConstant.LEAVE_DAY_TYPE_WORKING, leaveImpl.getLeave().getDayType())){		
-					
-					for(Date leaveDate : listLeaveImplDate){	
-						
-						//Check if Leave was on public holiday
-						Boolean isLeaveOnPublicHoliday = isDateIsInListDate(leaveDate, listPublicHolidayDate);
-						Boolean isLeaveOnOffSchedule = Boolean.FALSE;
-						
-						if(!listEmpOffSchedule.isEmpty()){				
-							
-							//Check if Leave was on off day schedule
-							isLeaveOnOffSchedule = isDateIsInListDate(leaveDate, listEmpOffDate);						
-							
-						}
-						
-						// if leave is implement on off day schedule, or public holiday and dayType of leave = HRMConstant.LEAVE_DAY_TYPE_WORKING, decrement totalLeaveDaysPerRecord
-						if(isLeaveOnOffSchedule || isLeaveOnPublicHoliday){
-							totalLeaveDaysPerRecord --;
-						}
-					}
-				}
-				
-			}else{				
-				
-				for(Date leaveDate : listLeaveImplDate){					
-					Boolean isLeaveDateInPeriod = isDateIsInListDate(leaveDate, listDateInSelectedPeriod);					
-					if(isLeaveDateInPeriod){
-						
-						// If Leave dayType equal to HRMConstant.LEAVE_DAY_TYPE_WORKING, check again leave
-						if(StringUtils.equals(HRMConstant.LEAVE_DAY_TYPE_WORKING, leaveImpl.getLeave().getDayType())){		
-							
-							//Check if Leave was on public holiday
-							Boolean isLeaveOnPublicHoliday = isDateIsInListDate(leaveDate, listPublicHolidayDate);
-							Boolean isLeaveOnOffSchedule = Boolean.FALSE;
-							
-							if(!listEmpOffSchedule.isEmpty()){				
-								
-								//Check if Leave was on off day schedule
-								isLeaveOnOffSchedule = isDateIsInListDate(leaveDate, listEmpOffDate);						
-								
-							}
-							
-							// if leave is implement on off day schedule, or public holiday and dayType of leave = HRMConstant.LEAVE_DAY_TYPE_WORKING, decrement totalLeaveDaysPerRecord
-							if(isLeaveOnOffSchedule || isLeaveOnPublicHoliday){
-								totalLeaveDaysPerRecord --;
-							}
-						
-						}					
-						
-					}else{
-						
-						// no need to check, just decrement because leave was implemented out of date period range
-						totalLeaveDaysPerRecord --;
-						
-					}
-				}
-			}
-			
-			//increment totalLeave with each totalLeaveDaysPerRecord
-			totalLeave += totalLeaveDaysPerRecord;
-		}
-		
-		//return totalLeave
-		return totalLeave;
-	}
-	
-	private Integer calculateAndCheckTotalPermit(List<PermitImplementation> listPermitImplementation, Date dateFrom, Date dateUntill, Long empDataId){
-		Integer totalPermit = 0;		
-		List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
-		
-		//Get List Employee Off Schedule
-		List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateUntill);
-		List<Date> listEmpOffDate = new ArrayList<Date>();
-		
-		if(!listEmpOffSchedule.isEmpty()){
-			listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
-			Collections.sort(listEmpOffDate);
-		}	
-		
-		//Get List Public Holiday Schedule
-		List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate( dateFrom, dateFrom);
-		List<Date> listPublicHolidayDate = new ArrayList<Date>();
-		
-		if(!listPublicHoliday.isEmpty()){
-			listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
-			Collections.sort(listPublicHolidayDate);	
-		}
-				
-		//Looping List PermitImplementation
-		for(PermitImplementation permitImplementation : listPermitImplementation){
-			
-			//get total permit per record and list permitDates					
-			List<Date> listSickDates = getRangeOfDates(permitImplementation.getStartDate(), permitImplementation.getEndDate());
-			int totalPermitDaysPerRecord = listSickDates.size();	
-			Collections.sort(listSickDates);
-			
-			//Check whether permit startDate and end Date is in Period date
-			Boolean isPermitStartDateInPeriodRange = isDateIsBetWeenTwoDates(permitImplementation.getStartDate(), dateFrom, dateUntill);
-			Boolean isPermitEndDateInPeriodRange = isDateIsBetWeenTwoDates(permitImplementation.getEndDate(), dateFrom, dateUntill);
-			
-			//if permit startDate and end Date is in Period date, loop the list and check one By One
-			if(isPermitStartDateInPeriodRange && isPermitEndDateInPeriodRange){
-				
-				for(Date sickDate : listSickDates){
-					
-					//Check if permit was on public holiday
-					Boolean isPermitOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
-					Boolean isPermitOnOffSchedule = Boolean.FALSE;
-					
-					if(!listEmpOffSchedule.isEmpty()){	
-						
-						//Check if permit was on Off day Schedule
-						isPermitOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);						
-						
-					}
-					
-					//if permit was on off day schedule, or on public holiday, decrement totalpermitDaysPerRecord because actually it didn't affect on employee total Attendance 
-					if(isPermitOnOffSchedule || isPermitOnPublicHoliday){
-						totalPermitDaysPerRecord --;
-					}	
-				}
-				
-			}else{
-				
-				for(Date sickDate : listSickDates){
-					
-					//Check if permit is in period list date
-					Boolean isSickDateInPeriod = isDateIsInListDate(sickDate, listDateInSelectedPeriod);					
-					
-					if(isSickDateInPeriod){
-						
-						//Check if permit was on public holiday
-						Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
-						Boolean isSickOnOffSchedule = Boolean.FALSE;
-						
-						if(!listEmpOffSchedule.isEmpty()){		
-							
-							//Check if permit was on Off day Schedule
-							isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
-							
-							
-						}
-						
-						//if permit was on off day schedule, or on public holiday, decrement totalpermitDaysPerRecord because actually it didn't affect on employee total Attendance 
-						if(isSickOnOffSchedule || isSickOnPublicHoliday){
-							totalPermitDaysPerRecord --;
-						}	
-						
-					}else{
-						// no need to check, just decrement, bacause permit date is out of list period date
-						totalPermitDaysPerRecord --;
-					}
-					
-				}
-			}
-			
-			//increment totalPermit with each totalPermitDaysPerRecord
-			totalPermit += totalPermitDaysPerRecord;
-		}
-		
-		//return totalPermit
-		return totalPermit;
-	}
-	
-	private Integer calculateAndCheckTotalDuty(List<BusinessTravel> listBusinessTravel, Date dateFrom, Date dateUntill, Long empDataId){
-		Integer totalDuty = 0;		
-		List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);	
-				
-		//Looping List listBusinessTravel
-		for(BusinessTravel businessTravel : listBusinessTravel){
-			
-			//get total days per record and list travelDates					
-			List<Date> listTravelDates = getRangeOfDates(businessTravel.getStartDate(), businessTravel.getEndDate());
-			int totalTravelDaysPerRecord = listTravelDates.size();	
-			
-			Collections.sort(listTravelDates);
-			
-			//Check whether travel startDate and end Date is in Period date
-			Boolean isTravelStartDateInPeriodRange = isDateIsBetWeenTwoDates(businessTravel.getStartDate(), dateFrom, dateUntill);
-			Boolean isTravelEndDateInPeriodRange = isDateIsBetWeenTwoDates(businessTravel.getEndDate(), dateFrom, dateUntill);
-			
-			//if travel startDate or endDate is not in Period date, loop the list and check date, One By One.
-			if(!isTravelStartDateInPeriodRange || !isTravelEndDateInPeriodRange){
-				
-				for(Date travelDate : listTravelDates){
-					
-					//Check if travel is in period list date
-					Boolean isTravelDateInPeriod = isDateIsInListDate(travelDate, listDateInSelectedPeriod);					
-					
-					//if travel date is not in period list date
-					if(!isTravelDateInPeriod){
-						
-						// no need to check, just decrement, bacause travel date is out of list period date
-						totalTravelDaysPerRecord --;
-					}					
-					
-				}
-				
-			}
-			
-			//increment totalDuty with each totalTravelDaysPerRecord
-			totalDuty += totalTravelDaysPerRecord;
-		}
-		
-		//return totalDuty
-		return totalDuty;
-	}
-	
-	
-	
-	private Boolean isDateIsBetWeenTwoDates(Date dateToCheck, Date dateFrom, Date dateUntill){
-		
-		Boolean isGreaterOrEqThanStartDate = dateToCheck.compareTo(dateFrom) >= 0;
-		Boolean isLessOrEqThanEndDate = dateToCheck.compareTo(dateUntill) <= 0;
-		return isGreaterOrEqThanStartDate && isLessOrEqThanEndDate;
-	}
-	
-	private Boolean isDateIsInListDate(Date dateToCheck, List<Date> listDate){		
-		return Collections.binarySearch(listDate, dateToCheck, new MyDateComparator()) >= 0;		
-	}
-	
-	
+        TempAttendanceRealizationViewModel tempAttendanceRealizationViewModel = new TempAttendanceRealizationViewModel();
+        EmpData empData = empDataDao.getByEmpIdWithDetail(empDataId);
+        String religionCode = empData.getBioData().getReligion().getCode();
 
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor =Exception.class)
-	public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception {
-		//Boolean isInsertable = this.payTempUploadDataDao.getEntityByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()) == null;
-		Boolean isInsertable = Boolean.TRUE;
-		//skip jika data sudah ada di database(tidak boleh duplikat)
-		if(isInsertable) {
-			EmpData empData = empDataDao.getEntiyByPK(model.getEmpId());
-			WtGroupWorking wtGroupWorking = wtGroupWorkingDao.getEntiyByPK(model.getWtGroupWorkingId());
-			WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(model.getWtPeriodId());
-			
-			
-			if(empData!= null ) {
-				TempAttendanceRealization entity = new TempAttendanceRealization();
-				entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-				entity.setAttendanceDaysPresent(model.getAttendanceDaysPresent());
-				entity.setAttendanceDaysSchedule(model.getAttendanceDaysSchedule());
-				entity.setCreatedBy(model.getCreatedBy());
-				entity.setCreatedOn(new Date());
-				entity.setDuty(model.getDuty());
-				entity.setEmpData(empData);
-				entity.setLeave(model.getLeaves());
-				entity.setOvertime(model.getOverTime());
-				entity.setPermit(model.getPermit());
-				entity.setSick(model.getSick());
-				entity.setWtGroupWorking(wtGroupWorking);
-				entity.setWtPeriod(wtPeriode);
-				
-		        this.tempAttendanceRealizationDao.save(entity);
-			}
-		}		
-	}
-	
-	private List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate) throws Exception {
-    	List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
-    	WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
+        WtGroupWorking wtGroupWorking = wtGroupWorkingDao.getEntiyByPK(empData.getWtGroupWorking().getId());
+        WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(wtPeriodId);
+
+        List<MedicalCare> listMedicalCares = medicalCareDao.getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<ImplementationOfOverTime> listImplementationOfOverTime = implementationOfOverTimeDao.getAllEmpOtImplBetweenStartDateAndEndDate(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<LeaveImplementation> listLeaveImplementation = leaveImplementationDao.getListByStartDateBetweenDateAndEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<PermitImplementation> listPermitImplementation = permitImplementationDao.getListByStartDateBetweenDateAndEmpId(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<BusinessTravel> listBusinessTravel = businessTravelDao.getListByStartDateBetweenDateAndEmpIdAndNotOff(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+
+        Integer attendanceDaysSchedule = this.getTotalWorkingDaysBetween(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        Integer attendanceDaysPresent = tempProcessReadFingerDao.getEmpTotalAttendanceBetweenDateFromAndDateUntill(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode()).intValue();
+        Integer sick = calculateAndCheckTotalSick(listMedicalCares, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
+        Integer leave = calculateAndCheckTotalLeave(listLeaveImplementation, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
+        Integer permit = calculateAndCheckTotalPermit(listPermitImplementation, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
+        Integer duty = calculateAndCheckTotalDuty(listBusinessTravel, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), empDataId);
+        Float overtime = calculateAndCheckTotalOverTime(listImplementationOfOverTime, wtPeriode, empDataId, religionCode);
+
+        tempAttendanceRealizationViewModel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        tempAttendanceRealizationViewModel.setAbsenStatus(HRMConstant.WT_PERIOD_STATUS_ACTIVE);
+        tempAttendanceRealizationViewModel.setAttendanceDaysPresent(attendanceDaysPresent);
+        tempAttendanceRealizationViewModel.setAttendanceDaysSchedule(attendanceDaysSchedule);
+        tempAttendanceRealizationViewModel.setDuty(duty);
+        tempAttendanceRealizationViewModel.setEmpId(empDataId);
+        tempAttendanceRealizationViewModel.setEmpName(empData.getBioData().getFullName());
+        tempAttendanceRealizationViewModel.setLeaves(leave);
+        tempAttendanceRealizationViewModel.setNik(empData.getNik());
+        tempAttendanceRealizationViewModel.setOverTime(overtime);
+        tempAttendanceRealizationViewModel.setPermit(permit);
+        tempAttendanceRealizationViewModel.setSick(sick);
+        tempAttendanceRealizationViewModel.setWtGroupWorkingId(wtGroupWorking.getId());
+        tempAttendanceRealizationViewModel.setWtGroupWorkingName(wtGroupWorking.getName());
+        tempAttendanceRealizationViewModel.setWtPeriodId(wtPeriodId);
+
+        return tempAttendanceRealizationViewModel;
+    }
+
+    private Integer calculateAndCheckTotalSick(List<MedicalCare> listMedicalCares, Date dateFrom, Date dateUntill, Long empDataId) {
+        Integer totalSick = 0;
+
+        List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
+        List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateUntill);
+        List<Date> listEmpOffDate = new ArrayList<Date>();
+
+        if (!listEmpOffSchedule.isEmpty()) {
+            listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
+            Collections.sort(listEmpOffDate);
+        }
+
+        //Get List Public Holiday Schedule
+        List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate(dateFrom, dateFrom);
+        List<Date> listPublicHolidayDate = new ArrayList<Date>();
+
+        if (!listPublicHoliday.isEmpty()) {
+            listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
+            Collections.sort(listPublicHolidayDate);
+        }
+
+        //Looping List MedicalCare
+        for (MedicalCare medicalCare : listMedicalCares) {
+
+            //get total sickDays and list sickDates
+            int totalSickDaysPerRecord = medicalCare.getTotalDays();
+            List<Date> listSickDates = getRangeOfDates(medicalCare.getStartDate(), medicalCare.getEndDate());
+            Collections.sort(listSickDates);
+
+            //Check whether sick startDate and end Date is in Period date
+            Boolean isSickStartDateInPeriodRange = isDateIsBetWeenTwoDates(medicalCare.getStartDate(), dateFrom, dateUntill);
+            Boolean isSickEndDateInPeriodRange = isDateIsBetWeenTwoDates(medicalCare.getEndDate(), dateFrom, dateUntill);
+
+            //if sick startDate and end Date is in Period date, loop the list and check one By One
+            if (isSickStartDateInPeriodRange && isSickEndDateInPeriodRange) {
+
+                for (Date sickDate : listSickDates) {
+
+                    //Check if Sick was on public holiday
+                    Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
+                    Boolean isSickOnOffSchedule = Boolean.FALSE;
+
+                    if (!listEmpOffSchedule.isEmpty()) {
+
+                        //Check if Sick was on Off day Schedule
+                        isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
+
+                    }
+
+                    //if sick was on off day schedule, or on public holiday, decrement totalSickDaysPerRecord because actually it didn't affect on employee total Attendance 
+                    if (isSickOnOffSchedule || isSickOnPublicHoliday) {
+                        totalSickDaysPerRecord--;
+                    }
+                }
+
+            } else {
+
+                for (Date sickDate : listSickDates) {
+
+                    //Check if Sick is in period list date
+                    Boolean isSickDateInPeriod = isDateIsInListDate(sickDate, listDateInSelectedPeriod);
+
+                    if (isSickDateInPeriod) {
+
+                        //Check if Sick was on public holiday
+                        Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
+                        Boolean isSickOnOffSchedule = Boolean.FALSE;
+
+                        if (!listEmpOffSchedule.isEmpty()) {
+
+                            //Check if Sick was on Off day Schedule
+                            isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
+
+                        }
+
+                        //if sick was on off day schedule, or on public holiday, decrement totalSickDaysPerRecord because actually it didn't affect on employee total Attendance 
+                        if (isSickOnOffSchedule || isSickOnPublicHoliday) {
+                            totalSickDaysPerRecord--;
+                        }
+
+                    } else {
+                        // no need to check, just decrement, bacause sick date is out of list period date
+                        totalSickDaysPerRecord--;
+                    }
+
+                }
+            }
+
+            //increment totalSick with each totalSickDaysPerRecord
+            totalSick += totalSickDaysPerRecord;
+        }
+
+        //return totalSick
+        return totalSick;
+    }
+
+    private Float calculateAndCheckTotalOverTime(List<ImplementationOfOverTime> listImplementationOfOverTime, WtPeriode wtPeriode, Long empDataId, String religionCode) {
+        Float totalOvertime = 0f;
+
+        //Get List Holiday Schedule
+        List<TempJadwalKaryawan> listJadwalLibur = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<Date> listDateLibur = Lambda.extract(listJadwalLibur, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
+        Collections.sort(listDateLibur);
+
+        //Get List Public Non Religion Holiday Schedule
+        List<WtHoliday> listPublicNonReligionHoliday = wtHolidayDao.getListPublicNonReligionHolidayBetweenDate(wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode());
+        List<Date> listPublicNonReligionHolidayDate = Lambda.extract(listPublicNonReligionHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
+        Collections.sort(listPublicNonReligionHolidayDate);
+
+        //Get List Public Religion Holiday Schedule
+        List<WtHoliday> listPublicReligionHoliday = wtHolidayDao.getListPublicReligionHolidayByReligionCodeAndBetweenDate(wtPeriode.getFromPeriode(), wtPeriode.getUntilPeriode(), religionCode);
+        List<Date> listPublicReligionHolidayDate = Lambda.extract(listPublicReligionHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
+        Collections.sort(listPublicReligionHolidayDate);
+
+        //Looping List Overtime Implementation
+        for (ImplementationOfOverTime otImpl : listImplementationOfOverTime) {
+
+            List<WtHitungLemburJam> listWtHitungLemburJam = wtHitungLemburJamDao.getListByWtHitungLemburId(otImpl.getWtOverTime().getWtHitungLembur().getId());
+
+            Boolean isImplementedOnScheduleHoliday = Collections.binarySearch(listDateLibur, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
+            Boolean isImplementedOnPublicNonReligionHoliday = Collections.binarySearch(listPublicNonReligionHolidayDate, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
+            Boolean isImplementedOnPublicReligionHoliday = Collections.binarySearch(listPublicReligionHolidayDate, otImpl.getImplementationDate(), new MyDateComparator()) >= 0;
+
+            //get total Overtime in hours
+            Float totalHoursOvertime = DateTimeUtil.getTotalHoursDifference(otImpl.getStartTime(), otImpl.getEndTime()).floatValue();
+
+            //Initialize real total hours overtime
+            Float realTotalOverTime = 0f;
+
+            //Check implementOn and calculate real total hours based on implementOn
+            if (isImplementedOnScheduleHoliday || isImplementedOnPublicNonReligionHoliday) {
+                realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "schduleOrPublicNonReligionHoliday");
+            } else if (isImplementedOnPublicReligionHoliday) {
+                realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "publicReligionHoliday");
+            } else {
+                realTotalOverTime = countRealOverTime(totalHoursOvertime, listWtHitungLemburJam, "workingDay");
+            }
+
+            //increment totalOvertime with each realTotalOvertime record
+            totalOvertime += realTotalOverTime;
+
+        }
+
+        //if totalOvertime Is Not A Number than reinitialize to 0
+        if (totalOvertime.isNaN()) {
+            totalOvertime = 0f;
+        }
+
+        //return totalOvertime of employee during period active
+        return totalOvertime;
+    }
+
+    private Float countRealOverTime(Float totalOverTime, List<WtHitungLemburJam> listWtHitungLemburJam, String implementOn) {
+
+        //Initialize totalRealOvertime
+        Float totalRealOvertime = 0f;
+
+        /* separate rounding value and decimal value from totalOvertime */
+        Integer overtimeRounded = Math.round(totalOverTime);
+        Float sisa = totalOverTime - overtimeRounded;
+
+        /*Filter list WtHitungLemburJam, only record with field 'jamKe' value less or equal to overtimeRounded that will be invoke inside calculation process*/
+        listWtHitungLemburJam = Lambda.select(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.lessThanOrEqualTo(overtimeRounded)));
+
+        WtHitungLemburJam wtHitungLemburJamSisa = null;
+        Float realTotalOtFromWtHitungLemburJam = 0f;
+        Float realSisa = 0f;
+
+        //check implementOn
+        switch (implementOn) {
+
+            case "workingDay":
+
+                /*if overtime was implemented on WorkingDay,
+                 //sum real OverTime Value from field 'hariKerja' in listWtHitungLemburJam,
+                 //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariKerja().floatValue());
+                wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
+                if (null != wtHitungLemburJamSisa) {
+                    realSisa = sisa * wtHitungLemburJamSisa.getHariKerja().floatValue();
+                }
+
+                break;
+
+            case "publicReligionHoliday":
+
+                /*if overtime was implemented on public Religion Holiday (from table WtHoliday with religion is not Null),
+                 //sum real OverTime Value from field 'hariRaya' in listWtHitungLemburJam,
+                 //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariRaya().floatValue());
+                wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
+                if (null != wtHitungLemburJamSisa) {
+                    realSisa = sisa * wtHitungLemburJamSisa.getHariRaya().floatValue();
+                }
+
+                break;
+
+            case "schduleOrPublicNonReligionHoliday":
+
+                /*if overtime was implemented on public holiday but not related to religion (ex Independence Day, 17 August) from table WtHoliday  or HolidaySchedule from table TempJadwalKaryawan,
+                 //sum real OverTime Value from field 'hariLibur' in listWtHitungLemburJam,
+                 //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariLibur().floatValue());
+                wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
+                if (null != wtHitungLemburJamSisa) {
+                    realSisa = sisa * wtHitungLemburJamSisa.getHariLibur().floatValue();
+                }
+
+                break;
+
+            default:
+                break;
+        }
+
+        //sum realTotalOtFromWtHitungLemburJam and realSisa to get totalRealOvertime
+        totalRealOvertime = realTotalOtFromWtHitungLemburJam + realSisa;
+
+        // return totalRealOvertime
+        return totalRealOvertime;
+    }
+
+    private Integer calculateAndCheckTotalLeave(List<LeaveImplementation> listLeaveImplementation, Date dateFrom, Date dateUntill, Long empDataId) {
+
+        Integer totalLeave = 0;
+        List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
+
+        // Get List Public Holiday Schedule
+        List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateFrom);
+        List<Date> listEmpOffDate = new ArrayList<Date>();
+
+        if (!listEmpOffSchedule.isEmpty()) {
+            listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
+            Collections.sort(listEmpOffDate);
+        }
+
+        // Get List Public Holiday Schedule
+        List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate(dateFrom, dateFrom);
+        List<Date> listPublicHolidayDate = new ArrayList<Date>();
+
+        if (!listPublicHoliday.isEmpty()) {
+            listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
+            Collections.sort(listPublicHolidayDate);
+        }
+
+        //Looping leaveImplementation
+        for (LeaveImplementation leaveImpl : listLeaveImplementation) {
+
+            // get totalLeaveDays, and list leaves date of each record
+            int totalLeaveDaysPerRecord = getRangeOfDates(leaveImpl.getStartDate(), leaveImpl.getEndDate()).size();
+            List<Date> listLeaveImplDate = getRangeOfDates(leaveImpl.getStartDate(), leaveImpl.getEndDate());
+            Collections.sort(listLeaveImplDate);
+
+            //check, whether leave startDate and end Date is in Period date
+            Boolean isLeaveStartDateInPeriodRange = isDateIsBetWeenTwoDates(leaveImpl.getStartDate(), dateFrom, dateUntill);
+            Boolean isLeaveEndDateInPeriodRange = isDateIsBetWeenTwoDates(leaveImpl.getEndDate(), dateFrom, dateUntill);
+
+            //if leave startDate and end Date is in Period date, loop the list and check one By One
+            if (isLeaveStartDateInPeriodRange && isLeaveEndDateInPeriodRange) {
+
+                // If Leave dayType equal to HRMConstant.LEAVE_DAY_TYPE_WORKING, check again leave
+                if (StringUtils.equals(HRMConstant.LEAVE_DAY_TYPE_WORKING, leaveImpl.getLeave().getDayType())) {
+
+                    for (Date leaveDate : listLeaveImplDate) {
+
+                        //Check if Leave was on public holiday
+                        Boolean isLeaveOnPublicHoliday = isDateIsInListDate(leaveDate, listPublicHolidayDate);
+                        Boolean isLeaveOnOffSchedule = Boolean.FALSE;
+
+                        if (!listEmpOffSchedule.isEmpty()) {
+
+                            //Check if Leave was on off day schedule
+                            isLeaveOnOffSchedule = isDateIsInListDate(leaveDate, listEmpOffDate);
+
+                        }
+
+                        // if leave is implement on off day schedule, or public holiday and dayType of leave = HRMConstant.LEAVE_DAY_TYPE_WORKING, decrement totalLeaveDaysPerRecord
+                        if (isLeaveOnOffSchedule || isLeaveOnPublicHoliday) {
+                            totalLeaveDaysPerRecord--;
+                        }
+                    }
+                }
+
+            } else {
+
+                for (Date leaveDate : listLeaveImplDate) {
+                    Boolean isLeaveDateInPeriod = isDateIsInListDate(leaveDate, listDateInSelectedPeriod);
+                    if (isLeaveDateInPeriod) {
+
+                        // If Leave dayType equal to HRMConstant.LEAVE_DAY_TYPE_WORKING, check again leave
+                        if (StringUtils.equals(HRMConstant.LEAVE_DAY_TYPE_WORKING, leaveImpl.getLeave().getDayType())) {
+
+                            //Check if Leave was on public holiday
+                            Boolean isLeaveOnPublicHoliday = isDateIsInListDate(leaveDate, listPublicHolidayDate);
+                            Boolean isLeaveOnOffSchedule = Boolean.FALSE;
+
+                            if (!listEmpOffSchedule.isEmpty()) {
+
+                                //Check if Leave was on off day schedule
+                                isLeaveOnOffSchedule = isDateIsInListDate(leaveDate, listEmpOffDate);
+
+                            }
+
+                            // if leave is implement on off day schedule, or public holiday and dayType of leave = HRMConstant.LEAVE_DAY_TYPE_WORKING, decrement totalLeaveDaysPerRecord
+                            if (isLeaveOnOffSchedule || isLeaveOnPublicHoliday) {
+                                totalLeaveDaysPerRecord--;
+                            }
+
+                        }
+
+                    } else {
+
+                        // no need to check, just decrement because leave was implemented out of date period range
+                        totalLeaveDaysPerRecord--;
+
+                    }
+                }
+            }
+
+            //increment totalLeave with each totalLeaveDaysPerRecord
+            totalLeave += totalLeaveDaysPerRecord;
+        }
+
+        //return totalLeave
+        return totalLeave;
+    }
+
+    private Integer calculateAndCheckTotalPermit(List<PermitImplementation> listPermitImplementation, Date dateFrom, Date dateUntill, Long empDataId) {
+        Integer totalPermit = 0;
+        List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
+
+        //Get List Employee Off Schedule
+        List<TempJadwalKaryawan> listEmpOffSchedule = tempJadwalKaryawanDao.getAllDataByEmpIdAndPeriodDateAndOffDay(empDataId, dateFrom, dateUntill);
+        List<Date> listEmpOffDate = new ArrayList<Date>();
+
+        if (!listEmpOffSchedule.isEmpty()) {
+            listEmpOffDate = Lambda.extract(listEmpOffSchedule, Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja());
+            Collections.sort(listEmpOffDate);
+        }
+
+        //Get List Public Holiday Schedule
+        List<WtHoliday> listPublicHoliday = wtHolidayDao.getBetweenDate(dateFrom, dateFrom);
+        List<Date> listPublicHolidayDate = new ArrayList<Date>();
+
+        if (!listPublicHoliday.isEmpty()) {
+            listPublicHolidayDate = Lambda.extract(listPublicHoliday, Lambda.on(WtHoliday.class).getHolidayDate());
+            Collections.sort(listPublicHolidayDate);
+        }
+
+        //Looping List PermitImplementation
+        for (PermitImplementation permitImplementation : listPermitImplementation) {
+
+            //get total permit per record and list permitDates					
+            List<Date> listSickDates = getRangeOfDates(permitImplementation.getStartDate(), permitImplementation.getEndDate());
+            int totalPermitDaysPerRecord = listSickDates.size();
+            Collections.sort(listSickDates);
+
+            //Check whether permit startDate and end Date is in Period date
+            Boolean isPermitStartDateInPeriodRange = isDateIsBetWeenTwoDates(permitImplementation.getStartDate(), dateFrom, dateUntill);
+            Boolean isPermitEndDateInPeriodRange = isDateIsBetWeenTwoDates(permitImplementation.getEndDate(), dateFrom, dateUntill);
+
+            //if permit startDate and end Date is in Period date, loop the list and check one By One
+            if (isPermitStartDateInPeriodRange && isPermitEndDateInPeriodRange) {
+
+                for (Date sickDate : listSickDates) {
+
+                    //Check if permit was on public holiday
+                    Boolean isPermitOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
+                    Boolean isPermitOnOffSchedule = Boolean.FALSE;
+
+                    if (!listEmpOffSchedule.isEmpty()) {
+
+                        //Check if permit was on Off day Schedule
+                        isPermitOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
+
+                    }
+
+                    //if permit was on off day schedule, or on public holiday, decrement totalpermitDaysPerRecord because actually it didn't affect on employee total Attendance 
+                    if (isPermitOnOffSchedule || isPermitOnPublicHoliday) {
+                        totalPermitDaysPerRecord--;
+                    }
+                }
+
+            } else {
+
+                for (Date sickDate : listSickDates) {
+
+                    //Check if permit is in period list date
+                    Boolean isSickDateInPeriod = isDateIsInListDate(sickDate, listDateInSelectedPeriod);
+
+                    if (isSickDateInPeriod) {
+
+                        //Check if permit was on public holiday
+                        Boolean isSickOnPublicHoliday = isDateIsInListDate(sickDate, listPublicHolidayDate);
+                        Boolean isSickOnOffSchedule = Boolean.FALSE;
+
+                        if (!listEmpOffSchedule.isEmpty()) {
+
+                            //Check if permit was on Off day Schedule
+                            isSickOnOffSchedule = isDateIsInListDate(sickDate, listEmpOffDate);
+
+                        }
+
+                        //if permit was on off day schedule, or on public holiday, decrement totalpermitDaysPerRecord because actually it didn't affect on employee total Attendance 
+                        if (isSickOnOffSchedule || isSickOnPublicHoliday) {
+                            totalPermitDaysPerRecord--;
+                        }
+
+                    } else {
+                        // no need to check, just decrement, bacause permit date is out of list period date
+                        totalPermitDaysPerRecord--;
+                    }
+
+                }
+            }
+
+            //increment totalPermit with each totalPermitDaysPerRecord
+            totalPermit += totalPermitDaysPerRecord;
+        }
+
+        //return totalPermit
+        return totalPermit;
+    }
+
+    private Integer calculateAndCheckTotalDuty(List<BusinessTravel> listBusinessTravel, Date dateFrom, Date dateUntill, Long empDataId) {
+        Integer totalDuty = 0;
+        List<Date> listDateInSelectedPeriod = getRangeOfDates(dateFrom, dateUntill);
+
+        //Looping List listBusinessTravel
+        for (BusinessTravel businessTravel : listBusinessTravel) {
+
+            //get total days per record and list travelDates					
+            List<Date> listTravelDates = getRangeOfDates(businessTravel.getStartDate(), businessTravel.getEndDate());
+            int totalTravelDaysPerRecord = listTravelDates.size();
+
+            Collections.sort(listTravelDates);
+
+            //Check whether travel startDate and end Date is in Period date
+            Boolean isTravelStartDateInPeriodRange = isDateIsBetWeenTwoDates(businessTravel.getStartDate(), dateFrom, dateUntill);
+            Boolean isTravelEndDateInPeriodRange = isDateIsBetWeenTwoDates(businessTravel.getEndDate(), dateFrom, dateUntill);
+
+            //if travel startDate or endDate is not in Period date, loop the list and check date, One By One.
+            if (!isTravelStartDateInPeriodRange || !isTravelEndDateInPeriodRange) {
+
+                for (Date travelDate : listTravelDates) {
+
+                    //Check if travel is in period list date
+                    Boolean isTravelDateInPeriod = isDateIsInListDate(travelDate, listDateInSelectedPeriod);
+
+                    //if travel date is not in period list date
+                    if (!isTravelDateInPeriod) {
+
+                        // no need to check, just decrement, bacause travel date is out of list period date
+                        totalTravelDaysPerRecord--;
+                    }
+
+                }
+
+            }
+
+            //increment totalDuty with each totalTravelDaysPerRecord
+            totalDuty += totalTravelDaysPerRecord;
+        }
+
+        //return totalDuty
+        return totalDuty;
+    }
+
+    private Boolean isDateIsBetWeenTwoDates(Date dateToCheck, Date dateFrom, Date dateUntill) {
+
+        Boolean isGreaterOrEqThanStartDate = dateToCheck.compareTo(dateFrom) >= 0;
+        Boolean isLessOrEqThanEndDate = dateToCheck.compareTo(dateUntill) <= 0;
+        return isGreaterOrEqThanStartDate && isLessOrEqThanEndDate;
+    }
+
+    private Boolean isDateIsInListDate(Date dateToCheck, List<Date> listDate) {
+        return Collections.binarySearch(listDate, dateToCheck, new MyDateComparator()) >= 0;
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void executeBatchFileUpload(TempAttendanceRealizationViewModel model) throws Exception {
+        //Boolean isInsertable = this.payTempUploadDataDao.getEntityByNikAndComponentId(model.getNik(), model.getPaySalaryComponentId()) == null;
+        Boolean isInsertable = Boolean.TRUE;
+        //skip jika data sudah ada di database(tidak boleh duplikat)
+        if (isInsertable) {
+            EmpData empData = empDataDao.getEntiyByPK(model.getEmpId());
+            WtGroupWorking wtGroupWorking = wtGroupWorkingDao.getEntiyByPK(model.getWtGroupWorkingId());
+            WtPeriode wtPeriode = wtPeriodeDao.getEntiyByPK(model.getWtPeriodId());
+
+            if (empData != null) {
+                TempAttendanceRealization entity = new TempAttendanceRealization();
+                entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+                entity.setAttendanceDaysPresent(model.getAttendanceDaysPresent());
+                entity.setAttendanceDaysSchedule(model.getAttendanceDaysSchedule());
+                entity.setCreatedBy(model.getCreatedBy());
+                entity.setCreatedOn(new Date());
+                entity.setDuty(model.getDuty());
+                entity.setEmpData(empData);
+                entity.setLeave(model.getLeaves());
+                entity.setOvertime(model.getOverTime());
+                entity.setPermit(model.getPermit());
+                entity.setSick(model.getSick());
+                entity.setWtGroupWorking(wtGroupWorking);
+                entity.setWtPeriod(wtPeriode);
+
+                this.tempAttendanceRealizationDao.save(entity);
+            }
+        }
+    }
+
+    private List<TempJadwalKaryawan> getAllScheduleForView(Long workingGroupId, Date createDate) throws Exception {
+        List<TempJadwalKaryawan> dataToShow = new ArrayList<>();
+        WtGroupWorking selectedWtGroupWorking = wtGroupWorkingDao.getEntiyByPK(workingGroupId);
         Date startDate = selectedWtGroupWorking.getBeginTime();
         Date endDate = selectedWtGroupWorking.getEndTime();
         int numberOfDay = DateTimeUtil.getTotalDayDifference(startDate, endDate);
@@ -1079,7 +1072,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
             } else {
                 jadwalKaryawan.setWtWorkingHour(list1.getWtWorkingHour());
             }
-            jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);            
+            jadwalKaryawan.setIsCollectiveLeave(Boolean.FALSE);
             jadwalKaryawan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
             jadwalKaryawan.getWtWorkingHour();
             jadwalKaryawan.getWtWorkingHour().getAttendanceStatus().getStatusKehadrian();
@@ -1088,38 +1081,36 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         }
         return dataToShow;
     }
-	
-	private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
+
+    private final Comparator<WtScheduleShift> shortByDate1 = new Comparator<WtScheduleShift>() {
         @Override
         public int compare(WtScheduleShift o1, WtScheduleShift o2) {
             return o1.getScheduleDate().compareTo(o2.getScheduleDate());
         }
     };
-    
-   
-    private Integer getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
-		EmpData empData = empDataDao.getEntiyByPK(empDataId);
-		Integer totalWorkingDays = 0;
-		List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
-		
-		//loop date-nya, check jadwal berdasarkan kelompok kerja		
-		for(Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)){
-			TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
-			if(jadwal == null){
-				//jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
-				List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(empData.getWtGroupWorking().getId(), loop);
-				tempJadwalKaryawans.addAll(jadwalKaryawans);
-				jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
-			}
-			
-			//selain "OFF"(hari libur) berarti termasuk jam kerja
-			if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
-				totalWorkingDays ++;
-			}			
-		}
-		return totalWorkingDays;
-	}
 
+    private Integer getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
+        EmpData empData = empDataDao.getEntiyByPK(empDataId);
+        Integer totalWorkingDays = 0;
+        List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
+
+        //loop date-nya, check jadwal berdasarkan kelompok kerja		
+        for (Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)) {
+            TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+            if (jadwal == null) {
+                //jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
+                List<TempJadwalKaryawan> jadwalKaryawans = this.getAllScheduleForView(empData.getWtGroupWorking().getId(), loop);
+                tempJadwalKaryawans.addAll(jadwalKaryawans);
+                jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
+            }
+
+            //selain "OFF"(hari libur) berarti termasuk jam kerja
+            if (!StringUtils.equals(jadwal.getWtWorkingHour().getCode(), "OFF")) {
+                totalWorkingDays++;
+            }
+        }
+        return totalWorkingDays;
+    }
 
     private static List<Date> getRangeOfDates(Date firstDate, Date secondDate) {
         List<Date> result = new ArrayList<Date>();
@@ -1157,26 +1148,133 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         }
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
-		
-		return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
-	}
-	
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable)
-			throws Exception {
-		
-		return tempAttendanceRealizationDao.getPaidOvertimeByParam(firstResult, maxResults, orderable);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalPaidOvertimeByParam() throws Exception {
-		
-		return tempAttendanceRealizationDao.getTotalPaidOvertimeByParam();
-	}
-   
+        return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable)
+            throws Exception {
+
+        return tempAttendanceRealizationDao.getPaidOvertimeByParam(firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPaidOvertimeByParam() throws Exception {
+
+        return tempAttendanceRealizationDao.getTotalPaidOvertimeByParam();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception {
+        List<WorkingTimeDeviationListDetailModel> listModelToShow = new ArrayList<WorkingTimeDeviationListDetailModel>();
+        WorkingTimeDeviationListDetailModel model;
+        List<TempProcessReadFinger> listTempProcessReadFinger = tempProcessReadFingerDao.getAllDataOvertimeAndReadFingerByEmpDataId(id, firstResult, maxResults, order);
+        int marginIn = 0;
+        int marginOut = 0;
+        long totalMargin = 0;
+        for (TempProcessReadFinger tempProcessReadFinger : listTempProcessReadFinger) {
+            //hitung kalkulasi waktu
+            marginIn = tempProcessReadFinger.getMarginIn();
+            marginOut = tempProcessReadFinger.getMarginOut();
+            totalMargin = getTotalMargin(marginIn, marginOut);
+            model = new WorkingTimeDeviationListDetailModel();
+            model.setDeviationTime(totalMargin);
+            model.setFingerIn(tempProcessReadFinger.getFingerIn());
+            model.setFingerOut(tempProcessReadFinger.getFingerOut());
+            model.setWorkingGroupName(tempProcessReadFinger.getEmpData().getWtGroupWorking().getName());
+            model.setWorkingDate(tempProcessReadFinger.getScheduleDate());
+
+            listModelToShow.add(model);
+        }
+        return listModelToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception {
+        return tempProcessReadFingerDao.getTotalOvertimeAndReadFingerByEmpDataId(id);
+    }
+    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception {
+//        WtPeriode wtPeriode = this.wtPeriodeDao.getEntityByAbsentTypeActive();
+        List<WorkingTimeDeviation> dataToShow = new ArrayList<>();
+        List<EmpData> getAllEmmp = this.empDataDao.getAllDataNotTerminatePaging(parameter, firstResult, maxResults, order);
+        for (EmpData emp : getAllEmmp) {
+            Long totalDeviation = tempProcessReadFingerDao.getTotalTimeDeviation(emp.getId());
+            WorkingTimeDeviation deviation = new WorkingTimeDeviation();
+//            deviation.setTotalDeviation(totalDeviation);
+            deviation.setEmpId(emp.getId());
+            TempAttendanceRealization attendanceRealization = tempAttendanceRealizationDao.getByEmp(emp.getId());
+            if (attendanceRealization != null) {
+                deviation.setTotalOverTime(attendanceRealization.getOvertime().longValue());
+                deviation.setAttendaceRealization(attendanceRealization.getAttendanceDaysPresent() + "/" + attendanceRealization.getAttendanceDaysSchedule());
+            }
+
+//            Long totalOverTime = tempAttendanceRealizationDao.getTotalOverTime(emp.getId());
+//            deviation.setTotalOverTime(totalOverTime);
+            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
+            if (totalDeviation != null) {
+                deviation.setTotalDeviation(totalDeviation);
+//                if (totalDeviation < 0) {
+//                    long totalAbsolut = -1 * totalDeviation;
+//                    if (totalAbsolut >= 60) {
+//                        long jam = totalAbsolut / 60;
+//                        long minute = totalAbsolut % 60;
+//                        deviation.setMinuteDefect(minute);
+//                        deviation.setHourDefect(jam);
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+////                    Date date = new Date(totalDeviation * (-1));
+////                    deviation.setDateDefect(date);
+////                    deviation.setHourDefect(totalDeviation / 60);
+////                    deviation.setMinuteDefect(totalDeviation * (-1));
+//                } else {
+////                    Date date = new Date(totalDeviation);
+////                    deviation.setDateDefect(date);
+//                    Long time = totalDeviation * 60 * 1000;
+//                    Date date = new Date(time);
+//                    if (totalDeviation >= 60) {
+//                        long jam = totalDeviation / 60;
+//                        long minute = totalDeviation % 60;
+//                        deviation.setExtraMinute(minute);
+//                        deviation.setExtraHour(jam);
+//
+//                    } else {
+//                        deviation.setExtraHour(Long.valueOf("0"));
+//                        deviation.setExtraMinute(totalDeviation);
+//                    }
+
+            }
+            deviation.setOverTime(null);
+            dataToShow.add(deviation);
+
+        }
+        return dataToShow;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception {
+        return empDataDao.getTotalNotTerminatePaging(parameter);
+    }
+    
+    /**
+     *
+     * Mencari jumlah waktu margin
+     *
+     */
+    private Integer getTotalMargin(int marginIn, int marginOut) {
+        return marginIn + marginOut;
+    }
 }

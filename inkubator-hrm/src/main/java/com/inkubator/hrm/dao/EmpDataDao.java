@@ -26,6 +26,7 @@ import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
  *
@@ -143,7 +144,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter);
 
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order);
 	
-	
+    public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter);
 }
 	
