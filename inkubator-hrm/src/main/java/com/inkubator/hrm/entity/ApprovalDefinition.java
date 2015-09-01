@@ -382,7 +382,7 @@ public class ApprovalDefinition implements java.io.Serializable {
         return true;
     }
 
-    @Column(name = "is_actve")
+    @Column(name = "is_active")
     public Boolean getIsActive() {
         return isActive;
     }
