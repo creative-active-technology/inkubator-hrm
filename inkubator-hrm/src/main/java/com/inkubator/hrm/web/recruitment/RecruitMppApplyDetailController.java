@@ -77,7 +77,7 @@ public class RecruitMppApplyDetailController extends BaseController {
     private Long mppPeriodeId;
     private RecruitMppApplyDetail selectedRecruitMppApplyDetail;
     private UploadedFile mppApplyFile;
-    private Boolean isApproved;
+    private Boolean isWaitingApproval;
 
     @PostConstruct
     @Override
@@ -89,10 +89,10 @@ public class RecruitMppApplyDetailController extends BaseController {
             listMppDetail = new ArrayList<>();
             activityNumber = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(activityNumber)) {
-                selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberAndSequence(activityNumber, 1);
+                selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(activityNumber);
 
                 if (null != selectedApprovalActivity) {
-                    isApproved = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED;
+                	isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
                     recruitMppApplyModel = convertJsonToModel(selectedApprovalActivity.getPendingData());                   
                 }
             }
@@ -127,7 +127,7 @@ public class RecruitMppApplyDetailController extends BaseController {
         selectedApprovalActivity = null;
         activityNumber = null;
         mppApplyFile = null;
-        isApproved = null;
+        isWaitingApproval = null;
         listMppDetail = null;
         selectedRecruitMppApplyDetail = null;
     }
@@ -262,12 +262,12 @@ public class RecruitMppApplyDetailController extends BaseController {
         this.empDataService = empDataService;
     }
 
-    public Boolean getIsApproved() {
-        return isApproved;
-    }
+	public Boolean getIsWaitingApproval() {
+		return isWaitingApproval;
+	}
 
-    public void setIsApproved(Boolean isApproved) {
-        this.isApproved = isApproved;
-    }
+	public void setIsWaitingApproval(Boolean isWaitingApproval) {
+		this.isWaitingApproval = isWaitingApproval;
+	}
 
 }

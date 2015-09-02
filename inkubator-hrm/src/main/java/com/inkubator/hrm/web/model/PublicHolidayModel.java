@@ -14,6 +14,7 @@ public class PublicHolidayModel implements Serializable {
     private Date startDate;
     private Date endDate;
     private String description;
+    private String code;
 
     public Long getId() {
         return id;
@@ -55,4 +56,11 @@ public class PublicHolidayModel implements Serializable {
         this.description = description;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

@@ -160,7 +160,7 @@ public class PublicHolidayViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 420);
+        options.put("contentHeight", 465);
         RequestContext.getCurrentInstance().openDialog("public_holiday_form", options, params);
     }
 

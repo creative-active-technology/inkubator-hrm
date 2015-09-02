@@ -294,7 +294,6 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
             PermitDistribution distribution = new PermitDistribution();
             distribution.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             distribution.setBalance(startBalance);
-            System.out.println(dtStart + " - " + dtEnd + " hoohooohoh");
             distribution.setStartDate(dtStart.toDate());
             distribution.setEndDate(dtEnd.toDate());
             distribution.setEmpData(empData);
