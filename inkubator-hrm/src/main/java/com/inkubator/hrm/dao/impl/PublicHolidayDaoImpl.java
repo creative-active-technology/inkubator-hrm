@@ -84,7 +84,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     @Override
     public Long getReportTotalByParam(PublicHolidaySearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchReportByParam(parameter,  criteria);
+        doSearchReportByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -99,7 +99,6 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
             criteria.add(Restrictions.eq("endDate", parameter.getEndDate()));
         }
 
-        
         criteria.add(Restrictions.isNotNull("id"));
     }
 
@@ -108,6 +107,14 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, criteria);
         criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        return criteria.list();
+    }
+
+    @Override
+    public List<PublicHoliday> getByLeavShcemaId(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("leaveScheme", "lv", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("lv.id", id));
         return criteria.list();
     }
 }

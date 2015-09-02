@@ -3,10 +3,13 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LeaveSchemeDao;
 import com.inkubator.hrm.dao.PublicHolidayDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.service.PublicHolidayService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -31,6 +34,8 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     private PublicHolidayDao publicHolidayDao;
     @Autowired
     private LeaveSchemeDao leaveSchemeDao;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -198,11 +203,15 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(PublicHoliday publicHoliday) throws Exception {
-        
+
         publicHoliday.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         publicHoliday.setLeaveScheme(this.leaveSchemeDao.getEntiyByPK(publicHoliday.getLeaveScheme().getId()));
         publicHoliday.setCreatedBy(UserInfoUtil.getUserName());
         publicHoliday.setCreatedOn(new Date());
+        Long currentMaxId = publicHolidayDao.getTotalData();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String pattern = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PUBCIL_HOLIDAY_KODE).getCode();
+        publicHoliday.setCode(KodefikasiUtil.getKodefikasi((int) currentMaxId.longValue(), pattern));
         publicHolidayDao.save(publicHoliday);
     }
 
@@ -233,7 +242,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(PublicHoliday r) throws Exception {
-        
+
         PublicHoliday publicHoliday = publicHolidayDao.getEntiyByPK(r.getId());
         publicHoliday.setLeaveScheme(this.leaveSchemeDao.getEntiyByPK(r.getLeaveScheme().getId()));
         publicHoliday.setStartDate(r.getStartDate());
@@ -241,6 +250,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
         publicHoliday.setDescription(r.getDescription());
         publicHoliday.setUpdatedBy(UserInfoUtil.getUserName());
         publicHoliday.setUpdatedOn(new Date());
+        publicHoliday.setCode(r.getCode());
         publicHolidayDao.update(publicHoliday);
     }
 
@@ -267,28 +277,34 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     public PublicHoliday getEntityByPKWithDetail(Long id) throws Exception {
         return publicHolidayDao.getEntityByPKWithDetail(id);
     }
-    
+
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PublicHoliday> getAllWithDetail() throws Exception {
         return publicHolidayDao.getAllWithDetail();
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter,  int firstResult, int maxResults, Order orderable) throws Exception {
+    public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         return publicHolidayDao.getReportByParam(parameter, firstResult, maxResults, orderable);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getReportTotalByParam(PublicHolidaySearchParameter parameter ) throws Exception {
+    public Long getReportTotalByParam(PublicHolidaySearchParameter parameter) throws Exception {
         return publicHolidayDao.getReportTotalByParam(parameter);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter) throws Exception {
         return publicHolidayDao.getReportHistoryByParam(parameter);
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PublicHoliday> getByLeavShcemaId(long id) throws Exception {
+        return publicHolidayDao.getByLeavShcemaId(id);
+    }
+
 }

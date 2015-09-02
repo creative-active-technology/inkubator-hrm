@@ -68,19 +68,25 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="leaveScheme"  style="width: 37%">
+                            <p:column sortBy="leaveScheme"  style="width: 27%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_leave']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayData.leaveScheme.name}"/>
+                            </p:column>
+                            <p:column sortBy="code" style="width: 15%" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{publicHolidayData.code}"/>
                             </p:column> 
-                            <p:column sortBy="startDate"  style="width: 25%">
+                            <p:column sortBy="startDate"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_start']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayData.startDate}"/>
                             </p:column> 
-                            <p:column sortBy="endDate"  style="width: 25%">
+                            <p:column sortBy="endDate"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_end']}"/>
                                 </f:facet>
@@ -88,8 +94,8 @@
                             </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                                                 action="#{publicHolidayViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPublicHoliday.show()">                        
+                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                                 action="#{publicHolidayViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPublicHoliday.show()">                        
                                     <f:setPropertyActionListener value="#{publicHolidayData}" target="#{publicHolidayViewController.selectedPublicHoliday}" />
                                 </p:commandButton>
                                 - 
@@ -154,7 +160,11 @@
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHoliday.publicHoliday_leave']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.leaveScheme.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
-                         <p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.code}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHoliday.publicHoliday_start']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.startDate}" styleClass="label_hrm"/></p:column>
                         </p:row>
