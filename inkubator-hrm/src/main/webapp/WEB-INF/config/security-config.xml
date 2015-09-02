@@ -22,7 +22,6 @@
         <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
-    
         <security:session-management>
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
         </security:session-management>
