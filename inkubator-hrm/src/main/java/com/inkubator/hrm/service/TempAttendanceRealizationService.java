@@ -10,6 +10,8 @@ import com.inkubator.hrm.web.model.DetilRealizationAttendanceModel;
 import com.inkubator.hrm.web.model.RealizationAttendanceModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.model.WorkingTimeDeviation;
+import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
@@ -48,5 +50,13 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
 	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalPaidOvertimeByParam() throws Exception;
+        
+        public List<WorkingTimeDeviationListDetailModel> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order) throws Exception;
+    
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception;
+    
+    public List<WorkingTimeDeviation> getWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalWorkingHourDeviation(TempAttendanceRealizationSearchParameter parameter) throws Exception;
 
 }

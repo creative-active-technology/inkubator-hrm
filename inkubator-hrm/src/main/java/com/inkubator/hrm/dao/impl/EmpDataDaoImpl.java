@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Criterion;
@@ -28,7 +27,6 @@ import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -42,17 +40,14 @@ import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
-import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.ReportOfEmployeesFamilySearchParameter;
-import com.inkubator.hrm.web.search.ReportRekapJabatanEmpSearchParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 
 /**
@@ -1286,4 +1281,65 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         }
     }
 
+
+    @Override
+    public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        if (parameter.getNik() != null) {
+            criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
+        }
+        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        if (parameter.getName() != null) {
+//            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+
+     
+        String sorting = "bio." + order;
+//        if (order==null) {
+//            criteria.addOrder(order);
+//        } else {
+//            if (order.isAscending()) {
+//             
+//                criteria.addOrder(Order.asc(sorting));
+//            } else {
+//                
+//                criteria.addOrder(Order.desc(sorting));
+//            }
+//        }
+
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResult);
+        return criteria.list();
+    }
+    
+    @Override
+    public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        if (parameter.getNik() != null) {
+            criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
+        }
+
+        if (parameter.getName() != null) {
+            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }

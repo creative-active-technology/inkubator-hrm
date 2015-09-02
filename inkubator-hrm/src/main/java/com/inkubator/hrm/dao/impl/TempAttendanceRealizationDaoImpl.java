@@ -92,7 +92,7 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     @Override
     public Long getTotalEmpLeav() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        return (Long) criteria.setProjection(Projections.sum("leave")).uniqueResult();
+        return (Long) criteria.setProjection(Projections.sum("leaves")).uniqueResult();
     }
 
     @Override
@@ -300,4 +300,11 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
     
+        @Override
+    public TempAttendanceRealization getByEmp(long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "ce", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("ce.id", empId));
+        return (TempAttendanceRealization) criteria.uniqueResult();
+    }
 }

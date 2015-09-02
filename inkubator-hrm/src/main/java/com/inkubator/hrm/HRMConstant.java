@@ -368,6 +368,7 @@ public class HRMConstant {
     public static final String TRAVEL_KODE = "TRAV";
     public static final String TERMINASI_KODE = "TERM";
     public static final String OVERTIME_KODE = "OTIM";
+    public static final String PUBCIL_HOLIDAY_KODE = "LVCO";
 
     public static final String APP_NAME = "Web Destop App";
 

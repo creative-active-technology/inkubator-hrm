@@ -28,4 +28,6 @@ public interface PublicHolidayService extends IService<PublicHoliday> {
 
     public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter) throws Exception;
 
+    public List<PublicHoliday> getByLeavShcemaId(long id) throws Exception;
+
 }

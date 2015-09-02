@@ -42,4 +42,9 @@ public interface TempProcessReadFingerDao extends IDAO<TempProcessReadFinger> {
 	
 	public Boolean isDataTempProcessReadFingerOnPeriodDateStillEmpty(Date startDate, Date endDate);
 
+            public List<TempProcessReadFinger> getAllDataOvertimeAndReadFingerByEmpDataId(Long id, int firstResult, int maxResults, Order order);
+
+    public Long getTotalOvertimeAndReadFingerByEmpDataId(long id);
+    
+    public Long getTotalTimeDeviation(long empid);
 }
