@@ -44,12 +44,18 @@ public class WtPeriodEmpViewController extends BaseController {
     private WtPeriodEmpViewModel selected;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    private Boolean isStartPeriod;
+    private Boolean isEndPeriod;
+    private Boolean isAbsenStatus;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         parameter = new WtPeriodeEmpSearchParameter();
+        isStartPeriod = Boolean.TRUE;
+        isEndPeriod = Boolean.FALSE;
+        isAbsenStatus = Boolean.FALSE;
     }
 
     @PreDestroy
@@ -58,6 +64,9 @@ public class WtPeriodEmpViewController extends BaseController {
         parameter = null;
         lazyData = null;
         selected = null;
+        isStartPeriod = null;
+        isEndPeriod = null;
+        isAbsenStatus = null;
     }
 
     public void doSearch() {
@@ -68,6 +77,22 @@ public class WtPeriodEmpViewController extends BaseController {
 return "/protected/working_time/wt_period_emp_detail.htm?faces-redirect=true&execution=e" + selected.getWtPeriodId().longValue();
     }
 
+    public void doChangeInputType(){
+        if(parameter.getKeyParam().equals("startPeriod")){
+            isStartPeriod = Boolean.TRUE;
+            isEndPeriod = Boolean.FALSE;
+            isAbsenStatus = Boolean.FALSE;
+        }else if(parameter.getKeyParam().equals("endPeriod")){
+            isStartPeriod = Boolean.FALSE;
+            isEndPeriod = Boolean.TRUE;
+            isAbsenStatus = Boolean.FALSE;
+        }else{
+            isStartPeriod = Boolean.FALSE;
+            isEndPeriod = Boolean.FALSE;
+            isAbsenStatus = Boolean.TRUE;
+        }
+    }
+    
     private void showDialog(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -114,6 +139,30 @@ return "/protected/working_time/wt_period_emp_detail.htm?faces-redirect=true&exe
 
     public void setParameter(WtPeriodeEmpSearchParameter parameter) {
         this.parameter = parameter;
+    }
+
+    public Boolean getIsStartPeriod() {
+        return isStartPeriod;
+    }
+
+    public void setIsStartPeriod(Boolean isStartPeriod) {
+        this.isStartPeriod = isStartPeriod;
+    }
+
+    public Boolean getIsEndPeriod() {
+        return isEndPeriod;
+    }
+
+    public void setIsEndPeriod(Boolean isEndPeriod) {
+        this.isEndPeriod = isEndPeriod;
+    }
+
+    public Boolean getIsAbsenStatus() {
+        return isAbsenStatus;
+    }
+
+    public void setIsAbsenStatus(Boolean isAbsenStatus) {
+        this.isAbsenStatus = isAbsenStatus;
     }
     
     
