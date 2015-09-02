@@ -97,14 +97,15 @@
     <view-state id="add_job_jabatan_type_spec"  view="job_jabatan_type_spec_view.xhtml">
     	<transition on="back" to="add_job_jabatan_spesification" />
     	<transition  on="add_new" to="add_new_jabatan_type_spec" />
+    	<transition  on="save" to="doSaveAllData" />
 		<!-- <transition  on="delete" to="doDeleteJabatanSpesification" /> -->
     </view-state>
     <view-state id="add_new_jabatan_type_spec" view="job_jabatan_type_spec_form.xhtml">
     	<on-entry> 
     		<evaluate expression="jobJabatanFormController.initialAddJabatanTypeSpecFlow(flowRequestContext)" />
     	</on-entry>
-    	<!-- <transition on="back" to="add_job_jabatan_spesification" />
-		<transition on="add" to="doAddJabatanSpesification" /> -->
+    	<transition on="back" to="add_job_jabatan_spesification" />
+		<transition on="add" to="doAddJabatanTypeSpec" />
     </view-state>
     
      <action-state id="doAddJabatanDescription">
@@ -133,8 +134,20 @@
     <action-state id="doUpdateListNilaiSpesification">
         <evaluate expression="jobJabatanFormController.doUpdateListNilaiSpesification()"/>        
     </action-state>
+    
+    <action-state id="doAddJabatanTypeSpec">
+        <evaluate expression="jobJabatanFormController.doAddJabatanTypeSpec(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_type_spec"/>
+        <transition on="error" to="add_new_jabatan_type_spec"/>
+    </action-state>
+    
+    <action-state id="doSaveAllData">
+        <evaluate expression="jobJabatanFormController.doSaveAllData(flowRequestContext)"/>        
+        <transition on="success" to="end_detail"/>
+        <transition on="error" to="add_job_jabatan_type_spec"/>
+    </action-state>
 
-    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.businessTravelNo}"/>
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/organisation/job_title_detil.htm?execution=e#{flowScope.jobJabatanModel.id}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/organisation/job_title_view.htm" />
     
 </flow>
