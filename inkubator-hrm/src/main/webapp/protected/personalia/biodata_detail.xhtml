@@ -80,7 +80,8 @@
                                                 <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
-                                                <p:outputLabel  value="#{bioDataDetilController.selectedBioData.city.cityName}" />
+                                                <!-- <p:outputLabel  value="#{bioDataDetilController.selectedBioData.city.cityName}" /> -->
+                                                <p:outputLabel  value="#{bioDataDetilController.selectedBioData.birthplaceText}" />
                                             </p:column>
 
 
@@ -1527,7 +1528,7 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioEducationHistoryViewController.score}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Ijazah" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['educationhistory.certificate']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;" rendered="#{bioDataDetilController.selectedBioEducationHistoryViewController.isDownload}">
                                 <h:form>
                                     <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
@@ -1658,28 +1659,28 @@
                 <!-- END Bio Insurance DIALOG -->
 
                 <!--Bio Contact-->
-                <p:dialog widgetVar="dialogDetailContact" header="Contact Detail" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailContact" header="#{appmsg['bioemergency.contact_detail']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioContactDetailId" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Nama Contact" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsgp['bioaddress.contact_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.contactName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="No. Telepon" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioaddress.phone_no']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.phoneNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Alamat" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.address}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Kota" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['hospital.city_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.city.cityName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Hubungan Keluarga" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_relation']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.familyRelation.relasiName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
@@ -1703,7 +1704,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogConfirmContactId"  columns="3">
-                            <p:outputLabel value="Nama Kontak"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['bioaddress.contact_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{bioDataDetilController.seleBioEmergencyContact.contactName}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -1732,7 +1733,7 @@
                         <h:panelGrid id="panelDialogBioMedicalHistoryConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['bioMedicalHistory.bioMedicalHistory_disease']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{bioDataDetilController.selectedBioMedicalHistory.disease.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{bioDataDetilController.doDeleteBioMedicalHistory()}" update="formBioDetailFormId:tabView:tableBioMedicalHistoryId,:growlBioDetailFormId"
@@ -2092,7 +2093,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="dialogConfirmKeahlian.hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="dialogDetailKeahlian" header="Keahlian" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
+                <p:dialog widgetVar="dialogDetailKeahlian" header="#{appmsg['biodata.skill']}" styleClass="header_small_no_bold" width="400" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogBioKeahlianId" style="width:100%;margin:5px;">
                         <p:row>
@@ -2100,7 +2101,7 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataDetilController.selectedBioKeahlian.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Tingkat Keahlian" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.skill_level']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;">
                                 <p:outputLabel value="#{bioDataDetilController.selectedBioKeahlian.tingkatKeahlian}" styleClass="label_hrm" >
                                     <f:converter converterId="tingkatKeahlianConverter" />
@@ -2132,7 +2133,7 @@
                             </h:panelGrid>
                         </div>
                         <h:panelGrid id="panelDialogSpesifikasiConfirmId"  columns="3">
-                            <p:outputLabel value="Nama Spesifikasi Ability"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appmsg['specAbility.spec_ability_name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
                             <p:outputLabel value="#{bioDataDetilController.selectedDioSpesifikasiAbility.optionAbility}" styleClass="label_hrm"/>
                         </h:panelGrid>
@@ -2356,4 +2357,3 @@
 
     </h:body>
 </html>
-
