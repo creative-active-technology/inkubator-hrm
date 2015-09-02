@@ -391,6 +391,7 @@ public class HRMConstant {
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
     public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
     public static final String VACANCY_ADVERTISEMENT_KODE = "VAC-ADV";
+    public static final String PUBCIL_HOLIDAY_KODE= "LVCO";
 
     public static final String APP_NAME = "Web Destop App";
 

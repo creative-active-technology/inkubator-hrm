@@ -33,16 +33,39 @@
                         <h:outputLabel value="#{appmsg['publicHolidayException.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                         <p:row>
+                        <p:row>
                             <p:column style="width: 39%">
-                                <p:outputLabel for="publicHolidayId" value="#{appmsg['publicHolidayException.publicHolidayException_public']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="leavSchemaId" value="#{appmsg['leavescheme.leave_scheme']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="publicHolidayId" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="leavSchemaId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
 
-                                <p:selectOneMenu id="publicHolidayId" value="#{publicHolidayExceptionFormController.publicHolidayExceptionModel.publicHolidayId}" style="width: 260px;margin-right: 3px" 
+                                <p:selectOneMenu id="leavSchemaId" value="#{publicHolidayExceptionFormController.publicHolidayExceptionModel.leavSchemaId}" style="width: 260px;margin-right: 3px" 
+                                                 required="false" requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_public_should_not_be_empty']}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{publicHolidayExceptionFormController.leavSchema}"/>
+                                    <p:ajax listener="#{publicHolidayExceptionFormController.doChangeLeaveSchema()}" update="publicId"/>
+                                </p:selectOneMenu>
+
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="leavSchemaId"/>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="publicId" value="#{appmsg['holiday.public_leave']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="publicId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+
+                                <p:selectOneMenu id="publicId" value="#{publicHolidayExceptionFormController.publicHolidayExceptionModel.publicHolidayId}" style="width: 260px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_public_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{publicHolidayExceptionFormController.publicHolidays}"/>
@@ -52,10 +75,11 @@
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="publicHolidayId"/>
+                                <p:message for="publicId"/>
                             </p:column>
-                        </p:row>   
-                         <p:row>
+                        </p:row> 
+
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="employeeId" value="#{appmsg['publicHolidayException.publicHolidayException_emp']}" styleClass="label_hrm"/>
                             </p:column>
