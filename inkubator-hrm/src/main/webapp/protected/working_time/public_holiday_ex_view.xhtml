@@ -53,7 +53,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{publicHolidayExceptionViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{publicHolidayExceptionViewController.onDialogReturn}"  update="tablePublicHolidayExceptionId,:growlPublicHolidayExceptionViewlId"/>
                                     </p:commandButton>
-                                    
+
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{publicHolidayExceptionViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -73,28 +73,37 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="publicHoliday.leaveScheme.name"  style="width: 35%">
+                            <p:column sortBy="publicHoliday" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{publicHolidayExceptionData.publicHoliday.code}"/>
+                            </p:column>
+                            <p:column sortBy="publicHoliday.leaveScheme.name"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHolidayException.publicHolidayException_public']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayExceptionData.publicHoliday.leaveScheme.name}"/>
                             </p:column>  
-                            <p:column sortBy="empData.bioData.firstName"  style="width: 50%">
+
+                            <p:column sortBy="empData.bioData.firstName"  style="width: 40%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHolidayException.publicHolidayException_emp']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayExceptionData.empData.bioData.firstName} #{publicHolidayExceptionData.empData.bioData.lastName}"/>
                             </p:column> 
+
+
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{publicHolidayExceptionViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPublicHolidayException.show()">                        
+                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                                 action="#{publicHolidayExceptionViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogDetailPublicHolidayException.show()">                        
                                     <f:setPropertyActionListener value="#{publicHolidayExceptionData}" target="#{publicHolidayExceptionViewController.selectedPublicHolidayException}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{publicHolidayExceptionViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPublicHolidayException.show()">
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{publicHolidayExceptionViewController.doDetail()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmPublicHolidayException.show()">
                                     <f:setPropertyActionListener value="#{publicHolidayExceptionData}" target="#{publicHolidayExceptionViewController.selectedPublicHolidayException}" />
                                 </p:commandButton>
                                 -
@@ -152,6 +161,10 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHolidayException.publicHolidayException_public']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayExceptionViewController.selectedPublicHolidayException.publicHoliday.leaveScheme.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayExceptionViewController.selectedPublicHolidayException.publicHoliday.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHolidayException.publicHolidayException_emp']}" styleClass="label_hrm"/></p:column>

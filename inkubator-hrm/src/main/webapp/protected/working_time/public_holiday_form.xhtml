@@ -32,7 +32,20 @@
                         <h:outputLabel value="#{appmsg['publicHoliday.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                         <h:outputLabel value="#{appmsg['publicHoliday.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">                       
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">    
+                        <p:row>
+                             <p:column style="width: 39%">
+                                <p:outputLabel for="codeId" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                             <p:column  style="width: 70%">
+                                 <p:inputText id="codeId" title="#{appmsg['global.code']}" value="#{publicHolidayFormController.publicHolidayModel.code}" 
+                                              required="true" styleClass="isitext_hrm"  readonly="true"/>
+
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column style="width: 39%">
                                 <p:outputLabel for="nameId" value="#{appmsg['publicHoliday.publicHoliday_leave']}" styleClass="label_hrm"/>
