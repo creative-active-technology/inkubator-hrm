@@ -126,7 +126,6 @@ public class RecruitMppApplyFormController extends BaseController {
     }
 
     public String doSave() {
-    	System.out.println(listMppDetail.size() + " list dari form");
         try {
             String result = StringUtils.EMPTY;
             RecruitMppApply recruitMppApply = getEntityFromViewModel(recruitMppApplyModel);
