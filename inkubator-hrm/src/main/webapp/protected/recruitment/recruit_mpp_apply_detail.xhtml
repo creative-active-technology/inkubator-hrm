@@ -194,7 +194,7 @@
                             <p:commandButton value="#{appmsg['global.edit']}" ajax="true" update="formRecruitMppId,:growlId"
                                              action="#{recruitMppApplyDetailController.doEdit()}" styleClass="isitext_hrm"
                                              style="margin-right: 5px" label="#{appmsg['global.edit']}"
-                                             rendered="#{!recruitMppApplyDetailController.isApproved}" 
+                                             rendered="#{recruitMppApplyDetailController.isWaitingApproval}" 
                                              icon="ui-icon-folder-open" title="#{appmsg['global.edit']}"/>
                             <p:commandButton value="#{appmsg['global.back']}" ajax="true" 
                                              action="#{recruitMppApplyDetailController.doBack()}" styleClass="isitext_hrm"
