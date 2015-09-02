@@ -20,4 +20,6 @@ public interface ApprovalDefinitionService extends IService<ApprovalDefinition> 
     public List<ApprovalDefinition> getByParam(ApprovalDefinitionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalApprovalDefinitionByParam(ApprovalDefinitionSearchParameter searchParameter) throws Exception;
+
+    public void updateStatusAndSms(ApprovalDefinition approvalDefinition) throws Exception;
 }
