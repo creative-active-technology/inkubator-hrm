@@ -9,14 +9,13 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
 import com.inkubator.hrm.web.search.WtPeriodeEmpSearchParameter;
 import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -167,17 +166,26 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     private String doSearchWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
     	StringBuilder query = new StringBuilder();
     	
-    	if(!StringsUtils.equals(searchParameter.getStartPeriod(), null)){
-    		query.append(" WHERE DATE_FORMAT(wtPeriode.from_periode, '%W %M %Y') LIKE :startPeriod ");
+//    	if(!StringsUtils.equals(searchParameter.getStartPeriod(), null)){
+//    		query.append(" WHERE DATE_FORMAT(wtPeriode.from_periode, '%W %M %Y') LIKE :startPeriod ");
+//    	}
+//    	
+//    	if(!StringsUtils.equals(searchParameter.getEndPeriod(), null)){
+//    		query.append(" WHERE DATE_FORMAT(wtPeriode.until_periode, '%W %M %Y') LIKE :endPeriod ");
+//    	}
+//    	
+//    	if(!StringsUtils.equals(searchParameter.getAbsenStatus(), null)){
+//    		query.append(" WHERE wtPeriode.absen LIKE :absenStatus  ");
+//    	}   
+        if(searchParameter.getStartPeriod() != null){
+    		query.append(" WHERE wtPeriode.from_periode = :startPeriod " );
     	}
-    	
-    	if(!StringsUtils.equals(searchParameter.getEndPeriod(), null)){
-    		query.append(" WHERE DATE_FORMAT(wtPeriode.until_periode, '%W %M %Y') LIKE :endPeriod ");
+    	if(searchParameter.getEndPeriod() != null){
+    		query.append(" WHERE wtPeriode.until_periode = :endPeriod " );
     	}
-    	
-    	if(!StringsUtils.equals(searchParameter.getAbsenStatus(), null)){
-    		query.append(" WHERE wtPeriode.absen LIKE :absenStatus  ");
-    	}    	
+    	if(searchParameter.getAbsenStatus() != null){
+    		query.append(" WHERE wtPeriode.absen = :absenStatus " );
+    	}        
     	
     	
     	return query.toString();
@@ -185,13 +193,13 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     
     private Query setValueQueryWtPeriodEmpByParam(Query hbm, WtPeriodeEmpSearchParameter parameter){    	
     	for(String param : hbm.getNamedParameters()){
-    		if(StringsUtils.equals(param, "startPeriod")){
-    			hbm.setParameter("startPeriod", "%" + parameter.getStartPeriod() + "%");
-    		} else if(StringsUtils.equals(param, "endPeriod")){
-    			hbm.setParameter("endPeriod", "%" + parameter.getEndPeriod() + "%");
-    		} else if(StringsUtils.equals(param, "absenStatus")){
+    		if(StringUtils.equals(param, "startPeriod")){
+    			hbm.setParameter("startPeriod", parameter.getStartPeriod());
+    		} else if(StringUtils.equals(param, "endPeriod")){
+    			hbm.setParameter("endPeriod", parameter.getEndPeriod());
+    		} else if(StringUtils.equals(param, "absenStatus")){
     			hbm.setParameter("absenStatus", "%" + parameter.getAbsenStatus() + "%");
-    		} 
+    		}
     	}    	
     	return hbm;
     }
