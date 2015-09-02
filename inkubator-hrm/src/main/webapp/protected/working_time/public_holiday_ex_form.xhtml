@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 60%">
 
-                                <p:selectOneMenu id="publicHolidayId" value="#{publicHolidayExceptionFormController.publicHolidayExceptionModel.publicHolidayId}" style="width: 150px;margin-right: 3px" 
+                                <p:selectOneMenu id="publicHolidayId" value="#{publicHolidayExceptionFormController.publicHolidayExceptionModel.publicHolidayId}" style="width: 260px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_public_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{publicHolidayExceptionFormController.publicHolidays}"/>
@@ -73,7 +73,7 @@
                                                 converter="empDataConverter"
                                                 required="true" 
                                                 requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" size="35" style="width:250px;"></p:autoComplete>
+                                                styleClass="isitext_hrm" size="39" style="width:250px;"></p:autoComplete>
 
 
                             </p:column>
