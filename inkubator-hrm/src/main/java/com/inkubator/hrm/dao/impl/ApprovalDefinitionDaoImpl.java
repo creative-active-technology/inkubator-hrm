@@ -111,7 +111,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(disjunction);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
     @Override
     public Long getTotalDataWithSequenceLowerAndNotId(String approvalName, int sequance, long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -130,6 +130,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.eq("processType", processType));
+        criteria.add(Restrictions.eq("isActive", true));// query bagi approval definisi yang active saja
         criteria.addOrder(order);
         return criteria.list();
     }
@@ -154,9 +155,9 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
-	@Override
-	public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificNameAndSequenceGreater(String name, String processType, String specificName, int sequence) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificNameAndSequenceGreater(String name, String processType, String specificName, int sequence) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.eq("processType", processType));
         criteria.add(Restrictions.eq("specificName", specificName));
@@ -164,16 +165,16 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(Restrictions.gt("sequence", sequence));
         criteria.addOrder(Order.asc("sequence"));
         return criteria.list();
-	}
+    }
 
-	@Override
-	public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificName( String name, String processType, String specificName, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public List<ApprovalDefinition> getAllDataByNameAndProcessTypeAndSpecificName(String name, String processType, String specificName, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.eq("processType", processType));
         criteria.add(Restrictions.eq("specificName", specificName));
         criteria.add(Restrictions.eq("isNoLongerInUse", false));
         criteria.addOrder(order);
         return criteria.list();
-	}
+    }
 }
