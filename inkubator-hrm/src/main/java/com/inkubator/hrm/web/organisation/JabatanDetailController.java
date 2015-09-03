@@ -76,8 +76,8 @@ public class JabatanDetailController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            String userId = FacesUtil.getRequestParameter("execution");
-            selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(userId.substring(1)));
+            String jabatanId = FacesUtil.getRequestParameter("execution");
+            selectedJabatan = jabatanService.getByIdWithJobDeskripsi(Long.parseLong(jabatanId.substring(1)));
             jabatanDeskripsis = new ArrayList<>(selectedJabatan.getJabatanDeskripsis());
             listJabatanSpesifikasi = new ArrayList<>(selectedJabatan.getJabatanSpesifikasis());
 

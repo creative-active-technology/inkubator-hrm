@@ -76,10 +76,11 @@
                         	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
                                              styleClass="label_button"/>
                             
-                            
-                             <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
-	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                    					 ajax="true" action="next" update="jobTitleFormId"/>
+                              <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="jobTitleFormId,:growlUserFormId"
+                                         action="save" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                                         
                             
                         </div>
 

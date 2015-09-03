@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -240,6 +242,18 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
 		disjunction.add(Restrictions.like("name", param, MatchMode.ANYWHERE));
 		criteria.add(disjunction);
 		return criteria.list();
+	}
+
+	@Override
+	public Jabatan getJabatanByCode(String code) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+	     criteria.add(Restrictions.eq("code", code));
+	     criteria.setFetchMode("costCenter", FetchMode.JOIN);
+	     criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+	     criteria.setFetchMode("department", FetchMode.JOIN);
+	     criteria.setFetchMode("unitKerja", FetchMode.JOIN);
+	     criteria.setFetchMode("jabatan", FetchMode.JOIN);
+	     return (Jabatan) criteria.uniqueResult();
 	}
 
 }
