@@ -19,7 +19,7 @@
         <security:intercept-url pattern="/protected/organisation/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/payroll/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/personalia/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
-        <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
         <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:session-management>
