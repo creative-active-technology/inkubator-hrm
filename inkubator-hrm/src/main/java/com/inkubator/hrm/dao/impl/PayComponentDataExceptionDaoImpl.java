@@ -124,4 +124,14 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
 		criteria.add(Restrictions.eq("resetAfterMonth", isReset));
 		return criteria.list();
 	}
+
+	@Override
+	public Long getDuplicateEmpData(Long empDataId, Long paySalaryComponentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }
