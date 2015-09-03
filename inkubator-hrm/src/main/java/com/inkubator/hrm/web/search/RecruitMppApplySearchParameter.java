@@ -14,7 +14,9 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class RecruitMppApplySearchParameter extends SearchParameter {
     private String recruitMppApplyName;
-    private String recruitMppApplyCode;   
+    private String recruitMppApplyCode;
+    private String requester;
+    private String approver;    
 
     public String getRecruitMppApplyName() {
          if (StringUtils.equalsIgnoreCase(getKeyParam(), "recruitMppApplyName")) {
@@ -41,5 +43,33 @@ public class RecruitMppApplySearchParameter extends SearchParameter {
     public void setRecruitMppApplyCode(String recruitMppApplyCode) {
         this.recruitMppApplyCode = recruitMppApplyCode;
     }
+
+	public String getRequester() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "requester")) {
+			requester = getParameter();
+        } else {
+        	requester = null;
+        }
+        return requester;
+	}
+
+	public void setRequester(String requester) {
+		this.requester = requester;
+	}
+
+	public String getApprover() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "approver")) {
+			approver = getParameter();
+        } else {
+        	approver = null;
+        }
+		return approver;
+	}
+
+	public void setApprover(String approver) {
+		this.approver = approver;
+	}
+    
+    
     
 }

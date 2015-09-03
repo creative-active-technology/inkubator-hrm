@@ -70,10 +70,12 @@
 	                                <p:outputLabel for="skillTypeId" value="#{appmsg['biodata.list_of_skill']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	 <p:pickList value="#{jobJabatanFormController.dualListModelOrgTypeOfSpecList}" var="typeSpecList" itemValue="#{typeSpecList}" converter="orgTypeOfSpecListConverter" id="picklistTypeSpecListId"
+	                            	 <p:pickList  value="#{jobJabatanFormController.dualListModelOrgTypeOfSpecList}" var="typeSpecList" itemValue="#{typeSpecList}" converter="orgTypeOfSpecListConverter" id="picklistTypeSpecListId"
                                         required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['biodata.list_of_skill']}" styleClass="isitext_hrm"
                                         itemLabel="#{typeSpecList.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}"/>
+                                        removeLabel="#{appmsg['global.remove']}">
+                                        <p:ajax event="transfer" listener="#{jobJabatanFormController.doSetListIdTypeSpecListToModel()}" />
+                                     </p:pickList>
                             		<p:message for="picklistTypeSpecListId" />
 	                            </p:column>
 	                    </p:row>	

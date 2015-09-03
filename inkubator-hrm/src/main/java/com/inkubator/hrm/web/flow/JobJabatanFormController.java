@@ -15,11 +15,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hamcrest.Matchers;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.BusinessTravel;
@@ -51,6 +54,7 @@ import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
+import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.SpecificationAbility;
 import com.inkubator.hrm.entity.UnitKerja;
@@ -356,6 +360,71 @@ public class JobJabatanFormController implements Serializable {
 		
 		context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 	}
+	 
+	 public String doSaveAllData(RequestContext context){
+		 String message = "error";
+		 try{
+			 
+			 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+			 jabatanService.saveDataJabatan(jobJabatanModel);
+			 //cleanAndExit();
+			 
+			 //Set Id jabatan yang sudah di simpan ke jabatanModel agar ketika di redirect ke detail sudah didapatkan id nya
+			 Jabatan jabatan = jabatanService.getJabatanByCode(jobJabatanModel.getKodeJabatan());
+			 jobJabatanModel = new JobJabatanModel();
+			 jobJabatanModel.setId(jabatan.getId());
+			 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+			 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			 message = "success";
+			 
+		 } catch (BussinessException ex) { 
+	         MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+	     } catch(Exception ex){
+	    	 LOGGER.error("Error", ex);
+		 }
+		 
+		 return message;
+	 }
+	 
+	 @PreDestroy
+	 public void cleanAndExit() {
+		 
+		 departmentService = null;
+		 unitKerjaService = null;
+		 costCenterService = null;
+		 golonganJabatanService = null;
+		 jabatanService = null;
+		 klasifikasiKerjaService = null;
+		 isDisable = null;
+		 isEdit = null;
+		 jobJabatanModel = null;
+		 untiKerjas = null;
+		 golJabatans = null;
+		 departments = null;
+		 posBiayas = null;
+		 jabatanAtasans = null;
+        
+         dualListModelEducationLevel = null;
+         dualListModelFaculty = null;
+         dualListModelKlasifikasiKerja = null;
+         dualListModelMajor = null;
+         dualListModelOccupationType = null;
+         dualListModelOrgTypeOfSpecList = null;
+         
+         departments = null;
+     	 untiKerjas = null;
+     	 golJabatans = null;
+     	 posBiayas = null;
+     	 jabatanAtasans = null;
+     	 specAbilities = null;
+     	 optionAbilities = null;
+     	 orgTypeofSpecs = null;
+     	 
+     	 selectedIndexJabatanDeskripsi = null;
+     	 selectedIndexJabatanSpesifikasi = null;
+    	 selectedIndexJabatanTypeSpec = null;
+		 
+	 }
 	
 	 /* Start method JabatanEdukasi */
 	 
@@ -743,10 +812,69 @@ public class JobJabatanFormController implements Serializable {
 			 dualListModelOrgTypeOfSpecList.setSource(listSourceTypeOfSpecList);
 			 dualListModelOrgTypeOfSpecList.setTarget(new ArrayList<OrgTypeOfSpecList>());
 			 
-			 context.getFlowScope().put("optionAbilities", optionAbilities);
 		 }catch(Exception e){
 			 
 		 }
+	 }
+	 
+	 public void doSetListIdTypeSpecListToModel(){
+		 RequestContext context = RequestContextHolder.getRequestContext();
+		 List<OrgTypeOfSpecList> listTarget = dualListModelOrgTypeOfSpecList.getTarget();
+		 List<Long> listIdTarget = Lambda.extract(listTarget, Lambda.on(OrgTypeOfSpecList.class).getId());
+		 OrgTypeOfSpecJabatanModel orgTypeOfSpecJabatanModel = (OrgTypeOfSpecJabatanModel) context.getFlowScope().get("orgTypeOfSpecJabatanModel");
+		 orgTypeOfSpecJabatanModel.setListIdOrgTypeOfSpecList(listIdTarget);
+	 }
+	 
+	 public String doAddJabatanTypeSpec(RequestContext context){
+		 
+		 OrgTypeOfSpecJabatanModel orgTypeOfSpecJabatanModel = (OrgTypeOfSpecJabatanModel) context.getFlowScope().get("orgTypeOfSpecJabatanModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatan = jobJabatanModel.getListOrgTypeOfSpecJabatan();
+		 
+		 //Filter jika sudah ada, munculkan message error
+		 if(!listOrgTypeOfSpecJabatan.isEmpty()){
+			 
+			 List<OrgTypeOfSpecList> listOrgTypeOfSpecList = Lambda.extract(listOrgTypeOfSpecJabatan, Lambda.on(OrgTypeOfSpecJabatan.class).getOrgTypeOfSpecList());
+			 List<Long> listSelectedId = orgTypeOfSpecJabatanModel.getListIdOrgTypeOfSpecList();
+			 
+			 for(Long idTypeSpec : listSelectedId){
+				 if(Lambda.exists(listOrgTypeOfSpecList, Lambda.having(Lambda.on(OrgTypeOfSpecList.class).getId(), Matchers.equalTo(idTypeSpec)))){
+					 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "biodata.one_or_more_skill_type_already_exist", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					 return "error";
+				 }
+			 }
+			 
+		 }
+		 
+		 List<OrgTypeOfSpecJabatan> listSelectedOrgTypeOfSpecJabatan = convertListOrgTypeOfSpecListIdToListOrgTypeOfSpecJabatan(orgTypeOfSpecJabatanModel.getListIdOrgTypeOfSpecList());
+		 
+		 listOrgTypeOfSpecJabatan.addAll(listSelectedOrgTypeOfSpecJabatan);
+		 jobJabatanModel.setListOrgTypeOfSpecJabatan(listOrgTypeOfSpecJabatan);
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+		 
+		 //reset dualListModelOrgTypeOfSpecList
+		 dualListModelOrgTypeOfSpecList.setTarget(new ArrayList<OrgTypeOfSpecList>());
+		 dualListModelOrgTypeOfSpecList.setSource(new ArrayList<OrgTypeOfSpecList>());
+		 return "success";
+	 } 
+	 
+	 public List<OrgTypeOfSpecJabatan> convertListOrgTypeOfSpecListIdToListOrgTypeOfSpecJabatan(List<Long> listOrgTypeSpecListId){
+		 List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatan = new ArrayList<OrgTypeOfSpecJabatan>();
+		 try {
+			 
+			 for (Long idSpecList : listOrgTypeSpecListId){
+				 OrgTypeOfSpecJabatan specJabatan = new OrgTypeOfSpecJabatan();
+				 OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListService.getEntiyByPK(idSpecList);
+				 specJabatan.setOrgTypeOfSpecList(orgTypeOfSpecList);
+				 listOrgTypeOfSpecJabatan.add(specJabatan);
+			 }
+			 
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+			return null;
+		}
+		 
+		 return listOrgTypeOfSpecJabatan;
 	 }
 	 
 	 /* End Method JabatanTypeSpec */

@@ -299,7 +299,7 @@
                                         - 
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                                          style="font-size: 10px!important" update=":panelDialogBioEmploymentHistoryConfirmId" 
-                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioEmploymentHistory').show()">
+                                                         action="#{empDataDetilController.doSelectBioEmploymentHistory()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmBioEmploymentHistory').show()">
                                             <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
                                         </p:commandButton>
                                         -

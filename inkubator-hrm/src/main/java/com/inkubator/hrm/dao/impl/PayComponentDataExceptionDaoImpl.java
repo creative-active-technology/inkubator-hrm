@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.web.model.PayComponentDataExceptionModel;
 import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -115,4 +117,11 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
         criteria.add(Restrictions.eq("emp.id", id));
         return criteria.list();
     }
+
+	@Override
+	public List<PayComponentDataException> getAllDataByReset(Boolean isReset) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("resetAfterMonth", isReset));
+		return criteria.list();
+	}
 }

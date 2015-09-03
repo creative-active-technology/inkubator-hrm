@@ -637,7 +637,6 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		
 		List<BusinessTravelViewModel> list = businessTravelDao.getAllActivityByParam(parameter, first, pageSize, orderable);
 		for(BusinessTravelViewModel model : list){	
-			System.out.println(model.getDestination() + "  " + model.getApprovalStatus());
 			if(model.getApprovalStatus().equals(HRMConstant.APPROVAL_STATUS_APPROVED)){
 				/** jika sudah di approved, maka di cek status perjalanan dinasnya, 
 				 *  apakah "menunggu dilaksanakan", "sedang dilaksanakan", "sudah dilaksanakan" */

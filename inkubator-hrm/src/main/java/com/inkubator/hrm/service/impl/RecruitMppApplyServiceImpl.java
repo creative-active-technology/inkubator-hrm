@@ -23,7 +23,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
-import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFile;
@@ -38,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ch.lambdaj.Lambda;
 import ch.lambdaj.group.Group;
 
+import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -55,15 +55,14 @@ import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
-import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RecruitMppApplyService;
+import com.inkubator.hrm.web.model.MppApplyHistoryViewModel;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -581,7 +580,6 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-        System.out.println(appActivity.getPendingData() + " pending data approve");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
@@ -711,6 +709,28 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus) throws Exception {
 		return recruitMppApplyDao.getListWithDetailByApprovalStatus(approvalStatus);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<MppApplyHistoryViewModel> getAllDataMppApplyHistoryByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		List<MppApplyHistoryViewModel> listModel = recruitMppApplyDao.getAllDataMppApplyHistoryByParam(parameter, firstResult, maxResults, orderable);
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+		for(MppApplyHistoryViewModel model : listModel){
+			if(Objects.equal(model.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)){
+				RecruitMppApply recruitMppApply = gson.fromJson(model.getJsonData(), RecruitMppApply.class);
+				model.setMppApplyName(recruitMppApply.getRecruitMppApplyName());
+				model.setMppApplyPeriodStart(recruitMppApply.getRecruitMppPeriod().getPeriodeStart());
+				model.setMppApplyPeriodEnd(recruitMppApply.getRecruitMppPeriod().getPeriodeEnd());
+			}
+		}
+		return listModel;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalMppApplyHistoryByParam(RecruitMppApplySearchParameter parameter) throws Exception {
+		return recruitMppApplyDao.getTotalMppApplyHistoryByParam(parameter);
 	}
 
 }
