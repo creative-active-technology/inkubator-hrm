@@ -58,7 +58,7 @@
     </security:authentication-manager>
     <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
         
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
                 <value>messages</value>
