@@ -7,7 +7,9 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PayComponentDataException;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -28,5 +30,5 @@ public interface PayComponentDataExceptionDao extends IDAO<PayComponentDataExcep
     
     public List<PayComponentDataException>getAllByEmpId(Long id);
     
-
+    public Long getDuplicateEmpData(Long empDataId, Long paySalaryComponentId);
 }
