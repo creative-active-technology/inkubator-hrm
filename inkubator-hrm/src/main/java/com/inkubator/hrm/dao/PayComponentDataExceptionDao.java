@@ -31,4 +31,7 @@ public interface PayComponentDataExceptionDao extends IDAO<PayComponentDataExcep
     public List<PayComponentDataException>getAllByEmpId(Long id);
     
     public Long getDuplicateEmpData(Long empDataId, Long paySalaryComponentId);
+    
+    public List<PayComponentDataException> getAllDataByReset(Boolean isReset);    
+
 }
