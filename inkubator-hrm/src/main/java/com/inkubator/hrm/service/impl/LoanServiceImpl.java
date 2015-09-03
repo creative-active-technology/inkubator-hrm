@@ -389,15 +389,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         LoanSchema loanSchema = loanSchemaDao.getEntiyByPK(entity.getLoanSchema().getId());
 
-        //Set Kodefikasi pada nomor
-        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
-        Long currentMaxLoanId = loanDao.getCurrentMaxId();
-        if (currentMaxLoanId == null) {
-            currentMaxLoanId = 0L;
-        }
-
-        entity.setNomor(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-
         entity.setEmpData(empData);
         entity.setLoanSchema(loanSchema);
 
@@ -417,10 +408,23 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
                 lpd.setCreatedOn(createdOn);
             }
             entity.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
+            
+            //Set Kodefikasi pada nomor
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+            Long currentMaxLoanId = loanDao.getCurrentMaxId();
+            if (currentMaxLoanId == null) {
+                currentMaxLoanId = 0L;
+            }
+            entity.setNomor(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+            
             loanDao.save(entity);
 
             message = "success_without_approval";
         } else {
+        	//Set Kodefikasi (pattern) pada nomor
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_KODE);
+            entity.setNomor(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            
             //parsing object to json and save to approval activity 
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             approvalActivity.setPendingData(gson.toJson(entity));

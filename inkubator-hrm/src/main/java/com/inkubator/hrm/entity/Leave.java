@@ -96,7 +96,7 @@ public class Leave implements Serializable {
         this.version = version;
     } 
     
-    @Column(name = "code", unique = true, nullable = false, length = 4)
+    @Column(name = "code", unique = true, nullable = false, length = 60)
     public String getCode() {
 		return code;
 	}
