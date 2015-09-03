@@ -84,8 +84,7 @@ public class LoanCanceledFormController extends BaseController {
             
             TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
             if(!ObjectUtils.equals(transactionCodefication, null)){
-            	Long currentMaxLoanCancelledId = loanCanceledService.getCurrentMaxId();
-                loanCanceledModel.setCode((KodefikasiUtil.getKodefikasi(((int) currentMaxLoanCancelledId.longValue()), transactionCodefication.getCode())));
+                loanCanceledModel.setCode((KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode())));
             }
             
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
