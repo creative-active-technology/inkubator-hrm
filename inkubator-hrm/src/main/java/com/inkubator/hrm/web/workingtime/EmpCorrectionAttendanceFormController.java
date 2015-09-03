@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.primefaces.event.RowEditEvent;
@@ -20,12 +21,12 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempProcessReadFinger;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
 import com.inkubator.hrm.entity.WtGroupWorking;
@@ -35,11 +36,13 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TempProcessReadFingerService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.hrm.service.WtGroupWorkingService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.service.WtWorkingHourService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.EmpCorrectionAttendanceDetailModel;
 import com.inkubator.hrm.web.model.EmpCorrectionAttendanceModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -79,6 +82,8 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     private WtGroupWorkingService wtGroupWorkingService;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
 
     @PreDestroy
     public void cleanAndExit() {
@@ -96,6 +101,7 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
         wtGroupWorkingService = null;
         tempProcessReadFingerService = null;
         wtPeriodeService = null;
+        transactionCodeficationService = null;
     }
     
     @PostConstruct
@@ -106,7 +112,6 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
             //initial
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             isRevised = Boolean.FALSE;
-            model.setRequestCode(HRMConstant.EMP_CORRECTION_ATTENDANCE_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
             model.setPeriod(wtPeriodeService.getEntityByAbsentTypeActive());
             model.setListWorkingHours(wtWorkingHourService.getAllData());
 
@@ -120,9 +125,17 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
                 askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
                         currentActivity.getSequence() - 1);
 
-            } else if (!isAdministator) { //jika bukan administrator, langsung di set empData berdasarkan yang login
-                model.setEmpData(HrmUserInfoUtil.getEmpData());
-                this.onChangeEmployee();
+            } else {
+            	//set kodefikasi nomor
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.EMP_CORRECTION_ATTENDANCE_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setRequestCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
+            	
+            	if (!isAdministator) { //jika bukan administrator, langsung di set empData berdasarkan yang login
+            		model.setEmpData(HrmUserInfoUtil.getEmpData());
+            		this.onChangeEmployee();
+            	}
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -412,5 +425,13 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
 	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
 		this.wtPeriodeService = wtPeriodeService;
 	}
-    
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}    
+	
 }

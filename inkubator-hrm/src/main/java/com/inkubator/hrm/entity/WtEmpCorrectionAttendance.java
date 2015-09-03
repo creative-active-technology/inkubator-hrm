@@ -114,7 +114,7 @@ public class WtEmpCorrectionAttendance implements Serializable {
 		this.requestDate = requestDate;
 	}
 
-	@Column(name = "request_code", length = 45, unique = true, nullable = false)
+	@Column(name = "request_code", length = 60, unique = true, nullable = false)
 	public String getRequestCode() {
 		return requestCode;
 	}

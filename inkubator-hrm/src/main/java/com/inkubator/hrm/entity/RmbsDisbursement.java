@@ -64,7 +64,7 @@ public class RmbsDisbursement implements java.io.Serializable {
         this.version = version;
     }
     
-    @Column(name = "code", unique = true, nullable = false, length = 45)
+    @Column(name = "code", unique = true, nullable = false, length = 60)
 	public String getCode() {
 		return code;
 	}

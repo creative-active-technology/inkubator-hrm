@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.primefaces.event.FileUploadEvent;
@@ -24,7 +25,6 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -36,6 +36,7 @@ import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
 import com.inkubator.hrm.entity.RmbsType;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.CurrencyService;
@@ -43,7 +44,9 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.RmbsApplicationModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -88,6 +91,8 @@ public class RmbsApplicationFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
 
     @PostConstruct
     @Override
@@ -99,7 +104,6 @@ public class RmbsApplicationFormController extends BaseController {
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             isRevised = Boolean.FALSE;
             model = new RmbsApplicationModel();
-            model.setCode(HRMConstant.REIMBURSEMENT_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
 
             //di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
             String appActivityId = FacesUtil.getRequestParameter("activity");
@@ -111,9 +115,17 @@ public class RmbsApplicationFormController extends BaseController {
                 askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
                         currentActivity.getSequence() - 1);
 
-            } else if (!isAdministator) { //jika bukan administrator, langsung di set empData berdasarkan yang login
-                model.setEmpData(HrmUserInfoUtil.getEmpData());
-                this.onChangeEmployee();
+            } else {
+            	//set kodefikasi nomor
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.REIMBURSEMENT_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
+            	
+            	if (!isAdministator) { //jika bukan administrator, langsung di set empData berdasarkan yang login
+            		model.setEmpData(HrmUserInfoUtil.getEmpData());
+            		this.onChangeEmployee();
+            	}
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -141,6 +153,7 @@ public class RmbsApplicationFormController extends BaseController {
         currentActivity = null;
         isAdministator = null;
         listApprover = null;
+        transactionCodeficationService = null;
     }
 
     public String doBack() {
@@ -472,4 +485,12 @@ public class RmbsApplicationFormController extends BaseController {
         this.listApprover = listApprover;
     }
 
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
+    
 }

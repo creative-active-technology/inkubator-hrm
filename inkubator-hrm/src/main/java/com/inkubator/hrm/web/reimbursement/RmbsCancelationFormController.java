@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
@@ -33,6 +34,7 @@ import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
 import com.inkubator.hrm.entity.RmbsSchemaListOfType;
 import com.inkubator.hrm.entity.RmbsSchemaListOfTypeId;
 import com.inkubator.hrm.entity.RmbsType;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.CurrencyService;
@@ -42,7 +44,9 @@ import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsSchemaListOfEmpService;
 import com.inkubator.hrm.service.RmbsSchemaListOfTypeService;
 import com.inkubator.hrm.service.RmbsTypeService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.RmbsCancelationModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -84,6 +88,8 @@ public class RmbsCancelationFormController extends BaseController {
     private CurrencyService currencyService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
 
     @PostConstruct
     @Override
@@ -91,6 +97,12 @@ public class RmbsCancelationFormController extends BaseController {
         try {
             super.initialization();
             model = new RmbsCancelationModel();
+            
+            //set kodefikasi nomor
+        	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.REIMBURSEMENT_CANCEL_KODE);
+        	if(!ObjectUtils.equals(transactionCodefication, null)){
+        		model.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+        	}
             
             isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             if(!isAdministator){
@@ -121,6 +133,7 @@ public class RmbsCancelationFormController extends BaseController {
     	listActivity = null;
     	isAdministator = null;
     	hrmUserService = null;
+    	transactionCodeficationService = null;
     }   
 
     public String doBack() {
@@ -348,5 +361,13 @@ public class RmbsCancelationFormController extends BaseController {
 	public void setHrmUserService(HrmUserService hrmUserService) {
 		this.hrmUserService = hrmUserService;
 	}
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}	
 	
 }
