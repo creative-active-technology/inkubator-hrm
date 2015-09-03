@@ -99,7 +99,13 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 	protected ApprovalActivity checkApprovalProcess(List<ApprovalDefinition> listAppDef, String requestByEmployee) throws Exception {		
 		
 		ApprovalActivity appActivity = null;
-		
+		System.out.println(UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE));
+		System.out.println(listAppDef.isEmpty());
+		if(!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()){ 
+			System.out.println("ssssssssssssssssssss");
+		} else {
+			System.out.println("fffffffffffffffff");
+		}
 		/** Lakukan proses pengecekan approval process hanya jika user yg input bukan ADMINISTRATOR_ROLE dan memiliki list approval definition */
 		if(!UserInfoUtil.hasRole(HRMConstant.ADMINISTRATOR_ROLE) && !listAppDef.isEmpty()){ 
 			

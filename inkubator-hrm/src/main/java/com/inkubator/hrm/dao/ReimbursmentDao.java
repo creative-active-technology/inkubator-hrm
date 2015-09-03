@@ -35,4 +35,6 @@ public interface ReimbursmentDao extends IDAO<Reimbursment>{
     public Reimbursment getEntityByReimbursmentNoWithDetail(String reimburmentNo);
 
 	public List<Reimbursment> getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(Long empDataid, Long reimbursmentSchemaId, Date fromPeriode, Date untilPeriode);
+
+	public Long getCurrentMaxId();
 }

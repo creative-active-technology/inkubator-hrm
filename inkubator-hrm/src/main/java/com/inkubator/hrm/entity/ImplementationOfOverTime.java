@@ -112,7 +112,7 @@ public class ImplementationOfOverTime implements java.io.Serializable {
         this.wtOverTime = wtOverTime;
     }
     
-    @Column(name="code", nullable=false, length=45)
+    @Column(name="code", nullable=false, length=60)
     public String getCode() {
         return this.code;
     }
