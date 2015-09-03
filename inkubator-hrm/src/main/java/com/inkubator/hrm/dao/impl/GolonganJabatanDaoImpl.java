@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.web.search.GolonganJabatanSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -86,5 +88,14 @@ public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements
         criteria.addOrder(Order.asc("code"));
         return criteria.list();
     }
+
+	@Override
+	public GolonganJabatan getEntityWithDetailById(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (GolonganJabatan) criteria.uniqueResult();
+	}
 
 }

@@ -23,11 +23,13 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.DepartmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -572,5 +574,11 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 
         return diagramModel;
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<Department> getAllWithSpecificCompany() throws Exception {
+		return departmentDao.getAllWithSpecificCompany();
+	}
 
 }
