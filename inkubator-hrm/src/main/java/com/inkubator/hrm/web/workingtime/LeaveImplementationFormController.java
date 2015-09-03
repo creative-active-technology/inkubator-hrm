@@ -11,21 +11,24 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.service.LeaveImplementationService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.LeaveImplementationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -48,6 +51,8 @@ public class LeaveImplementationFormController extends BaseController {
     private LeaveDistributionService leaveDistributionService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    TransactionCodeficationService transactionCodeficationService;
 
     @PostConstruct
     @Override
@@ -67,7 +72,10 @@ public class LeaveImplementationFormController extends BaseController {
                     isUpdate = Boolean.TRUE;
                 }
             }else{
-            	model.setNumberFilling(HRMConstant.LEAVE_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LEAVE_CODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setNumberFilling(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -82,6 +90,7 @@ public class LeaveImplementationFormController extends BaseController {
         leaveImplementationService = null;
         leaveDistributionService = null;
         empDataService = null;
+        transactionCodeficationService = null;
     }
 
 	public LeaveImplementationModel getModel() {
@@ -106,6 +115,14 @@ public class LeaveImplementationFormController extends BaseController {
 
 	public void setLeaves(List<Leave> leaves) {
 		this.leaves = leaves;
+	}
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
 	}
 
 	public void setLeaveImplementationService(
