@@ -4,8 +4,27 @@
  */
 package com.inkubator.hrm.web.loan;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
+
 import ch.lambdaj.Lambda;
-import com.google.common.collect.ImmutableSet;
+
 import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
@@ -20,6 +39,7 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfType;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.ApprovalDefinitionLoanService;
@@ -30,27 +50,13 @@ import com.inkubator.hrm.service.LoanNewSchemaListOfEmpService;
 import com.inkubator.hrm.service.LoanNewSchemaListOfTypeService;
 import com.inkubator.hrm.service.LoanNewSchemaService;
 import com.inkubator.hrm.service.LoanNewTypeService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.LoanApplicationFormModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import javax.xml.crypto.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
 
 /**
  *
@@ -78,7 +84,9 @@ public class LoanApplicationFormController extends BaseController {
     private ApprovalDefinitionLoanService approvalDefinitionLoanService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
-
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
+    
     private Boolean isAdmin;
     private Boolean isRevised;
 
@@ -103,7 +111,11 @@ public class LoanApplicationFormController extends BaseController {
         model.setRangeFirstInstallmentToDisbursement(1);
         model.setListLoanNewApplicationInstallments(new ArrayList<LoanNewApplicationInstallment>());
         model.setListApprover(new ArrayList<EmpData>());
-        model.setNomor(HRMConstant.LOAN + "-" + RandomNumberUtil.getRandomNumber(9));
+        //set kodefikasi nomor
+    	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN);
+    	if(!ObjectUtils.equals(transactionCodefication, null)){
+    		model.setNomor(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+    	}
         model.setRangeFirstInstallmentToDisbursement(1);
         try {
 
@@ -153,7 +165,8 @@ public class LoanApplicationFormController extends BaseController {
         loanNewTypeId = null;
         subsidiType = null;
         approvalDefId = null;
-        isAdmin = null;        
+        isAdmin = null;    
+        transactionCodeficationService = null;
     }
 
     public String doApply() {
@@ -701,5 +714,13 @@ public class LoanApplicationFormController extends BaseController {
     public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
         this.approvalActivityService = approvalActivityService;
     }
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
 
 }

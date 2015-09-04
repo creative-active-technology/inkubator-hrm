@@ -778,7 +778,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
     private String generateCancelationLoanNumber() {
         /**
-         * generate cancelation number form codification, from reimbursement
+         * generate cancelation number form codification, from loan
          * module
          */
         TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);

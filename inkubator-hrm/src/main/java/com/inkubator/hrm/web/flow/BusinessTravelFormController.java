@@ -87,6 +87,8 @@ public class BusinessTravelFormController implements Serializable{
 			//binding value to model
 			Boolean isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
 			BusinessTravelModel model = new BusinessTravelModel();
+			model.setIsAdministator(isAdministator);
+			model.setIsRevised(Boolean.FALSE);
 			
 			Long id = context.getFlowScope().getLong("id");	
 			Long appActivityId = context.getFlowScope().getLong("activity");
@@ -200,6 +202,10 @@ public class BusinessTravelFormController implements Serializable{
 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 				}else if (StringUtils.equals(message, "success_without_approval")) {
 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					
+					//set id to modelFlow
+					model.setId(businessTravel.getId());
+					context.getFlowScope().put("businessTravelModel", model);
 				}
 			} else {
 				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
@@ -210,6 +216,7 @@ public class BusinessTravelFormController implements Serializable{
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
+		
 		
 		return message;
 	}
