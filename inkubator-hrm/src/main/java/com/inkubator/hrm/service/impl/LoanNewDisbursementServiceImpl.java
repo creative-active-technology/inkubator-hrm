@@ -253,7 +253,7 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
     }
     
     private String generateLoanDisbursementNumber(){
-		/** generate number form codification, from reimbursement module */
+		/** generate number form codification, from loan module */
 		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_DISBURSEMENT_KODE);
         Long currentMaxId = loanNewDisbursementDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -28,11 +28,14 @@ import com.inkubator.hrm.entity.RecruitAdvertisementMedia;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RecruitAdvertisementMediaService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.VacancyAdvertisementDetailModel;
 import com.inkubator.hrm.web.model.VacancyAdvertisementModel;
 import com.inkubator.webcore.util.FacesUtil;
@@ -56,6 +59,8 @@ public class VacancyAdvertisementFormController implements Serializable {
 	private RecruitHireApplyService recruitHireApplyService;
 	@Autowired
 	private ApprovalActivityService approvalActivityService;
+	@Autowired
+	private TransactionCodeficationService transactionCodeficationService;
 	
 	public void initialProcessFlow(RequestContext context){
 		try {			
@@ -88,7 +93,11 @@ public class VacancyAdvertisementFormController implements Serializable {
 			} else {
 				//default value
 				model = new VacancyAdvertisementModel();
-				model.setVacancyAdvCode(HRMConstant.VACANCY_ADVERTISEMENT_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				//set kodefikasi nomor
+		    	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.VACANCY_ADVERTISEMENT_KODE);
+		    	if(!ObjectUtils.equals(transactionCodefication, null)){
+		    		model.setVacancyAdvCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+		    	}
 				List<VacancyAdvertisementDetailModel> listAdvertisementDetail = new ArrayList<VacancyAdvertisementDetailModel>();
 				model.setListAdvertisementDetail(listAdvertisementDetail);
 				
