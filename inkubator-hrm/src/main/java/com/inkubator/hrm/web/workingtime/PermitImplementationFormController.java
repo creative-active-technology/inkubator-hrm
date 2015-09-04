@@ -3,6 +3,9 @@ package com.inkubator.hrm.web.workingtime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -11,34 +14,32 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 import ch.lambdaj.Lambda;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.service.PermitImplementationService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.PermitImplementationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -57,6 +58,8 @@ public class PermitImplementationFormController extends BaseController {
     private PermitDistributionService permitDistributionService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
     private UploadedFile documentFile;
     @ManagedProperty(value = "#{uploadFilesUtil}")
     private UploadFilesUtil uploadFilesUtil;
@@ -72,7 +75,6 @@ public class PermitImplementationFormController extends BaseController {
             model = new PermitImplementationModel();
             isRequiredAttachment = Boolean.TRUE;
             String param = FacesUtil.getRequestParameter("execution");
-            model.setNumberFilling(HRMConstant.PERMIT_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
             isAdmin = Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             
             if (!isAdmin) { //jika bukan administrator, langsung di set empData berdasarkan yang login
@@ -94,6 +96,11 @@ public class PermitImplementationFormController extends BaseController {
                         isRequiredAttachment = Boolean.FALSE;
                     }
                 }
+            } else {
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setNumberFilling(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -111,6 +118,7 @@ public class PermitImplementationFormController extends BaseController {
         documentFile = null;
         isRequiredAttachment = null;
         isAdmin = null;
+        transactionCodeficationService = null;
     }
 
     public PermitImplementationModel getModel() {
@@ -147,7 +155,15 @@ public class PermitImplementationFormController extends BaseController {
         this.permits = permits;
     }
 
-    public void setPermitImplementationService(
+    public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
+
+	public void setPermitImplementationService(
             PermitImplementationService permitImplementationService) {
         this.permitImplementationService = permitImplementationService;
     }

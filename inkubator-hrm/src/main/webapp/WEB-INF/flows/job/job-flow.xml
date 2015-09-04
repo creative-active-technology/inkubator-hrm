@@ -71,7 +71,8 @@
 		</transition>
 		<transition  on="add_new" to="add_new_jabatan_desc" />
 		<transition  on="delete" to="doDeleteJabatanDescription" />
-		<transition on="next" to="add_job_jabatan_spesification" />
+		<!-- <transition on="next" to="add_job_jabatan_spesification" /> -->
+		<transition on="next" to="doCheckIsListJabatanDescriptionEmpty" />
     	<transition on="end" to="end"/>
     </view-state>
     <view-state id="add_new_jabatan_desc" view="job_jabatan_description_form.xhtml">
@@ -85,7 +86,8 @@
     	<transition on="back" to="add_job_jabatan_description" />
     	<transition  on="add_new" to="add_new_jabatan_spec" />
 		<transition  on="delete" to="doDeleteJabatanSpesification" />
-		<transition on="next" to="add_job_jabatan_type_spec" />
+		<!-- <transition on="next" to="add_job_jabatan_type_spec" /> -->
+		<transition on="next" to="doCheckIsListJabatanSpecificationEmpty" />
     </view-state>
     <view-state id="add_new_jabatan_spec" view="job_jabatan_spesification_form.xhtml">
     	<on-entry> 
@@ -98,13 +100,13 @@
     	<transition on="back" to="add_job_jabatan_spesification" />
     	<transition  on="add_new" to="add_new_jabatan_type_spec" />
     	<transition  on="save" to="doSaveAllData" />
-		<!-- <transition  on="delete" to="doDeleteJabatanSpesification" /> -->
+		<transition  on="delete" to="doDeleteJabatanTypeSpec" />
     </view-state>
     <view-state id="add_new_jabatan_type_spec" view="job_jabatan_type_spec_form.xhtml">
     	<on-entry> 
     		<evaluate expression="jobJabatanFormController.initialAddJabatanTypeSpecFlow(flowRequestContext)" />
     	</on-entry>
-    	<transition on="back" to="add_job_jabatan_spesification" />
+    	<transition on="back" to="add_job_jabatan_type_spec" />
 		<transition on="add" to="doAddJabatanTypeSpec" />
     </view-state>
     
@@ -117,7 +119,13 @@
    	 <action-state id="doDeleteJabatanDescription">
         <evaluate expression="jobJabatanFormController.doDeleteJabatanDeskripsi(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_description"/>
-        <transition on="error" to="add_new_jabatan_desc"/>
+        <transition on="error" to="add_job_jabatan_description"/>
+    </action-state>
+    
+    <action-state id="doCheckIsListJabatanDescriptionEmpty">
+        <evaluate expression="jobJabatanFormController.doCheckIsListJabatanDescriptionEmpty(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_spesification"/>
+        <transition on="error" to="add_job_jabatan_description"/>
     </action-state>
     
     <action-state id="doAddJabatanSpesification">
@@ -129,10 +137,17 @@
     <action-state id="doDeleteJabatanSpesification">
         <evaluate expression="jobJabatanFormController.doDeleteJabatanSpesification(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_spesification"/>
-        <transition on="error" to="add_new_jabatan_spec"/>
+        <transition on="error" to="add_job_jabatan_spesification"/>
     </action-state>
+    
     <action-state id="doUpdateListNilaiSpesification">
         <evaluate expression="jobJabatanFormController.doUpdateListNilaiSpesification()"/>        
+    </action-state>
+    
+     <action-state id="doCheckIsListJabatanSpecificationEmpty">
+        <evaluate expression="jobJabatanFormController.doCheckIsListJabatanSpecificationEmpty(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_type_spec"/>
+        <transition on="error" to="add_job_jabatan_spesification"/>
     </action-state>
     
     <action-state id="doAddJabatanTypeSpec">
@@ -144,6 +159,12 @@
     <action-state id="doSaveAllData">
         <evaluate expression="jobJabatanFormController.doSaveAllData(flowRequestContext)"/>        
         <transition on="success" to="end_detail"/>
+        <transition on="error" to="add_job_jabatan_type_spec"/>
+    </action-state>
+    
+     <action-state id="doDeleteJabatanTypeSpec">
+        <evaluate expression="jobJabatanFormController.doDeleteJabatanTypeSpec(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_type_spec"/>
         <transition on="error" to="add_job_jabatan_type_spec"/>
     </action-state>
 

@@ -100,7 +100,6 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
        // criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
     	criteria.add(Restrictions.eq("company.id", HrmUserInfoUtil.getCompanyId()));
-        
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }

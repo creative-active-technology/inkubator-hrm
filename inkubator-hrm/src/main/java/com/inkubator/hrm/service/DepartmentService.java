@@ -41,4 +41,6 @@ public interface DepartmentService extends IService<Department> {
     public void updateOrganisasiLevel(Department department) throws Exception;
 
     public DefaultDiagramModel createDiagramModel(long companyId) throws Exception;
+    
+    public List<Department> getAllWithSpecificCompany() throws Exception;
 }

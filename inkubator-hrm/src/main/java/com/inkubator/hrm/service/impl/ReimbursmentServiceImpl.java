@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -52,14 +53,17 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.ReimbursmentDao;
 import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
 import com.inkubator.hrm.dao.ReimbursmentSchemaEmployeeTypeDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.ReimbursmentSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
@@ -84,6 +88,8 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
     private ApprovalActivityDao approvalActivityDao;
     @Autowired
     private ReimbursmentSchemaEmployeeTypeDao reimbursmentSchemaEmployeeTypeDao;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
     @Autowired
     private FacesIO facesIO;
 
@@ -380,6 +386,14 @@ public class ReimbursmentServiceImpl extends BaseApprovalServiceImpl implements 
         if (approvalActivity == null) {
             reimbursment.setEmpData(empData);
             reimbursment.setReimbursmentSchema(reimbursmentSchema);
+            
+            //Set Kodefikasi pada code
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.REIMBURSEMENT_KODE);
+            Long currentMaxLoanId = reimbursmentDao.getCurrentMaxId();
+            if (currentMaxLoanId == null) {
+                currentMaxLoanId = 0L;
+            }
+            reimbursment.setCode(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
             
             
             reimbursment.setCreatedBy(createdBy);

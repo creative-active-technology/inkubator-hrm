@@ -89,7 +89,7 @@
 	                    	<p:commandButton value="#{appmsg['global.add']}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
 	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetAddJabatanDeskripsi(flowRequestContext)}"
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetJobJabatanTypeSpecForm(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formJabatanDescriptionFormId" />  
 	                        </p:commandButton>

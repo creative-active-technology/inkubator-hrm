@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
@@ -21,18 +22,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.RmbsDisbursement;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.lazymodel.RmbsApplicationUndisbursedLazyDataModel;
 import com.inkubator.hrm.web.model.RmbsDisbursementModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -66,6 +68,8 @@ public class RmbsDisbursementFormController extends BaseController {
     private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
 
     @PostConstruct
     @Override
@@ -74,8 +78,7 @@ public class RmbsDisbursementFormController extends BaseController {
         try {	        
 	        //initial
 	        model = new RmbsDisbursementModel();
-	        model.setDisbursementDate(new Date());
-	        model.setCode(HRMConstant.REIMBURSEMENT_DISBURSED_KODE +"-"+ RandomNumberUtil.getRandomNumber(9));        
+	        model.setDisbursementDate(new Date());      
         	period = wtPeriodeService.getEntityByPayrollTypeActive();
         	isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));        
 	        isRevised = Boolean.FALSE;
@@ -91,6 +94,13 @@ public class RmbsDisbursementFormController extends BaseController {
         				currentActivity.getSequence()-1);     
         		isRevised = Boolean.TRUE;
         		isRequester = StringUtils.equals(UserInfoUtil.getUserName(), currentActivity.getRequestBy());
+        	} else {
+        		//set kodefikasi nomor
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.REIMBURSEMENT_DISBURSED_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
+        		
         	}
         	
         } catch (Exception ex) {
@@ -112,6 +122,7 @@ public class RmbsDisbursementFormController extends BaseController {
         approvalActivityService = null;
         currentActivity = null;
         askingRevisedActivity = null;
+        transactionCodeficationService = null;
 	}
 
     public String doBack() {
@@ -282,6 +293,14 @@ public class RmbsDisbursementFormController extends BaseController {
 
 	public void setIsRequester(Boolean isRequester) {
 		this.isRequester = isRequester;
+	}
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
 	}
 	
 }

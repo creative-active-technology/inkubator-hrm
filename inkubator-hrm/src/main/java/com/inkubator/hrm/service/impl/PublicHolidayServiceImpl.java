@@ -4,6 +4,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveSchemeDao;
 import com.inkubator.hrm.dao.PublicHolidayDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
@@ -33,7 +34,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     @Autowired
     private PublicHolidayDao publicHolidayDao;
     @Autowired
-    private LeaveSchemeDao leaveSchemeDao;
+    private LeaveDao leaveDao;
     @Autowired
     private TransactionCodeficationDao transactionCodeficationDao;
 
@@ -205,7 +206,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     public void save(PublicHoliday publicHoliday) throws Exception {
 
         publicHoliday.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        publicHoliday.setLeaveScheme(this.leaveSchemeDao.getEntiyByPK(publicHoliday.getLeaveScheme().getId()));
+        publicHoliday.setLeave(this.leaveDao.getEntiyByPK(publicHoliday.getLeave().getId()));
         publicHoliday.setCreatedBy(UserInfoUtil.getUserName());
         publicHoliday.setCreatedOn(new Date());
         Long currentMaxId = publicHolidayDao.getTotalData();
@@ -244,7 +245,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     public void update(PublicHoliday r) throws Exception {
 
         PublicHoliday publicHoliday = publicHolidayDao.getEntiyByPK(r.getId());
-        publicHoliday.setLeaveScheme(this.leaveSchemeDao.getEntiyByPK(r.getLeaveScheme().getId()));
+        publicHoliday.setLeave(this.leaveDao.getEntiyByPK(r.getLeave().getId()));
         publicHoliday.setStartDate(r.getStartDate());
         publicHoliday.setEndDate(r.getEndDate());
         publicHoliday.setDescription(r.getDescription());
@@ -305,7 +306,7 @@ public class PublicHolidayServiceImpl extends IServiceImpl implements PublicHoli
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PublicHoliday> getByLeavShcemaId(long id) throws Exception {
         return publicHolidayDao.getByLeavShcemaId(id);
-       
+
     }
 
 }

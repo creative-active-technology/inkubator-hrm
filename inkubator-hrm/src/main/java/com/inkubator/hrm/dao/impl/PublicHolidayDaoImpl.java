@@ -47,9 +47,9 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     }
 
     private void doSearchPublicHolidayByParam(String parameter, Criteria criteria) {
-        criteria.createAlias("leaveScheme", "leaveScheme", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter)) {
-            criteria.add(Restrictions.like("leaveScheme.name", parameter, MatchMode.START));
+            criteria.add(Restrictions.like("leave.name", parameter, MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -58,14 +58,14 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     public PublicHoliday getEntityByPKWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
         return (PublicHoliday) criteria.uniqueResult();
     }
 
     @Override
     public List<PublicHoliday> getAllWithDetail() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
     }
 
@@ -73,7 +73,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     public List<PublicHoliday> getReportByParam(PublicHolidaySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, criteria);
-        criteria.createAlias("leaveScheme", "leaveScheme", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -105,14 +105,14 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     public List<PublicHoliday> getReportHistoryByParam(PublicHolidaySearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchReportByParam(parameter, criteria);
-        criteria.setFetchMode("leaveScheme", FetchMode.JOIN);
+        criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
     }
 
     @Override
     public List<PublicHoliday> getByLeavShcemaId(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("leaveScheme", "lv", JoinType.INNER_JOIN);
+        criteria.createAlias("leave", "lv", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("lv.id", id));
         return criteria.list();
     }

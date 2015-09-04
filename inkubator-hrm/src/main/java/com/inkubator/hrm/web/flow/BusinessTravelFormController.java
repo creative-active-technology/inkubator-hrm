@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.TravelComponentCostRate;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
@@ -34,10 +36,12 @@ import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.TravelComponentCostRateService;
 import com.inkubator.hrm.service.TravelTypeService;
 import com.inkubator.hrm.service.TravelZoneService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -66,6 +70,8 @@ public class BusinessTravelFormController implements Serializable{
 	private TravelTypeService travelTypeService;
 	@Autowired
 	private ApprovalActivityService approvalActivityService;
+	@Autowired
+	private TransactionCodeficationService transactionCodeficationService;
 	
 	
 	public void initBusinessTravelProcessFlow(RequestContext context){
@@ -102,7 +108,10 @@ public class BusinessTravelFormController implements Serializable{
                 
 			} else {
 				//set default random business travel number
-				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.BUSINESS_TRAVEL_CODE);
+				if (!ObjectUtils.equals(transactionCodefication, null)) {
+					model.setBusinessTravelNo(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+				}
 				
 				if(!isAdministator) { 
 					//jika bukan administrator, langsung di set empData berdasarkan yang login

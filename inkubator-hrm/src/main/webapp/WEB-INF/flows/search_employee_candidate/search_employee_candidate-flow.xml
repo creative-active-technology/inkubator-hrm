@@ -27,6 +27,6 @@
     </view-state>
     <end-state id="personal" view="externalRedirect:contextRelative:/protected/personalia/biodata_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
     <end-state id="employee" view="externalRedirect:contextRelative:/protected/employee/emp_placement_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
-    <end-state id="employeeBackground" view="externalRedirect:contextRelative:/protected/employee/emp_background_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
+    <end-state id="employeeBackground" view="externalRedirect:contextRelative:/protected/personalia/emp_background_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/home.htm" />
 </flow>

@@ -31,6 +31,7 @@ import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
+import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
 import com.inkubator.hrm.entity.JabatanEdukasi;
@@ -50,6 +51,7 @@ import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
+import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.JobJabatanModel;
@@ -545,16 +547,18 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 	
 	private Jabatan getDataJabatanFromModel(JobJabatanModel jobJabatanModel){
 		
+		GolonganJabatan golJabatan = this.golonganJabatanDao.getEntityWithDetailById(jobJabatanModel.getGolonganJabatanId());
+		PaySalaryGrade paySalaryGrade = this.paySalaryGradeDao.getEntiyByPK(golJabatan.getPaySalaryGrade().getId());		
 		Jabatan jabatan = new Jabatan();
 		
 		jabatan.setCode(jobJabatanModel.getKodeJabatan());
 		jabatan.setName(jobJabatanModel.getNamaJabatan());
 		jabatan.setCostCenter(this.costCenterDao.getEntiyByPK(jobJabatanModel.getPosBiayaId()));
 		jabatan.setDepartment(this.departmentDao.getEntiyByPK(jobJabatanModel.getDepartementId()));
-		jabatan.setGolonganJabatan(this.golonganJabatanDao.getEntiyByPK(jobJabatanModel.getGolonganJabatanId()));
+		jabatan.setGolonganJabatan(golJabatan);
 		jabatan.setJabatan(this.jabatanDao.getEntiyByPK(jobJabatanModel.getJabatanAtasanId()));
 		jabatan.setTujuanJabatan(jobJabatanModel.getTujuanJabatan());
-		//jabatan.setPaySalaryGrade(this.paySalaryGradeDao.getEntiyByPK(jobJabatanModel.getSalaryGradeId()));
+		jabatan.setPaySalaryGrade(paySalaryGrade);
 		jabatan.setUnitKerja(this.unitKerjaDao.getEntiyByPK(jobJabatanModel.getUnitKerjaId()));
 		
 		return jabatan;

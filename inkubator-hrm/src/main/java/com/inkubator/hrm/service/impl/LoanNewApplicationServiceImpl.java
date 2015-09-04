@@ -53,6 +53,7 @@ import com.inkubator.hrm.dao.LoanNewCancelationDao;
 import com.inkubator.hrm.dao.LoanNewSchemaDao;
 import com.inkubator.hrm.dao.LoanNewSchemaListOfEmpDao;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
@@ -65,10 +66,12 @@ import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.LoanNewSchemaListOfEmp;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
@@ -103,6 +106,8 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     private LoanNewCancelationDao LoanNewCancelationDao;
     @Autowired
     private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
     
 
     @Override
@@ -542,7 +547,12 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
        
         if (approvalActivity == null) {
 
-            entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));        
+            entity.setId(Integer.parseInt(RandomNumberUtil.getRandomNumber(9)));
+          
+            //generate number of code
+			String nomor = this.generateLoanNumber();	        
+            entity.setNomor(nomor);
+            
             loanNewApplicationDao.save(entity);
 
             result = "success_without_approval";
@@ -560,6 +570,15 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
         return result;
     }
+    
+    private String generateLoanNumber(){
+		/** generate number form codification, from reimbursement module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN);
+        Long currentMaxId = loanNewApplicationDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
     
     private ApprovalActivity checkApprovalIfAny(EmpData empData, Boolean isBypassApprovalChecking) throws Exception{
 		/** check approval process if any,
@@ -713,7 +732,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         loanNewCancelation.setEmpData(empDataDao.getEntiyByPK(loanNewCancellationFormModel.getEmpData().getId()));
         loanNewCancelation.setLoanNewSchema(loanNewSchemaDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewSchema().getId()));
         loanNewCancelation.setLoanNewType(loanNewTypeDao.getEntiyByPK(loanNewCancellationFormModel.getLoanNewType().getId()));
-        loanNewCancelation.setLoanCancellationNumber(loanNewCancellationFormModel.getCancellationNumber());
+        loanNewCancelation.setLoanCancellationNumber(this.generateLoanCancelationNumber());
         loanNewCancelation.setLoanNumber(loanNewCancellationFormModel.getLoanNumber());
         loanNewCancelation.setReason(loanNewCancellationFormModel.getReasonCancellation());
         loanNewCancelation.setCancelationDate(loanNewCancellationFormModel.getLoanCancellationDate());
@@ -730,7 +749,14 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         
     }
     
-    
+    private String generateLoanCancelationNumber(){
+		/** generate number form codification, from reimbursement module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+        Long currentMaxId = LoanNewCancelationDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)

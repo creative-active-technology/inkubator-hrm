@@ -22,7 +22,7 @@
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['jabatan.jabatan_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability_form']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['specificationability.specification_ability_data_from_reference']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
@@ -75,7 +75,7 @@
 	                    	<p:commandButton value="#{appmsg['global.add']}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
 	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetAddJabatanDeskripsi(flowRequestContext)}"
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetJobJabatanSpecificationForm(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formJabatanDescriptionFormId" />  
 	                        </p:commandButton>

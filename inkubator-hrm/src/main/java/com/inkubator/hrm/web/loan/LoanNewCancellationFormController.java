@@ -6,6 +6,7 @@ package com.inkubator.hrm.web.loan;
 
 import ch.lambdaj.Lambda;
 import ch.lambdaj.group.Group;
+
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -30,18 +31,22 @@ import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
@@ -78,10 +83,11 @@ public class LoanNewCancellationFormController extends BaseController {
         model = new LoanNewCancellationFormModel();
 
         try {
-
-            TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
-            Long currentMaxLoanId = loanNewCancelationService.getCurrentMaxId();
-            model.setCancellationNumber(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+        	//set kodefikasi nomor
+        	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+        	if(!ObjectUtils.equals(transactionCodefication, null)){
+        		model.setCancellationNumber(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+        	}
 
             isAdmin = Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             if (!isAdmin) { //jika bukan administrator, langsung di set empData berdasarkan yang login

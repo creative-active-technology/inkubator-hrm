@@ -5,21 +5,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.LoanNewApplicationDao;
-import com.inkubator.hrm.dao.LoanNewDisbursementDao;
-import com.inkubator.hrm.dao.LoanNewDisbursementListDao;
-import com.inkubator.hrm.entity.LoanNewApplication;
-import com.inkubator.hrm.entity.LoanNewDisbursement;
-import com.inkubator.hrm.entity.LoanNewDisbursementList;
-import com.inkubator.hrm.service.LoanNewDisbursementService;
-import com.inkubator.hrm.web.model.LoanNewDisbursementFormModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -27,6 +15,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewDisbursementDao;
+import com.inkubator.hrm.dao.LoanNewDisbursementListDao;
+import com.inkubator.hrm.dao.TransactionCodeficationDao;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewDisbursement;
+import com.inkubator.hrm.entity.LoanNewDisbursementList;
+import com.inkubator.hrm.entity.TransactionCodefication;
+import com.inkubator.hrm.service.LoanNewDisbursementService;
+import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -42,6 +46,8 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
     @Autowired
     private LoanNewDisbursementListDao loanNewDisbursementListDao;
     
+    @Autowired
+    private TransactionCodeficationDao transactionCodeficationDao;
     
     @Autowired
     private LoanNewApplicationDao loanNewApplicationDao;
@@ -216,7 +222,8 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
         }
         
         Long id = Long.parseLong(RandomNumberUtil.getRandomNumber(9));
-        loanNewDisbursement.setId(id);        
+        loanNewDisbursement.setId(id);   
+        loanNewDisbursement.setDibursementCode(this.generateLoanDisbursementNumber());
         loanNewDisbursement.setCreatedBy(UserInfoUtil.getUserName());
         loanNewDisbursement.setCreatedOn(new Date());
         
@@ -244,6 +251,15 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
             loanNewDisbursementListDao.save(loanNewDisbursementList);
         }
     }
+    
+    private String generateLoanDisbursementNumber(){
+		/** generate number form codification, from reimbursement module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_DISBURSEMENT_KODE);
+        Long currentMaxId = loanNewDisbursementDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
