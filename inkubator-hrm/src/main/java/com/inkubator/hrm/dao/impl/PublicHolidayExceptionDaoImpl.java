@@ -34,7 +34,7 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPublicHolidayExceptionByParam(parameter, criteria);
         criteria.setFetchMode("publicHoliday", FetchMode.JOIN);
-        criteria.setFetchMode("publicHoliday.leaveScheme", FetchMode.JOIN);
+        criteria.setFetchMode("publicHoliday.leave", FetchMode.JOIN);
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.addOrder(orderable);
@@ -62,7 +62,7 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
         
         if (parameter.getPublicHolidayName()!= null) {
             criteria.createAlias("publicHoliday", "p", JoinType.INNER_JOIN);
-            criteria.createAlias("p.leaveScheme", "l", JoinType.INNER_JOIN);
+            criteria.createAlias("p.leave", "l", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("l.name", parameter.getPublicHolidayName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -73,7 +73,7 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("publicHoliday", FetchMode.JOIN);
-        criteria.setFetchMode("publicHoliday.leaveScheme", FetchMode.JOIN);
+        criteria.setFetchMode("publicHoliday.leave", FetchMode.JOIN);
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         return (PublicHolidayException) criteria.uniqueResult();

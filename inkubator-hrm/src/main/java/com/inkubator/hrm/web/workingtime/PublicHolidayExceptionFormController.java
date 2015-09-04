@@ -3,11 +3,12 @@ package com.inkubator.hrm.web.workingtime;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveScheme;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.entity.PublicHolidayException;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.LeaveSchemeService;
+import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.service.PublicHolidayService;
 import com.inkubator.hrm.service.PublicHolidayExceptionService;
 import com.inkubator.hrm.util.MapUtil;
@@ -43,8 +44,8 @@ public class PublicHolidayExceptionFormController extends BaseController {
     private PublicHolidayExceptionService publicHolidayExceptionService;
     @ManagedProperty(value = "#{publicHolidayService}")
     private PublicHolidayService publicHolidayService;
-    @ManagedProperty(value = "#{leaveSchemeService}")
-    private LeaveSchemeService leaveSchemeService;
+    @ManagedProperty(value = "#{leaveService}")
+    private LeaveService leaveService;
     private Map<String, Long> publicHolidays = new TreeMap<>();
     private Map<String, Long> leavSchema = new TreeMap<>();
     @ManagedProperty(value = "#{empDataService}")
@@ -59,12 +60,12 @@ public class PublicHolidayExceptionFormController extends BaseController {
             publicHolidayExceptionModel = new PublicHolidayExceptionModel();
             isUpdate = Boolean.FALSE;
             List<PublicHoliday> listPublicHolidays = publicHolidayService.getAllWithDetail();
-            List<LeaveScheme> listLeavSchema = leaveSchemeService.getAllData();
-            for (LeaveScheme leave : listLeavSchema) {
+            List<Leave> listLeavSchema = leaveService.getAllData();
+            for (Leave leave : listLeavSchema) {
                 leavSchema.put(leave.getName(), leave.getId());
             }
             for (PublicHoliday publicHoliday : listPublicHolidays) {
-                publicHolidays.put(publicHoliday.getCode() + " - " + publicHoliday.getLeaveScheme().getName(), publicHoliday.getId());
+                publicHolidays.put(publicHoliday.getCode() + " - " + publicHoliday.getLeave().getName(), publicHoliday.getId());
 
             }
 
@@ -77,7 +78,7 @@ public class PublicHolidayExceptionFormController extends BaseController {
                     publicHolidayExceptionModel.setPublicHolidayId(publicHolidayException.getPublicHoliday().getId());
                     publicHolidayExceptionModel.setEmpData(publicHolidayException.getEmpData());
                     publicHolidayExceptionModel.setDescription(publicHolidayException.getDescription());
-                    publicHolidayExceptionModel.setLeavSchemaId(publicHolidayException.getPublicHoliday().getLeaveScheme().getId());
+                    publicHolidayExceptionModel.setLeavSchemaId(publicHolidayException.getPublicHoliday().getLeave().getId());
                     isUpdate = Boolean.TRUE;
                 }
 
@@ -181,16 +182,18 @@ public class PublicHolidayExceptionFormController extends BaseController {
         this.leavSchema = leavSchema;
     }
 
-    public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
-        this.leaveSchemeService = leaveSchemeService;
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
     }
+
+    
 
     public void doChangeLeaveSchema() {
         try {
             List<PublicHoliday> listPublicHolidays = publicHolidayService.getByLeavShcemaId(publicHolidayExceptionModel.getLeavSchemaId());
             publicHolidays=new TreeMap<>();
             for (PublicHoliday publicHoliday : listPublicHolidays) {
-                publicHolidays.put(publicHoliday.getCode() + " - " + publicHoliday.getLeaveScheme().getName(), publicHoliday.getId());
+                publicHolidays.put(publicHoliday.getCode() + " - " + publicHoliday.getLeave().getName(), publicHoliday.getId());
                 
             }
         } catch (Exception ex) {
