@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlUserFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="jobTitleFormId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="jabatan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['jabtan.jabatan_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:focus context="jobTitleFormId" />
+                        <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability']}" styleClass="header_big" />
+                       
+                        <p:separator/>
+                        <div align="left">
+                            <p:dataTable value="#{jobJabatanModel.listJabatanSpesifikasi}" var="data" rowIndexVar="no" id="jobSpecTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="#{data.specificationAbility}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['specificationability.indication_ability']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{data.specificationAbility.name}" />
+                                    </p:column> 
+                                    <p:column sortBy="#{data.optionAbility}" style="width: 15%;text-align: center"> 
+                                        <f:facet name="header" >  
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{data.optionAbility}" />
+                                    </p:column>
+                                    <p:column sortBy="#{data.value}" style="width: 10%;text-align: center"> 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['specAbility.score']}" />
+                                        </f:facet>
+                                        <p:outputLabel value="#{data.value}" />
+                                    </p:column>
+                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                               
+		                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+		                                		style="font-size: 10px!important" update=":panelDialogConfirmId" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
+		                                    	<f:setPropertyActionListener value="#{no}" target="#{jobJabatanFormController.selectedIndexJabatanSpesifikasi}" />
+		                                </p:commandButton>
+                               
+                          			</p:column> 
+                                </p:dataTable> 
+                                  <h:panelGrid columns="1">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['global.address']}" label="#{appmsg['global.add']} #{appmsg['global.address']}" styleClass="label_button" icon="ui-icon-document" 
+                                                      ajax="true" action="add_new">
+                                    </p:commandButton>
+                                </h:panelGrid>
+                        </div>  
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                        	<p:commandButton value="#{appmsg['global.previous']}"  icon="ui-icon-contact"  title="#{appmsg['global.previous']}"  immediate="true" action="back"
+                                             styleClass="label_button"/>
+                            
+                            
+                             <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="next" update="jobTitleFormId"/>
+                            
+                        </div>
+
+                    </div>
+
+                </h:form>
+                
+                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['specificationability.indication_ability']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{jobJabatanModel.listJabatanSpesifikasi.get(jobJabatanFormController.selectedIndexJabatanSpesifikasi).specificationAbility.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="delete" update=":jobTitleFormId:jobSpecTableId, :growlUserFormId"
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

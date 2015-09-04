@@ -129,4 +129,10 @@ public class ReimburstmentDaoImpl extends IDAOImpl<Reimbursment> implements Reim
         criteria.add(Restrictions.le("claimDate", untilPeriode));
         return criteria.list();
     }
+    
+    @Override
+    public Long getCurrentMaxId() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+    }
 }

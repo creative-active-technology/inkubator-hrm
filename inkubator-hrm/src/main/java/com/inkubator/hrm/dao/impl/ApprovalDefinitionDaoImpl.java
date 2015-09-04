@@ -132,6 +132,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.eq("processType", processType));
+        criteria.add(Restrictions.eq("isActive", true));// query bagi approval definisi yang active saja
         criteria.addOrder(order);
         return criteria.list();
     }

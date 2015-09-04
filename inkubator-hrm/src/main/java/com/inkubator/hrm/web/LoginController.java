@@ -166,7 +166,9 @@ public class LoginController extends BaseController {
                 emailIsExist = Boolean.TRUE;
                 user.setPassword("Inkuba" + RandomNumberUtil.getRandomNumber(7));
                 userService.resetPassword(user);
-
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.reset_successful", "global.please_check_your_email",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                
             }
 
         } catch (Exception ex) {

@@ -86,7 +86,7 @@ public class LoanNewCancelation  implements java.io.Serializable {
         this.version = version;
     }
     
-    @Column(name="loan_cancellation_number", unique=true, nullable=false, length=45)
+    @Column(name="loan_cancellation_number", unique=true, nullable=false, length=60)
     public String getLoanCancellationNumber() {
         return loanCancellationNumber;
     }

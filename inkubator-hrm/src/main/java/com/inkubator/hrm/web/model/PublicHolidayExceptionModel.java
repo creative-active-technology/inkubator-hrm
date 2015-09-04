@@ -13,6 +13,7 @@ public class PublicHolidayExceptionModel implements Serializable {
     private String description;
     private Long publicHolidayId;
     private EmpData empData;
+    private Long leavSchemaId;
 
     public Long getId() {
         return id;
@@ -21,7 +22,6 @@ public class PublicHolidayExceptionModel implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
 
     public String getDescription() {
         return description;
@@ -47,7 +47,12 @@ public class PublicHolidayExceptionModel implements Serializable {
         this.empData = empData;
     }
 
-    
+    public Long getLeavSchemaId() {
+        return leavSchemaId;
+    }
 
-    
+    public void setLeavSchemaId(Long leavSchemaId) {
+        this.leavSchemaId = leavSchemaId;
+    }
+
 }

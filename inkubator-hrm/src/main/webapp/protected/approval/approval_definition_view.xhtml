@@ -124,7 +124,7 @@
                                 <h:outputLabel value= "#{approvalDefinitionData.minRejector}"/>
                             </p:column>
 
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 150px;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 180px;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{approvalDefinitionViewController.doDetail()}" style="font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
@@ -137,6 +137,12 @@
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                   action="#{approvalDefinitionViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
+
+                                </p:commandButton> 
+                                -
+                                <p:commandButton  value="Edit Status" title="Status" label="Status" style="font-size: 10px!important" 
+                                                  action="#{approvalDefinitionViewController.doEditStatus()}" >
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{approvalDefinitionViewController.selectedApprovalDefinition}" />
 
                                 </p:commandButton> 

@@ -40,4 +40,6 @@ public interface JabatanDao extends IDAO<Jabatan> {
     public List<Jabatan> getByName(String name);
 
 	public List<Jabatan> getAllDataByCodeOrName(String param);
+	
+	public Jabatan getJabatanByCode(String code);
 }

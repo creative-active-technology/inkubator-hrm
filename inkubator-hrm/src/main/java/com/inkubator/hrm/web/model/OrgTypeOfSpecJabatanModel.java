@@ -6,6 +6,8 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,6 +19,8 @@ public class OrgTypeOfSpecJabatanModel implements Serializable {
     private String jabatanName;
     private Long jabatanId;
     private Long orgTypeOfSpecListId;
+    private Long orgTypeOfSpecId;
+    private List<Long> listIdOrgTypeOfSpecList = new ArrayList<Long>();
 
     public Long getJabatanId() {
         return jabatanId;
@@ -49,6 +53,22 @@ public class OrgTypeOfSpecJabatanModel implements Serializable {
     public void setJabatanName(String jabatanName) {
         this.jabatanName = jabatanName;
     }
+
+	public Long getOrgTypeOfSpecId() {
+		return orgTypeOfSpecId;
+	}
+
+	public void setOrgTypeOfSpecId(Long orgTypeOfSpecId) {
+		this.orgTypeOfSpecId = orgTypeOfSpecId;
+	}
+
+	public List<Long> getListIdOrgTypeOfSpecList() {
+		return listIdOrgTypeOfSpecList;
+	}
+
+	public void setListIdOrgTypeOfSpecList(List<Long> listIdOrgTypeOfSpecList) {
+		this.listIdOrgTypeOfSpecList = listIdOrgTypeOfSpecList;
+	}
     
     
 }

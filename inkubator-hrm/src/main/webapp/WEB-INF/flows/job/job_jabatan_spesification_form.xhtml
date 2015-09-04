@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlJabatanDescriptionFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formJabatanDescriptionFormId">
+                	<div id="box_bg" style="margin: 10px">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['biodata.spesifikasi_ability_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['specificationability.specification_ability_data_from_reference']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    
+                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                    	<p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="indicationAbilityId" value="#{appmsg['specificationability.indication_ability']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu  id="indicationAbilityId"  value="#{jabatanSpesifikasiModel.specId}" 
+                                                     label="#{appmsg['specificationability.indication_ability']}"  
+                                                     style="min-width: 200px;margin-right: 3px" required="true" >
+										
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{specAbilities}"/>
+                                        <p:ajax listener="#{jobJabatanFormController.doUpdateListNilaiSpesification()}"   update="specScoreId"/>
+                                    </p:selectOneMenu>
+	                                <p:message for="indicationAbilityId"/>
+	                            </p:column>
+	                    </p:row>
+	                    
+	                    <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="specScoreId" value="#{appmsg['specAbility.score']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="specScoreId"  value="#{jabatanSpesifikasiModel.optionAbility}" 
+                                                     label="#{appmsg['specificationability.indication_ability']}"  
+                                                     style="min-width: 200px;margin-right: 3px" required="true" >
+
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{optionAbilities}"/>
+                                        <p:ajax listener="#{jobJabatanFormController.doSetValueByOptionAbility()}"   />
+                                    </p:selectOneMenu>
+	                                <p:message for="specScoreId"/>
+	                            </p:column>
+	                    </p:row>	    
+                       
+                        
+                        
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                   
+                     <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" icon="ui-icon-arrow-1-w" 
+	                        				 action="back" immediate="true"/>
+	                    	<p:commandButton value="#{appmsg['global.add']}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
+	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetJobJabatanSpecificationForm(flowRequestContext)}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formJabatanDescriptionFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
+	                        				 action="end" immediate="true"/>
+	                    </div>
+	                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

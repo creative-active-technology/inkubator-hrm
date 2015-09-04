@@ -6,11 +6,10 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.UploadedFile;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.web.model.MppApplyHistoryViewModel;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
-import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 
 /**
@@ -38,5 +37,9 @@ public interface RecruitMppApplyService extends IService<RecruitMppApply>, BaseA
     public UploadedFile convertFileToUploadedFile(String path);
     
     public List<RecruitMppApply> getListWithDetailByApprovalStatus(Integer approvalStatus) throws Exception;
+    
+    public List<MppApplyHistoryViewModel> getAllDataMppApplyHistoryByParam(RecruitMppApplySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+
+	public Long getTotalMppApplyHistoryByParam(RecruitMppApplySearchParameter parameter) throws Exception;
     
 }

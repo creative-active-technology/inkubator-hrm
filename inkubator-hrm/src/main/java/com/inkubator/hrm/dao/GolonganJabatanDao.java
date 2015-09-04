@@ -24,5 +24,7 @@ public interface GolonganJabatanDao extends IDAO<GolonganJabatan> {
     public GolonganJabatan getEntityByPkFetchPangkat(Long id);
 
     public List<GolonganJabatan> getAllWithDetail();
+    
+    public GolonganJabatan getEntityWithDetailById(Long id);
 
 }

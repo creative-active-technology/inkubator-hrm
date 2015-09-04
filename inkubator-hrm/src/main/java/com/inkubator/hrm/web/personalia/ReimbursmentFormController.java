@@ -9,15 +9,19 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Reimbursment;
 import com.inkubator.hrm.entity.ReimbursmentSchema;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ReimbursmentSchemaService;
 import com.inkubator.hrm.service.ReimbursmentService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ReimbursmentModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,13 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.context.RequestContext;
@@ -55,6 +62,8 @@ public class ReimbursmentFormController extends BaseController {
     private ReimbursmentSchemaService reimbursmentSchemaService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
     //Dropdown
@@ -96,6 +105,11 @@ public class ReimbursmentFormController extends BaseController {
                         isUpload = Boolean.TRUE;
                     }
                 }
+            } else {
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.REIMBURSEMENT_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}            	
             }
 
             listDrowDown();
@@ -119,6 +133,7 @@ public class ReimbursmentFormController extends BaseController {
         listReimbursmentSchema = null;
         isNominal = null;
         isQuantity = null;
+        transactionCodeficationService = null;
     }
 
     public void listDrowDown() throws Exception {
@@ -382,7 +397,15 @@ public class ReimbursmentFormController extends BaseController {
         this.isNominal = isNominal;
     }
 
-    public void doReset() {
+    public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
+
+	public void doReset() {
         cleanAndExit();
     }
 

@@ -12,9 +12,11 @@ import java.util.List;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.JabatanDeskripsi;
+import com.inkubator.hrm.entity.JabatanSpesifikasi;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
+import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 
 /**
  *
@@ -40,6 +42,8 @@ public class JobJabatanModel implements Serializable {
     private List<Faculty> listFaculties = new ArrayList<Faculty>();
     private List<JabatanDeskripsi> listJabatanDeskripsi = new ArrayList<JabatanDeskripsi>();
     private List<JabatanDeskripsiModel> listJabatanDeskripsiModel = new ArrayList<JabatanDeskripsiModel>();
+    private List<JabatanSpesifikasi> listJabatanSpesifikasi = new ArrayList<JabatanSpesifikasi>();
+    private List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatan = new ArrayList<OrgTypeOfSpecJabatan>();
 
     public Long getId() {
         return id;
@@ -191,6 +195,24 @@ public class JobJabatanModel implements Serializable {
 	public void setListJabatanDeskripsiModel(
 			List<JabatanDeskripsiModel> listJabatanDeskripsiModel) {
 		this.listJabatanDeskripsiModel = listJabatanDeskripsiModel;
+	}
+
+	public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {
+		return listJabatanSpesifikasi;
+	}
+
+	public void setListJabatanSpesifikasi(
+			List<JabatanSpesifikasi> listJabatanSpesifikasi) {
+		this.listJabatanSpesifikasi = listJabatanSpesifikasi;
+	}
+
+	public List<OrgTypeOfSpecJabatan> getListOrgTypeOfSpecJabatan() {
+		return listOrgTypeOfSpecJabatan;
+	}
+
+	public void setListOrgTypeOfSpecJabatan(
+			List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatan) {
+		this.listOrgTypeOfSpecJabatan = listOrgTypeOfSpecJabatan;
 	}
 
 	

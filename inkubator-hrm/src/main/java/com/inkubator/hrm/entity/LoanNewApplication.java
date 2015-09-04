@@ -108,7 +108,7 @@ public class LoanNewApplication implements java.io.Serializable {
         this.empData = empData;
     }
     
-    @Column(name="nomor", unique=true, length = 45)
+    @Column(name="nomor", unique=true, length = 60)
     public String getNomor() {
         return nomor;
     }

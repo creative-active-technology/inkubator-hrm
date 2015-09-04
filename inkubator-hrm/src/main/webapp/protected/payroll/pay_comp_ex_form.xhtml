@@ -42,7 +42,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="componentName"  value="#{payComponentDataExceptionFormController.model.componentName}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" disabled="true"/>
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" readonly="true"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -70,7 +70,9 @@
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}" 
-                                                styleClass="isitext_hrm" transient="true" size="28">
+                                                styleClass="isitext_hrm" transient="true" size="28"
+                                                readonly="#{payComponentDataExceptionFormController.isUpdate}"
+                                                >
                                 </p:autoComplete>
                             </p:column>
                         </p:row>

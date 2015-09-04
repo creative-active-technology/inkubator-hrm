@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.web.model.PayComponentDataExceptionModel;
 import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -115,4 +117,21 @@ public class PayComponentDataExceptionDaoImpl extends IDAOImpl<PayComponentDataE
         criteria.add(Restrictions.eq("emp.id", id));
         return criteria.list();
     }
+
+	@Override
+	public List<PayComponentDataException> getAllDataByReset(Boolean isReset) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("resetAfterMonth", isReset));
+		return criteria.list();
+	}
+
+	@Override
+	public Long getDuplicateEmpData(Long empDataId, Long paySalaryComponentId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("paySalaryComponent", "paySalaryComponent", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("paySalaryComponent.id", paySalaryComponentId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.personalia;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -14,26 +15,33 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Loan;
 import com.inkubator.hrm.entity.LoanCanceled;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hamcrest.Matchers;
 import org.primefaces.context.RequestContext;
 
@@ -51,6 +59,8 @@ public class LoanCanceledFormController extends BaseController {
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{approvalActivityService}")
     private ApprovalActivityService approvalActivityService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
     private LoanCanceledModel loanCanceledModel;
     private Boolean isAdministator;
     private HashMap<Long, String> listActivity;
@@ -69,6 +79,11 @@ public class LoanCanceledFormController extends BaseController {
             
             	loanCanceledModel.setEmpData(HrmUserInfoUtil.getEmpData());
             	listActivity = loanService.getAllDataNotApprovedYet(UserInfoUtil.getUserName());
+            }
+            
+            TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
+            if(!ObjectUtils.equals(transactionCodefication, null)){
+                loanCanceledModel.setCode((KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode())));
             }
             
             //            String loanId = FacesUtil.getRequestParameter("execution");
@@ -108,6 +123,7 @@ public class LoanCanceledFormController extends BaseController {
         empDataService = null;
         loan = null;
         loanPaymentDetails = null;
+        transactionCodeficationService = null;
     }
 
     public Boolean getIsPaginator() {
@@ -267,5 +283,12 @@ public class LoanCanceledFormController extends BaseController {
 		this.loanPaymentDetails = loanPaymentDetails;
 	}
 
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
     
 }

@@ -79,7 +79,7 @@ public class BusinessTravel implements Serializable {
         this.version = version;
     }
 
-    @Column(name = "business_travel_no", unique = true, nullable = false, length = 45)
+    @Column(name = "business_travel_no", unique = true, nullable = false, length = 60)
     public String getBusinessTravelNo() {
         return businessTravelNo;
     }
