@@ -11,18 +11,17 @@
         <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin"
                              authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
         <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
-        <security:intercept-url pattern="/flow-protected/**" access="isAuthenticated()"/>
-<!--        <security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE')"/>
-        <security:intercept-url pattern="/protected/approval/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/batch/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/employee/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/organisation/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/payroll/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/personalia/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
+        <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/account/**" access="hasAnyRole('SUPER_ADMIN_ROLE')"/>
+        <security:intercept-url pattern="/protected/approval/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/batch/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/employee/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/organisation/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/payroll/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/personalia/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:intercept-url pattern="/protected/reference/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>
-        <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE')"/>-->
-    
+        <security:intercept-url pattern="/protected/report/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
+        <security:intercept-url pattern="/protected/working_time/**" access="hasAnyRole('ADMINISTRATOR_ROLE','BASIC_USER')"/>
         <security:session-management>
             <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" session-registry-alias="sessionRegistry"/>
         </security:session-management>
@@ -50,7 +49,7 @@
             <security:password-encoder hash="sha-256" />
             <security:user-service>
                 <security:user name="gunturris" password="378c74e0d4c964a0d8f0f71506f7d9bb9aa7360306f6731166a86e1336745a91" authorities="SUPER_ADMIN_ROLE" />
-                <security:user name="deni.fahri" password="f89a34d294751b4bb49587b4419da31837209f64d23604844f166bae02e25259" authorities="SUPER_ADMIN_ROLE" />
+                <!--<security:user name="deni.fahri" password="f89a34d294751b4bb49587b4419da31837209f64d23604844f166bae02e25259" authorities="SUPER_ADMIN_ROLE" />-->
             </security:user-service>
         </security:authentication-provider>
         <security:authentication-provider user-service-ref="userDetailsService" >
@@ -60,7 +59,7 @@
     <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" />
         
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basenames" >
+        <property name="basenames">
             <list>
                 <value>messages</value>
                 <value>messages_in</value>

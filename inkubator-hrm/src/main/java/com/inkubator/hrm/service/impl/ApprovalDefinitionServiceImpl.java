@@ -344,4 +344,38 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void updateStatusAndSms(ApprovalDefinition entity) throws Exception {
+        ApprovalDefinition ad = this.approvalDefinitionDao.getEntiyByPK(entity.getId());
+        ad.setAllowOnBehalf(entity.getAllowOnBehalf());
+        ad.setApproverType(entity.getApproverType());
+        ad.setAutoApproveOnDelay(entity.getAutoApproveOnDelay());
+        ad.setDelayTime(entity.getDelayTime());
+        ad.setEscalateOnDelay(entity.getEscalateOnDelay());
+        if (entity.getHrmUserByApproverIndividual() != null) {
+            ad.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
+        }
+        if (entity.getHrmUserByOnBehalfIndividual() != null) {
+            ad.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
+        }
+
+        if (entity.getJabatanByApproverPosition() != null) {
+            ad.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
+        }
+        if (entity.getJabatanByOnBehalfPosition() != null) {
+            ad.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
+        }
+        ad.setMinApprover(entity.getMinApprover());
+        ad.setMinRejector(entity.getMinRejector());
+        ad.setName(entity.getName());
+        ad.setOnBehalfType(entity.getOnBehalfType());
+        ad.setProcessType(entity.getProcessType());
+        ad.setSequence(entity.getSequence());
+        ad.setSmsNotification(entity.getSmsNotification());
+        ad.setUpdatedBy(UserInfoUtil.getUserName());
+        ad.setUpdatedOn(new Date());
+        ad.setIsActive(entity.getIsActive());
+        this.approvalDefinitionDao.update(ad);
+    }
 }

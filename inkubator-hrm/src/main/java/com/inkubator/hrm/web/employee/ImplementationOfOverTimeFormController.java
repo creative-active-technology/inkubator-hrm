@@ -17,20 +17,23 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.WtOverTime;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.WtOverTimeService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ImplementationOfOverTimeModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -52,6 +55,8 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     private ImplementationOfOverTimeService implementationOfOverTimeService;
     @ManagedProperty(value = "#{tempJadwalKaryawanService}")
     private TempJadwalKaryawanService tempJadwalKaryawanService;
+    @ManagedProperty(value = "#{transactionCodeficationService}")
+    private TransactionCodeficationService transactionCodeficationService;
     private Boolean isUpdate;
     private Map<String, Long> wtOverTimeDropDown = new TreeMap<String, Long>();
     private List<WtOverTime> listWtOverTime = new ArrayList<>();
@@ -69,7 +74,6 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             String implementOfOTId = FacesUtil.getRequestParameter("implementOfOTId");
             isDisableStartAndEndOverTime = Boolean.FALSE;
             model = new ImplementationOfOverTimeModel();
-            model.setImplementationNumber(HRMConstant.OVERTIME_KODE + "-" + RandomNumberUtil.getRandomNumber(9));
             isUpdate = Boolean.FALSE;
             if (StringUtils.isNotEmpty(implementOfOTId)) {
                 ImplementationOfOverTime implementationOfOverTime = implementationOfOverTimeService.getEntityByPkWithDetail(Long.parseLong(implementOfOTId));
@@ -77,6 +81,11 @@ public class ImplementationOfOverTimeFormController extends BaseController {
                     model = getModelFromEntity(implementationOfOverTime);
                     isUpdate = Boolean.TRUE;
                 }
+            } else {
+            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.OVERTIME_KODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setImplementationNumber(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
             }
             
             listDrowDown();
@@ -98,6 +107,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         empId = null;
         startTime = null;
         endTime = null;
+        transactionCodeficationService = null;
     }
     
     public void listDrowDown() throws Exception {
@@ -342,6 +352,13 @@ public class ImplementationOfOverTimeFormController extends BaseController {
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-    
+
+	public TransactionCodeficationService getTransactionCodeficationService() {
+		return transactionCodeficationService;
+	}
+
+	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+		this.transactionCodeficationService = transactionCodeficationService;
+	}
     
 }

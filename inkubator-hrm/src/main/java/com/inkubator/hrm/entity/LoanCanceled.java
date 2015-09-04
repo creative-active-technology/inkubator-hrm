@@ -255,7 +255,7 @@ public class LoanCanceled  implements java.io.Serializable {
    }
 
    
-   @Column(name="code", unique=true, nullable=false, length=45)
+   @Column(name="code", unique=true, nullable=false, length=60)
    public String getCode() {
        return this.code;
    }

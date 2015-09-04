@@ -28,7 +28,8 @@ public class PublicHoliday implements java.io.Serializable {
 
     private long id;
     private Integer version;
-    private LeaveScheme leaveScheme;
+//    private LeaveScheme leaveScheme;
+    private Leave leave;
     private String createdBy;
     private Date createdOn;
     private String updatedBy;
@@ -46,14 +47,14 @@ public class PublicHoliday implements java.io.Serializable {
         this.id = id;
     }
 
-    public PublicHoliday(long id, LeaveScheme leaveScheme) {
+    public PublicHoliday(long id, Leave leave) {
         this.id = id;
-        this.leaveScheme = leaveScheme;
+        this.leave = leave;
     }
 
-    public PublicHoliday(long id, LeaveScheme leaveScheme, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Date startDate, Date endDate, String description, Set<PublicHolidayException> publicHolidayExceptions) {
+    public PublicHoliday(long id,Leave leave, String createdBy, Date createdOn, String updatedBy, Date updatedOn, Date startDate, Date endDate, String description, Set<PublicHolidayException> publicHolidayExceptions) {
         this.id = id;
-        this.leaveScheme = leaveScheme;
+        this.leave = leave;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
@@ -85,15 +86,15 @@ public class PublicHoliday implements java.io.Serializable {
         this.version = version;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leave_scheme_id", nullable = false)
-    public LeaveScheme getLeaveScheme() {
-        return this.leaveScheme;
-    }
-
-    public void setLeaveScheme(LeaveScheme leaveScheme) {
-        this.leaveScheme = leaveScheme;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "leave_scheme_id", nullable = false)
+//    public LeaveScheme getLeaveScheme() {
+//        return this.leaveScheme;
+//    }
+//
+//    public void setLeaveScheme(LeaveScheme leaveScheme) {
+//        this.leaveScheme = leaveScheme;
+//    }
 
     @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
@@ -179,4 +180,15 @@ public class PublicHoliday implements java.io.Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "leave_id", nullable = false)
+    public Leave getLeave() {
+        return leave;
+    }
+
+    public void setLeave(Leave leave) {
+        this.leave = leave;
+    }
+
 }

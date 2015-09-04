@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,15 +22,18 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.entity.TravelComponentCostRate;
 import com.inkubator.hrm.entity.TravelType;
 import com.inkubator.hrm.entity.TravelZone;
 import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.TravelComponentCostRateService;
 import com.inkubator.hrm.service.TravelTypeService;
 import com.inkubator.hrm.service.TravelZoneService;
+import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -55,6 +59,8 @@ public class BusinessTravelFormController implements Serializable{
 	private TravelZoneService travelZoneService;
 	@Autowired 
 	private TravelTypeService travelTypeService;
+	@Autowired
+	private TransactionCodeficationService transactionCodeficationService;
 	private String endResult;
 	
 	
@@ -75,7 +81,10 @@ public class BusinessTravelFormController implements Serializable{
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(id);
 				model = bindEntityToModel(businessTravel);
 			}else{
-				model.setBusinessTravelNo(HRMConstant.BUSINESS_TRAVEL_CODE + "-" + RandomNumberUtil.getRandomNumber(9));
+				TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.BUSINESS_TRAVEL_CODE);
+            	if(!ObjectUtils.equals(transactionCodefication, null)){
+            		model.setBusinessTravelNo(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            	}
 				
 			}
 			context.getFlowScope().put("businessTravelModel", model);

@@ -68,11 +68,11 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="leaveScheme"  style="width: 27%">
+                            <p:column sortBy="leave"  style="width: 27%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_leave']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{publicHolidayData.leaveScheme.name}"/>
+                                <h:outputLabel value= "#{publicHolidayData.leave.name}"/>
                             </p:column>
                             <p:column sortBy="code" style="width: 15%" >
                                 <f:facet name="header">  
@@ -145,7 +145,7 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['publicHoliday.publicHoliday_leave']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.leaveScheme.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.leave.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{publicHolidayViewController.doDelete()}" update="formPublicHolidayViewId,:growlPublicHolidayViewlId"
@@ -158,7 +158,7 @@
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHoliday.publicHoliday_leave']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.leaveScheme.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayViewController.selectedPublicHoliday.leave.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>

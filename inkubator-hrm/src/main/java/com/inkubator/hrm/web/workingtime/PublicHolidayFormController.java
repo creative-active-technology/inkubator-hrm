@@ -2,10 +2,12 @@ package com.inkubator.hrm.web.workingtime;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveScheme;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.service.LeaveSchemeService;
+import com.inkubator.hrm.service.LeaveService;
 import com.inkubator.hrm.service.PublicHolidayService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.KodefikasiUtil;
@@ -38,8 +40,8 @@ public class PublicHolidayFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{publicHolidayService}")
     private PublicHolidayService publicHolidayService;
-    @ManagedProperty(value = "#{leaveSchemeService}")
-    private LeaveSchemeService leaveSchemeService;
+    @ManagedProperty(value = "#{leaveService}")
+    private LeaveService leaveService;
     private Map<String, Long> leaveSchemes = new TreeMap<>();
     @ManagedProperty(value = "#{transactionCodeficationService}")
     private TransactionCodeficationService transactionCodeficationService;
@@ -55,9 +57,9 @@ public class PublicHolidayFormController extends BaseController {
             TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.PUBCIL_HOLIDAY_KODE);
            
             publicHolidayModel.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
-            List<LeaveScheme> listLeaveSchemes = leaveSchemeService.getAllData();
+            List<Leave> listLeaveSchemes = leaveService.getAllData();
 
-            for (LeaveScheme leaveScheme : listLeaveSchemes) {
+            for (Leave leaveScheme : listLeaveSchemes) {
                 leaveSchemes.put(leaveScheme.getName(), leaveScheme.getId());
             }
 
@@ -67,7 +69,7 @@ public class PublicHolidayFormController extends BaseController {
                 PublicHoliday publicHoliday = publicHolidayService.getEntiyByPK(Long.parseLong(param));
                 if (publicHoliday != null) {
                     publicHolidayModel.setId(publicHoliday.getId());
-                    publicHolidayModel.setLeaveSchemeId(publicHoliday.getLeaveScheme().getId());
+                    publicHolidayModel.setLeaveSchemeId(publicHoliday.getLeave().getId());
                     publicHolidayModel.setStartDate(publicHoliday.getStartDate());
                     publicHolidayModel.setEndDate(publicHoliday.getEndDate());
                     publicHolidayModel.setDescription(publicHoliday.getDescription());
@@ -86,7 +88,7 @@ public class PublicHolidayFormController extends BaseController {
         publicHolidayService = null;
 //        publicHolidayModel = null;
         isUpdate = null;
-        leaveSchemeService = null;
+        leaveService = null;
         leaveSchemes = null;
     }
 
@@ -118,9 +120,11 @@ public class PublicHolidayFormController extends BaseController {
         this.leaveSchemes = leaveSchemes;
     }
 
-    public void setLeaveSchemeService(LeaveSchemeService leaveSchemeService) {
-        this.leaveSchemeService = leaveSchemeService;
+    public void setLeaveService(LeaveService leaveService) {
+        this.leaveService = leaveService;
     }
+
+   
     
     
 
@@ -147,7 +151,7 @@ public class PublicHolidayFormController extends BaseController {
         if (publicHolidayModel.getId() != null) {
             publicHoliday.setId(publicHolidayModel.getId());
         }
-        publicHoliday.setLeaveScheme(new LeaveScheme(publicHolidayModel.getLeaveSchemeId()));
+        publicHoliday.setLeave(new Leave(publicHolidayModel.getLeaveSchemeId()));
         publicHoliday.setStartDate(publicHolidayModel.getStartDate());
         publicHoliday.setEndDate(publicHolidayModel.getEndDate());
         publicHoliday.setDescription(publicHolidayModel.getDescription());

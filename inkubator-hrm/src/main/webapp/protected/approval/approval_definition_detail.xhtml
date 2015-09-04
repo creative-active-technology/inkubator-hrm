@@ -155,11 +155,19 @@
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
-                            <p:row rendered="#{not empty approvalDefinitionDetilController.selectedApprovalDefinition.specificName}">
+                            <p:row >
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Is Active" style="font-weight: bold"/>
+                                </p:column>
+                                 <p:column style="width: 37%" >
+                                     <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.isActive}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" rendered="#{not empty approvalDefinitionDetilController.selectedApprovalDefinition.specificName}" >
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.specific_approval']}" style="font-weight: bold"/>
                                 </p:column>
-                                 <p:column style="width: 37%" colspan="3">
+                                 <p:column style="width: 37%" colspan="3" rendered="#{not empty approvalDefinitionDetilController.selectedApprovalDefinition.specificName}">
                                      <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.specificName}"/>
                                 </p:column>
                             </p:row>
