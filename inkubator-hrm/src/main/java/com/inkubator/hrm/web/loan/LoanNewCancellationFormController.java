@@ -137,9 +137,6 @@ public class LoanNewCancellationFormController extends BaseController {
         try {
 
             model = new LoanNewCancellationFormModel();
-            TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
-            Long currentMaxLoanId = loanNewCancelationService.getCurrentMaxId();
-            model.setCancellationNumber(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
 
             if (!isAdmin) {
                 model.setEmpData(HrmUserInfoUtil.getEmpData());

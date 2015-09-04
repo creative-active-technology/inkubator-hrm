@@ -606,9 +606,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             entity.setRecruitMppPeriod(recruitMppPeriod);
 
             //Set codefication at field reqHireCode
-            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.RECRUITMENT_REQUEST_KODE);
-            Long currentMaxRecruitHireApplyId = recruitHireApplyDao.getCurrentMaxId();
-            entity.setReqHireCode(KodefikasiUtil.getKodefikasi(((int) currentMaxRecruitHireApplyId.longValue()), transactionCodefication.getCode()));
+            entity.setReqHireCode(this.generateRecruitmentRequestNumber());
             entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
             entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
@@ -658,9 +656,7 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             entity.setRecruitMppPeriod(recruitMppPeriod);
 
             //Set codefication at field reqHireCode
-            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.RECRUITMENT_REQUEST_KODE);
-            Long currentMaxRecruitHireApplyId = recruitHireApplyDao.getCurrentMaxId();
-            entity.setReqHireCode(KodefikasiUtil.getKodefikasi(((int) currentMaxRecruitHireApplyId.longValue()), transactionCodefication.getCode()));
+            entity.setReqHireCode(this.generateRecruitmentRequestNumber());
             entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
             entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
@@ -683,6 +679,15 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         this.sendingApprovalNotification(appActivity);
     }
 
+    private String generateRecruitmentRequestNumber(){
+		/** generate number form codification, from recruitment request module */
+		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.RECRUITMENT_REQUEST_KODE);
+        Long currentMaxId = recruitHireApplyDao.getCurrentMaxId();
+        currentMaxId = currentMaxId != null ? currentMaxId : 0;
+        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        return nomor;
+	}
+    
     @Override
     public void diverted(long approvalActivityId) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -572,7 +572,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
     
     private String generateLoanNumber(){
-		/** generate number form codification, from reimbursement module */
+		/** generate number form codification, from loan module */
 		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN);
         Long currentMaxId = loanNewApplicationDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
@@ -750,7 +750,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
     }
     
     private String generateLoanCancelationNumber(){
-		/** generate number form codification, from reimbursement module */
+		/** generate number form codification, from loan module */
 		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_CANCELLATION_KODE);
         Long currentMaxId = LoanNewCancelationDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;

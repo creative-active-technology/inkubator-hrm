@@ -1034,11 +1034,14 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             	//Set Kodefikasi pada nomor
             	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
-        		Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
-        		if (currentMaxLoanId == null) {
-        			currentMaxLoanId = 0L;
+        		Long currentMaxId = permitImplementationDao.getCurrentMaxId();
+        		if (currentMaxId == null) {
+        			currentMaxId = 0L;
         		}
-    			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+    			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode()));
+    			System.out.println(transactionCodefication.getCode());
+    			System.out.println(currentMaxId);
+    			System.out.println("aaaaaaaaaaaaa " + entity.getNumberFilling());
                 entity.setEmpData(empData);
                 entity.setPermitClassification(permit);
                 if (documentFile != null) {
