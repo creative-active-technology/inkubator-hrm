@@ -334,14 +334,15 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 				
 		HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
 		ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.BUSINESS_TRAVEL, requestUser.getUserId());
-                TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.BUSINESS_TRAVEL_CODE);
-		Long currentMaxBussinessTravId = businessTravelDao.getCurrentMaxId();
-		if (currentMaxBussinessTravId == null) {
-			currentMaxBussinessTravId = 0L;
-		}
-		entity.setBusinessTravelNo(KodefikasiUtil.getKodefikasi(((int)currentMaxBussinessTravId.longValue()), transactionCodefication.getCode()));
-		
-                if(approvalActivity == null){
+        if(approvalActivity == null){
+        	//set kodefikasi nomor
+        	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.BUSINESS_TRAVEL_CODE);
+    		Long currentMaxBussinessTravId = businessTravelDao.getCurrentMaxId();
+    		if (currentMaxBussinessTravId == null) {
+    			currentMaxBussinessTravId = 0L;
+    		}
+    		entity.setBusinessTravelNo(KodefikasiUtil.getKodefikasi(((int)currentMaxBussinessTravId.longValue()), transactionCodefication.getCode()));
+    		
         	businessTravelDao.save(entity);
         	message = "success_without_approval";
         } else {

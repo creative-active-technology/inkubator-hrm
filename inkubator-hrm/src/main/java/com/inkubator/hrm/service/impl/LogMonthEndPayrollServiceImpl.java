@@ -24,6 +24,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
+import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
@@ -31,6 +32,7 @@ import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
+import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.util.CommonReportUtil;
@@ -67,6 +69,8 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	private PayTempAttendanceStatusDao payTempAttendanceStatusDao;
 	@Autowired
 	private PayTempOvertimeDao payTempOvertimeDao;
+	@Autowired
+	private PayComponentDataExceptionDao payComponentDataExceptionDao;
 
 	@Override
 	public LogMonthEndPayroll getEntiyByPK(String id) throws Exception {
@@ -347,6 +351,12 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 			wtp.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
 			wtPeriodeDao.update(wtp);
 		}		
+		
+		/** reseting record(deleted) of component exception **/
+		List<PayComponentDataException> list = payComponentDataExceptionDao.getAllDataByReset(Boolean.TRUE);
+		for(PayComponentDataException entity : list){
+			payComponentDataExceptionDao.delete(entity);
+		}
 		
 		/** delete all the record in the temporary table **/
 		payTempKalkulasiDao.deleteAllData();

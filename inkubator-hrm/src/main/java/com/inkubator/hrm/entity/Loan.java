@@ -77,7 +77,7 @@ public class Loan implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name="nomor", unique=true, length = 45)
+    @Column(name="nomor", unique=true, length = 60)
     public String getNomor() {
         return nomor;
     }

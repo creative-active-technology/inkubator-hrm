@@ -40,9 +40,17 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['workingTime.start_period']}" itemValue="startPeriod"/>
                                         <f:selectItem itemLabel="#{appmsg['workingTime.end_period']}" itemValue="endPeriod"/>
-                                        <f:selectItem itemLabel="#{appmsg['batchJobExecution.status']}" itemValue="absenStatus"/>
+                                        <!-- <f:selectItem itemLabel="#{appmsg['batchJobExecution.status']}" itemValue="absenStatus"/> -->
+                                        <!-- <p:ajax update="formId" process="@this" listener="#{wtPeriodEmpViewController.doChangeInputType()}"/>
+                                     -->
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{wtPeriodEmpViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:inputText id="searchTextId" rendered="#{wtPeriodEmpViewController.isAbsenStatus}" value="#{wtPeriodEmpViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:calendar  id="searchDateStartPeriodeId" size="39" rendered="#{wtPeriodEmpViewController.isStartPeriod}" pattern="dd MMMM yyyy" label="searchDate" value="#{wtPeriodEmpViewController.parameter.startPeriod}" style="width: 250px;"
+                                                 navigator="true">
+                                    </p:calendar>
+                                    <p:calendar  id="searchDateEndDateId" size="39" rendered="#{wtPeriodEmpViewController.isEndPeriod}" pattern="dd MMMM yyyy" label="searchDate" value="#{wtPeriodEmpViewController.parameter.endPeriod}" style="width: 250px;"
+                                                 navigator="true">
+                                    </p:calendar>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{wtPeriodEmpViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -55,7 +63,7 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <p:focus for="searchId" />
+                        <p:focus for="searchTextId" />
 
                         <p:dataTable  id="tableId" var="data"  value="#{wtPeriodEmpViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
