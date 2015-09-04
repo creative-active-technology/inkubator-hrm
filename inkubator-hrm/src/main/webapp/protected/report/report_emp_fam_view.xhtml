@@ -69,25 +69,25 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bioData.listEmpData.get(0).nik}"/>
                             </p:column>-->
-                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 15%">
+                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 16%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bioData.fullName}"/>
                             </p:column>
-                            <p:column sortBy="#{data.familyRelation.relasiName}"  style="width: 15%;text-align: center;">
+                            <p:column sortBy="#{data.familyRelation.relasiName}"  style="width: 10%;text-align: center;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_relation']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.familyRelation.relasiName}"/>
                             </p:column>
-                            <p:column sortBy="#{data.name}"  style="width: 15%">
+                            <p:column sortBy="#{data.name}"  style="width: 16%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}"/>
                             </p:column>
-                            <p:column sortBy="#{data.dateOfBirth}"  style="width: 15%">
+                            <p:column sortBy="#{data.dateOfBirth}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.birth_date']}"/>
                                 </f:facet>
@@ -95,7 +95,7 @@
                                     <f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.gender}"  style="width: 15%;text-align: center;">
+                            <p:column sortBy="#{data.gender}"  style="width: 10%;text-align: center;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -103,19 +103,19 @@
                                     <f:converter converterId="genderConverter" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.educationLevel.name}"  style="width: 15%">
+                            <p:column sortBy="#{data.educationLevel.name}"  style="width: 12%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_education']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.educationLevel.name}" />
                             </p:column>
-                            <p:column sortBy="#{data.occupation}"  style="width: 15%">
+                            <p:column sortBy="#{data.occupation}"  style="width: 11%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_occupation']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.occupation}" />
                             </p:column>
-                            <p:column sortBy="#{data.dependents}"  style="width: 15%;text-align: center;">
+                            <p:column sortBy="#{data.dependents}"  style="width: 10%;text-align: center;">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['reportFamilyEmployee.reportFamilyEmployee_dependents']}"/>
                                 </f:facet>
