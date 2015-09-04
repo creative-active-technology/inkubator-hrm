@@ -38,7 +38,7 @@ public class PublicHolidayLazyDataModel extends LazyDataModel<PublicHoliday> imp
             if (sortField != null) {
                 orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
             } else {
-                orderable = Order.desc("leaveScheme");
+                orderable = Order.desc("leave");
             }
 
             publicHolidays = publicHolidayService.getByParam(parameter, first, pageSize, orderable);

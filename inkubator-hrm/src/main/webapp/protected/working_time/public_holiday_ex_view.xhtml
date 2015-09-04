@@ -79,11 +79,11 @@
                                 </f:facet>
                                 <p:outputLabel value="#{publicHolidayExceptionData.publicHoliday.code}"/>
                             </p:column>
-                            <p:column sortBy="#{publicHolidayExceptionData.leaveScheme.name}"  style="width: 35%">
+                            <p:column sortBy="#{publicHolidayExceptionData.leave.name}"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHolidayException.publicHolidayException_public']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{publicHolidayExceptionData.publicHoliday.leaveScheme.name}"/>
+                                <h:outputLabel value= "#{publicHolidayExceptionData.publicHoliday.leave.name}"/>
                             </p:column>  
                             <p:column sortBy="#{publicHolidayExceptionData.bioData.firstName}"  style="width: 50%">
                                 <f:facet name="header">  
@@ -154,7 +154,7 @@
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['publicHolidayException.publicHolidayException_public']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayExceptionViewController.selectedPublicHolidayException.publicHoliday.leaveScheme.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{publicHolidayExceptionViewController.selectedPublicHolidayException.publicHoliday.leave.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
