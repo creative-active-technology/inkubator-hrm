@@ -8,7 +8,9 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -24,4 +26,6 @@ public interface OrgTypeOfSpecJabatanDao extends IDAO<OrgTypeOfSpecJabatan> {
     public OrgTypeOfSpecJabatan getEntityByPK(OrgTypeOfSpecJabatanId id);
     
     public Long getTotalByPK(OrgTypeOfSpecJabatanId id);
+    
+    public List<OrgTypeOfSpecJabatan> getAllDataByJabatanId(Long id);
 }

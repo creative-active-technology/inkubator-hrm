@@ -43,7 +43,6 @@
                                 <p:column style="width: 37%">
                                     <p:outputLabel  value="#{jabatanDetailController.selectedJabatan.name}" />
                                 </p:column>
-
                             </p:row>
                             <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
@@ -96,52 +95,127 @@
 
                         </p:panelGrid>
                         <p:tabView id="tabView1" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-left: 0px; margin-right: 0px;margin-bottom: 15px">
-                            <p:tab id="jobSpesificationId" title="#{appmsg['jobspek.jobspek']}">  
-                                <p:dataTable  var="listJobSpecifikasi"  value="#{jabatanDetailController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
-                                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                              id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-                                              rowIndexVar="no">
+                        	<p:tab id="jobEdukasiId" title="#{appmsg['educationhistory.education_level']}">  
+                        		<p:dataTable value="#{jabatanDetailController.listJabatanEdukasi}" var="dataJabatanEdukasi" rowIndexVar="no" id="jobEduTableId"
+                                             >
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column sortBy="#{dataJabatanEdukasi.educationLevel.name}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['educationhistory.education_level']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanEdukasi.educationLevel.name}" />
+                                    </p:column> 
+                                     <!-- <p:column sortBy="#{dataJabatanEdukasi.educationLevel.description}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{dataJabatanEdukasi.educationLevel.description}" />
+                                    </p:column>  -->
+                                </p:dataTable> 
+                        	</p:tab>
+                        	<p:tab id="jobOccupationId" title="#{appmsg['occupationType.occupationType']}">  
+                        		<p:dataTable value="#{jabatanDetailController.listJabatanProfesi}" var="dataJabatanProfesi" rowIndexVar="no" id="jobOccupTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 20%" sortBy="#{dataJabatanProfesi.occupationType.occupationTypeName}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['occupationType.occupationType']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanProfesi.occupationType.occupationTypeName}" />
+                                    </p:column> 
+                                    <p:column style="text-align: left;width: 77%" sortBy="#{dataJabatanProfesi.occupationType.description}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{dataJabatanProfesi.occupationType.description}" />
+                                    </p:column>
+                                </p:dataTable> 
+                        	</p:tab>
+                        	<p:tab id="jobMajorId" title="#{appmsg['employeeCertification.major']}">  
+                        		<p:dataTable value="#{jabatanDetailController.listJabatanMajor}" var="dataJabatanMajor" rowIndexVar="no" id="jobMajorTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 20%" sortBy="#{dataJabatanMajor.major.majorName}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['employeeCertification.major']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanMajor.major.majorName}" />
+                                    </p:column> 
+                                    <p:column style="text-align: left;width: 77%" sortBy="#{dataJabatanMajor.major.description}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{dataJabatanMajor.major.description}" />
+                                    </p:column>
+                                </p:dataTable> 
+                        	</p:tab>
+                        	<p:tab id="jobFacultyId" title="#{appmsg['faculty.faculty']}">  
+                        		<p:dataTable value="#{jabatanDetailController.listJabatanFakulties}" var="dataJabatanFaculty" rowIndexVar="no" id="jobFacultyTableId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 20%" sortBy="#{dataJabatanFaculty.faculty.name}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['faculty.faculty_name']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanFaculty.faculty.name}" />
+                                    </p:column> 
+                                    <p:column style="text-align: left;width: 77%" sortBy="#{dataJabatanFaculty.faculty.description}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{dataJabatanFaculty.faculty.description}" />
+                                    </p:column>
+                                </p:dataTable> 
+                        	</p:tab>
+                        	 <p:tab id="jobWorkKlasificationTab" title="#{appmsg['jabatan.job_criteria']}">  
+                                <!--<h:panelGrid columns="2" cellpadding="10">-->  
+                                <p:dataTable value="#{jabatanDetailController.listKlasifikasiKerjaJabatan}" var="listJobCriteria" rowIndexVar="no" id="jobWorkKlasificationId"
+                                             >
+                                    <p:column style="text-align: center;width: 3%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="#{listJobSpecifikasi.orgTypeOfSpecList.code}" style="width: 150px;text-align: center"> 
+                                    <p:column style="text-align: left;width: 15%" sortBy="#{listJobCriteria.klasifikasiKerja.code}" > 
                                         <f:facet name="header" >  
-                                            <h:outputText value="#{appmsg['jobspec.code']}"/>
+                                            <h:outputText value="#{appmsg['global.code']}" />
                                         </f:facet>
-                                        <p:outputLabel value="#{listJobSpecifikasi.orgTypeOfSpecList.code}" />
+                                        <p:outputLabel value="#{listJobCriteria.klasifikasiKerja.code}" />
                                     </p:column>
-                                    <p:column sortBy="#{listJobSpecifikasi.orgTypeOfSpecList.name}"> 
+                                    <p:column style="text-align: left;width: 25%" sortBy="#{listJobCriteria.klasifikasiKerja.name}" > 
                                         <f:facet name="header">  
-                                            <h:outputText value="#{appmsg['jobspec.nama']}"/>
+                                            <h:outputText value="#{appmsg['global.name']}" />
                                         </f:facet>
-                                        <h:outputLabel value=" #{listJobSpecifikasi.orgTypeOfSpecList.name}" />
+                                        <p:outputLabel value="#{listJobCriteria.klasifikasiKerja.name}"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 57%" sortBy="#{listJobCriteria.klasifikasiKerja.description}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['global.description']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{listJobCriteria.klasifikasiKerja.description}" />
                                     </p:column> 
-                                    
-                                    <!--                                    <p:column style="width: 80px;text-align: center"> 
-                                                                            <f:facet name="header">  
-                                                                                <h:outputText value="#{appmsg['jobspec.jobspec_value']}"/>
-                                                                            </f:facet>
-                                                                            <p:outputLabel value="#{listJobSpecifikasi.value}" />
-                                                                        </p:column>-->
-                                    <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                        
-                                        <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                         style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                         action="#{jabatanDetailController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
-                                            <f:setPropertyActionListener value="#{listJobSpecifikasi}" target="#{jabatanDetailController.selectedOrgTypeSpecJabatan}" />
-                                        </p:commandButton>
-                                        
-                                    </p:column> 
-                                </p:dataTable>  
-                                <h:panelGrid columns="1">
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" label="#{appmsg['global.add']} #{appmsg['bioMedicalHistory.bioMedicalHistory']}" styleClass="label_button" icon="ui-icon-document" 
-                                                     actionListener="#{jabatanDetailController.doAdd()}" ajax="true" immediate="true">
-                                        <p:ajax event="dialogReturn" update=":jobTitleViewId:tabView1:tableId, :userViewGrowlId" listener="#{jabatanDetailController.onDialogReturn}"/>
-                                    </p:commandButton>
-                                </h:panelGrid>
+                                </p:dataTable> 
                             </p:tab>  
                             <p:tab id="jobDeskriptionId" title="#{appmsg['jabatandeskripsi.jabatandeskripsi']}">  
                                 <!--<h:panelGrid columns="2" cellpadding="10">-->  
@@ -177,36 +251,61 @@
                                     </p:column>
                                 </p:dataTable> 
                             </p:tab> 
-                            <p:tab id="jobWorkKlasificationTab" title="#{appmsg['jabatan.job_criteria']}">  
-                                <!--<h:panelGrid columns="2" cellpadding="10">-->  
-                                <p:dataTable value="#{jabatanDetailController.selectedJabatan.kerjaJabatans}" var="listJobCriteria" rowIndexVar="no" id="jobWorkKlasificationId"
+                        	<p:tab id="jobClassificationId" title="#{appmsg['specificationability.specification_ability']}">  
+                        		<p:dataTable value="#{jabatanDetailController.listJabatanSpesifikasi}" var="dataJabatanClassification" rowIndexVar="no" id="jobClassificationTableId"
                                              >
+                                    <p:column style="text-align: center;width: 3%">
+                                        <f:facet name="header">  
+                                            <h:outputText value="No." />
+                                        </f:facet>
+                                        <h:outputLabel value="#{no+1}." />
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 20%" sortBy="#{dataJabatanClassification.specificationAbility.name}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['specificationability.indication_ability']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanClassification.specificationAbility.name}" />
+                                    </p:column> 
+                                    <p:column style="text-align: left;width: 57%" sortBy="#{dataJabatanClassification.optionAbility}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['jobspec.jobspec_option_ability']}" />
+                                        </f:facet>
+                                        <h:outputLabel value=" #{dataJabatanClassification.optionAbility}" />
+                                    </p:column>
+                                    <p:column style="text-align: left;width: 20%" sortBy="#{dataJabatanClassification.value}" > 
+                                        <f:facet name="header">  
+                                            <h:outputText value="#{appmsg['specAbility.score']}" />
+                                        </f:facet>
+                                        <h:outputLabel value="#{dataJabatanClassification.value}" />
+                                    </p:column> 
+                                </p:dataTable> 
+                        	</p:tab>
+                        	
+                            <p:tab id="jobSpesificationId" title="#{appmsg['jobspek.jobspek']}">  
+                                <p:dataTable  var="listJobSpecifikasi"  value="#{jabatanDetailController.listOrgTypeOfSpecJabatan}" 
+                                              id="tableId"   rowIndexVar="no">
                                     <p:column style="text-align: center;width: 25px;max-width: 25px">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['global.number']}" />
                                         </f:facet>
                                         <h:outputLabel value="#{no+1}." />
                                     </p:column>
-                                    <p:column sortBy="#{listJobCriteria.code}" > 
+                                    <p:column sortBy="#{listJobSpecifikasi.orgTypeOfSpecList.code}" style="width: 150px;text-align: center"> 
                                         <f:facet name="header" >  
-                                            <h:outputText value="#{appmsg['global.code']}" />
+                                            <h:outputText value="#{appmsg['jobspec.code']}"/>
                                         </f:facet>
-                                        <p:outputLabel value="#{listJobCriteria.code}" />
+                                        <p:outputLabel value="#{listJobSpecifikasi.orgTypeOfSpecList.code}" />
                                     </p:column>
-                                    <p:column sortBy="#{listJobCriteria.name}" > 
+                                    <p:column sortBy="#{listJobSpecifikasi.orgTypeOfSpecList.name}"> 
                                         <f:facet name="header">  
-                                            <h:outputText value="#{appmsg['global.name']}" />
+                                            <h:outputText value="#{appmsg['jobspec.nama']}"/>
                                         </f:facet>
-                                        <p:outputLabel value="#{listJobCriteria.name}"/>
-                                    </p:column>
-                                    <p:column sortBy="#{listJobCriteria.description}" > 
-                                        <f:facet name="header">  
-                                            <h:outputText value="#{appmsg['global.description']}" />
-                                        </f:facet>
-                                        <h:outputLabel value=" #{listJobCriteria.description}" />
+                                        <h:outputLabel value=" #{listJobSpecifikasi.orgTypeOfSpecList.name}" />
                                     </p:column> 
-                                </p:dataTable> 
+                                </p:dataTable>  
                             </p:tab>  
+                            
+                           
                         </p:tabView>
                         <p:separator/>
                         <h:panelGrid columns="2" style="margin-bottom: 5px;float: left">
@@ -218,30 +317,6 @@
                 </div>
                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                     <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
-                </p:dialog>
-                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
-                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
-                    <div align="center">
-                        <div align="center">
-                            <h:panelGrid columns="2" style="text-align: justify">
-                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
-                                <h:panelGroup>
-                                    <h:panelGrid style="text-align: center">
-                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
-                                    </h:panelGrid>
-                                </h:panelGroup>
-                            </h:panelGrid>
-                        </div>
-                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
-                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
-                            <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{jabatanDetailController.selectedOrgTypeSpecJabatan.orgTypeOfSpecList.name}" styleClass="label_hrm"/>
-                        </h:panelGrid>
-                        <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{jabatanDetailController.doDelete()}" update="jobTitleViewId, userViewGrowlId"
-                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
-                    </div>
                 </p:dialog>
 
             </ui:define>
