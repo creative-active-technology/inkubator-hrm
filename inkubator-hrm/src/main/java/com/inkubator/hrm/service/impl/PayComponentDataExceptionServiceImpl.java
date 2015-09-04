@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
@@ -15,8 +16,10 @@ import com.inkubator.hrm.service.PayComponentDataExceptionService;
 import com.inkubator.hrm.web.model.PayComponentDataExceptionModel;
 import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -83,6 +86,10 @@ public class PayComponentDataExceptionServiceImpl extends IServiceImpl implement
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(PayComponentDataException entity) throws Exception {
+    	Long getDuplicateEmpData = payComponentDataExceptionDao.getDuplicateEmpData(entity.getEmpData().getId(), entity.getPaySalaryComponent().getId());
+    	if(getDuplicateEmpData > 0){
+    		throw new BussinessException("error.duplicate_employee");
+    	}
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
         entity.setPaySalaryComponent(paySalaryComponentDao.getEntiyByPK(entity.getPaySalaryComponent().getId()));

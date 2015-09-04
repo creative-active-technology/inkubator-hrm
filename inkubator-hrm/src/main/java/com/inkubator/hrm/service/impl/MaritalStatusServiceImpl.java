@@ -73,7 +73,7 @@ public class MaritalStatusServiceImpl extends IServiceImpl implements MaritalSta
         // check duplicate name
         long totalDuplicates = maritalStatusDao.getByMaritalStatusName(entity.getName());
         if (totalDuplicates > 0) {
-            throw new BussinessException("marital.error_duplicate_marital_code");
+            throw new BussinessException("maritalstatus.status_error");
         }
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setName(entity.getName());
