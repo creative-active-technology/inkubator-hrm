@@ -11,6 +11,7 @@ import com.inkubator.hrm.entity.RiwayatAkses;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -40,6 +41,7 @@ public class HomeController extends BaseController {
     private RiwayatAksesService riwayatAksesService;
     @ManagedProperty(value = "#{hrmUserService}")
     private HrmUserService hrmUserService;
+    private String roleUser;
 
     @PostConstruct
     @Override
@@ -49,7 +51,8 @@ public class HomeController extends BaseController {
         /**
          * saving process of User Access History
          */
-
+        roleUser = HrmUserInfoUtil.getRolesString();
+        roleUser = StringsUtils.substringBefore(roleUser, ",");
         StringBuffer urlPath = FacesUtil.getRequest().getRequestURL();
         RiwayatAkses akses = new RiwayatAkses();
         akses.setDateAccess(new Date());
@@ -74,7 +77,7 @@ public class HomeController extends BaseController {
             LOGGER.info("Begin redirecting");
             LOGGER.info("Kondisi" + isValid);
             HrmUser hrmUser = hrmUserService.getByUserId(HrmUserInfoUtil.getUserName());
-            if (hrmUser.getEmpData()!=null&&isValid) {
+            if (hrmUser.getEmpData() != null && isValid) {
                 LOGGER.info("redirec ok");
                 return "/protected/check_in_out.htm?faces-redirect=true";
             } else {
@@ -92,18 +95,26 @@ public class HomeController extends BaseController {
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
-    
+
     public String doChangeLanguageSession() {
-    	try {
-	    	String languange = FacesUtil.getRequestParameter("languange");
-	    	FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
-	    	ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-    	} catch (Exception ex) {
+        try {
+            String languange = FacesUtil.getRequestParameter("languange");
+            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
-    	
-    	return null;
+
+        return null;
+    }
+
+    public String getRoleUser() {
+        return roleUser;
+    }
+
+    public void setRoleUser(String roleUser) {
+        this.roleUser = roleUser;
     }
 
 }
