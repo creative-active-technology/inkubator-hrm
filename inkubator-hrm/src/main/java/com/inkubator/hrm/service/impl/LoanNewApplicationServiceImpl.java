@@ -293,17 +293,20 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         } else if (typeOfInterest.equals(HRMConstant.FLOATING)) {
             loanPayment = HRMFinanceLib.getLoanPaymentEffectiveMode(loanPayment);
         }
+        
+        List<JadwalPembayaran> listjadwalPembayaran = loanPayment.getJadwalPembayarans();
+        List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments = new ArrayList<>();
 
         //convert jadwalPembayaran to loanNewApplicationInstallment
-        List<LoanNewApplicationInstallment> listLoanNewApplicationInstallments = new ArrayList<>();
-        for (JadwalPembayaran jadwalPembayaran : loanPayment.getJadwalPembayarans()) {
-
+        for (JadwalPembayaran jadwalPembayaran : listjadwalPembayaran) {
+        	int index = listjadwalPembayaran.indexOf(jadwalPembayaran);
             LoanNewApplicationInstallment loanNewApplicationInstallment = new LoanNewApplicationInstallment();
             loanNewApplicationInstallment.setInstallmentDate(jadwalPembayaran.getTanggalPembayaran());
             loanNewApplicationInstallment.setInterestNominal(jadwalPembayaran.getBunga());
             loanNewApplicationInstallment.setBasicNominal(jadwalPembayaran.getPokok());
             loanNewApplicationInstallment.setTotalPayment(jadwalPembayaran.getAngsuran());
             loanNewApplicationInstallment.setRemainingBasic(jadwalPembayaran.getSisaUtang());
+            loanNewApplicationInstallment.setNumOfInstallment(index + 1);
             listLoanNewApplicationInstallments.add(loanNewApplicationInstallment);
         }
 

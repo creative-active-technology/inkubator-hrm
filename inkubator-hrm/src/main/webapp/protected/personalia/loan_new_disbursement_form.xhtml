@@ -55,7 +55,7 @@
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
                                         <p:calendar  id="loanDisbursementDate" pattern="dd MMMM yyyy" label="#{appmsg['loanCanceled.canceledDate']}"
                                                      value="#{loanNewDisbursementFormController.model.disbursementDate}"  
-                                                     readonly="false" required="true" size="28" showOn="button"
+                                                     readonly="false" required="true" size="28" showOn="button" mindate="#{loanNewDisbursementFormController.minimumBackDate}"
                                                      style="width:250px;" >                                    
                                         </p:calendar>
                                         <p:message for="loanDisbursementDate"/>                                 
@@ -157,7 +157,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.loanNewType.loanTypeCode} #{data.loanNewType.loanTypeName}" />
                             </p:column>                            
-                            <p:column sortBy="nominalPrincipal" style="width: 13%;" >
+                            <p:column sortBy="nominalPrincipal" style="width: 10%;" >
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['loan.nominal_principal']}"/>
                                 </f:facet>
@@ -168,7 +168,7 @@
                                 
                             </p:column>                           
                             
-                           <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">                               
+                           <p:column headerText="#{appmsg['global.action']}" style="width: 8%;text-align: center" exportable="false">                               
                                 <p:selectBooleanButton value="#{loanNewDisbursementFormController.model.selectedIds[data.id]}" styleClass="label_button"
 					onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
                             </p:column>    
