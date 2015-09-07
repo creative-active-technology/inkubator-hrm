@@ -15,8 +15,10 @@ import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.service.OrgTypeOfSpecJabatanService;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -240,5 +242,11 @@ public class OrgTypeOfSpecJabatanServiceImpl extends IServiceImpl implements Org
     public OrgTypeOfSpecJabatan getEntityByPK(OrgTypeOfSpecJabatanId id) throws Exception {
         return orgTypeOfSpecJabatanDao.getEntityByPK(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<OrgTypeOfSpecJabatan> getAllDataByJabatanId(Long id) throws Exception {
+		return orgTypeOfSpecJabatanDao.getAllDataByJabatanId(id);
+	}
     
 }

@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.OrgTypeOfSpecJabatanDao;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
@@ -69,5 +71,18 @@ public class OrgTypeOfSpecJabatanDaoImpl extends IDAOImpl<OrgTypeOfSpecJabatan> 
         criteria.add(Restrictions.eq("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<OrgTypeOfSpecJabatan> getAllDataByJabatanId(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("jabatan.id", id));
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("orgTypeOfSpecList", FetchMode.JOIN);
+        
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("orgTypeOfSpecList", "orgTypeOfSpecList", JoinType.INNER_JOIN);
+        
+        return criteria.list();
+	}
     
 }
