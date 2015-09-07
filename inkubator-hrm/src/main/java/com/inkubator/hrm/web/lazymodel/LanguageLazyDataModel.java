@@ -34,14 +34,14 @@ public class LanguageLazyDataModel extends LazyDataModel<LanguageUsed> implement
     public List<LanguageUsed> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
-        	Order orderable = null;
-	        if (sortField != null) {
-	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
-	        } else {
-	        	orderable = Order.desc("languageName");
-	        }
+        	Order order = null;
+            if(sortField != null){
+                order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+            }else{
+                order = Order.desc("languageName");
+            }
 	        
-	        languages = languageService.getByParam(parameter, first, pageSize, orderable);
+	        languages = languageService.getByParam(parameter, first, pageSize, order);
             total = Integer.parseInt(String.valueOf(languageService.getTotalLanguageByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
