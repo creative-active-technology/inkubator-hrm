@@ -19,4 +19,5 @@ public interface AppraisalDetailDao extends IDAO<AppraisalDetail> {
 
     public AppraisalDetail getEntityByPKWithDetail(Long id);
 
+    
 }
