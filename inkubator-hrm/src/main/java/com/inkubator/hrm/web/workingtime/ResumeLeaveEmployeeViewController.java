@@ -116,5 +116,7 @@ public class ResumeLeaveEmployeeViewController extends BaseController {
 		this.listLeaveImplementationDate = listLeaveImplementationDate;
 	}
     
-    
+    public String doBack(){
+    	return "/protected/home.htm?faces-redirect=true";
+    }
 }
