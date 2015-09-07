@@ -8,12 +8,14 @@ import com.inkubator.hrm.web.model.ReligionModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -39,12 +41,9 @@ public class ReligionFormController extends BaseController {
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNumeric(param)) {
             try {
-                Religion religion = religionService.getEntiyByPK(Long.parseLong(param));
+                Religion religion = doSelectEntity(Long.parseLong(param));
                 if (religion != null) {
-                    religionModel.setId(religion.getId());
-                    religionModel.setName(religion.getName());
-                    religionModel.setCode(religion.getCode());
-                    religionModel.setDescription(religion.getDescription());
+                	religionModel = getModelFromEntity(religion);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -60,6 +59,29 @@ public class ReligionFormController extends BaseController {
         isUpdate = null;
     }
 
+    public Religion doSelectEntity(Long id) throws Exception{
+    	Religion religion = religionService.getEntiyByPK(id);
+    	return religion;
+    }
+    
+    public ReligionModel getModelFromEntity(Religion religion){
+    	ReligionModel model = new ReligionModel();
+    	model.setId(religion.getId());
+    	model.setName(religion.getName());
+    	model.setCode(religion.getCode());
+    	model.setDescription(religion.getDescription());
+        return model;
+    }
+    
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		Religion religion = doSelectEntity(religionModel.getId());
+    		religionModel = getModelFromEntity(religion);
+    	}else{
+    		religionModel = new ReligionModel();
+    	}
+    }
+    
     public ReligionModel getReligionModel() {
         return religionModel;
     }

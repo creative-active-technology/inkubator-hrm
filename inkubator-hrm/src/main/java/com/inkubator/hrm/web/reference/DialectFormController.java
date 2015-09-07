@@ -3,17 +3,21 @@ package com.inkubator.hrm.web.reference;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Dialect;
+import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.service.DialectService;
 import com.inkubator.hrm.web.model.DialectModel;
+import com.inkubator.hrm.web.model.RaceModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -41,10 +45,7 @@ public class DialectFormController extends BaseController {
             try {
                 Dialect dialect = dialectService.getEntiyByPK(Long.parseLong(param));
                 if (dialect != null) {
-                    dialectModel.setId(dialect.getId());
-                    dialectModel.setDialectCode(dialect.getDialectCode());
-                    dialectModel.setDialectName(dialect.getDialectName());
-                    dialectModel.setDescription(dialect.getDescription());
+                    dialectModel = getModelFromEntity(dialect);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -60,6 +61,29 @@ public class DialectFormController extends BaseController {
         isUpdate = null;
     }
 
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		Dialect dialect = doSelectEntity(dialectModel.getId());
+    		dialectModel = getModelFromEntity(dialect);
+    	}else{
+    		dialectModel = new DialectModel();
+    	}
+    }
+    
+    public Dialect doSelectEntity(Long id) throws Exception{
+    	Dialect dialect = dialectService.getEntiyByPK(id);
+    	return dialect;
+    }
+    
+    public DialectModel getModelFromEntity(Dialect dialect){
+    	DialectModel model = new DialectModel();
+    	model.setId(dialect.getId());
+    	model.setDialectCode(dialect.getDialectCode());
+    	model.setDialectName(dialect.getDialectName());
+    	model.setDescription(dialect.getDescription());
+        return model;
+    }
+    
     public DialectModel getDialectModel() {
         return dialectModel;
     }

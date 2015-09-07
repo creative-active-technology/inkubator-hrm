@@ -2,18 +2,22 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.FamilyRelation;
 import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.service.RaceService;
+import com.inkubator.hrm.web.model.FamilyRelationModel;
 import com.inkubator.hrm.web.model.RaceModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -41,10 +45,7 @@ public class RaceFormController extends BaseController {
             try {
                 Race race = raceService.getEntiyByPK(Long.parseLong(param));
                 if (race != null) {
-                    raceModel.setId(race.getId());
-                    raceModel.setRaceCode(race.getRaceCode());
-                    raceModel.setRaceName(race.getRaceName());
-                    raceModel.setDescription(race.getDescription());
+            		raceModel = getModelFromEntity(race);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -60,6 +61,29 @@ public class RaceFormController extends BaseController {
         isUpdate = null;
     }
 
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		Race race = doSelectEntity(raceModel.getId());
+    		raceModel = getModelFromEntity(race);
+    	}else{
+    		raceModel = new RaceModel();
+    	}
+    }
+    
+    public Race doSelectEntity(Long id) throws Exception{
+    	Race face = raceService.getEntiyByPK(id);
+    	return face;
+    }
+    
+    public RaceModel getModelFromEntity(Race race){
+    	RaceModel model = new RaceModel();
+    	model.setId(race.getId());
+    	model.setRaceCode(race.getRaceCode());
+    	model.setRaceName(race.getRaceName());
+    	model.setDescription(race.getDescription());
+        return model;
+    }
+    
     public RaceModel getRaceModel() {
         return raceModel;
     }
