@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -22,7 +23,8 @@ import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.web.model.PayReceiverBankAccountModel;
 import com.inkubator.hrm.web.search.PayReceiverBankAccountSearchParameter;
-
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 
 /**
  *
@@ -103,7 +105,7 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
     @Override
     public Long getTotalByParam(PayReceiverBankAccountSearchParameter searchParameter) {
 
-       final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM emp_data ep");
+        final StringBuilder nativeQuery = new StringBuilder("SELECT count(*) FROM(SELECT count(ba.id) FROM emp_data ep");
         nativeQuery.append(" JOIN bio_data bi on ep.bio_data_id=bi.id");
         nativeQuery.append(" JOIN bio_bank_account ba on ba.bio_data_id=bi.id");
         nativeQuery.append(" JOIN golongan_jabatan go on ep.gol_jab_id=go.id");
@@ -150,7 +152,6 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         return null;
     }
 
-
     @Override
     public List<PayReceiverBankAccount> getAllByEmpId(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -161,16 +162,26 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         return criteria.list();
     }
 
-	@Override
-	public List<PayReceiverBankAccount> getAllDataWithDetail() {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-		criteria.setFetchMode("bioBankAccount", FetchMode.JOIN);
-		criteria.setFetchMode("bioBankAccount.bank", FetchMode.JOIN);
-		criteria.addOrder(Order.asc("bioData.firstName"));
-		return criteria.list();
-	}
+    @Override
+    public List<PayReceiverBankAccount> getAllDataWithDetail() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.setFetchMode("bioBankAccount", FetchMode.JOIN);
+        criteria.setFetchMode("bioBankAccount.bank", FetchMode.JOIN);
+        criteria.addOrder(Order.asc("bioData.firstName"));
+        return criteria.list();
+    }
 
+    @Override
+    public void saveListPayBankReceive(List<PayReceiverBankAccount> accounts) {
+        for (PayReceiverBankAccount account : accounts) {
+            account.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            account.setCreatedBy(UserInfoUtil.getUserName());
+            account.setCreatedOn(new Date());
+            getCurrentSession().save(account);
+            getCurrentSession().flush();
+        }
+    }
 
 }
