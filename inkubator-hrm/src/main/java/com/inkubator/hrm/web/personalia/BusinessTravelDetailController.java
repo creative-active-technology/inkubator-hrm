@@ -54,7 +54,7 @@ public class BusinessTravelDetailController extends BaseController {
             String param = execution.substring(0, 1);
             if(StringUtils.equals(param, "e")){
             	/* parameter (businessTravelNo) ini datangnya dari businesstravel Flow atau View */
-            	selectedBusinessTravel = businessTravelService.getEntityByBusinessTravelNoWithDetail(execution.substring(1));
+            	selectedBusinessTravel = businessTravelService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
             } else {
             	/* parameter (activityNumber) ini datangnya dari home approval request history View */
             	selectedBusinessTravel = businessTravelService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));

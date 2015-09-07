@@ -173,6 +173,16 @@ public class BusinessTravelFormController implements Serializable{
 		try {
 			if(businessTravel.getId() == null) {
 				message = businessTravelService.save(businessTravel, model.getBusinessTravelComponents(), false);
+				
+				if (StringUtils.equals(message, "success_need_approval")) {
+ 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+ 				}else if (StringUtils.equals(message, "success_without_approval")) {
+ 					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				
+					//set id to modelFlow
+					model.setId(businessTravel.getId());
+					context.getFlowScope().put("businessTravelModel", model);
+ 				}
 			} else {
 				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
 				message = "success_without_approval";
@@ -187,6 +197,7 @@ public class BusinessTravelFormController implements Serializable{
 	}
 	
 	public String doEndVerification(){
+		System.out.println("aaaaaaaaaaaaa"  + endResult);
 		return endResult;
 	}
 	public List<EmpData> doAutoCompletEmployee(String param){
