@@ -244,31 +244,37 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
         }
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception {
-		return this.payReceiverBankAccountDao.getAllDataWithDetail();
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<PayReceiverBankAccount> getAllDataWithDetail() throws Exception {
+        return this.payReceiverBankAccountDao.getAllDataWithDetail();
 
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
-	public List<PayReceiverAccountModel> getAllDataByEmpDataId(Long empDataId) throws Exception {
-		List<PayReceiverBankAccount> listAccount = payReceiverBankAccountDao.getAllByEmpId(empDataId);
-		PayTempKalkulasi takeHomePay = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
-		List<PayReceiverAccountModel> listModel = new ArrayList<>();
-		for(PayReceiverBankAccount account : listAccount){
-			PayReceiverAccountModel model = new PayReceiverAccountModel();
-			model.setBankName(account.getBioBankAccount().getBank().getBankName());
-			model.setAccountNumber(account.getBioBankAccount().getAccountNumber());
-			model.setAccountName(account.getBioBankAccount().getOwnerName());
-			model.setPercent(account.getPersen());
-			BigDecimal transferNominal = takeHomePay.getNominal();
-			transferNominal = transferNominal.multiply(new BigDecimal(account.getPersen())).divide(new BigDecimal(100));
-			model.setNominal(transferNominal.doubleValue());
-			listModel.add(model);
-		}
-		return listModel;
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<PayReceiverAccountModel> getAllDataByEmpDataId(Long empDataId) throws Exception {
+        List<PayReceiverBankAccount> listAccount = payReceiverBankAccountDao.getAllByEmpId(empDataId);
+        PayTempKalkulasi takeHomePay = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empDataId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+        List<PayReceiverAccountModel> listModel = new ArrayList<>();
+        for (PayReceiverBankAccount account : listAccount) {
+            PayReceiverAccountModel model = new PayReceiverAccountModel();
+            model.setBankName(account.getBioBankAccount().getBank().getBankName());
+            model.setAccountNumber(account.getBioBankAccount().getAccountNumber());
+            model.setAccountName(account.getBioBankAccount().getOwnerName());
+            model.setPercent(account.getPersen());
+            BigDecimal transferNominal = takeHomePay.getNominal();
+            transferNominal = transferNominal.multiply(new BigDecimal(account.getPersen())).divide(new BigDecimal(100));
+            model.setNominal(transferNominal.doubleValue());
+            listModel.add(model);
+        }
+        return listModel;
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    public void saveListPayBankReceive(List<PayReceiverBankAccount> accounts) throws Exception {
+        payReceiverBankAccountDao.saveListPayBankReceive(accounts);
+    }
 
 }
