@@ -107,8 +107,8 @@
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formNationalityFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formNationalityFormId" />  
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" action="#{nationalityFormController.doReset()}">  
+                            <!-- <p:resetInput target="formNationalityFormId" />   -->
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>

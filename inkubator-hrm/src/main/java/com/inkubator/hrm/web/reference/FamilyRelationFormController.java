@@ -3,17 +3,21 @@ package com.inkubator.hrm.web.reference;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.FamilyRelation;
+import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.service.FamilyRelationService;
 import com.inkubator.hrm.web.model.FamilyRelationModel;
+import com.inkubator.hrm.web.model.MaritalStatusModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -39,14 +43,9 @@ public class FamilyRelationFormController extends BaseController {
         isUpdate = Boolean.FALSE;
         if (StringUtils.isNotEmpty(param)) {
             try {
-                FamilyRelation religion = familyRelationService.getEntiyByPK(Long.parseLong(param));
-                if (religion != null) {
-                    familyRelationModel.setId(religion.getId());
-                    familyRelationModel.setRelationName(religion.getRelasiName());
-                    familyRelationModel.setDescription(religion.getDescription());
-                    familyRelationModel.setIsActive(religion.getIsActive());
-                    familyRelationModel. setIsDependent(religion.getIsDependent());
-                    familyRelationModel.setCode(religion.getCode());
+                FamilyRelation familyRelation = familyRelationService.getEntiyByPK(Long.parseLong(param));
+                if (familyRelation != null) {
+                	familyRelationModel = getModelFromEntity(familyRelation);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -62,6 +61,31 @@ public class FamilyRelationFormController extends BaseController {
         isUpdate = null;
     }
 
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		FamilyRelation familyRelation = doSelectEntity(familyRelationModel.getId());
+    		familyRelationModel = getModelFromEntity(familyRelation);
+    	}else{
+    		familyRelationModel = new FamilyRelationModel();
+    	}
+    }
+    
+    public FamilyRelation doSelectEntity(Long id) throws Exception{
+    	FamilyRelation familyRelation = familyRelationService.getEntiyByPK(id);
+    	return familyRelation;
+    }
+    
+    public FamilyRelationModel getModelFromEntity(FamilyRelation familyRelation){
+    	FamilyRelationModel model = new FamilyRelationModel();
+    	model.setId(familyRelation.getId());
+    	model.setRelationName(familyRelation.getRelasiName());
+    	model.setDescription(familyRelation.getDescription());
+    	model.setIsActive(familyRelation.getIsActive());
+    	model. setIsDependent(familyRelation.getIsDependent());
+    	model.setCode(familyRelation.getCode());
+        return model;
+    }
+    
     public void doSave() {
         FamilyRelation familyRelation = getEntityFromViewModel(familyRelationModel);
         try {

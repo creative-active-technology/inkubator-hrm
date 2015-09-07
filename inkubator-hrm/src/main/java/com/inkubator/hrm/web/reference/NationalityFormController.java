@@ -2,18 +2,22 @@ package com.inkubator.hrm.web.reference;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.Dialect;
 import com.inkubator.hrm.entity.Nationality;
 import com.inkubator.hrm.service.NationalityService;
+import com.inkubator.hrm.web.model.DialectModel;
 import com.inkubator.hrm.web.model.NationalityModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -41,10 +45,7 @@ public class NationalityFormController extends BaseController {
             try {
                 Nationality nationality = nationalityService.getEntiyByPK(Long.parseLong(param));
                 if (nationality != null) {
-                    nationalityModel.setId(nationality.getId());
-                    nationalityModel.setNationalityCode(nationality.getNationalityCode());
-                    nationalityModel.setNationalityName(nationality.getNationalityName());
-                    nationalityModel.setDescription(nationality.getDescription());
+                    nationalityModel = getModelFromEntity(nationality);
                     isUpdate = Boolean.TRUE;
                 }
             } catch (Exception e) {
@@ -60,6 +61,29 @@ public class NationalityFormController extends BaseController {
         isUpdate = null;
     }
 
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		Nationality nationality = doSelectEntity(nationalityModel.getId());
+    		nationalityModel = getModelFromEntity(nationality);
+    	}else{
+    		nationalityModel = new NationalityModel();
+    	}
+    }
+    
+    public Nationality doSelectEntity(Long id) throws Exception{
+    	Nationality nationality = nationalityService.getEntiyByPK(id);
+    	return nationality;
+    }
+    
+    public NationalityModel getModelFromEntity(Nationality nationality){
+    	NationalityModel model = new NationalityModel();
+    	model.setId(nationality.getId());
+    	model.setNationalityCode(nationality.getNationalityCode());
+    	model.setNationalityName(nationality.getNationalityName());
+    	model.setDescription(nationality.getDescription());
+        return model;
+    }
+    
     public NationalityModel getNationalityModel() {
         return nationalityModel;
     }

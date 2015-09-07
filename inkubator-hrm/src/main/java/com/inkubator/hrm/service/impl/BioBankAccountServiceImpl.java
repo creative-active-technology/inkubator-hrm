@@ -16,6 +16,7 @@ import com.inkubator.hrm.entity.BioBankAccount;
 import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Currency;
+import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.service.BioBankAccountService;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
@@ -242,6 +243,8 @@ public class BioBankAccountServiceImpl extends IServiceImpl implements BioBankAc
         bioBankAccount.setCreatedBy(UserInfoUtil.getUserName());
         bioBankAccount.setCreatedOn(new Date());
         bioBankAccountDao.save(bioBankAccount);
+       
+        
     }
 
     @Override

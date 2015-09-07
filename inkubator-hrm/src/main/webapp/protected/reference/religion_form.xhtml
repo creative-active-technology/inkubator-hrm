@@ -110,8 +110,8 @@
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formReligionFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formReligionFormId" />  
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" action="#{religionFormController.doReset()}">  
+                            <!-- <p:resetInput target="formReligionFormId" />  --> 
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>
