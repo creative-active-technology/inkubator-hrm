@@ -51,4 +51,6 @@ public interface JabatanService extends IService<Jabatan> {
 	public void saveDataJabatan(JobJabatanModel jobJabatanModel) throws Exception;
 	
 	public Jabatan getJabatanByCode(String code) throws Exception;
+	
+	public void updateDataJabatan(JobJabatanModel jobJabatanModel) throws Exception;
 }

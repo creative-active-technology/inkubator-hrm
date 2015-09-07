@@ -170,6 +170,7 @@ public class JobJabatanFormController implements Serializable {
 			//binding value to model
 			Long id = context.getFlowScope().getLong("id");	
 			jobJabatanModel = new JobJabatanModel();
+			
 			if(id != null){			
 				
 				Jabatan jabatan = jabatanService.getByIdWithKlasifikasiKerja(id);
@@ -210,6 +211,11 @@ public class JobJabatanFormController implements Serializable {
 			    
 			    List<JabatanSpesifikasi> listJabatanSpesifikasi = jabatanSpesifikasiService.getAllDataByJabatanId(jobJabatanModel.getId());
 			    jobJabatanModel.setListJabatanSpesifikasi(listJabatanSpesifikasi);
+			    
+			    List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatan = orgTypeOfSpecJabatanService.getAllDataByJabatanId(jobJabatanModel.getId());
+			    jobJabatanModel.setListOrgTypeOfSpecJabatan(listOrgTypeOfSpecJabatan);
+			    
+			    isEdit = Boolean.TRUE;
                 
 			}else{
 				
@@ -372,7 +378,11 @@ public class JobJabatanFormController implements Serializable {
 				 return message;
 			 }
 			 
-			 jabatanService.saveDataJabatan(jobJabatanModel);
+			 if(isEdit){
+				 jabatanService.updateDataJabatan(jobJabatanModel);
+			 }else{
+				 jabatanService.saveDataJabatan(jobJabatanModel);
+			 }
 			
 			 //Set Id jabatan yang sudah di simpan ke jabatanModel agar ketika di redirect ke detail sudah didapatkan id nya
 			 Jabatan jabatan = jabatanService.getJabatanByCode(jobJabatanModel.getKodeJabatan());
@@ -648,6 +658,11 @@ public class JobJabatanFormController implements Serializable {
 	            LOGGER.error("Error", ex);
 	        }
 	    }
+	 
+	 public String doEditJabatanDeskripsi(RequestContext context){
+		 String result = "error";
+		 return result;
+	 }
 	 
 	 public String doCheckIsListJabatanDescriptionEmpty(RequestContext context){
 		 String message = "success";
