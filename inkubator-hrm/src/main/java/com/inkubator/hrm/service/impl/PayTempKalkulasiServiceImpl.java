@@ -38,7 +38,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.LoanPaymentDetailDao;
+import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
@@ -46,12 +46,12 @@ import com.inkubator.hrm.dao.PayTempKalkulasiDao;
 import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
-import com.inkubator.hrm.dao.ReimbursmentDao;
+import com.inkubator.hrm.dao.RmbsApplicationDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.BenefitGroupRate;
 import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
@@ -59,7 +59,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasi;
 import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.entity.PayTempUploadData;
-import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
@@ -88,10 +88,6 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
     @Autowired
-    private LoanPaymentDetailDao loanPaymentDetailDao;
-    @Autowired
-    private ReimbursmentDao reimbursmentDao;
-    @Autowired
     private BenefitGroupRateDao benefitGroupRateDao;
     @Autowired
     private PayTempKalkulasiEmpPajakDao payTempKalkulasiEmpPajakDao;
@@ -103,6 +99,10 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private WtGroupWorkingDao wtGroupWorkingDao;
     @Autowired
     private WtScheduleShiftService wtScheduleShiftService;
+    @Autowired
+    private RmbsApplicationDao rmbsApplicationDao;
+    @Autowired
+    private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
 
     @Override
     public PayTempKalkulasi getEntiyByPK(String id) throws Exception {
@@ -517,21 +517,21 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     LOGGER.info("Save By Basic Salary " + (((timeTmb / 30) < 1) ? "Not Full" : "Full") + ", nominal : " + nominal);
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
-                    List<LoanPaymentDetail> loanPaymentDetails = loanPaymentDetailDao.getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(
+                    List<LoanNewApplicationInstallment> installments = loanNewApplicationInstallmentDao.getAllDataDisbursedByEmpDataIdAndLoanTypeIdAndPeriodDate(
                             empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
-                    for (LoanPaymentDetail payDetail : loanPaymentDetails) {
+                    for (LoanNewApplicationInstallment installment : installments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);
                         kalkulasi.setPaySalaryComponent(paySalaryComponent);
                         kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
-                        BigDecimal nominal = new BigDecimal(payDetail.getTotalPayment());
+                        BigDecimal nominal = new BigDecimal(installment.getTotalPayment());
                         nominal = nominal.setScale(0, RoundingMode.UP);
                         kalkulasi.setNominal(nominal);
                         
                         //set detail loan
-                        int termin = payDetail.getLoan().getTermin();
-                        long cicilanKe = termin - loanPaymentDetailDao.getTotalUnPaidLoanByLoanId(payDetail.getLoan().getId(), endPeriodDate);                        
+                        int termin = installment.getLoanNewApplication().getTermin();
+                        long cicilanKe = termin - installment.getNumOfInstallment();                        
                         kalkulasi.setDetail(cicilanKe + "/" + termin);
 
                         kalkulasi.setCreatedBy(createdBy);
@@ -543,9 +543,9 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
-                    List<Reimbursment> reimbursments = reimbursmentDao.getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(
+                    List<RmbsApplication> reimbursments = rmbsApplicationDao.getAllDataDisbursedByEmpDataIdAndRmbsTypeIdAndPeriodDate(
                             empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
-                    for (Reimbursment reimbursment : reimbursments) {
+                    for (RmbsApplication reimbursment : reimbursments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
                         kalkulasi.setEmpData(empData);

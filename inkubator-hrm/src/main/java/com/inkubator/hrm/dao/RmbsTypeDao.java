@@ -17,5 +17,7 @@ public interface RmbsTypeDao extends IDAO<RmbsType> {
 	public List<RmbsType> getAllDataByStatusActive();
 
 	public RmbsType getEntityByPkWithDetail(Long id);
+
+	public List<RmbsType> getAllDataPayrollComponent(Long modelComponentId);
 	
 }

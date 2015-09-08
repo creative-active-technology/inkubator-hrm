@@ -8,13 +8,19 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LoanNewTypeDao;
 import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.web.search.LoanNewTypeSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
@@ -99,5 +105,20 @@ public class LoanNewTypeDaoImpl extends IDAOImpl<LoanNewType> implements LoanNew
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
+
+	@Override
+	public List<LoanNewType> getAllDataPayrollComponent(Long modelComponentId) {
+		ProjectionList subProjection = Projections.projectionList();
+        subProjection.add(Projections.groupProperty("modelReffernsil"));
+        
+        DetachedCriteria subQuery = DetachedCriteria.forClass(PaySalaryComponent.class);
+        subQuery.createAlias("modelComponent", "modelComponent", JoinType.INNER_JOIN);
+        subQuery.add(Restrictions.eq("modelComponent.id", modelComponentId));
+        subQuery.setProjection(subProjection);
+        
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Property.forName("id").notIn(subQuery));
+        return criteria.list();
+	}
 
 }
