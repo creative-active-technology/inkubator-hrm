@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -287,4 +288,25 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     	}    	
     	return hbm;
     }
+
+	@Override
+	public Boolean isDuplicateRequestDate(Date startRequest, Date endRequest, Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		
+		Conjunction conjStartRequest = Restrictions.conjunction();
+		conjStartRequest.add(Restrictions.le("startDate", startRequest));
+		conjStartRequest.add(Restrictions.ge("endDate", startRequest));
+        
+        Conjunction conjEndRequest = Restrictions.conjunction();
+        conjEndRequest.add(Restrictions.le("startDate", endRequest));
+        conjEndRequest.add(Restrictions.ge("endDate", endRequest));
+        
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(conjStartRequest);
+        disjunction.add(conjEndRequest);
+        
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(disjunction);        
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult() > 0;
+	}
 }
