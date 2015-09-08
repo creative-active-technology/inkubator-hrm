@@ -52,7 +52,11 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3">
+                                <h:panelGrid columns="4">
+                                    <p:commandButton value="Approval Diagram" action="#{approvalDefinitionViewController.doGrafik()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" icon="ui-icon-contact"
+                                                     styleClass="label_button" ajax="true" immediate="true">
+
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableApprovalDevId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_User"/>
                                     </p:commandButton>
