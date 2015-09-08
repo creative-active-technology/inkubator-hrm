@@ -254,5 +254,18 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
     	
     	return hbm.list();
 	}
+
+	@Override
+	public List<RmbsApplication> getAllDataDisbursedByEmpDataIdAndRmbsTypeIdAndPeriodDate(Long empDataId, Long rmbsTypeId, Date startPeriodDate, Date endPeriodDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("rmbsApplicationDisbursements", "rmbsApplicationDisbursements", JoinType.INNER_JOIN);
+		criteria.createAlias("rmbsApplicationDisbursements.rmbsDisbursement", "rmbsDisbursement", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("rmbsType.id", rmbsTypeId));
+		criteria.add(Restrictions.le("rmbsDisbursement.payrollPeriodDate", endPeriodDate));
+		criteria.add(Restrictions.ge("rmbsDisbursement.payrollPeriodDate", startPeriodDate));
+		criteria.add(Restrictions.ge("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED));
+		return criteria.list();
+	}
 	
 }
