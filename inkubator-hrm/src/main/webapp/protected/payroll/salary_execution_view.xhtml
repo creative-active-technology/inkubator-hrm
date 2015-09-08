@@ -188,11 +188,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
                                 </f:facet>
-                                <div style="text-align: right">
                                     <h:outputLabel value= "#{data.nominal}" >
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
-                                </div>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
