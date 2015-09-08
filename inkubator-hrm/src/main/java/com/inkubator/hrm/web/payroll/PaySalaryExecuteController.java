@@ -137,9 +137,15 @@ public class PaySalaryExecuteController extends BaseController {
     }
 
     public void doCalculatePayroll() {
+    	if(payrollCalculationDate == null){
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "salaryCalculation.payroll_date_should_be_filled",
+    		        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		FacesContext.getCurrentInstance().validationFailed();
+    	} 
+    	
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
     	 *  please see onComplete method that will set jobExecution == null */
-    	if(jobExecution == null){ 
+    	if(jobExecution == null && payrollCalculationDate != null){ 
 	        try {	        	
 	            long sleepVariable = empDataService.getTotalEmpDataNotTerminate() * 3;
 	            

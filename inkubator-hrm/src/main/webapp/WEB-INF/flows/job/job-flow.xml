@@ -11,11 +11,17 @@
     	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
       	<evaluate expression="jobJabatanFormController.initJabatanProcessFlow(flowRequestContext)"/>
 	</on-start>
-
+	
+	<!--  Beginning Step 1 Jabatan -->
+	
     <view-state id="add_job_jabatan" view="job_jabatan_form.xhtml">
 		<transition on="next" to="add_job_jabatan_edukasi" />
 		<transition on="end" to="end"/>
     </view-state>
+    
+    <!--  End Step 1 Jabatan -->
+    
+    <!--  Beginning Step 2 JabatanEdukasi -->
     
     <view-state id="add_job_jabatan_edukasi" view="job_jabatan_education_form.xhtml">
     	<transition on="back" to="add_job_jabatan"  />
@@ -24,6 +30,10 @@
 		</transition>
     	<transition on="end" to="end"/>
     </view-state>
+    
+    <!--  End Step 2 JabatanEdukasi -->
+    
+    <!--  Beginning Step 3 JabatanProfesi -->
     
     <view-state id="add_job_jabatan_profesi" view="job_jabatan_profesi_form.xhtml">
     	<transition on="back" to="add_job_jabatan_edukasi" >
@@ -35,6 +45,10 @@
     	<transition on="end" to="end"/>
     </view-state>
     
+    <!--  End Step 3 JabatanProfesi -->
+    
+    <!--  Beginning Step 4 JabatanMajor -->
+    
     <view-state id="add_job_jabatan_major" view="job_jabatan_major_form.xhtml">
     	<transition on="back" to="add_job_jabatan_profesi" >
     		<evaluate  expression="jobJabatanFormController.getListOccupationTypeFromFlow(flowRequestContext)" /> 
@@ -44,6 +58,10 @@
 		</transition>
     	<transition on="end" to="end"/>
     </view-state>
+    
+    <!--  End Step 4 JabatanMajor -->
+    
+    <!--  Beginning Step 5 JabatanFaculty -->
     
     <view-state id="add_job_jabatan_faculty" view="job_jabatan_faculty_form.xhtml">
     	<transition on="back" to="add_job_jabatan_major" >
@@ -55,6 +73,10 @@
     	<transition on="end" to="end"/>
     </view-state>
     
+    <!--  End Step 5 JabatanFaculty -->
+    
+    <!--  Beginning Step 6 KlasifikasiKerjaJabatan -->
+    
     <view-state id="add_job_jabatan_classification" view="job_jabatan_classification_form.xhtml">
     	<transition on="back" to="add_job_jabatan_faculty" >
     		<evaluate  expression="jobJabatanFormController.getListFacultyFromFlow(flowRequestContext)" /> 
@@ -65,55 +87,41 @@
     	<transition on="end" to="end"/>
     </view-state>
     
+    <!--  End Step 6 KlasifikasiKerjaJabatan -->
+    
+    <!--  Beginning Step 7 JabatanDeskripsi -->
+    
     <view-state id="add_job_jabatan_description"  view="job_jabatan_description_view.xhtml">
     	<transition on="back" to="add_job_jabatan_classification" >
     		<evaluate  expression="jobJabatanFormController.getListKlasifikasiKerjaFromFlow(flowRequestContext)" /> 
 		</transition>
-		<transition  on="add_new" to="add_new_jabatan_desc" />
+		<transition  on="add_new" to="jabatan_description_form" >
+			<evaluate expression="jobJabatanFormController.initialAddJabatanDeskripsiFlow(flowRequestContext)" />
+		</transition>
+		<transition on="edit" to="jabatan_description_form"  >
+			<evaluate expression="jobJabatanFormController.initialEditJabatanDeskripsiFlow(flowRequestContext)" />
+		</transition>
 		<transition  on="delete" to="doDeleteJabatanDescription" />
-		<transition on="edit" to="doEditJabatanDescription" />
 		<transition on="next" to="doCheckIsListJabatanDescriptionEmpty" />
     	<transition on="end" to="end"/>
     </view-state>
-    <view-state id="add_new_jabatan_desc" view="job_jabatan_description_form.xhtml">
-    	<on-entry> 
-    		<evaluate expression="jobJabatanFormController.initialAddJabatanDeskripsiFlow(flowRequestContext)" />
-    	 </on-entry>
+    
+    <view-state id="jabatan_description_form" view="job_jabatan_description_form.xhtml">
     	<transition on="back" to="add_job_jabatan_description" />
 		<transition on="add" to="doAddJabatanDescription" />
-    </view-state>
-    <view-state id="add_job_jabatan_spesification"  view="job_jabatan_spesification_view.xhtml">
-    	<transition on="back" to="add_job_jabatan_description" />
-    	<transition  on="add_new" to="add_new_jabatan_spec" />
-		<transition  on="delete" to="doDeleteJabatanSpesification" />
-		<!-- <transition on="next" to="add_job_jabatan_type_spec" /> -->
-		<transition on="next" to="doCheckIsListJabatanSpecificationEmpty" />
-    </view-state>
-    <view-state id="add_new_jabatan_spec" view="job_jabatan_spesification_form.xhtml">
-    	<on-entry> 
-    		<evaluate expression="jobJabatanFormController.initialAddJabatanSpesificationFlow(flowRequestContext)" />
-    	</on-entry>
-    	<transition on="back" to="add_job_jabatan_spesification" />
-		<transition on="add" to="doAddJabatanSpesification" />
-    </view-state>
-    <view-state id="add_job_jabatan_type_spec"  view="job_jabatan_type_spec_view.xhtml">
-    	<transition on="back" to="add_job_jabatan_spesification" />
-    	<transition  on="add_new" to="add_new_jabatan_type_spec" />
-    	<transition  on="save" to="doSaveAllData" />
-		<transition  on="delete" to="doDeleteJabatanTypeSpec" />
-    </view-state>
-    <view-state id="add_new_jabatan_type_spec" view="job_jabatan_type_spec_form.xhtml">
-    	<on-entry> 
-    		<evaluate expression="jobJabatanFormController.initialAddJabatanTypeSpecFlow(flowRequestContext)" />
-    	</on-entry>
-    	<transition on="back" to="add_job_jabatan_type_spec" />
-		<transition on="add" to="doAddJabatanTypeSpec" />
+		<transition on="edit" to="doEditJabatanDescription" />
     </view-state>
     
      <action-state id="doAddJabatanDescription">
         <evaluate expression="jobJabatanFormController.doAddJabatanDescription(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_description"/>
-        <transition on="error" to="add_new_jabatan_desc"/>
+        <transition on="error" to="jabatan_description_form"/>
+    </action-state>
+    
+     <action-state id="doEditJabatanDescription">
+        <evaluate expression="jobJabatanFormController.doEditJabatanDescription(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_description"/>
+        <transition on="error" to="jabatan_description_form"/>
     </action-state>
    	
    	 <action-state id="doDeleteJabatanDescription">
@@ -122,23 +130,44 @@
         <transition on="error" to="add_job_jabatan_description"/>
     </action-state>
     
-    <action-state id="doEditJabatanDescription">
-        <evaluate expression="jobJabatanFormController.doEditJabatanDeskripsi(flowRequestContext)"/>        
-        <transition on="success" to="add_job_jabatan_description"/>
-        <transition on="error" to="add_job_jabatan_description"/>
-    </action-state>
-    
-    
-    <action-state id="doCheckIsListJabatanDescriptionEmpty">
+     <action-state id="doCheckIsListJabatanDescriptionEmpty">
         <evaluate expression="jobJabatanFormController.doCheckIsListJabatanDescriptionEmpty(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_spesification"/>
         <transition on="error" to="add_job_jabatan_description"/>
     </action-state>
     
+     <!--  End Step 7 JabatanDeskripsi -->
+    
+    <!--  Beginning Step 8 JabatanSpecification -->
+    
+    <view-state id="add_job_jabatan_spesification"  view="job_jabatan_spesification_view.xhtml">
+    	<transition  on="add_new" to="jabatan_specification_form" >
+    		<evaluate expression="jobJabatanFormController.initialAddJabatanSpesificationFlow(flowRequestContext)" />
+    	</transition>
+    	<transition  on="edit" to="jabatan_specification_form" >
+    		<evaluate expression="jobJabatanFormController.initialEditJabatanSpesificationFlow(flowRequestContext)" />
+    	</transition>
+		<transition  on="delete" to="doDeleteJabatanSpesification" />
+		<transition on="back" to="add_job_jabatan_description" />
+		<transition on="next" to="doCheckIsListJabatanSpecificationEmpty" />
+    </view-state>
+    
+    <view-state id="jabatan_specification_form" view="job_jabatan_spesification_form.xhtml">
+    	<transition on="back" to="add_job_jabatan_spesification" />
+		<transition on="add" to="doAddJabatanSpesification" />
+		<transition on="edit" to="doEditJabatanSpesification" />
+    </view-state>
+    
     <action-state id="doAddJabatanSpesification">
         <evaluate expression="jobJabatanFormController.doAddJabatanSpesification(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_spesification"/>
-        <transition on="error" to="add_new_jabatan_spec"/>
+        <transition on="error" to="jabatan_specification_form"/>
+    </action-state>
+    
+     <action-state id="doEditJabatanSpesification">
+        <evaluate expression="jobJabatanFormController.doEditJabatanSpesification(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_spesification"/>
+        <transition on="error" to="jabatan_specification_form"/>
     </action-state>
     
     <action-state id="doDeleteJabatanSpesification">
@@ -157,25 +186,49 @@
         <transition on="error" to="add_job_jabatan_spesification"/>
     </action-state>
     
+     <!--  End Step 8 JabatanSpecification -->
+     
+     <!--  Beginning Step 9 JabatanTypeSpec -->
+     
+    <view-state id="add_job_jabatan_type_spec"  view="job_jabatan_type_spec_view.xhtml">
+    	<transition on="back" to="add_job_jabatan_spesification" />
+    	<transition  on="add_new" to="jabatan_type_spec_form" />
+    	<transition  on="save" to="doSaveAllData" />
+		<transition  on="delete" to="doDeleteJabatanTypeSpec" />
+    </view-state>
+    
+    <view-state id="jabatan_type_spec_form" view="job_jabatan_type_spec_form.xhtml">
+    	<on-entry> 
+    		<evaluate expression="jobJabatanFormController.initialAddJabatanTypeSpecFlow(flowRequestContext)" />
+    	</on-entry>
+    	<transition on="back" to="add_job_jabatan_type_spec" />
+		<transition on="add" to="doAddJabatanTypeSpec" />
+    </view-state>
+    
     <action-state id="doAddJabatanTypeSpec">
         <evaluate expression="jobJabatanFormController.doAddJabatanTypeSpec(flowRequestContext)"/>        
         <transition on="success" to="add_job_jabatan_type_spec"/>
-        <transition on="error" to="add_new_jabatan_type_spec"/>
+        <transition on="error" to="jabatan_type_spec_form"/>
     </action-state>
+    
+    <action-state id="doDeleteJabatanTypeSpec">
+        <evaluate expression="jobJabatanFormController.doDeleteJabatanTypeSpec(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_type_spec"/>
+        <transition on="error" to="add_job_jabatan_type_spec"/>
+    </action-state>
+    
+    <!--  End Step 9 JabatanTypeSpec -->
+    
+    <!-- End Flow  -->
     
     <action-state id="doSaveAllData">
         <evaluate expression="jobJabatanFormController.doSaveAllData(flowRequestContext)"/>        
         <transition on="success" to="end_detail"/>
         <transition on="error" to="add_job_jabatan_type_spec"/>
     </action-state>
-    
-     <action-state id="doDeleteJabatanTypeSpec">
-        <evaluate expression="jobJabatanFormController.doDeleteJabatanTypeSpec(flowRequestContext)"/>        
-        <transition on="success" to="add_job_jabatan_type_spec"/>
-        <transition on="error" to="add_job_jabatan_type_spec"/>
-    </action-state>
 
     <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/organisation/job_title_detil.htm?execution=e#{flowScope.jobJabatanModel.id}"/>
     <end-state id="end" view="externalRedirect:contextRelative:/protected/organisation/job_title_view.htm" />
     
+    <!-- End Flow  -->
 </flow>

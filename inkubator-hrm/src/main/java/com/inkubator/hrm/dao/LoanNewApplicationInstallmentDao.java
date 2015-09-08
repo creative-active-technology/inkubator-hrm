@@ -1,8 +1,7 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
-
-import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
@@ -25,6 +24,7 @@ public interface LoanNewApplicationInstallmentDao extends IDAO<LoanNewApplicatio
 	public LoanNewApplicationInstallment getEntityByIdWithDetail(Long id);	
 	
 	public Long getTotalInstallmentByLoanNewApplicationId(Integer loanNewApplicationId);
-	
 
+	public List<LoanNewApplicationInstallment> getAllDataDisbursedByEmpDataIdAndLoanTypeIdAndPeriodDate(Long empDataId, Long loanTypeId, Date startPeriodDate, Date endPeriodDate);
+	
 }

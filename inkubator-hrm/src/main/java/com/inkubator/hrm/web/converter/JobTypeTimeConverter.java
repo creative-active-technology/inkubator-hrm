@@ -28,14 +28,13 @@ public class JobTypeTimeConverter implements Converter {
        
         Integer data= (Integer) obj;
         if (data.equals(HRMConstant.JOB_DESCRIPTION_DAY)) {
-           
             return messages.getString("jobs_desk.time_daily");
-
         }
 
-        if (obj == HRMConstant.JOB_DESCRIPTION_MONTH) {
+        if (data.equals(HRMConstant.JOB_DESCRIPTION_MONTH)) {
             return messages.getString("jobs_desk.time_monthly");
         }
+        
         return null;
 
     }

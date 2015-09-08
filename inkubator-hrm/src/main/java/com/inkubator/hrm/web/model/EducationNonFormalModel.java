@@ -18,7 +18,7 @@ public class EducationNonFormalModel implements Serializable {
     private Long countryId;
     private Long provinceId;
     private Long cityId;
-    private String postalCode;
+    private Integer postalCode;
     private String officialPhoneNo;
     private String officialEmail;
     
@@ -70,10 +70,10 @@ public class EducationNonFormalModel implements Serializable {
 	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
-	public String getPostalCode() {
+	public Integer getPostalCode() {
 		return postalCode;
 	}
-	public void setPostalCode(String postalCode) {
+	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
 	@Pattern(regexp = "^([+][\\d() -]+)?", message = "{errorr_phone}")
