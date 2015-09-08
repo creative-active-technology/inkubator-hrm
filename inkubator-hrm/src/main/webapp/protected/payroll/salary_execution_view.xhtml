@@ -214,14 +214,13 @@
 
                     <div align="center">
                         <h:form id="detailPanel">
-                            <p:messages/>
                             <h:panelGrid columns="4"  style="margin-bottom: 10px">
                                 <p:outputLabel value="#{appmsg['payroll.payroll_date']}"  styleClass="label_hrm"/>
                                 <p:outputLabel value=":"  styleClass="label_hrm"/>
-                                <p:calendar  id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}" value="#{paySalaryExecuteController.payrollCalculationDate}"
-                                             required="true" navigator="true">
-                                </p:calendar>
-                                <p:commandButton value="Calculate"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel"/>
+                                <p:calendar id="tanggalKalkulasiId" pattern="dd MMMM yyyy" label="#{appmsg['payroll.payroll_date']}"
+                                			value="#{paySalaryExecuteController.payrollCalculationDate}"/>
+                                <p:commandButton value="#{appmsg['salaryCalculation.calculation']}"  onclick="PF('pbAjax').start();PF('closeWidget').disable();" widgetVar="startButton" 
+                                				 action="#{paySalaryExecuteController.doCalculatePayroll()}"  id="startID" icon="ui-icon-refresh" update="detailPanel,:formId:growlId"/>
                             </h:panelGrid>
 
                             <p:progressBar widgetVar="pbAjax" ajax="true" value="#{paySalaryExecuteController.progress}" labelTemplate="{value}%" styleClass="animated" global="false" style="margin-bottom: 20px">
