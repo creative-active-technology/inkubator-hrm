@@ -72,9 +72,10 @@
 		                                    	<f:setPropertyActionListener value="#{no}" target="#{jobJabatanFormController.selectedIndexJabatanDeskripsi}" />
 		                                </p:commandButton>
 		                                
-		                               <!--  <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+		                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
 		                                         action="edit" ajax="true" >
-		                                </p:commandButton> -->
+		                                         <f:setPropertyActionListener value="#{no}" target="#{jobJabatanFormController.selectedIndexJabatanDeskripsi}" />
+		                                </p:commandButton>
                                
                           			</p:column> 
                                 </p:dataTable> 
