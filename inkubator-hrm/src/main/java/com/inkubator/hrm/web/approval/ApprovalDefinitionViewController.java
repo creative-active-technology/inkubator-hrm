@@ -119,6 +119,9 @@ public class ApprovalDefinitionViewController extends BaseController {
         return "/protected/approval/approval_definition_form.htm?faces-redirect=true";
     }
 
+    public String doGrafik(){
+         return "/protected/approval/approval_graph_def.htm?faces-redirect=true";
+    }
     @PreDestroy
     public void cleanAndExit() {
         approvalDefinitionSearchParameter = null;

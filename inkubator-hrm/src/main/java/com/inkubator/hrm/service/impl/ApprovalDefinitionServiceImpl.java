@@ -50,6 +50,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     private ApprovalDefinitionLoanDao approvalDefinionLoanDao;
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public ApprovalDefinition getEntiyByPK(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -297,8 +298,9 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalDefinition> getAllData(Boolean isActive) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.approvalDefinitionDao.getAllData(isActive);
     }
 
     @Override
