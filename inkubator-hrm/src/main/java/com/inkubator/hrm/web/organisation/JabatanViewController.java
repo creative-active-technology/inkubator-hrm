@@ -94,8 +94,14 @@ public class JabatanViewController extends BaseController {
          }
     }
 
-    public String doEdit() {
-        return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
+    public void doEdit() {
+    	ExternalContext red = FacesUtil.getExternalContext();
+        try {
+			red.redirect(red.getRequestContextPath() + "/flow-protected/job?id=" + selectedJabatan.getId());
+		} catch (IOException ex) {
+			LOGGER.error("Error", ex);
+		}
+        //return "/protected/organisation/job_title_form.htm?faces-redirect=true&execution=e" + selectedJabatan.getId();
     }
 
     public void doDelete() {

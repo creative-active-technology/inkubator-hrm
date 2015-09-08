@@ -39,7 +39,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:inputText value="#{jobJabatanModel.kodeJabatan}" maxlength="12"
-                                                 styleClass="isitext_hrm" label="#{appmsg['jabat.jabatan_code']}"
+                                                 styleClass="isitext_hrm" label="#{appmsg['jabat.jabatan_code']}" readonly="#{jobJabatanFormController.isEdit}"
                                                  style="width: 350px" required="true" id="codeId" onkeyup="this.value = this.value.toUpperCase();" />
                                     <p:message for="codeId"/>
                                 </p:column>

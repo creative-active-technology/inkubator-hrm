@@ -71,7 +71,7 @@
 		</transition>
 		<transition  on="add_new" to="add_new_jabatan_desc" />
 		<transition  on="delete" to="doDeleteJabatanDescription" />
-		<!-- <transition on="next" to="add_job_jabatan_spesification" /> -->
+		<transition on="edit" to="doEditJabatanDescription" />
 		<transition on="next" to="doCheckIsListJabatanDescriptionEmpty" />
     	<transition on="end" to="end"/>
     </view-state>
@@ -121,6 +121,13 @@
         <transition on="success" to="add_job_jabatan_description"/>
         <transition on="error" to="add_job_jabatan_description"/>
     </action-state>
+    
+    <action-state id="doEditJabatanDescription">
+        <evaluate expression="jobJabatanFormController.doEditJabatanDeskripsi(flowRequestContext)"/>        
+        <transition on="success" to="add_job_jabatan_description"/>
+        <transition on="error" to="add_job_jabatan_description"/>
+    </action-state>
+    
     
     <action-state id="doCheckIsListJabatanDescriptionEmpty">
         <evaluate expression="jobJabatanFormController.doCheckIsListJabatanDescriptionEmpty(flowRequestContext)"/>        
