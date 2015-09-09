@@ -37,6 +37,8 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 
 	public Long getTotalActualBusinessTravel(Date date);
         
-        public Long getCurrentMaxId();
+	public Long getCurrentMaxId();
 	
+	public Boolean isDuplicateRequestDate(Date startRequest, Date endRequest, Long empDataId);
+
 }
