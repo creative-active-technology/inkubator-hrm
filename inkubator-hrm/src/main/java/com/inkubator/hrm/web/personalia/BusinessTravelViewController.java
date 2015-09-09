@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -201,6 +202,13 @@ public class BusinessTravelViewController extends BaseController {
             red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel?id=" + selectedBusinessTravel.getId());
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
+        }
+    }
+    
+    public void onShowGrowl(){
+    	String param = FacesUtil.getRequestParameter("growl");
+        if(StringUtils.equals(param, "need_approval")){
+        	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());        	
         }
     }
 }
