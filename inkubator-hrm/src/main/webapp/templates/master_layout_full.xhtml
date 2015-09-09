@@ -210,27 +210,23 @@
                 <div id="art-page-background-glare-image">
                     <div id="art-main">
                     	<div style="float:left">
-                            <h:panelGrid style="margin-left: 50px;padding-top: 3px" columns="2">
-                                <!-- <p:commandLink>
-                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
+                            <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
+                                <p:commandLink >
+                                      <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
-                                    </p:graphicImage>
-                                </p:commandLink> -->
-
-                                <!--<p:graphicImage library="images" name="user_ico.png" width="22" height="22" cache="true"/>-->
+                                    </p:graphicImage>  
+                                </p:commandLink>
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
-                                    <p:outputLabel value="Login as Administrator" styleClass="label_welcome_header" />
+                                    <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
                                 </h:panelGroup>
-                                    
-                             
 
                             </h:panelGrid>
                         </div>
                         
                         <div style="float: right">
                             <h:form>                                
-                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 6%;padding-top: 3px">
+                                <h:panelGrid columns="9" cellpadding="3" style="margin-right: 4%;padding-top: 3px">
                                     <h:panelGroup>
                                         <p:outputLabel value="#{appmsg['global.welcome']}, " styleClass="label_welcome_header" />
                                         <!-- <p:outputLabel value="#{realName}. " styleClass="label_welcome_header" style="color: #ffcc00 !important;font-weight: bold!important" /> -->

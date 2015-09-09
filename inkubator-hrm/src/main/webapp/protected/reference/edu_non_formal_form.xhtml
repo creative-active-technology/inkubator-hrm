@@ -168,8 +168,8 @@
                                 <h:outputLabel for="postalCodeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                            	<p:inputText id="postalCodeId" title="#{appmsg['global.postal_code']}" value="#{educationNonFormalFormController.model.postalCode}" 
-                                    		 required="true" maxlength="8" styleClass="isitext_hrm" style="width:190px;" />
+                            	<pe:inputNumber id="postalCodeId" title="#{appmsg['global.postal_code']}" value="#{educationNonFormalFormController.model.postalCode}" 
+                                    		 required="true"  maxValue="99999999" thousandSeparator="" decimalPlaces="0" styleClass="isitext_hrm" style="width:190px;" />
                             </p:column>
                         </p:row>
                         <p:row>

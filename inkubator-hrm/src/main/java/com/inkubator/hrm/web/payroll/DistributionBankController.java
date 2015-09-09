@@ -51,9 +51,11 @@ public class DistributionBankController extends BaseController {
         try {
             super.initialization();
             String empId = FacesUtil.getRequestParameter("execution");
-            
+
             empData = empDataService.getByPKBankTransfer(Long.parseLong(empId.substring(1)));
             dataToCalculate = this.payReceiverBankAccountService.getAllByEmpId(empData.getId());
+
+            LOGGER.info("Jumlah nya " + dataToCalculate.size());
             totalPercent = Lambda.sum(dataToCalculate, Lambda.on(PayReceiverBankAccount.class).getPersen());
             if (dataToCalculate.isEmpty()) {
                 dataToCalculate = new ArrayList<>();
@@ -68,6 +70,28 @@ public class DistributionBankController extends BaseController {
                 isEdit = Boolean.FALSE;
             } else {
                 isEdit = Boolean.TRUE;
+                Set<BioBankAccount> data = empData.getBioData().getBioBankAccounts();
+                List<BioBankAccount> acuanAccount = new ArrayList<>(data);
+                List<BioBankAccount> targerAxxount = new ArrayList<>();
+                LOGGER.info("Ukueran target " + targerAxxount.size());
+                LOGGER.info("Ukueran acuaan " + acuanAccount.size());
+                for (PayReceiverBankAccount dataToCalculate1 : dataToCalculate) {
+                    targerAxxount.add(dataToCalculate1.getBioBankAccount());
+                }
+                acuanAccount.removeAll(targerAxxount);
+                LOGGER.info("ukrannaya " + acuanAccount.size());
+                List<PayReceiverBankAccount> addNew = new ArrayList<>();
+                for (BioBankAccount a : acuanAccount) {
+                    PayReceiverBankAccount account = new PayReceiverBankAccount();
+                    account.setBioBankAccount(a);
+                    account.setEmpData(empData);
+                    account.setPersen(0.0);
+                    addNew.add(account);
+                }
+                payReceiverBankAccountService.saveListPayBankReceive(addNew);
+                dataToCalculate = new ArrayList<>();
+                dataToCalculate = this.payReceiverBankAccountService.getAllByEmpId(empData.getId());
+
             }
 
         } catch (Exception ex) {
@@ -149,7 +173,7 @@ public class DistributionBankController extends BaseController {
                 }
             }
         } else {
-            
+
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.error", "distribution.error_range_not100",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }

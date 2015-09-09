@@ -28,6 +28,7 @@ public class SpecAbilityFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{specificationAbilityService}")
     private SpecificationAbilityService specificationAbilityService;
+    private Boolean isDisable;
 
     @PostConstruct
     @Override
@@ -36,6 +37,7 @@ public class SpecAbilityFormController extends BaseController {
         String param = FacesUtil.getRequestParameter("execution");
         specAbilityModel = new SpecAbilityModel();
         isUpdate = Boolean.FALSE;
+        isDisable = Boolean.TRUE;
         if (StringUtils.isNotEmpty(param)) {
             try {
                 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(Long.parseLong(param.substring(1)));
@@ -75,20 +77,20 @@ public class SpecAbilityFormController extends BaseController {
     public void setSpecificationAbilityService(SpecificationAbilityService specificationAbilityService) {
         this.specificationAbilityService = specificationAbilityService;
     }
-    
+
     public void doReset() {
-    	if(isUpdate) {
-    		try {
-    			SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(specAbilityModel.getId());
-    			if (specificationAbility != null) {
+        if (isUpdate) {
+            try {
+                SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(specAbilityModel.getId());
+                if (specificationAbility != null) {
                     getModelFromEntity(specificationAbility);
-    			}
-    		} catch (Exception ex) {
-    			LOGGER.error("Error", ex);
-    		}
-    	} else {
-    		specAbilityModel = new SpecAbilityModel();
-    	}    	
+                }
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+        } else {
+            specAbilityModel = new SpecAbilityModel();
+        }
     }
 
     public String doSave() {
@@ -105,7 +107,7 @@ public class SpecAbilityFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/reference/spec_ability_view.htm?faces-redirect=true";
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -137,16 +139,16 @@ public class SpecAbilityFormController extends BaseController {
 
         return specificationAbility;
     }
-    
-    private void getModelFromEntity(SpecificationAbility specAbility){
-    	specAbilityModel.setId(specAbility.getId());
+
+    private void getModelFromEntity(SpecificationAbility specAbility) {
+        specAbilityModel.setId(specAbility.getId());
         specAbilityModel.setName(specAbility.getName());
         String options[] = StringUtils.split(specAbility.getOptionAbility(), HRMConstant.DELIMITER);
         specAbilityModel.setTotalOption(options.length);
         specAbilityModel.setOptions(options);
         String scaleVals[] = StringUtils.split(specAbility.getScaleValue(), HRMConstant.DELIMITER);
         specAbilityModel.setScaleValue(scaleVals);
-    	
+
     }
 
     /* rule, if total option is 4 -> then scale value 0, 33, 66, 100 
@@ -154,6 +156,7 @@ public class SpecAbilityFormController extends BaseController {
      *                          6 -> then scale value 0, 20, 40, 60, 80, 100
      * */
     public void doAdjustScaleValue() {
+        isDisable = Boolean.FALSE;
         int scaleValue = 0;
 
         //find divisor value, only if totalOption is more than 1(one)
@@ -175,4 +178,13 @@ public class SpecAbilityFormController extends BaseController {
     public String doBack() {
         return "/protected/reference/spec_ability_view.htm?faces-redirect=true";
     }
+
+    public Boolean getIsDisable() {
+        return isDisable;
+    }
+
+    public void setIsDisable(Boolean isDisable) {
+        this.isDisable = isDisable;
+    }
+
 }
