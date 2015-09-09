@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class MajorModel implements Serializable {
 
 	private Long id;
-	private String name;
+	private String majorName;
         private String description;
 	
 	public Long getId() {
@@ -19,12 +19,12 @@ public class MajorModel implements Serializable {
 		this.id = id;
 	}
 
-    public String getName() {
-        return name;
+    public String getMajorName() {
+        return majorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
     }
 
     public String getDescription() {

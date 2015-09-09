@@ -42,7 +42,7 @@ public class MajorFormController extends BaseController {
                 Major major = majorService.getEntiyByPK(Long.parseLong(param));
                 if (major != null) {
                     majorModel.setId(major.getId());
-                    majorModel.setName(major.getName());
+                    majorModel.setMajorName(major.getMajorName());
                     majorModel.setDescription(major.getDescription());
                     isUpdate = Boolean.TRUE;
                 }
@@ -102,7 +102,7 @@ public class MajorFormController extends BaseController {
         if (majorModel.getId() != null) {
             major.setId(majorModel.getId());
         }
-        major.setName(majorModel.getName());
+        major.setMajorName(majorModel.getMajorName());
         major.setDescription(majorModel.getDescription());
         return major;
     }

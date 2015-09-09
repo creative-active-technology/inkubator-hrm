@@ -306,7 +306,7 @@ public class BioEducationHistoryServiceImpl extends IServiceImpl implements BioE
         view.setInstitutionEducation(bioEducationHistory.getInstitutionEducation().getInstitutionEducationName());
         view.setId(bioEducationHistory.getId());
         if(bioEducationHistory.getMajor() != null){
-            view.setMajor(bioEducationHistory.getMajor().getName());
+            view.setMajor(bioEducationHistory.getMajor().getMajorName());
         }
         view.setYearIn(bioEducationHistory.getYearIn());
         view.setYearOut(bioEducationHistory.getYearOut());

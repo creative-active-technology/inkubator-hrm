@@ -34,14 +34,14 @@ public class MajorLazyDataModel extends LazyDataModel<Major> implements Serializ
     public List<Major> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
-        	Order order = null;
+        	Order orderable = null;
 	        if (sortField != null) {
-	            order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
+	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	order = Order.desc("name");
+	        	orderable = Order.desc("majorName");
 	        }
 	        
-	        majors = majorService.getByParam(parameter, first, pageSize, order);
+	        majors = majorService.getByParam(parameter, first, pageSize, orderable);
             total = Integer.parseInt(String.valueOf(majorService.getTotalMajorByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
