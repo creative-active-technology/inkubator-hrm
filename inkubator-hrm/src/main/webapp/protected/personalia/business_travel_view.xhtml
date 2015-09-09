@@ -30,6 +30,7 @@
 
                     <p:separator/>
                     <p:growl id="growlBusinessTravelViewlId" globalOnly="true" showDetail="true" />
+                    <f:event type="preRenderView" listener="#{businessTravelViewController.onShowGrowl}" />
 
                     <h:form id="formBusinessTravelViewId">
                         <p:toolbar  style="margin-top: 10px">
