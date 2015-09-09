@@ -5,6 +5,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BankDao;
 import com.inkubator.hrm.dao.BankGroupDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.entity.Bank;
@@ -12,9 +13,12 @@ import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.service.BankService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.web.search.BankSearchParameter;
+import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,6 +39,8 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
     private RecruitMppApplyDao recruitMppApplyDao;
     @Autowired
     private RecruitMppApplyDetailDao recruitMppApplyDetailDao;    
+    @Autowired
+    private EmpDataDao empDataDao;  
 
     @Override
     public RecruitMppApplyDetail getEntiyByPK(String string) throws Exception {
@@ -207,6 +213,26 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
     public Long getRecruitPlanByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) throws Exception {
         return this.recruitMppApplyDetailDao.getRecruitPlanByJabatanIdAndMppPeriodId(jabatanId, mppPeriodId);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+		List<RecruitMppApplyDetail> listRecruitMppApplyDetail = recruitMppApplyDetailDao.getAllDataByParam(searchParameter, firstResult, maxResults, order);
+		for(RecruitMppApplyDetail recruitMppApplyDetail : listRecruitMppApplyDetail){
+			Integer plan = recruitMppApplyDetail.getRecruitPlan();
+			Integer actual = empDataDao.getTotalKaryawanByJabatanId(recruitMppApplyDetail.getJabatan().getId()).intValue();
+			Integer difference = plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan);
+			recruitMppApplyDetail.setActualNumber(actual);
+			recruitMppApplyDetail.setDifference(difference);
+		}
+		return listRecruitMppApplyDetail;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataByParam(RecruitMppApplyDetailSearchParameter searchParameter) throws Exception {
+		return this.recruitMppApplyDetailDao.getTotalDataByParam(searchParameter);
+	}
 
     
 }
