@@ -193,7 +193,7 @@ public class BioEducationHistoryFormController extends BaseController{
         //Major
         listMajor = majorService.getAllData();
         for (Major major : listMajor) {
-            listMajors.put(major.getMajorName(), major.getId());
+            listMajors.put(major.getName(), major.getId());
         }
         //City
         listCity = cityService.getAllData();

@@ -33,7 +33,7 @@ public class Major implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
-    private String majorName;
+    private String name;
     private String description;
     private Set<BioEducationHistory> educationHistorys = new HashSet<BioEducationHistory>(0);
     private List<Major> listMajors = new ArrayList<>(0);
@@ -45,13 +45,13 @@ public class Major implements java.io.Serializable {
         this.id = id;
     }
 
-    public Major(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String majorName, String description, Set<BioEducationHistory> educationHistorys) {
+    public Major(long id, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String name, String description, Set<BioEducationHistory> educationHistorys) {
         this.id = id;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
-        this.majorName = majorName;
+        this.name = name;
         this.description = description;
         this.educationHistorys = educationHistorys;
     }
@@ -116,12 +116,12 @@ public class Major implements java.io.Serializable {
     }
 
     @Column(name = "major_name", unique = true, length = 60)
-    public String getMajorName() {
-        return this.majorName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setMajorName(String majorName) {
-        this.majorName = majorName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Column(name = "description", length = 65535, columnDefinition="Text")
@@ -160,7 +160,7 @@ public class Major implements java.io.Serializable {
         hash = 47 * hash + Objects.hashCode(this.createdOn);
         hash = 47 * hash + Objects.hashCode(this.updatedBy);
         hash = 47 * hash + Objects.hashCode(this.updatedOn);
-        hash = 47 * hash + Objects.hashCode(this.majorName);
+        hash = 47 * hash + Objects.hashCode(this.name);
         hash = 47 * hash + Objects.hashCode(this.description);
         return hash;
     }
@@ -192,7 +192,7 @@ public class Major implements java.io.Serializable {
         if (!Objects.equals(this.updatedOn, other.updatedOn)) {
             return false;
         }
-        if (!Objects.equals(this.majorName, other.majorName)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.description, other.description)) {

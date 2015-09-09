@@ -32,6 +32,7 @@ public class MaritalStatusDaoImpl extends IDAOImpl<MaritalStatus> implements Mar
 
     @Override
     public List<MaritalStatus> getByParam(MaritalStatusSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        System.out.println(order.toString());
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchMaritalStatusByParam(searchParameter, criteria);
         criteria.addOrder(order);

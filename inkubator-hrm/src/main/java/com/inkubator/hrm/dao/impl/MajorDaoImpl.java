@@ -45,7 +45,7 @@ public class MajorDaoImpl extends IDAOImpl<Major> implements MajorDao {
 
     private void doSearchMajorByParam(String parameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(parameter)) {
-            criteria.add(Restrictions.like("majorName", parameter, MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("name", parameter, MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -53,14 +53,14 @@ public class MajorDaoImpl extends IDAOImpl<Major> implements MajorDao {
     @Override
     public Long getTotalByName(String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("majorName", name));
+        criteria.add(Restrictions.eq("name", name));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override
     public Long getTotalByNameAndNotId(String name, Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("majorName", name));
+        criteria.add(Restrictions.eq("name", name));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }

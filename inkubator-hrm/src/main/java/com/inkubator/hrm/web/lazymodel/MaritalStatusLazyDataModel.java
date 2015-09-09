@@ -16,6 +16,7 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+
 /**
  *
  * @author Deni
@@ -43,7 +44,7 @@ public class MaritalStatusLazyDataModel extends LazyDataModel<MaritalStatus> imp
                 }else{
                     order = Order.desc("name");
                 }
-                maritalStatusList = service.getByParam(parameter, first, pageSize, Order.desc("name"));
+                maritalStatusList = service.getByParam(parameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalMaritalStatusByParam(parameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

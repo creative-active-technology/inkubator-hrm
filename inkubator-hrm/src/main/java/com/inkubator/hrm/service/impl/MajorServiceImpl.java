@@ -200,7 +200,7 @@ public class MajorServiceImpl extends IServiceImpl implements MajorService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(Major major) throws Exception {
         // check duplicate name
-        long totalDuplicates = majorDao.getTotalByName(major.getMajorName());
+        long totalDuplicates = majorDao.getTotalByName(major.getName());
         if (totalDuplicates > 0) {
             throw new BussinessException("major.error_duplicate_major_name");
         }
@@ -239,13 +239,13 @@ public class MajorServiceImpl extends IServiceImpl implements MajorService {
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(Major r) throws Exception {
         // check duplicate name
-        long totalDuplicates = majorDao.getTotalByNameAndNotId(r.getMajorName(), r.getId());
+        long totalDuplicates = majorDao.getTotalByNameAndNotId(r.getName(), r.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("major.error_duplicate_major_name");
         }
 
         Major major = majorDao.getEntiyByPK(r.getId());
-        major.setMajorName(r.getMajorName());
+        major.setName(r.getName());
         major.setDescription(r.getDescription());
         major.setUpdatedBy(UserInfoUtil.getUserName());
         major.setUpdatedOn(new Date());
