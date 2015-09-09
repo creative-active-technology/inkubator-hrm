@@ -60,5 +60,13 @@ public class LoanNewApplicationInstallmentDaoImpl extends IDAOImpl<LoanNewApplic
 		criteria.add(Restrictions.ge("loanNewApplication.loanStatus", HRMConstant.LOAN_DISBURSED));
 		return criteria.list();
 	}
+
+	@Override
+	public List<LoanNewApplicationInstallment> getListByLoanNewApplicationId(Integer loanNewApplicationId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("loanNewApplication", "loanNewApplication", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("loanNewApplication.id", loanNewApplicationId));
+		return criteria.list();
+	}
     
 }

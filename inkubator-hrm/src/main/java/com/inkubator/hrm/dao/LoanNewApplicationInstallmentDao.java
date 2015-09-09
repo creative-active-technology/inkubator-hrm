@@ -27,4 +27,6 @@ public interface LoanNewApplicationInstallmentDao extends IDAO<LoanNewApplicatio
 
 	public List<LoanNewApplicationInstallment> getAllDataDisbursedByEmpDataIdAndLoanTypeIdAndPeriodDate(Long empDataId, Long loanTypeId, Date startPeriodDate, Date endPeriodDate);
 	
+	public List<LoanNewApplicationInstallment> getListByLoanNewApplicationId(Integer loanNewApplicationId);
+	
 }
