@@ -25,4 +25,6 @@ public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
     public List<RecruitMppApplyDetail> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalDataByParam(RecruitMppApplyDetailSearchParameter searchParameter) ;
+    
+    public RecruitMppApplyDetail getEntityWithDetail(Long idRecruitMppApplyDetailId);
 }
