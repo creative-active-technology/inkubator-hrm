@@ -86,9 +86,18 @@ public class BankFormController extends BaseController {
             }
 
             // dropdown bank
-            List<Bank> listBank = bankService.getAllData();
+            List<Bank> listBank = bankService.getAllWithparent();
             for (Bank bnk : listBank) {
-                dropDownBank.put(bnk.getBankName(), bnk.getId());
+                if (bnk.getBankName() != null) {
+                    dropDownBank.put(bnk.getBankName(), bnk.getId());
+                }else{
+                       dropDownBank.put(bnk.getBank().getBankName()+" - "+bnk.getBranchName(), bnk.getId());
+                }
+//                if (bnk.getBranchName()!= null) {
+//                   dropDownBank.put(bnk.getBank().getBankName()+"-"+bnk.getBranchName(), bnk.getId());
+//                }
+               
+
             }
             // dropdown grop bank
             List<BankGroup> listBankGroup = bankGroupService.getAllData();
@@ -140,9 +149,9 @@ public class BankFormController extends BaseController {
     }
 
     public String doSave() {
-      
+
         Bank bank = getEntityFromViewModel(bankModel);
-      
+
         try {
             if (isUpdate) {
                 bankService.update(bank);
