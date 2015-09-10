@@ -52,10 +52,10 @@ public class CompanyBankAccountFormController extends BaseController {
     @Override
     public void initialization() {
         super.initialization();
+        accountModel = new CompanyBankAccountModel();
+        System.out.println(" Hehehrh eksekusisii");
         try {
             isUpdate = Boolean.FALSE;
-            accountModel = new CompanyBankAccountModel();
-
             List<Bank> listBank = bankService.getAllWithparent();
             for (Bank bnk : listBank) {
                 if (bnk.getBankName() != null) {
@@ -84,7 +84,7 @@ public class CompanyBankAccountFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        accountModel = null;
+//        accountModel = null;
         isUpdate = null;
 //        banks = null;
         savingTypes = null;
@@ -101,8 +101,6 @@ public class CompanyBankAccountFormController extends BaseController {
         this.accountModel = accountModel;
     }
 
-    
-
     public Boolean getIsUpdate() {
         return isUpdate;
     }
@@ -118,7 +116,6 @@ public class CompanyBankAccountFormController extends BaseController {
 //    public void setBanks(List<Bank> banks) {
 //        this.banks = banks;
 //    }
-
     public List<SavingType> getSavingTypes() {
         return savingTypes;
     }
