@@ -5,6 +5,7 @@
 package com.inkubator.hrm.web.model;
 
 import com.inkubator.hrm.entity.SpecificationAbility;
+
 import java.io.Serializable;
 
 /**
@@ -21,6 +22,7 @@ public class JabatanSpesifikasiModel implements Serializable{
     private String optionAbility;
     private String jabatan;
     private SpecificationAbility ability;
+    private Boolean isUpdate;
 
     public String getJabatan() {
         return jabatan;
@@ -94,6 +96,13 @@ public class JabatanSpesifikasiModel implements Serializable{
     public void setOldId(Long oldId) {
         this.oldId = oldId;
     }
-    
+
+	public Boolean getIsUpdate() {
+		return isUpdate;
+	}
+
+	public void setIsUpdate(Boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
     
 }

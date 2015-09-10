@@ -14,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 
 import ch.lambdaj.Lambda;
@@ -54,6 +55,7 @@ public class RmbsDisbursementFormController extends BaseController {
 	private Boolean isRevised;
 	private Boolean isRequester;
 	
+	private Date minimumBackDate;
 	private WtPeriode period;
 	private RmbsApplicationUndisbursedLazyDataModel lazyData;
     private RmbsDisbursementModel model;
@@ -83,7 +85,11 @@ public class RmbsDisbursementFormController extends BaseController {
         	isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));        
 	        isRevised = Boolean.FALSE;
 	        isRequester = Boolean.FALSE;
-        	
+	        
+	        //Minimum backdate paling lambat awal bulan dari bulan selanjutnya dari periode penggajian yang aktif
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            minimumBackDate = DateUtils.addDays(activeWtPeriode.getUntilPeriode(), 1);
+            
         	//di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
 	        String appActivityId = FacesUtil.getRequestParameter("activity");
         	if(StringUtils.isNotEmpty(appActivityId)) {
@@ -123,6 +129,7 @@ public class RmbsDisbursementFormController extends BaseController {
         currentActivity = null;
         askingRevisedActivity = null;
         transactionCodeficationService = null;
+        minimumBackDate = null;
 	}
 
     public String doBack() {
@@ -301,6 +308,14 @@ public class RmbsDisbursementFormController extends BaseController {
 
 	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
 		this.transactionCodeficationService = transactionCodeficationService;
+	}
+
+	public Date getMinimumBackDate() {
+		return minimumBackDate;
+	}
+
+	public void setMinimumBackDate(Date minimumBackDate) {
+		this.minimumBackDate = minimumBackDate;
 	}
 	
 }

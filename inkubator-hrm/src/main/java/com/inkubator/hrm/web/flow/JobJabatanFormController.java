@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.PreDestroy;
@@ -20,7 +19,6 @@ import javax.faces.application.FacesMessage;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.hamcrest.Matchers;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.model.DualListModel;
@@ -35,8 +33,6 @@ import ch.lambdaj.Lambda;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.BioEmergencyContact;
-import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.CostCenter;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
@@ -79,15 +75,11 @@ import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.SpecificationAbilityService;
 import com.inkubator.hrm.service.UnitKerjaService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.hrm.web.model.JabatanDeskripsiModel;
-import com.inkubator.hrm.web.model.JabatanModel;
 import com.inkubator.hrm.web.model.JabatanSpesifikasiModel;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.model.OrgTypeOfSpecJabatanModel;
-import com.inkubator.hrm.web.model.VacancyAdvertisementDetailModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
@@ -641,7 +633,49 @@ public class JobJabatanFormController implements Serializable {
 	 
 	 /* Start Method JabatanDeskripsi */
 	 
+	 public void initialAddJabatanDeskripsiFlow(RequestContext context) {
+		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
+		 jabatanDeskripsiModel = new JabatanDeskripsiModel();
+		 jabatanDeskripsiModel.setIsUpdate(Boolean.FALSE);
+		 context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
+	 }
 	 
+	 public void initialEditJabatanDeskripsiFlow(RequestContext context){
+		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 JabatanDeskripsi selectedJabatanDeskripsi = jobJabatanModel.getListJabatanDeskripsi().get(selectedIndexJabatanDeskripsi);
+		 jabatanDeskripsiModel = convertJabatanDeskripsiToModel(selectedJabatanDeskripsi);
+		 jabatanDeskripsiModel.setIsUpdate(Boolean.TRUE);
+		 context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
+	 }
+	 
+	 public String doAddJabatanDescription(RequestContext context){
+		 String message = "success";
+		 JabatanDeskripsiModel jabatanDeskripsiModel =  (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
+		 JabatanDeskripsi jabatanDeskripsi = convertJabatanDeskripsiModelToEntity(jabatanDeskripsiModel);
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 List<JabatanDeskripsi> listJabatanDeskripsi = jobJabatanModel.getListJabatanDeskripsi();
+		 listJabatanDeskripsi.add(jabatanDeskripsi);
+		 jobJabatanModel.setListJabatanDeskripsi(listJabatanDeskripsi);
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+		 return message;
+	 } 
+	 
+	 public String doEditJabatanDescription(RequestContext context){
+		 String message = "success";
+		 JabatanDeskripsiModel jabatanDeskripsiModel =  (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 
+		 List<JabatanDeskripsi> listJabatanDeskripsi = jobJabatanModel.getListJabatanDeskripsi();
+		 listJabatanDeskripsi.get(selectedIndexJabatanDeskripsi).setKategoryTugas(jabatanDeskripsiModel.getCategoryTugas());
+		 listJabatanDeskripsi.get(selectedIndexJabatanDeskripsi).setTypeWaktu(jabatanDeskripsiModel.getTypeWaktu());
+		 listJabatanDeskripsi.get(selectedIndexJabatanDeskripsi).setDescription(jabatanDeskripsiModel.getDeskripsi());
+		 
+		 jobJabatanModel.setListJabatanDeskripsi(listJabatanDeskripsi);
+		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+		 return message;
+	 }
+	
 	 public void doDeleteJabatanDeskripsi(RequestContext context) {
 	        try {
 	        	JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
@@ -659,11 +693,6 @@ public class JobJabatanFormController implements Serializable {
 	        }
 	    }
 	 
-	 public String doEditJabatanDeskripsi(RequestContext context){
-		 String result = "error";
-		 return result;
-	 }
-	 
 	 public String doCheckIsListJabatanDescriptionEmpty(RequestContext context){
 		 String message = "success";
 		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
@@ -674,11 +703,7 @@ public class JobJabatanFormController implements Serializable {
      	}
      	return message;
 	 }
-	 public void initialAddJabatanDeskripsiFlow(RequestContext context) {
-		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
-		 jabatanDeskripsiModel = new JabatanDeskripsiModel();
-		 context.getFlowScope().put("jabatanDeskripsiModel", jabatanDeskripsiModel);
-	 }
+	
 	 
 	 public void doResetAddJabatanDeskripsi(RequestContext context){
 		 JabatanDeskripsiModel jabatanDeskripsiModel = (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
@@ -691,24 +716,24 @@ public class JobJabatanFormController implements Serializable {
 		}
 	 
 	 
-	 public String doAddJabatanDescription(RequestContext context){
-		 String message = "success";
-		 JabatanDeskripsiModel jabatanDeskripsiModel =  (JabatanDeskripsiModel) context.getFlowScope().get("jabatanDeskripsiModel");
-		 JabatanDeskripsi jabatanDeskripsi = convertJabatanDeskripsiModelToEntity(jabatanDeskripsiModel);
-		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
-		 List<JabatanDeskripsi> listJabatanDeskripsi = jobJabatanModel.getListJabatanDeskripsi();
-		 listJabatanDeskripsi.add(jabatanDeskripsi);
-		 jobJabatanModel.setListJabatanDeskripsi(listJabatanDeskripsi);
-		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
-		 return message;
-	 } 
-	 
 	 public JabatanDeskripsi convertJabatanDeskripsiModelToEntity(JabatanDeskripsiModel jabatanDeskripsiModel){
 		 JabatanDeskripsi jabatanDeskripsi = new JabatanDeskripsi();
+		 if(jabatanDeskripsiModel.getId() != null){
+			 jabatanDeskripsi.setId(jabatanDeskripsiModel.getId());
+		 }
 		 jabatanDeskripsi.setKategoryTugas(jabatanDeskripsiModel.getCategoryTugas());
 		 jabatanDeskripsi.setTypeWaktu(jabatanDeskripsiModel.getTypeWaktu());
 		 jabatanDeskripsi.setDescription(jabatanDeskripsiModel.getDeskripsi());
 		 return jabatanDeskripsi;
+	 }
+	 
+	 public JabatanDeskripsiModel convertJabatanDeskripsiToModel(JabatanDeskripsi jabatanDeskripsi){
+		 JabatanDeskripsiModel jabatanDeskripsiModel = new JabatanDeskripsiModel();
+		 jabatanDeskripsiModel.setId(jabatanDeskripsi.getId());
+		 jabatanDeskripsiModel.setCategoryTugas(jabatanDeskripsi.getKategoryTugas());
+		 jabatanDeskripsiModel.setTypeWaktu(jabatanDeskripsi.getTypeWaktu());
+		 jabatanDeskripsiModel.setDeskripsi(jabatanDeskripsi.getDescription());
+		 return jabatanDeskripsiModel;
 	 }
 	 
 	 /* End Method JabatanDeskripsi */
@@ -718,6 +743,16 @@ public class JobJabatanFormController implements Serializable {
 	 public void initialAddJabatanSpesificationFlow(RequestContext context) {
 		 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
 		 jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
+		 jabatanSpesifikasiModel.setIsUpdate(Boolean.FALSE);
+		 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
+	 }
+	 
+	 public void initialEditJabatanSpesificationFlow(RequestContext context) {
+		 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+		 JabatanSpesifikasi selectedJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi().get(selectedIndexJabatanSpesifikasi);
+		 jabatanSpesifikasiModel = convertJabatanSpesifikasiToModel(selectedJabatanSpesifikasi);
+		 jabatanSpesifikasiModel.setIsUpdate(Boolean.TRUE);
 		 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
 	 }
 	 
@@ -746,6 +781,30 @@ public class JobJabatanFormController implements Serializable {
 		 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
 		 return "success";
 	 } 
+	 
+	 public String doEditJabatanSpesification(RequestContext context){
+		 String message = "success";
+		 try {
+			JabatanSpesifikasiModel jabatanSpesifikasiModel =  (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+			 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+			 
+			 List<JabatanSpesifikasi> listJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi();
+			 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(jabatanSpesifikasiModel.getSpecId());
+			 
+			 listJabatanSpesifikasi.get(selectedIndexJabatanSpesifikasi).setSpecificationAbility(specificationAbility);
+			 listJabatanSpesifikasi.get(selectedIndexJabatanSpesifikasi).setValue(jabatanSpesifikasiModel.getValue());
+			 listJabatanSpesifikasi.get(selectedIndexJabatanSpesifikasi).setOptionAbility(jabatanSpesifikasiModel.getOptionAbility());
+			 
+			 jobJabatanModel.setListJabatanSpesifikasi(listJabatanSpesifikasi);
+			 context.getFlowScope().put("jobJabatanModel", jobJabatanModel);
+			 
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return message;
+	 }
 	 
 	 public void doDeleteJabatanSpesification(RequestContext context) {
 	        try {
@@ -819,6 +878,16 @@ public class JobJabatanFormController implements Serializable {
 			LOGGER.error("Error", e);
 			return null;
 		}
+	 }
+	 
+	 public JabatanSpesifikasiModel convertJabatanSpesifikasiToModel(JabatanSpesifikasi jabatanSpesifikasi){
+		 
+		 JabatanSpesifikasiModel jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
+		 jabatanSpesifikasiModel.setJabatanId(jabatanSpesifikasi.getId().getJabatanId());
+		 jabatanSpesifikasiModel.setSpecId(jabatanSpesifikasi.getId().getSpecificationId());
+		 jabatanSpesifikasiModel.setValue(jabatanSpesifikasi.getValue());
+		 jabatanSpesifikasiModel.setOptionAbility(jabatanSpesifikasi.getOptionAbility());
+		 return jabatanSpesifikasiModel;
 	 }
 	 
 	 public String doCheckIsListJabatanSpecificationEmpty(RequestContext context){

@@ -24,7 +24,13 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 	
 	public RmbsApplication getEntityByPkWithDetail(Long id);
 	
+
+	
+	//LIST
 	public List<RmbsHistoryViewModel> getAllDataHistoryBetweenDate(Long empDataId, Date startDate, Date endDate);
+	
+	public List<RmbsApplication> getAllDataDisbursedByEmpDataIdAndRmbsTypeIdAndPeriodDate(Long empDataId, Long rmbsTypeId, Date startPeriodDate, Date endPeriodDate);
+	
 	
 	
 	//pageable
@@ -39,5 +45,7 @@ public interface RmbsApplicationDao extends IDAO<RmbsApplication> {
 	public List<RmbsApplication> getReimbursementHistoryByParam(Long empDataId, int first, int pageSize, Order orderable);
 
 	public Long getTotalReimbursementHistoryByParam(Long empDataId);
+
+	
 
 }

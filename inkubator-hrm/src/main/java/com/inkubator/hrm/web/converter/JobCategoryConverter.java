@@ -2,8 +2,10 @@ package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.webcore.util.FacesUtil;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -28,12 +30,10 @@ public class JobCategoryConverter implements Converter {
   
         Integer data= (Integer) obj;
         if (data.equals(HRMConstant.JOB_DESCRIPTION_PRIMER)) {
-           
             return messages.getString("jobs_desk.primer_taks");
-
         }
 
-        if (obj == HRMConstant.JOB_DESCRIPTION_SEKUNDER) {
+        if (data.equals(HRMConstant.JOB_DESCRIPTION_SEKUNDER)) {
             return messages.getString("jobs_desk.sekunder_task");
         }
         return null;

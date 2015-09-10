@@ -48,7 +48,8 @@
 	                                <p:outputLabel for="disbursementDateId" value="#{appmsg['rmbs_disbursement.disbursement_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:calendar id="disbursementDateId" required="true" pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementFormController.model.disbursementDate}"/>
+	                                <p:calendar id="disbursementDateId" required="true" pattern="dd-MMMM-yyyy" 
+	                                			value="#{rmbsDisbursementFormController.model.disbursementDate}" mindate="#{rmbsDisbursementFormController.minimumBackDate}"/>
 	                                <p:message for="disbursementDateId"/>
 	                            </p:column>
 	                        </p:row>

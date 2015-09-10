@@ -369,6 +369,7 @@ public class LoanApplicationFormController extends BaseController {
             LoanNewSchemaListOfEmp loanNewSchemaListOfEmp = loanNewSchemaListOfEmpService.getEntityWithDetailByEmpDataId(model.getEmpData().getId());
 
             if (null == loanNewSchemaListOfEmp) {
+            	model.setLoanNewSchemaListOfEmp(null);
                 MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.emp_doesnt_have_any_loan_schema", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return;
             }

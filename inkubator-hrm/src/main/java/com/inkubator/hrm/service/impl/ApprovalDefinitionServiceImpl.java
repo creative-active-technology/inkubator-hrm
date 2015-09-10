@@ -23,6 +23,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.diagram.Connection;
+import org.primefaces.model.diagram.DefaultDiagramModel;
+import org.primefaces.model.diagram.Element;
+import org.primefaces.model.diagram.connector.FlowChartConnector;
+import org.primefaces.model.diagram.endpoint.BlankEndPoint;
+import org.primefaces.model.diagram.endpoint.DotEndPoint;
+import org.primefaces.model.diagram.endpoint.EndPoint;
+import org.primefaces.model.diagram.endpoint.EndPointAnchor;
+import org.primefaces.model.diagram.overlay.ArrowOverlay;
+import org.primefaces.model.diagram.overlay.LabelOverlay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -50,6 +60,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     private ApprovalDefinitionLoanDao approvalDefinionLoanDao;
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public ApprovalDefinition getEntiyByPK(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -297,8 +308,9 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
     }
 
     @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalDefinition> getAllData(Boolean isActive) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.approvalDefinitionDao.getAllData(isActive);
     }
 
     @Override
@@ -399,6 +411,146 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         ad.setUpdatedOn(new Date());
         ad.setIsActive(entity.getIsActive());
         this.approvalDefinitionDao.update(ad);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public DefaultDiagramModel getGraphMode(long id) throws Exception {
+        ApprovalDefinition selected = approvalDefinitionDao.getEntiyByPK(id);
+        DefaultDiagramModel model;
+        model = new DefaultDiagramModel();
+        model.setMaxConnections(-1);
+        int x = 6;
+        int y = 5;
+        FlowChartConnector connector = new FlowChartConnector();
+        connector.setPaintStyle("{strokeStyle:'#C7B097',lineWidth:3}");
+        model.setDefaultConnector(connector);
+        String header = selected.getName();
+        if (selected.getSpecificName() != null) {
+            header = header + "-" + selected.getSpecificName();
+        }
+        Element start = new Element(header, y + "em", x + "em");
+        start.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+        start.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
+        start.setStyleClass("ui-diagram-success");
+        Element step = null;
+        if (HRMConstant.APPROVAL_TYPE_DEPARTMENT.equalsIgnoreCase(selected.getApproverType())) {
+            step = new Element("Approve By Departement Hirarki", "30em", "10em");
+        }
+        if (HRMConstant.APPROVAL_TYPE_INDIVIDUAL.equalsIgnoreCase(selected.getApproverType())) {
+            step = new Element(selected.getHrmUserByApproverIndividual().getRealName(), "30em", "10em");
+        }
+
+        if (HRMConstant.APPROVAL_TYPE_POSITION.equalsIgnoreCase(selected.getApproverType())) {
+            step = new Element(selected.getJabatanByApproverPosition().getName(), "30em", "10em");
+        }
+        int minApprover = selected.getMinApprover();
+        Element step1 = null;
+        if (minApprover > 1) {
+            for (int i = 1; i < minApprover; i++) {
+                step1 = new Element("By Posititon Hirarki (" + (minApprover - 1) + " times)", "60em", "10em");
+                step1.addEndPoint(new BlankEndPoint(EndPointAnchor.LEFT));
+                step1.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+                step1.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
+                step1.addEndPoint(new BlankEndPoint(EndPointAnchor.BOTTOM));
+                model.addElement(step1);
+            }
+        }
+        step.addEndPoint(new BlankEndPoint(EndPointAnchor.LEFT));
+        step.addEndPoint(new BlankEndPoint(EndPointAnchor.BOTTOM));
+        step.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
+        step.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+
+        Element finish = new Element("Approved", "85em", "10em");
+        finish.addEndPoint(new BlankEndPoint(EndPointAnchor.LEFT));
+        finish.addEndPoint(new BlankEndPoint(EndPointAnchor.BOTTOM));
+        finish.addEndPoint(new BlankEndPoint(EndPointAnchor.TOP));
+        finish.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+        finish.setStyleClass("ui-diagram-success");
+        Element reject = new Element("Reject Notification to Sender", y + "em", x + 10 + "em");
+        reject.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+        reject.setStyleClass("ui-diagram-fail");
+        Element approve = new Element("Approve Notification to Sender", y + "em", x + 20 + "em");
+        approve.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+        approve.setStyleClass("ui-diagram-fail");
+
+        ApprovalDefinition onReject = approvalDefinitionDao.getByNameAndSpecificAndProcessName(selected.getName(), selected.getSpecificName(), HRMConstant.ON_REJECT_INFO);
+        ApprovalDefinition onApprove = approvalDefinitionDao.getByNameAndSpecificAndProcessName(selected.getName(), selected.getSpecificName(), HRMConstant.ON_APPROVE_INFO);
+        Element onApproveElement = null;
+        if (onApprove != null) {
+            if (HRMConstant.APPROVAL_TYPE_DEPARTMENT.equalsIgnoreCase(onApprove.getApproverType())) {
+                onApproveElement = new Element("Departement Hirarki", y + "em", x + 35 + "em");
+            }
+            if (HRMConstant.APPROVAL_TYPE_INDIVIDUAL.equalsIgnoreCase(onApprove.getApproverType())) {
+                onApproveElement = new Element(onReject.getHrmUserByApproverIndividual().getRealName(), y + "em", x + 35 + "em");
+            }
+
+            if (HRMConstant.APPROVAL_TYPE_POSITION.equalsIgnoreCase(onApprove.getApproverType())) {
+                onApproveElement = new Element(onReject.getJabatanByApproverPosition().getName(), y + "em", x + 35 + "em");
+            }
+
+            onApproveElement.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+            onApproveElement.setStyleClass("ui-diagram-success");
+            model.addElement(onApproveElement);
+            model.connect(createConnection(finish.getEndPoints().get(1), onApproveElement.getEndPoints().get(0), "On Approve Notification"));
+        }
+        Element onRejectElement = null;
+        if (onReject != null) {
+            if (HRMConstant.APPROVAL_TYPE_DEPARTMENT.equalsIgnoreCase(onReject.getApproverType())) {
+                onRejectElement = new Element("Departement Hirarki", y + "em", x + 30 + "em");
+            }
+            if (HRMConstant.APPROVAL_TYPE_INDIVIDUAL.equalsIgnoreCase(onReject.getApproverType())) {
+                onRejectElement = new Element(onReject.getHrmUserByApproverIndividual().getRealName(), y + "em", x + 30 + "em");
+            }
+
+            if (HRMConstant.APPROVAL_TYPE_POSITION.equalsIgnoreCase(onReject.getApproverType())) {
+                onRejectElement = new Element(onReject.getJabatanByApproverPosition().getName(), y + "em", x + 30 + "em");
+            }
+
+            onRejectElement.addEndPoint(new BlankEndPoint(EndPointAnchor.RIGHT));
+            onRejectElement.setStyleClass("ui-diagram-success");
+            model.addElement(onRejectElement);
+            model.connect(createConnection(step.getEndPoints().get(1), onRejectElement.getEndPoints().get(0), "On Reject Notification"));
+            if (minApprover > 1) {
+                model.connect(createConnection(step1.getEndPoints().get(3), onRejectElement.getEndPoints().get(0), "On Reject Notification"));
+            }
+        }
+
+        model.addElement(start);
+        model.addElement(reject);
+        model.addElement(step);
+
+        model.addElement(finish);
+        model.addElement(approve);
+        model.connect(createConnection(start.getEndPoints().get(0), step.getEndPoints().get(0), "Request"));
+        model.connect(createConnection(step.getEndPoints().get(1), reject.getEndPoints().get(0), "No"));
+
+        model.connect(createConnection(step.getEndPoints().get(2), start.getEndPoints().get(1), "Revisi"));
+        if (minApprover > 1) {
+            model.connect(createConnection(step1.getEndPoints().get(2), start.getEndPoints().get(1), null));
+            model.connect(createConnection(step1.getEndPoints().get(1), finish.getEndPoints().get(0), "Yes"));
+            model.connect(createConnection(step.getEndPoints().get(3), step1.getEndPoints().get(0), "Yes"));
+            model.connect(createConnection(step1.getEndPoints().get(3), reject.getEndPoints().get(0), null));
+            model.connect(createConnection(step.getEndPoints().get(1), onRejectElement.getEndPoints().get(0), "On Reject Notification"));
+        }
+
+        if (minApprover == 1) {
+            model.connect(createConnection(step.getEndPoints().get(3), finish.getEndPoints().get(0), "Yes"));
+        }
+
+        model.connect(createConnection(finish.getEndPoints().get(1), approve.getEndPoints().get(0), null));
+        return model;
+    }
+
+    private Connection createConnection(EndPoint from, EndPoint to, String label) {
+        Connection conn = new Connection(from, to);
+        conn.getOverlays().add(new ArrowOverlay(20, 20, 1, 1));
+
+        if (label != null) {
+            conn.getOverlays().add(new LabelOverlay(label, "flow-label", 0.5));
+        }
+
+        return conn;
     }
 
 }

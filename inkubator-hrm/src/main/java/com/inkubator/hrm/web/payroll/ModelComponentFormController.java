@@ -48,6 +48,7 @@ public class ModelComponentFormController extends BaseController {
             super.initialization();
             String param = FacesUtil.getRequestParameter("param");
             modelComponentModel = new ModelComponentModel();
+            modelComponentModel.setHasException(Boolean.TRUE); //default is true
             isUpdate = Boolean.FALSE;
             disabledBenefit = Boolean.TRUE;
 
@@ -67,6 +68,7 @@ public class ModelComponentFormController extends BaseController {
                     modelComponentModel.setName(modelComponent.getName());
                     modelComponentModel.setDescription(modelComponent.getDescription());
                     modelComponentModel.setSpesific(modelComponent.getSpesific());
+                    modelComponentModel.setHasException(modelComponent.getHasException());
                     if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
                         modelComponentModel.setBenefitGroupId(modelComponent.getBenefitGroup().getId());
                         disabledBenefit = Boolean.FALSE;
@@ -158,6 +160,7 @@ public class ModelComponentFormController extends BaseController {
         modelComponent.setName(modelComponentModel.getName());
         modelComponent.setSpesific(modelComponentModel.getSpesific());
         modelComponent.setDescription(modelComponentModel.getDescription());
+        modelComponent.setHasException(modelComponentModel.getHasException());
         if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             modelComponent.setBenefitGroup(new BenefitGroup(modelComponentModel.getBenefitGroupId()));
         }
@@ -165,9 +168,7 @@ public class ModelComponentFormController extends BaseController {
     }
 
     public void specificChanged(ValueChangeEvent event) {
-
-        
-
+    	
         if (String.valueOf(event.getNewValue()).equals(String.valueOf(HRMConstant.MODEL_COMP_BENEFIT_TABLE))) {
             disabledBenefit = Boolean.FALSE;
         } else {

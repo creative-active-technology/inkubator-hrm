@@ -44,5 +44,7 @@ public interface BusinessTravelDao extends IDAO<BusinessTravel> {
 	public List<BusinessTravelViewModel> getAllActivityByParam(BusinessTravelSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter);
+	
+	public Boolean isDuplicateRequestDate(Date startRequest, Date endRequest, Long empDataId);
 
 }

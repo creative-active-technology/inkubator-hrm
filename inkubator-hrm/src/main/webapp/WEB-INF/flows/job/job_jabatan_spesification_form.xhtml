@@ -36,7 +36,7 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:selectOneMenu  id="indicationAbilityId"  value="#{jabatanSpesifikasiModel.specId}" 
-                                                     label="#{appmsg['specificationability.indication_ability']}"  
+                                                     label="#{appmsg['specificationability.indication_ability']}"  disabled="#{jabatanSpesifikasiModel.isUpdate}"
                                                      style="min-width: 200px;margin-right: 3px" required="true" >
 										
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
@@ -72,9 +72,15 @@
                      <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" icon="ui-icon-arrow-1-w" 
 	                        				 action="back" immediate="true"/>
+	                        				 
 	                    	<p:commandButton value="#{appmsg['global.add']}" label="#{appmsg['global.add']}" title="#{appmsg['global.add']}" 
 	                    					 icon="ui-icon-document" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                    					 ajax="true" action="add" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
+	                    					 ajax="true" action="add" rendered="#{!jabatanSpesifikasiModel.isUpdate}" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
+	                    					 
+	                    	<p:commandButton value="#{appmsg['global.save']}" label="#{appmsg['global.save']}" title="#{appmsg['global.save']}" 
+	                    					 icon="ui-icon-disk" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="edit" rendered="#{jabatanSpesifikasiModel.isUpdate}" update="formJabatanDescriptionFormId, :growlJabatanDescriptionFormlId" />
+	                    					 
 	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formJabatanDescriptionFormId" action="#{jobJabatanFormController.doResetJobJabatanSpecificationForm(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formJabatanDescriptionFormId" />  
