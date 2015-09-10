@@ -310,6 +310,10 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
             throw new BussinessException("businesstravel.error_duplicate_business_travel_no");
         }
         
+        if(this.isDuplicateRequestDate(entity.getStartDate(), entity.getEndDate(), entity.getEmpData().getId())){
+        	throw new BussinessException("businesstravel.cannot_apply_date_already_appplied");
+        }
+        
 		EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
 		TravelZone travelZone = travelZoneDao.getEntiyByPK(entity.getTravelZone().getId());
 		TravelType travelType = travelTypeDao.getEntiyByPK(entity.getTravelType().getId());
@@ -368,6 +372,41 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
         }
         
         return message;
+	}
+	
+	private Boolean isDuplicateRequestDate(Date startRequest, Date endRequest, Long empDataId){
+		Boolean isDuplicate = Boolean.FALSE;
+		
+		//check duplicate request date untuk yang sudah disetujui
+		if(isDuplicate == Boolean.FALSE){
+			isDuplicate =  businessTravelDao.isDuplicateRequestDate(startRequest, endRequest, empDataId);
+		}
+		
+		//check duplicate request date untuk yang masih menunggu persetujuan
+		if(isDuplicate == Boolean.FALSE){
+			HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+			List<ApprovalActivity> listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.BUSINESS_TRAVEL);
+			for(ApprovalActivity appActivity : listApprovalActivities){
+				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+				BusinessTravel businessTravel = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
+				
+				Date start = businessTravel.getStartDate();
+				Date end = businessTravel.getEndDate();
+				if(
+					((startRequest.after(start) || DateUtils.isSameDay(startRequest, start)) && 
+					 (startRequest.before(end)  || DateUtils.isSameDay(startRequest, end)))
+					||
+					((endRequest.after(start) || DateUtils.isSameDay(endRequest, start)) && 
+					 (endRequest.before(end)  || DateUtils.isSameDay(endRequest, end)))					
+				) 
+				{
+					isDuplicate = Boolean.TRUE;
+					break;
+				}
+			}
+		}
+		
+		return isDuplicate;
 	}
 
 	@Override

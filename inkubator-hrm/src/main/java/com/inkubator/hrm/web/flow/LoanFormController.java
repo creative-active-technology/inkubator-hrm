@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.flow;
 
 import com.inkubator.common.CommonUtilConstant;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,15 +91,27 @@ public class LoanFormController implements Serializable{
 	public String doLoanFormVerification(RequestContext context){
 		String message = "success";
 		LoanModel model = (LoanModel) context.getFlowScope().get("loanModel");
-		if(model.getNominalPrincipal() > model.getMaxNominalPrincipal()){
-			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_nominal_principal", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			message = "error";
+		
+		try {
+			if(model.getNominalPrincipal() > model.getMaxNominalPrincipal()){
+				MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_nominal_principal", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				message = "error";
+				
+			} else if(model.getTermin() > model.getMaxTermin()){
+				MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_period", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				message = "error";
+				
+			}		
 			
-		} else if(model.getTermin() > model.getMaxTermin()){
-			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "loan.error_period", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-			message = "error";
+			String result = loanService.isLoanAllowed(model.getEmpData().getId(), model.getLoanSchemaId());
+			if(!StringUtils.equals("yes", result)){
+				MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", result, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				message = "error";
+			}
 			
-		}		
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
 		return message;
 	}
 	public String doSave(RequestContext context) {

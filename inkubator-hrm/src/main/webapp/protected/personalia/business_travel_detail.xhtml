@@ -27,7 +27,11 @@
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
+	                    
 	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                    	<f:event type="preRenderView" listener="#{businessTravelDetailController.onShowGrowl}" />
+                    	
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
