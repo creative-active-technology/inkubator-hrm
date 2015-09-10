@@ -49,7 +49,7 @@
                                 	<p:spinner id="optionId" value="#{specAbilityFormController.specAbilityModel.totalOption}" min="0" max="11" required="true" size="2" 
                                                validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
                                     	<f:validateLongRange minimum="1" maximum="11"/>
-                                        <p:ajax update="optionsGroupId" process="@this" listener="#{specAbilityFormController.doAdjustScaleValue()}"/>
+                                        <p:ajax update="optionsGroupId,btnSaveId" process="@this" listener="#{specAbilityFormController.doAdjustScaleValue()}"/>
                                     </p:spinner>
                                     <p:message for="optionId"/>                            
                                 </p:column>
@@ -76,8 +76,8 @@
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSpecAbilityFormId,:growlSpecAbilityFormlId"
-                                             action="#{specAbilityFormController.doSave()}" styleClass="isitext_hrm"
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             action="#{specAbilityFormController.doSave()}" styleClass="isitext_hrm" disabled="#{specAbilityFormController.isDisable}"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" id="btnSaveId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formSpecAbilityFormId" action="#{specAbilityFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
