@@ -37,6 +37,7 @@ public class ModelComponent  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Integer spesific;
+     private Boolean hasException;
 
     public ModelComponent() {
     }
@@ -170,8 +171,15 @@ public class ModelComponent  implements java.io.Serializable {
         this.spesific = spesific;
     }
 
+    @Column(name="has_exception")
+	public Boolean getHasException() {
+		return hasException;
+	}
 
 
+	public void setHasException(Boolean hasException) {
+		this.hasException = hasException;
+	}
 
 }
 
