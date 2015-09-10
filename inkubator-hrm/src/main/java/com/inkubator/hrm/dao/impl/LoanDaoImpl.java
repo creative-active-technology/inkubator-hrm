@@ -136,7 +136,16 @@ public class LoanDaoImpl extends IDAOImpl<Loan> implements LoanDao {
         doSearchByParam(parameter, criteria);
         criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-    }    
+    }
+
+	@Override
+	public List<Loan> getAllDataByEmpDataIdAndStatusUndisbursed(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.eq("statusPencairan", HRMConstant.LOAN_UNDISBURSED));
+        criteria.setFetchMode("loanSchema", FetchMode.JOIN);
+        return criteria.list();
+	}    
 
 }
 
