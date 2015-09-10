@@ -81,10 +81,13 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
         String hqlDeleteUnregEmpReligion = "delete from UnregEmpReligion uer where uer.unregSalary.id = :unregSalaryId";
         String hqlDeleteUnregEmpType = "delete from UnregEmpType uet where uet.unregSalary.id = :unregSalaryId";
         String hqlDeleteUnregGoljab = "delete from UnregGoljab ug where ug.unregSalary.id = :unregSalaryId";
+        String hqlDeleteUnregGender = "delete from UnregGender ugen where ugen.unregSalary.id = :unregSalaryId";
         int deletedJabatanEdukasi = getCurrentSession().createQuery(hqlDeleteUnregDepartment).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
         int deletedJabatanMajor = getCurrentSession().createQuery(hqlDeleteUnregEmpReligion).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
         int deletedJabatanFaculty = getCurrentSession().createQuery(hqlDeleteUnregEmpType).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
         int deletedJabatanOccupation = getCurrentSession().createQuery(hqlDeleteUnregGoljab).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+        int deletedGender = getCurrentSession().createQuery(hqlDeleteUnregGender).setString("unregSalaryId", String.valueOf(unregSalaryId)).executeUpdate();
+        
     }
 
     @Override
