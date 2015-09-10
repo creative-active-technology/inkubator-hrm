@@ -208,4 +208,5 @@ public class HrmRole implements java.io.Serializable {
         return new ArrayList<>(getHrmMenuRoles());
     }
 
+    
 }

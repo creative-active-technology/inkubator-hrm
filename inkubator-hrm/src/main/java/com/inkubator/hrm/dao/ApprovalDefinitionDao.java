@@ -41,6 +41,8 @@ public interface ApprovalDefinitionDao extends IDAO<ApprovalDefinition> {
 
     public List<ApprovalDefinition> getAllDataByName(String name);
 
+    public ApprovalDefinition getByNameAndSpecificAndProcessName(String definitionName, String detil, String peocessName);
 
-    
+    public List<ApprovalDefinition> getALLDataWithSequece(int sequace);
+
 }

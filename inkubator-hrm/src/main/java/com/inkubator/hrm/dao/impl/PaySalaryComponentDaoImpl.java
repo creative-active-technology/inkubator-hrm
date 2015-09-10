@@ -50,7 +50,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     }
 
     @Override
-    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PaySalaryComponent> getAllDataByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("modelComponent", FetchMode.JOIN);
         criteria.setFetchMode("paySalaryJurnal", FetchMode.JOIN);
@@ -63,7 +63,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     }
 
     @Override
-    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter) {
+    public Long getTotalByParamWithDetail(PaySalaryComponentSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
@@ -128,7 +128,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     }
 
     @Override
-    public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate) {
+    public PaySalaryComponent getByEmployeeTypeIdAndComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("paySalaryEmpTypes", "payType");
         criteria.createAlias("payType.employeeType", "employeeType");
@@ -197,15 +197,21 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     }
 
     @Override
-    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PayComponentDataExceptionModelView> getAllDataByParamDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         final StringBuilder query = new StringBuilder("SELECT B.id AS paySalaryComponentId, B.name AS name, B.code AS code, count(A.emp_id) AS jumlahKaryawan, sum(A.nominal) AS jumlahNominal");
         query.append(" FROM pay_salary_component B");
+        query.append(" JOIN model_component C ON B.model_component_id = C.id");
         query.append(" LEFT JOIN pay_component_data_exception A ON A.pay_component_id = B.id");
         if (searchParameter.getCode() != null) {
             query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
+            query.append(" AND C.has_exception = 1");
         } else if (searchParameter.getName() != null) {
             query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
+            query.append(" AND C.has_exception = 1");
+        } else {
+        	query.append(" WHERE C.has_exception = 1");
         }
+        
         query.append(" GROUP BY B.name");
         if (order.toString().contains("code") || order.toString().contains("name") || order.toString().contains("jumlahKaryawan") || order.toString().contains("jumlahNominal")) {
             query.append(" order by " + order);
@@ -225,11 +231,16 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT count(B.name)");
         query.append(" FROM pay_salary_component B");
+        query.append(" JOIN model_component C ON B.model_component_id = C.id");
         query.append(" LEFT JOIN pay_component_data_exception A ON A.pay_component_id = B.id");
         if (searchParameter.getCode() != null) {
             query.append(" WHERE B.code like '%" + searchParameter.getCode() + "%'");
+            query.append(" AND C.has_exception = 1");
         } else if (searchParameter.getName() != null) {
             query.append(" WHERE B.name like '%" + searchParameter.getName() + "%'");
+            query.append(" AND C.has_exception = 1");
+        } else {
+        	query.append(" WHERE C.has_exception = 1");
         }
         query.append(" GROUP BY B.name) as totalData");
 
