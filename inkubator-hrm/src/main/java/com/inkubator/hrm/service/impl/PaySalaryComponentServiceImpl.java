@@ -264,14 +264,14 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryComponentDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    public List<PaySalaryComponent> getAllDataByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryComponentDao.getAllDataByParamWithDetail(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception {
-        return paySalaryComponentDao.getTotalResourceTypeByParam(searchParameter);
+    public Long getTotalParamWithDetail(PaySalaryComponentSearchParameter searchParameter) throws Exception {
+        return paySalaryComponentDao.getTotalByParamWithDetail(searchParameter);
     }
 
     @Override
@@ -354,8 +354,8 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryComponentDao.getByParamWithDetailForDataException(searchParameter, firstResult, maxResults, order);
+    public List<PayComponentDataExceptionModelView> getAllDataByParamDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryComponentDao.getAllDataByParamDataException(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
