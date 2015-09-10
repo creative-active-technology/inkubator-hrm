@@ -39,7 +39,7 @@ public class LoanStatusConverter implements Converter {
         } else if(Objects.equals(data, HRMConstant.LOAN_UNDISBURSED)){
         	messages = resourceBundle.getString("loan.undisbursed");
         } else if(Objects.equals(data, HRMConstant.LOAN_DISBURSED)){
-        	messages = resourceBundle.getString("global.disbursed");
+        	messages = resourceBundle.getString("loan.disbursed");
         }
         
         return messages;
