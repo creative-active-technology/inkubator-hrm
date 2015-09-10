@@ -24,21 +24,16 @@
     
     	<transition on="back" to="add_business_travel"/>
     	<transition on="save" to="save_verification"/>
-    	<transition on="end_verification" to="end_verification"/>
     	<transition on="end" to="end"/>
     </view-state>
 
 	<action-state id="save_verification">
-        <evaluate expression="businessTravelFormController.doSave(flowRequestContext)" />
-    </action-state >
-	
-	<action-state id="end_verification">
-		 <evaluate expression="businessTravelFormController.doEndVerification()" />
+        <evaluate expression="businessTravelFormController.doSave(flowRequestContext)"/>
         <transition on="success_need_approval" to="end"/>
         <transition on="success_without_approval" to="end_detail"/>
         <transition on="error" to="add_business_travel_component"/>
-	</action-state>
-    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?execution=e#{flowScope.businessTravelModel.id}"/>
-    <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm" />
+    </action-state >
+    <end-state id="end_detail" view="externalRedirect:contextRelative:/protected/personalia/business_travel_detail.htm?growl=success&amp;execution=e#{flowScope.businessTravelModel.id}"/>
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/personalia/business_travel_view.htm?growl=need_approval" />
     
 </flow>

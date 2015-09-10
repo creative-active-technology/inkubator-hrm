@@ -31,7 +31,7 @@
                     <div style="background:none repeat scroll 0 0 #ffffff;height: 2px;position: relative;">
 
                     </div>
-                    
+
                     <div id="box_bg">
                         <p:growl id="growlRest" life="6000" showDetail="true" escape="false" showSummary="true" globalOnly="false"/>
                         <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
@@ -47,7 +47,7 @@
                                                      required="true" label="#{appmsg['loginform.choose_language']}"
                                                      style="font-family: Calibri!important;width: 130px;text-align: left" >
                                         <f:selectItems value="#{bahasa}"/>
-                                        <p:ajax listener="#{loginController.doChageLanguange()}" update="pilihanBahasaForm,:loginForm,:dialogResetId"/>
+                                        <p:ajax listener="#{loginController.doChageLanguange()}" update="pilihanBahasaForm,:loginForm,:dialogResetId,:browserId"/>
                                     </p:selectOneMenu>
                                 </h:panelGrid>
                                 <div style="clear: both"/>
@@ -132,12 +132,12 @@
                         <div style="float: left;margin-left: 20px;margin-top: -5px" >
                             <h:outputLabel value="#{appmsg['loginform.copyright']}" styleClass="footer_hrm"/>   
                         </div>
-                        <div style="float: right;margin-right: 20px;margin-top: -5px" >
-                            <h:outputLabel value="#{appmsg['global.application_name']}" styleClass="footer_hrm"/>
 
-                        </div>
                     </div> 
                 </div>
+            </div>
+            <div style="margin-left: 20px;bottom: 15%;position: absolute;left: 28%">
+                <p:outputLabel value="#{loginController.info}"  style="color: #990000!important" id="browserId"/>
             </div>
         </div>
 

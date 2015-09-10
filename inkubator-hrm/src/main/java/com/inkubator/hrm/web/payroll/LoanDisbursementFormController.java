@@ -82,7 +82,7 @@ public class LoanDisbursementFormController extends BaseController{
        
         try {           
             if(agree){
-                loanService.updateStatusAndDateDisbursementPaid(selectedLoan.getId(), dateDisbursed);       
+                loanService.disbursement(selectedLoan.getId(), dateDisbursed);       
             }
                     
             RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);           

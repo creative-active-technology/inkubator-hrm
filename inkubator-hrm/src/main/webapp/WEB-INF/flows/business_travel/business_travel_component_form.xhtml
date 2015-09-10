@@ -36,10 +36,7 @@
 	                                <p:outputLabel value="#{appmsg['businesstravel.business_travel_number']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inplace editor="true">
-	                            		<p:inputText value="#{businessTravelModel.businessTravelNo}" required="true" label="text"/>
-	                            	</p:inplace>
-	                            	<p:outputLabel value="#{appmsg['global.click_to_edit']}"  style="font-style: italic;margin-left: 10px;font-size: 11px!important"/>
+	                            	<p:outputLabel value="#{businessTravelModel.businessTravelNo}"/>
 	                            </p:column>
 	                        </p:row> 
 	                        <p:row>
@@ -142,23 +139,13 @@
 	                            <p:resetInput target="formBusinessTravelComponentFormId" />  
 	                        </p:commandButton>                        
 	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                        				 label="#{appmsg['global.save']}" oncomplete="dialogSuccessResult.show()" icon="ui-icon-disk" title="#{appmsg['global.save']}"
+	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
                                              ajax="true" action="save" update=":growlBusinessTravelComponentFormlId" />
                             <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
 	                        				 action="end" immediate="true"/>
 	                    </div>
                     </div>
                 </h:form>
-                
-                <p:dialog widgetVar="dialogSuccessResult" header="#{appmsg['global.added_successfully']}" styleClass="header_small_no_bold" width="450" modal="true" resizable="false" hideEffect="puff" 
-                          showEffect="clip" onShow="statusDialog.hide()" appendTo="@(body)">
-                    <p:separator/>
-                      <div align="center">
-                        <p:commandButton value="OK" action="end_verification"
-                                         oncomplete="dialogSuccessResult.hide()" style="margin-right: 5px" icon="ui-icon-check"/>
-                      </div>
-                          
-                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

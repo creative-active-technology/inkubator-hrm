@@ -44,13 +44,15 @@ public interface LoanService extends IService<Loan>, BaseApprovalService {
     
     public Long getTotalByParamByStatusUndisbursed(LoanSearchParameter parameter) throws Exception;
     
-    public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception;
+    public void disbursement(Long loanId, Date dateDisbursement) throws Exception;
     
     public List<Loan> getAllDataByEmpDataIdAndStatusDisbursed(Long empDataId) throws Exception;
     
-        public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
+    public HashMap<Long, String> getAllDataNotApprovedYet(String userId) throws Exception;
     
     public void cancelled(long approvalActivityId, LoanCanceled loanCancelation) throws Exception;
     
     public Long getCurrentMaxId() throws Exception;
+    
+    public String isLoanAllowed(Long empDataId, Long loanSchemaId) throws Exception;
 }

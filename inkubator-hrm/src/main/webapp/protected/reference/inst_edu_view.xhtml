@@ -40,7 +40,6 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_code']}" itemValue="institutionEducationCode"/>
                                         <f:selectItem itemLabel="#{appmsg['institutionEducation.institutionEducation_name']}" itemValue="institutionEducationName"/>
-                                        <f:selectItem itemLabel="#{appmsg['institutionEducation.city_name']}" itemValue="cityName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{institutionEducationViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{institutionEducationViewController.doSearch()}" update="tableInstitutionEducationId"  styleClass="label_button" icon="ui-icon-search"/>

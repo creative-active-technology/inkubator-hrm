@@ -10,6 +10,8 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.util.ResourceBundleUtil;
+import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -49,6 +51,7 @@ public class LoginController extends BaseController {
     private HrmUserService userService;
     @ManagedProperty(value = "#{deviceResolver}")
     private DeviceResolver deviceResolver;
+    private String info;
 
     @PostConstruct
     @Override
@@ -75,7 +78,12 @@ public class LoginController extends BaseController {
         if (device.isTablet()) {
             LOGGER.info("TABLET");
         }
-
+        String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
+        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
+            info = ResourceBundleUtil.getAsString("browser.info");
+        } else {
+            info = ResourceBundleUtil.getAsString("browser.info_invalid");
+        }
     }
 
     @PreDestroy
@@ -91,7 +99,7 @@ public class LoginController extends BaseController {
     public void setDeviceResolver(DeviceResolver deviceResolver) {
         this.deviceResolver = deviceResolver;
     }
-    
+
     public String getUserId() {
         return userId;
     }
@@ -136,6 +144,12 @@ public class LoginController extends BaseController {
         FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
         String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
+        String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
+        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
+            info = ResourceBundleUtil.getAsString("browser.info");
+        } else {
+            info = ResourceBundleUtil.getAsString("browser.info_invalid");
+        }
     }
 
     public String doLogin() {
@@ -175,6 +189,14 @@ public class LoginController extends BaseController {
             LOGGER.error("Error", ex);
         }
         context.addCallbackParam("emailIsExist", emailIsExist);
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
 }
