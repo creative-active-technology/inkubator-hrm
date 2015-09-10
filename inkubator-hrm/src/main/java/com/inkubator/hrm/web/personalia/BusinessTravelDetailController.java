@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -17,6 +18,7 @@ import javax.faces.context.ExternalContext;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BusinessTravel;
 import com.inkubator.hrm.entity.BusinessTravelComponent;
@@ -25,6 +27,7 @@ import com.inkubator.hrm.service.BusinessTravelComponentService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -148,6 +151,13 @@ public class BusinessTravelDetailController extends BaseController {
             red.redirect(red.getRequestContextPath() + "/flow-protected/business_travel?id=" + selectedBusinessTravel.getId());
         } catch (IOException ex) {
           LOGGER.error("Erorr", ex);
+        }
+    }
+	
+	public void onShowGrowl(){
+    	String param = FacesUtil.getRequestParameter("growl");
+        if(StringUtils.equals(param, "success")){
+        	MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());        	
         }
     }
 
