@@ -20,6 +20,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -615,45 +616,46 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         HrmUser hrmUser = hrmUserDao.getByEmpDataId(empData.getId());
         LoanNewSchema loanNewSchema = loanNewSchemaDao.getEntiyByPK(loanNewSchemaId);
 
-        //Get All pending request of employee
+        //Dapatkan semua List pending Approval Activity dari Karyawan yang sedang mengajukan pinjaman
         List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId());
-        //approvalActivityDao.is
 
-        //filter only activity that comes from LOAN 
+        //filter hanya yang datang dari LOAN
         listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.LOAN)));
-
-        //grouping list by ActivityNumber
-        //Group<ApprovalActivity> groupPendingActivity = Lambda.group(listPendingRequest, Lambda.by(Lambda.on(ApprovalActivity.class).getActivityNumber()));
-
-        //iterate each group list element
-//        for (String key : groupPendingActivity.keySet()) {
-//            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
-//
-//            // Get activity with highest sequence from each grouped list activities
-//            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
-//
-//            //if previous loan approval activity with same loanNewType and still in approval process found,  return Exception Message
-//            if (approvalActivityWithHighestSequence.getTypeSpecific() == loanNewTypeId) {
-//                return "loan.error_loan_with_same_type_found";
-//            }
-//        }
         
+        // Cek Type Specificnya, jika sama dengan tipe yang sedang diajukan, return key exception
         for(ApprovalActivity pendingApprovalActivity : listPendingRequest){
-            if (pendingApprovalActivity.getTypeSpecific() == loanNewTypeId) {
+            if (pendingApprovalActivity.getTypeSpecific().equals(loanNewTypeId)) {
                 return "loan.error_loan_with_same_type_found";
             }
         }
         
-        
-        //Check whether employee still have outstanding loan with same loanType
+        // Dapatkan List Loan yang status <> HRMConstant.LOAN_PAID
         List<LoanNewApplication> listPreviosUnpaidLoanWithSameLoanTypeId = loanNewApplicationDao.getListUnpaidLoanByEmpDataIdAndLoanNewTypeId(empData.getId(), loanNewTypeId);
-
-        //if previous loan with same type and still remain outstanding found,  return Exception Message
-        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {
-            return "loan.error_loan_with_same_type_found";
+        
+        // filter jadi dua list : listUndisbursedLoan (List Loan yang belum di cairkan), dan listdisbursedLoan (List Loan yang sudah di cairkan)
+        List<LoanNewApplication> listUndisbursedLoan = Lambda.select(listPreviosUnpaidLoanWithSameLoanTypeId, Lambda.having(Lambda.on(LoanNewApplication.class).getLoanStatus(), Matchers.equalTo(HRMConstant.LOAN_UNDISBURSED)));
+        List<LoanNewApplication> listdisbursedLoan = Lambda.select(listPreviosUnpaidLoanWithSameLoanTypeId, Lambda.having(Lambda.on(LoanNewApplication.class).getLoanStatus(), Matchers.equalTo(HRMConstant.LOAN_DISBURSED)));
+        
+        // Jika di list loan yang belum di cairkan, sudah ada loan yang tipe nya sama dengan yang sedang di ajukan, return key exception
+        if(!listUndisbursedLoan.isEmpty()){
+        	return "loan.error_loan_with_same_type_found";
+        }
+        
+        // jika tidak ada di list yang belum dicairkan, lanjut cek ke list yang sudah di cairkan, cek satu persatu,
+        // dapatkan lastInstallmentDate (Tanggal terakhir cicilan) dari loan tsb, bandingkan dengan tgl hari ini, jika tgl hari ini sebelum tgl cicilan terakhir, berarti belum lunas
+        // return key exception
+        for(LoanNewApplication loanNewApplication : listdisbursedLoan){
+        	List<LoanNewApplicationInstallment> listInstallments = loanNewApplicationInstallmentDao.getListByLoanNewApplicationId(loanNewApplication.getId());
+        	if(!listInstallments.isEmpty()){
+        		Date lastInstallment = Lambda.max(listInstallments, Lambda.on(LoanNewApplicationInstallment.class).getInstallmentDate());
+            	if(new Date().before(lastInstallment)){
+            		return "loan.error_loan_with_same_type_found";
+            	}
+        	}
+        	
         }
 
-        /* Begin Calculate Total loan of exisiting loan application and previous loan of selected employee*/
+        /* Mulai Hitung Total loan dari pengajuan yang sedang berlangsung dan pengajuan sebelumnya*/
         Double totalLoanByUser = loanPrincipal;
         
         for(ApprovalActivity pendingApprovalActivity : listPendingRequest){
@@ -667,37 +669,26 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             }
         }
 
-        //iterate each group list element
-//        for (String key : groupPendingActivity.keySet()) {
-//            List<ApprovalActivity> listGroupedActivity = groupPendingActivity.find(key);
-//
-//            // Get activity with highest sequence from each grouped list activities
-//            ApprovalActivity approvalActivityWithHighestSequence = Lambda.selectMax(listGroupedActivity, Lambda.on(ApprovalDefinition.class).getSequence());
-//            
-//            //calculate only from different activity number
-//            if (!StringUtils.equals(activityNumber, approvalActivityWithHighestSequence.getActivityNumber())) {
-//                String pendingData = approvalActivityWithHighestSequence.getPendingData();
-//                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//                LoanNewApplication loanNewApplication = gson.fromJson(pendingData, LoanNewApplication.class);
-//                totalLoanByUser += loanNewApplication.getNominalPrincipal();
-//            }
-//
-//        }
-
-        if (!listPreviosUnpaidLoanWithSameLoanTypeId.isEmpty()) {
-            for (LoanNewApplication prevLoan : listPreviosUnpaidLoanWithSameLoanTypeId) {
+        if (!listUndisbursedLoan.isEmpty()) {
+            for (LoanNewApplication prevLoan : listUndisbursedLoan) {
+                totalLoanByUser += prevLoan.getNominalPrincipal();
+            }
+        }
+        
+        if (!listdisbursedLoan.isEmpty()) {
+            for (LoanNewApplication prevLoan : listdisbursedLoan) {
                 totalLoanByUser += prevLoan.getNominalPrincipal();
             }
         }
 
-        /* End Calculate Total loan of exisiting loan application and previous loan of selected employee*/
+        /* Akhir perhitungan */
         
-        //if total All Loan exceed maximum loan from employee loan schema, return Exception Message
+        //if total Nominal melebihi maksimum pinjaman dari skema pinjaman karyawan terpilih, return Exception Message
         if (totalLoanByUser > loanNewSchema.getTotalMaximumLoan()) {
             return "loan.error_total_loan_exceed_max_loan_on_loan_scheme";
         }
 
-        // if no rule violation found, return yes
+        // jika tidak ada pelanggaran, return yes
         return "yes";
     }
 

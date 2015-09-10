@@ -31,8 +31,6 @@
                         </h:panelGrid>
                         <p:separator/>
 
-
-
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3" >
                                                         <p:row>
                                                             <p:column style="width: 15%;background-color: #e1f0f0!important" >
@@ -81,7 +79,7 @@
                                                         requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                         styleClass="isitext_hrm" size="28"  style="width:250px;" >
                                             <p:ajax event="itemSelect" listener="#{loanApplicationFormController.updateDataPinjamanByEmployee()}" 
-                                                    update="labelNewSchema,loanNewTypeId,tableLoanNewApplicationInstallmentId,tableApproverId,:growlUserFormId"/>
+                                                    update="labelNewSchema,loanNewTypeId,tableLoanNewApplicationInstallmentId,listApproverId,:growlUserFormId"/>
 
                                         </p:autoComplete>
 
@@ -105,7 +103,7 @@
                                 </p:column>
                                 <p:column style="width: 85%">
                                     <p:outputLabel id="labelNewSchema" value="#{loanApplicationFormController.model.loanNewSchemaListOfEmp.loanNewSchema.loanSchemaCode}  -  #{loanApplicationFormController.model.loanNewSchemaListOfEmp.loanNewSchema.loanSchemaName}"
-                                                   styleClass="label_hrm" />
+                                                    />
 
                                 </p:column>
                             </p:row>
@@ -230,38 +228,38 @@
                                 <p:column style="width: 85%">
                                     <h:panelGrid columns="3" style="margin-left: -10px;">
 
-                                        <p:outputLabel value="#{appmsg['loan.max_loan_amount']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="maxLoan" value="#{loanApplicationFormController.model.maxLoanAmount}" styleClass="label_hrm" >
+                                        <p:outputLabel value="#{appmsg['loan.max_loan_amount']}"  />                                    
+                                        <p:outputLabel value=" :  "  />
+                                        <p:outputLabel id="maxLoan" value="#{loanApplicationFormController.model.maxLoanAmount}"  >
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
 
-                                        <p:outputLabel value="#{appmsg['loan.min_loan_amount']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="minLoan" value="#{loanApplicationFormController.model.minLoanAmount}" styleClass="label_hrm" >
+                                        <p:outputLabel value="#{appmsg['loan.min_loan_amount']}"  />                                    
+                                        <p:outputLabel value=" :  " />
+                                        <p:outputLabel id="minLoan" value="#{loanApplicationFormController.model.minLoanAmount}"  >
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
 
-                                        <p:outputLabel value="#{appmsg['loan.used_loan_amount']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="usedLoan" value="#{loanApplicationFormController.model.nominalLoan}" styleClass="label_hrm" >
+                                        <p:outputLabel value="#{appmsg['loan.used_loan_amount']}"  />                                    
+                                        <p:outputLabel value=" :  "  />
+                                        <p:outputLabel id="usedLoan" value="#{loanApplicationFormController.model.nominalLoan}"  >
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
 
-                                        <p:outputLabel value="#{appmsg['loan.available_loan_amount_left']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="availableLoan" value="#{loanApplicationFormController.model.availableLoanAmount}" styleClass="label_hrm" >
+                                        <p:outputLabel value="#{appmsg['loan.available_loan_amount_left']}"  />                                    
+                                        <p:outputLabel value=" :  " />
+                                        <p:outputLabel id="availableLoan" value="#{loanApplicationFormController.model.availableLoanAmount}"  >
                                             <f:convertNumber pattern="###,###" type="currency"/>
                                         </p:outputLabel>
 
-                                        <p:outputLabel value="#{appmsg['loan.max_periode']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="maxPeriod" value="#{loanApplicationFormController.model.selectedLoanNewSchemaListOfType.maxPeriode}" styleClass="label_hrm" >                                        
+                                        <p:outputLabel value="#{appmsg['loan.max_periode']}"  />                                    
+                                        <p:outputLabel value=" :  "  />
+                                        <p:outputLabel id="maxPeriod" value="#{loanApplicationFormController.model.selectedLoanNewSchemaListOfType.maxPeriode}"  >                                        
                                         </p:outputLabel>
 
-                                        <p:outputLabel value="#{appmsg['loan.loan_periode']}" styleClass="label_hrm" />                                    
-                                        <p:outputLabel value=" :  " styleClass="label_hrm" />
-                                        <p:outputLabel id="loanPeriod" value="#{loanApplicationFormController.model.loanPeriod}" styleClass="label_hrm" >                                        
+                                        <p:outputLabel value="#{appmsg['loan.loan_periode']}"  />                                    
+                                        <p:outputLabel value=" :  "  />
+                                        <p:outputLabel id="loanPeriod" value="#{loanApplicationFormController.model.loanPeriod}"  >                                        
                                         </p:outputLabel>
 
                                     </h:panelGrid>
@@ -421,51 +419,14 @@
                                 </p:column>
                             </p:row>
 
-                            <!--                            <p:row>
-                                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                                <p:outputLabel  value="#{appmsg['loanNewSchema.pattern_approval']}"  for="patternApprovalId" styleClass="label_hrm" />
-                                                            </p:column>
-                                                            <p:column style="width: 80%">
-                            
-                                                                <p:selectOneMenu id="patternApprovalId" value="#{loanApplicationFormController.approvalDefId}" 
-                                                                                 label="#{appmsg['loanNewSchema.pattern_approval']}"   
-                            
-                                                                                 style="min-width: 200px;margin-right: 3px" required="true" >
-                            
-                                                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                                                    <f:selectItems value="#{loanApplicationFormController.mapApprovalLoan}"/>
-                                                                    <p:ajax   listener="#{loanApplicationFormController.updateDataApprover()}"  update="tableApproverId"/>
-                                                                </p:selectOneMenu>
-                                                                <p:message for="patternApprovalId"/>
-                                                            </p:column>
-                                                        </p:row>-->
-
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loan.loan_approver']}"  for="minimumInstallment" styleClass="label_hrm" />
                                 </p:column>
-                                <p:column style="width: 40%">
-                                    <h:panelGrid columns="1" style="margin-left: -10px;">
-                                        <p:dataTable  id="tableApproverId" var="approverData"  value="#{loanApplicationFormController.model.listApprover}" lazy="false" paginator="#{loanApplicationFormController.model.ispaginatorLoanApprover}" pageLinks="7"
-                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
-                                                      rowIndexVar="no"> 
-                                            <p:column style="text-align: center;width: 5%">
-                                                <f:facet name="header">  
-                                                    <h:outputText value="#{appmsg['global.number']}"/>
-                                                </f:facet>
-                                                <h:outputLabel value="#{no+1}." />
-                                            </p:column>  
-                                            <p:column style="text-align: center;width: 24%">
-                                                <f:facet name="header">  
-                                                    <h:outputText value="#{appmsg['loan.loan_approver']}"/>
-                                                </f:facet>
-                                                <h:outputLabel value= "#{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName}">
-
-                                                </h:outputLabel>
-                                            </p:column>
-                                        </p:dataTable>
-                                    </h:panelGrid>
+                                <p:column id="listApproverId" style="width: 80%">
+                                    <ui:repeat value="#{loanApplicationFormController.model.listApprover}" var="approverData" varStatus="no">
+                                        #{no.index+1}. #{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName} <br />
+                                    </ui:repeat>
                                 </p:column>
                             </p:row>
 
