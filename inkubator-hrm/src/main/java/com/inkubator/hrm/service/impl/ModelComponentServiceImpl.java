@@ -274,6 +274,7 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
         modelComponent.setName(b.getName());
         modelComponent.setDescription(b.getDescription());
         modelComponent.setSpesific(b.getSpesific());
+        modelComponent.setHasException(b.getHasException());
         modelComponent.setUpdatedBy(UserInfoUtil.getUserName());
         modelComponent.setUpdatedOn(new Date());
         modelComponentDao.update(modelComponent);
