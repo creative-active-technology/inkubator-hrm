@@ -101,7 +101,7 @@
                             </p:column>
                             <p:column sortBy="#{leaveImplementationData.numberFilling}"  style="width: 15%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
+                                    <h:outputText value="#{appmsg['leavehistreport.request_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.numberFilling}"/>
                             </p:column>
@@ -135,7 +135,7 @@
                             </p:column> 
                             <p:column sortBy="#{leaveImplementationData.fillingDate}"  style="width: 10%">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['leaveimplementation.filling_date']}"/>
+                                    <h:outputText value="#{appmsg['leavehistreport.request_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveImplementationData.fillingDate}">
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
@@ -180,9 +180,9 @@
                                 <h:outputText value="#{report.nikWithFullName}" />
                             </p:column>
 
-                            <p:column headerText="#{appmsg['leaveimplementation.filling_number']}">
+                            <p:column headerText="#{appmsg['leavehistreport.request_number']}">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['leaveimplementation.filling_number']}"/>
+                                    <h:outputText value="#{appmsg['leavehistreport.request_number']}"/>
                                 </f:facet>
                                 <h:outputText value="#{report.numberFilling}" />
                             </p:column>
@@ -248,7 +248,7 @@
                             <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.empData.nikWithFullName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['leaveimplementation.filling_number']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['leavehistreport.request_number']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{reportLeaveHistoryViewController.selectedLeaveImplementation.numberFilling}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
