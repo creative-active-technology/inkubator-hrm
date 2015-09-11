@@ -2192,4 +2192,20 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(Restrictions.ilike("bioData.combineName", dataSearchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
     }
+
+	@Override
+	public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /**
+         * automatically get relations of jabatanByJabatanId, department,
+         * company don't create alias for that entity, or will get error :
+         * duplicate association path
+         */
+        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.add(Restrictions.le("joinDate", joinDateLimit));
+
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }

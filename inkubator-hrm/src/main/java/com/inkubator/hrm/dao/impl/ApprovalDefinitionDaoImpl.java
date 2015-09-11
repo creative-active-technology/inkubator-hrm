@@ -195,4 +195,11 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         criteria.add(Restrictions.eq("processType", peocessName));
         return (ApprovalDefinition) criteria.uniqueResult();
     }
+
+    @Override
+    public List<ApprovalDefinition> getALLDataWithSequece(int sequace) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("sequence", sequace));
+        return criteria.list();
+    }
 }

@@ -27,4 +27,6 @@ public interface ApprovalDefinitionService extends IService<ApprovalDefinition> 
     public void updateStatusAndSms(ApprovalDefinition approvalDefinition) throws Exception;
 
     public DefaultDiagramModel getGraphMode(long id) throws Exception;
+
+    public List<ApprovalDefinition> getALLDataWithSequece(int sequace) throws Exception;
 }

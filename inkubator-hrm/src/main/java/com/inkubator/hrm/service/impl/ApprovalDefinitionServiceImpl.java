@@ -512,7 +512,7 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
             model.addElement(onRejectElement);
             model.connect(createConnection(step.getEndPoints().get(1), onRejectElement.getEndPoints().get(0), "On Reject Notification"));
             if (minApprover > 1) {
-                model.connect(createConnection(step1.getEndPoints().get(3), onRejectElement.getEndPoints().get(0), "On Reject Notification"));
+                model.connect(createConnection(step1.getEndPoints().get(3), onRejectElement.getEndPoints().get(0), null));
             }
         }
 
@@ -551,6 +551,12 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         }
 
         return conn;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalDefinition> getALLDataWithSequece(int sequace) throws Exception {
+        return this.approvalDefinitionDao.getALLDataWithSequece(sequace);
     }
 
 }

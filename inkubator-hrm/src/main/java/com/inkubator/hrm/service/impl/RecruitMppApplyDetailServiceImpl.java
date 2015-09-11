@@ -234,5 +234,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 		return this.recruitMppApplyDetailDao.getTotalDataByParam(searchParameter);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitMppApplyDetail getEntityWithDetail(Long idRecruitMppApplyDetailId) throws Exception {
+		return recruitMppApplyDetailDao.getEntityWithDetail(idRecruitMppApplyDetailId);
+	}
+
     
 }

@@ -20,9 +20,9 @@ import org.hibernate.criterion.Order;
  */
 public interface PaySalaryComponentService extends IService<PaySalaryComponent> {
 
-    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<PaySalaryComponent> getAllDataByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception;
+    public Long getTotalParamWithDetail(PaySalaryComponentSearchParameter searchParameter) throws Exception;
 
     public PaySalaryComponent getEntityByPkWithDetail(Long id) throws Exception;
     
@@ -34,7 +34,7 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
     
     public void saveWithEmployeeType(PaySalaryComponent paySalaryComponent) throws Exception;
     
-    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+    public List<PayComponentDataExceptionModelView> getAllDataByParamDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter) throws Exception;
 

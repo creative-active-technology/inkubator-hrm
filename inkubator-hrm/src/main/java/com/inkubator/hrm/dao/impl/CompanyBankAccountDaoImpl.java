@@ -31,6 +31,7 @@ public class CompanyBankAccountDaoImpl extends IDAOImpl<CompanyBankAccount> impl
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("company.id", companyId));
 		criteria.setFetchMode("bank", FetchMode.JOIN);
+                criteria.setFetchMode("bank.bank", FetchMode.JOIN);
 		criteria.setFetchMode("savingType", FetchMode.JOIN);
 		return criteria.list();		
 	}

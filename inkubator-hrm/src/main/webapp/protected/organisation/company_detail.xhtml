@@ -180,7 +180,8 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bank.bank_name']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bankData.bank.bankName}"/>
+                                        <p:outputLabel value= "#{bankData.bank.bankName}" rendered="#{!bankData.bank.parent}" />
+                                        <p:outputLabel value= "#{bankData.bank.bank.bankName} - #{bankData.bank.branchName} " rendered="#{bankData.bank.parent}" />
                                     </p:column>
                                     <p:column style="width: 15%">
                                         <f:facet name="header">  
@@ -295,7 +296,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab id="tabCommisioner" title="#{appmsg['commisoner.commisioner']}" >
                                 <p:dataTable  id="tableCommisioner" var="data"  value="#{companyDetailController.listCompanyCommmisioner}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
@@ -342,7 +343,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab id="tabOwnership" title="#{appmsg['ownership.ownership']}" >
                                 <p:dataTable  id="tableOwnership" var="data"  value="#{companyDetailController.listCompanyOwnership}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
@@ -459,7 +460,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmFinancialPartner').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                
+
                 <p:dialog widgetVar="dialogConfirmCompanyCommisioner" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
@@ -484,7 +485,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCompanyCommisioner').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                
+
                 <p:dialog widgetVar="dialogConfirmCompanyOwnership" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
