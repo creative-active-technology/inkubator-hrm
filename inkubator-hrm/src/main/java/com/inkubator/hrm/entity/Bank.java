@@ -189,7 +189,7 @@ public class Bank implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-    @Column(name = "bank_identification_no", unique = true, length = 60)
+    @Column(name = "bank_identification_no", unique = true, length = 32)
     public String getBankIdentificationNo() {
         return this.bankIdentificationNo;
     }
@@ -207,7 +207,7 @@ public class Bank implements java.io.Serializable {
         this.iban = iban;
     }
 
-    @Column(name = "swift_code", unique = true, length = 30)
+    @Column(name = "swift_code", unique = true, length = 32)
     public String getSwiftCode() {
         return this.swiftCode;
     }
