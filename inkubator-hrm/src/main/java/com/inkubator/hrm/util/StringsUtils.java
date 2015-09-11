@@ -61,9 +61,11 @@ public class StringsUtils extends StringUtils {
         }
         return isCondition;
     }
-    
+
     /**
-     * <p>Potong kalimat berdasarkan inputan panjang karakter, tetapi dipotong per-kata</p>
+     * <p>
+     * Potong kalimat berdasarkan inputan panjang karakter, tetapi dipotong
+     * per-kata</p>
      *
      * <pre>
      * StringUtils.slicePerWord("rizky kojek cute", 13)   = "rizky kojek"
@@ -74,23 +76,30 @@ public class StringsUtils extends StringUtils {
      * StringUtils.slicePerWord("rizky kojek cute", 3)   = "riz"
      * </pre>
      *
-     * @param str  the String to get the substring from, may be null
-     * @param len  the maximum character
+     * @param str the String to get the substring from, may be null
+     * @param len the maximum character
      * @return string which already slice
      */
-    public static String slicePerWord(String str, int len){
-    	
-    	String result = EMPTY;
-    	if (str == null || str.length() == 0) {
+    public static String slicePerWord(String str, int len) {
+
+        String result = EMPTY;
+        if (str == null || str.length() == 0) {
             return result;
         }
-    	
-    	String chr = substring(str, len-1, len);
-		result = substring(str, 0, len);
-    	if(isAlphanumeric(chr) && !equals(substring(str, len, len+1), " ")){
-    		result = substringBeforeLast(result, " ");
-    	} 
-    	
-    	return result;
+
+        String chr = substring(str, len - 1, len);
+        result = substring(str, 0, len);
+        if (isAlphanumeric(chr) && !equals(substring(str, len, len + 1), " ")) {
+            result = substringBeforeLast(result, " ");
+        }
+
+        return result;
+    }
+
+    public static boolean isContain(String source, String subItem) {
+        String pattern = "\\b" + subItem + "\\b";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(source);
+        return m.find();
     }
 }

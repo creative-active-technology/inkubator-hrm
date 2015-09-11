@@ -58,6 +58,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalByTaxFreeIsNull();
 
     public Long getTotalKaryawanByJabatanId(Long jabatanId);
+    
+    public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit);
 
     /**
      * get entity

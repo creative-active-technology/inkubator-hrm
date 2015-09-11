@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
@@ -29,6 +31,7 @@ import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
+import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.GolonganJabatan;
@@ -51,6 +54,7 @@ import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
+import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
@@ -63,7 +67,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -450,7 +456,7 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 		Date dateCreated = new Date();
 		String userCreated = HrmUserInfoUtil.getUserName();
 		
-		Jabatan jabatan = getDataJabatanFromModel(jobJabatanModel);
+		Jabatan jabatan = getDataJabatanFromModel(jobJabatanModel, Boolean.FALSE);
 		jabatan.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		jabatan.setCreatedBy(userCreated);
 		jabatan.setCreatedOn(dateCreated);
@@ -545,11 +551,250 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 		}
 	}
 	
-	private Jabatan getDataJabatanFromModel(JobJabatanModel jobJabatanModel){
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateDataJabatan(JobJabatanModel jobJabatanModel)	throws Exception {
+		
+		Date dateUpdated = new Date();
+		String userUpdated = HrmUserInfoUtil.getUserName();
+		
+		Jabatan jabatan = getDataJabatanFromModel(jobJabatanModel, Boolean.TRUE);
+		jabatan.setUpdatedBy(userUpdated);
+		jabatan.setUpdatedOn(dateUpdated);
+		jabatanDao.update(jabatan);
+		
+		// Save/Delete List JabatanEdukasi
+		List<EducationLevel> listEducationLevels = jobJabatanModel.getListEducationLevel();
+		List<JabatanEdukasi> listJabatanEdukasi = jabatanEdukasiDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(EducationLevel educationLevel : listEducationLevels){
+			
+			//Hanya educationLevel yang belum ada di jabatanEdukasi yang di simpan, klo sudah ada tidak perlu di update, karena itu hanya tabel tengah antara Jabatan dengan EducationLevel
+			 if(!Lambda.exists(listJabatanEdukasi, Lambda.having(Lambda.on(JabatanEdukasi.class).getEducationLevel().getId(), Matchers.equalTo(educationLevel.getId())))){
+				 JabatanEdukasi jabatanEdukasi = new JabatanEdukasi();
+					jabatanEdukasi.setEducationLevel(educationLevelDao.getEntiyByPK(educationLevel.getId()));
+					jabatanEdukasi.setJabatan(jabatan);
+					jabatanEdukasi.setDescripstion(educationLevel.getDescription());
+					jabatanEdukasi.setId(new JabatanEdukasiId(jabatan.getId(), educationLevel.getId()));
+					jabatanEdukasiDao.save(jabatanEdukasi);
+			 }
+			
+		}
+		
+		//Hapus JabatanEdukasi yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanEdukasi jabatanEdukasiFromDb : listJabatanEdukasi){
+			if(!Lambda.exists(listEducationLevels, Lambda.having(Lambda.on(EducationLevel.class).getId(), Matchers.equalTo(jabatanEdukasiFromDb.getEducationLevel().getId())))){
+				jabatanEdukasiDao.delete(jabatanEdukasiFromDb);
+			}
+		}
+		
+		//Save/Delete List JabatanProfesi
+		List<OccupationType> listOccupationTypes = jobJabatanModel.getListOccupationType();
+		List<JabatanProfesi> listJabatanProfesi = jabatanProfesiDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(OccupationType occupationType : listOccupationTypes){
+			
+			//Hanya occupationType yang belum ada di listJabatanProfesi yang di simpan, klo sudah ada tidak perlu di update, karena itu hanya tabel tengah antara Jabatan dengan OccupationType
+			 if(!Lambda.exists(listJabatanProfesi, Lambda.having(Lambda.on(JabatanProfesi.class).getOccupationType().getId(), Matchers.equalTo(occupationType.getId())))){
+				JabatanProfesi jabatanProfesi = new JabatanProfesi();
+				jabatanProfesi.setOccupationType(occupationTypeDao.getEntiyByPK(occupationType.getId()));
+				jabatanProfesi.setJabatan(jabatan);
+				jabatanProfesi.setId(new JabatanProfesiId(jabatan.getId(), occupationType.getId()));
+				jabatanProfesiDao.save(jabatanProfesi);
+			 }
+
+		}
+		
+		//Hapus JabatanProfesi yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanProfesi jabatanProfesiFromDb : listJabatanProfesi){
+			if(!Lambda.exists(listOccupationTypes, Lambda.having(Lambda.on(OccupationType.class).getId(), Matchers.equalTo(jabatanProfesiFromDb.getOccupationType().getId())))){
+				jabatanProfesiDao.delete(jabatanProfesiFromDb);
+			}
+		}
+		
+		// Save / Delete List JabatanMajor
+		List<Major> listMajors = jobJabatanModel.getListMajor();
+		List<JabatanMajor> listJabatanMajor = jabatanMajorDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(Major major : listMajors){
+			
+			//Hanya major yang belum ada di listJabatanMajor yang di simpan, klo sudah ada tidak perlu di update, karena itu hanya tabel tengah antara Jabatan dengan Major
+			 if(!Lambda.exists(listJabatanMajor, Lambda.having(Lambda.on(JabatanMajor.class).getMajor().getId(), Matchers.equalTo(major.getId())))){
+				JabatanMajor jabatanMajor = new JabatanMajor();
+				jabatanMajor.setMajor(majorDao.getEntiyByPK(major.getId()));
+				jabatanMajor.setJabatan(jabatan);
+				jabatanMajor.setId(new JabatanMajorId(jabatan.getId(), major.getId()));
+				jabatanMajor.setDescription(major.getDescription());
+				jabatanMajorDao.save(jabatanMajor);
+			 }
+			
+		}
+		
+		//Hapus JabatanMajor yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanMajor jabatanMajorFromDb : listJabatanMajor){
+			if(!Lambda.exists(listMajors, Lambda.having(Lambda.on(Major.class).getId(), Matchers.equalTo( jabatanMajorFromDb.getMajor().getId())))){
+				jabatanMajorDao.delete(jabatanMajorFromDb);
+			}
+		}
+		
+		//Save List JabatanFakulty
+		List<Faculty> listFaculties = jobJabatanModel.getListFaculties();
+		List<JabatanFakulty> listJabatanFakulties = jabatanFakultyDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(Faculty faculty : listFaculties){
+			
+			//Hanya faculty yang belum ada di listJabatanFakulties yang di simpan, klo sudah ada tidak perlu di update, karena itu hanya tabel tengah antara Jabatan dengan Faculty
+			 if(!Lambda.exists(listJabatanFakulties, Lambda.having(Lambda.on(JabatanFakulty.class).getFaculty().getId(), Matchers.equalTo(faculty.getId())))){
+				JabatanFakulty jabatanFakulty = new JabatanFakulty();
+				jabatanFakulty.setFaculty(facultyDao.getEntiyByPK(faculty.getId()));
+				jabatanFakulty.setJabatan(jabatan);
+				jabatanFakulty.setId(new JabatanFakultyId(jabatan.getId(), faculty.getId()));
+				jabatanFakulty.setDescription(faculty.getDescription());
+				jabatanFakultyDao.save(jabatanFakulty);
+			 }
+			
+		}
+		
+		//Hapus JabatanFakulty yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanFakulty jabatanFacultyFromDb : listJabatanFakulties){
+			if(!Lambda.exists(listFaculties, Lambda.having(Lambda.on(Faculty.class).getId(), Matchers.equalTo(jabatanFacultyFromDb.getFaculty().getId())))){
+				jabatanFakultyDao.delete(jabatanFacultyFromDb);
+			}
+		}
+		
+		// Save / Delete List KlasifikasiKerjaJabatan
+		List<KlasifikasiKerja> listKlasifikasiKerja = jobJabatanModel.getListKlasifikasiKerja();
+		List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatan = klasifikasiKerjaJabatanDao.getByJabatanId(jobJabatanModel.getId());
+		
+		for(KlasifikasiKerja klasifikasiKerja : listKlasifikasiKerja){
+			
+			//Hanya klasifikasiKerja yang belum ada di listKlasifikasiKerjaJabatan yang di simpan, klo sudah ada tidak perlu di update, karena itu hanya tabel tengah antara Jabatan dengan klasifikasiKerja
+			 if(!Lambda.exists(listKlasifikasiKerjaJabatan, Lambda.having(Lambda.on(KlasifikasiKerjaJabatan.class).getKlasifikasiKerja().getId(), Matchers.equalTo(klasifikasiKerja.getId())))){
+				KlasifikasiKerjaJabatan klasifikasiKerjaJabatan = new KlasifikasiKerjaJabatan();
+				klasifikasiKerjaJabatan.setKlasifikasiKerja(klasifikasiKerjaDao.getEntiyByPK(klasifikasiKerja.getId()));
+				klasifikasiKerjaJabatan.setJabatan(jabatan);
+				klasifikasiKerjaJabatan.setId(new KlasifikasiKerjaJabatanId(jabatan.getId(), klasifikasiKerja.getId()));
+				klasifikasiKerjaJabatan.setDescription(klasifikasiKerja.getDescription());
+				klasifikasiKerjaJabatanDao.save(klasifikasiKerjaJabatan);
+			 }
+			
+		}
+		
+		//Hapus KlasifikasiKerjaJabatan yang ada di DB, berdasarkan  yang dihapus dari view
+		for(KlasifikasiKerjaJabatan klasifikasiKerjaJabatanFromDb : listKlasifikasiKerjaJabatan){
+			if(!Lambda.exists(listKlasifikasiKerja, Lambda.having(Lambda.on(KlasifikasiKerja.class).getId(), Matchers.equalTo(klasifikasiKerjaJabatanFromDb.getKlasifikasiKerja().getId())))){
+				klasifikasiKerjaJabatanDao.delete(klasifikasiKerjaJabatanFromDb);
+			}
+		}
+		
+		//Save/Update List JabatanDeskripsi
+		List<JabatanDeskripsi> listJabatanDeskripsi = jobJabatanModel.getListJabatanDeskripsi();
+		List<JabatanDeskripsi> listJabatanDeskripsiFromDb = jabatanDeskripsiDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(JabatanDeskripsi jabatanDeskripsi : listJabatanDeskripsi){
+			
+			//primitive type, kalau tidak di set defaultnya nilainya 0
+			if(jabatanDeskripsi.getId() == 0l){
+				jabatanDeskripsi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				jabatanDeskripsi.setCreatedBy(userUpdated);
+				jabatanDeskripsi.setCreatedOn(dateUpdated);
+				jabatanDeskripsi.setJabatan(jabatan);
+				jabatanDeskripsiDao.save(jabatanDeskripsi);
+			}else{
+				JabatanDeskripsi jabatanDeskripsiToUpdate = jabatanDeskripsiDao.getEntiyByPK(jabatanDeskripsi.getId());
+				BeanUtils.copyProperties(jabatanDeskripsi, jabatanDeskripsiToUpdate, new String[]{"id","createdOn","createdBy","jabatan","version"});
+				jabatanDeskripsiToUpdate.setJabatan(jabatan);
+				jabatanDeskripsiToUpdate.setUpdatedBy(userUpdated);
+				jabatanDeskripsiToUpdate.setUpdatedOn(dateUpdated);
+				jabatanDeskripsiDao.update(jabatanDeskripsiToUpdate);
+			}
+			
+		}
+		
+		//Hapus JabatanDeskripsi yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanDeskripsi jabatanDeskripsiFromDb : listJabatanDeskripsiFromDb){
+			if(!Lambda.exists(listJabatanDeskripsi, Lambda.having(Lambda.on(JabatanDeskripsi.class).getId(), Matchers.equalTo(jabatanDeskripsiFromDb.getId())))){
+				jabatanDeskripsiDao.delete(jabatanDeskripsiFromDb);
+			}
+		}
+		
+		//Save/Update/Delete List JabatanSpesifikasi
+		List<JabatanSpesifikasi> listJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi();
+		List<JabatanSpesifikasi> listJabatanSpesifikasiFromDb = jabatanSpesifikasiDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(JabatanSpesifikasi jabatanSpesifikasi : listJabatanSpesifikasi){
+			
+			if(jabatanSpesifikasi.getId() == null){
+				jabatanSpesifikasi.setId(new JabatanSpesifikasiId(jabatan.getId(), jabatanSpesifikasi.getSpecificationAbility().getId()));
+				jabatanSpesifikasi.setSpecificationAbility(specificationAbilityDao.getEntiyByPK(jabatanSpesifikasi.getSpecificationAbility().getId()));
+				jabatanSpesifikasi.setJabatan(jabatan);
+				jabatanSpesifikasi.setCreatedOn(dateUpdated);
+				jabatanSpesifikasi.setCreatedBy(userUpdated);
+				jabatanSpesifikasiDao.save(jabatanSpesifikasi);
+			}else{
+				JabatanSpesifikasi jabatanSpesifikasiToUpdate = jabatanSpesifikasiDao.getEntityByBioJabatanSpesifikasiId(jabatanSpesifikasi.getId());
+				BeanUtils.copyProperties(jabatanSpesifikasi, jabatanSpesifikasiToUpdate, new String[]{"id","jabatan","specificationAbility","createdOn","createdBy","version"});
+				jabatanSpesifikasiToUpdate.setSpecificationAbility(specificationAbilityDao.getEntiyByPK(jabatanSpesifikasi.getSpecificationAbility().getId()));
+				jabatanSpesifikasiToUpdate.setJabatan(jabatan);
+				jabatanSpesifikasiToUpdate.setUpdatedBy(userUpdated);
+				jabatanSpesifikasiToUpdate.setUpdatedOn(dateUpdated);
+				jabatanSpesifikasiDao.update(jabatanSpesifikasiToUpdate);
+			}
+			
+		}
+		
+		//Hapus JabatanSpesifikasi yang ada di DB, berdasarkan  yang dihapus dari view
+		for(JabatanSpesifikasi jabatanSpesifikasiFromDb : listJabatanSpesifikasiFromDb){
+			if(!Lambda.exists(listJabatanSpesifikasi, Lambda.having(Lambda.on(JabatanSpesifikasi.class).getId(), Matchers.equalTo(jabatanSpesifikasiFromDb.getId())))){
+				jabatanSpesifikasiDao.delete(jabatanSpesifikasiFromDb);
+			}
+		}
+		
+		//Saving/Update/Delete List OrgTypeOfSpecJabatan
+		List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatans = jobJabatanModel.getListOrgTypeOfSpecJabatan();
+		List<OrgTypeOfSpecJabatan> listOrgTypeOfSpecJabatansFromDb = orgTypeOfSpecJabatanDao.getAllDataByJabatanId(jobJabatanModel.getId());
+		
+		for(OrgTypeOfSpecJabatan orgTypeOfSpecJabatan : listOrgTypeOfSpecJabatans){
+			
+			if(orgTypeOfSpecJabatan.getId() == null){
+				orgTypeOfSpecJabatan.setId(new OrgTypeOfSpecJabatanId(orgTypeOfSpecJabatan.getOrgTypeOfSpecList().getId(), jabatan.getId()));
+				orgTypeOfSpecJabatan.setOrgTypeOfSpecList(orgTypeOfSpecListDao.getEntiyByPK(orgTypeOfSpecJabatan.getOrgTypeOfSpecList().getId()));
+				orgTypeOfSpecJabatan.setJabatan(jabatan);
+				orgTypeOfSpecJabatan.setDescription(orgTypeOfSpecJabatan.getOrgTypeOfSpecList().getDescription());
+				orgTypeOfSpecJabatan.setCreatedBy(userUpdated);
+				orgTypeOfSpecJabatan.setCreatedOn(dateUpdated);
+				orgTypeOfSpecJabatanDao.save(orgTypeOfSpecJabatan);
+			}else{
+				OrgTypeOfSpecJabatan orgTypeOfSpecJabatanToUpdate = orgTypeOfSpecJabatanDao.getEntityByPK(orgTypeOfSpecJabatan.getId());
+				orgTypeOfSpecJabatanToUpdate.setOrgTypeOfSpecList(orgTypeOfSpecListDao.getEntiyByPK(orgTypeOfSpecJabatan.getOrgTypeOfSpecList().getId()));
+				orgTypeOfSpecJabatanToUpdate.setJabatan(jabatan);
+				orgTypeOfSpecJabatanToUpdate.setDescription(orgTypeOfSpecJabatan.getOrgTypeOfSpecList().getDescription());
+				orgTypeOfSpecJabatanToUpdate.setUpdatedOn(dateUpdated);
+				orgTypeOfSpecJabatanDao.update(orgTypeOfSpecJabatanToUpdate);
+			}
+			
+		}	
+		
+		//Hapus OrgTypeOfSpecJabatan yang ada di DB, berdasarkan  yang dihapus dari view
+		for(OrgTypeOfSpecJabatan orgTypeOfSpecJabatanFromDb : listOrgTypeOfSpecJabatansFromDb){
+			if(!Lambda.exists(listOrgTypeOfSpecJabatans, Lambda.having(Lambda.on(OrgTypeOfSpecJabatan.class).getOrgTypeOfSpecList().getId(), Matchers.equalTo(orgTypeOfSpecJabatanFromDb.getOrgTypeOfSpecList().getId())))){
+				orgTypeOfSpecJabatanDao.delete(orgTypeOfSpecJabatanFromDb);
+			}
+		}
+		
+	}
+	
+	private Jabatan getDataJabatanFromModel(JobJabatanModel jobJabatanModel, Boolean isEdit){
 		
 		GolonganJabatan golJabatan = this.golonganJabatanDao.getEntityWithDetailById(jobJabatanModel.getGolonganJabatanId());
-		PaySalaryGrade paySalaryGrade = this.paySalaryGradeDao.getEntiyByPK(golJabatan.getPaySalaryGrade().getId());		
-		Jabatan jabatan = new Jabatan();
+		PaySalaryGrade paySalaryGrade = this.paySalaryGradeDao.getEntiyByPK(golJabatan.getPaySalaryGrade().getId());	
+		Jabatan jabatan = null;
+		
+		if(isEdit){
+			jabatan = jabatanDao.getEntiyByPK(jobJabatanModel.getId());
+		}else{
+			jabatan = new Jabatan();
+		}
 		
 		jabatan.setCode(jobJabatanModel.getKodeJabatan());
 		jabatan.setName(jobJabatanModel.getNamaJabatan());
@@ -569,6 +814,8 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 	public Jabatan getJabatanByCode(String code) throws Exception {
 		return jabatanDao.getJabatanByCode(code);
 	}
+
+	
 
 	
 

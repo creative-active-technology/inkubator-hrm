@@ -893,7 +893,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
 		 for(BioEmergencyContact bioEmergencyContactFromDb : listBioEmergencyContactFromDb){
 			 
 			 //jika data BioEmergencyContact dari db, tidak ada dalam list BioEmergencyContact dari proses revisi, berarti revisi nya itu hapus data yang sudah ada, jadi langsung hapus dari database
-			 if(!Lambda.exists(listBioEmergencyContactRevision, Lambda.having(Lambda.on(BioEmergencyContact.class).getId() == bioEmergencyContactFromDb.getId()))){
+			 if(!Lambda.exists(listBioEmergencyContactRevision, Lambda.having(Lambda.on(BioEmergencyContact.class).getId(), Matchers.equalTo(bioEmergencyContactFromDb.getId())))){
 				 bioEmergencyContactDao.delete(bioEmergencyContactFromDb);
 			 }
 		 }

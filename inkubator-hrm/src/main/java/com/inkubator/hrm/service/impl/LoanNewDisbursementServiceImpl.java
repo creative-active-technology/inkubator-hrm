@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,20 +17,28 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.dao.LoanNewDisbursementDao;
 import com.inkubator.hrm.dao.LoanNewDisbursementListDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LoanNewDisbursement;
 import com.inkubator.hrm.entity.LoanNewDisbursementList;
 import com.inkubator.hrm.entity.TransactionCodefication;
+import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanNewDisbursementService;
+import com.inkubator.hrm.util.HRMFinanceLib;
+import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -51,6 +60,12 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
     
     @Autowired
     private LoanNewApplicationDao loanNewApplicationDao;
+    
+    @Autowired
+    private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    
+    @Autowired
+    private LoanNewApplicationService loanNewApplicationService;
     
 
     @Override
@@ -220,7 +235,6 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
         if(listLoanNewApplicationid.isEmpty()){
             throw new BussinessException("loan_disbursement.error_no_application_selected");
         }
-        
         Long id = Long.parseLong(RandomNumberUtil.getRandomNumber(9));
         loanNewDisbursement.setId(id);   
         loanNewDisbursement.setDibursementCode(this.generateLoanDisbursementNumber());
@@ -235,13 +249,13 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
         // iterate each Loan
         for (Integer loanNewApplicationId : listLoanNewApplicationid){
             
-           
             //Update Loan Status to HRMConstant.LOAN_DISBURSED
             LoanNewApplication loanToUpdate = loanNewApplicationDao.getEntiyByPK(loanNewApplicationId);
             loanToUpdate.setLoanStatus(HRMConstant.LOAN_DISBURSED);
             loanNewApplicationDao.update(loanToUpdate);
             
-             LoanNewDisbursementList loanNewDisbursementList = new LoanNewDisbursementList();
+            //Save LoanNewDisbursementList
+            LoanNewDisbursementList loanNewDisbursementList = new LoanNewDisbursementList();
             loanNewDisbursementList.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             loanNewDisbursementList.setLoanNewApplication(loanToUpdate);
             loanNewDisbursementList.setLoanNewDisbursement(lnd);
@@ -249,11 +263,28 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
             loanNewDisbursementList.setCreatedOn(new Date());
             //Save each detail disbursement
             loanNewDisbursementListDao.save(loanNewDisbursementList);
+            
+            //Generate and save installment schedule
+            Double interest = loanToUpdate.getLoanNewType().getInterest().doubleValue();
+            Integer termin = loanToUpdate.getTermin();
+            Date disbursementDate = loanNewDisbursement.getDibursementDate();
+            Double loanNominal = loanToUpdate.getNominalPrincipal();
+            Integer interestMethod = loanToUpdate.getLoanNewType().getInterestMethod();
+            List<LoanNewApplicationInstallment> listLoanNewApplicationInstallment  = loanNewApplicationService.getAllDataLoanNewApplicationInstallment(interest, termin, disbursementDate, loanNominal, interestMethod);
+            
+            for(LoanNewApplicationInstallment loanNewApplicationInstallment : listLoanNewApplicationInstallment){
+            	loanNewApplicationInstallment.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            	loanNewApplicationInstallment.setLoanNewApplication(loanToUpdate);
+            	loanNewApplicationInstallment.setCreatedOn(new Date());
+            	loanNewApplicationInstallment.setCreatedBy(UserInfoUtil.getUserName());
+            	loanNewApplicationInstallmentDao.save(loanNewApplicationInstallment);
+            }
+            
         }
     }
     
     private String generateLoanDisbursementNumber(){
-		/** generate number form codification, from reimbursement module */
+		/** generate number form codification, from loan module */
 		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.LOAN_DISBURSEMENT_KODE);
         Long currentMaxId = loanNewDisbursementDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
@@ -266,5 +297,6 @@ public class LoanNewDisbursementServiceImpl extends IServiceImpl implements Loan
     public Long getCurrentMaxId() throws Exception {
         return loanNewDisbursementDao.getCurrentMaxId();
     }
+    
     
 }

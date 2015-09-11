@@ -30,7 +30,7 @@ public class JabatanProfesiDaoImpl extends IDAOImpl<JabatanProfesi> implements J
 	public List<JabatanProfesi> getAllDataByJabatanId(Long jabatanId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("jabatan", "jabatan");
-        criteria.setFetchMode("educationLevel", FetchMode.JOIN);
+        criteria.setFetchMode("occupationType", FetchMode.JOIN);
         criteria.add(Restrictions.eq("jabatan.id", jabatanId));
         return criteria.list();
 	}

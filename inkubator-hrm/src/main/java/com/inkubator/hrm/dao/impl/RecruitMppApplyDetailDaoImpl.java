@@ -1,11 +1,14 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
+import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 
 import java.util.List;
 
@@ -76,6 +79,61 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         criteria.setFetchMode("jabatan.department", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", recruitMppApplyId));
         return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RecruitMppApplyDetail> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter,	int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+    
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalDataByParam( RecruitMppApplyDetailSearchParameter searchParameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private void doSearchByParam( RecruitMppApplyDetailSearchParameter searchParameter, Criteria criteria) {
+		
+		criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        
+        if (searchParameter.getJabatanCode() != null) {
+            criteria.add(Restrictions.like("jabatan.code", searchParameter.getJabatanCode(), MatchMode.START));
+        }
+
+        if (searchParameter.getJabatanName() != null) {
+            criteria.add(Restrictions.like("jabatan.name", searchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        }
+
+       /* if (searchParameter.getPeriode() != null) {
+            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
+//            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
+//            criteria.add(disjunction);
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        }*/
+       
+    }
+
+	@Override
+	public RecruitMppApplyDetail getEntityWithDetail(Long idRecruitMppApplyDetailId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", idRecruitMppApplyDetailId));
+		criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+		return (RecruitMppApplyDetail) criteria.uniqueResult();
 	}
 
 }

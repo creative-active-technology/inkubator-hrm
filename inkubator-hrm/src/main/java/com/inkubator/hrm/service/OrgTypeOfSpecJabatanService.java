@@ -25,4 +25,6 @@ public interface OrgTypeOfSpecJabatanService extends IService<OrgTypeOfSpecJabat
     public void save(OrgTypeOfSpecJabatan entity, List<OrgTypeOfSpecList> listTypeSpec) throws Exception;
     
     public OrgTypeOfSpecJabatan getEntityByPK(OrgTypeOfSpecJabatanId id) throws Exception;
+    
+    public List<OrgTypeOfSpecJabatan> getAllDataByJabatanId(Long id) throws Exception;
 }

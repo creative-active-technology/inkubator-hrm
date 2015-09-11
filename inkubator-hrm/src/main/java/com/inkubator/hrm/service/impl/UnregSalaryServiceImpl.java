@@ -5,39 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.DepartmentDao;
-import com.inkubator.hrm.dao.EmployeeTypeDao;
-import com.inkubator.hrm.dao.GolonganJabatanDao;
-import com.inkubator.hrm.dao.ReligionDao;
-import com.inkubator.hrm.dao.UnregDepartementDao;
-import com.inkubator.hrm.dao.UnregEmpReligionDao;
-import com.inkubator.hrm.dao.UnregEmpTypeDao;
-import com.inkubator.hrm.dao.UnregGoljabDao;
-import com.inkubator.hrm.dao.UnregSalaryDao;
-import com.inkubator.hrm.dao.WtPeriodeDao;
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.entity.EmployeeType;
-import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.entity.UnregDepartement;
-import com.inkubator.hrm.entity.UnregDepartementId;
-import com.inkubator.hrm.entity.UnregEmpReligion;
-import com.inkubator.hrm.entity.UnregEmpReligionId;
-import com.inkubator.hrm.entity.UnregEmpType;
-import com.inkubator.hrm.entity.UnregEmpTypeId;
-import com.inkubator.hrm.entity.UnregGoljab;
-import com.inkubator.hrm.entity.UnregGoljabId;
-import com.inkubator.hrm.entity.UnregSalary;
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.UnregSalaryService;
-import com.inkubator.hrm.web.model.UnregSalaryModel;
-import com.inkubator.hrm.web.model.UnregSalaryViewModel;
-import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +15,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.DepartmentDao;
+import com.inkubator.hrm.dao.EmployeeTypeDao;
+import com.inkubator.hrm.dao.GenderDao;
+import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.dao.UnregDepartementDao;
+import com.inkubator.hrm.dao.UnregEmpReligionDao;
+import com.inkubator.hrm.dao.UnregEmpTypeDao;
+import com.inkubator.hrm.dao.UnregGenderDao;
+import com.inkubator.hrm.dao.UnregGoljabDao;
+import com.inkubator.hrm.dao.UnregSalaryDao;
+import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.Gender;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.Religion;
+import com.inkubator.hrm.entity.UnregDepartement;
+import com.inkubator.hrm.entity.UnregDepartementId;
+import com.inkubator.hrm.entity.UnregEmpReligion;
+import com.inkubator.hrm.entity.UnregEmpReligionId;
+import com.inkubator.hrm.entity.UnregEmpType;
+import com.inkubator.hrm.entity.UnregEmpTypeId;
+import com.inkubator.hrm.entity.UnregGender;
+import com.inkubator.hrm.entity.UnregGenderId;
+import com.inkubator.hrm.entity.UnregGoljab;
+import com.inkubator.hrm.entity.UnregGoljabId;
+import com.inkubator.hrm.entity.UnregSalary;
+import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.UnregSalaryService;
+import com.inkubator.hrm.web.model.UnregSalaryModel;
+import com.inkubator.hrm.web.model.UnregSalaryViewModel;
+import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -77,6 +82,10 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
     private UnregEmpTypeDao unregEmpTypeDao;
     @Autowired
     private EmployeeTypeDao employeeTypeDao;
+    @Autowired
+    private GenderDao genderDao;
+    @Autowired
+    private UnregGenderDao unregGenderDao;
     
 
     @Override
@@ -312,7 +321,7 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(Long unregSalaryId, Date startDate, Date endDate, List<GolonganJabatan> golonganJabatans, List<Department> departments, List<Religion> religions, List<EmployeeType> employeeTypes) throws Exception {
+    public void save(Long unregSalaryId, Date startDate, Date endDate, List<GolonganJabatan> golonganJabatans, List<Department> departments, List<Religion> religions, List<EmployeeType> employeeTypes, List<Gender> listGender) throws Exception {
        unregSalaryDao.deleteAllDataByUnregSalaryId(unregSalaryId);
         //update unreg salary startDate period and endDate period
         UnregSalary update = unregSalaryDao.getEntiyByPK(unregSalaryId);
@@ -366,6 +375,15 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
             unregEmpTypeDao.save(unregEmpType);
         }
         
+        for(Gender gender : listGender){
+        	UnregGender unregGender = new UnregGender();
+        	unregGender.setId(new UnregGenderId(unregSalaryId, gender.getId()));
+        	unregGender.setUnregSalary(unregSalaryDao.getEntiyByPK(unregSalaryId));
+        	unregGender.setGender(genderDao.getEntiyByPK(gender.getId()));
+        	unregGender.setCreatedBy(UserInfoUtil.getUserName());
+        	unregGender.setCreatedOn(new Date());
+        	unregGenderDao.save(unregGender);
+        }
     }
 
     @Override

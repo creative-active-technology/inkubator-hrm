@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.loan;
 
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CostCenter;
@@ -11,11 +12,13 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewDisbursement;
 import com.inkubator.hrm.entity.TransactionCodefication;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.CostCenterService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanNewDisbursementService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.lazymodel.LoanNewDisbursementLazyDataModel;
 import com.inkubator.hrm.web.model.LoanNewDisbursementFormModel;
@@ -23,18 +26,23 @@ import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.primefaces.model.LazyDataModel;
 
 /**
@@ -53,12 +61,14 @@ public class LoanNewDisbursementFormController extends BaseController {
     private LoanNewApplicationService loanNewApplicationService;
     @ManagedProperty(value = "#{loanNewDisbursementService}")
     private LoanNewDisbursementService loanNewDisbursementService;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{costCenterService}")
     private CostCenterService costCenterService;
     private LoanNewDisbursementFormModel model;
     private LazyDataModel<LoanNewApplication> lazy;
     private LoanNewSearchParameter loanNewSearchParameter;
-
+    private Date minimumBackDate;
     @PostConstruct
     @Override
     public void initialization() {
@@ -71,6 +81,10 @@ public class LoanNewDisbursementFormController extends BaseController {
             TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.LOAN_DISBURSEMENT_KODE);
             Long currentMaxLoanId = loanNewDisbursementService.getCurrentMaxId();
             model.setDisbursementCode(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+            
+            //Minimum backdate paling lambat awal bulan dari bulan selanjutnya dari periode penggajian yang aktif
+            WtPeriode activeWtPeriode = wtPeriodeService.getEntityByPayrollTypeActive();
+            minimumBackDate = DateUtils.addDays(activeWtPeriode.getUntilPeriode(), 1);
             
             List<CostCenter> listCoa = costCenterService.getAllData();
             Map<String,Long> mapCoa = new HashMap<String, Long>();
@@ -186,6 +200,19 @@ public class LoanNewDisbursementFormController extends BaseController {
     public void setCostCenterService(CostCenterService costCenterService) {
         this.costCenterService = costCenterService;
     }
+
+	public Date getMinimumBackDate() {
+		return minimumBackDate;
+	}
+
+	public void setMinimumBackDate(Date minimumBackDate) {
+		this.minimumBackDate = minimumBackDate;
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+    
     
     
 }

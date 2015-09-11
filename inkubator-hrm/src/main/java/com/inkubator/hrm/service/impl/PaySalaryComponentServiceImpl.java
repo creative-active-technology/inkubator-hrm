@@ -5,29 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.BenefitGroupDao;
-import com.inkubator.hrm.dao.LoanSchemaDao;
-import com.inkubator.hrm.dao.ModelComponentDao;
-import com.inkubator.hrm.dao.PaySalaryComponentDao;
-import com.inkubator.hrm.dao.PaySalaryEmpTypeDao;
-import com.inkubator.hrm.dao.PaySalaryJurnalDao;
-import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
-import com.inkubator.hrm.dao.TaxComponentDao;
-import com.inkubator.hrm.entity.BenefitGroup;
-import com.inkubator.hrm.entity.EmployeeType;
-import com.inkubator.hrm.entity.LoanSchema;
-import com.inkubator.hrm.entity.ModelComponent;
-import com.inkubator.hrm.entity.PaySalaryComponent;
-import com.inkubator.hrm.entity.PaySalaryEmpType;
-import com.inkubator.hrm.entity.ReimbursmentSchema;
-import com.inkubator.hrm.service.PaySalaryComponentService;
-import com.inkubator.hrm.web.model.PayComponentDataExceptionModelView;
-import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
-import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -42,6 +20,30 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.BenefitGroupDao;
+import com.inkubator.hrm.dao.LoanNewTypeDao;
+import com.inkubator.hrm.dao.ModelComponentDao;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
+import com.inkubator.hrm.dao.PaySalaryEmpTypeDao;
+import com.inkubator.hrm.dao.PaySalaryJurnalDao;
+import com.inkubator.hrm.dao.RmbsTypeDao;
+import com.inkubator.hrm.dao.TaxComponentDao;
+import com.inkubator.hrm.entity.BenefitGroup;
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.LoanNewType;
+import com.inkubator.hrm.entity.ModelComponent;
+import com.inkubator.hrm.entity.PaySalaryComponent;
+import com.inkubator.hrm.entity.PaySalaryEmpType;
+import com.inkubator.hrm.entity.RmbsType;
+import com.inkubator.hrm.service.PaySalaryComponentService;
+import com.inkubator.hrm.web.model.PayComponentDataExceptionModelView;
+import com.inkubator.hrm.web.search.PayComponentDataExceptionSearchParameter;
+import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -56,10 +58,6 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Autowired
     private ModelComponentDao modelComponentDao;
     @Autowired
-    private LoanSchemaDao loanSchemaDao;
-    @Autowired
-    private ReimbursmentSchemaDao reimbursmentSchemaDao;
-    @Autowired
     private BenefitGroupDao benefitGroupDao;
     @Autowired
     private PaySalaryJurnalDao paySalaryJurnalDao;
@@ -67,6 +65,10 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     private TaxComponentDao taxComponentDao;
     @Autowired
     private PaySalaryEmpTypeDao paySalaryEmpTypeDao;
+    @Autowired
+    private LoanNewTypeDao loanNewTypeDao;
+    @Autowired
+    private RmbsTypeDao rmbsTypeDao;
 
     @Override
     public PaySalaryComponent getEntiyByPK(String id) throws Exception {
@@ -264,14 +266,14 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryComponentDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    public List<PaySalaryComponent> getAllDataByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryComponentDao.getAllDataByParamWithDetail(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception {
-        return paySalaryComponentDao.getTotalResourceTypeByParam(searchParameter);
+    public Long getTotalParamWithDetail(PaySalaryComponentSearchParameter searchParameter) throws Exception {
+        return paySalaryComponentDao.getTotalByParamWithDetail(searchParameter);
     }
 
     @Override
@@ -309,16 +311,16 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 //        List<Integer> listModelReferensi = paySalaryComponentDao.getAllModelReferensiId();
         Map<String, Long> data = new HashMap();
         if (Objects.equals(component.getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
-            List<LoanSchema> dataToSend = loanSchemaDao.getEntityIsPayRollComponent(component.getId());
-            for (LoanSchema loanSchema : dataToSend) {
-                data.put(loanSchema.getName(), loanSchema.getId());
+            List<LoanNewType> dataToSend = loanNewTypeDao.getAllDataPayrollComponent(component.getId());
+            for (LoanNewType loanType : dataToSend) {
+                data.put(loanType.getLoanTypeName(), loanType.getId());
             }
         }
 
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
-            List<ReimbursmentSchema> dataToSend = this.reimbursmentSchemaDao.isPayrollComponent(component.getId());
-            for (ReimbursmentSchema rs : dataToSend) {
-                data.put(rs.getName(), rs.getId());
+            List<RmbsType> dataToSend = rmbsTypeDao.getAllDataPayrollComponent(component.getId());
+            for (RmbsType rmbsType : dataToSend) {
+                data.put(rmbsType.getName(), rmbsType.getId());
             }
         }
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
@@ -354,8 +356,8 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return paySalaryComponentDao.getByParamWithDetailForDataException(searchParameter, firstResult, maxResults, order);
+    public List<PayComponentDataExceptionModelView> getAllDataByParamDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return paySalaryComponentDao.getAllDataByParamDataException(searchParameter, firstResult, maxResults, order);
     }
 
     @Override

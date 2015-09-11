@@ -110,6 +110,19 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                <p:outputLabel  value="#{appmsg['global.gender']} zz" style="font-weight: bold"/>
+                                            </p:column>
+                                            <p:column style="width: 80%">
+                                                <p:pickList value="#{UnregSalaryEmpSettingFormController.genderDualListModel}" var="a" itemValue="#{a}" converter="genderPickListConverter" id="picklistGender"
+                                                            required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="Daftar Employee Type" styleClass="isitext_hrm"
+                                                            itemLabel="#{a.genderAsString}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                            removeLabel="#{appmsg['global.remove']}">
+                                                            </p:pickList>
+                                                <p:message for="picklistGender" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                                 <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">

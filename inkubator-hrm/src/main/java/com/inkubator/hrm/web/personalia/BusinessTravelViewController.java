@@ -175,7 +175,7 @@ public class BusinessTravelViewController extends BaseController {
     public String doDetail() {
     	String path = StringUtils.EMPTY;
     	if(selectedBusinessTravel.getBusinessTravelId() != null){
-    		path = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getBusinessTravelNo();
+    		path = "/protected/personalia/business_travel_detail.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getBusinessTravelId();
     	} else {
     		path = "/protected/personalia/business_travel_appr_form.htm?faces-redirect=true&execution=e" + selectedBusinessTravel.getApprovalActivityId();
     	}

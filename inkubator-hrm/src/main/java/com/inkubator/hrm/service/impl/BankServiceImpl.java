@@ -313,4 +313,10 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
         return bankDao.getEntityWithDetail(id);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<Bank> getAllWithparent() throws Exception {
+        return this.bankDao.getAllWithparent();
+    }
+
 }

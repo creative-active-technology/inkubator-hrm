@@ -24,7 +24,7 @@ public class LoanNewApplicationInstallment implements java.io.Serializable {
     private long id;
     private Integer version;
     private LoanNewApplication loanNewApplication;
-    private Date numOfInstallment;
+    private Integer numOfInstallment;
     private Date installmentDate;
     private Double interestNominal;
     private Double basicNominal;
@@ -38,12 +38,12 @@ public class LoanNewApplicationInstallment implements java.io.Serializable {
     public LoanNewApplicationInstallment() {
     }
 
-    public LoanNewApplicationInstallment(long id, Date numOfInstallment) {
+    public LoanNewApplicationInstallment(long id, Integer numOfInstallment) {
         this.id = id;
         this.numOfInstallment = numOfInstallment;
     }
 
-    public LoanNewApplicationInstallment(long id, LoanNewApplication loanNewApplication, Date numOfInstallment, Date installmentDate, Double interestNominal, Double basicNominal, Date createdOn, Date updatedOn, String createdBy, String updatedBy) {
+    public LoanNewApplicationInstallment(long id, LoanNewApplication loanNewApplication, Integer numOfInstallment, Date installmentDate, Double interestNominal, Double basicNominal, Date createdOn, Date updatedOn, String createdBy, String updatedBy) {
         this.id = id;
         this.loanNewApplication = loanNewApplication;
         this.numOfInstallment = numOfInstallment;
@@ -87,13 +87,12 @@ public class LoanNewApplicationInstallment implements java.io.Serializable {
         this.loanNewApplication = loanNewApplication;
     }
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "num_of_installment", nullable = false, length = 10)
-    public Date getNumOfInstallment() {
+    @Column(name = "num_of_installment", nullable = false)
+    public Integer getNumOfInstallment() {
         return this.numOfInstallment;
     }
 
-    public void setNumOfInstallment(Date numOfInstallment) {
+    public void setNumOfInstallment(Integer numOfInstallment) {
         this.numOfInstallment = numOfInstallment;
     }
 

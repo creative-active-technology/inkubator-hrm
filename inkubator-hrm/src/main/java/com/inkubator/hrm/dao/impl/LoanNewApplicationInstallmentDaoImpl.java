@@ -5,6 +5,9 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
@@ -14,6 +17,7 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +45,28 @@ public class LoanNewApplicationInstallmentDaoImpl extends IDAOImpl<LoanNewApplic
 		criteria.setFetchMode("loanNewApplication", FetchMode.JOIN);
         criteria.add(Restrictions.eq("loanNewApplication.id", loanNewApplicationId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public List<LoanNewApplicationInstallment> getAllDataDisbursedByEmpDataIdAndLoanTypeIdAndPeriodDate(Long empDataId, Long loanTypeId, Date startPeriodDate, Date endPeriodDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("loanNewApplication", "loanNewApplication", JoinType.INNER_JOIN);
+		criteria.createAlias("loanNewApplication.empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("loanNewApplication.loanNewType", "loanNewType", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("loanNewType.id", loanTypeId));
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.le("installmentDate", endPeriodDate));
+		criteria.add(Restrictions.ge("installmentDate", startPeriodDate));
+		criteria.add(Restrictions.ge("loanNewApplication.loanStatus", HRMConstant.LOAN_DISBURSED));
+		return criteria.list();
+	}
+
+	@Override
+	public List<LoanNewApplicationInstallment> getListByLoanNewApplicationId(Integer loanNewApplicationId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("loanNewApplication", "loanNewApplication", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("loanNewApplication.id", loanNewApplicationId));
+		return criteria.list();
 	}
     
 }

@@ -44,8 +44,8 @@ public class PaySalaryComponentLazyDataModel extends LazyDataModel<PaySalaryComp
                 }else{
                     order = Order.desc("name");
                 }
-                paySalaryComponentList = service.getByParamWithDetail(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalResourceTypeByParam(searchParameter)));
+                paySalaryComponentList = service.getAllDataByParamWithDetail(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalParamWithDetail(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

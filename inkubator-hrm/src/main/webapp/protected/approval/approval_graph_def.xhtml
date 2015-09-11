@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Diagram Formuli Definisi Persetujuan" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['approvaldefinition.approval_definition_header']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlapprovalFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="approvalFormId" >
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 5%;background-color: #e1f0f0!important;" >
+                                    <p:outputLabel for="approvalName"  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 35%">
+                                    <p:selectOneMenu id="approvalName" styleClass="isitext_hrm" value="#{approvalDefinitionGraphController.selectedApprovalDef}" filter="true" filterMatchMode="contains"  required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <!--Cek HRM Constanta..-->
+                                        <f:selectItems value="#{approvalDefinitionGraphController.approvalNames}" />
+                                        <p:ajax listener="#{approvalDefinitionGraphController.doSelectApprovalName()}" update="diagramId" />
+                                    </p:selectOneMenu>
+                                    <p:message for="approvalName"/>
+
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <p:diagram value="#{approvalDefinitionGraphController.model}" style="height:1000px;margin-top: 10px" styleClass="ui-widget-content" id="diagramId"/>
+
+
+                        <p:separator/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{approvalDefinitionFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{approvalDefinitionFormController.initialization()}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
+                                <p:resetInput target="approvalFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{approvalDefinitionFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

@@ -7,17 +7,21 @@ package com.inkubator.hrm.web.reference;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.MaritalStatus;
+import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.MaritalStatusService;
 import com.inkubator.hrm.web.model.MaritalStatusModel;
+import com.inkubator.hrm.web.model.ReligionModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.context.RequestContext;
 
 /**
@@ -74,13 +78,11 @@ public class MaritalStatusFormController extends BaseController{
         model = new MaritalStatusModel();
         try {
             if (param != null) {
-
-                isEdit = Boolean.TRUE;
                 MaritalStatus maritalStatus = service.getEntiyByPK(Long.parseLong(param));
-                model.setId(maritalStatus.getId());
-                model.setName(maritalStatus.getName());
-
-
+                if(maritalStatus != null){
+                	model = getModelFromEntity(maritalStatus);
+                    isEdit = Boolean.TRUE;
+                }
             } else {
                 isEdit = Boolean.FALSE;
             }
@@ -111,6 +113,26 @@ public class MaritalStatusFormController extends BaseController{
 //        cleanAndExit();
     }
     
+    public void doReset() throws Exception{
+    	if(isEdit){
+    		MaritalStatus maritalStatus = doSelectEntity(model.getId());
+    		model = getModelFromEntity(maritalStatus);
+    	}else{
+    		model = new MaritalStatusModel();
+    	}
+    }
+    
+    public MaritalStatus doSelectEntity(Long id) throws Exception{
+    	MaritalStatus maritalStatus = service.getEntiyByPK(id);
+    	return maritalStatus;
+    }
+    
+    public MaritalStatusModel getModelFromEntity(MaritalStatus maritalStatus){
+    	MaritalStatusModel model = new MaritalStatusModel();
+    	model.setId(maritalStatus.getId());
+    	model.setName(maritalStatus.getName());
+        return model;
+    }
     private MaritalStatus getEntityFromViewModel(MaritalStatusModel model) {
         MaritalStatus maritalStatus = new MaritalStatus();
         if (model.getId() != null) {

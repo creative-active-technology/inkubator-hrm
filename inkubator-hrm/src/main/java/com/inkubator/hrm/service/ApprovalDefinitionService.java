@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.primefaces.model.diagram.DefaultDiagramModel;
 
 /**
  *
@@ -24,4 +25,8 @@ public interface ApprovalDefinitionService extends IService<ApprovalDefinition> 
     public List<ApprovalDefinition> getAllDataByLoanNewSchemaId(Long id) throws Exception;
 
     public void updateStatusAndSms(ApprovalDefinition approvalDefinition) throws Exception;
+
+    public DefaultDiagramModel getGraphMode(long id) throws Exception;
+
+    public List<ApprovalDefinition> getALLDataWithSequece(int sequace) throws Exception;
 }
