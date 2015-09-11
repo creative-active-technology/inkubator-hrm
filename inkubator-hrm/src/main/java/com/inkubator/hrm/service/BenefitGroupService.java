@@ -6,6 +6,8 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.BenefitGroup;
+import com.inkubator.hrm.web.model.BenefitGroupModel;
+import com.inkubator.hrm.web.model.BenefitGroupRenumerationModel;
 import com.inkubator.hrm.web.search.BenefitGroupSearchParameter;
 
 /**
@@ -19,4 +21,7 @@ public interface BenefitGroupService extends IService<BenefitGroup> {
     public Long getTotalByParam(BenefitGroupSearchParameter parameter) throws Exception;
 
     public String getBenefitGroupNameByPk(Long id) throws Exception;
+    
+    public List<BenefitGroupRenumerationModel> getAllDataRenumeration(Long empDataId) throws Exception;
+    
 }
