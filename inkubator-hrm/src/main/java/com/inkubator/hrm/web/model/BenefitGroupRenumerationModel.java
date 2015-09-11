@@ -7,28 +7,41 @@ import java.io.Serializable;
  */
 public class BenefitGroupRenumerationModel implements Serializable {
 
-    private String benefitGroup;
-    private String nominal;
-
-    public String getBenefitGroup() {
-        return benefitGroup;
-    }
-
-    public void setBenefitGroup(String benefitGroup) {
-        this.benefitGroup = benefitGroup;
-    }
-
+    private String name;
+    private Double nominal;
+    private Integer componentCategory; 
+    private Boolean isBasicSalary;
     
-    
-    public String getNominal() {
-        return nominal;
-    }
+    public String getName() {
+		return name;
+	}
 
-    public void setNominal(String nominal) {
-        this.nominal = nominal;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    
+	public Integer getComponentCategory() {
+		return componentCategory;
+	}
 
-    
+	public void setComponentCategory(Integer componentCategory) {
+		this.componentCategory = componentCategory;
+	}
+
+	public Double getNominal() {
+		return nominal;
+	}
+
+	public void setNominal(Double nominal) {
+		this.nominal = nominal;
+	}
+
+	public Boolean getIsBasicSalary() {
+		return isBasicSalary;
+	}
+
+	public void setIsBasicSalary(Boolean isBasicSalary) {
+		this.isBasicSalary = isBasicSalary;
+	}
+	
 }
