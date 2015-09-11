@@ -90,7 +90,9 @@ public class SpecAbilityFormController extends BaseController {
             }
         } else {
             specAbilityModel = new SpecAbilityModel();
+            isDisable = Boolean.TRUE;
         }
+
     }
 
     public String doSave() {
