@@ -84,13 +84,14 @@ public class CompanyBankAccountFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-//        accountModel = null;
+        
         isUpdate = null;
 //        banks = null;
         savingTypes = null;
         bankService = null;
         savingTypeService = null;
         companyBankAccountService = null;
+        accountModel = new CompanyBankAccountModel();
     }
 
     public CompanyBankAccountModel getAccountModel() {
