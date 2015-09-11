@@ -30,9 +30,9 @@ import com.inkubator.hrm.web.search.PaySalaryComponentSearchParameter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
-
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 
@@ -265,4 +265,20 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
         criteria.add(disjunction);
         return criteria.list();
     }
+
+	@Override
+	public List<PaySalaryComponent> getAllDataRenumerationByEmployeeTypeId(Long empTypeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("modelComponent", "modelComponent", JoinType.INNER_JOIN);
+		criteria.createAlias("paySalaryEmpTypes", "paySalaryEmpTypes", JoinType.INNER_JOIN);
+		criteria.createAlias("paySalaryEmpTypes.employeeType", "employeeType", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("employeeType.id", empTypeId));
+		
+		Disjunction renumerationComp = Restrictions.disjunction();
+		renumerationComp.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_BENEFIT_TABLE));
+		renumerationComp.add(Restrictions.eq("modelComponent.spesific", HRMConstant.MODEL_COMP_BASIC_SALARY));
+		criteria.add(renumerationComp);
+		
+		return criteria.list();
+	}
 }

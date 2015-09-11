@@ -592,27 +592,25 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-                    List<BenefitGroupRate> benefitGroupRates = benefitGroupRateDao.getAllDataByBenefitGroupIdAndGolJabatanId((long) paySalaryComponent.getModelReffernsil(), empData.getGolonganJabatan().getId());
-                    for (BenefitGroupRate benefitGroupRate : benefitGroupRates) {
-                        PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
-                        kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                        kalkulasi.setEmpData(empData);
-                        kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                        kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
-                        //nominal untuk benefit dikali nilai dari measurement                        
-                        BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
-                        kalkulasi.setNominal(nominal);
+                    BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId((long) paySalaryComponent.getModelReffernsil(), empData.getGolonganJabatan().getId());
+                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                    kalkulasi.setEmpData(empData);
+                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
+                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+                    //nominal untuk benefit dikali nilai dari measurement                        
+                    BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
+                    kalkulasi.setNominal(nominal);
 
-                        //set detail benefit
-                        kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
-                        
-                        kalkulasi.setCreatedBy(createdBy);
-                        kalkulasi.setCreatedOn(createdOn);
-                        datas.add(kalkulasi);
+                    //set detail benefit
+                    kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
+                    
+                    kalkulasi.setCreatedBy(createdBy);
+                    kalkulasi.setCreatedOn(createdOn);
+                    datas.add(kalkulasi);
 
-                        totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
-                        LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
-                    }
+                    totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
+                    LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
                 }
             }
 

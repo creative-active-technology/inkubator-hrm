@@ -10,15 +10,18 @@ import com.inkubator.hrm.web.model.BankModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -53,34 +56,8 @@ public class BankFormController extends BaseController {
             if (StringUtils.isNotEmpty(param)) {
                 Bank bank = bankService.getEntityWithDetail(Long.parseLong(param.substring(1)));
                 if (bank != null) {
-                    bankModel.setId(bank.getId());
-                    bankModel.setSwiftCode(bank.getSwiftCode());
-                    bankModel.setIban(bank.getIban());
-                    bankModel.setBankIdentificationNumber(bank.getBankIdentificationNo());
-                    bankModel.setDescription(bank.getDescription());
-                    bankModel.setBranchCodeInput(bank.getBranchCode());
-                    bankModel.setAddress(bank.getAddress());
-                    bankModel.setBankPhone(bank.getBankPhone());
-                    bankModel.setBankFax(bank.getBankFax());
-                    bankModel.setBranchName(bank.getBranchName());
-                    if (bank.getBankGroup().getId() != null) {
-                        bankModel.setBankGroup(bank.getBankGroup().getId());
-                    }
-                    if (bank.getBank() != null) {
-                        isReadOnlyBankNameAndCode = Boolean.TRUE;
-                        isReadOnlyBankNameAndCodeBranch = Boolean.FALSE;
-                        bankModel.setBank(bank.getBank().getId());
-                        bankModel.setBankCode(bank.getBank().getBankCode());
-                        bankModel.setBankName(bank.getBank().getBankName());
-                        bankModel.setBranchCode(bank.getBank().getBankCode());
-                    } else {
-                        isReadOnlyBankNameAndCodeBranch = Boolean.TRUE;
-                        isReadOnlyBankNameAndCode = Boolean.FALSE;
-                        bankModel.setBranchName(bank.getBranchName());
-                        bankModel.setBankCode(bank.getBankCode());
-                        bankModel.setBankName(bank.getBankName());
-                    }
-                    isUpdate = Boolean.TRUE;
+                	bankModel = getModelFromEntity(bank);
+                	isUpdate = Boolean.TRUE;
                 }
 
             }
@@ -195,18 +172,45 @@ public class BankFormController extends BaseController {
         return bank;
     }
 
-    public void doReset() {
-        bankModel.setAddress(null);
-        bankModel.setBankCode(null);
-        bankModel.setBankFax(null);
-        bankModel.setBankGroup(null);
-        bankModel.setBankName(null);
-        bankModel.setBankPhone(null);
-        bankModel.setBranchCode(null);
-        bankModel.setBranchName(null);
-        bankModel.setIban(null);
-        bankModel.setSwiftCode(null);
-        bankModel.setDescription(null);
+    private BankModel getModelFromEntity(Bank bank){
+    	BankModel model = new BankModel();
+    	model.setId(bank.getId());
+    	model.setSwiftCode(bank.getSwiftCode());
+    	model.setIban(bank.getIban());
+    	model.setBankIdentificationNumber(bank.getBankIdentificationNo());
+    	model.setDescription(bank.getDescription());
+    	model.setBranchCodeInput(bank.getBranchCode());
+    	model.setAddress(bank.getAddress());
+    	model.setBankPhone(bank.getBankPhone());
+    	model.setBankFax(bank.getBankFax());
+    	model.setBranchName(bank.getBranchName());
+        if (bank.getBankGroup().getId() != null) {
+        	model.setBankGroup(bank.getBankGroup().getId());
+        }
+        if (bank.getBank() != null) {
+            isReadOnlyBankNameAndCode = Boolean.TRUE;
+            isReadOnlyBankNameAndCodeBranch = Boolean.FALSE;
+            model.setBank(bank.getBank().getId());
+            model.setBankCode(bank.getBank().getBankCode());
+            model.setBankName(bank.getBank().getBankName());
+            model.setBranchCode(bank.getBank().getBankCode());
+        } else {
+            isReadOnlyBankNameAndCodeBranch = Boolean.TRUE;
+            isReadOnlyBankNameAndCode = Boolean.FALSE;
+            model.setBranchName(bank.getBranchName());
+            model.setBankCode(bank.getBankCode());
+            model.setBankName(bank.getBankName());
+        }
+    	return model;
+    }
+    
+    public void doReset() throws Exception {
+        if(isUpdate){
+        	Bank bank = bankService.getEntityWithDetail(bankModel.getId());
+        	bankModel = getModelFromEntity(bank);
+        }else{
+        	bankModel = new BankModel();
+        }
     }
 
     public void doChangeReadOnlyBankNameAndCode() throws Exception {

@@ -76,10 +76,10 @@ public class BenefitGroupRateDaoImpl extends IDAOImpl<BenefitGroupRate> implemen
     }
 
 	@Override
-	public List<BenefitGroupRate> getAllDataByBenefitGroupIdAndGolJabatanId(Long benefitGroupId, Long golJabatanId) {
+	public BenefitGroupRate getEntityByBenefitGroupIdAndGolJabatanId(Long benefitGroupId, Long golJabatanId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("benefitGroup.id", benefitGroupId));
         criteria.add(Restrictions.eq("golonganJabatan.id", golJabatanId));
-        return criteria.list();
+        return (BenefitGroupRate) criteria.uniqueResult();
 	}
 }
