@@ -3,13 +3,25 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BenefitGroupDao;
+import com.inkubator.hrm.dao.BenefitGroupRateDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.entity.BenefitGroup;
+import com.inkubator.hrm.entity.BenefitGroupRate;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.BenefitGroupService;
+import com.inkubator.hrm.web.model.BenefitGroupRenumerationModel;
 import com.inkubator.hrm.web.search.BenefitGroupSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -28,6 +40,12 @@ public class BenefitGroupServiceImpl extends IServiceImpl implements BenefitGrou
 
     @Autowired
     private BenefitGroupDao benefitGroupDao;
+    @Autowired
+    private PaySalaryComponentDao paySalaryComponentDao;
+    @Autowired
+    private EmpDataDao empDataDao;
+    @Autowired
+    private BenefitGroupRateDao benefitGroupRateDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -274,5 +292,38 @@ public class BenefitGroupServiceImpl extends IServiceImpl implements BenefitGrou
     public String getBenefitGroupNameByPk(Long id) throws Exception {
         return benefitGroupDao.getBenefitGroupNameByPk(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public List<BenefitGroupRenumerationModel> getAllDataRenumeration(Long empDataId) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		
+		List<BenefitGroupRenumerationModel> listRenumeration = new ArrayList<BenefitGroupRenumerationModel>();
+		List<PaySalaryComponent> listComponent =  paySalaryComponentDao.getAllDataRenumerationByEmployeeTypeId(empData.getEmployeeType().getId());
+		for(PaySalaryComponent component : listComponent) {			
+			BenefitGroupRenumerationModel model = new BenefitGroupRenumerationModel();
+			if(ObjectUtils.equals(component.getModelComponent().getSpesific(),HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
+				//Tunjangan
+				BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK((long)component.getModelReffernsil());
+				BenefitGroupRate benefitGroupRate =  benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId(benefitGroup.getId(),empData.getGolonganJabatan().getId());			
+				
+				model.setName(benefitGroup.getName());
+				model.setComponentCategory(component.getComponentCategory());
+				model.setNominal(benefitGroupRate != null ? benefitGroupRate.getNominal() : 0.0);
+				model.setIsBasicSalary(Boolean.FALSE);
+				
+			} else if(ObjectUtils.equals(component.getModelComponent().getSpesific(),HRMConstant.MODEL_COMP_BASIC_SALARY)) {
+				//Basic Salary
+				model.setName(component.getName());
+				model.setComponentCategory(component.getComponentCategory());
+				model.setNominal(Double.parseDouble(empData.getBasicSalaryDecrypted()));
+				model.setIsBasicSalary(Boolean.TRUE);
+			}
+			
+			listRenumeration.add(model);
+		}
+		
+		return listRenumeration;
+	}
 
 }

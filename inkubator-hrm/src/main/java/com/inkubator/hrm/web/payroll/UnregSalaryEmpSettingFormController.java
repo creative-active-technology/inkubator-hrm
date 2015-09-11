@@ -8,12 +8,14 @@ package com.inkubator.hrm.web.payroll;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.Gender;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmployeeTypeService;
+import com.inkubator.hrm.service.GenderService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.service.UnregSalaryService;
@@ -22,15 +24,18 @@ import com.inkubator.hrm.web.model.UnregSalaryModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
@@ -56,6 +61,8 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
     private ReligionService religionService;
     @ManagedProperty(value = "#{employeeTypeService}")
     private EmployeeTypeService employeeTypeService;
+    @ManagedProperty(value = "#{genderService}")
+    private GenderService genderService;
     private DualListModel<GolonganJabatan> goljabDualListModel = new DualListModel<>();
     private List<GolonganJabatan> golonganJabatanSource = new ArrayList<>();
     private DualListModel<Department> departmentDualListModel = new DualListModel<>();
@@ -64,6 +71,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
     private List<Religion> religionSource = new ArrayList<>();
     private DualListModel<EmployeeType> empTypeDualListModel = new DualListModel<>();
     private List<EmployeeType> empTypeSource = new ArrayList<>();
+    private DualListModel<Gender> genderDualListModel = new DualListModel<>();
     private UnregSalaryModel model;
     private String unregSalaryId;
     private Boolean isDataEmpty;
@@ -87,6 +95,7 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
             departmentSource = departmentService.getAllData();
             religionSource = religionService.getAllData();
             empTypeSource = employeeTypeService.getAllData();
+            List<Gender> genderSource = genderService.getAllData();
 
             /* 
              * update or view
@@ -125,6 +134,14 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
                 empTypeDualListModel = new DualListModel<>(empTypeSource, employeeTypes);
             }
             
+            Gender gender = genderService.getEntityByUnregSalaryIdWithDetail(Long.parseLong(unregSalaryId.substring(1)));
+            List<Gender> genders = gender.getListGenders();
+            if(genders.isEmpty()){
+                genderDualListModel.setSource(genderSource);
+            }else{
+            	genderSource.removeAll(genders);
+            	genderDualListModel = new DualListModel<>(genderSource, genders);
+            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -162,7 +179,8 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
         List<Department> listDepartement = departmentDualListModel.getTarget();
         List<Religion> listReligion = religionDualListModel.getTarget();
         List<EmployeeType> listEmployeeType = empTypeDualListModel.getTarget();
-        this.unregSalaryService.save(Long.parseLong(unregSalaryId.substring(1)), model.getStartPeriodDate(), model.getEndPeriodDate(), listGolonganJabatan, listDepartement, listReligion, listEmployeeType);
+        List<Gender> listGender = genderDualListModel.getTarget();
+        this.unregSalaryService.save(Long.parseLong(unregSalaryId.substring(1)), model.getStartPeriodDate(), model.getEndPeriodDate(), listGolonganJabatan, listDepartement, listReligion, listEmployeeType, listGender);
         MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                 FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         return "/protected/payroll/unreg_salary_view.htm?faces-redirect=true";
@@ -313,4 +331,21 @@ public class UnregSalaryEmpSettingFormController extends BaseController {
         this.isDataEmpty = isDataEmpty;
     }
 
+	public GenderService getGenderService() {
+		return genderService;
+	}
+
+	public void setGenderService(GenderService genderService) {
+		this.genderService = genderService;
+	}
+
+	public DualListModel<Gender> getGenderDualListModel() {
+		return genderDualListModel;
+	}
+
+	public void setGenderDualListModel(DualListModel<Gender> genderDualListModel) {
+		this.genderDualListModel = genderDualListModel;
+	}
+
+    
 }

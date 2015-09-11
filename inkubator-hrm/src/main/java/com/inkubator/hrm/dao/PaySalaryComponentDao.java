@@ -22,33 +22,49 @@ import org.hibernate.criterion.Order;
  */
 public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
 
-    public List<PaySalaryComponent> getByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+	public void saveAndMerge(PaySalaryComponent paySalaryComponent);
+	
+	
+	
+	//pageable
+    public List<PaySalaryComponent> getAllDataByParamWithDetail(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-    public Long getTotalResourceTypeByParam(PaySalaryComponentSearchParameter searchParameter);
-
-    public PaySalaryComponent getEntityByPkWithDetail(Long id);
-
+    public Long getTotalByParamWithDetail(PaySalaryComponentSearchParameter searchParameter);
+    
     public List<PaySalaryComponent> getAllDataComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter);
-
-    public void saveAndMerge(PaySalaryComponent paySalaryComponent);
-
-    public PaySalaryComponent getByEployeeTypeIdComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate);
-
-    public List<PaySalaryComponent> getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(Long empTypeId, int fromTbm, List<Long> componentIds);
-
-    public Long getTotalByModelComponentAndModelReferensi(Long modelComponentId, Integer modelReferensi);
-
-    public Long getTotalByModelComponentAndModelReferensiAndNotId(Long modelComponentId, Integer modelReferensi, Long id);
-
-    public PaySalaryComponent getEntityBySpecificModelComponent(Integer specific);
-
-    public List<PayComponentDataExceptionModelView> getByParamWithDetailForDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+    
+    public List<PayComponentDataExceptionModelView> getAllDataByParamDataException(PayComponentDataExceptionSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalByParamDataException(PayComponentDataExceptionSearchParameter searchParameter);
+    
+    
+        
+    //get Entity
+    public PaySalaryComponent getEntityByPkWithDetail(Long id);
+
+    public PaySalaryComponent getByEmployeeTypeIdAndComponentIdAndJoinDate(Long typeId, Long componentId, Date joinDate);
+    
+    public PaySalaryComponent getEntityBySpecificModelComponent(Integer specific);
+    
+    
+    
+    //get List
+    public List<PaySalaryComponent> getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(Long empTypeId, int fromTbm, List<Long> componentIds);
     
     public List<PaySalaryComponent> getAllDataByComponentCategoryZeroOrOne();
     
     public List<Integer> getAllModelReferensiId();
+    
+    public List<PaySalaryComponent> getAllDataRenumerationByEmployeeTypeId(Long empTypeId);
+    
+    
+    
+    //get Property
+    public Long getTotalByModelComponentAndModelReferensi(Long modelComponentId, Integer modelReferensi);
+
+    public Long getTotalByModelComponentAndModelReferensiAndNotId(Long modelComponentId, Integer modelReferensi, Long id);
+    
+    
 }

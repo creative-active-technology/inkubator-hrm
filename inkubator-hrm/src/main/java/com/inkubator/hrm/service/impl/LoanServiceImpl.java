@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
@@ -31,13 +30,10 @@ import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
-import com.inkubator.hrm.web.model.LoanCanceledModel;
 import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.hrm.web.search.LoanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -52,13 +48,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -680,7 +676,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void updateStatusAndDateDisbursementPaid(Long loanId, Date dateDisbursement) throws Exception {
+    public void disbursement(Long loanId, Date dateDisbursement) throws Exception {
         Loan loan = loanDao.getEntiyByPK(loanId);
         Date currentLoanPaymentDate = loan.getLoanPaymentDate();
 
@@ -688,23 +684,21 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         loan.setUpdatedBy(UserInfoUtil.getUserName());
         loan.setUpdatedOn(new Date());
         loanDao.update(loan);
-
+        
         //Jika Tgl Payment berbeda dari tanggal payment awal ketika pengajuan, maka create ulang jadwal pembayaran
         if (!DateTimeUtil.isSameDateWithTimeIgnore(currentLoanPaymentDate, dateDisbursement)) {
             loan.setLoanPaymentDate(dateDisbursement);
-
-            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), dateDisbursement,
-                    loan.getNominalPrincipal(), loan.getTypeOfInterest());
+            
+            //Hapus terlebih dahulu jadwal yang di generate ketika di awal - awal pada saat pengajuan, agar tidak duplikat
+            List<LoanPaymentDetail> listInitialPaymentDetails = loanPaymentDetailDao.getAllDataByLoanId(loan.getId());
+            for(LoanPaymentDetail initialLoanPaymentDetail : listInitialPaymentDetails){
+            	loanPaymentDetailDao.delete(initialLoanPaymentDetail);
+            }
+            
+            //Generate jadwal baru
+            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(), dateDisbursement, loan.getNominalPrincipal(), loan.getTypeOfInterest());
             loanPaymentDetailDao.save(loanPaymentDetails, loan);
 
-//            List<LoanPaymentDetail> loanPaymentDetails = calculateLoanPaymentDetails(loan.getInterestRate(), loan.getTermin(),
-//                    dateDisbursement, loan.getNominalPrincipal(), loan.getTypeOfInterest());
-//            for (LoanPaymentDetail lpd : loanPaymentDetails) {
-//                lpd.setLoan(loan);
-//                lpd.setCreatedBy(UserInfoUtil.getUserName());
-//                lpd.setCreatedOn(new Date());
-//            }
-//            loan.setLoanPaymentDetails(ImmutableSet.copyOf(loanPaymentDetails));
         }
     }
 
@@ -758,7 +752,7 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
         this.save(application, Boolean.TRUE);
 
         /**
-         * saving entity RmbsCancelation to DB
+         * saving entity loanCancelation to DB
          */
         this.savingCancelation(loanCancelation, application, appActivity.getActivityNumber());
 
@@ -771,7 +765,6 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
     }
     
     private void savingCancelation(LoanCanceled cancelation, Loan application, String activityNumber) throws BussinessException {
-        System.out.println("saving cancelation");
         // check duplicate code
         Long totalDuplicates = loanCanceledDao.getTotalByCode(cancelation.getCode());
         if (totalDuplicates > 0) {
@@ -814,5 +807,55 @@ public class LoanServiceImpl extends BaseApprovalServiceImpl implements LoanServ
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getCurrentMaxId() throws Exception {
 		return loanDao.getCurrentMaxId();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public String isLoanAllowed(Long empDataId, Long loanSchemaId) throws Exception {
+		
+		HrmUser hrmUser = hrmUserDao.getByEmpDataId(empDataId);
+
+        //Dapatkan semua List pending Approval Activity dari Karyawan yang sedang mengajukan pinjaman
+        List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(hrmUser.getUserId());
+        
+        //filter hanya yang datang dari LOAN
+        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.LOAN)));
+        for(ApprovalActivity pendingApprovalActivity : listPendingRequest){
+            
+            String pendingData = pendingApprovalActivity.getPendingData();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            Loan loan = gson.fromJson(pendingData, Loan.class);
+            if (loan.getLoanSchema().getId().equals(loanSchemaId)) {
+                return "loan.error_loan_with_same_schema_found";
+            }
+        }
+        
+        // Dapatkan List Loan yang belum dicairkan, dan filter hanya yang schemaId nya sama dengan yang sedang di ajukan
+        List<Loan> listLoanUndisbursed = loanDao.getAllDataByEmpDataIdAndStatusUndisbursed(empDataId);
+        listLoanUndisbursed = Lambda.select(listLoanUndisbursed, Lambda.having(Lambda.on(Loan.class).getLoanSchema().getId(), Matchers.equalTo(loanSchemaId)));
+        
+        // Jika di list loan yang belum di cairkan, sudah ada loan yang skema nya sama dengan yang sedang di ajukan, return key exception
+        if(!listLoanUndisbursed.isEmpty()){
+        	return "loan.error_loan_with_same_schema_found";
+        }
+        
+        // jika tidak ada di list yang belum dicairkan, lanjut cek ke list yang sudah di cairkan, cek satu persatu,
+        // dapatkan lastInstallmentDate (Tanggal terakhir cicilan) dari loan tsb, bandingkan dengan tgl hari ini, jika tgl hari ini sebelum tgl cicilan terakhir, berarti belum lunas
+        // return key exception
+        List<Loan> listLoanDisbursed = loanDao.getAllDataByEmpDataIdAndStatusDisbursed(empDataId);
+        listLoanDisbursed = Lambda.select(listLoanDisbursed, Lambda.having(Lambda.on(Loan.class).getLoanSchema().getId(), Matchers.equalTo(loanSchemaId)));
+        
+        for(Loan loanDisbursed : listLoanDisbursed){
+        	List<LoanPaymentDetail> listLoanPaymentDetails = loanPaymentDetailDao.getAllDataByLoanId(loanDisbursed.getId());
+        	if(!listLoanPaymentDetails.isEmpty()){
+        		Date lastInstallment = Lambda.max(listLoanPaymentDetails, Lambda.on(LoanPaymentDetail.class).getDueDate());
+            	if(new Date().before(lastInstallment)){
+            		return "loan.error_loan_with_same_schema_found";
+            	}
+        	}
+        	
+        }
+        
+		return "yes";
 	}
 }
