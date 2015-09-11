@@ -21,5 +21,5 @@ public interface BenefitGroupRateDao extends IDAO<BenefitGroupRate> {
     
     public List<BenefitGroupRate> getByGolonganJabatan(Long golonganId);
     
-    public List<BenefitGroupRate> getAllDataByBenefitGroupIdAndGolJabatanId(Long benefitGroupId, Long golJabatanId);
+    public BenefitGroupRate getEntityByBenefitGroupIdAndGolJabatanId(Long benefitGroupId, Long golJabatanId);
 }
