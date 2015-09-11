@@ -22,4 +22,6 @@ public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDe
 
     public Long getTotalDataByParam(RecruitMppApplyDetailSearchParameter searchParameter) throws Exception;
     
+    public RecruitMppApplyDetail getEntityWithDetail(Long idRecruitMppApplyDetailId) throws Exception;
+    
 }

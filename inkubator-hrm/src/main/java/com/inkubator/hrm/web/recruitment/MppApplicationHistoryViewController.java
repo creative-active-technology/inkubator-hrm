@@ -54,7 +54,7 @@ public class MppApplicationHistoryViewController extends BaseController {
 
     public String doDetail() {
     	//return "/protected/recruitment/loan_new_schema_detail.htm?faces-redirect=true&execution=e" + selected.getId();
-        return "/protected/recruitment/mpp_application_history_view.htm?faces-redirect=true";
+        return "/protected/recruitment/mpp_application_history_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 
     public void setRecruitMppApplyDetailService(
