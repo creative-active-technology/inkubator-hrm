@@ -79,9 +79,7 @@ public class LoginController extends BaseController {
             LOGGER.info("TABLET");
         }
         String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
-        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
-            info = ResourceBundleUtil.getAsString("browser.info");
-        } else {
+        if (StringsUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
         }
     }
@@ -145,9 +143,7 @@ public class LoginController extends BaseController {
         String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
         String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
-        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
-            info = ResourceBundleUtil.getAsString("browser.info");
-        } else {
+        if (StringsUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
         }
     }
