@@ -305,32 +305,32 @@
                                     </p:tab>  
 
                                     <p:tab id="tbaCuti" title="#{appmsg['resumeLeaveEmployee.leave_usage']}">
-                                        <p:dataTable id="tableKonsumsiCuti" var="data"
+                                        <p:dataTable id="tableKonsumsiCuti" var="data" styleClass="grid_border_table"
                                                      value="#{resumeLeaveEmployeeViewController.listLeaveImplementationDateModel}"
                                                      lazy="false" paginator="false"
                                                      style="margin-top: 0px;margin-bottom: 10px" rowIndexVar="no">
 
                                             <p:column style="text-align: center;width: 3%">
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{appmsg['global.number']}" />
+                                                    <p:outputLabel value="#{appmsg['global.number']}" />
                                                 </f:facet>
                                                 <h:outputLabel value="#{no+1}." />
                                             </p:column>
                                             <p:column style="text-align: center;width: 20%">
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{appmsg['leave.name']}" />
+                                                    <p:outputLabel value="#{appmsg['leave.name']}" />
                                                 </f:facet>
                                                 <h:outputLabel value="#{data.leaveDistributionName}" />
                                             </p:column>
                                             <p:column style="text-align: center;width: 20%">
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{appmsg['leave.usage']}" />
+                                                    <p:outputLabel value="#{appmsg['leave.usage']}" />
                                                 </f:facet>
-                                                <h:outputLabel value="#{data.totalPakai} / #{data.balance}" />
+                                                <p:outputLabel value="#{data.totalPakai} / #{data.balance}" />
                                             </p:column>
                                             <p:column style="text-align: center;width: 77%">
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{appmsg['leave.percentage']}" />
+                                                    <p:outputLabel value="#{appmsg['leave.percentage']}" />
                                                 </f:facet>
                                                 <p:progressBar value="#{data.percentage}" labelTemplate="100%" displayOnly="true"/>
                                             </p:column>

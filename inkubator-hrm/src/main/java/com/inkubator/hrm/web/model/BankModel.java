@@ -2,6 +2,8 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
+
 /**
  *
  * @author Taufik Hidayat
@@ -104,6 +106,7 @@ public class BankModel implements Serializable {
         this.address = address;
     }
 
+    @Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
     public String getBankPhone() {
         return bankPhone;
     }
@@ -112,6 +115,7 @@ public class BankModel implements Serializable {
         this.bankPhone = bankPhone;
     }
 
+    @Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_fax}")
     public String getBankFax() {
         return bankFax;
     }

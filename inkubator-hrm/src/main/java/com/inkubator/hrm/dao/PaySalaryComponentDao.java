@@ -57,6 +57,8 @@ public interface PaySalaryComponentDao extends IDAO<PaySalaryComponent> {
     
     public List<Integer> getAllModelReferensiId();
     
+    public List<PaySalaryComponent> getAllDataRenumerationByEmployeeTypeId(Long empTypeId);
+    
     
     
     //get Property

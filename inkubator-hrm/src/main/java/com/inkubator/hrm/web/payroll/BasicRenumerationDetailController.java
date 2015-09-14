@@ -5,25 +5,26 @@
  */
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.common.util.AESUtil;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.BenefitGroupRate;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.BenefitGroupRateService;
-import com.inkubator.hrm.web.model.BenefitGroupRenumerationModel;
-import com.inkubator.hrm.web.model.SubsidiModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.ObjectUtils;
+
+import ch.lambdaj.Lambda;
+
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.BenefitGroupService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.model.BenefitGroupRenumerationModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -36,55 +37,53 @@ public class BasicRenumerationDetailController extends BaseController {
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private EmpData selectedEmpData;
-    private String id;
-    private String total;
 
     //personal discipline
-    @ManagedProperty(value = "#{benefitGroupRateService}")
-    private BenefitGroupRateService benefitGroupRateService;
-    private List<BenefitGroupRate> listBenefitGroupRate;
+    @ManagedProperty(value = "#{benefitGroupService}")
+    private BenefitGroupService benefitGroupService;
 
-    private List<SubsidiModel> listSubsidi;
+    private List<BenefitGroupRenumerationModel> listAllRenumeration;
+    private List<BenefitGroupRenumerationModel> listSubsidy;
     private List<BenefitGroupRenumerationModel> listBenefit;
-    private String subsidiTotal;
-    DecimalFormat f = new DecimalFormat("###,###.###");
+    private Double totalBenefit;
+    private Double totalSubsidy;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
-            super.initialization();
-            DecimalFormatSymbols custom = new DecimalFormatSymbols();
-            custom.setDecimalSeparator(',');
-            custom.setGroupingSeparator('.');            
-            f.setDecimalFormatSymbols(custom);
+            super.initialization();            
             String empId = FacesUtil.getRequestParameter("execution");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
-            listBenefitGroupRate = benefitGroupRateService.getByGolonganJabatan(selectedEmpData.getGolonganJabatan().getId());
+            
+            listBenefit = new ArrayList<BenefitGroupRenumerationModel>();
+            listSubsidy = new ArrayList<BenefitGroupRenumerationModel>();
+            listAllRenumeration = benefitGroupService.getAllDataRenumeration(selectedEmpData.getId());
+            for(BenefitGroupRenumerationModel model : listAllRenumeration){
+            	if(ObjectUtils.equals(model.getComponentCategory(), HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)){
+            		listBenefit.add(model);
+            	} else if(ObjectUtils.equals(model.getComponentCategory(), HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)){
+            		listSubsidy.add(model);
+            	}
+            }
+            totalBenefit = Lambda.sum(listBenefit, Lambda.on(BenefitGroupRenumerationModel.class).getNominal());
+            totalSubsidy = Lambda.sum(listSubsidy, Lambda.on(BenefitGroupRenumerationModel.class).getNominal());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
 
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public EmpData getSelectedEmpData() {
-        return selectedEmpData;
-    }
-
-    public void setSelectedEmpData(EmpData selectedEmpData) {
-        this.selectedEmpData = selectedEmpData;
-    }
-
-    public void setEmpDataService(EmpDataService empDataService) {
-        this.empDataService = empDataService;
+    
+    @PreDestroy
+    public void cleanAndExit() {
+        empDataService = null;
+        selectedEmpData = null;
+        benefitGroupService = null;
+        listAllRenumeration = null;
+        listSubsidy = null;
+        listBenefit = null;
+        totalBenefit = null;
+        totalSubsidy = null;
     }
 
     public String doBack() {
@@ -99,91 +98,68 @@ public class BasicRenumerationDetailController extends BaseController {
         }
     }
 
-    public BenefitGroupRateService getBenefitGroupRateService() {
-        return benefitGroupRateService;
-    }
+	public EmpDataService getEmpDataService() {
+		return empDataService;
+	}
 
-    public void setBenefitGroupRateService(BenefitGroupRateService benefitGroupRateService) {
-        this.benefitGroupRateService = benefitGroupRateService;
-    }
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
 
-    public List<BenefitGroupRate> getListBenefitGroupRate() {
-        return listBenefitGroupRate;
-    }
+	public EmpData getSelectedEmpData() {
+		return selectedEmpData;
+	}
 
-    public void setListBenefitGroupRate(List<BenefitGroupRate> listBenefitGroupRate) {
-        this.listBenefitGroupRate = listBenefitGroupRate;
-    }
+	public void setSelectedEmpData(EmpData selectedEmpData) {
+		this.selectedEmpData = selectedEmpData;
+	}
 
-    @PreDestroy
-    public void cleanAndExit() {
-        empDataService = null;
-        selectedEmpData = null;
-        id = null;
-        benefitGroupRateService = null;
-        listBenefitGroupRate = null;
-        total = null;
-        listBenefit = null;
-        listSubsidi = null;
-        subsidiTotal = null;
-    }
+	public BenefitGroupService getBenefitGroupService() {
+		return benefitGroupService;
+	}
 
-    public String getTotal() {
-        Integer totalDouble = 0;
-        for (BenefitGroupRate b : listBenefitGroupRate) {
-            totalDouble += b.getNominal().intValue();
-        }
-        String dataDecripted = selectedEmpData.getBasicSalaryDecrypted();
-        totalDouble += Integer.parseInt(dataDecripted);
-        total = String.valueOf(totalDouble);
-        return String.valueOf(f.format(Integer.parseInt(total)));
-    }
+	public void setBenefitGroupService(BenefitGroupService benefitGroupService) {
+		this.benefitGroupService = benefitGroupService;
+	}
 
-    public String getSubsidiTotal() {
-        Integer subTotal = 0;
-        Integer ppip = selectedEmpData.getPpip() != null ? Integer.parseInt(selectedEmpData.getPpip()) : 0;
-        Integer ppmp = selectedEmpData.getPpmp() != null ? Integer.parseInt(selectedEmpData.getPpmp()) : 0;
+	public List<BenefitGroupRenumerationModel> getListAllRenumeration() {
+		return listAllRenumeration;
+	}
 
-        subTotal = ppip + ppmp;
-        
-        return String.valueOf(f.format(subTotal));
-    }
+	public void setListAllRenumeration(List<BenefitGroupRenumerationModel> listAllRenumeration) {
+		this.listAllRenumeration = listAllRenumeration;
+	}
 
-    public List<SubsidiModel> getListSubsidi() {
-        listSubsidi = new ArrayList<>();
+	public List<BenefitGroupRenumerationModel> getListSubsidy() {
+		return listSubsidy;
+	}
 
-        Integer ppip = selectedEmpData.getPpip() != null ? Integer.parseInt(selectedEmpData.getPpip()) : 0;
-        Integer ppmp = selectedEmpData.getPpmp() != null ? Integer.parseInt(selectedEmpData.getPpmp()) : 0;
+	public void setListSubsidy(List<BenefitGroupRenumerationModel> listSubsidy) {
+		this.listSubsidy = listSubsidy;
+	}
 
-        SubsidiModel ppipObj = new SubsidiModel();
-        ppipObj.setSubsidiName("Premi PPIP");
-        ppipObj.setNominal(String.valueOf(f.format(ppip)));
+	public List<BenefitGroupRenumerationModel> getListBenefit() {
+		return listBenefit;
+	}
 
-        SubsidiModel ppmpObj = new SubsidiModel();
-        ppmpObj.setSubsidiName("Premi PPMP");
-        ppmpObj.setNominal(String.valueOf(f.format(ppmp)));
+	public void setListBenefit(List<BenefitGroupRenumerationModel> listBenefit) {
+		this.listBenefit = listBenefit;
+	}
+	
+	public Double getTotalBenefit() {
+		return totalBenefit;
+	}
 
-        listSubsidi.add(ppipObj);
-        listSubsidi.add(ppmpObj);
+	public void setTotalBenefit(Double totalBenefit) {
+		this.totalBenefit = totalBenefit;
+	}
+	
+	public Double getTotalSubsidy() {
+		return totalSubsidy;
+	}
 
-        return listSubsidi;
-    }
-
-    public List<BenefitGroupRenumerationModel> getListBenefit() {
-        listBenefit = new ArrayList<>();
-        BenefitGroupRenumerationModel bgrm = new BenefitGroupRenumerationModel();
-        bgrm.setBenefitGroup("Basic Salary");
-        bgrm.setNominal(selectedEmpData.getBasicSalary());
-        listBenefit.add(bgrm);
-
-        for (BenefitGroupRate benefitGroupRate : listBenefitGroupRate) {
-            BenefitGroupRenumerationModel benefitGroupRenumerationModel = new BenefitGroupRenumerationModel();
-            benefitGroupRenumerationModel.setBenefitGroup(benefitGroupRate.getBenefitGroup().getName());
-            benefitGroupRenumerationModel.setNominal(String.valueOf(f.format(benefitGroupRate.getNominal())));
-
-            listBenefit.add(benefitGroupRenumerationModel);
-        }
-        return listBenefit;
-    }
+	public void setTotalSubsidy(Double totalSubsidy) {
+		this.totalSubsidy = totalSubsidy;
+	}
 
 }
