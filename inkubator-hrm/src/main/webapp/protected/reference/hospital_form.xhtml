@@ -143,11 +143,11 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 70%">
-                                <p:selectOneMenu id="countryId" value="#{hospitalFormController.hospitalModel.countryId}" required="true" valueChangeListener="#{hospitalFormController.countryChanged}" 
+                                <p:selectOneMenu id="countryId" value="#{hospitalFormController.hospitalModel.countryId}" required="true"  
                                                  style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{hospitalFormController.countrys}"  />
-                                    <p:ajax update="provinceIdA, provinceId, cityIdA, cityId, postalCodeId" event="change" />
+                                    <p:ajax update="provinceIdA, provinceId, cityIdA, cityId, postalCodeId"  listener="#{hospitalFormController.countryChanged()}"/>
                                 </p:selectOneMenu>
                             </p:column>                            
                         </p:row>
@@ -164,11 +164,11 @@
                                 <h:outputLabel for="provinceIdA" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 70%">
-                                <p:selectOneMenu id="provinceIdA" value="#{hospitalFormController.hospitalModel.provinceId}" required="true" valueChangeListener="#{hospitalFormController.provinceChanged}"
-                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{hospitalFormController.disabledProvince}">
+                                <p:selectOneMenu id="provinceIdA" value="#{hospitalFormController.hospitalModel.provinceId}" required="true"
+                                                 style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{hospitalFormController.provinces}"  />
-                                    <p:ajax update="cityIdA, cityId, postalCodeId" event="change" />
+                                    <p:ajax update="cityIdA, cityId, postalCodeId" listener="#{hospitalFormController.provinceChanged()}" />
                                 </p:selectOneMenu>                                
                             </p:column>
                         </p:row>
@@ -188,7 +188,7 @@
                             <p:column  style="width: 70%">
                                 <p:focus for ="cityIdA">
                                     <p:selectOneMenu id="cityIdA" value="#{hospitalFormController.hospitalModel.cityId}" required="true"
-                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['hospital.city_should_not_be_empty']}" disabled="#{hospitalFormController.disabledCity}">
+                                                     style="width: 250px" filter="true" requiredMessage="#{appmsg['hospital.city_should_not_be_empty']}" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{hospitalFormController.citys}" />
                                     </p:selectOneMenu>
