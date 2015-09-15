@@ -94,11 +94,13 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="unregPayComponentses" style="width: 15%">
+                            <p:column style="width: 15%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['unregSalary.total_component']}"/>
+                                    <h:outputText value="#{appmsg['unregSalary.totalPaid']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.unregPayComponentses.size()}" />
+                                <h:outputLabel value= "#{data.totalPaid}" >
+                                	<f:convertNumber rendered="###,###" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 25%;text-align: center" exportable="false">                                
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
