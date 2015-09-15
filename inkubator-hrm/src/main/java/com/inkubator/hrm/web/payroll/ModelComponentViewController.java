@@ -129,7 +129,7 @@ public class ModelComponentViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 5524200);
         RequestContext.getCurrentInstance().openDialog("model_component_form", options, params);
     }
 
