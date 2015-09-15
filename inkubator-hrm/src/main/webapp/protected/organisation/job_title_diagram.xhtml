@@ -47,8 +47,8 @@
                         <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
-                        <p:dialog widgetVar="infoListEmpoyee" header="Daftar Karyawan Pemegang Jabatan" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
-                                  appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                        <p:dialog widgetVar="infoListEmpoyee" header="#{appmsg['employee.list_of_employee']} :" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                                  appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold" id="headerId">
                           
                             <div align="center" style="margin-bottom: 7px;margin-top: 7px">
                                     <p:dataTable value="#{jabatanSchemaController.listEmp}" var="emp" rowIndexVar="no" id="empListId"
@@ -61,7 +61,7 @@
                                         </p:column>
                                         <p:column > 
                                             <f:facet name="header">  
-                                                <h:outputText value="Nama" />
+                                                <h:outputText value="#{appmsg['global.name']}" />
                                             </f:facet>
                                             <p:outputLabel value="#{emp.bioData.firstName} #{emp.bioData.lastName}" />
                                         </p:column> 

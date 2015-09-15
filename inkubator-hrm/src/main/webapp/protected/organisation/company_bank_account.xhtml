@@ -40,7 +40,7 @@
                                 <h:outputLabel for="bankIdd" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                                <p:selectOneMenu id="bankIdd" styleClass="isitext_hrm" value="#{companyBankAccountFormController.accountModel.bankId}" style="width:266px;" required="true">
+                                <p:selectOneMenu id="bankIdd" styleClass="isitext_hrm" value="#{companyBankAccountFormController.accountModel.bankId}" style="width:266px;" filter="true" required="true">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{companyBankAccountFormController.dropDownBank}"/>
                                 </p:selectOneMenu>
