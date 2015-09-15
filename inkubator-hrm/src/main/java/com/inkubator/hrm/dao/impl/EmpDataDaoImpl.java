@@ -1744,9 +1744,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
                 + " INNER JOIN bioEdu.biodata bioDataInner "
                 + " WHERE bioDataInner.id = bioData.id ) "
-                + " AND  (SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
+                + " AND  EXISTS(SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
                 + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
-                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
+                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId AND bioEduGpa.score > :gpa  ) ");
+                /*+ " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");*/
 
         //Filter by gender
         if (!StringUtils.equals("Any", gender)) {
@@ -1820,9 +1821,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
                 + " INNER JOIN bioEdu.biodata bioDataInner "
                 + " WHERE bioDataInner.id = bioData.id ) "
-                + " AND  (SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
+                + " AND  EXISTS(SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
                 + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
-                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
+                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId AND bioEduGpa.score > :gpa  ) ");
+        
+//                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
 
         //Filter by gender
         if (!StringUtils.equals("Any", gender)) {
