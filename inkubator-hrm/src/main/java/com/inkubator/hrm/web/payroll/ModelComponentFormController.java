@@ -1,28 +1,23 @@
 package com.inkubator.hrm.web.payroll;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.BenefitGroup;
-import com.inkubator.hrm.entity.ModelComponent;
-import com.inkubator.hrm.service.BenefitGroupService;
-import com.inkubator.hrm.service.ModelComponentService;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.model.ModelComponentModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ValueChangeEvent;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ModelComponent;
+import com.inkubator.hrm.service.ModelComponentService;
+import com.inkubator.hrm.web.model.ModelComponentModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -36,10 +31,6 @@ public class ModelComponentFormController extends BaseController {
     private Boolean isUpdate;
     @ManagedProperty(value = "#{modelComponentService}")
     private ModelComponentService modelComponentService;
-    @ManagedProperty(value = "#{benefitGroupService}")
-    private BenefitGroupService benefitGroupService;
-    private Map<String, Long> benefits = new TreeMap<>();
-    private Boolean disabledBenefit;
 
     @PostConstruct
     @Override
@@ -50,15 +41,6 @@ public class ModelComponentFormController extends BaseController {
             modelComponentModel = new ModelComponentModel();
             modelComponentModel.setHasException(Boolean.TRUE); //default is true
             isUpdate = Boolean.FALSE;
-            disabledBenefit = Boolean.TRUE;
-
-            List<BenefitGroup> listBenefit = benefitGroupService.getAllData();
-
-            for (BenefitGroup benefit : listBenefit) {
-                benefits.put(benefit.getName(), benefit.getId());
-            }
-
-            MapUtil.sortByValue(benefits);
 
             if (StringUtils.isNumeric(param)) {
                 ModelComponent modelComponent = modelComponentService.getEntityByPKWithDetail(Long.parseLong(param));
@@ -69,11 +51,7 @@ public class ModelComponentFormController extends BaseController {
                     modelComponentModel.setDescription(modelComponent.getDescription());
                     modelComponentModel.setSpesific(modelComponent.getSpesific());
                     modelComponentModel.setHasException(modelComponent.getHasException());
-                    if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-                        modelComponentModel.setBenefitGroupId(modelComponent.getBenefitGroup().getId());
-                        disabledBenefit = Boolean.FALSE;
-                    }
-
+                    
                     isUpdate = Boolean.TRUE;
                 }
 
@@ -86,22 +64,15 @@ public class ModelComponentFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         modelComponentService = null;
-//        modelComponentModel = null;
+        modelComponentModel = null;
         isUpdate = null;
-        benefitGroupService = null;
-        benefits = null;
-        disabledBenefit = null;
     }
+    
+    public ModelComponentService getModelComponentService() {
+		return modelComponentService;
+	}
 
-    public void setDisabledBenefit(Boolean disabledBenefit) {
-        this.disabledBenefit = disabledBenefit;
-    }
-
-    public Boolean getDisabledBenefit() {
-        return disabledBenefit;
-    }
-
-    public ModelComponentModel getModelComponentModel() {
+	public ModelComponentModel getModelComponentModel() {
         return modelComponentModel;
     }
 
@@ -119,19 +90,7 @@ public class ModelComponentFormController extends BaseController {
 
     public void setModelComponentService(ModelComponentService modelComponentService) {
         this.modelComponentService = modelComponentService;
-    }
-
-    public Map<String, Long> getBenefits() {
-        return benefits;
-    }
-
-    public void setBenefits(Map<String, Long> benefits) {
-        this.benefits = benefits;
-    }
-
-    public void setBenefitGroupService(BenefitGroupService benefitGroupService) {
-        this.benefitGroupService = benefitGroupService;
-    }
+    }    
 
     public void doSave() {
         ModelComponent modelComponent = getEntityFromViewModel(modelComponentModel);
@@ -161,19 +120,7 @@ public class ModelComponentFormController extends BaseController {
         modelComponent.setSpesific(modelComponentModel.getSpesific());
         modelComponent.setDescription(modelComponentModel.getDescription());
         modelComponent.setHasException(modelComponentModel.getHasException());
-        if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-            modelComponent.setBenefitGroup(new BenefitGroup(modelComponentModel.getBenefitGroupId()));
-        }
         return modelComponent;
     }
-
-    public void specificChanged(ValueChangeEvent event) {
-    	
-        if (String.valueOf(event.getNewValue()).equals(String.valueOf(HRMConstant.MODEL_COMP_BENEFIT_TABLE))) {
-            disabledBenefit = Boolean.FALSE;
-        } else {
-            disabledBenefit = Boolean.TRUE;
-        }
-
-    }
+    
 }
