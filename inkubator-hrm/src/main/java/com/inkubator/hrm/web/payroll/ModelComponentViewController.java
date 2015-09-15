@@ -127,11 +127,7 @@ public class ModelComponentViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-<<<<<<< HEAD
-        options.put("contentHeight", 5524200);
-=======
         options.put("contentHeight", 470);
->>>>>>> branch 'master' of https://ekamuli@github.com/creative-active-technology/inkubator-hrm.git
         RequestContext.getCurrentInstance().openDialog("model_component_form", options, params);
     }
 
