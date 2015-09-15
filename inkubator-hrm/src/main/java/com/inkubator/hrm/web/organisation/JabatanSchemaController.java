@@ -5,15 +5,20 @@
  */
 package com.inkubator.hrm.web.organisation;
 
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -28,6 +33,10 @@ public class JabatanSchemaController extends BaseController {
     private TreeNode root;
     @ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
+    private TreeNode selectedNode;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    private List<EmpData> listEmp = new ArrayList<>();
 
     @PostConstruct
     @Override
@@ -47,10 +56,10 @@ public class JabatanSchemaController extends BaseController {
 
         if (root1 == null) {
 
-            root = new DefaultTreeNode(jabatan.getName(), null);
+            root = new DefaultTreeNode(jabatan, null);
             List<Jabatan> data1 = jabatanService.getJabatanByParentCode(jabatan.getCode());
             for (Jabatan jabatan1 : data1) {
-                TreeNode node = new DefaultTreeNode(jabatan1.getName(), root);
+                TreeNode node = new DefaultTreeNode(jabatan1, root);
                 node.setExpanded(true);
                 if (!jabatan1.getJabatans().isEmpty()) {
                     doViewSchema(jabatan1, node);
@@ -60,7 +69,7 @@ public class JabatanSchemaController extends BaseController {
 
             List<Jabatan> data1 = jabatanService.getJabatanByParentCode(jabatan.getCode());
             for (Jabatan jabatan1 : data1) {
-                TreeNode node = new DefaultTreeNode(jabatan1.getName(), root1);
+                TreeNode node = new DefaultTreeNode(jabatan1, root1);
                 node.setExpanded(true);
                 if (!jabatan1.getJabatans().isEmpty()) {
                     doViewSchema(jabatan1, node);
@@ -88,4 +97,36 @@ public class JabatanSchemaController extends BaseController {
         this.jabatanService = jabatanService;
     }
 
+    public void onNodeSelect(NodeSelectEvent event) {
+        try {
+            Jabatan jabatan = (Jabatan) selectedNode.getData();
+            listEmp = empDataService.getAllByJabatanAndCompanyAndStatus(jabatan.getId(), HRMConstant.EMP_TERMINATION);
+            LOGGER.error("Jumlah empolenya  " + listEmp.size());
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+
+    }
+
+    public TreeNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public List<EmpData> getListEmp() {
+        return listEmp;
+    }
+
+    public void setListEmp(List<EmpData> listEmp) {
+        this.listEmp = listEmp;
+    }
+
+    
 }

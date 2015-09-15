@@ -115,38 +115,38 @@ public interface EmpDataService extends IService<EmpData> {
     public EmpData getByEmpDataByBioDataId(long bioDataid);
 
     public List<EmpDataMatrixModel> getAllDataByAbsisAndOrdinateAndGoljab(String absis, String ordinate, long golJabId) throws Exception;
-    
+
     public BioDataModel getEmpNameWithNearestBirthDate();
 
     public List<EmpData> getAllDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation, int firstResult, int maxResults, Order order) throws Exception;
-    
+
     public List<ReportEmployeeEducationViewModel> getAllDataByDepartementAndEducationWithHql(List<Department> departementId, List<EducationLevel> educationId, int firstResult, int maxResults, Order order);
 
     public Long getTotalDataByDepartementAndEducation(List<Department> listDepartement, List<EducationLevel> listEducation) throws Exception;
-    
+
     public List<EmpData> getReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, int firstResult, int maxResults, Order order);
 
     public Long getTotalReportRekapJabatanByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId);
-    
+
     public List<ReportEmpPensionPreparationModel> getReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges, int firstResult, int maxResults, Order order);
 
     public Long getTotalReportPensionPreparementByParam(List<Long> listDepartmentId, List<Long> listEmpTypeId, List<Integer> listEmpAges);
 
-	public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
-	
-	public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
+    public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds);
 
-	public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
-    
+    public Boolean isEmpDataWithNullWtGroupWorkingExist() throws Exception;
+
+    public List<EmployeeRestModel> getAllDataRestModel(String nikOrName) throws Exception;
+
     public EmployeeRestModel getRestModelByNik(String nik) throws Exception;
 
-	public Map<String,List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
-	
-	public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard();
-	
+    public Map<String, List<DepAttendanceRealizationViewModel>> getListDepAttendanceByDepartmentIdAndRangeDate(Date dateFrom, Date dateUntill) throws Exception;
+
+    public EmployeeResumeDashboardModel getEmployeeResumeOnDashboard();
+
     public List<EmpData> getAllDataByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) throws Exception;
 
-	
+    public List<EmpData> getAllByJabatanAndCompanyAndStatus(long jabataId, String status) throws Exception;
 }
