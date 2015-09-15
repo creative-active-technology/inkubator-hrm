@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -18,11 +19,13 @@ public class HrmUserSearchParameter extends SearchParameter {
     private String roleName;
 
     public String getUserName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("userId")) {
-                userName = getParameter();
-            }
+
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "userId")) {
+            userName = getParameter();
+        } else {
+            userName = null;
         }
+
         return userName;
     }
 
@@ -31,10 +34,11 @@ public class HrmUserSearchParameter extends SearchParameter {
     }
 
     public String getRealName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("realName")) {
-                realName = getParameter();
-            }
+
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "realName")) {
+            realName = getParameter();
+        } else {
+            realName = null;
         }
         return realName;
     }
@@ -44,17 +48,18 @@ public class HrmUserSearchParameter extends SearchParameter {
     }
 
     public String getRoleName() {
-         if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("roleName")) {
-                roleName = getParameter();
-            }
+        
+         if (StringUtils.equalsIgnoreCase(getKeyParam(), "roleName")) {
+            roleName = getParameter();
+        } else {
+            roleName = null;
         }
+        
         return roleName;
     }
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
-    
-    
+
 }

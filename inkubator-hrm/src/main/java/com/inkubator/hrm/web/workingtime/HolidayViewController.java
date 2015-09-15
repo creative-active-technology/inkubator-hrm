@@ -36,56 +36,58 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ManagedBean(name = "holidayViewController")
 @ViewScoped
 public class HolidayViewController extends BaseController {
-    
+
     private HolidaySearchParameter holidaySearchParameter;
     private LazyDataModel<WtHoliday> wtHolidayLazyDataModel;
     @ManagedProperty(value = "#{wtHolidayService}")
     private WtHolidayService wtHolidayService;
     private WtHoliday selecWtHoliday;
-    
+
     public HolidaySearchParameter getHolidaySearchParameter() {
         return holidaySearchParameter;
     }
-    
+
     public void setHolidaySearchParameter(HolidaySearchParameter holidaySearchParameter) {
         this.holidaySearchParameter = holidaySearchParameter;
     }
-    
+
     public LazyDataModel<WtHoliday> getWtPeriodelazyDataModel() {
         if (wtHolidayLazyDataModel == null) {
             wtHolidayLazyDataModel = new WtHolidayLazyModel(holidaySearchParameter, wtHolidayService);
         }
         return wtHolidayLazyDataModel;
     }
-    
+
     public void setWtPeriodelazyDataModel(LazyDataModel<WtHoliday> wtPeriodelazyDataModel) {
         this.wtHolidayLazyDataModel = wtPeriodelazyDataModel;
     }
-    
+
     public WtHoliday getSelecWtHoliday() {
         return selecWtHoliday;
     }
-    
+
     public void setSelecWtHoliday(WtHoliday selecWtHoliday) {
         this.selecWtHoliday = selecWtHoliday;
     }
-    
+
     public void setWtHolidayService(WtHolidayService wtHolidayService) {
         this.wtHolidayService = wtHolidayService;
     }
-    
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         holidaySearchParameter = new HolidaySearchParameter();
-        
+
     }
-    
+
     public void doSearch() {
+      
         wtHolidayLazyDataModel = null;
+
     }
-    
+
     public void doDetail() {
         try {
             selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
@@ -93,13 +95,13 @@ public class HolidayViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doDelete() {
         try {
             this.wtHolidayService.delete(selecWtHoliday);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            
+
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -108,7 +110,7 @@ public class HolidayViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doAdd() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -116,10 +118,10 @@ public class HolidayViewController extends BaseController {
         options.put("resizable", false);
         options.put("contentWidth", 400);
         options.put("contentHeight", 360);
-        
+
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, null);
     }
-    
+
     public void doEdit() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -133,13 +135,13 @@ public class HolidayViewController extends BaseController {
         dataToSend.put("param", dataIsi);
         RequestContext.getCurrentInstance().openDialog("holiday_form", options, dataToSend);
     }
-    
+
     @Override
     public void onDialogReturn(SelectEvent event) {
         wtHolidayLazyDataModel = null;
         super.onDialogReturn(event);
     }
-    
+
     public void onDelete() {
         try {
             selecWtHoliday = wtHolidayService.getEntiyByPK(selecWtHoliday.getId());
@@ -147,15 +149,15 @@ public class HolidayViewController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doChangeYear() {
         wtHolidayLazyDataModel = null;
     }
-    
+
     public void doChangeMonth() {
         wtHolidayLazyDataModel = null;
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
         holidaySearchParameter = null;

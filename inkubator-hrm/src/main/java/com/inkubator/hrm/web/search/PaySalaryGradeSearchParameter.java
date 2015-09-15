@@ -23,6 +23,8 @@ public class PaySalaryGradeSearchParameter extends SearchParameter{
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("gradeSalary")&& getParameter()!=null) {
                 gradeSalary = Integer.parseInt(getParameter());
+            }else{
+                gradeSalary=null;
             }
         }
         return gradeSalary;

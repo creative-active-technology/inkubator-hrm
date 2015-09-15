@@ -22,6 +22,8 @@ public class WtOverTimeSearchParameter extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("overTimecode")) {
                 overTimecode = getParameter();
+            }else{
+                overTimecode=null;
             }
         }
         return overTimecode;

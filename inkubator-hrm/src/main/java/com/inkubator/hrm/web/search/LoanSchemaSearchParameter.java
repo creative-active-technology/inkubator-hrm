@@ -47,6 +47,8 @@ public class LoanSchemaSearchParameter extends SearchParameter{
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("maxNominal")&& getParameter()!=null) {
                 maxNominal = new BigDecimal(getParameter());
+            }else{
+                maxNominal=null;
             }
         }
         return maxNominal;
