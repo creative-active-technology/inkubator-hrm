@@ -13,6 +13,7 @@ import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GenderDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.dao.UnregDepartementDao;
 import com.inkubator.hrm.dao.UnregEmpReligionDao;
 import com.inkubator.hrm.dao.UnregEmpTypeDao;
@@ -43,6 +44,7 @@ import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +88,8 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
     private GenderDao genderDao;
     @Autowired
     private UnregGenderDao unregGenderDao;
+    @Autowired
+    private TempUnregPayrollDao tempUnregPayrollDao;
     
 
     @Override
@@ -419,7 +423,12 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {
-		return unregSalaryDao.getByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		List<UnregSalary> unregSalaries = unregSalaryDao.getByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		for(UnregSalary unregSalary : unregSalaries){
+			BigDecimal totalPaid = tempUnregPayrollDao.getTotalNominalByUnregSalaryId(unregSalary.getId());
+			unregSalary.setTotalPaid(totalPaid);
+		}
+		return unregSalaries;
 		
 	}
 

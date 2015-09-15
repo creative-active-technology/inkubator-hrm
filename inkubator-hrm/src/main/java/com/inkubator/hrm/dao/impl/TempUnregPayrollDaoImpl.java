@@ -183,4 +183,19 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
     	
 		return hbm.list();
 	}
+	
+	@Override
+	public BigDecimal getTotalNominalByUnregSalaryId(Long unregSalaryId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT SUM(nominal) " +
+    			"FROM TempUnregPayroll " +
+    			"WHERE unregSalary.id = :unregSalaryId ");
+		
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString())
+    			.setParameter("unregSalaryId", unregSalaryId);
+    	
+    	Object result = hbm.uniqueResult();
+    	
+		return result != null ? new BigDecimal(result.toString()) : new BigDecimal(0);
+	}
 }
