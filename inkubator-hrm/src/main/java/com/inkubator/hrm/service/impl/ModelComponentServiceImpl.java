@@ -1,18 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.BenefitGroupDao;
-import com.inkubator.hrm.dao.ModelComponentDao;
-import com.inkubator.hrm.entity.BenefitGroup;
-import com.inkubator.hrm.entity.ModelComponent;
-import com.inkubator.hrm.service.ModelComponentService;
-import com.inkubator.hrm.web.search.ModelComponentSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,6 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.ModelComponentDao;
+import com.inkubator.hrm.entity.ModelComponent;
+import com.inkubator.hrm.service.ModelComponentService;
+import com.inkubator.hrm.web.search.ModelComponentSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -31,8 +30,6 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
 
     @Autowired
     private ModelComponentDao modelComponentDao;
-    @Autowired
-    private BenefitGroupDao benefitGroupDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -211,11 +208,6 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
         if (totalDuplicateName > 0) {
             throw new BussinessException("modelComponent.error_duplicate_modelComponent_name");
         }
-
-        if (modelComponent.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-            BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(modelComponent.getBenefitGroup().getId());
-            modelComponent.setBenefitGroup(benefitGroup);
-        }
         modelComponent.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 
         modelComponent.setCreatedBy(UserInfoUtil.getUserName());
@@ -263,13 +255,7 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
         }
 
         ModelComponent modelComponent = modelComponentDao.getEntiyByPK(b.getId());
-        if (b.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-            BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(b.getBenefitGroup().getId());
-            modelComponent.setBenefitGroup(benefitGroup);
-        }else{
-            modelComponent.setBenefitGroup(null);
-        }
-        
+        System.out.println("bbbbbbbbbbbbbbb");
         modelComponent.setCode(b.getCode());
         modelComponent.setName(b.getName());
         modelComponent.setDescription(b.getDescription());

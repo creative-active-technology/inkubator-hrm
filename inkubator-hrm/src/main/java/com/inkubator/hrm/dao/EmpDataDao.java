@@ -58,7 +58,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public Long getTotalByTaxFreeIsNull();
 
     public Long getTotalKaryawanByJabatanId(Long jabatanId);
-    
+
     public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit);
 
     /**
@@ -156,8 +156,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     /**
      * get list
+     *
      * @param param
-     * @return 
+     * @return
      */
     public List<EmpData> getAllDataByNameOrNik(String param);
 
@@ -207,5 +208,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public List<DepAttendanceRealizationViewModel> getListDepAttendanceByListRangeDepIdAndRangeDate(String rangeDepId, Date dateFrom, Date dateUntill);
 
     public String getIdChildDepRecursiveByDepartmentId(Long idDepartment);
+
+    public List<EmpData> getAllByJabatanAndCompanyAndStatus(long jabataId, String status);
 
 }

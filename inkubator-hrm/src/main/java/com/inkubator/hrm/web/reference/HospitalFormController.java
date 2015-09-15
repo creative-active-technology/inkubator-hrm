@@ -4,7 +4,6 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
-import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.Hospital;
 import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.CityService;
@@ -169,7 +168,7 @@ public class HospitalFormController extends BaseController {
             hospitalModel.setCityId(hospital.getCity().getId());
             hospitalModel.setType(hospital.getType());
             hospitalModel.setPostalCode(hospital.getPostalCode());
-        }else{
+        } else {
             disabledCity = Boolean.TRUE;
             disabledProvince = Boolean.TRUE;
             hospitalModel.setId(null);
@@ -286,16 +285,17 @@ public class HospitalFormController extends BaseController {
         return hospital;
     }
 
-    public void countryChanged(ValueChangeEvent event) {
+    public void countryChanged() {
         try {
 
-            Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
+            Country country = countryService.getEntiyByPK(hospitalModel.getCountryId());
 
-            List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
+            List<Province> listProvinces = provinceService.getByCountryIdWithDetail(hospitalModel.getCountryId());
 
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
-
+                provinces.clear();
+                hospitalModel.setProvinceId(null);
                 FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
@@ -306,7 +306,7 @@ public class HospitalFormController extends BaseController {
                 }
                 MapUtil.sortByValue(provinces);
             }
-            
+
             disabledCity = Boolean.TRUE;
             hospitalModel.setProvinceId(null);
             hospitalModel.setCityId(null);
@@ -317,16 +317,17 @@ public class HospitalFormController extends BaseController {
         }
     }
 
-    public void provinceChanged(ValueChangeEvent event) {
+    public void provinceChanged() {
         try {
 
-            Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
+            Province province = provinceService.getEntiyByPK(hospitalModel.getProvinceId());
 
-            List<City> listCities = cityService.getByProvinceIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
+            List<City> listCities = cityService.getByProvinceIdWithDetail(hospitalModel.getProvinceId());
 
             if (listCities.isEmpty() || listCities == null) {
                 disabledCity = Boolean.TRUE;
-
+                citys.clear();
+                hospitalModel.setProvinceId(null);
                 FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:cityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
@@ -336,7 +337,7 @@ public class HospitalFormController extends BaseController {
                     citys.put(city.getCityName(), city.getId());
                 }
                 MapUtil.sortByValue(citys);
-                
+
                 hospitalModel.setCityId(null);
                 hospitalModel.setPostalCode(null);
             }

@@ -60,8 +60,10 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
+import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RecruitMppApplyService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.MppApplyHistoryViewModel;
 import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
@@ -292,50 +294,14 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
             throw new BussinessException("mpp_recruitment.error_mpp_code_duplicate");
         }
 
-        String result = "error";
-
-        String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-        entity.setCreatedBy(createdBy);
-        entity.setCreatedOn(createdOn);
-        entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
-        ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
-        
-        
-        if(approvalActivity == null){
-        	recruitMppApplyDao.save(entity);
-        	result = "save_without_approval";
-        }else{
-        	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-            JsonArray jsonRecruitMppApplyDetails = (JsonArray) parser.parse(gson.toJson(entity.getRecruitMppApplyDetails()));
-            jsonObject.add("listRecruitMppApplyDetails", jsonRecruitMppApplyDetails);
-    		JsonArray arrayComponents = new JsonArray();
-    		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
-    			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
-    			arrayComponents.add(component);
-    		}
-    		jsonObject.add("listMppDetail", arrayComponents);
-            
-            
-            String jsonPendingData = gson.toJson(jsonObject);
-        	approvalActivity.setPendingData(jsonPendingData);
-        	approvalActivityDao.save(approvalActivity);
-        	
-        	//sending email notification
-            this.sendingApprovalNotification(approvalActivity);
-            result = "success_need_approval";
-        }
-
+        String result = save(entity, listDetailRecruitMppApply, recruitMppApplyFile, Boolean.FALSE);
         return result;
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String updateRecruitMppApplytWithApproval(RecruitMppApply entity, List<RecruitMppApplyDetail> listDetailRecruitMppApply, UploadedFile recruitMppApplyFile, String activityNumber) throws Exception {
-
+    	String result = "error";
         Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUIT_MPP_APPLY);
 
         //If Approval Defintion for MPP Process have not been created, throw Exception
@@ -347,10 +313,11 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         if (isMppCodeDuplicate(entity.getRecruitMppApplyCode(), activityNumber)) {
             throw new BussinessException("mpp_recruitment.error_mpp_code_duplicate");
         }
-
+        
+        // diambil dari urutan pertama, jika di urutan pertama sudah di approve, maka tidak boleh update
         ApprovalActivity selectedApprovalActivity = approvalActivityDao.getEntityByActivityNumberAndSequence(activityNumber, 1);
 
-        if (selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
+        if (selectedApprovalActivity.getApprovalStatus().equals(HRMConstant.APPROVAL_STATUS_APPROVED)) {
             throw new BussinessException("mpp_recruitment.error_activity_already_approved");
         }
 
@@ -362,13 +329,56 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         selectedApprovalActivity.setPendingData(convertToJsonData(entity, recruitMppApplyFile, listDetailRecruitMppApply));
 
-        String result = "error";
-
         approvalActivityDao.update(selectedApprovalActivity);
         result = "success_need_approval";
         return result;
     }
+    
+    private String save(RecruitMppApply entity, List<RecruitMppApplyDetail> listMppDetail, UploadedFile recruitMppApplyFile, Boolean isBypassApprovalChecking) throws Exception {
+    	String result = "error";
 
+        String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+        
+        entity.setCreatedBy(createdBy);
+        entity.setCreatedOn(createdOn);
+        entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
+        ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
+        System.out.println("approvalActivity null : " + (approvalActivity == null));
+        if(approvalActivity == null){
+        	
+             RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
+             entity.setRecruitMppPeriod(recruitMppPeriod);
+
+             entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+             entity.setCreatedOn(createdOn);
+             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
+
+             recruitMppApplyDao.save(entity);
+             for (RecruitMppApplyDetail detail : listMppDetail) {
+                 Jabatan jabatan = jabatanDao.getEntiyByPK(detail.getJabatan().getId());
+                 detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+                 detail.setRecruitMppApply(entity);
+                 detail.setJabatan(jabatan);
+                 detail.setCreatedBy(createdBy);
+                 detail.setCreatedOn(createdOn);
+                 recruitMppApplyDetailDao.save(detail);
+             }
+        	
+        	result = "save_without_approval";
+        }else{
+            approvalActivity.setPendingData(convertToJsonData(entity, recruitMppApplyFile, listMppDetail));
+        	approvalActivityDao.save(approvalActivity);
+        	
+        	//sending email notification
+            this.sendingApprovalNotification(approvalActivity);
+            result = "success_need_approval";
+        }
+
+    	
+    	
+    	return result;
+    }
     private String convertToJsonData(RecruitMppApply entity, UploadedFile recruitMppFile, List<RecruitMppApplyDetail> listMppDetail) throws IOException {
         //saving file uploaded temporary
         String uploadPath = null;
@@ -586,41 +596,10 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
              * berarti langsung insert ke database
              */
             RecruitMppApply entity = this.convertJsonToEntity(appActivity.getPendingData());
-
-            String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-            RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-            entity.setRecruitMppPeriod(recruitMppPeriod);
-
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
-
-            // file attachment was already uploaded at first apply (at method convertToJsonData),
-            //so no need to re-upload the file, just save it into related table
-            List<RecruitMppApplyDetail> listDetail = new ArrayList<>(entity.getRecruitMppApplyDetails());
-            entity = recruitMppApplyDao.saveData(entity);
             
-//            List<RecruitMppApplyDetail> listDetailRecruitMppApply = new ArrayList<RecruitMppApplyDetail>();
-            for (RecruitMppApplyDetail detail : listDetail) {
-                Jabatan jabatan = jabatanDao.getEntiyByPK(detail.getJabatan().getId());
-                detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                detail.setRecruitMppApply(entity);
-                detail.setJabatan(jabatan);
-                detail.setCreatedBy(createdBy);
-                detail.setCreatedOn(createdOn);
-                recruitMppApplyDetailDao.save(detail);
-//                listDetailRecruitMppApply.add(detail);
-            }
-            
-           /* JsonArray arrayComponents = new JsonArray();
-    		for(RecruitMppApplyDetail rmad : listDetailRecruitMppApply){
-    			JsonObject component = (JsonObject) parser.parse(gson.toJson(rmad));
-    			arrayComponents.add(component);
-    		}
-    		jsonObject.add("listJabatan", arrayComponents);*/
+            this.save(entity, new ArrayList<RecruitMppApplyDetail>(entity.getRecruitMppApplyDetails()), null, Boolean.TRUE);
         }
         
         this.sendingApprovalNotification(appActivity);
@@ -632,44 +611,40 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
-            
              /**
              * kalau status akhir sudah di reject dan tidak ada next approval,
              * berarti langsung insert ke database
              */
             RecruitMppApply entity = this.convertJsonToEntity(appActivity.getPendingData());
 
-            String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-            RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-            entity.setRecruitMppPeriod(recruitMppPeriod);
-
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_REJECTED);
+            
+            this.save(entity, new ArrayList<RecruitMppApplyDetail>(entity.getRecruitMppApplyDetails()), null, Boolean.TRUE);
 
-            // file attachment was already uploaded at first apply (at method convertToJsonData),
-            //so no need to re-upload the file, just save it into related table
-            List<RecruitMppApplyDetail> listDetail = new ArrayList<>(entity.getRecruitMppApplyDetails());
-            entity = recruitMppApplyDao.saveData(entity);            
-
-            for (RecruitMppApplyDetail detail : listDetail) {
-                Jabatan jabatan = jabatanDao.getEntiyByPK(detail.getJabatan().getId());
-                detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                detail.setRecruitMppApply(entity);
-                detail.setJabatan(jabatan);
-                detail.setCreatedBy(createdBy);
-                detail.setCreatedOn(createdOn);
-                recruitMppApplyDetailDao.save(detail);
-            }
         }
+        
+        this.sendingApprovalNotification(appActivity);
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void diverted(long approvalActivityId) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	 Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
+         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+             /**
+              * kalau status akhir sudah di approved dan tidak ada next approval,
+              * berarti langsung insert ke database
+              */
+             RecruitMppApply entity = this.convertJsonToEntity(appActivity.getPendingData());
+             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
+             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
+             
+             this.save(entity, new ArrayList<RecruitMppApplyDetail>(entity.getRecruitMppApplyDetails()), null, Boolean.TRUE);
+         }
+         
+         this.sendingApprovalNotification(appActivity);
     }
 
     private RecruitMppApply convertJsonToEntity(String jsonPendingData) {

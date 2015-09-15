@@ -65,8 +65,6 @@ public class ModelComponentViewController extends BaseController {
         this.searchParameter = searchParameter;
     }
 
-    
-
     public LazyDataModel<ModelComponent> getLazyDataModelComponent() {
         if (lazyDataModelComponent == null) {
             lazyDataModelComponent = new ModelComponentLazyDataModel(searchParameter, modelComponentService);
@@ -129,7 +127,7 @@ public class ModelComponentViewController extends BaseController {
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 500);
-        options.put("contentHeight", 500);
+        options.put("contentHeight", 470);
         RequestContext.getCurrentInstance().openDialog("model_component_form", options, params);
     }
 

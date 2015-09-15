@@ -99,6 +99,7 @@ public class ApprovalDefinitionDaoImpl extends IDAOImpl<ApprovalDefinition> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("name", approvalName));
         criteria.add(Restrictions.eq("sequence", 1));
+        criteria.add(Restrictions.eq("isActive", true));// query bagi approval definisi yang active saja
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

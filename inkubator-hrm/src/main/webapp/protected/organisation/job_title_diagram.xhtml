@@ -21,7 +21,7 @@
                         <h:panelGroup layout="block">
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['jabtan.diagram']}" styleClass="header_big" />
-                                 <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['jabtan_view.header2']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -29,11 +29,12 @@
                     <p:growl id="growlJabatan" showDetail="true" showSummary="true" globalOnly="true"/>
                     <h:form id="skema_jabatan_id">
                         <div style="margin-top: 15px;margin-left: 0px;margin-right: 10px;margin-bottom: 15px">
-                            <p:tree id="tree" value="#{jabatanSchemaController.root}" style="width: 100%"
+                            <p:tree id="tree" value="#{jabatanSchemaController.root}" style="width: 100%" selection="#{jabatanSchemaController.selectedNode}" selectionMode="single" onNodeClick="PF('statusDialog').show()"
                                     var="node" orientation="horizontal" dynamic="true" highlight="true">
                                 <!--<div style="margin-right: 10px">-->
+                                <p:ajax event="select" listener="#{jabatanSchemaController.onNodeSelect}" oncomplete="PF('infoListEmpoyee').show()" update=":skema_jabatan_id:empListId"/>
                                 <p:treeNode id="treeNode">  
-                                    <h:outputText value="#{node}" id="lblNode" escape="true"/>  
+                                    <p:outputLabel value="#{node.name}" id="lblNode" escape="true"/>  
                                 </p:treeNode>  
                                 <!--</div>-->
                             </p:tree>
@@ -42,6 +43,35 @@
                         <h:panelGrid columns="1" style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{jabatanSchemaController.doBack()}" styleClass="label_button" immediate="true"/>
                         </h:panelGrid>
+
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                        <p:dialog widgetVar="infoListEmpoyee" header="#{appmsg['employee.list_of_employee']} :" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                                  appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold" id="headerId">
+                          
+                            <div align="center" style="margin-bottom: 7px;margin-top: 7px">
+                                    <p:dataTable value="#{jabatanSchemaController.listEmp}" var="emp" rowIndexVar="no" id="empListId"
+                                                 >
+                                        <p:column style="text-align: center;width: 25px;max-width: 25px">
+                                            <f:facet name="header">  
+                                                <h:outputText value="No." />
+                                            </f:facet>
+                                            <h:outputLabel value="#{no+1}." />
+                                        </p:column>
+                                        <p:column > 
+                                            <f:facet name="header">  
+                                                <h:outputText value="#{appmsg['global.name']}" />
+                                            </f:facet>
+                                            <p:outputLabel value="#{emp.bioData.firstName} #{emp.bioData.lastName}" />
+                                        </p:column> 
+                                    </p:dataTable>
+                                </div>
+                               
+                                
+
+                           
+                        </p:dialog>
                     </h:form>
                 </div>
             </ui:define>

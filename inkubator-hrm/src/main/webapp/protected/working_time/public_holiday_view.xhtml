@@ -72,14 +72,14 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_leave']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{publicHolidayData.leave.name}"/>
+                                <h:outputLabel value= "#{publicHolidayData.code} - #{publicHolidayData.leave.name}"/>
                             </p:column> 
-                            <p:column sortBy="#{publicHolidayData.code}" style="width: 15%" >
+<!--                            <p:column sortBy="#{publicHolidayData.code}" style="width: 15%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayData.code}"/>
-                            </p:column> 
+                            </p:column> -->
                             <p:column sortBy="#{publicHolidayData.startDate}"  style="width: 25%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_start']}"/>
