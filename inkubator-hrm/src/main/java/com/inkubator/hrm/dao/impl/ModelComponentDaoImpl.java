@@ -59,7 +59,6 @@ public class ModelComponentDaoImpl extends IDAOImpl<ModelComponent> implements M
     public ModelComponent getEntityByPKWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("benefitGroup", FetchMode.JOIN);
         return (ModelComponent) criteria.uniqueResult();
     }
 

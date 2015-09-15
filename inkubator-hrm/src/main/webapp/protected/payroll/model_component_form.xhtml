@@ -80,7 +80,7 @@
                             <p:column  style="width: 70%">
 
                                 <p:selectOneMenu id="specificId" value="#{modelComponentFormController.modelComponentModel.spesific}" style="width: 150px;margin-right: 3px" 
-                                                 required="true" requiredMessage="#{appmsg['modelComponent.modelComponent_specific_should_not_be_empty']}" valueChangeListener="#{modelComponentFormController.specificChanged}" >
+                                                 required="true" requiredMessage="#{appmsg['modelComponent.modelComponent_specific_should_not_be_empty']}" >
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_basic']}" itemValue="0"/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_ceil']}" itemValue="1"/>
@@ -91,7 +91,6 @@
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_reimbursement']}" itemValue="6"/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_benefit']}" itemValue="7"/>
                                     <f:selectItem itemLabel="#{appmsg['modelComponent.modelComponent_take_home_pay']}" itemValue="100"/>
-                                    <p:ajax update="benefitId" event="change" />
                                 </p:selectOneMenu>
 
                             </p:column>
@@ -99,28 +98,6 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="specificId"/>
-                            </p:column>
-                        </p:row>    
-                         <p:row>
-                            <p:column style="width: 39%">
-                                <p:outputLabel for="benefitId" value="#{appmsg['modelComponent.modelComponent_benefit_reference']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="benefitId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 60%">
-
-                                <p:selectOneMenu id="benefitId" value="#{modelComponentFormController.modelComponentModel.benefitGroupId}" style="width: 150px;margin-right: 3px" 
-                                                 required="true" disabled="#{modelComponentFormController.disabledBenefit}">
-                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{modelComponentFormController.benefits}"/>
-                                </p:selectOneMenu>
-
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="benefitId"/>
                             </p:column>
                         </p:row>   
                         <p:row>

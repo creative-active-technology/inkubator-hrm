@@ -3,12 +3,10 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +18,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="model_component"
-    ,catalog="hrm_payroll_backup"
+    ,catalog="hrm"
     , uniqueConstraints = {@UniqueConstraint(columnNames="code"), @UniqueConstraint(columnNames="name")} 
 )
 public class ModelComponent  implements java.io.Serializable {
@@ -28,7 +26,6 @@ public class ModelComponent  implements java.io.Serializable {
 
      private long id;
      private Integer version;
-     private BenefitGroup benefitGroup;
      private String createdBy;
      private Date createdOn;
      private String description;
@@ -46,9 +43,8 @@ public class ModelComponent  implements java.io.Serializable {
     public ModelComponent(long id) {
         this.id = id;
     }
-    public ModelComponent(long id, BenefitGroup benefitGroup, String createdBy, Date createdOn, String description, String code, String name, String updatedBy, Date updatedOn, Integer spesific) {
+    public ModelComponent(long id, String createdBy, Date createdOn, String description, String code, String name, String updatedBy, Date updatedOn, Integer spesific) {
        this.id = id;
-       this.benefitGroup = benefitGroup;
        this.createdBy = createdBy;
        this.createdOn = createdOn;
        this.description = description;
@@ -80,17 +76,6 @@ public class ModelComponent  implements java.io.Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="benefit_group_id")
-    public BenefitGroup getBenefitGroup() {
-        return this.benefitGroup;
-    }
-    
-    public void setBenefitGroup(BenefitGroup benefitGroup) {
-        this.benefitGroup = benefitGroup;
-    }
-
     
     @Column(name="created_by", length=45)
     public String getCreatedBy() {
