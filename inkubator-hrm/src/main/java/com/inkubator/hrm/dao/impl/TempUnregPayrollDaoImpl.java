@@ -162,7 +162,9 @@ public class TempUnregPayrollDaoImpl extends IDAOImpl<TempUnregPayroll> implemen
     			.setParameter("unregSalaryId", unregSalaryId)
     			.setParameter("paySalaryComponentId", paySalaryComponentId);
     	
-		return new BigDecimal(hbm.uniqueResult().toString());
+    	Object result = hbm.uniqueResult();
+    	
+		return result != null ? new BigDecimal(result.toString()) : new BigDecimal(0);
 	}
 
 	@Override
