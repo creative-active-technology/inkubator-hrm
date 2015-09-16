@@ -32,7 +32,7 @@
                             <p:row>
                                 <div align="left">
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['empCandidateSearch.candidate_position']}" style="font-weight: bold"/>
+                                        <p:outputLabel  value="#{appmsg['empCandidateSearch.candidate_position']}" style="font-weight: bold" for="jabatanId"/>
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:pickList value="#{searchEmployeeCandidateModel.dualListModelJabatan}" var="jabatan" itemValue="#{jabatan}" converter="jabatanConverter" id="jabatanId"
@@ -49,16 +49,18 @@
                                     <p:outputLabel for="fromWp" value="#{appmsg['empCandidateSearch.working_period']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:spinner id="fromWp" value="#{searchEmployeeCandidateModel.workingPeriodFrom}" min="0" max="100" required="true" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    <p:spinner id="fromWp" value="#{searchEmployeeCandidateModel.workingPeriodFrom}" min="0" max="100" required="false" size="2" 
+                                           validatorMessage="#{appmsg['searchEmployeeCandidate.option_min_one_until_one_hundred']}">
                                         <f:validateLongRange minimum="1" maximum="100"/>
                                     </p:spinner>
                                     &nbsp;#{appmsg['global.until']}&nbsp;
-                                        <p:spinner id="untilWp" value="#{searchEmployeeCandidateModel.workingPeriodEnd}" min="0" max="100" required="true" size="2" 
-                                           validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                        <p:spinner id="untilWp" value="#{searchEmployeeCandidateModel.workingPeriodEnd}" min="0" max="100" required="false" size="2" 
+                                           validatorMessage="#{appmsg['searchEmployeeCandidate.option_min_one_until_one_hundred']}">
                                         <f:validateLongRange minimum="1" maximum="100"/>
                                         </p:spinner>
                                    &nbsp; #{appmsg['global.year']} &nbsp;
+                                   <p:message for="fromWp" />
+                                   <p:message for="untilWp" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -68,15 +70,18 @@
                                     </p:column>
                                     <p:column style="text-align: left;" colspan="2">
                                         <p:spinner id="from" value="#{searchEmployeeCandidateModel.ageFrom}" min="0" max="100" required="false" size="2" 
-                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                                   validatorMessage="#{appmsg['searchEmployeeCandidate.option_min_one_until_fifty_five']}">
                                             <f:validateLongRange minimum="17" maximum="55"/>
                                         </p:spinner>
+                                        
                                         &nbsp;#{appmsg['global.until']}&nbsp;
                                         <p:spinner id="until" value="#{searchEmployeeCandidateModel.ageUntil}" min="0" max="100" required="false" size="2" 
-                                                   validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                                   validatorMessage="#{appmsg['searchEmployeeCandidate.option_min_one_until_fifty_five']}">
                                             <f:validateLongRange minimum="17" maximum="55"/>
                                         </p:spinner>
                                        &nbsp; #{appmsg['global.year']} &nbsp;
+                                       <p:message for="from" />
+                                   	   <p:message for="until" />
                                     </p:column>
                                 </div>
                             </p:row>

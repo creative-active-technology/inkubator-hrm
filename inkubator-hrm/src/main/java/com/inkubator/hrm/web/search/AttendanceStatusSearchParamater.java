@@ -21,6 +21,8 @@ public class AttendanceStatusSearchParamater extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("statusCode")) {
                 codeStatus = getParameter();
+            }else{
+                codeStatus=null;
             }
         }
         return codeStatus;
@@ -34,6 +36,8 @@ public class AttendanceStatusSearchParamater extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("statusName")) {
                 statusName = getParameter();
+            }else{
+                statusName=null;
             }
         }
         return statusName;
