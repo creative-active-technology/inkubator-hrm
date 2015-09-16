@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.service.BenefitGroupRateService;
 import com.inkubator.hrm.service.BenefitGroupService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -44,7 +45,7 @@ public class MppApplicationHistoryDetailController extends BaseController {
     private RecruitMppApplyDetail selected;
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
     private RecruitMppApplyDetailService recruitMppApplyDetailService;
-    private List<RecruitMppApplyDetail> listMppApplyDetailInSelectedPeriod;
+    private List<RecruitMppApplyDetailViewModel> listMppDetailModelPerMonth;
     private RecruitMppApplyDetail selectedDataList;
     
     @PostConstruct
@@ -54,7 +55,7 @@ public class MppApplicationHistoryDetailController extends BaseController {
             super.initialization();
             String recruitMppApplyDetailId = FacesUtil.getRequestParameter("execution");
             selected = recruitMppApplyDetailService.getEntityWithDetail(Long.parseLong(recruitMppApplyDetailId.substring(1)));
-            listMppApplyDetailInSelectedPeriod = new ArrayList<RecruitMppApplyDetail>();
+            listMppDetailModelPerMonth = recruitMppApplyDetailService.getListPerMonthByMppPeriodIdAndJabatanId(selected.getRecruitMppApply().getRecruitMppPeriod().getId(), selected.getJabatan().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -140,14 +141,14 @@ public class MppApplicationHistoryDetailController extends BaseController {
 		this.recruitMppApplyDetailService = recruitMppApplyDetailService;
 	}
 
-	public List<RecruitMppApplyDetail> getListMppApplyDetailInSelectedPeriod() {
-		return listMppApplyDetailInSelectedPeriod;
+	public List<RecruitMppApplyDetailViewModel> getListMppDetailModelPerMonth() {
+		return listMppDetailModelPerMonth;
 	}
 
-	public void setListMppApplyDetailInSelectedPeriod(
-			List<RecruitMppApplyDetail> listMppApplyDetailInSelectedPeriod) {
-		this.listMppApplyDetailInSelectedPeriod = listMppApplyDetailInSelectedPeriod;
+	public void setListMppDetailModelPerMonth(List<RecruitMppApplyDetailViewModel> listMppDetailModelPerMonth) {
+		this.listMppDetailModelPerMonth = listMppDetailModelPerMonth;
 	}
-    
+
+	
     
 }

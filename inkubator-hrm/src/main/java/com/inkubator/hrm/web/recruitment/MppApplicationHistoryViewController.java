@@ -8,6 +8,7 @@ package com.inkubator.hrm.web.recruitment;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.web.lazymodel.RecruitMppApplyDetailLazyDataModel;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -30,8 +31,8 @@ public class MppApplicationHistoryViewController extends BaseController {
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
     private RecruitMppApplyDetailService recruitMppApplyDetailService;
     private RecruitMppApplyDetailSearchParameter searchParameter;
-    private LazyDataModel<RecruitMppApplyDetail> lazyDataModel;
-    private RecruitMppApplyDetail selected;
+    private LazyDataModel<RecruitMppApplyDetailViewModel> lazyDataModel;
+    private RecruitMppApplyDetailViewModel selected;
 
     @PostConstruct
     @Override
@@ -70,22 +71,22 @@ public class MppApplicationHistoryViewController extends BaseController {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<RecruitMppApplyDetail> getLazyDataModel() {
+    public LazyDataModel<RecruitMppApplyDetailViewModel> getLazyDataModel() {
         if (lazyDataModel == null) {
             lazyDataModel = new RecruitMppApplyDetailLazyDataModel(searchParameter, recruitMppApplyDetailService);
         }
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<RecruitMppApplyDetail> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<RecruitMppApplyDetailViewModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public RecruitMppApplyDetail getSelected() {
+    public RecruitMppApplyDetailViewModel getSelected() {
         return selected;
     }
 
-    public void setSelected(RecruitMppApplyDetail selected) {
+    public void setSelected(RecruitMppApplyDetailViewModel selected) {
         this.selected = selected;
     }
 

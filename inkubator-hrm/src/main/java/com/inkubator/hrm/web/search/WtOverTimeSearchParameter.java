@@ -22,6 +22,9 @@ public class WtOverTimeSearchParameter extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("overTimecode")) {
                 overTimecode = getParameter();
+            }else{
+                overTimecode=null;
+                
             }
         }
         return overTimecode;
@@ -35,6 +38,8 @@ public class WtOverTimeSearchParameter extends SearchParameter{
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("overTimeName")) {
                 overTimeName = getParameter();
+            }else{
+                overTimeName=null;
             }
         }
         return overTimeName;
@@ -48,6 +53,8 @@ public class WtOverTimeSearchParameter extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("minTime")&& getParameter()!=null) {
                 minTime = Double.parseDouble(getParameter());
+            }else{
+                minTime=null;
             }
         }
         return minTime;
@@ -61,6 +68,8 @@ public class WtOverTimeSearchParameter extends SearchParameter{
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("maxTime")&& getParameter()!=null) {
                 maxTime = Double.parseDouble(getParameter());
+            }else{
+                maxTime=null;
             }
         }
         return maxTime;

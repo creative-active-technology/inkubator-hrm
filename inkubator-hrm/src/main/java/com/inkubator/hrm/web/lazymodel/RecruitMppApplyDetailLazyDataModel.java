@@ -5,8 +5,8 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
-import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 
 import java.io.Serializable;
@@ -23,11 +23,11 @@ import org.primefaces.model.SortOrder;
  *
  * @author Ahmad Mudzakkir Amal
  */
-public class RecruitMppApplyDetailLazyDataModel extends LazyDataModel<RecruitMppApplyDetail> implements Serializable{
+public class RecruitMppApplyDetailLazyDataModel extends LazyDataModel<RecruitMppApplyDetailViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(RecruitMppApplyDetailLazyDataModel.class);
     private final RecruitMppApplyDetailSearchParameter searchParameter;
     private final RecruitMppApplyDetailService service;
-    private List<RecruitMppApplyDetail> listData = new ArrayList<>();
+    private List<RecruitMppApplyDetailViewModel> listData = new ArrayList<>();
     private Integer jumlahData;
 
     public RecruitMppApplyDetailLazyDataModel(RecruitMppApplyDetailSearchParameter searchParameter, RecruitMppApplyDetailService service) {
@@ -36,7 +36,7 @@ public class RecruitMppApplyDetailLazyDataModel extends LazyDataModel<RecruitMpp
     }
     
     @Override
-    public List<RecruitMppApplyDetail> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<RecruitMppApplyDetailViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
             try {
                 Order order = null;
@@ -58,15 +58,15 @@ public class RecruitMppApplyDetailLazyDataModel extends LazyDataModel<RecruitMpp
     }
     
     @Override
-    public Object getRowKey(RecruitMppApplyDetail recruitMppApplyDetail) {
-        return recruitMppApplyDetail.getId();
+    public Object getRowKey(RecruitMppApplyDetailViewModel recruitMppApplyDetailViewModel) {
+        return recruitMppApplyDetailViewModel.getJabatanId();
     }
 
     @Override
-    public RecruitMppApplyDetail getRowData(String id) {
-        for (RecruitMppApplyDetail recruitMppApplyDetail : listData) {
-            if (id.equals(String.valueOf(recruitMppApplyDetail.getId()))) {
-                return recruitMppApplyDetail;
+    public RecruitMppApplyDetailViewModel getRowData(String id) {
+        for (RecruitMppApplyDetailViewModel recruitMppApplyDetailViewModel : listData) {
+            if (id.equals(String.valueOf(recruitMppApplyDetailViewModel.getId()))) {
+                return recruitMppApplyDetailViewModel;
             }
         }
         return null;
