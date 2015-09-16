@@ -1,6 +1,7 @@
 package com.inkubator.hrm.entity;
 // Generated Dec 24, 2014 8:49:26 AM by Hibernate Tools 4.3.1
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +48,11 @@ public class UnregSalary implements java.io.Serializable {
     private Set<UnregEmpReligion> unregEmpReligions = new HashSet<UnregEmpReligion>(0);
     private Set<TempUnregPayrollEmpPajak> tempUnregPayrollEmpPajaks = new HashSet<TempUnregPayrollEmpPajak>(0);
     private Set<TempUnregPayroll> tempUnregPayrolls = new HashSet<TempUnregPayroll>(0);
+    
+    
+    //transient
     private Integer totalUnregPayComponents;
+    private BigDecimal totalPaid;
 
     public UnregSalary() {
     }
@@ -271,5 +276,16 @@ public class UnregSalary implements java.io.Serializable {
 	public void setTotalUnregPayComponents(Integer totalUnregPayComponents) {
 		this.totalUnregPayComponents = totalUnregPayComponents;
 	}
+
+	@Transient
+	public BigDecimal getTotalPaid() {
+		return totalPaid;
+	}
+
+	public void setTotalPaid(BigDecimal totalPaid) {
+		this.totalPaid = totalPaid;
+	}
+	
+	
     
 }

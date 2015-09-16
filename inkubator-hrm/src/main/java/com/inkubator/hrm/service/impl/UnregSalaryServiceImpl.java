@@ -8,11 +8,14 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GenderDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.dao.UnregDepartementDao;
 import com.inkubator.hrm.dao.UnregEmpReligionDao;
 import com.inkubator.hrm.dao.UnregEmpTypeDao;
@@ -24,6 +27,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.Gender;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.entity.UnregDepartement;
 import com.inkubator.hrm.entity.UnregDepartementId;
@@ -43,6 +47,7 @@ import com.inkubator.hrm.web.model.UnregSalaryViewModel;
 import com.inkubator.hrm.web.search.UnregSalarySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +91,10 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
     private GenderDao genderDao;
     @Autowired
     private UnregGenderDao unregGenderDao;
+    @Autowired
+    private TempUnregPayrollDao tempUnregPayrollDao;
+    @Autowired
+    private PaySalaryComponentDao paySalaryComponentDao ;
     
 
     @Override
@@ -419,7 +428,13 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<UnregSalary> getByParamBySalaryCalculation(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {
-		return unregSalaryDao.getByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		PaySalaryComponent takeHomePay = paySalaryComponentDao.getEntityBySpecificModelComponent(HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
+		List<UnregSalary> unregSalaries = unregSalaryDao.getByParamBySalaryCalculation(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		for(UnregSalary unregSalary : unregSalaries){
+			BigDecimal totalPaid = tempUnregPayrollDao.getTotalNominalByUnregSalaryIdAndPaySalaryCompId(unregSalary.getId(), takeHomePay.getId());
+			unregSalary.setTotalPaid(totalPaid);
+		}
+		return unregSalaries;
 		
 	}
 
