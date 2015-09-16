@@ -36,9 +36,11 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.BenefitGroupDao;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
+import com.inkubator.hrm.dao.LoanNewTypeDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
@@ -47,11 +49,14 @@ import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.dao.RmbsApplicationDao;
+import com.inkubator.hrm.dao.RmbsTypeDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.BenefitGroup;
 import com.inkubator.hrm.entity.BenefitGroupRate;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
@@ -60,6 +65,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.entity.RmbsApplication;
+import com.inkubator.hrm.entity.RmbsType;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
@@ -103,6 +109,12 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private RmbsApplicationDao rmbsApplicationDao;
     @Autowired
     private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    @Autowired
+    private LoanNewTypeDao loanNewTypeDao;
+    @Autowired
+    private RmbsTypeDao rmbsTypeDao;
+    @Autowired
+    private BenefitGroupDao benefitGroupDao;
 
     @Override
     public PayTempKalkulasi getEntiyByPK(String id) throws Exception {
@@ -517,8 +529,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     LOGGER.info("Save By Basic Salary " + (((timeTmb / 30) < 1) ? "Not Full" : "Full") + ", nominal : " + nominal);
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	LoanNewType loanType = loanNewTypeDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(loanType == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
                     List<LoanNewApplicationInstallment> installments = loanNewApplicationInstallmentDao.getAllDataDisbursedByEmpDataIdAndLoanTypeIdAndPeriodDate(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
+                            empData.getId(), loanType.getId(), startPeriodDate, endPeriodDate);
                     for (LoanNewApplicationInstallment installment : installments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -543,8 +561,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
-                    List<RmbsApplication> reimbursments = rmbsApplicationDao.getAllDataDisbursedByEmpDataIdAndRmbsTypeIdAndPeriodDate(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	RmbsType rmbsType = rmbsTypeDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(rmbsType == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
+                	List<RmbsApplication> reimbursments = rmbsApplicationDao.getAllDataDisbursedByEmpDataIdAndRmbsTypeIdAndPeriodDate(
+                            empData.getId(), rmbsType.getId(), startPeriodDate, endPeriodDate);
                     for (RmbsApplication reimbursment : reimbursments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -592,25 +616,34 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-                    BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId((long) paySalaryComponent.getModelReffernsil(), empData.getGolonganJabatan().getId());
-                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
-                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                    kalkulasi.setEmpData(empData);
-                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
-                    //nominal untuk benefit dikali nilai dari measurement                        
-                    BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
-                    kalkulasi.setNominal(nominal);
-
-                    //set detail benefit
-                    kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
-                    
-                    kalkulasi.setCreatedBy(createdBy);
-                    kalkulasi.setCreatedOn(createdOn);
-                    datas.add(kalkulasi);
-
-                    totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
-                    LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(benefitGroup == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
+                	//cek apakah tunjangan yg didapatkan sesuai dengan hak dari golonganJabatan karyawan
+                	BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId(benefitGroup.getId(), empData.getGolonganJabatan().getId());
+                	if(benefitGroupRate != null) {
+	                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+	                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+	                    kalkulasi.setEmpData(empData);
+	                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
+	                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+	                    //nominal untuk benefit dikali nilai dari measurement                        
+	                    BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
+	                    kalkulasi.setNominal(nominal);
+	
+	                    //set detail benefit
+	                    kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
+	                    
+	                    kalkulasi.setCreatedBy(createdBy);
+	                    kalkulasi.setCreatedOn(createdOn);
+	                    datas.add(kalkulasi);
+	
+	                    totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
+	                    LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
+                	}
                 }
             }
 
