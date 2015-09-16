@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
 import java.util.Date;
 import java.util.List;
@@ -89,26 +90,25 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
 
 	@Override
 	public List<RecruitMppApplyDetailViewModel> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter,	int firstResult, int maxResults, Order order) {
-		
+		System.out.println("property order : " + order.getPropertyName());
 		final StringBuilder queryString = new StringBuilder("SELECT detail.id AS id, jabatan.code AS jabatanKode, jabatan.name AS jabatanName,");
         queryString.append(" jabatan.id AS jabatanId, period.periodeStart AS periodeStart, period.periodeEnd AS periodeEnd,");
         queryString.append(" SUM(detail.recruitPlan) AS mpp FROM RecruitMppApplyDetail detail ");
         queryString.append(" INNER JOIN detail.recruitMppApply recruitMppApply ");
         queryString.append(" INNER JOIN detail.jabatan jabatan ");
         queryString.append(" INNER JOIN recruitMppApply.recruitMppPeriod period  ");
-        //queryString.append(doSearchByParam(searchParameter));
+        queryString.append(doSearchByParam(searchParameter));
         queryString.append(" GROUP BY period.id, jabatan.code ");
+        queryString.append(" ORDER BY  " + getRealNameOfOrderField(order));
         
         Query hbm = getCurrentSession().createQuery(queryString.toString());
-                /*.setParameter("jabatanCode", searchParameter.getJabatanCode())
-                .setParameter("jabatanCode", searchParameter.getJabatanName());*/
+        hbm = this.setValueQueryRecruitMppApplyDetailByParam(hbm, searchParameter);
         
         return hbm.setMaxResults(maxResults)
                 .setFirstResult(firstResult)
                 .setResultTransformer(Transformers.aliasToBean(RecruitMppApplyDetailViewModel.class))
                 .list();
         
-      
 	}
 
 	@Override
@@ -116,14 +116,16 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
 		
 		final StringBuilder queryString = new StringBuilder("SELECT COUNT(*) ");
         queryString.append(" FROM RecruitMppApplyDetail detail ");
-        queryString.append(" INNER JOIN detail.recruitMppApply recruitMppApply ");
-        queryString.append(" INNER JOIN detail.jabatan jabatan ");
-        queryString.append(" INNER JOIN recruitMppApply.recruitMppPeriod period  ");
-        //queryString.append(doSearchByParam(searchParameter));
-        queryString.append(" GROUP BY period.id, jabatan.code ");
+        queryString.append(" INNER JOIN detail.recruitMppApply  recruitMppApply ");
+        queryString.append(" INNER JOIN detail.jabatan  jabatan ");
+        queryString.append(" INNER JOIN recruitMppApply.recruitMppPeriod   period  ");
+        queryString.append(doSearchByParam(searchParameter));
         
         Query hbm = getCurrentSession().createQuery(queryString.toString());
-        return Long.valueOf(hbm.uniqueResult().toString());
+        hbm = this.setValueQueryRecruitMppApplyDetailByParam(hbm, searchParameter);
+        
+        Long result = (Long) hbm.list().get(0);
+        return result == null ? 0 : result;
 	}
 	
 	private String doSearchByParam( RecruitMppApplyDetailSearchParameter searchParameter) {
@@ -132,25 +134,38 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         
         if (searchParameter.getJabatanCode() != null) {
         	stringBuffer.append(" WHERE jabatan.code LIKE :jabatanCode ");
-            //criteria.add(Restrictions.like("jabatan.code", searchParameter.getJabatanCode(), MatchMode.START));
         }
 
         if (searchParameter.getJabatanName() != null) {
         	stringBuffer.append(" WHERE jabatan.name LIKE :jabatanName ");
-            //criteria.add(Restrictions.like("jabatan.name", searchParameter.getJabatanName(), MatchMode.ANYWHERE));
         }
 
-       /* if (searchParameter.getPeriode() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-//            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
-//            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
-//            criteria.add(disjunction);
-            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
-        }*/
-       
         return stringBuffer.toString();
     }
-
+	
+	private Query setValueQueryRecruitMppApplyDetailByParam(Query hbm, RecruitMppApplyDetailSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "jabatanCode")){
+    			hbm.setParameter("jabatanCode", "%" + parameter.getJabatanCode() + "%");
+    		} else if(StringUtils.equals(param, "jabatanName")){
+    			hbm.setParameter("jabatanName", "%" + parameter.getJabatanName() + "%");
+    		}
+    	}    	
+    	return hbm;
+    }
+	
+	private String getRealNameOfOrderField(Order order){
+		String realNameField = order.getPropertyName();
+		if(StringUtils.equals(order.getPropertyName(), "jabatanKode")){
+			realNameField = "jabatan.code";
+		}else if(StringUtils.equals(order.getPropertyName(), "jabatanName")){
+			realNameField = "jabatan.name";
+		}else if(StringUtils.equals(order.getPropertyName(), "periodeStart")){
+			realNameField = "period.periodeStart";
+		}
+		
+		return realNameField + (order.isAscending() ? " ASC" : " DESC");
+	}
 	@Override
 	public RecruitMppApplyDetail getEntityWithDetail(Long idRecruitMppApplyDetailId) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

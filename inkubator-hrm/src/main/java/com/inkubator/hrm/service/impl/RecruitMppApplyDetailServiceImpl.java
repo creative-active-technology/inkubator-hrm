@@ -267,9 +267,12 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 		Date startPeriod = recruitMppPeriod.getPeriodeStart();
 		Date endPeriod = recruitMppPeriod.getPeriodeEnd();
 		
-		//inisialiasi calendar dengan startPeriod dari selectedMppPeriod
+		//inisialiasi calendar dengan startPeriod dan endPeriod dari selectedMppPeriod
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(startPeriod);
+		
+		Calendar calendarEndDate = Calendar.getInstance();
+		calendarEndDate.setTime(endPeriod);
 		
 		do {
 			
@@ -281,6 +284,7 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			Date endDateInSelectedMonth = calendar.getTime();
 			
+			
 			RecruitMppApplyDetailViewModel model = generateMppDetailModelPerMonth(startDateInSelectedMonth, endDateInSelectedMonth, jabatanId);
 			model.setPeriodeStart(startDateInSelectedMonth);
 			model.setPeriodeEnd(endDateInSelectedMonth);
@@ -290,7 +294,8 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 			//Lompat ke bulan berikutnya
 			calendar.add(Calendar.MONTH, 1);
 			
-		}while(calendar.before(endPeriod));
+			
+		}while(calendar.before(calendarEndDate));
 		
 		
 		return listRecruitMppApplyDetailViewModel;
