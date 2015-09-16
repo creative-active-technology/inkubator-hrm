@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
 *
@@ -15,8 +16,10 @@ public class RecruitMppApplyDetailViewModel implements Serializable {
 	private Long recruitMppApplyId;
 	private Long mppPeriodId;
 	private Integer actual;
-	private Integer mpp;
+	private Long mpp;
 	private Integer difference;
+	private Date periodeStart;
+	private Date periodeEnd;
 	
 	public Long getId() {
 		return id;
@@ -60,10 +63,10 @@ public class RecruitMppApplyDetailViewModel implements Serializable {
 	public void setActual(Integer actual) {
 		this.actual = actual;
 	}
-	public Integer getMpp() {
+	public Long getMpp() {
 		return mpp;
 	}
-	public void setMpp(Integer mpp) {
+	public void setMpp(Long mpp) {
 		this.mpp = mpp;
 	}
 	public Integer getDifference() {
@@ -72,7 +75,17 @@ public class RecruitMppApplyDetailViewModel implements Serializable {
 	public void setDifference(Integer difference) {
 		this.difference = difference;
 	}
-	
-	
+	public Date getPeriodeStart() {
+		return periodeStart;
+	}
+	public void setPeriodeStart(Date periodeStart) {
+		this.periodeStart = periodeStart;
+	}
+	public Date getPeriodeEnd() {
+		return periodeEnd;
+	}
+	public void setPeriodeEnd(Date periodeEnd) {
+		this.periodeEnd = periodeEnd;
+	}
 	
 }
