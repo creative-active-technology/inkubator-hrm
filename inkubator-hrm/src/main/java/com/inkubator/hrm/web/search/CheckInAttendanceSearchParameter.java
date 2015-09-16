@@ -4,6 +4,8 @@
  */
 package com.inkubator.hrm.web.search;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.inkubator.webcore.util.SearchParameter;
 
 /**
@@ -13,9 +15,14 @@ import com.inkubator.webcore.util.SearchParameter;
 public class CheckInAttendanceSearchParameter extends SearchParameter{
      private String empData;
      private String ipAddress;
-     private Integer status;
+     private String status;
 
     public String getEmpData() {
+    	if(StringUtils.equalsIgnoreCase(getKeyParam(), "empData")){
+    		empData = getParameter();
+        } else {
+        	empData = null;
+        }
         return empData;
     }
 
@@ -24,6 +31,11 @@ public class CheckInAttendanceSearchParameter extends SearchParameter{
     }
 
     public String getIpAddress() {
+    	if(StringUtils.equalsIgnoreCase(getKeyParam(), "ipAddress")){
+    		ipAddress = getParameter();
+        } else {
+        	ipAddress = null;
+        }
         return ipAddress;
     }
 
@@ -31,11 +43,16 @@ public class CheckInAttendanceSearchParameter extends SearchParameter{
         this.ipAddress = ipAddress;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
+    	if(StringUtils.equalsIgnoreCase(getKeyParam(), "status")){
+    		status = getParameter();
+        } else {
+        	status = null;
+        }
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
      

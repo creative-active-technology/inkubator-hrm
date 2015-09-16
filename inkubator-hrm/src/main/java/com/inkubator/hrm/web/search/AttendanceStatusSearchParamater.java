@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
  * @author Deni Husni FR
  */
-public class AttendanceStatusSearchParamater extends SearchParameter{
-    
+public class AttendanceStatusSearchParamater extends SearchParameter {
+
     private String codeStatus;
     private String statusName;
 
     public String getCodeStatus() {
-         if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("statusCode")) {
-                codeStatus = getParameter();
-            }
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "statusCode")) {
+            codeStatus = getParameter();
+        } else {
+            codeStatus = null;
         }
         return codeStatus;
     }
@@ -31,17 +31,17 @@ public class AttendanceStatusSearchParamater extends SearchParameter{
     }
 
     public String getStatusName() {
-         if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("statusName")) {
-                statusName = getParameter();
-            }
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "statusName")) {
+            statusName = getParameter();
+        } else {
+            statusName = null;
         }
+
         return statusName;
     }
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
     }
-    
-    
+
 }

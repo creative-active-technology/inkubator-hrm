@@ -19,24 +19,24 @@ public class LoginHistorySearchParameter extends SearchParameter {
     private String ipAddress;
 
     public String getUserId() {
-    	if(StringUtils.equalsIgnoreCase(getKeyParam(), "userId")){
-    		userId = getParameter();
-		} else {
-			userId = null;
-		}
-    	return userId;
-	}
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "userId")) {
+            userId = getParameter();
+        } else {
+            userId = null;
+        }
+        return userId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public String getIpAddress() {
-		if(StringUtils.equalsIgnoreCase(getKeyParam(), "ipAddress")){
-			ipAddress = getParameter();
-		} else {
-			ipAddress = null;
-		}
+    public String getIpAddress() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "ipAddress")) {
+            ipAddress = getParameter();
+        } else {
+            ipAddress = null;
+        }
         return ipAddress;
     }
 

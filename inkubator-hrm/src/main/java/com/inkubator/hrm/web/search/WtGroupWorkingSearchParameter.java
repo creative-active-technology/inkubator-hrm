@@ -20,6 +20,8 @@ public class WtGroupWorkingSearchParameter extends SearchParameter{
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("kode")) {
                 kode = getParameter();
+            }else{
+                kode=null;
             }
         }
         return kode;
@@ -33,6 +35,8 @@ public class WtGroupWorkingSearchParameter extends SearchParameter{
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("name")) {
                 name = getParameter();
+            }else{
+                name=null;
             }
         }
         return name;

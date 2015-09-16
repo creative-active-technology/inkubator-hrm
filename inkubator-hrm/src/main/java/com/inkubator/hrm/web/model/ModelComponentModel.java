@@ -13,7 +13,6 @@ public class ModelComponentModel implements Serializable {
     private String name;
     private String description;
     private Integer spesific;
-    private Long benefitGroupId;
     private Boolean hasException;
 
     public Long getId() {
@@ -54,15 +53,7 @@ public class ModelComponentModel implements Serializable {
 
     public void setSpesific(Integer spesific) {
         this.spesific = spesific;
-    }        
-
-    public Long getBenefitGroupId() {
-        return benefitGroupId;
-    }
-
-    public void setBenefitGroupId(Long benefitGroupId) {
-        this.benefitGroupId = benefitGroupId;
-    }
+    }    
 
 	public Boolean getHasException() {
 		return hasException;

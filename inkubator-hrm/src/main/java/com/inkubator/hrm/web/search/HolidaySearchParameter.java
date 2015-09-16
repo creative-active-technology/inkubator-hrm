@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.search;
 
 import com.inkubator.webcore.util.SearchParameter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -19,10 +20,10 @@ public class HolidaySearchParameter extends SearchParameter {
     private Boolean isCollective;
 
     public String getReligionName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("religionName")) {
-                religionName = getParameter();
-            }
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "religionName")) {
+            religionName = getParameter();
+        } else {
+            religionName = null;
         }
 
         return religionName;
@@ -33,11 +34,11 @@ public class HolidaySearchParameter extends SearchParameter {
     }
 
     public String getHolidayName() {
-        if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("holidayName")) {
-                holidayName = getParameter();
-            }
 
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "holidayName")) {
+            holidayName = getParameter();
+        } else {
+            holidayName = null;
         }
 
         return holidayName;

@@ -1075,5 +1075,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter) throws Exception {
         return this.empDataDao.getTotalByParamForOnlyEmployeeNotIncludeCompany(searchParameter);
     }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllByJabatanAndCompanyAndStatus(long jabataId, String status) throws Exception {
+         return this.empDataDao.getAllByJabatanAndCompanyAndStatus(jabataId, status);
+    }
 	
 }
