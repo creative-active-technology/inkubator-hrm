@@ -21,6 +21,8 @@ public class HrmUserSearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("userId")) {
                 userName = getParameter();
+            }else{
+                userName=null;
             }
         }
         return userName;
@@ -34,6 +36,8 @@ public class HrmUserSearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("realName")) {
                 realName = getParameter();
+            }else{
+                realName=null;
             }
         }
         return realName;
@@ -47,6 +51,8 @@ public class HrmUserSearchParameter extends SearchParameter {
          if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("roleName")) {
                 roleName = getParameter();
+            }else{
+                roleName=null;
             }
         }
         return roleName;

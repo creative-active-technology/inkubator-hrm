@@ -43,6 +43,10 @@ public class CheckInAttendanceViewController extends BaseController {
     	lazy = null;
     }
     
+    public void doSearch() {
+        lazy = null;
+    }
+    
     public CheckInAttendanceService getService() {
         return service;
     }

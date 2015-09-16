@@ -8,12 +8,16 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.CheckInAttendanceDao;
 import com.inkubator.hrm.entity.CheckInAttendance;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.search.CheckInAttendanceSearchParameter;
+
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
@@ -41,9 +45,8 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
     public List<CheckInAttendance> getByParamWithDetail(CheckInAttendanceSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(searchParameter, criteria);
-        criteria.createAlias("empData.bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         criteria.setFetchMode("empData", FetchMode.JOIN);
-//        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -58,9 +61,17 @@ public class CheckInAttendanceDaoImpl extends IDAOImpl<CheckInAttendance> implem
     }
 
     private void doSearchByParam(CheckInAttendanceSearchParameter searchParameter, Criteria criteria) {
-
         if (searchParameter.getEmpData() != null) {
-            criteria.add(Restrictions.like("empData", searchParameter.getEmpData(), MatchMode.START));
+        	criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        	criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        	Disjunction disjunction = Restrictions.disjunction();
+        	disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+        	disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
+        	criteria.add(disjunction);
+        }
+        
+        if (searchParameter.getIpAddress() != null) {
+        	criteria.add(Restrictions.like("ipAddress", searchParameter.getIpAddress(), MatchMode.ANYWHERE));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

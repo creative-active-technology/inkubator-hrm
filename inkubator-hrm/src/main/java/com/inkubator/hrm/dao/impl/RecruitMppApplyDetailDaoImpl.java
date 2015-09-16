@@ -6,20 +6,26 @@ import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
+import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
 import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -82,38 +88,56 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
 	}
 
 	@Override
-	public List<RecruitMppApplyDetail> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter,	int firstResult, int maxResults, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(searchParameter, criteria);
-        criteria.addOrder(order);
-        criteria.setFetchMode("jabatan", FetchMode.JOIN);
-        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
-        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
-    
-        criteria.setFirstResult(firstResult);
-        criteria.setMaxResults(maxResults);
-        return criteria.list();
+	public List<RecruitMppApplyDetailViewModel> getAllDataByParam(RecruitMppApplyDetailSearchParameter searchParameter,	int firstResult, int maxResults, Order order) {
+		
+		final StringBuilder queryString = new StringBuilder("SELECT detail.id AS id, jabatan.code AS jabatanKode, jabatan.name AS jabatanName,");
+        queryString.append(" jabatan.id AS jabatanId, period.periodeStart AS periodeStart, period.periodeEnd AS periodeEnd,");
+        queryString.append(" SUM(detail.recruitPlan) AS mpp FROM RecruitMppApplyDetail detail ");
+        queryString.append(" INNER JOIN detail.recruitMppApply recruitMppApply ");
+        queryString.append(" INNER JOIN detail.jabatan jabatan ");
+        queryString.append(" INNER JOIN recruitMppApply.recruitMppPeriod period  ");
+        //queryString.append(doSearchByParam(searchParameter));
+        queryString.append(" GROUP BY period.id, jabatan.code ");
+        
+        Query hbm = getCurrentSession().createQuery(queryString.toString());
+                /*.setParameter("jabatanCode", searchParameter.getJabatanCode())
+                .setParameter("jabatanCode", searchParameter.getJabatanName());*/
+        
+        return hbm.setMaxResults(maxResults)
+                .setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(RecruitMppApplyDetailViewModel.class))
+                .list();
+        
+      
 	}
 
 	@Override
 	public Long getTotalDataByParam( RecruitMppApplyDetailSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearchByParam(searchParameter, criteria);
-        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+		final StringBuilder queryString = new StringBuilder("SELECT COUNT(*) ");
+        queryString.append(" FROM RecruitMppApplyDetail detail ");
+        queryString.append(" INNER JOIN detail.recruitMppApply recruitMppApply ");
+        queryString.append(" INNER JOIN detail.jabatan jabatan ");
+        queryString.append(" INNER JOIN recruitMppApply.recruitMppPeriod period  ");
+        //queryString.append(doSearchByParam(searchParameter));
+        queryString.append(" GROUP BY period.id, jabatan.code ");
+        
+        Query hbm = getCurrentSession().createQuery(queryString.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
 	}
 	
-	private void doSearchByParam( RecruitMppApplyDetailSearchParameter searchParameter, Criteria criteria) {
+	private String doSearchByParam( RecruitMppApplyDetailSearchParameter searchParameter) {
 		
-		criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
-        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
-        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+		StringBuffer stringBuffer = new StringBuffer();
         
         if (searchParameter.getJabatanCode() != null) {
-            criteria.add(Restrictions.like("jabatan.code", searchParameter.getJabatanCode(), MatchMode.START));
+        	stringBuffer.append(" WHERE jabatan.code LIKE :jabatanCode ");
+            //criteria.add(Restrictions.like("jabatan.code", searchParameter.getJabatanCode(), MatchMode.START));
         }
 
         if (searchParameter.getJabatanName() != null) {
-            criteria.add(Restrictions.like("jabatan.name", searchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        	stringBuffer.append(" WHERE jabatan.name LIKE :jabatanName ");
+            //criteria.add(Restrictions.like("jabatan.name", searchParameter.getJabatanName(), MatchMode.ANYWHERE));
         }
 
        /* if (searchParameter.getPeriode() != null) {
@@ -124,6 +148,7 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
             criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }*/
        
+        return stringBuffer.toString();
     }
 
 	@Override
@@ -134,6 +159,16 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
         criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
 		return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
+
+	@Override
+	public Long getTotalNumberOfMppByJabatanIdAndDateRange(Long jabatanId, Date startDate, Date endDate) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		 criteria.setFetchMode("jabatan", FetchMode.JOIN);
+		 criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+		 criteria.add(Restrictions.between("recruitMppMonth", startDate, endDate));
+		 Long result = (Long) criteria.setProjection(Projections.sum("recruitPlan")).uniqueResult();
+         return result == null ? 0l : result;
 	}
 
 }
