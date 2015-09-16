@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="reimbursement.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['reimbursment.reimbursment_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['reimbursement.reimbusement_history']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['reimbursement.reimbursement_history_from_reimbursement']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -47,9 +47,9 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Travel_Component_Cost_Rate"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" action="#{reimbursmentViewController.add()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <!--<p:ajax event="dialogReturn" listener="#{reimbursmentViewController.onDialogReturn}"  update="tableId, growlId"/>-->
-                                    </p:commandButton>
+<!--                                    <p:commandButton value="#{appmsg['global.add']}" action="#{reimbursmentViewController.add()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{reimbursmentViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    </p:commandButton>-->
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reimbursmentViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
