@@ -35,13 +35,13 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{loginHistoryController.loginHistorySearchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{checkInAttendanceViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.user_id']}" itemValue="userId"/>
+                                        <f:selectItem itemLabel="#{appmsg['employee.employee_name']}" itemValue="empData"/>
                                         <f:selectItem itemLabel="#{appmsg['loginhistory.ip_address']}" itemValue="ipAddress"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{loginHistoryController.loginHistorySearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loginHistoryController.doSearch()}" update="tableLoginHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{checkInAttendanceViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{checkInAttendanceViewController.doSearch()}" update="tableLoginHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -110,7 +110,7 @@
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{loginHistoryController.lazyDataLoginHistory.rowCount}"/>
+                                <p:outputLabel value="#{checkInAttendanceViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
