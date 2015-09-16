@@ -80,7 +80,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.effective_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{companyPolicyData.effectiveDate}"/>
+                                <h:outputLabel value= "#{companyPolicyData.effectiveDate}">
+                                	<f:convertDateTime pattern ="dd-MMMM-yyyy" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="department.departmentName" style="text-align: center;width: 30%">
                                 <f:facet name="header">  
