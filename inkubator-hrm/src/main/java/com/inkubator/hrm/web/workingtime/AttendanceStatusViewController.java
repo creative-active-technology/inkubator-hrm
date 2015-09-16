@@ -57,6 +57,7 @@ public class AttendanceStatusViewController extends BaseController {
 
     public LazyDataModel<AttendanceStatus> getAttendanceStatusesLazyDataModel() {
         if (attendanceStatusesLazyDataModel == null) {
+            System.out.println(" karena nullll");
             attendanceStatusesLazyDataModel = new AttendanceStatusLazyDataModel(attendanceStatusSearchParamater, attendanceStatusService);
         }
         return attendanceStatusesLazyDataModel;

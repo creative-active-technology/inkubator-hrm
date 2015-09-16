@@ -20,6 +20,8 @@ public class WtPeriodeSearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("tahun")) {
                 tahun = getParameter();
+            }else{
+                tahun=null;
             }
         }
         return tahun;
@@ -33,6 +35,8 @@ public class WtPeriodeSearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("bulan")) {
                 bulan = Integer.parseInt(getParameter());
+            }else{
+                bulan =null;
             }
         }
 

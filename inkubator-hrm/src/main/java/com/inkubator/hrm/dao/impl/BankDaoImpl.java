@@ -50,8 +50,8 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
         if (parameter.getBankCode() != null) {
             criteria.add(Restrictions.like("bankCode", parameter.getBankCode(), MatchMode.ANYWHERE));
         }
-        
-        if (parameter.getBankName()!= null) {
+
+        if (parameter.getBankName() != null) {
             criteria.add(Restrictions.like("bankName", parameter.getBankName(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -111,4 +111,11 @@ public class BankDaoImpl extends IDAOImpl<Bank> implements BankDao {
         return (Bank) criteria.uniqueResult();
     }
 
+    @Override
+    public List<Bank> getAllWithparent() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("bank", FetchMode.JOIN);
+        criteria.setFetchMode("bankGroup", FetchMode.JOIN);
+        return criteria.list();
+    }
 }

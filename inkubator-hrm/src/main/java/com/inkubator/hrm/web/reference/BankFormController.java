@@ -65,7 +65,11 @@ public class BankFormController extends BaseController {
             // dropdown bank
             List<Bank> listBank = bankService.getAllData();
             for (Bank bnk : listBank) {
-                dropDownBank.put(bnk.getBankName(), bnk.getId());
+                if (bnk.getBankName() != null) {
+                    dropDownBank.put(bnk.getBankName(), bnk.getId());
+                } else {
+                    dropDownBank.put(bnk.getBank().getBankName() + " - " + bnk.getBranchName(), bnk.getId());
+                }
             }
             // dropdown grop bank
             List<BankGroup> listBankGroup = bankGroupService.getAllData();
@@ -161,20 +165,20 @@ public class BankFormController extends BaseController {
         return bank;
     }
 
-    private BankModel getModelFromEntity(Bank bank){
-    	BankModel model = new BankModel();
-    	model.setId(bank.getId());
-    	model.setSwiftCode(bank.getSwiftCode());
-    	model.setIban(bank.getIban());
-    	model.setBankIdentificationNumber(bank.getBankIdentificationNo());
-    	model.setDescription(bank.getDescription());
-    	model.setBranchCodeInput(bank.getBranchCode());
-    	model.setAddress(bank.getAddress());
-    	model.setBankPhone(bank.getBankPhone());
-    	model.setBankFax(bank.getBankFax());
-    	model.setBranchName(bank.getBranchName());
+    private BankModel getModelFromEntity(Bank bank) {
+        BankModel model = new BankModel();
+        model.setId(bank.getId());
+        model.setSwiftCode(bank.getSwiftCode());
+        model.setIban(bank.getIban());
+        model.setBankIdentificationNumber(bank.getBankIdentificationNo());
+        model.setDescription(bank.getDescription());
+        model.setBranchCodeInput(bank.getBranchCode());
+        model.setAddress(bank.getAddress());
+        model.setBankPhone(bank.getBankPhone());
+        model.setBankFax(bank.getBankFax());
+        model.setBranchName(bank.getBranchName());
         if (bank.getBankGroup().getId() != null) {
-        	model.setBankGroup(bank.getBankGroup().getId());
+            model.setBankGroup(bank.getBankGroup().getId());
         }
         if (bank.getBank() != null) {
             isReadOnlyBankNameAndCode = Boolean.TRUE;
@@ -190,15 +194,15 @@ public class BankFormController extends BaseController {
             model.setBankCode(bank.getBankCode());
             model.setBankName(bank.getBankName());
         }
-    	return model;
+        return model;
     }
-    
+
     public void doReset() throws Exception {
-        if(isUpdate){
-        	Bank bank = bankService.getEntityWithDetail(bankModel.getId());
-        	bankModel = getModelFromEntity(bank);
-        }else{
-        	bankModel = new BankModel();
+        if (isUpdate) {
+            Bank bank = bankService.getEntityWithDetail(bankModel.getId());
+            bankModel = getModelFromEntity(bank);
+        } else {
+            bankModel = new BankModel();
         }
     }
 

@@ -11,15 +11,16 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Deni
  */
-public class EmpPersonAchievementSearchParameter extends SearchParameter{
+public class EmpPersonAchievementSearchParameter extends SearchParameter {
+
     private String empData;
     private String achievementName;
 
     public String getEmpData() {
-        if(StringUtils.equalsIgnoreCase(getKeyParam(), "empData")){
-			empData = getParameter();
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
+            empData = getParameter();
         } else {
-                empData = null;
+            empData = null;
         }
         return empData;
     }
@@ -29,10 +30,10 @@ public class EmpPersonAchievementSearchParameter extends SearchParameter{
     }
 
     public String getAchievementName() {
-        if(StringUtils.equalsIgnoreCase(getKeyParam(), "achievementName")){
-			achievementName = getParameter();
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "achievementName")) {
+            achievementName = getParameter();
         } else {
-                achievementName = null;
+            achievementName = null;
         }
         return achievementName;
     }
@@ -40,6 +41,5 @@ public class EmpPersonAchievementSearchParameter extends SearchParameter{
     public void setAchievementName(String achievementName) {
         this.achievementName = achievementName;
     }
-    
-    
+
 }

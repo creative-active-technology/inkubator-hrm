@@ -51,9 +51,13 @@ public class AttendanceStatusDaoImpl extends IDAOImpl<AttendanceStatus> implemen
     private void doSearchAttendanceStatusByParam(AttendanceStatusSearchParamater searchParamater, Criteria criteria) {
         if (searchParamater.getCodeStatus() != null && !searchParamater.getCodeStatus().isEmpty()) {
             criteria.add(Restrictions.like("code", searchParamater.getCodeStatus(), MatchMode.START));
+            System.out.println("key1 " + searchParamater.getKeyParam());
+            System.out.println("param1 " + searchParamater.getCodeStatus());;
         }
 
         if (searchParamater.getStatusName() != null && !searchParamater.getStatusName().isEmpty()) {
+            System.out.println("key2 " + searchParamater.getKeyParam());
+            System.out.println("param2 " + searchParamater.getStatusName());
             criteria.add(Restrictions.like("statusKehadrian", searchParamater.getStatusName(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));

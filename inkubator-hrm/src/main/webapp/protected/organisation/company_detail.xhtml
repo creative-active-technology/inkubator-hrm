@@ -180,7 +180,8 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bank.bank_name']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bankData.bank.bankName}"/>
+                                        <p:outputLabel value= "#{bankData.bank.bankName}" rendered="#{!bankData.bank.parent}" />
+                                        <p:outputLabel value= "#{bankData.bank.bank.bankName} - #{bankData.bank.branchName} " rendered="#{bankData.bank.parent}" />
                                     </p:column>
                                     <p:column style="width: 15%">
                                         <f:facet name="header">  

@@ -60,10 +60,14 @@ public class WtHolidayDaoImpl extends IDAOImpl<WtHoliday> implements WtHolidayDa
         if (searchParameter.getReligionName() != null && !searchParameter.getReligionName().isEmpty()) {
             criteria.createAlias("religion", "r");
             criteria.add(Restrictions.like("r.name", searchParameter.getReligionName(), MatchMode.START));
+              System.out.println("key1 " + searchParameter.getKeyParam());
+            System.out.println("param1 " + searchParameter.getReligionName());
         }
 
         if (searchParameter.getHolidayName() != null && !searchParameter.getHolidayName().isEmpty()) {
             criteria.add(Restrictions.like("holidayName", searchParameter.getHolidayName(), MatchMode.START));
+             System.out.println("key2 " + searchParameter.getKeyParam());
+            System.out.println("param3 " + searchParameter.getHolidayName());
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

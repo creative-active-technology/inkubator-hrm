@@ -45,8 +45,10 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
 
             try {
+                HrmUser hrmUser = hrmUserService.getByUserIdOrEmail(authentication.getName());
+//                FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(hrmUser.getUserId()));
 //                FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(authentication.getName()));
-                EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(authentication.getName()).getEmpData();
+                EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(hrmUser.getUserId()).getEmpData();
                 FacesUtil.setSessionAttribute(HRMConstant.BIODATA_ID, data.getBioData().getId());
                 FacesUtil.setSessionAttribute(HRMConstant.EMP_DATA_ID, data.getId());
             } catch (Exception ex) {

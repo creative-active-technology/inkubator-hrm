@@ -21,41 +21,42 @@ import com.inkubator.hrm.entity.CompanyBankAccount;
 @Lazy
 public class CompanyBankAccountDaoImpl extends IDAOImpl<CompanyBankAccount> implements CompanyBankAccountDao {
 
-	@Override
-	public Class<CompanyBankAccount> getEntityClass() {
-		return CompanyBankAccount.class;		
-	}
+    @Override
+    public Class<CompanyBankAccount> getEntityClass() {
+        return CompanyBankAccount.class;
+    }
 
-	@Override
-	public List<CompanyBankAccount> getAllDataByCompanyId(Long companyId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("company.id", companyId));
-		criteria.setFetchMode("bank", FetchMode.JOIN);
-		criteria.setFetchMode("savingType", FetchMode.JOIN);
-		return criteria.list();		
-	}
+    @Override
+    public List<CompanyBankAccount> getAllDataByCompanyId(Long companyId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("company.id", companyId));
+        criteria.setFetchMode("bank", FetchMode.JOIN);
+        criteria.setFetchMode("bank.bank", FetchMode.JOIN);
+        criteria.setFetchMode("savingType", FetchMode.JOIN);
+        return criteria.list();
+    }
 
-	@Override
-	public CompanyBankAccount getEntityByPKWithDetail(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("id", id));
-		criteria.setFetchMode("bank", FetchMode.JOIN);
-		criteria.setFetchMode("savingType", FetchMode.JOIN);
-		return (CompanyBankAccount) criteria.uniqueResult();
-	}
+    @Override
+    public CompanyBankAccount getEntityByPKWithDetail(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("bank", FetchMode.JOIN);
+        criteria.setFetchMode("savingType", FetchMode.JOIN);
+        return (CompanyBankAccount) criteria.uniqueResult();
+    }
 
-	@Override
-	public Long getTotalByAccountNumber(Integer accountNumber) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public Long getTotalByAccountNumber(Integer accountNumber) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("accountNumber", accountNumber));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    }
 
-	@Override
-	public Long getTotalByAccountNumberAndNotId(Integer accountNumber, Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public Long getTotalByAccountNumberAndNotId(Integer accountNumber, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("accountNumber", accountNumber));
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    }
 }
