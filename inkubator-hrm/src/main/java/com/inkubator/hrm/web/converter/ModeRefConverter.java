@@ -42,12 +42,12 @@ public class ModeRefConverter implements Converter {
         String message = StringUtils.EMPTY;
         // Pay Salary Component id
         String paySalaryComponentId = component.getAttributes().get("paySalaryComponentId").toString();
-        System.out.println(" nilai " + paySalaryComponentId);
+      
         try {
             //get specifik from paysalaryComponent->modelComponent->specifik
             PaySalaryComponentService paySalaryComponentService = (PaySalaryComponentService) ServiceWebUtil.getService("paySalaryComponentService");
             PaySalaryComponent paySalaryComponent = paySalaryComponentService.getEntityByPkWithDetail(Long.valueOf(paySalaryComponentId));
-            System.out.println(paySalaryComponent.getModelComponent().getSpesific());
+          
             //if specific == loan schema
             if (Objects.equals(paySalaryComponent.getModelComponent().getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
                 LoanNewTypeService loanSchemaService = (LoanNewTypeService) ServiceWebUtil.getService("loanNewTypeService");

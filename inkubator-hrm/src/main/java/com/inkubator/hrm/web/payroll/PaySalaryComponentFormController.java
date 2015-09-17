@@ -479,7 +479,7 @@ public class PaySalaryComponentFormController extends BaseController {
         try {
 //            Long modRefId = Long.parseLong(String.valueOf(model.getModelReffernsiId()));
             dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId(), null);
-            System.out.println(" hehrherherhehrehrehrerh");
+            
             if (dropDownModelRef.size() > 0) {
                 isDisableComponetModel = Boolean.FALSE;
             } else {
