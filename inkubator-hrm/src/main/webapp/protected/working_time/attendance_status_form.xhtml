@@ -140,7 +140,7 @@
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formAttendanceStatusFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" action="#{attendanceStatusFormController.doReset()}">  
                             <p:resetInput target="formAttendanceStatusFormId" />  
                         </p:commandButton>
                     </h:panelGrid>

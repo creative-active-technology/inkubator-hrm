@@ -41,8 +41,8 @@
                                         <f:selectItem itemLabel="#{appmsg['workingTime.start_period']}" itemValue="startPeriod"/>
                                         <f:selectItem itemLabel="#{appmsg['workingTime.end_period']}" itemValue="endPeriod"/>
                                         <!-- <f:selectItem itemLabel="#{appmsg['batchJobExecution.status']}" itemValue="absenStatus"/> -->
-                                        <!-- <p:ajax update="formId" process="@this" listener="#{wtPeriodEmpViewController.doChangeInputType()}"/>
-                                     -->
+                                        <p:ajax update="formId" process="@this" listener="#{wtPeriodEmpViewController.doChangeInputType()}"/>
+                                    
                                     </p:selectOneMenu>
                                     <p:inputText id="searchTextId" rendered="#{wtPeriodEmpViewController.isAbsenStatus}" value="#{wtPeriodEmpViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:calendar  id="searchDateStartPeriodeId" size="39" rendered="#{wtPeriodEmpViewController.isStartPeriod}" pattern="dd MMMM yyyy" label="searchDate" value="#{wtPeriodEmpViewController.parameter.startPeriod}" style="width: 250px;"
