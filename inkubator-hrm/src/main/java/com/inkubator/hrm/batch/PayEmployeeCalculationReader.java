@@ -20,7 +20,7 @@ public class PayEmployeeCalculationReader implements ItemReader<PayTempKalkulasi
 	
 	public PayEmployeeCalculationReader(PayTempKalkulasiService payTempKalkulasiService, Date startPeriodDate, Date endPeriodDate, Date createdOn, String createdBy) throws Exception{
 		//get populated data
-            System.out.println(" Ekeskuksiiiiii SUksekekekkekekekekk");
+           
 		listObject = payTempKalkulasiService.getAllDataCalculatedPayment(startPeriodDate, endPeriodDate, createdOn, createdBy);
 	}
 	
