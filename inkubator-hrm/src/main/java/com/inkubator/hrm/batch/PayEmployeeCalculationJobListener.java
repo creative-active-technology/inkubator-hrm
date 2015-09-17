@@ -24,17 +24,13 @@ public class PayEmployeeCalculationJobListener implements JobExecutionListener {
 	
 	@Override
 	public void beforeJob(JobExecution jobExecution) {
-		try {
-			
-			/** delete all the record, will be recalculated during batch process **/
-			payTempKalkulasiService.deleteAllData();
-			payTempKalkulasiEmpPajakService.deleteAllData();
-			
-		} catch (Exception e) {
-			jobExecution.stop(); //jika ada error, canceled the jobs
-			LOGGER.error("Error " + e);
-		}
 		
+		/** delete all the record, will be recalculated during batch process **/
+		Boolean isSuccess =  this.deleteRelatedEntity();
+		if(!isSuccess){
+			//jika ada error, canceled the jobs
+			jobExecution.stop(); 
+		}		
 	}
 
 	@Override
@@ -48,6 +44,10 @@ public class PayEmployeeCalculationJobListener implements JobExecutionListener {
 				wtPeriodeService.saveOrUpdate(periode);
 				
 			} catch (Exception e) {
+				/** delete all the record (case if interruption in the middle of process) */
+				this.deleteRelatedEntity();
+				
+				/** log the Error Message into BatchLog */
 				StringWriter errorMessage = new StringWriter();
 				e.printStackTrace(new PrintWriter(errorMessage));
 				
@@ -55,7 +55,26 @@ public class PayEmployeeCalculationJobListener implements JobExecutionListener {
 				jobExecution.setExitStatus(exitStatus);
 				jobExecution.setStatus(BatchStatus.FAILED);
 			}
-		}		
+			
+		} else {
+			/** delete all the record (case if interruption in the middle of process) */
+			this.deleteRelatedEntity();
+		}
+	}
+	
+	private Boolean deleteRelatedEntity(){
+		Boolean isSuccess = Boolean.TRUE;
+		
+		try {	
+			payTempKalkulasiService.deleteAllData();
+			payTempKalkulasiEmpPajakService.deleteAllData();
+			
+		} catch (Exception e) {
+			isSuccess =  Boolean.FALSE;
+			LOGGER.error("Error " + e);
+		}
+		
+		return isSuccess;
 	}
 
 	public WtPeriodeService getWtPeriodeService() {
