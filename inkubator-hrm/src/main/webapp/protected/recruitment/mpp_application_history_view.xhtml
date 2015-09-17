@@ -57,7 +57,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['loanschema.list_of_loan']}"/>
+                                <h:outputText value="#{appmsg['mppPeriod.mpp_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -89,19 +89,19 @@
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                           <p:column sortBy="#{data.actual}"  style="text-align: center;width: 8%">
+                           <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
                                </f:facet>
                                <h:outputLabel value= "#{data.actual}"/> 
                            </p:column> 
-                            <p:column sortBy="#{data.mpp}"  style="text-align: center;width: 8%">
+                            <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
                                </f:facet>
                                 <h:outputLabel value= "#{data.mpp}"/> 
                            </p:column>  
-                           <p:column sortBy="#{data.difference}"  style="text-align: center;width: 8%">
+                           <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
                                </f:facet>

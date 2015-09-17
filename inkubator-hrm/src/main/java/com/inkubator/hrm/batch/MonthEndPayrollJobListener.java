@@ -31,19 +31,12 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	
 	@Override
 	public void beforeJob(JobExecution jobExecution) {		
-		try {
-			WtPeriode periode = wtPeriodeService.getEntityByPayrollTypeActive();
-			
-			/** delete all record in that period (if any)**/
-			logMonthEndPayrollService.deleteByPeriodId(periode.getId());
-			logListOfTransferService.deleteByPeriodId(periode.getId());
-			logSalaryJournalService.deleteByPeriodId(periode.getId());
-			logMonthEndTaxesService.deleteByPeriodId(periode.getId());
-			
-		} catch (Exception e) {
-			jobExecution.stop(); //jika ada error, canceled the jobs
-			LOGGER.error("Error " + e);
-		}
+		/** delete all record in that period (if any) **/
+		Boolean isSuccess =  this.deleteAllRecordInPayrollPeriod();
+		if(!isSuccess){
+			//jika ada error, canceled the jobs
+			jobExecution.stop(); 
+		}	
 	}
 
 	@Override
@@ -55,6 +48,10 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 				logMonthEndPayrollService.afterMonthEndProcess();
 				
 			} catch (Exception e) {
+				/** delete all the record (case if interruption in the middle of process) */
+				this.deleteAllRecordInPayrollPeriod();
+				
+				/** log the Error Message into BatchLog */
 				StringWriter errorMessage = new StringWriter();
 				e.printStackTrace(new PrintWriter(errorMessage));
 				
@@ -62,8 +59,33 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 				jobExecution.setExitStatus(exitStatus);
 				jobExecution.setStatus(BatchStatus.FAILED);
 			}
+			
+		} else {
+			/** delete all the record (case if interruption in the middle of process) */
+			this.deleteAllRecordInPayrollPeriod();
 		}
 
+	}
+	
+	private Boolean deleteAllRecordInPayrollPeriod(){
+		
+	
+		Boolean isSuccess = Boolean.TRUE;
+		
+		try {			
+			WtPeriode periode = wtPeriodeService.getEntityByPayrollTypeActive();			
+			
+			logMonthEndPayrollService.deleteByPeriodId(periode.getId());
+			logListOfTransferService.deleteByPeriodId(periode.getId());
+			logSalaryJournalService.deleteByPeriodId(periode.getId());
+			logMonthEndTaxesService.deleteByPeriodId(periode.getId());
+			
+		} catch (Exception e) {
+			isSuccess =  Boolean.FALSE;
+			LOGGER.error("Error " + e);
+		}
+		
+		return isSuccess;
 	}
 
 	public WtPeriodeService getWtPeriodeService() {

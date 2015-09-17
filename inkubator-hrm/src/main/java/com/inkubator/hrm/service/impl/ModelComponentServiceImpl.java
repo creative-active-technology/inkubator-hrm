@@ -255,7 +255,7 @@ public class ModelComponentServiceImpl extends IServiceImpl implements ModelComp
         }
 
         ModelComponent modelComponent = modelComponentDao.getEntiyByPK(b.getId());
-        System.out.println("bbbbbbbbbbbbbbb");
+  
         modelComponent.setCode(b.getCode());
         modelComponent.setName(b.getName());
         modelComponent.setDescription(b.getDescription());

@@ -1039,9 +1039,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         			currentMaxId = 0L;
         		}
     			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode()));
-    			System.out.println(transactionCodefication.getCode());
-    			System.out.println(currentMaxId);
-    			System.out.println("aaaaaaaaaaaaa " + entity.getNumberFilling());
+    			
                 entity.setEmpData(empData);
                 entity.setPermitClassification(permit);
                 if (documentFile != null) {

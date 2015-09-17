@@ -53,7 +53,7 @@ public class CompanyBankAccountFormController extends BaseController {
     public void initialization() {
         super.initialization();
         accountModel = new CompanyBankAccountModel();
-        System.out.println(" Hehehrh eksekusisii");
+       
         try {
             isUpdate = Boolean.FALSE;
             List<Bank> listBank = bankService.getAllWithparent();

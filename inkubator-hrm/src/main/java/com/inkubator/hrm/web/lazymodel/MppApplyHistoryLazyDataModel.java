@@ -42,7 +42,7 @@ public class MppApplyHistoryLazyDataModel extends LazyDataModel<MppApplyHistoryV
 	        } else {
 	        	orderable = Order.desc("approvalActivity.created_time");
 	        }
-	        System.out.println(service == null);
+	       
 	        list = service.getAllDataMppApplyHistoryByParam(parameter, first, pageSize, orderable);
             total = Integer.parseInt(String.valueOf(service.getTotalMppApplyHistoryByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");

@@ -30,7 +30,7 @@ public interface PaySalaryComponentService extends IService<PaySalaryComponent> 
     
     public Long getTotalComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter) throws Exception;
 
-    public Map<String, Long> returnComponentChange(Long id) throws Exception;
+    public Map<String, Long> returnComponentChange(Long id, Integer modelRefId) throws Exception;
     
     public void saveWithEmployeeType(PaySalaryComponent paySalaryComponent) throws Exception;
     
