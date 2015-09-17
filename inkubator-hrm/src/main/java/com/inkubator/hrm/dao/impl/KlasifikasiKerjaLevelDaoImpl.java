@@ -73,8 +73,10 @@ public class KlasifikasiKerjaLevelDaoImpl extends IDAOImpl<KlasifikasiKerjaLevel
     public KlasifikasiKerjaLevel getEntityWithDetail(Long id){
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("klasifikasiKerja", FetchMode.JOIN);
-        criteria.setFetchMode("klasifikasiKerja.golonganJabatan", FetchMode.JOIN);
-        criteria.setFetchMode("klasifikasiKerja.golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("klasifikasiKerja.golonganJabatanByStrataAtasGoljabId", FetchMode.JOIN);
+        criteria.setFetchMode("klasifikasiKerja.golonganJabatanByStrataBawahGoljabId", FetchMode.JOIN);
+        criteria.setFetchMode("klasifikasiKerja.golonganJabatanByStrataAtasGoljabId.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("klasifikasiKerja.golonganJabatanByStrataBawahGoljabId.pangkat", FetchMode.JOIN);
         criteria.add(Restrictions.eq("id", id));
         return (KlasifikasiKerjaLevel) criteria.uniqueResult();
     }
