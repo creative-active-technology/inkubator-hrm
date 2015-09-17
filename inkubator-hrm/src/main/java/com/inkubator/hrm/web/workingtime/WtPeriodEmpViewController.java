@@ -79,10 +79,12 @@ return "/protected/working_time/wt_period_emp_detail.htm?faces-redirect=true&exe
 
     public void doChangeInputType(){
         if(parameter.getKeyParam().equals("startPeriod")){
+        	System.out.println("start");
             isStartPeriod = Boolean.TRUE;
             isEndPeriod = Boolean.FALSE;
             isAbsenStatus = Boolean.FALSE;
         }else if(parameter.getKeyParam().equals("endPeriod")){
+        	System.out.println("end");
             isStartPeriod = Boolean.FALSE;
             isEndPeriod = Boolean.TRUE;
             isAbsenStatus = Boolean.FALSE;

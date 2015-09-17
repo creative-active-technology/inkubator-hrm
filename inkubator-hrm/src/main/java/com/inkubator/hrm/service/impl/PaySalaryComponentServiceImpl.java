@@ -304,12 +304,18 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Map<String, Long> returnComponentChange(Long id) throws Exception {
+    public Map<String, Long> returnComponentChange(Long id,Integer modRefId) throws Exception {
         ModelComponent component = this.modelComponentDao.getEntiyByPK(id);
 //        List<Integer> listModelReferensi = paySalaryComponentDao.getAllModelReferensiId();
         Map<String, Long> data = new HashMap();
         if (Objects.equals(component.getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
+            
             List<LoanSchema> dataToSend = loanSchemaDao.getEntityIsPayRollComponent(component.getId());
+              if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                LoanSchema loanNewType = loanSchemaDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(loanNewType);
+            }
             for (LoanSchema loanSchema : dataToSend) {
                 data.put(loanSchema.getName(), loanSchema.getId());
             }
@@ -317,12 +323,22 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
             List<ReimbursmentSchema> dataToSend = this.reimbursmentSchemaDao.isPayrollComponent(component.getId());
+            if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                ReimbursmentSchema rmbsType = reimbursmentSchemaDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(rmbsType);
+            }
             for (ReimbursmentSchema rs : dataToSend) {
                 data.put(rs.getName(), rs.getId());
             }
         }
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             List<BenefitGroup> dataToSend = this.benefitGroupDao.getBenefitGroupData(component.getId());
+            if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(benefitGroup);
+            }
             for (BenefitGroup bg : dataToSend) {
                 data.put(bg.getName(), bg.getId());
             }

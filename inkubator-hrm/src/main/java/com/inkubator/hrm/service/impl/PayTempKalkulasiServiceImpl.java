@@ -36,9 +36,11 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.BenefitGroupDao;
 import com.inkubator.hrm.dao.BenefitGroupRateDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LoanPaymentDetailDao;
+import com.inkubator.hrm.dao.LoanSchemaDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
@@ -47,11 +49,14 @@ import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.PayTempUploadDataDao;
 import com.inkubator.hrm.dao.ReimbursmentDao;
+import com.inkubator.hrm.dao.ReimbursmentSchemaDao;
 import com.inkubator.hrm.dao.WtGroupWorkingDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.BenefitGroup;
 import com.inkubator.hrm.entity.BenefitGroupRate;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LoanPaymentDetail;
+import com.inkubator.hrm.entity.LoanSchema;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PayTempAttendanceStatus;
@@ -60,6 +65,7 @@ import com.inkubator.hrm.entity.PayTempKalkulasiEmpPajak;
 import com.inkubator.hrm.entity.PayTempOvertime;
 import com.inkubator.hrm.entity.PayTempUploadData;
 import com.inkubator.hrm.entity.Reimbursment;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
 import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
@@ -103,6 +109,12 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
     private WtGroupWorkingDao wtGroupWorkingDao;
     @Autowired
     private WtScheduleShiftService wtScheduleShiftService;
+    @Autowired
+    private LoanSchemaDao loanSchemaDao;
+    @Autowired
+    private ReimbursmentSchemaDao reimbursmentSchemaDao;
+    @Autowired
+    private BenefitGroupDao benefitGroupDao;
 
     @Override
     public PayTempKalkulasi getEntiyByPK(String id) throws Exception {
@@ -475,7 +487,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), endPeriodDate);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
             List<PaySalaryComponent> listPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
-            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))){
+            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))
+            		&& null == Lambda.selectFirst(payComponentExceptions, Lambda.having(Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))){
             	throw new BussinessException("global.error_user_does_not_have_basic_salary", empData.getNikWithFullName());
             }
             for (PaySalaryComponent paySalaryComponent : listPayComponetNotExcp) {
@@ -519,8 +532,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     LOGGER.info("Save By Basic Salary " + (((timeTmb / 30) < 1) ? "Not Full" : "Full") + ", nominal : " + nominal);
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_LOAN)) {
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	LoanSchema loanSchema = loanSchemaDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(loanSchema == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
                     List<LoanPaymentDetail> loanPaymentDetails = loanPaymentDetailDao.getAllDataByEmpDataIdAndLoanSchemaIdAndPeriodTime(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
+                            empData.getId(), loanSchema.getId(), startPeriodDate, endPeriodDate);
                     for (LoanPaymentDetail payDetail : loanPaymentDetails) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -545,8 +564,14 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	ReimbursmentSchema rmbsSchema = reimbursmentSchemaDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(rmbsSchema == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
                     List<Reimbursment> reimbursments = reimbursmentDao.getAllDataByEmpDataIdAndReimbursmentSchemaIdAndPeriodTime(
-                            empData.getId(), (long) paySalaryComponent.getModelReffernsil(), startPeriodDate, endPeriodDate);
+                            empData.getId(), rmbsSchema.getId(), startPeriodDate, endPeriodDate);
                     for (Reimbursment reimbursment : reimbursments) {
                         PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
                         kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
@@ -594,25 +619,34 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
                     }
 
                 } else if (paySalaryComponent.getModelComponent().getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
-                    BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId((long) paySalaryComponent.getModelReffernsil(), empData.getGolonganJabatan().getId());
-                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
-                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                    kalkulasi.setEmpData(empData);
-                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
-                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
-                    //nominal untuk benefit dikali nilai dari measurement                        
-                    BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
-                    kalkulasi.setNominal(nominal);
-
-                    //set detail benefit
-                    kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
-                    
-                    kalkulasi.setCreatedBy(createdBy);
-                    kalkulasi.setCreatedOn(createdOn);
-                    datas.add(kalkulasi);
-
-                    totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
-                    LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
+                	//cek apakah modelReferensi di paySalaryComponent valid atau tidak
+                	BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK((long) paySalaryComponent.getModelReffernsil());
+                	if(benefitGroup == null){
+                		throw new BussinessException("salaryCalculation.error_salary_component_reference", paySalaryComponent.getName());
+                	}
+                	
+                	//cek apakah tunjangan yg didapatkan sesuai dengan hak dari golonganJabatan karyawan
+                	BenefitGroupRate benefitGroupRate = benefitGroupRateDao.getEntityByBenefitGroupIdAndGolJabatanId(benefitGroup.getId(), empData.getGolonganJabatan().getId());
+                	if(benefitGroupRate != null) {
+	                    PayTempKalkulasi kalkulasi = new PayTempKalkulasi();
+	                    kalkulasi.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+	                    kalkulasi.setEmpData(empData);
+	                    kalkulasi.setPaySalaryComponent(paySalaryComponent);
+	                    kalkulasi.setFactor(this.getFactorBasedCategory(paySalaryComponent.getComponentCategory()));
+	                    //nominal untuk benefit dikali nilai dari measurement                        
+	                    BigDecimal nominal = new BigDecimal(benefitGroupRate.getNominal()).multiply(this.getMultiplierFromMeasurement(benefitGroupRate.getBenefitGroup().getMeasurement()));
+	                    kalkulasi.setNominal(nominal);
+	
+	                    //set detail benefit
+	                    kalkulasi.setDetail(benefitGroupRate.getGolonganJabatan().getCode());
+	                    
+	                    kalkulasi.setCreatedBy(createdBy);
+	                    kalkulasi.setCreatedOn(createdOn);
+	                    datas.add(kalkulasi);
+	
+	                    totalIncome = this.calculateTotalIncome(totalIncome, kalkulasi); //calculate totalIncome temporary
+	                    LOGGER.info("Save By Benefit - " + paySalaryComponent.getName() + ", nominal : " + nominal);
+                	}
                 }
             }
 

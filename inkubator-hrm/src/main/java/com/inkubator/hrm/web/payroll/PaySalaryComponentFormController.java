@@ -100,7 +100,7 @@ public class PaySalaryComponentFormController extends BaseController {
                     model = getModelFromEntity(paySalaryComponent);
                     dropDownModelRef = new HashMap<>();
                     try {
-                        dropDownModelRef = this.paySalaryComponentService.returnComponentChange(paySalaryComponent.getModelComponent().getId());
+                        dropDownModelRef = this.paySalaryComponentService.returnComponentChange(paySalaryComponent.getModelComponent().getId(),model.getModelReffernsiId());
                         if (dropDownModelRef.size() > 0) {
                             isDisableComponetModel = Boolean.FALSE;
                         } else {
@@ -475,7 +475,7 @@ public class PaySalaryComponentFormController extends BaseController {
     public void doCangeComponentModel() {
         dropDownModelRef = new HashMap<>();
         try {
-            dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId());
+            dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId(),null);
             if (dropDownModelRef.size() > 0) {
                 isDisableComponetModel = Boolean.FALSE;
             } else {

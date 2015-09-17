@@ -6,12 +6,9 @@
 package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.LoanSchema;
-import com.inkubator.hrm.entity.ModelComponent;
 import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.service.BenefitGroupService;
 import com.inkubator.hrm.service.LoanSchemaService;
-import com.inkubator.hrm.service.ModelComponentService;
 import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.hrm.service.ReimbursmentSchemaService;
 import com.inkubator.webcore.util.ServiceWebUtil;
@@ -23,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.apache.commons.lang3.StringUtils;
+
 
 /**
  *
@@ -39,8 +37,11 @@ public class ModelReferensiConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         String message = StringUtils.EMPTY;
-        // Pay Salary Component id
+        Integer data = (Integer) value;
+      
+        System.out.println(" Data ");
         String paySalaryComponentId = component.getAttributes().get("paySalaryComponentId").toString();
+        System.out.println(" Data " + paySalaryComponentId);
         try {
             //get specifik from paysalaryComponent->modelComponent->specifik
             PaySalaryComponentService paySalaryComponentService = (PaySalaryComponentService) ServiceWebUtil.getService("paySalaryComponentService");
@@ -48,7 +49,7 @@ public class ModelReferensiConverter implements Converter {
             //if specific == loan schema
             if (Objects.equals(paySalaryComponent.getModelComponent().getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
                 LoanSchemaService loanSchemaService = (LoanSchemaService) ServiceWebUtil.getService("loanSchemaService");
-                message = loanSchemaService.getLoanSchemaNameByPk(Long.valueOf(paySalaryComponent.getModelReffernsil()));  
+                message = loanSchemaService.getLoanSchemaNameByPk(Long.valueOf(paySalaryComponent.getModelReffernsil()));
             }
             //if specific == reimbursment schema
             if (Objects.equals(paySalaryComponent.getModelComponent().getSpesific(), HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
