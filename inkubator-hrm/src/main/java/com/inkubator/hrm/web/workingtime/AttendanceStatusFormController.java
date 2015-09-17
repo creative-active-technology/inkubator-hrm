@@ -13,12 +13,14 @@ import com.inkubator.hrm.web.model.AttendanceStatusModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.context.RequestContext;
 
 /**
@@ -56,24 +58,8 @@ public class AttendanceStatusFormController extends BaseController {
             if (param != null) {
                 isEdit = Boolean.TRUE;
                 AttendanceStatus attendanceStatus = attendanceStatusService.getEntiyByPK(Long.parseLong(param));
-                attendanceStatusModel.setId(attendanceStatus.getId());
-                attendanceStatusModel.setDescription(attendanceStatus.getDescription());
-                attendanceStatusModel.setKodeStatus(attendanceStatus.getCode());
-                attendanceStatusModel.setNamaStatus(attendanceStatus.getStatusKehadrian());
-                attendanceStatusModel.setIsActive(attendanceStatus.getIsActive());
-
-                if (attendanceStatus.getIsPay() == 1) {
-                    attendanceStatusModel.setIsPay(Boolean.TRUE);
-                }
-                if (attendanceStatus.getIsPay() == 0) {
-                    attendanceStatusModel.setIsPay(Boolean.FALSE);
-                }
-
-                if (attendanceStatus.getIsPresent() == 1) {
-                    attendanceStatusModel.setIsPresent(Boolean.TRUE);
-                }
-                if (attendanceStatus.getIsPresent() == 0) {
-                    attendanceStatusModel.setIsPresent(Boolean.FALSE);
+                if(attendanceStatus != null){
+                	attendanceStatusModel = getModelFromEntity(attendanceStatus);
                 }
             } else {
                 isEdit = Boolean.FALSE;
@@ -85,6 +71,41 @@ public class AttendanceStatusFormController extends BaseController {
 
     }
 
+    public AttendanceStatusModel getModelFromEntity(AttendanceStatus attendanceStatus){
+    	AttendanceStatusModel model = new AttendanceStatusModel();
+    	model.setId(attendanceStatus.getId());
+    	model.setDescription(attendanceStatus.getDescription());
+    	model.setKodeStatus(attendanceStatus.getCode());
+    	model.setNamaStatus(attendanceStatus.getStatusKehadrian());
+    	model.setIsActive(attendanceStatus.getIsActive());
+
+        if (attendanceStatus.getIsPay() == 1) {
+        	model.setIsPay(Boolean.TRUE);
+        }
+        if (attendanceStatus.getIsPay() == 0) {
+        	model.setIsPay(Boolean.FALSE);
+        }
+
+        if (attendanceStatus.getIsPresent() == 1) {
+        	model.setIsPresent(Boolean.TRUE);
+        }
+        if (attendanceStatus.getIsPresent() == 0) {
+        	model.setIsPresent(Boolean.FALSE);
+        }
+    	return model;
+    }
+    
+    public void doReset() throws Exception{
+    	if(isEdit){
+    		AttendanceStatus attendanceStatus = attendanceStatusService.getEntiyByPK(attendanceStatusModel.getId());
+            if(attendanceStatus != null){
+            	attendanceStatusModel = getModelFromEntity(attendanceStatus);
+            }
+    	}else{
+    		attendanceStatusModel = new AttendanceStatusModel();
+    	}
+    }
+    
     public void doSave() {
         AttendanceStatus attendanceStatus = getEntityFromViewModel(attendanceStatusModel);
         try {
@@ -101,7 +122,6 @@ public class AttendanceStatusFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-        cleanAndExit();
     }
 
     public Boolean getIsEdit() {
