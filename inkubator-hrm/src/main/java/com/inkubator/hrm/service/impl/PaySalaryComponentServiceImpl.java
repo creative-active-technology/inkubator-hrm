@@ -194,7 +194,7 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(PaySalaryComponent entity) throws Exception {
-        PaySalaryComponent data=this.paySalaryComponentDao.getEntiyByPK(entity.getId());
+        PaySalaryComponent data = this.paySalaryComponentDao.getEntiyByPK(entity.getId());
         this.paySalaryComponentDao.delete(data);
     }
 
@@ -306,12 +306,19 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Map<String, Long> returnComponentChange(Long id) throws Exception {
+    public Map<String, Long> returnComponentChange(Long id, Integer modRefId) throws Exception {
         ModelComponent component = this.modelComponentDao.getEntiyByPK(id);
 //        List<Integer> listModelReferensi = paySalaryComponentDao.getAllModelReferensiId();
         Map<String, Long> data = new HashMap();
         if (Objects.equals(component.getSpesific(), HRMConstant.MODEL_COMP_LOAN)) {
+
             List<LoanNewType> dataToSend = loanNewTypeDao.getAllDataPayrollComponent(component.getId());
+            if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                LoanNewType loanNewType = loanNewTypeDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(loanNewType);
+            }
+           
             for (LoanNewType loanType : dataToSend) {
                 data.put(loanType.getLoanTypeName(), loanType.getId());
             }
@@ -319,12 +326,22 @@ public class PaySalaryComponentServiceImpl extends IServiceImpl implements PaySa
 
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_REIMBURSEMENT)) {
             List<RmbsType> dataToSend = rmbsTypeDao.getAllDataPayrollComponent(component.getId());
+            if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(rmbsType);
+            }
             for (RmbsType rmbsType : dataToSend) {
                 data.put(rmbsType.getName(), rmbsType.getId());
             }
         }
         if (component.getSpesific().equals(HRMConstant.MODEL_COMP_BENEFIT_TABLE)) {
             List<BenefitGroup> dataToSend = this.benefitGroupDao.getBenefitGroupData(component.getId());
+            if (modRefId != null) {
+                Long modRefIdLong = Long.parseLong(String.valueOf(modRefId));
+                BenefitGroup benefitGroup = benefitGroupDao.getEntiyByPK(modRefIdLong);
+                dataToSend.add(benefitGroup);
+            }
             for (BenefitGroup bg : dataToSend) {
                 data.put(bg.getName(), bg.getId());
             }

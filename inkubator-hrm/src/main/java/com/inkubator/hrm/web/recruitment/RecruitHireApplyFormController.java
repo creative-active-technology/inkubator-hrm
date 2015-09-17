@@ -118,17 +118,17 @@ public class RecruitHireApplyFormController extends BaseController {
     @Override
     public void initialization() {
         try {
-        	
-        	maxRequestEmp = 0;
+
+            maxRequestEmp = 0;
             model = new RecruitHireApplyModel();
             List<RecruitMppApply> listApprovedMpp = recruitMppApplyService.getListWithDetailByApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
-            
-            for(RecruitMppApply recruit : listApprovedMpp){
-            	String periodeStart = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+
+            for (RecruitMppApply recruit : listApprovedMpp) {
+                String periodeStart = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
                 String periodeEnd = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeEnd(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
                 mapPeriode.put(periodeStart + " - " + periodeEnd + "  |  " + recruit.getRecruitMppPeriod().getName(), recruit.getId());
             }
-           
+
             List<EmployeeType> typeToShow = employeeTypeService.getAllData();
             for (EmployeeType employeeType : typeToShow) {
                 mapEmployeeType.put(employeeType.getName(), employeeType.getId());
@@ -151,7 +151,7 @@ public class RecruitHireApplyFormController extends BaseController {
 
                     //Make sure only process who have not been approved that can be modified.
                     if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
-                        model = convertJsonToModel(selectedApprovalActivity.getPendingData());                       
+                        model = convertJsonToModel(selectedApprovalActivity.getPendingData());
                     }
                 }
             } else {
@@ -223,24 +223,24 @@ public class RecruitHireApplyFormController extends BaseController {
 
             recruitHireApply.setRecruitHireApplyDetails(setRecruitHireApplyDetails);
             String message = "";
-            if (isEdit) {                
+            if (isEdit) {
                 recruitHireApplyService.updateRecruitHireWithApproval(recruitHireApply, selectedApprovalActivity.getActivityNumber());
-            } else {                
+            } else {
                 message = recruitHireApplyService.saveRecruitHireWithApproval(recruitHireApply);
             }
-            
+
             cleanAndExit();
-            if(StringUtils.equals(message, "success_need_approval")){
-            	redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
-            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
+            if (StringUtils.equals(message, "success_need_approval")) {
+                redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }else{
-            	redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
-            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+            } else {
+                redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             /*MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";*/
+             redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";*/
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -249,19 +249,19 @@ public class RecruitHireApplyFormController extends BaseController {
 
         return redirect;
     }
-    
+
     public void onChangeMppPeriod() {
         try {
-        	mapJabatan.clear();
+            mapJabatan.clear();
             Long recruitMppId = model.getRecruitMppId();
             RecruitMppApply entity = recruitMppApplyService.getEntityWithDetailById(recruitMppId);
             model.setRecruitMppPeriodId(entity.getRecruitMppPeriod().getId());
-           
+
             List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListWithDetailByRecruitMppApplyId(recruitMppId);
-            for(RecruitMppApplyDetail detail : listMppDetail){
-            	 mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
+            for (RecruitMppApplyDetail detail : listMppDetail) {
+                mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(RecruitHireApplyFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -272,7 +272,7 @@ public class RecruitHireApplyFormController extends BaseController {
             Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
             model.setActual(totalActual);
             if (model.getRecruitMppId() != null) {
-            	
+
                 Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppPeriodId());
                 if (null != totalMpp) {
                     model.setMpp(totalMpp);
@@ -521,19 +521,17 @@ public class RecruitHireApplyFormController extends BaseController {
         this.orgTypeOfSpecService = orgTypeOfSpecService;
     }
 
-	public void setRecruitMppApplyService(
-			RecruitMppApplyService recruitMppApplyService) {
-		this.recruitMppApplyService = recruitMppApplyService;
-	}
+    public void setRecruitMppApplyService(
+            RecruitMppApplyService recruitMppApplyService) {
+        this.recruitMppApplyService = recruitMppApplyService;
+    }
 
-	public Integer getMaxRequestEmp() {
-		return maxRequestEmp;
-	}
+    public Integer getMaxRequestEmp() {
+        return maxRequestEmp;
+    }
 
-	public void setMaxRequestEmp(Integer maxRequestEmp) {
-		this.maxRequestEmp = maxRequestEmp;
-	}
-    
-    
+    public void setMaxRequestEmp(Integer maxRequestEmp) {
+        this.maxRequestEmp = maxRequestEmp;
+    }
 
 }

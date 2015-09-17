@@ -39,6 +39,8 @@ public class WtPeriodeEmpSearchParameter extends SearchParameter {
 	  if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("absenStatus")) {
             	absenStatus = getParameter();
+            }else{
+                absenStatus=null;
             }
         }
 		return absenStatus;

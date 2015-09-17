@@ -42,7 +42,8 @@ public class CustomAuthenticationSuccessHandler extends AuthenticationSuccessHan
             loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
             FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
             try {
-                FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(authentication.getName()));
+                HrmUser hrmUser=hrmUserService.getByUserIdOrEmail(authentication.getName());
+                FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(hrmUser.getUserId()));
                 EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(authentication.getName()).getEmpData();
                 FacesUtil.setSessionAttribute(HRMConstant.BIODATA_ID, data.getBioData().getId());
                 FacesUtil.setSessionAttribute(HRMConstant.EMP_DATA_ID, data.getId());

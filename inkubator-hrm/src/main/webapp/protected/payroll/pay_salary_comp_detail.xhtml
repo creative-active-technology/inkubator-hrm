@@ -56,8 +56,8 @@
                                     <p:outputLabel  value="#{appmsg['paySalaryComponent.model_referensi']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.modelReffernsil}" >
-                                        <f:converter converterId="modelReferensiConverter" />
+                                    <p:outputLabel value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.modelReffernsil}" >
+                                        <f:converter converterId="modeRefConverter"/>
                                         <f:attribute name="paySalaryComponentId" value="#{paySalaryComponentDetailController.selectedPaySalaryComponent.id}"/>
                                     </p:outputLabel>
                                 </p:column>

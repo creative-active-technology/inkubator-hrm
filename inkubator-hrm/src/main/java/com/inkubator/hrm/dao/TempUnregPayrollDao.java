@@ -39,4 +39,6 @@ public interface TempUnregPayrollDao extends IDAO<TempUnregPayroll> {
 	
 	public List<EmpData> getAllDataEmployeeByUnregSalaryId(Long unregSalaryId);
 
+	public BigDecimal getTotalNominalByUnregSalaryId(Long unregSalaryId);
+
 }

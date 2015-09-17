@@ -57,7 +57,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['loanschema.list_of_loan']}"/>
+                                <h:outputText value="#{appmsg['mppPeriod.mpp_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -65,43 +65,43 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{jabatan.code}" style="width: 20%">
+                            <p:column sortBy="#{data.jabatanKode}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabatan.jabatan_code']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jabatan.code}" />
+                                <h:outputLabel value= "#{data.jabatanKode}" />
                             </p:column>
-                            <p:column sortBy="#{jabatan.name}" style="width: 25%">
+                            <p:column sortBy="#{data.jabatanName}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['jabatan.jabatan_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.jabatan.name}" />
+                                <h:outputLabel value= "#{data.jabatanName}" />
                             </p:column>
-                            <p:column sortBy="#{recruitMppPeriod.periodeStart}" style="width: 18%">
+                            <p:column sortBy="#{data.periodeStart}" style="width: 18%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['menu.period']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.recruitMppApply.recruitMppPeriod.periodeStart}" >
+                                <h:outputLabel value= "#{data.periodeStart}" >
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                                 -
-                                <h:outputLabel value= "#{data.recruitMppApply.recruitMppPeriod.periodeEnd}" >
+                                <h:outputLabel value= "#{data.periodeEnd}" >
                                 	<f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                           <p:column sortBy="actualNumber"  style="text-align: center;width: 8%">
+                           <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
                                </f:facet>
-                               <h:outputLabel value= "#{data.actualNumber}"/> 
+                               <h:outputLabel value= "#{data.actual}"/> 
                            </p:column> 
-                            <p:column sortBy="recruitPlan"  style="text-align: center;width: 8%">
+                            <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
                                </f:facet>
-                                <h:outputLabel value= "#{data.recruitPlan}"/> 
+                                <h:outputLabel value= "#{data.mpp}"/> 
                            </p:column>  
-                           <p:column sortBy="difference"  style="text-align: center;width: 8%">
+                           <p:column  style="text-align: center;width: 8%">
                                <f:facet name="header">  
                                    <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
                                </f:facet>

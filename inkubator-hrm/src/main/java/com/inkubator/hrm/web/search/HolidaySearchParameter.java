@@ -22,6 +22,8 @@ public class HolidaySearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("religionName")) {
                 religionName = getParameter();
+            }else{
+                religionName = null;
             }
         }
 
@@ -36,6 +38,8 @@ public class HolidaySearchParameter extends SearchParameter {
         if (getKeyParam() != null) {
             if (getKeyParam().equalsIgnoreCase("holidayName")) {
                 holidayName = getParameter();
+            }else{
+                holidayName=null;
             }
 
         }

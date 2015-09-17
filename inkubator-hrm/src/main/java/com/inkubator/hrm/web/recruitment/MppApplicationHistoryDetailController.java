@@ -12,11 +12,13 @@ import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.service.BenefitGroupRateService;
 import com.inkubator.hrm.service.BenefitGroupService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +46,8 @@ public class MppApplicationHistoryDetailController extends BaseController {
     private RecruitMppApplyDetail selected;
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
     private RecruitMppApplyDetailService recruitMppApplyDetailService;
-    private List<RecruitMppApplyDetail> listMppApplyDetailInSelectedPeriod;
-    private RecruitMppApplyDetail selectedDataList;
+    private List<RecruitMppApplyDetailViewModel> listMppDetailModelPerMonth;
+    private RecruitMppApplyDetailViewModel selectedDataList;
     
     @PostConstruct
     @Override
@@ -54,7 +56,7 @@ public class MppApplicationHistoryDetailController extends BaseController {
             super.initialization();
             String recruitMppApplyDetailId = FacesUtil.getRequestParameter("execution");
             selected = recruitMppApplyDetailService.getEntityWithDetail(Long.parseLong(recruitMppApplyDetailId.substring(1)));
-            listMppApplyDetailInSelectedPeriod = new ArrayList<RecruitMppApplyDetail>();
+            listMppDetailModelPerMonth = recruitMppApplyDetailService.getListPerMonthByMppPeriodIdAndJabatanId(selected.getRecruitMppApply().getRecruitMppPeriod().getId(), selected.getJabatan().getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -65,50 +67,33 @@ public class MppApplicationHistoryDetailController extends BaseController {
         return "/protected/recruitment/mpp_application_history_view.htm?faces-redirect=true";
     }
 
-   public void doSelectDataList() {
-        /*try {
-            selectedDataList = benefitGroupRateService.getEntityByPKWithDetail(selectedBenefitGroupRate.getId());
-        } catch (Exception e) {
-            LOGGER.error("Error", e);
-        }*/
-    }
 
     public void doUpdateRecruitMppApplyDetail() {
 
-        List<String> benefitGroupRateId = new ArrayList<>();
-        benefitGroupRateId.add(String.valueOf(selectedDataList.getId()));
-
-        List<String> benefitGroupId = new ArrayList<>();
-        benefitGroupId.add(String.valueOf(selectedDataList.getId()));
-
         Map<String, List<String>> dataToSend = new HashMap<>();
-        dataToSend.put("benefitGroupRateId", benefitGroupRateId);
-        dataToSend.put("benefitGroupId", benefitGroupId);
-        showDialogBenefitGroupRate(dataToSend);
+        dataToSend.put("mppApplyDetailId", Arrays.asList(String.valueOf(selectedDataList.getId())));
+        showDialogRecruitMppApplyDetailHistory(dataToSend);
 
     }
-
-   
-
     
 
-    private void showDialogBenefitGroupRate(Map<String, List<String>> params) {
+    private void showDialogRecruitMppApplyDetailHistory(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 550);
         options.put("contentHeight", 330);
-        RequestContext.getCurrentInstance().openDialog("benefit_group_rate", options, params);
+        RequestContext.getCurrentInstance().openDialog("mpp_application_history_form", options, params);
     }
 
     public void onDialogReturnDataList(SelectEvent event) {
-       /* try {
-            benefitGroupRates = benefitGroupRateService.getAllDataByBenefitGroupId(selectedBenefitGroup.getId());
+        try {
+        	listMppDetailModelPerMonth = recruitMppApplyDetailService.getListPerMonthByMppPeriodIdAndJabatanId(selected.getRecruitMppApply().getRecruitMppPeriod().getId(), selected.getJabatan().getId());
             super.onDialogReturn(event);
         } catch (Exception e) {
             LOGGER.error("Error", e);
-        }*/
+        }
     }
 
 
@@ -119,11 +104,11 @@ public class MppApplicationHistoryDetailController extends BaseController {
     }
     
     
-	public RecruitMppApplyDetail getSelectedDataList() {
+	public RecruitMppApplyDetailViewModel getSelectedDataList() {
 		return selectedDataList;
 	}
 
-	public void setSelectedDataList(RecruitMppApplyDetail selectedDataList) {
+	public void setSelectedDataList(RecruitMppApplyDetailViewModel selectedDataList) {
 		this.selectedDataList = selectedDataList;
 	}
 
@@ -140,14 +125,14 @@ public class MppApplicationHistoryDetailController extends BaseController {
 		this.recruitMppApplyDetailService = recruitMppApplyDetailService;
 	}
 
-	public List<RecruitMppApplyDetail> getListMppApplyDetailInSelectedPeriod() {
-		return listMppApplyDetailInSelectedPeriod;
+	public List<RecruitMppApplyDetailViewModel> getListMppDetailModelPerMonth() {
+		return listMppDetailModelPerMonth;
 	}
 
-	public void setListMppApplyDetailInSelectedPeriod(
-			List<RecruitMppApplyDetail> listMppApplyDetailInSelectedPeriod) {
-		this.listMppApplyDetailInSelectedPeriod = listMppApplyDetailInSelectedPeriod;
+	public void setListMppDetailModelPerMonth(List<RecruitMppApplyDetailViewModel> listMppDetailModelPerMonth) {
+		this.listMppDetailModelPerMonth = listMppDetailModelPerMonth;
 	}
-    
+
+	
     
 }

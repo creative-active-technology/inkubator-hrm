@@ -40,6 +40,7 @@ public class JabatanSchemaController extends BaseController {
     private EmpDataService empDataService;
     private TreeNode selectedNode;
     private List<EmpData> listEmp = new ArrayList<>();
+    private String namaJabatan;
     
     @PostConstruct
     @Override
@@ -104,7 +105,7 @@ public class JabatanSchemaController extends BaseController {
         try {
             Jabatan jabatan = (Jabatan) selectedNode.getData();
             listEmp = empDataService.getAllByJabatanAndCompanyAndStatus(jabatan.getId(), HRMConstant.EMP_TERMINATION);
-            LOGGER.error("Jumlah empolenya  " + listEmp.size());
+            namaJabatan=jabatan.getName();
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -129,6 +130,14 @@ public class JabatanSchemaController extends BaseController {
 
     public void setListEmp(List<EmpData> listEmp) {
         this.listEmp = listEmp;
+    }
+
+    public String getNamaJabatan() {
+        return namaJabatan;
+    }
+
+    public void setNamaJabatan(String namaJabatan) {
+        this.namaJabatan = namaJabatan;
     }
     
 }
