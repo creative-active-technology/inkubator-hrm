@@ -288,7 +288,7 @@
                        
                         <div style="margin-bottom: 5px">
 
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId" 
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="bioDataFormId, :growlBidoDataFormId" 
                                              action="#{bioDataFormController.doSave()}" styleClass="label_button" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
@@ -308,6 +308,7 @@
             </ui:define>
 
         </ui:composition>
+        
 
     </h:body>
 </html>
