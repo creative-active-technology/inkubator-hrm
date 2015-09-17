@@ -485,7 +485,8 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
             int timeTmb = DateTimeUtil.getTotalDay(empData.getJoinDate(), createdOn);
             List<Long> componentIds = Lambda.extract(payComponentExceptions, Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getId());
             List<PaySalaryComponent> listPayComponetNotExcp = paySalaryComponentDao.getAllDataByEmpTypeIdAndActiveFromTmAndIdNotIn(empData.getEmployeeType().getId(), timeTmb, componentIds);
-            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))){
+            if(null == Lambda.selectFirst(listPayComponetNotExcp, Lambda.having(Lambda.on(PaySalaryComponent.class).getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))
+            		&& null == Lambda.selectFirst(payComponentExceptions, Lambda.having(Lambda.on(PayComponentDataException.class).getPaySalaryComponent().getModelComponent().getSpesific(), Matchers.equalTo(HRMConstant.MODEL_COMP_BASIC_SALARY)))) {
             	throw new BussinessException("global.error_user_does_not_have_basic_salary", empData.getNikWithFullName());
             }
             for (PaySalaryComponent paySalaryComponent : listPayComponetNotExcp) {
