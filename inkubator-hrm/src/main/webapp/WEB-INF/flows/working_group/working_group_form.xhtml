@@ -62,7 +62,7 @@
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_name_of_working_group']}"  for="nameKKid" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="Nama Kelompok Kerja"
+                                    <p:inputText value="#{groupWorkingModel.name}" styleClass="isitext_hrm" label="#{appmsg['workinggroup.working_group_name_of_working_group']}"
                                                  style="width:290px" required="true" id="nameKKid" />
                                     <p:message for="nameKKid"/>
                                 </p:column>
@@ -152,7 +152,7 @@
                         <p:focus context="formWorkingGroupId" />
                         <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="Lanjut" ajax="true" 
+                            <p:commandButton value="#{appmsg['global.continue']}" ajax="true" 
                                              action="next" styleClass="isitext_hrm" update="formWorkingGroupId,:workingGroupFormGrowlId"
                                              style="margin-right: 5px" label="Lanjut"
                                              icon="ui-icon-arrow-1-e" title="Lanjut"/>

@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{costCenterController.costCenterSearchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['department.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['department.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['costcenter.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['costcenter.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{costCenterController.costCenterSearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{costCenterController.doSearch()}" update="tableCostCenterId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -44,7 +44,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableCostCenterId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_COA"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{costCenterController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
