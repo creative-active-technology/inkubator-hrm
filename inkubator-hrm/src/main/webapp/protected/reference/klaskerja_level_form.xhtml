@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Klasifikasi Kerja Level Form" styleClass="header_big" />
-                                <p:outputLabel value="Klasifikasi Kerja Level Form dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['workclaslevel.work_classification_level_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['workclaslevel.work_classification_level_form_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Kode" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['global.code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama Tingkat K.Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -71,7 +71,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="klasifikasiKerjaId" value="Klasifikasi Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="klasifikasiKerjaId" value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="klasifikasiKerjaId" value=":" styleClass="label_hrm"/>

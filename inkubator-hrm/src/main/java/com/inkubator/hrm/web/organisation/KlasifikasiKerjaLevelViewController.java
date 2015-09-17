@@ -116,9 +116,13 @@ public class KlasifikasiKerjaLevelViewController extends BaseController{
         }
     }
     
-    public String doDetail(){
-        return "/protected/reference/klaskerja_level_detail.htm?faces-redirect=true&execution=e" + selected.getId();
-    }
+//    public void doDetail(){
+//    	try{
+//    		selected = this.service.getEntiyByPK(selected.getId());
+//    	} catch(Exception ex){
+//    		LOGGER.error("Error", ex);
+//    	}
+//    }
 
     public KlasifikasiKerjaLevelService getService() {
         return service;
