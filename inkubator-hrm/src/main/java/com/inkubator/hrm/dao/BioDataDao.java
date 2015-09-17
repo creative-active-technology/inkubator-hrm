@@ -9,7 +9,9 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -38,5 +40,7 @@ public interface BioDataDao extends IDAO<BioData> {
 
     public List<EmpDataMatrixModel> getAllAgeByGenderFromBirthDate();
 
-   
+	public Long getTotalByNpwp(String npwp);
+	
+	public Long getTotalByNpwpAndNotId(String npwp, Long id);
 }
