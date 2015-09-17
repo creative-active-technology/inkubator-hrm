@@ -125,8 +125,7 @@ public class JadwalKerjaMassExceptionMessagesListener extends IServiceImpl imple
 //                Collections.sort(dataScheduleShift, shortByDate1);
 
                 int totaldayPropsot = DateTimeUtil.getTotalDayDifference(startProposeDate, tanggalAkhirJadwal);
-                System.out.println(" Jumlah  " + totaldayPropsot);
-                System.out.println(" Jumlah 2  " + dataScheduleShift.size());
+               
                 int loop = totaldayPropsot / dataScheduleShift.size();
                 List<WtScheduleShift> sortedDataScheduleShift = Lambda.sort(dataScheduleShift, Lambda.on(WtScheduleShift.class).getScheduleDate());
                 int i = 0;
@@ -134,7 +133,7 @@ public class JadwalKerjaMassExceptionMessagesListener extends IServiceImpl imple
                     for (WtScheduleShift wtScheduleShift : sortedDataScheduleShift) {
                         String onlyDate = new SimpleDateFormat("yyyy-MM-dd").format(DateTimeUtil.getDateFrom(beginScheduleDate, i, CommonUtilConstant.DATE_FORMAT_DAY));
                         Date olnyDate = new SimpleDateFormat("yyyy-MM-dd").parse(onlyDate);
-                        System.out.println(" Tannggal nya  "+olnyDate);
+                      
                         jadwalKaryawan = tempJadwalKaryawanDao.getByEmpId(id, olnyDate);
                         if (jadwalKaryawan != null) {
                             jadwalKaryawan.setUpdatedBy(createBy);

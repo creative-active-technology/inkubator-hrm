@@ -69,7 +69,7 @@ public class MonthEndPayrollJobListener implements JobExecutionListener {
 	
 	private Boolean deleteAllRecordInPayrollPeriod(){
 		
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+	
 		Boolean isSuccess = Boolean.TRUE;
 		
 		try {			

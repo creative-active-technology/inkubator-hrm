@@ -236,7 +236,7 @@ public class BioBankAccount implements java.io.Serializable {
 
     @Override
     public int hashCode() {
-        System.out.println(" Hereere di 1 =======================================================");
+       
         int hash = 3;
         hash = 37 * hash + (int) (this.id ^ (this.id >>> 32));
         hash = 37 * hash + Objects.hashCode(this.version);
@@ -251,31 +251,31 @@ public class BioBankAccount implements java.io.Serializable {
         hash = 37 * hash + Objects.hashCode(this.savingType);
         hash = 37 * hash + Objects.hashCode(this.swiftCode);
         hash = 37 * hash + Objects.hashCode(this.defaultAccount);
-        System.out.println(" Hereere di 2 =======================================================");
+      
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            System.out.println(" Hereere di 1 akses =======================================================");
+           
             return false;
         }
         if (getClass() != obj.getClass()) {
-            System.out.println(" Hereere di 2 akses =======================================================");
+         
             return false;
         }
         final BioBankAccount other = (BioBankAccount) obj;
         if (this.id != other.id) {
-            System.out.println(" Hereere di 3 akses =======================================================");
+           
             return false;
         }
         if (!Objects.equals(this.version, other.version)) {
-            System.out.println(" Hereere di 4 akses =======================================================");
+        
             return false;
         }
         if (!Objects.equals(this.createdBy, other.createdBy)) {
-            System.out.println(" Hereere di 5 akses =======================================================");
+           
             return false;
         }
         if (!Objects.equals(this.updatedBy, other.updatedBy)) {
