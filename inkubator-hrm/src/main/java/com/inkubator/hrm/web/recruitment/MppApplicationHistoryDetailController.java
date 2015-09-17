@@ -47,7 +47,7 @@ public class MppApplicationHistoryDetailController extends BaseController {
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
     private RecruitMppApplyDetailService recruitMppApplyDetailService;
     private List<RecruitMppApplyDetailViewModel> listMppDetailModelPerMonth;
-    private RecruitMppApplyDetail selectedDataList;
+    private RecruitMppApplyDetailViewModel selectedDataList;
     
     @PostConstruct
     @Override
@@ -67,13 +67,6 @@ public class MppApplicationHistoryDetailController extends BaseController {
         return "/protected/recruitment/mpp_application_history_view.htm?faces-redirect=true";
     }
 
-   public void doSelectDataList() {
-        /*try {
-            selectedDataList = benefitGroupRateService.getEntityByPKWithDetail(selectedBenefitGroupRate.getId());
-        } catch (Exception e) {
-            LOGGER.error("Error", e);
-        }*/
-    }
 
     public void doUpdateRecruitMppApplyDetail() {
 
@@ -95,12 +88,12 @@ public class MppApplicationHistoryDetailController extends BaseController {
     }
 
     public void onDialogReturnDataList(SelectEvent event) {
-       /* try {
-            benefitGroupRates = benefitGroupRateService.getAllDataByBenefitGroupId(selectedBenefitGroup.getId());
+        try {
+        	listMppDetailModelPerMonth = recruitMppApplyDetailService.getListPerMonthByMppPeriodIdAndJabatanId(selected.getRecruitMppApply().getRecruitMppPeriod().getId(), selected.getJabatan().getId());
             super.onDialogReturn(event);
         } catch (Exception e) {
             LOGGER.error("Error", e);
-        }*/
+        }
     }
 
 
@@ -111,11 +104,11 @@ public class MppApplicationHistoryDetailController extends BaseController {
     }
     
     
-	public RecruitMppApplyDetail getSelectedDataList() {
+	public RecruitMppApplyDetailViewModel getSelectedDataList() {
 		return selectedDataList;
 	}
 
-	public void setSelectedDataList(RecruitMppApplyDetail selectedDataList) {
+	public void setSelectedDataList(RecruitMppApplyDetailViewModel selectedDataList) {
 		this.selectedDataList = selectedDataList;
 	}
 

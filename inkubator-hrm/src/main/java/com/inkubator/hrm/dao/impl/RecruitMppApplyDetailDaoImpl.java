@@ -186,4 +186,13 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
          return result == null ? 0l : result;
 	}
 
+	@Override
+	public RecruitMppApplyDetail getEntityByDateRangeAndJabatanId(Long jabatanId, Date startDate, Date endDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		 criteria.setFetchMode("jabatan", FetchMode.JOIN);
+		 criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+		 criteria.add(Restrictions.between("recruitMppMonth", startDate, endDate));
+		 return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
+
 }

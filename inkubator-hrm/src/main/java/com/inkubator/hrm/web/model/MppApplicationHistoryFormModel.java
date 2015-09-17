@@ -8,25 +8,32 @@ import java.util.Date;
  * @author Ahmad Mudzakkir Amal
  */
 public class MppApplicationHistoryFormModel implements Serializable {
-
+	private Long id;
     private Long mppApplyDetailId;
-    private Long jabatanIdId;
+    private Long jabatanId;
     private Long actual;
     private Long mpp;
     private Long difference;
     private Date periodeStart;
     
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getMppApplyDetailId() {
 		return mppApplyDetailId;
 	}
 	public void setMppApplyDetailId(Long mppApplyDetailId) {
 		this.mppApplyDetailId = mppApplyDetailId;
 	}
-	public Long getJabatanIdId() {
-		return jabatanIdId;
+	
+	public Long getJabatanId() {
+		return jabatanId;
 	}
-	public void setJabatanIdId(Long jabatanIdId) {
-		this.jabatanIdId = jabatanIdId;
+	public void setJabatanId(Long jabatanId) {
+		this.jabatanId = jabatanId;
 	}
 	public Long getActual() {
 		return actual;

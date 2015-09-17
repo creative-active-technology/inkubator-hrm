@@ -62,7 +62,7 @@
                                     <p:outputLabel for="metodeHitungId" value="#{appmsg['overtime.count_method']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
-                                    <p:selectOneMenu id="metodeHitungId" value="#{overTimeFormController.overTimeModel.wtHitungLemburID}" style="width: 156px" >
+                                    <p:selectOneMenu id="metodeHitungId" required="true" label="#{appmsg['overtime.count_method']}" value="#{overTimeFormController.overTimeModel.wtHitungLemburID}" style="width: 156px" >
                                             <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                             <f:selectItems value="#{overTimeFormController.listWtHitungLembur}" var="hitungLembur" itemValue="#{hitungLembur.id}" itemLabel="#{hitungLembur.metodeHitung}" />
                                     </p:selectOneMenu>

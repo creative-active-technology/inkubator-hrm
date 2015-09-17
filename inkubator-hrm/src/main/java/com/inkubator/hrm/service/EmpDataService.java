@@ -73,6 +73,8 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getAllDataNotExistInUserByParam(String param, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalNotExistInUserByParam(String param) throws Exception;
+    
+    public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit) throws Exception;
 
 //<<<<<<< HEAD
 //    public List<EmpData> getTotalBySearchEmployee(Long workingGroupId, Integer deptLikeOrEqual, String deptName, Integer empTypeLikeOrEqual, String empTypeName, Integer gender, Long golJabId, Integer sortBy, Integer orderBy) throws Exception;

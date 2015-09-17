@@ -10,7 +10,10 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Currency;
 import com.inkubator.hrm.entity.LoanNewType;
 import com.inkubator.hrm.entity.LoanType;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
 import com.inkubator.hrm.service.CurrencyService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanNewTypeService;
 import com.inkubator.hrm.service.LoanTypeService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
@@ -50,14 +53,33 @@ public class MppApplicationHistoryFormController extends BaseController {
     private RecruitMppApplyDetailTimeService recruitMppApplyDetailTimeService;
     @ManagedProperty(value = "#{recruitMppApplyDetailService}")
     private RecruitMppApplyDetailService recruitMppApplyDetailService;
-
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
-            String param = FacesUtil.getRequestParameter("param");
-            model = new MppApplicationHistoryFormModel();
+        	model = new MppApplicationHistoryFormModel();
+            String mppApplyDetailId = FacesUtil.getRequestParameter("mppApplyDetailId");
+            if(StringUtils.isNotBlank(mppApplyDetailId)){
+            	
+            	RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailService.getEntityWithDetail(Long.parseLong(mppApplyDetailId));
+            	model.setMppApplyDetailId(recruitMppApplyDetail.getId());
+            	model.setJabatanId(recruitMppApplyDetail.getJabatan().getId());
+            	model.setPeriodeStart(recruitMppApplyDetail.getRecruitMppMonth());
+            	
+            	Long plan = recruitMppApplyDetail.getRecruitPlan().longValue();
+            	Long actual = empDataService.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(model.getJabatanId(), model.getPeriodeStart());
+            	Integer difference = (int) (plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan));
+            	
+            	model.setMpp(plan);
+            	model.setActual(actual);
+            	model.setDifference(difference.longValue());
+            	
+            }
+            
             
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -74,21 +96,16 @@ public class MppApplicationHistoryFormController extends BaseController {
 
     public void doSave() {
 
-        /*try {
-            LoanNewType loanNewType = getEntityFromViewModel(model);
-            if (isUpdate) {
-                loanNewTypeService.update(loanNewType);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                loanNewTypeService.save(loanNewType);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
+        try {
+            RecruitMppApplyDetailTime recruitMppApplyDetailTime = getEntityFromViewModel(model);
+            recruitMppApplyDetailTimeService.saveDataAndUpdateMppApplyDetail(recruitMppApplyDetailTime);
+            RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             cleanAndExit();
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
-        }*/
+        }
     }
 
 	public MppApplicationHistoryFormModel getModel() {
@@ -109,22 +126,22 @@ public class MppApplicationHistoryFormController extends BaseController {
 		this.recruitMppApplyDetailService = recruitMppApplyDetailService;
 	}
 
-   /* private LoanNewType getEntityFromViewModel(LoanNewTypeModel loanNewTypeModel) throws Exception {
-        LoanNewType loanNewType = new LoanNewType();
-        if (loanNewTypeModel.getId() != null) {
-            loanNewType.setId(loanNewTypeModel.getId());
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+
+	
+    private RecruitMppApplyDetailTime getEntityFromViewModel(MppApplicationHistoryFormModel model) throws Exception {
+    	RecruitMppApplyDetailTime recruitMppApplyDetailTime = new RecruitMppApplyDetailTime();
+        if (model.getId() != null) {
+            recruitMppApplyDetailTime.setId(model.getId());
         }
-        loanNewType.setLoanTypeCode(loanNewTypeModel.getLoanTypeCode());
-        loanNewType.setLoanTypeName(loanNewTypeModel.getLoanTypeName());       
-        Currency currency = currencyService.getEntiyByPK(currencyId);
-        loanNewType.setCurrency(currency);
-        loanNewType.setInterestMethod(loanNewTypeModel.getInterestMethod());
-        loanNewType.setInterest(new BigDecimal(loanNewTypeModel.getInterest()));
-        loanNewType.setRoundingStatus(rounding ? 1 : 0);
-        loanNewType.setDescription(loanNewTypeModel.getDescription());
+        recruitMppApplyDetailTime.setMppMonthApply(model.getPeriodeStart());
+        recruitMppApplyDetailTime.setPlanningPerson(model.getMpp().intValue());    
+        recruitMppApplyDetailTime.setRecruitMppApplyDetail(new RecruitMppApplyDetail(model.getMppApplyDetailId()));
         
-        return loanNewType;
-    }*/
+        return recruitMppApplyDetailTime;
+    }
     
     
 }

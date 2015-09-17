@@ -1,5 +1,8 @@
 package com.inkubator.hrm.dao.impl;
 
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
