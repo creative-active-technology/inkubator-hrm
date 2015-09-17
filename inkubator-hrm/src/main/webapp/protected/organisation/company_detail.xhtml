@@ -124,7 +124,9 @@
                                     <p:outputLabel value="#{appmsg['organization.company_level']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 30%">
-                                    <p:outputLabel value="#{companyDetailController.selectedCompany.level}"/>
+                                    <p:outputLabel value="#{companyDetailController.selectedCompany.level}">
+                                        <f:converter converterId="companyLevelComverter"/>
+                                    </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
