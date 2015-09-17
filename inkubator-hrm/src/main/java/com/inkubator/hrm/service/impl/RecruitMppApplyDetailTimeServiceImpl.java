@@ -1,14 +1,25 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDetailTimeDao;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
 import com.inkubator.hrm.service.RecruitMppApplyDetailTimeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
 *
@@ -17,6 +28,12 @@ import com.inkubator.hrm.service.RecruitMppApplyDetailTimeService;
 @Service(value = "recruitMppApplyDetailTimeService")
 @Lazy
 public class RecruitMppApplyDetailTimeServiceImpl extends IServiceImpl implements RecruitMppApplyDetailTimeService {
+	
+	 @Autowired
+	 private RecruitMppApplyDetailTimeDao recruitMppApplyDetailTimeDao;
+	 
+	 @Autowired
+	 private RecruitMppApplyDetailDao recruitMppApplyDetailDao;
 
 	@Override
 	public void delete(RecruitMppApplyDetailTime arg0) throws Exception {
@@ -224,10 +241,27 @@ public class RecruitMppApplyDetailTimeServiceImpl extends IServiceImpl implement
 	}
 
 	@Override
-	public RecruitMppApplyDetailTime updateData(RecruitMppApplyDetailTime arg0)
-			throws Exception {
+	public RecruitMppApplyDetailTime updateData(RecruitMppApplyDetailTime arg0)	throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void saveDataAndUpdateMppApplyDetail(RecruitMppApplyDetailTime entity) throws Exception {
+		
+		RecruitMppApplyDetail mppApplyDetail = recruitMppApplyDetailDao.getEntiyByPK(entity.getRecruitMppApplyDetail().getId());
+		mppApplyDetail.setRecruitPlan(entity.getPlanningPerson());
+		recruitMppApplyDetailDao.update(mppApplyDetail);
+		
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		entity.setRecruitMppApplyDetail(mppApplyDetail);
+		entity.setCreatedBy(HrmUserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		recruitMppApplyDetailTimeDao.save(entity);
+	}
+
+	
+
 
 }

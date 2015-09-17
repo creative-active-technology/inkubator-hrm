@@ -3,6 +3,7 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,6 +28,8 @@ public class RecruitMppApplyDetailTime  implements java.io.Serializable {
      private RecruitMppApplyDetail recruitMppApplyDetail;
      private Date mppMonthApply;
      private Integer planningPerson;
+     private String createdBy;
+     private Date createdOn;
 
     public RecruitMppApplyDetailTime() {
     }
@@ -84,7 +87,24 @@ public class RecruitMppApplyDetailTime  implements java.io.Serializable {
         this.planningPerson = planningPerson;
     }
 
+    @Column(name = "created_by", length = 45)
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_on", length = 19)
+    public Date getCreatedOn() {
+        return this.createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
 
 }

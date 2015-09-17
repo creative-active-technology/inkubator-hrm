@@ -297,13 +297,20 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 			
 		}while(calendar.before(calendarEndDate));
 		
-		
 		return listRecruitMppApplyDetailViewModel;
 	}
 	
 	private RecruitMppApplyDetailViewModel generateMppDetailModelPerMonth(Date startDate, Date endDate, Long jabatanId){
 		RecruitMppApplyDetailViewModel model = new RecruitMppApplyDetailViewModel();
-		Integer plan = recruitMppApplyDetailDao.getTotalNumberOfMppByJabatanIdAndDateRange(jabatanId, startDate, endDate).intValue();
+		RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailDao.getEntityByDateRangeAndJabatanId(jabatanId, startDate, endDate);
+		Integer plan = 0;
+		
+		// Cek jika ada Recruitment MPP untuk jabatan yang di pilih pada range date terpilih, maka set Id dan plan dari model dengan data dari recruitMppApplyDetail
+		if(null != recruitMppApplyDetail){
+			model.setId(recruitMppApplyDetail.getId());
+			plan = recruitMppApplyDetail.getRecruitPlan();
+		}
+		
 		Integer actual = empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(jabatanId, startDate).intValue();
 		Integer difference = plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan);
 		model.setJabatanId(jabatanId);

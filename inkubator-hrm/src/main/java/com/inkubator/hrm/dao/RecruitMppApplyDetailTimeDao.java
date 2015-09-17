@@ -9,5 +9,4 @@ import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
  * @author Ahmad Mudzakkir Amal
  */
 public interface RecruitMppApplyDetailTimeDao extends IDAO<RecruitMppApplyDetailTime> {
-    
 }

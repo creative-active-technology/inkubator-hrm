@@ -48,13 +48,32 @@
                        
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel value="#{appmsg['mpp_recruitment.mpp']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="mppId" value="#{appmsg['mpp_recruitment.mpp']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="mppId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">                                
+                                <p:spinner id="mppId" label="#{appmsg['mpp_recruitment.mpp']}"  required="true" value="#{mppApplicationHistoryFormController.model.mpp}" size="2" min="0" stepFactor="1" max="100" styleClass="isitext_hrm" />                                
+                            </p:column>
+                          
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="mppId"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 40%">
+                                <p:outputLabel value="#{appmsg['mpp_recruitment.actual']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                                <p:outputLabel value="#{mppApplicationHistoryFormController.model.mpp}" />
+                            <p:column  style="width: 59%">
+                               <p:outputLabel value="#{mppApplicationHistoryFormController.model.actual}" />             
                             </p:column>
                         </p:row>
                         
@@ -67,26 +86,6 @@
                             </p:column>
                             <p:column  style="width: 59%">
                                <p:outputLabel value="#{mppApplicationHistoryFormController.model.difference}" />             
-                            </p:column>
-                        </p:row>
-                       
-                       
-                        <p:row>
-                            <p:column style="width: 29%">
-                                <p:outputLabel for="actualId" value="#{appmsg['mpp_recruitment.actual']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="actualId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 70%">                                
-                                <p:spinner id="actualId" required="true" value="#{mppApplicationHistoryFormController.model.actual}" size="2" min="0" stepFactor="1" max="100" styleClass="isitext_hrm" />                                
-                                 <h:outputLabel  value="  %" styleClass="label_hrm"/>
-                            </p:column>
-                          
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="actualId"/>
                             </p:column>
                         </p:row>
                         
