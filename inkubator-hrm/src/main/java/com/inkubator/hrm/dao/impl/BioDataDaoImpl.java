@@ -10,7 +10,9 @@ import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.search.BioDataSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
@@ -162,4 +164,18 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
                 .list();
     }
 
+    @Override
+    public Long getTotalByNpwp(String npwp) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("npwp", npwp));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalByNpwpAndNotId(String npwp, Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("npwp", npwp));
+        criteria.add(Restrictions.ne("id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 }
