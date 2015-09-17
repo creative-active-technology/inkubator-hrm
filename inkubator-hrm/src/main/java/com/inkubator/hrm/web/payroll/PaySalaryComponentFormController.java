@@ -99,8 +99,10 @@ public class PaySalaryComponentFormController extends BaseController {
                 if (loanId.substring(1) != null) {
                     model = getModelFromEntity(paySalaryComponent);
                     dropDownModelRef = new HashMap<>();
+//                    Long modRefId = Long.parseLong(String.valueOf(model.getModelReffernsiId()));
                     try {
-                        dropDownModelRef = this.paySalaryComponentService.returnComponentChange(paySalaryComponent.getModelComponent().getId());
+                        dropDownModelRef = this.paySalaryComponentService.returnComponentChange(paySalaryComponent.getModelComponent().getId(), model.getModelReffernsiId());
+
                         if (dropDownModelRef.size() > 0) {
                             isDisableComponetModel = Boolean.FALSE;
                         } else {
@@ -475,7 +477,9 @@ public class PaySalaryComponentFormController extends BaseController {
     public void doCangeComponentModel() {
         dropDownModelRef = new HashMap<>();
         try {
-            dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId());
+//            Long modRefId = Long.parseLong(String.valueOf(model.getModelReffernsiId()));
+            dropDownModelRef = this.paySalaryComponentService.returnComponentChange(model.getModelComponentId(), null);
+            System.out.println(" hehrherherhehrehrehrerh");
             if (dropDownModelRef.size() > 0) {
                 isDisableComponetModel = Boolean.FALSE;
             } else {
@@ -525,11 +529,11 @@ public class PaySalaryComponentFormController extends BaseController {
             model.setRenumeration(paySalaryComponent.getRenumeration());
 
             model.setTaxableCheck(Boolean.FALSE);
-            
+
             if (paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_LOAN || paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_REIMBURSEMENT || paySalaryComponent.getModelComponent().getId() == HRMConstant.MODEL_COMP_BENEFIT_TABLE) {
                 model.setModelComponentId(paySalaryComponent.getModelComponent().getId());
                 isDisableComponetModel = Boolean.FALSE;
-            }else{
+            } else {
                 model.setModelComponentId(paySalaryComponent.getModelComponent().getId());
                 isDisableComponetModel = Boolean.TRUE;
             }
