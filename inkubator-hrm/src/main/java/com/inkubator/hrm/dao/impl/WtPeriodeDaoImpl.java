@@ -143,7 +143,7 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
 
     @Override
     public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
-        System.out.println(searchParameter.getStartPeriod() + " dao impl");
+        System.out.println(searchParameter.getEndPeriod() + " dao impl");
     	final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT wtPeriode.id AS wtPeriodId, ");
         query.append(" wtPeriode.from_periode AS fromPeriode,");
         query.append(" wtPeriode.until_periode AS untilPeriode,");
