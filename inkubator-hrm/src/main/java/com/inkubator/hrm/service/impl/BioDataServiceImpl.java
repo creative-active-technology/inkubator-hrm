@@ -197,7 +197,10 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioData entity) throws Exception {
-
+    	Long totalDuplicateNpwp = bioDataDao.getTotalByNpwp(entity.getNpwp());
+    	if(totalDuplicateNpwp > 0){
+    		throw new BussinessException("biodata.error_duplicate_npwp");
+    	}
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         entity.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
@@ -212,6 +215,10 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioData entity) throws Exception {
+    	Long totalDuplicateNpwp = bioDataDao.getTotalByNpwpAndNotId(entity.getNpwp(), entity.getId());
+    	if(totalDuplicateNpwp > 0){
+    		throw new BussinessException("biodata.error_duplicate_npwp");
+    	}
         BioData bioData = this.bioDataDao.getEntiyByPK(entity.getId());
         bioData.setBloodType(entity.getBloodType());
         bioData.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
