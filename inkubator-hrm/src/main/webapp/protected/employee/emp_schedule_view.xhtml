@@ -233,6 +233,12 @@
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
                             </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.workgroup']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.wtGroupWorking.name}"/>
+                            </p:column>
                         </p:dataTable>
                         <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
