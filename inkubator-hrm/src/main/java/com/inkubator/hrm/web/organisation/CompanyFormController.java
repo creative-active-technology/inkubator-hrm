@@ -42,19 +42,19 @@ public class CompanyFormController extends BaseController {
     private CompanyModel model;
     private Boolean isUpdate;
     private List<Country> countries;
-	private List<Province> provinces;
-	private List<City> cities;
-	private List<BusinessType> businessTypes;
+    private List<Province> provinces;
+    private List<City> cities;
+    private List<BusinessType> businessTypes;
     @ManagedProperty(value = "#{companyService}")
     private CompanyService companyService;
     @ManagedProperty(value = "#{countryService}")
-	private CountryService countryService;
-	@ManagedProperty(value = "#{provinceService}")
-	private ProvinceService provinceService;
-	@ManagedProperty(value = "#{cityService}")
-	private CityService cityService;
-	@ManagedProperty(value = "#{businessTypeService}")
-	private BusinessTypeService businessTypeService;
+    private CountryService countryService;
+    @ManagedProperty(value = "#{provinceService}")
+    private ProvinceService provinceService;
+    @ManagedProperty(value = "#{cityService}")
+    private CityService cityService;
+    @ManagedProperty(value = "#{businessTypeService}")
+    private BusinessTypeService businessTypeService;
 
     @PostConstruct
     @Override
@@ -63,7 +63,7 @@ public class CompanyFormController extends BaseController {
         try {
             isUpdate = Boolean.FALSE;
             model = new CompanyModel();
-            businessTypes =  businessTypeService.getAllData();
+            businessTypes = businessTypeService.getAllData();
             countries = countryService.getAllData();
             provinces = new ArrayList<Province>();
             cities = new ArrayList<City>();
@@ -74,7 +74,7 @@ public class CompanyFormController extends BaseController {
                 if (company != null) {
                     getModelFromEntity(company);
                     provinces = provinceService.getByCountryId(model.getCountryId());
-            		cities = cityService.getByProvinceId(model.getProvinceId());
+                    cities = cityService.getByProvinceId(model.getProvinceId());
                     isUpdate = Boolean.TRUE;
                 }
             }
@@ -87,86 +87,86 @@ public class CompanyFormController extends BaseController {
     public void cleanAndExit() {
         model = null;
         isUpdate = null;
-        countries = null; 
-        provinces = null; 
-        cities = null; 
-        companyService = null; 
-        countryService = null; 
-        provinceService = null; 
-        cityService = null; 
+        countries = null;
+        provinces = null;
+        cities = null;
+        companyService = null;
+        countryService = null;
+        provinceService = null;
+        cityService = null;
         businessTypeService = null;
         businessTypes = null;
     }
 
-	public CompanyModel getModel() {
-		return model;
-	}
+    public CompanyModel getModel() {
+        return model;
+    }
 
-	public void setModel(CompanyModel model) {
-		this.model = model;
-	}
+    public void setModel(CompanyModel model) {
+        this.model = model;
+    }
 
-	public Boolean getIsUpdate() {
-		return isUpdate;
-	}
+    public Boolean getIsUpdate() {
+        return isUpdate;
+    }
 
-	public void setIsUpdate(Boolean isUpdate) {
-		this.isUpdate = isUpdate;
-	}
+    public void setIsUpdate(Boolean isUpdate) {
+        this.isUpdate = isUpdate;
+    }
 
-	public List<Country> getCountries() {
-		return countries;
-	}
+    public List<Country> getCountries() {
+        return countries;
+    }
 
-	public void setCountries(List<Country> countries) {
-		this.countries = countries;
-	}
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
 
-	public List<Province> getProvinces() {
-		return provinces;
-	}
+    public List<Province> getProvinces() {
+        return provinces;
+    }
 
-	public void setProvinces(List<Province> provinces) {
-		this.provinces = provinces;
-	}
+    public void setProvinces(List<Province> provinces) {
+        this.provinces = provinces;
+    }
 
-	public List<City> getCities() {
-		return cities;
-	}
+    public List<City> getCities() {
+        return cities;
+    }
 
-	public void setCities(List<City> cities) {
-		this.cities = cities;
-	}
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
 
-	public List<BusinessType> getBusinessTypes() {
-		return businessTypes;
-	}
+    public List<BusinessType> getBusinessTypes() {
+        return businessTypes;
+    }
 
-	public void setBusinessTypes(List<BusinessType> businessTypes) {
-		this.businessTypes = businessTypes;
-	}
+    public void setBusinessTypes(List<BusinessType> businessTypes) {
+        this.businessTypes = businessTypes;
+    }
 
-	public void setCompanyService(CompanyService companyService) {
-		this.companyService = companyService;
-	}
+    public void setCompanyService(CompanyService companyService) {
+        this.companyService = companyService;
+    }
 
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
-	}
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
+    }
 
-	public void setProvinceService(ProvinceService provinceService) {
-		this.provinceService = provinceService;
-	}
+    public void setProvinceService(ProvinceService provinceService) {
+        this.provinceService = provinceService;
+    }
 
-	public void setCityService(CityService cityService) {
-		this.cityService = cityService;
-	}
+    public void setCityService(CityService cityService) {
+        this.cityService = cityService;
+    }
 
-	public void setBusinessTypeService(BusinessTypeService businessTypeService) {
-		this.businessTypeService = businessTypeService;
-	}
+    public void setBusinessTypeService(BusinessTypeService businessTypeService) {
+        this.businessTypeService = businessTypeService;
+    }
 
-	public void doReset() {
+    public void doReset() {
         if (isUpdate) {
             try {
                 Company company = companyService.getEntityByPKWithDetail(model.getId());
@@ -190,12 +190,12 @@ public class CompanyFormController extends BaseController {
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-            	companyService.save(company);
+                companyService.save(company);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/organisation/company_detail.htm?faces-redirect=true&execution=e" + company.getId();
-        } catch (BussinessException ex) {             
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -230,9 +230,9 @@ public class CompanyFormController extends BaseController {
 
     private void getModelFromEntity(Company company) {
         model.setId(company.getId());
-    	model.setCode(company.getCode());
-    	model.setCompanyLogoName(company.getCompanyLogoName());
-    	model.setName(company.getName());
+        model.setCode(company.getCode());
+        model.setCompanyLogoName(company.getCompanyLogoName());
+        model.setName(company.getName());
         model.setOfficialName(company.getOfficialName());
         model.setLegalNo(company.getLegalNo());
         model.setLevel(company.getLevel());
@@ -247,36 +247,36 @@ public class CompanyFormController extends BaseController {
         model.setPhone(company.getPhone());
         model.setFax(company.getFax());
         model.setVision(company.getVision());
-        model.setMision(company.getMision());        
+        model.setMision(company.getMision());
     }
 
     public String doBack() {
         return "/protected/organisation/company_view.htm?faces-redirect=true";
-    }       
-    
-    public void onChangeCountries(){
-		try {
-			provinces.clear();
-			cities.clear();
-			provinces = provinceService.getByCountryId(model.getCountryId());
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-	}
-	
-	public void onChangeProvinces(){
-		try {
-			cities.clear();
-			cities = cityService.getByProvinceId(model.getProvinceId());
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-	}
-	
-	public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
+    }
+
+    public void onChangeCountries() {
+        try {
+            provinces.clear();
+            cities.clear();
+            provinces = provinceService.getByCountryId(model.getCountryId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void onChangeProvinces() {
+        try {
+            cities.clear();
+            cities = cityService.getByProvinceId(model.getProvinceId());
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void handingFotoUpload(FileUploadEvent fileUploadEvent) {
         UploadedFile logoFile = fileUploadEvent.getFile();
         model.setCompanyLogo(logoFile.getContents());
         model.setCompanyLogoName(logoFile.getFileName());
     }
-    
+
 }
