@@ -75,9 +75,9 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:selectOneMenu id="costCenterId" styleClass="isitext_hrm" required="true"  value="#{departmentFormController.departmentModel.costCenterDeptId}">
-	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                <f:selectItems value="#{departmentFormController.costCenterDepts}" var="costCenterDept" itemValue="#{costCenterDept.id}" itemLabel="#{costCenterDept.name}"/>
-	                          	</p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{departmentFormController.costCenterDepts}" var="costCenterDept" itemValue="#{costCenterDept.id}" itemLabel="#{costCenterDept.code} - #{costCenterDept.name}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
