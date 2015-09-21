@@ -6,7 +6,9 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Email;
 
 /**
@@ -27,6 +29,8 @@ public class UserModel implements Serializable {
     private Boolean isLock;
     private Long empDataId;
     private String empDataFullName;
+    private String countryPhoneCode;
+    private Long phoneNumbers;
 
     public Long getId() {
         return id;
@@ -125,6 +129,23 @@ public class UserModel implements Serializable {
 
 	public void setEmpDataFullName(String empDataFullName) {
 		this.empDataFullName = empDataFullName;
+	}
+	
+	@Pattern(regexp = "^[+][\\d() -]+", message = "{error_country_phone_code}")
+	public String getCountryPhoneCode() {
+		return countryPhoneCode;
+	}
+
+	public void setCountryPhoneCode(String countryPhoneCode) {
+		this.countryPhoneCode = countryPhoneCode;
+	}
+
+	public Long getPhoneNumbers() {
+		return phoneNumbers;
+	}
+
+	public void setPhoneNumbers(Long phoneNumbers) {
+		this.phoneNumbers = phoneNumbers;
 	}
 
 }
