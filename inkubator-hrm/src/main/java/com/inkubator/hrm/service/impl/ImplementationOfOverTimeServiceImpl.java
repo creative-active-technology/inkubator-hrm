@@ -141,6 +141,21 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(ImplementationOfOverTime entity) throws Exception {
+        Long overTimeId = entity.getWtOverTime().getId();
+        WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
+        Date currentDate = new Date();
+        Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
+        if (selisihWaktu > 0) {
+            if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
+
+        if (selisihWaktu < 0) {
+            if (selisihWaktu < selectTedWtOverTime.getBatasMudur()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
         long totalDuplicates = implementationOfOverTimeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
