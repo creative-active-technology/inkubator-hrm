@@ -310,6 +310,8 @@ public class WtOverTimeServiceImpl extends BaseApprovalConfigurationServiceImpl<
         overTime.setIsActive(entity.getIsActive());
         overTime.setUpdatedBy(UserInfoUtil.getUserName());
         overTime.setUpdatedOn(new Date());
+        overTime.setBatasMaju(entity.getBatasMaju());
+        overTime.setBatasMudur(entity.getBatasMudur());
         wtOverTimeDao.update(overTime);
         
         /** updating approval definition conf manyToMany */

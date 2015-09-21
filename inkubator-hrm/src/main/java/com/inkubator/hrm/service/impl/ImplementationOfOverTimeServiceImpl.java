@@ -7,6 +7,7 @@ package com.inkubator.hrm.service.impl;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -62,6 +63,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "implementationOfOverTimeService")
 @Lazy
 public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl implements ImplementationOfOverTimeService {
+
     @Autowired
     private ImplementationOfOverTimeDao implementationOfOverTimeDao;
     @Autowired
@@ -121,12 +123,12 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
         }
         TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(entity.getEmpData().getId(), entity.getImplementationDate());
-        if(jadwalKaryawan != null){
-            if(entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())){
-                
+        if (jadwalKaryawan != null) {
+            if (entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
+
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
-        }else{
+        } else {
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
         entity.setEmpData(entity.getEmpData());
@@ -139,6 +141,21 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(ImplementationOfOverTime entity) throws Exception {
+        Long overTimeId = entity.getWtOverTime().getId();
+        WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
+        Date currentDate = new Date();
+        Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
+        if (selisihWaktu > 0) {
+            if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
+
+        if (selisihWaktu < 0) {
+            if (selisihWaktu < selectTedWtOverTime.getBatasMudur()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
         long totalDuplicates = implementationOfOverTimeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
@@ -299,15 +316,17 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
         Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-        if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-                /** kalau status akhir sudah di approved dan tidak ada next approval, 
-                 * berarti langsung insert ke database */
-                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-                String pendingData = appActivity.getPendingData();
-                ImplementationOfOverTime implementationOfOverTime =  gson.fromJson(pendingData, ImplementationOfOverTime.class);
-                implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+            String pendingData = appActivity.getPendingData();
+            ImplementationOfOverTime implementationOfOverTime = gson.fromJson(pendingData, ImplementationOfOverTime.class);
+            implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
-                this.save(implementationOfOverTime, true);
+            this.save(implementationOfOverTime, true);
         }
 
         //if there is no error, then sending the email notification
@@ -318,76 +337,75 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
         Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			/** kalau status akhir sudah di approved dan tidak ada next approval, 
-			 * berarti langsung insert ke database */
-			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-                        String pendingData = appActivity.getPendingData();
-			ImplementationOfOverTime implementationOfOverTime =  gson.fromJson(pendingData, ImplementationOfOverTime.class);
-                        implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+            String pendingData = appActivity.getPendingData();
+            ImplementationOfOverTime implementationOfOverTime = gson.fromJson(pendingData, ImplementationOfOverTime.class);
+            implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
-			this.save(implementationOfOverTime, true);
-		}
-		
-		//if there is no error, then sending the email notification
-		sendingApprovalNotification(appActivity);
+            this.save(implementationOfOverTime, true);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void diverted(long approvalActivityId) throws Exception {
         Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
-		ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
-		if(StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")){
-			/** kalau status akhir sudah di approved dan tidak ada next approval, 
-			 * berarti langsung insert ke database */
-			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-                        String pendingData = appActivity.getPendingData();
-			ImplementationOfOverTime implementationOfOverTime =  gson.fromJson(pendingData, ImplementationOfOverTime.class);
-                        implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
+        ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
+        if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
+            /**
+             * kalau status akhir sudah di approved dan tidak ada next approval,
+             * berarti langsung insert ke database
+             */
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+            String pendingData = appActivity.getPendingData();
+            ImplementationOfOverTime implementationOfOverTime = gson.fromJson(pendingData, ImplementationOfOverTime.class);
+            implementationOfOverTime.setApprovalActivityNumber(appActivity.getActivityNumber());  //set approval activity number, for history approval purpose
 
-			this.save(implementationOfOverTime, true);
-		}
-		
-		//if there is no error, then sending the email notification
-		sendingApprovalNotification(appActivity);
+            this.save(implementationOfOverTime, true);
+        }
+
+        //if there is no error, then sending the email notification
+        sendingApprovalNotification(appActivity);
     }
 
     @Override
     public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
-    	//send sms notification to approver if need approval OR
+        //send sms notification to approver if need approval OR
         //send sms notification to requester if need revision
-		super.sendApprovalSmsnotif(appActivity);
-		
-		//initialization
+        super.sendApprovalSmsnotif(appActivity);
+
+        //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
-        
+
         //get all sendCC email address on status approve OR reject
-        List<String> ccEmailAddresses =  new ArrayList<String>();
-        if((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED)  || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)){
-                ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
         }
-        
-        
+
 // cara manual        
 //        JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);
 //        String locale = jsonObject.get("locale").getAsString();
-
 //        String empData = jsonObject.get("empData").getAsString();
 //        TypeToken<List<Long>> token = new TypeToken<List<Long>>(){};
 //        
 //        List<EmpData> listEmpData = gson.fromJson(empData, token.getType());
-
-        
         //parsing object data to json, for email purpose
-        ImplementationOfOverTime implementationOfOverTime =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);		
+        ImplementationOfOverTime implementationOfOverTime = gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
         final JSONObject jsonObj = new JSONObject();
-        
 
-        try {        
+        try {
 
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
@@ -402,7 +420,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
-        
+
         //send messaging, to trigger sending email
         super.jmsTemplateApproval.send(new MessageCreator() {
             @Override
@@ -416,77 +434,95 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String save(ImplementationOfOverTime entity, boolean isBypassApprovalChecking) throws Exception {
         String message = "error";
-        
+        Long overTimeId = entity.getWtOverTime().getId();
+        WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
+        Date currentDate = new Date();
+        Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
+    
+        if (selisihWaktu > 0) {
+            if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
+
+        if (selisihWaktu < 0) {
+            selisihWaktu=selisihWaktu*(-1);
+            if (selisihWaktu >selectTedWtOverTime.getBatasMudur()) {
+                throw new BussinessException("implementOt.implementation_date_outofrange");
+            }
+        }
+
         // check duplicate code
         long totalDuplicates = implementationOfOverTimeDao.getByCode(entity.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("implementOt.implementation_ot_error_duplicate_code");
         }
-        
-        
+
         TempJadwalKaryawan jadwalKaryawan = tempJadwalKaryawanService.getEntityByEmpDataIdAndTanggalWaktuKerja(entity.getEmpData().getId(), entity.getImplementationDate());
         // check apakah terdapat temporary jadwal karyawan atau tidak
-        if(jadwalKaryawan != null){
+        if (jadwalKaryawan != null) {
             // check jika request start time dan end timenya terdapat dalam waktu kerjanya
-            if(entity.getStartTime() != null && entity.getEndTime() != null && 
-            		entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin()) && 
-            		entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
-               
+            if (entity.getStartTime() != null && entity.getEndTime() != null
+                    && entity.getStartTime().after(jadwalKaryawan.getWtWorkingHour().getWorkingHourBegin())
+                    && entity.getEndTime().before(jadwalKaryawan.getWtWorkingHour().getWorkingHourEnd())) {
+
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
-        }else{
+        } else {
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
-        
+
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
         Date createdOn = wtOverTime.getCreatedOn() == null ? new Date() : wtOverTime.getCreatedOn();
-                  
+
         entity.setEmpData(empData);
         entity.setWtOverTime(wtOverTime);
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
-        
+
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         List<ApprovalDefinition> appDefs = Lambda.extract(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition());
-        
+
         // check jika ada cuti yang masih diproses approval, hanya boleh mengajukan cuti jika tidak ada approval yang pending
-        if(approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())){
-                throw new BussinessException("leaveimplementation.error_still_have_waiting_status");
+        if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+            throw new BussinessException("leaveimplementation.error_still_have_waiting_status");
         }
-        
+
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
-        if(approvalActivity == null){
-        	//generate number of code
-			String nomor = this.generateOvertimeNumber();	        
+        if (approvalActivity == null) {
+            //generate number of code
+            String nomor = this.generateOvertimeNumber();
             entity.setCode(nomor);
-            
-            implementationOfOverTimeDao.save(entity);			
+
+            implementationOfOverTimeDao.save(entity);
             message = "success_without_approval";
         } else {
-           
-        //parsing object to json and save to approval activity 
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        approvalActivity.setPendingData( gson.toJson(entity));
-        approvalActivityDao.save(approvalActivity);
 
-        message = "success_need_approval";
+            //parsing object to json and save to approval activity 
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            approvalActivity.setPendingData(gson.toJson(entity));
+            approvalActivityDao.save(approvalActivity);
 
-        //sending email notification
-        this.sendingApprovalNotification(approvalActivity);
+            message = "success_need_approval";
+
+            //sending email notification
+            this.sendingApprovalNotification(approvalActivity);
         }
         return message;
     }
-    
-    private String generateOvertimeNumber(){
-		/** generate number form codification, from OVERTIME module */
-		TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.OVERTIME_KODE);
+
+    private String generateOvertimeNumber() {
+        /**
+         * generate number form codification, from OVERTIME module
+         */
+        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.OVERTIME_KODE);
         Long currentMaxId = implementationOfOverTimeDao.getCurrentMaxId();
         currentMaxId = currentMaxId != null ? currentMaxId : 0;
-        String nomor  = KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode());
+        String nomor = KodefikasiUtil.getKodefikasi(((int) currentMaxId.longValue()), transactionCodefication.getCode());
         return nomor;
-	}
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
@@ -494,20 +530,19 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         return implementationOfOverTimeDao.getEntityByApprovalActivityNumberWithDetail(activityNumber);
     }
 
-	@Override
-	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-		StringBuffer detail = new StringBuffer();
-		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
-        ImplementationOfOverTime entity =  gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
-        
+    @Override
+    protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        StringBuffer detail = new StringBuffer();
+        HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        ImplementationOfOverTime entity = gson.fromJson(appActivity.getPendingData(), ImplementationOfOverTime.class);
+
         detail.append("Pengajuan lembur oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
         detail.append("Jenis: " + entity.getWtOverTime().getName() + ". ");
-        detail.append("Tanggal " + dateFormat.format(entity.getImplementationDate()) + ". ");        
+        detail.append("Tanggal " + dateFormat.format(entity.getImplementationDate()) + ". ");
         detail.append("Total " + entity.getRelativeHour() + " jam, " + entity.getRelativeMinute() + " menit");
         return detail.toString();
-	}
-    
-    
+    }
+
 }

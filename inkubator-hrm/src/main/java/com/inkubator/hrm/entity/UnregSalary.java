@@ -53,6 +53,7 @@ public class UnregSalary implements java.io.Serializable {
     //transient
     private Integer totalUnregPayComponents;
     private BigDecimal totalPaid;
+    private Long totalEmployee; 
 
     public UnregSalary() {
     }
@@ -284,6 +285,15 @@ public class UnregSalary implements java.io.Serializable {
 
 	public void setTotalPaid(BigDecimal totalPaid) {
 		this.totalPaid = totalPaid;
+	}
+
+	@Transient
+	public Long getTotalEmployee() {
+		return totalEmployee;
+	}
+
+	public void setTotalEmployee(Long totalEmployee) {
+		this.totalEmployee = totalEmployee;
 	}
 	
 	

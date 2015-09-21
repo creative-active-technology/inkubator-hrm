@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
 import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
@@ -24,5 +26,7 @@ public interface WtEmpCorrectionAttendanceService extends IService<WtEmpCorrecti
 	public List<WtEmpCorrectionAttendance> getByParam(EmpCorrectionAttendanceSearchParameter parameter, int firstResult, int maxResult, Order orderable) throws Exception;
 	
 	public Long getTotalByParam(EmpCorrectionAttendanceSearchParameter parameter) throws Exception;
+	
+	public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef, Long empDataId) throws Exception;
 
 }

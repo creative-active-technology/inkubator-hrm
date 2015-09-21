@@ -53,6 +53,8 @@ public class WtOverTime implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Integer batasMaju;
+    private Integer batasMudur;
     private WtHitungLembur wtHitungLembur;
     private Set<ApprovalDefinitionOT> approvalDefinitionOTs = new HashSet<ApprovalDefinitionOT>(0);
     private Set<OverTimeDistribution> overTimeDistributions = new HashSet<OverTimeDistribution>(0);
@@ -201,14 +203,14 @@ public class WtOverTime implements java.io.Serializable {
 
     @Column(name = "is_active")
     public Boolean getIsActive() {
-		return isActive;
-	}
+        return isActive;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	@Column(name = "created_by", length = 45)
+    @Column(name = "created_by", length = 45)
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -250,20 +252,20 @@ public class WtOverTime implements java.io.Serializable {
     public Set<ApprovalDefinitionOT> getApprovalDefinitionOTs() {
         return approvalDefinitionOTs;
     }
-    
+
     public void setApprovalDefinitionOTs(Set<ApprovalDefinitionOT> approvalDefinitionOTs) {
         this.approvalDefinitionOTs = approvalDefinitionOTs;
     }
-    
+
     @Transient
     public String getOTCalculationAsString() {
-    	String label = StringUtils.EMPTY;
-    	ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-    	
+        String label = StringUtils.EMPTY;
+        ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+
         if (Objects.equals(getOverTimeCalculation(), HRMConstant.OT_SEPARATED)) {
-        	label =  messages.getString("overtime.separated");
+            label = messages.getString("overtime.separated");
         } else if (Objects.equals(getOverTimeCalculation(), HRMConstant.OT_SUMMARY)) {
-        	label =  messages.getString("overtime.combined");
+            label = messages.getString("overtime.combined");
         }
 
         return label;
@@ -279,30 +281,49 @@ public class WtOverTime implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "wtOverTime")
-	public Set<WtWorkingHour> getWtWorkingHours() {
-		return wtWorkingHours;
-	}
+    public Set<WtWorkingHour> getWtWorkingHours() {
+        return wtWorkingHours;
+    }
 
-	public void setWtWorkingHours(Set<WtWorkingHour> wtWorkingHours) {
-		this.wtWorkingHours = wtWorkingHours;
-	}
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="wtOverTime")
+    public void setWtWorkingHours(Set<WtWorkingHour> wtWorkingHours) {
+        this.wtWorkingHours = wtWorkingHours;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "wtOverTime")
     public Set<ImplementationOfOverTime> getImplementationOfOvertimes() {
         return this.implementationOfOvertimes;
     }
-    
+
     public void setImplementationOfOvertimes(Set<ImplementationOfOverTime> implementationOfOvertimes) {
         this.implementationOfOvertimes = implementationOfOvertimes;
     }
-    
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="hitung_lembur_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hitung_lembur_id")
     public WtHitungLembur getWtHitungLembur() {
         return this.wtHitungLembur;
     }
-    
+
     public void setWtHitungLembur(WtHitungLembur wtHitungLembur) {
         this.wtHitungLembur = wtHitungLembur;
     }
+
+    @Column(name = "batas_maju")
+    public Integer getBatasMaju() {
+        return batasMaju;
+    }
+
+    public void setBatasMaju(Integer batasMaju) {
+        this.batasMaju = batasMaju;
+    }
+
+    @Column(name = "batas_mundur")
+    public Integer getBatasMudur() {
+        return batasMudur;
+    }
+
+    public void setBatasMudur(Integer batasMudur) {
+        this.batasMudur = batasMudur;
+    }
+
 }

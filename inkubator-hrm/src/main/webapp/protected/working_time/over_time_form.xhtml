@@ -52,7 +52,7 @@
                                 <p:column  style="width: 50%">
                                     <p:inputText id="name"  value="#{overTimeFormController.overTimeModel.name}"
                                                  required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
-                                                 <p:ajax listener="#{overTimeFormController.onChangeName()}" update="tableApprovalDevId" />
+                                        <p:ajax listener="#{overTimeFormController.onChangeName()}" update="tableApprovalDevId" />
                                     </p:inputText>
                                     <p:message for="name"/>
                                 </p:column>
@@ -63,10 +63,10 @@
                                 </p:column>
                                 <p:column  style="width: 50%">
                                     <p:selectOneMenu id="metodeHitungId" required="true" label="#{appmsg['overtime.count_method']}" value="#{overTimeFormController.overTimeModel.wtHitungLemburID}" style="width: 156px" >
-                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                            <f:selectItems value="#{overTimeFormController.listWtHitungLembur}" var="hitungLembur" itemValue="#{hitungLembur.id}" itemLabel="#{hitungLembur.metodeHitung}" />
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{overTimeFormController.listWtHitungLembur}" var="hitungLembur" itemValue="#{hitungLembur.id}" itemLabel="#{hitungLembur.metodeHitung}" />
                                     </p:selectOneMenu>
-                                        <p:message for="metodeHitungId"/>
+                                    <p:message for="metodeHitungId"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -181,9 +181,28 @@
                                                            offIcon="ui-icon-close" />
                                 </p:column>
                             </p:row>
-
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="batasMajuId" value="#{appmsg['overtime.batas_maju']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:spinner id="batasMajuId" value="#{overTimeFormController.overTimeModel.batasMaju}" size="3" label="#{appmsg['overtime.batas_maju']}"
+                                               min="1" max="100" stepFactor="1"/> #{appmsg['global.day']}
+                                    <p:message for="batasMajuId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important;">
+                                    <p:outputLabel for="batasMundurId" value="#{appmsg['overtime.batas_mundur']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:spinner id="batasMundurId" value="#{overTimeFormController.overTimeModel.batasMundur}" size="3" label="#{appmsg['overtime.batas_mundur']}"
+                                               min="1" max="100" stepFactor="1"/> #{appmsg['global.day']}
+                                    <p:message for="batasMajuId"/>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
-                        <p:focus context="formOverTimeId" />
+
 
                         <p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
                         <p:separator/>
@@ -276,7 +295,7 @@
                                 <p:resetInput target="formOverTimeId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{overTimeFormController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
+                                             styleClass="label_button"/>
                         </div>
                     </div>
                 </o:form>
