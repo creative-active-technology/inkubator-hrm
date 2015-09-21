@@ -26,12 +26,13 @@ public class UnregPayrollJobListener implements JobExecutionListener {
 	
 	@Override
 	public void beforeJob(JobExecution jobExecution) {		
-		try {	
-			Long unregSalaryId = jobExecution.getJobParameters().getLong("unregSalaryId");
+		try {				
 			/** delete all record (if any)**/
-			logUnregPayrollService.deleteByUnregSalaryId(unregSalaryId);
-			logUnregTaxesService.deleteByUnregSalaryId(unregSalaryId);
-			logUnregListOfTransferService.deleteByUnregSalaryId(unregSalaryId);
+			Boolean isSuccess = this.deleteAllRecordByUnregSalaryId(jobExecution);
+			if(!isSuccess){
+				//jika ada error, canceled the jobs
+				jobExecution.stop(); 
+			}
 			
 		} catch (Exception e) {
 			jobExecution.stop(); //jika ada error, canceled the jobs
@@ -49,6 +50,10 @@ public class UnregPayrollJobListener implements JobExecutionListener {
 				logUnregPayrollService.afterPayrollProcess(unregSalaryId);
 				
 			} catch (Exception e) {
+				/** delete all the record (case if interruption in the middle of process) */
+				this.deleteAllRecordByUnregSalaryId(jobExecution);
+				
+				/** log the Error Message into BatchLog */
 				StringWriter errorMessage = new StringWriter();
 				e.printStackTrace(new PrintWriter(errorMessage));
 				
@@ -56,7 +61,28 @@ public class UnregPayrollJobListener implements JobExecutionListener {
 				jobExecution.setExitStatus(exitStatus);
 				jobExecution.setStatus(BatchStatus.FAILED);
 			}
+			
+		} else {
+			/** delete all the record (case if interruption in the middle of process) */
+			this.deleteAllRecordByUnregSalaryId(jobExecution);
 		}
+	}
+	
+	private Boolean deleteAllRecordByUnregSalaryId(JobExecution jobExecution){		
+		Boolean isSuccess = Boolean.TRUE;
+		
+		try {			
+			Long unregSalaryId = jobExecution.getJobParameters().getLong("unregSalaryId");
+			logUnregPayrollService.deleteByUnregSalaryId(unregSalaryId);
+			logUnregTaxesService.deleteByUnregSalaryId(unregSalaryId);
+			logUnregListOfTransferService.deleteByUnregSalaryId(unregSalaryId);
+			
+		} catch (Exception e) {
+			isSuccess =  Boolean.FALSE;
+			LOGGER.error("Error " + e);
+		}
+		
+		return isSuccess;
 	}
 
 	public LogUnregPayrollService getLogUnregPayrollService() {

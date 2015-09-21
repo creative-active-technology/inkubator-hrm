@@ -27,5 +27,7 @@ public interface LogUnregPayrollService extends IService<LogUnregPayroll> {
 	public List<UnregPayrollViewModel> getByParam(UnregPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalByParam(UnregPayrollSearchParameter parameter);
+	
+	public List<LogUnregPayroll> getAllDataByEmpDataIdAndUnregSalaryId(Long empDataId, Long unregSalaryId) throws Exception;
 
 }
