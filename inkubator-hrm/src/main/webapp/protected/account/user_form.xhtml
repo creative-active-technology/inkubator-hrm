@@ -4,6 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>IGNORED</title>
@@ -78,10 +79,18 @@
                                     <p:outputLabel  value="#{appmsg['user_form.phone_number']}" styleClass="label_hrm" for="phone"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.phone_number']}"
+                                    <!-- <p:inputText  value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['user_form.phone_number']}"
                                                   required="true" id="phone" validatorMessage="#{appmsg['errorr_phone']}">
                                         <p:clientValidator/>
+                                    </p:inputText> -->
+                                    <p:inputText  value="#{userFormController.userModel.countryPhoneCode}" styleClass="isitext_hrm" style="width: 50px;" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="countryPhoneCode" >
+                                        <p:clientValidator/>
                                     </p:inputText>
+                                    <pe:inputNumber value="#{userFormController.userModel.phoneNumbers}" styleClass="isitext_hrm" style="width: 75%" decimalPlaces="0" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="phone">
+                                    </pe:inputNumber>
+                                    <p:message for="countryPhoneCode"/>
                                     <p:message for="phone"/>
                                 </p:column>
                                 
