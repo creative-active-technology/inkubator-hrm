@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,8 +16,13 @@ import javax.faces.bean.ViewScoped;
 
 import ch.lambdaj.Lambda;
 
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendance;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
+import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -34,14 +40,23 @@ public class EmpCorrectionAttendanceDetailController extends BaseController {
     
     @ManagedProperty(value = "#{wtEmpCorrectionAttendanceService}")
     private WtEmpCorrectionAttendanceService wtEmpCorrectionAttendanceService;
+    
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
+    
+    private List<EmpData> listApprover;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            listApprover = new ArrayList<EmpData>();
             String id = FacesUtil.getRequestParameter("execution").substring(1);
             empCorrectionAttendance = wtEmpCorrectionAttendanceService.getEntityByPkWithDetail(Long.parseLong(id));
+            List<ApprovalActivity> listApprovalActivities = approvalActivityService.getAllDataByActivityNumberWithDetail(empCorrectionAttendance.getApprovalActivityNumber());
+            List<ApprovalDefinition> listAppDef = Lambda.extract(listApprovalActivities, Lambda.on(ApprovalActivity.class).getApprovalDefinition());
+            listApprover = wtEmpCorrectionAttendanceService.getListApproverByListAppDefintion(listAppDef, empCorrectionAttendance.getEmpData().getId());
             listDetail = Lambda.sort(empCorrectionAttendance.getWtEmpCorrectionAttendanceDetails(), Lambda.on(WtEmpCorrectionAttendanceDetail.class).getAttendanceDate());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -52,6 +67,7 @@ public class EmpCorrectionAttendanceDetailController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
     	empCorrectionAttendance = null;
+    	approvalActivityService = null;
     	wtEmpCorrectionAttendanceService = null;
     	listDetail = null;
     }   
@@ -83,5 +99,21 @@ public class EmpCorrectionAttendanceDetailController extends BaseController {
 	public void setListDetail(List<WtEmpCorrectionAttendanceDetail> listDetail) {
 		this.listDetail = listDetail;
 	}
+
+	public List<EmpData> getListApprover() {
+		return listApprover;
+	}
+
+	public void setListApprover(List<EmpData> listApprover) {
+		this.listApprover = listApprover;
+	}
+
+	public void setApprovalActivityService(
+			ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
+	}
+
+	
+	
 	
 }
