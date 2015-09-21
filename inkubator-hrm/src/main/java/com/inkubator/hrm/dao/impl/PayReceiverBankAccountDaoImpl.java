@@ -159,6 +159,7 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         criteria.add(Restrictions.eq("ep.id", id));
         criteria.setFetchMode("bioBankAccount", FetchMode.JOIN);
         criteria.setFetchMode("bioBankAccount.bank", FetchMode.JOIN);
+        criteria.setFetchMode("bioBankAccount.bank.bank", FetchMode.JOIN);
         return criteria.list();
     }
 

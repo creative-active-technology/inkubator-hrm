@@ -34,6 +34,7 @@ public class BioBankAccountDaoImpl extends IDAOImpl<BioBankAccount> implements B
         criteria.setFetchMode("city.province.country", FetchMode.JOIN);
         criteria.setFetchMode("bank", FetchMode.JOIN);
         criteria.setFetchMode("currency", FetchMode.JOIN);
+         criteria.setFetchMode("bank.bank", FetchMode.JOIN);
         return criteria.list();
     }
 
