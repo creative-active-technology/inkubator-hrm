@@ -81,7 +81,14 @@ public class BioBankAccountFormController extends BaseController {
             List<Bank> listBank = bankService.getAllData();
 
             for (Bank bank : listBank) {
-                banks.put(bank.getBankName(), bank.getId());
+
+                if (bank.getBankName() != null) {
+                    banks.put(bank.getBankName(), bank.getId());
+                } else {
+                    banks.put(bank.getBank().getBankName() + " - " + bank.getBranchName(), bank.getId());
+                }
+
+//                banks.put(bank.getBankName(), bank.getId());
             }
 
             MapUtil.sortByValue(banks);
@@ -280,7 +287,7 @@ public class BioBankAccountFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -327,12 +334,11 @@ public class BioBankAccountFormController extends BaseController {
 
     public void countryChanged(ValueChangeEvent event) {
         try {
-           
 
             Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
-           
+
             if (listProvinces.isEmpty() || listProvinces == null) {
                 disabledProvince = Boolean.TRUE;
 
@@ -355,7 +361,6 @@ public class BioBankAccountFormController extends BaseController {
 
     public void provinceChanged(ValueChangeEvent event) {
         try {
-            
 
             Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(event.getNewValue())));
 
