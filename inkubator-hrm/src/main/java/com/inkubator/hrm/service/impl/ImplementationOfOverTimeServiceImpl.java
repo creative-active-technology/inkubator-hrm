@@ -438,6 +438,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
         Date currentDate = new Date();
         Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
+    
         if (selisihWaktu > 0) {
             if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
                 throw new BussinessException("implementOt.implementation_date_outofrange");
@@ -445,7 +446,8 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         }
 
         if (selisihWaktu < 0) {
-            if (selisihWaktu < selectTedWtOverTime.getBatasMudur()) {
+            selisihWaktu=selisihWaktu*(-1);
+            if (selisihWaktu >selectTedWtOverTime.getBatasMudur()) {
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
