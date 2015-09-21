@@ -33,6 +33,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.dao.WtEmpCorrectionAttendanceDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.TransactionCodefication;
@@ -514,6 +515,13 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
 		detail.append("Pengajuan koreksi kehadiran oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
 		detail.append("Tanggal kerja  " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()) );
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getListApproverByListAppDefintion(List<ApprovalDefinition> listAppDef, Long empDataId)	throws Exception {
+		HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+    	return super.getListApproverByListAppDef(listAppDef,requester.getUserId());
 	}
 
 }
