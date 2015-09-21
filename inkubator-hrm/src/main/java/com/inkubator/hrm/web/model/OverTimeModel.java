@@ -27,6 +27,8 @@ public class OverTimeModel implements Serializable {
     private Double valuePrice;
     private Boolean isActive;
     private Long wtHitungLemburID;
+    private Integer batasMaju;
+    private Integer batasMundur;
 
     public Long getId() {
         return id;
@@ -117,21 +119,35 @@ public class OverTimeModel implements Serializable {
     }
 
     public Boolean getIsActive() {
-		return isActive;
-	}
+        return isActive;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	public Long getWtHitungLemburID() {
+    public Long getWtHitungLemburID() {
         return wtHitungLemburID;
     }
 
     public void setWtHitungLemburID(Long wtHitungLemburID) {
         this.wtHitungLemburID = wtHitungLemburID;
     }
-    
-    
+
+    public Integer getBatasMaju() {
+        return batasMaju;
+    }
+
+    public void setBatasMaju(Integer batasMaju) {
+        this.batasMaju = batasMaju;
+    }
+
+    public Integer getBatasMundur() {
+        return batasMundur;
+    }
+
+    public void setBatasMundur(Integer batasMundur) {
+        this.batasMundur = batasMundur;
+    }
 
 }

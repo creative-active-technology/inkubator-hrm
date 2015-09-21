@@ -131,11 +131,26 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.isActive}">
-                                    	<f:converter converterId="booleanMessageConverter" />
+                                        <f:converter converterId="booleanMessageConverter" />
                                     </p:outputLabel>  	                                
                                 </p:column>
                             </p:row>
-
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.batas_maju']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.batasMaju}"/> 	                                
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['overtime.batas_mundur']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{overTimeDetailController.selectedWtOverTime.batasMudur}"/> 	                                
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>	                    
                         <p:separator/>
 
