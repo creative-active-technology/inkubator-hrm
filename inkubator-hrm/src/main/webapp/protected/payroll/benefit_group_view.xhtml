@@ -90,7 +90,7 @@
                                     <h:outputText value="#{appmsg['benefitGroup.benefitGroup_validDate']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{benefitGroupData.validDate}">
-                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                      <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="measurement"  style="width: 15%">
