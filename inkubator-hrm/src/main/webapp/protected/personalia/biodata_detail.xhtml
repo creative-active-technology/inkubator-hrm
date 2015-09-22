@@ -751,13 +751,17 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_issued']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioIdCardData.issuedDate}" />
+                                        <p:outputLabel value= "#{bioIdCardData.issuedDate}" >
+                                            <f:convertDateTime pattern="dd MMMM yyyy"/>
+                                        </p:outputLabel>
                                     </p:column> 
                                     <p:column sortBy="validDate"  style="width: 15%">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioIdCard.bioIdCard_valid']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioIdCardData.validDate}" />
+                                        <p:outputLabel value= "#{bioIdCardData.validDate}" >
+                                         <f:convertDateTime pattern="dd MMMM yyyy"/>
+                                        </p:outputLabel>
                                     </p:column> 
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
 
