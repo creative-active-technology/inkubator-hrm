@@ -215,6 +215,7 @@ public class PermitImplementationFormController extends BaseController {
         	String tempNumberFilling = model.getNumberFilling();
             model = new PermitImplementationModel();
             model.setNumberFilling(tempNumberFilling);
+            
         }
     }
 
