@@ -269,6 +269,7 @@ public class UserFormController extends BaseController {
         }
         hrmUser.setPassword(userModel.getPassword());
         hrmUser.setPhoneNumber(phoneNumber);
+        hrmUser.setPhoneCode(userModel.getCountryPhoneCode());
         hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
         if(userModel.getEmpDataId() != null){
@@ -279,6 +280,15 @@ public class UserFormController extends BaseController {
 
     public UserModel getUserModelFromEntity(HrmUser hrmUser) {
         UserModel us = new UserModel();
+      //replace phone number, ex: from +6285720123456 to 085720123456
+    	if(hrmUser.getPhoneCode() != null){
+	    	String phoneWithCode = hrmUser.getPhoneNumber();
+	    	System.out.println(phoneWithCode + " - " + hrmUser.getPhoneNumber() + " - " + hrmUser.getPhoneCode().length() + " - " + hrmUser.getPhoneNumber().length());
+	    	String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
+	        System.out.println(phoneNumberWithoutCode);
+	        us.setPhoneNumbers(Long.valueOf(phoneNumberWithoutCode));
+	        us.setCountryPhoneCode(hrmUser.getPhoneCode());
+    	}
         us.setId(hrmUser.getId());
         us.setEmailAddress(hrmUser.getEmailAddress());
         if (Objects.equals(hrmUser.getIsActive(), HRMConstant.ACTIVE)) {
