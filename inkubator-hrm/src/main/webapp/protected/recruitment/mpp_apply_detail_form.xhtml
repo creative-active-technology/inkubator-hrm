@@ -157,7 +157,7 @@
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formMppApplyDetailId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" action="#{mppApplyDetailFormController.doReset()}" >  
                             <p:resetInput target="formMppApplyDetailId" />  
                         </p:commandButton>
                     </h:panelGrid>

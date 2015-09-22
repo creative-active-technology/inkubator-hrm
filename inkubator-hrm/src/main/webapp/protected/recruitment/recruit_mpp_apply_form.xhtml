@@ -211,7 +211,7 @@
                                              action="#{recruitMppApplyFormController.doSave()}" styleClass="isitext_hrm"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitMppId"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitMppId" action="#{recruitMppApplyFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm" style="margin-right: 5px" disabled="#{recruitMppApplyFormController.isUpdate}"  >  
                                 <p:resetInput target="formRecruitMppId" />  
                             </p:commandButton>
@@ -222,24 +222,6 @@
                         </div>
                       </div>
                     
-                     <!-- <div id="box_bg" style="margin: 10px">
-
-                       <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                        <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formRecruitMppId,:growlId"
-                                             action="#{recruitMppApplyFormController.doSave()}" styleClass="isitext_hrm"
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
-                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitMppId"
-                                             icon="ui-icon-refresh" styleClass="isitext_hrm" style="margin-right: 5px" disabled="#{recruitMppApplyFormController.isUpdate}"  >  
-                                <p:resetInput target="formRecruitMppId" />  
-                            </p:commandButton>
-                            <p:commandButton value="#{appmsg['global.back']}" immediate="true"
-                                             action="#{recruitMppApplyFormController.doBack()}" styleClass="isitext_hrm"
-                                             style="margin-right: 5px" label="#{appmsg['global.back']}"
-                                             icon="ui-icon-home" title="#{appmsg['global.back']}"/>
-                        </div>
-                     </div> -->
                     
                     
                 </h:form>
