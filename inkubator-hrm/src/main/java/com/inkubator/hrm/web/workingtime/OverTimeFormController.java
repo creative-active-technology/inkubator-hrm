@@ -88,6 +88,8 @@ public class OverTimeFormController extends BaseController {
                 overTimeModel.setValuePrice(wtOverTime.getValuePrice());
                 overTimeModel.setWtHitungLemburID(wtOverTime.getWtHitungLembur() != null ? wtOverTime.getWtHitungLembur().getId() : null);
                 overTimeModel.setIsActive(wtOverTime.getIsActive());
+                overTimeModel.setBatasMaju(wtOverTime.getBatasMaju());
+                overTimeModel.setBatasMundur(wtOverTime.getBatasMudur());
                 Set<ApprovalDefinitionOT> approvalDefinitionOTs = wtOverTime.getApprovalDefinitionOTs();
                     for(ApprovalDefinitionOT appDefOverTime : approvalDefinitionOTs){
                     	appDefs.add(appDefOverTime.getApprovalDefinition());
@@ -146,6 +148,8 @@ public class OverTimeFormController extends BaseController {
         overTime.setValuePrice(overTimeModel.getValuePrice());
         overTime.setIsActive(overTimeModel.getIsActive());
         overTime.setWtHitungLembur(new WtHitungLembur(overTimeModel.getWtHitungLemburID()));
+        overTime.setBatasMaju(overTimeModel.getBatasMaju());
+        overTime.setBatasMudur(overTimeModel.getBatasMundur());
         return overTime;
     }
 

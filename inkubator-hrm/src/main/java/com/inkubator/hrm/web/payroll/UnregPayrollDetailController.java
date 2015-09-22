@@ -46,6 +46,7 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 public class UnregPayrollDetailController extends BaseController {
 
 	private UnregSalary unregSalary;
+	private UnregPayrollViewModel unregPayrollViewModel;
 	private Long totalEmployee;
 	private BigDecimal totalNominal;
     private UnregPayrollSearchParameter parameter;
@@ -103,6 +104,10 @@ public class UnregPayrollDetailController extends BaseController {
 	public void doSearch() {
         lazyDataModel = null;
     }
+	
+	public String doDetail(){
+		return "/protected/payroll/unreg_payroll_component_detail.htm?faces-redirect=true&execution=e"+unregPayrollViewModel.getEmpDataId()+"&unreg=e"+unregSalary.getId();
+	}
 
     public void doPaymentProcess(){
     	/** to cater prevent multiple click, that will make batch execute multiple time. 
@@ -297,6 +302,14 @@ public class UnregPayrollDetailController extends BaseController {
 
 	public void setJobUnregPayroll(Job jobUnregPayroll) {
 		this.jobUnregPayroll = jobUnregPayroll;
-	}    
+	}
+
+	public UnregPayrollViewModel getUnregPayrollViewModel() {
+		return unregPayrollViewModel;
+	}
+
+	public void setUnregPayrollViewModel(UnregPayrollViewModel unregPayrollViewModel) {
+		this.unregPayrollViewModel = unregPayrollViewModel;
+	}  
     
 }

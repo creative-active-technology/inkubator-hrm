@@ -6,9 +6,7 @@
 package com.inkubator.hrm.web.converter;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.service.PaySalaryComponentService;
 import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.ServiceWebUtil;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -17,27 +15,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  *
  * @author Deni
  */
-@FacesConverter(value = "paySalaryComponentConverter")
-public class PaySalaryComponentConverter implements Converter{
-    
-    private static final Logger LOGGER = Logger.getLogger(PaySalaryComponentConverter.class);
+@FacesConverter(value = "paySalaryComponentFormulaConverter")
+public class PaySalaryComponentFormulaConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        PaySalaryComponentService paySalaryComponentService = (PaySalaryComponentService) ServiceWebUtil.getService("paySalaryComponentService");
-        Object object = null;
-        try {
-            object = paySalaryComponentService.getEntiyByPK(Long.parseLong(value));
-        } catch (Exception ex) {
-            LOGGER.error(ex.getMessage());
-        }
-        return object;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -46,11 +34,11 @@ public class PaySalaryComponentConverter implements Converter{
         
         String messages = StringUtils.EMPTY;
         Integer data= (Integer) value;
-        if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)){
+        if(Objects.equals(data, 1)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_tunjangan");
-        } else if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)){
+        } else if(Objects.equals(data, -1)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_potongan");
-        } else if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)){
+        } else if(Objects.equals(data, 0)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_subsidi");
         } 
         return messages;

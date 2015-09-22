@@ -6,6 +6,7 @@
 package com.inkubator.hrm.web.recruitment;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -28,18 +29,21 @@ import com.inkubator.hrm.web.model.RecruitMppApplyModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.exception.ConstraintViolationException;
@@ -315,6 +319,25 @@ public class RecruitMppApplyFormController extends BaseController {
     public String doBack() {       
         cleanAndExit();
         return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
+    }
+    
+    public void doReset() {   
+    	
+    	listMppDetail = new ArrayList<RecruitMppApplyDetail>();
+    	recruitMppApplyModel = new RecruitMppApplyModel();
+        mppPeriodeId = null;
+        
+    	if(isUpdate){
+    		if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
+                try {
+					recruitMppApplyModel = convertJsonToModel(selectedApprovalActivity.getPendingData());
+				} catch (Exception e) {
+					LOGGER.error("Error", e);
+				}
+                mppPeriodeId = recruitMppApplyModel.getMppPeriodId();
+            }
+    	}
+    	
     }
 
     private RecruitMppApplyModel convertJsonToModel(String jsonData) throws Exception {

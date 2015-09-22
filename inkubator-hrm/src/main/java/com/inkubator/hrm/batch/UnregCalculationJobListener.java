@@ -29,10 +29,12 @@ public class UnregCalculationJobListener implements JobExecutionListener {
 	@Override
 	public void beforeJob(JobExecution jobExecution) {
 		try {
-			Long unregSalaryId = jobExecution.getJobParameters().getLong("unregSalaryId");
 			/** delete all the record, will be recalculated during batch process **/
-			tempUnregPayrollService.deleteByUnregSalaryId(unregSalaryId);
-			tempUnregPayrollEmpPajakService.deleteByUnregSalaryId(unregSalaryId);
+			Boolean isSuccess = this.deleteAllRecordByUnregSalaryId(jobExecution);
+			if(!isSuccess){
+				//jika ada error, canceled the jobs
+				jobExecution.stop(); 
+			}
 			
 		} catch (Exception e) {
 			jobExecution.stop(); //jika ada error, canceled the jobs
@@ -53,6 +55,10 @@ public class UnregCalculationJobListener implements JobExecutionListener {
 				unregSalaryService.saveOrUpdate(unregSalary);
 				
 			} catch (Exception e) {
+				/** delete all the record (case if interruption in the middle of process) */
+				this.deleteAllRecordByUnregSalaryId(jobExecution);
+				
+				/** log the Error Message into BatchLog */
 				StringWriter errorMessage = new StringWriter();
 				e.printStackTrace(new PrintWriter(errorMessage));
 				
@@ -60,9 +66,28 @@ public class UnregCalculationJobListener implements JobExecutionListener {
 				jobExecution.setExitStatus(exitStatus);
 				jobExecution.setStatus(BatchStatus.FAILED);
 			}
+			
+		} else {
+			/** delete all the record (case if interruption in the middle of process) */
+			this.deleteAllRecordByUnregSalaryId(jobExecution);
 		}
 	}
 
+	private Boolean deleteAllRecordByUnregSalaryId(JobExecution jobExecution){		
+		Boolean isSuccess = Boolean.TRUE;
+		
+		try {	
+			Long unregSalaryId = jobExecution.getJobParameters().getLong("unregSalaryId");
+			tempUnregPayrollService.deleteByUnregSalaryId(unregSalaryId);
+			tempUnregPayrollEmpPajakService.deleteByUnregSalaryId(unregSalaryId);
+			
+		} catch (Exception e) {
+			isSuccess =  Boolean.FALSE;
+			LOGGER.error("Error " + e);
+		}
+		
+		return isSuccess;
+	}
 	
 	public UnregSalaryService getUnregSalaryService() {
 		return unregSalaryService;

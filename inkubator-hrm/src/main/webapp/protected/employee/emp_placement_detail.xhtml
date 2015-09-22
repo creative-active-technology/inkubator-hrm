@@ -603,7 +603,9 @@
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['bioBankAccount.bioBankAccount_bank']}"/>
                                         </f:facet>
-                                        <h:outputLabel value= "#{bioBankAccountData.bank.bankName}"/>
+                                         <p:outputLabel value= "#{bioBankAccountData.bank.bankName}" rendered="#{!bioBankAccountData.bank.parent}" />
+                                        <p:outputLabel value= "#{bioBankAccountData.bank.bank.bankName} - #{bioBankAccountData.bank.branchName} " rendered="#{bioBankAccountData.bank.parent}" />
+                                        <!--<h:outputLabel value= "#{bioBankAccountData.bank.bankName}"/>-->
                                     </p:column>  
                                     <p:column sortBy="#{bioBankAccountData.accountNumber}"  style="width: 25%">
                                         <f:facet name="header">  

@@ -81,7 +81,12 @@ public class BioBankAccountFormController extends BaseController {
             List<Bank> listBank = bankService.getAllData();
 
             for (Bank bank : listBank) {
-                banks.put(bank.getBankName(), bank.getId());
+                 if (bank.getBankName() != null) {
+                    banks.put(bank.getBankName(), bank.getId());
+                }else{
+                       banks.put(bank.getBank().getBankName()+" - "+bank.getBranchName(), bank.getId());
+                }
+//                banks.put(bank.getBankName(), bank.getId());
             }
 
             MapUtil.sortByValue(banks);

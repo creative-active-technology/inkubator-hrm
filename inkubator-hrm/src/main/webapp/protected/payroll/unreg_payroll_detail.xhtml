@@ -113,7 +113,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empNik}" />
                             </p:column>
-                            <p:column sortBy="empName" style="width: 30%">
+                            <p:column sortBy="empName" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['employee.employee_name']}"/>
                                 </f:facet>
@@ -151,6 +151,12 @@
                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column> 
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">                                
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" action="#{unregPayrollDetailController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregPayrollDetailController.unregPayrollViewModel}" />
+                                </p:commandButton>
+                            </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{unregPayrollDetailController.lazyDataModel.rowCount}"/>

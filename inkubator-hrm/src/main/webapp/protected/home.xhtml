@@ -650,7 +650,7 @@
                             <p:column style="width: 25%;" >
                                 <p:panel  style="margin-left: 0px;margin-right: 10px;margin-top: 10px;height: 242px" > 
                                     <div align="center" style="margin-top: 5%">
-                                        <p:calendar id="calendarId" mindate="#{homeDashboardController.startCalendarDate}" maxdate="#{homeDashboardController.endCalendarDate}" mode="inline" beforeShowDay="holidaysDisabled">
+                                        <p:calendar id="calendarId" mindate="#{homeDashboardController.startCalendarDate}" maxdate="#{homeDashboardController.endCalendarDate}" mode="inline" beforeShowDay="holidaysDisabled" >
                                             <p:ajax event="dateSelect" listener="#{homeDashboardController.onSelectDate}" update=":mainGrowl"/>
                                         </p:calendar>
                                     </div>
