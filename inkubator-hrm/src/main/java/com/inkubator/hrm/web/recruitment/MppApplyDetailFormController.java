@@ -170,6 +170,14 @@ public class MppApplyDetailFormController extends BaseController {
         jabatanService = null;
         isUpdate = null;
     }
+    
+    public void doReset() {
+    	if(!isUpdate){
+    		mppApplyDetailModel.setDepartemenId(null);               
+            mppApplyDetailModel.setJabatanId(null);
+    	}
+    	 
+    }
 
     public void doSave() {
 

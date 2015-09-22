@@ -155,6 +155,7 @@ public class UserFormController extends BaseController {
 
     private String doInsert(HrmUser hrmUser) {
         hrmUser.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        
         try {
             boolean isDuplicateUserId = hrmUserService.getByUserId(hrmUser.getUserId()) != null;
             boolean isDuplicateEmailAddress = hrmUserService.getByEmailAddress(hrmUser.getEmailAddress()) != null;
@@ -244,6 +245,7 @@ public class UserFormController extends BaseController {
 
     public HrmUser getEntityFromView(UserModel userModel) {
         HrmUser hrmUser = new HrmUser();
+        String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumbers();
         if (userModel.getId() != null) {
             hrmUser.setId(userModel.getId());
         }
@@ -266,7 +268,7 @@ public class UserFormController extends BaseController {
             hrmUser.setIsLock(HRMConstant.NOTLOCK);
         }
         hrmUser.setPassword(userModel.getPassword());
-        hrmUser.setPhoneNumber(userModel.getPhoneNumber());
+        hrmUser.setPhoneNumber(phoneNumber);
         hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
         if(userModel.getEmpDataId() != null){

@@ -25,6 +25,7 @@ import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
 import com.inkubator.hrm.dao.GenderDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
+import com.inkubator.hrm.dao.LogUnregPayrollDao;
 import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
@@ -94,7 +95,9 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
     @Autowired
     private TempUnregPayrollDao tempUnregPayrollDao;
     @Autowired
-    private PaySalaryComponentDao paySalaryComponentDao;
+    private PaySalaryComponentDao paySalaryComponentDao ;
+    @Autowired
+    private LogUnregPayrollDao logUnregPayrollDao;
     
 
     @Override
@@ -446,7 +449,15 @@ public class UnregSalaryServiceImpl extends IServiceImpl implements UnregSalaryS
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<UnregSalary> getByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {
+	public List<UnregSalary> getByParamBySalaryPayroll(UnregSalarySearchParameter searchParameter, Date fromPeriodPayrollType, int firstResult, int maxResults, Order order) throws Exception {		
+		List<UnregSalary> unregSalaries = unregSalaryDao.getByParamBySalaryPayroll(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
+		for(UnregSalary unregSalary : unregSalaries){
+			BigDecimal totalPaid = logUnregPayrollDao.getTotalTakeHomePayByUnregSalaryId(unregSalary.getId());
+			Long totalEmployee = logUnregPayrollDao.getTotalEmployeeByUnregSalaryId(unregSalary.getId());
+			
+			unregSalary.setTotalPaid(totalPaid);
+			unregSalary.setTotalEmployee(totalEmployee);
+		}
 		return unregSalaryDao.getByParamBySalaryPayroll(searchParameter, fromPeriodPayrollType, firstResult, maxResults, order);
 		
 	}

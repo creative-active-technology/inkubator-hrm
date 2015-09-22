@@ -266,7 +266,7 @@
                                 </p:commandButton> 
                                 -
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{overTimeFormController.doEditAppDef()}" >
+                                                 action="#{overTimeFormController.doEditAppDef()}" immediate="true">
                                     <f:setPropertyActionListener value="#{approvalDefinitionData}" target="#{overTimeFormController.selectedAppDef}" />
                                     <p:ajax event="dialogReturn" listener="#{overTimeFormController.onDialogReturnEditAppDef}"  update="tableApprovalDevId"/>
                                 </p:commandButton>

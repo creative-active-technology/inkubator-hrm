@@ -328,9 +328,12 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 			}
 			
 			//selain "OFF"(hari libur) berarti termasuk jam kerja
-			if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
-				workingDays.add(jadwal.getTanggalWaktuKerja());
-			}			
+			if(jadwal != null){
+				if(!StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+					workingDays.add(jadwal.getTanggalWaktuKerja());
+				}	
+			}
+					
 		}
 		return workingDays;
 	}
@@ -355,9 +358,12 @@ public class WtScheduleShiftServiceImpl extends IServiceImpl implements WtSchedu
 				}
 				
 				//hanya yg "OFF"(hari libur) saja
-				if(StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
-					offDays.add(jadwal.getTanggalWaktuKerja());
-				}	
+				if(jadwal != null){
+					if(StringUtils.equals(jadwal.getWtWorkingHour().getCode(),"OFF")){
+						offDays.add(jadwal.getTanggalWaktuKerja());
+					}	
+				}
+				
 			}
 		}
 		

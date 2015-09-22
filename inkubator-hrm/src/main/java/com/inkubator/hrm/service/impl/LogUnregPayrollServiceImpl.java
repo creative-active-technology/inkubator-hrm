@@ -18,6 +18,7 @@ import com.inkubator.hrm.dao.LogUnregPayrollDao;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
 import com.inkubator.hrm.dao.UnregSalaryDao;
+import com.inkubator.hrm.entity.LogUnregPayroll;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.LogUnregPayrollService;
 import com.inkubator.hrm.web.model.UnregPayrollViewModel;
@@ -312,6 +313,12 @@ public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnreg
 	public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
 		return logUnregPayrollDao.getTotalByParam(parameter);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogUnregPayroll> getAllDataByEmpDataIdAndUnregSalaryId(Long empDataId, Long unregSalaryId) throws Exception {
+		return logUnregPayrollDao.getAllDataByEmpDataIdAndUnregSalaryId(empDataId, unregSalaryId);
 	}
 
 }
