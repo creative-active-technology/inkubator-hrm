@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +38,7 @@ public class HrmUser implements java.io.Serializable {
     private String realName;
     private String emailAddress;
     private String phoneNumber;
+    private String phoneCode;
     private String password;
     private Integer isActive;
     private Integer isLock;
@@ -239,6 +241,15 @@ public class HrmUser implements java.io.Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    @Column(name = "PHONE_CODE", length = 45)
+    public String getPhoneCode() {
+		return phoneCode;
+	}
+
+	public void setPhoneCode(String phoneCode) {
+		this.phoneCode = phoneCode;
+	}
+	
     @Transient
     public List<HrmRole> getRoles() {
         return roles;
