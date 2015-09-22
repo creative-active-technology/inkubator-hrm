@@ -37,6 +37,7 @@ public class HrmUser implements java.io.Serializable {
     private String realName;
     private String emailAddress;
     private String phoneNumber;
+    private String phoneCode;
     private String password;
     private Integer isActive;
     private Integer isLock;
@@ -239,7 +240,16 @@ public class HrmUser implements java.io.Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    @Transient
+    @Column(name = "PHONE_CODE", length = 45)
+    public String getPhoneCode() {
+		return phoneCode;
+	}
+
+	public void setPhoneCode(String phoneCode) {
+		this.phoneCode = phoneCode;
+	}
+
+	@Transient
     public List<HrmRole> getRoles() {
         return roles;
     }
