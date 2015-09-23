@@ -55,7 +55,10 @@
 	                                <p:outputLabel for="contentPolicyId" value="#{appmsg['companypolicy.content']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:editor id="contentPolicyId" required="true" widgetVar="editorWidget" value="#{companyPolicyFormController.model.contentPolicy}" width="600" />
+	                            	<p:editor id="contentPolicyId" required="true" widgetVar="editorWidget" value="#{companyPolicyFormController.model.contentPolicy}" width="600" >
+		                            	<f:validator validatorId="htmlContentValidator"  />
+	                                    <f:attribute name="validatorMessage" value="#{appmsg['companypolicy.content_should_not_be_empty']}"/>
+	                            	</p:editor>
 	                                <p:message for="contentPolicyId"/>
 	                            </p:column>
 	                        </p:row> 	
