@@ -53,6 +53,7 @@ import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
@@ -528,6 +529,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
@@ -2230,4 +2232,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.addOrder(Order.asc("bi.firstName"));
         return criteria.list();
     }
+
+	@Override
+	public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
 }
