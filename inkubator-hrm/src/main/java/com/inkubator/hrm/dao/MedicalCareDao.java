@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -7,7 +8,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
-import java.util.Date;
+import com.inkubator.hrm.web.search.ReportSickDataSearchParameter;
 
 /**
  *
@@ -28,5 +29,10 @@ public interface MedicalCareDao extends IDAO<MedicalCare> {
     public MedicalCare getByEmpIdAndDate(long empId, Date doDate);
     
     public List<MedicalCare> getListWhereStartDateBetweenDateFromAndDateUntillByEmpId(Long empDataId, Date dateFrom, Date dateUntill);
-
+    
+    public List<MedicalCare> getByParamForReportSickData(ReportSickDataSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+    
+    public Long getTotalByParamForReportSickData(ReportSickDataSearchParameter searchParameter);
 }
+
+

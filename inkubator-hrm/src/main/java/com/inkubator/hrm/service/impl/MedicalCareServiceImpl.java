@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.service.MedicalCareService;
 import com.inkubator.hrm.web.lazymodel.MedicalCareLazyDataModel;
 import com.inkubator.hrm.web.search.MedicalCareSearchParameter;
+import com.inkubator.hrm.web.search.ReportSickDataSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
 import java.io.File;
@@ -371,4 +372,17 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
     public MedicalCare getEntityWithNameAndNik(Long id) throws Exception {
         return this.medicalCareDao.getEntityWithNameAndNik(id);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<MedicalCare> getByParamForReportSickData(ReportSickDataSearchParameter searchParameter, int firstResult,
+			int maxResults, Order orderable) throws Exception{
+		return this.medicalCareDao.getByParamForReportSickData(searchParameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamForReportSickData(ReportSickDataSearchParameter searchParameter) throws Exception{
+		return this.medicalCareDao.getTotalByParamForReportSickData(searchParameter);
+	}
 }
