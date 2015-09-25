@@ -1000,15 +1000,20 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         Long overTimeId = entity.getPermitClassification().getId();
         PermitClassification selectedPermitClass = permitDao.getEntiyByPK(overTimeId);
         Date currentDate = new Date();
-        Integer selisihWaktuMundur = DateTimeUtil.getTotalDayDifference(currentDate, entity.getEndDate());
-        Integer selisihWaktuMaju = DateTimeUtil.getTotalDayDifference(currentDate, entity.getStartDate());
 
-        if (selisihWaktuMundur > selectedPermitClass.getBatasMudur()) {
-            throw new BussinessException("permitimplementation.error_out_off_range");
+        Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getStartDate());
+
+        if (selisihWaktu > 0) {
+            if (selisihWaktu > selectedPermitClass.getBatasMaju()) {
+                throw new BussinessException("permitimplementation.error_out_off_range");
+            }
         }
 
-        if (selisihWaktuMaju > selectedPermitClass.getBatasMaju()) {
-            throw new BussinessException("permitimplementation.error_out_off_range");
+        if (selisihWaktu < 0) {
+            selisihWaktu = Math.abs(selisihWaktu);
+            if (selisihWaktu > selectedPermitClass.getBatasMudur()) {
+                throw new BussinessException("permitimplementation.error_out_off_range");
+            }
         }
 
         long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
