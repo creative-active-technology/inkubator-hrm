@@ -371,6 +371,8 @@ public class PermitClassificationServiceImpl extends BaseApprovalConfigurationSe
         permitClassification.setIsActive(entity.getIsActive());
         permitClassification.setUpdatedBy(UserInfoUtil.getUserName());
         permitClassification.setUpdatedOn(new Date());
+        permitClassification.setBatasMaju(entity.getBatasMaju());
+        permitClassification.setBatasMudur(entity.getBatasMudur());
         permitClassificationDao.update(permitClassification);
         
         /** updating approval definition conf manyToMany */

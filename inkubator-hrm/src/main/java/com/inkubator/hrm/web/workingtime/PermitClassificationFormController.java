@@ -66,7 +66,7 @@ public class PermitClassificationFormController extends BaseController {
             permitClassificationModel = new PermitClassificationModel();
             isUpdate = Boolean.FALSE;
             disabled = Boolean.TRUE;
-            appDefs = new ArrayList<ApprovalDefinition>(); 
+            appDefs = new ArrayList<ApprovalDefinition>();
             List<AttendanceStatus> listAttendanceStatuss = attendanceStatusService.getAllData();
 
             for (AttendanceStatus attendanceStatus : listAttendanceStatuss) {
@@ -76,6 +76,7 @@ public class PermitClassificationFormController extends BaseController {
             MapUtil.sortByValue(attendanceStatuss);
 
             if (param != null) {
+                System.out.println(" Kondisi is updatae");
                 try {
                     PermitClassification permitClassification = permitClassificationService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                     permitClassificationModel.setId(permitClassification.getId());
@@ -98,16 +99,16 @@ public class PermitClassificationFormController extends BaseController {
                     permitClassificationModel.setBatasMaju(permitClassification.getBatasMaju());
                     permitClassificationModel.setBatasMudur(permitClassification.getBatasMudur());
                     if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
-                    	disabled = Boolean.FALSE;
+                        disabled = Boolean.FALSE;
                     }
                     if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_MONTH)) {
-                    	disabled = Boolean.TRUE;
+                        disabled = Boolean.TRUE;
                     }
                     Set<ApprovalDefinitionPermit> setAppDefPermits = permitClassification.getApprovalDefinitionPermits();
-                    for(ApprovalDefinitionPermit appDefPermit : setAppDefPermits){
-                    	appDefs.add(appDefPermit.getApprovalDefinition());
+                    for (ApprovalDefinitionPermit appDefPermit : setAppDefPermits) {
+                        appDefs.add(appDefPermit.getApprovalDefinition());
                     }
-
+                    isUpdate = Boolean.TRUE;
                 } catch (Exception e) {
                     LOGGER.error("Error", e);
                 }
@@ -128,7 +129,7 @@ public class PermitClassificationFormController extends BaseController {
         disabled = null;
         appDefs = null;
         selectedAppDef = null;
-        
+
     }
 
     public List<ApprovalDefinition> getAppDefs() {
@@ -154,7 +155,7 @@ public class PermitClassificationFormController extends BaseController {
     public void setIndexOfAppDefs(int indexOfAppDefs) {
         this.indexOfAppDefs = indexOfAppDefs;
     }
-    
+
     public PermitClassificationModel getPermitClassificationModel() {
         return permitClassificationModel;
     }
@@ -195,8 +196,6 @@ public class PermitClassificationFormController extends BaseController {
         this.disabled = disabled;
     }
 
-    
-
     public String doBack() {
         return "/protected/working_time/permit_classification_view.htm?faces-redirect=true";
     }
@@ -207,16 +206,18 @@ public class PermitClassificationFormController extends BaseController {
             PermitClassification permitClassification = getEntityFromViewModel(permitClassificationModel);
 
             if (isUpdate) {
+                System.out.println(" Kondisi is updatae");
                 permitClassificationService.update(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
+                System.out.println(" Kondisi is saveee");
                 permitClassificationService.save(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
             return "/protected/working_time/permit_classification_detail.htm?faces-redirect=true&execution=e" + permitClassification.getId();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -295,7 +296,7 @@ public class PermitClassificationFormController extends BaseController {
                 permitClassificationModel.setIsActive(permitClassification.getIsActive());
                 isUpdate = Boolean.TRUE;
                 if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
-                	disabled = Boolean.FALSE;
+                    disabled = Boolean.FALSE;
                 }
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -305,20 +306,22 @@ public class PermitClassificationFormController extends BaseController {
             isUpdate = Boolean.FALSE;
         }
     }
-    
-    /** Start Approval Definition form */
-    public void onChangeName(){
-    	if(!appDefs.isEmpty()) {
-    		Lambda.forEach(appDefs).setSpecificName(permitClassificationModel.getName());
-    	}
+
+    /**
+     * Start Approval Definition form
+     */
+    public void onChangeName() {
+        if (!appDefs.isEmpty()) {
+            Lambda.forEach(appDefs).setSpecificName(permitClassificationModel.getName());
+        }
     }
-    
+
     public void doDeleteAppDef() {
-    	appDefs.remove(selectedAppDef);
+        appDefs.remove(selectedAppDef);
     }
-    
+
     public void doAddAppDef() {
-    	Map<String, List<String>> dataToSend = new HashMap<>();
+        Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> appDefName = new ArrayList<>();
         appDefName.add(HRMConstant.PERMIT);
         dataToSend.put("appDefName", appDefName);
@@ -326,19 +329,19 @@ public class PermitClassificationFormController extends BaseController {
         String name = StringUtils.isEmpty(permitClassificationModel.getName()) ? StringUtils.EMPTY : permitClassificationModel.getName();
         specificName.add(name);
         dataToSend.put("specificName", specificName);
-    	this.showDialogAppDef(dataToSend);
+        this.showDialogAppDef(dataToSend);
     }
-    
+
     public void doEditAppDef() {
-    	indexOfAppDefs = appDefs.indexOf(selectedAppDef);    	
-    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-    	Map<String, List<String>> dataToSend = new HashMap<>();
+        indexOfAppDefs = appDefs.indexOf(selectedAppDef);
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> values = new ArrayList<>();
         values.add(gson.toJson(selectedAppDef));
         dataToSend.put("jsonAppDef", values);
         this.showDialogAppDef(dataToSend);
     }
-    
+
     private void showDialogAppDef(Map<String, List<String>> params) {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -348,16 +351,18 @@ public class PermitClassificationFormController extends BaseController {
         options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("appr_def_popup_form", options, params);
     }
-    
+
     public void onDialogReturnAddAppDef(SelectEvent event) {
         ApprovalDefinition appDef = (ApprovalDefinition) event.getObject();
         appDefs.add(appDef);
     }
-    
+
     public void onDialogReturnEditAppDef(SelectEvent event) {
         ApprovalDefinition dataUpdated = (ApprovalDefinition) event.getObject();
         appDefs.remove(indexOfAppDefs);
-		appDefs.add(indexOfAppDefs, dataUpdated);
-    }    
-    /** End Approval Definition form */
+        appDefs.add(indexOfAppDefs, dataUpdated);
+    }
+    /**
+     * End Approval Definition form
+     */
 }
