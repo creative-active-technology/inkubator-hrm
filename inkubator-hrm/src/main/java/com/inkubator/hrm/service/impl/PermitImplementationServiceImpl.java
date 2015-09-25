@@ -124,58 +124,58 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
-		String message = "";
-    	EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-		PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
-		PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
-		Boolean isBypassApprovalChecking = Boolean.FALSE;
-		// check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+        String message = "";
+        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+        PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+        PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+        Boolean isBypassApprovalChecking = Boolean.FALSE;
+        // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
         Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
         if (actualPermit > permitDistribution.getBalance()) {
             throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
         }
-        
+
         HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
         List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
         // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
         if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
             throw new BussinessException("permitimplementation.error_still_have_waiting_status");
-        }        
+        }
         ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
-        
+
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
         if (approvalActivity == null) {
-        	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        	//Set Kodefikasi pada nomor
-        	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
-    		Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
-    		if (currentMaxLoanId == null) {
-    			currentMaxLoanId = 0L;
-    		}
-			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-			entity.setEmpData(empData);
-			entity.setPermitClassification(permit);
+            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            //Set Kodefikasi pada nomor
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+            Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+            if (currentMaxLoanId == null) {
+                currentMaxLoanId = 0L;
+            }
+            entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int) currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+            entity.setEmpData(empData);
+            entity.setPermitClassification(permit);
 
-			entity.setCreatedBy(createdBy);
-			entity.setCreatedOn(createdOn);
+            entity.setCreatedBy(createdBy);
+            entity.setCreatedOn(createdOn);
 
-			permitImplementationDao.save(entity);
+            permitImplementationDao.save(entity);
 
-			if (documentFile != null) {
-				String uploadPath = getUploadPath(entity.getId(), documentFile);
-				facesIO.transferFile(documentFile);
-				File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
-				file.renameTo(new File(uploadPath));
+            if (documentFile != null) {
+                String uploadPath = getUploadPath(entity.getId(), documentFile);
+                facesIO.transferFile(documentFile);
+                File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                file.renameTo(new File(uploadPath));
 
-				entity.setUploadPath(uploadPath);
-				permitImplementationDao.update(entity);
-			}
-			
-			this.creditPermitBalance(permitDistribution, actualPermit);
-			message = "success_without_approvl";
-        }else{
-        	String uploadPath = null;
+                entity.setUploadPath(uploadPath);
+                permitImplementationDao.update(entity);
+            }
+
+            this.creditPermitBalance(permitDistribution, actualPermit);
+            message = "success_without_approvl";
+        } else {
+            String uploadPath = null;
             if (documentFile != null) {
                 uploadPath = getUploadPath(Long.parseLong(RandomNumberUtil.getRandomNumber(9)), documentFile);
                 facesIO.transferFile(documentFile);
@@ -198,78 +198,75 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         }
         return message;
     }
-    
+
     @Override
     public void save(PermitImplementation t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /*@Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-        // check duplicate number filling
-//        long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
-//        if (totalDuplicates > 0) {
-//            throw new BussinessException("permitimplementation.error_duplicate_filling_number");
-//        }
+     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+     public void save(PermitImplementation entity, UploadedFile documentFile) throws Exception {
+     //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+     // check duplicate number filling
+     //        long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+     //        if (totalDuplicates > 0) {
+     //            throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+     //        }
 
-        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-        PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
-//        EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
-        PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+     EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+     PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+     //        EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
+     PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
 
-        // check submitted permit tidak boleh lebih besar dari batasPengajuan di permitDefinition
-//        long differenceDaysOfFilling = DateTimeUtil.getTotalDayDifference(new Date(), entity.getStartDate());
-//        if (differenceDaysOfFilling > permit.getSubmittedLimit()) {
-//            throw new BussinessException("permitimplementation.error_submitted_limit");
-//        }
-        // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
-        Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
-        if (actualPermit > permitDistribution.getBalance()) {
-            throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
-        }
+     // check submitted permit tidak boleh lebih besar dari batasPengajuan di permitDefinition
+     //        long differenceDaysOfFilling = DateTimeUtil.getTotalDayDifference(new Date(), entity.getStartDate());
+     //        if (differenceDaysOfFilling > permit.getSubmittedLimit()) {
+     //            throw new BussinessException("permitimplementation.error_submitted_limit");
+     //        }
+     // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+     Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
+     if (actualPermit > permitDistribution.getBalance()) {
+     throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+     }
 
-//        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-      //Set Kodefikasi pada nomor
-        TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
-        Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
-        if (currentMaxLoanId == null) {
-            currentMaxLoanId = 0L;
-        }
-        entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
-        entity.setEmpData(empData);
-        entity.setPermitClassification(permit);
-//        entity.setTemporaryActing(temporaryActing);
+     //        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+     //Set Kodefikasi pada nomor
+     TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+     Long currentMaxLoanId = permitImplementationDao.getCurrentMaxId();
+     if (currentMaxLoanId == null) {
+     currentMaxLoanId = 0L;
+     }
+     entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxLoanId.longValue()), transactionCodefication.getCode()));
+     entity.setEmpData(empData);
+     entity.setPermitClassification(permit);
+     //        entity.setTemporaryActing(temporaryActing);
 
-        String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-        entity.setCreatedBy(createdBy);
-        entity.setCreatedOn(createdOn);
+     String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+     Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+     entity.setCreatedBy(createdBy);
+     entity.setCreatedOn(createdOn);
 
-        permitImplementationDao.save(entity);
+     permitImplementationDao.save(entity);
 
-        if (documentFile != null) {
-            String uploadPath = getUploadPath(entity.getId(), documentFile);
-            facesIO.transferFile(documentFile);
-            File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
-            file.renameTo(new File(uploadPath));
+     if (documentFile != null) {
+     String uploadPath = getUploadPath(entity.getId(), documentFile);
+     facesIO.transferFile(documentFile);
+     File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+     file.renameTo(new File(uploadPath));
 
-            entity.setUploadPath(uploadPath);
-            permitImplementationDao.update(entity);
-        }
-//        if (permit.getIsQuotaReduction()) {
-        this.creditPermitBalance(permitDistribution, actualPermit);
-//        }
-    }*/
-
+     entity.setUploadPath(uploadPath);
+     permitImplementationDao.update(entity);
+     }
+     //        if (permit.getIsQuotaReduction()) {
+     this.creditPermitBalance(permitDistribution, actualPermit);
+     //        }
+     }*/
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(PermitImplementation entity,  UploadedFile documentFile) throws Exception {
+    public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
-        
-        
-        
+
         long totalDuplicates = permitImplementationDao.getTotalByNumberFillingAndNotId(entity.getNumberFilling(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("permitimplementation.error_duplicate_filling_number");
@@ -291,7 +288,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
             file.renameTo(new File(uploadPath));
         }
-        
+
         EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
         PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
 //        EmpData temporaryActing = entity.getTemporaryActing() != null ? empDataDao.getEntiyByPK(entity.getTemporaryActing().getId()) : null;
@@ -508,15 +505,15 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
-    	Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
+        Map<String, Object> result = super.approvedAndCheckNextApproval(approvalActivityId, pendingDataUpdate, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
              * kalau status akhir sudah di approved dan tidak ada next approval,
              * berarti langsung insert ke database
              */
-        	
-        	//parsing from json to entity
+
+            //parsing from json to entity
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             String pendingData = appActivity.getPendingData();
             PermitImplementation permitImplementation = gson.fromJson(pendingData, PermitImplementation.class);
@@ -550,7 +547,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void rejected(long approvalActivityId, String comment) throws Exception {
-    	Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
+        Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
         if (StringUtils.equals((String) result.get("isEndOfApprovalProcess"), "true")) {
             /**
@@ -626,10 +623,10 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 
     @Override
     public void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
-    	//send sms notification to approver if need approval OR
+        //send sms notification to approver if need approval OR
         //send sms notification to requester if need revision
-		super.sendApprovalSmsnotif(appActivity);
-		
+        super.sendApprovalSmsnotif(appActivity);
+
 //        //initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
@@ -660,7 +657,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
 //
         final JSONObject jsonObj = new JSONObject();
         try {
-        	jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(permitImplementation.getCreatedOn()));
@@ -959,22 +956,22 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     public List<ReportPermitHistoryModel> getReportPermitHistoryByParam(ReportPermitHistorySearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
         List<PermitImplementation> listPermit = permitImplementationDao.getReportPermitHistoryByParam(parameter, firstResult, maxResults, orderable);
         List<ReportPermitHistoryModel> listModel = new ArrayList<ReportPermitHistoryModel>();
-        for(PermitImplementation permit : listPermit){
-        	ReportPermitHistoryModel model = new ReportPermitHistoryModel();
-        	model.setNikWithFullName(permit.getEmpData().getNikWithFullName());
-        	model.setStartDate(permit.getStartDate());
-        	model.setEndDate(permit.getEndDate());
-        	model.setPermitClassification(permit.getPermitClassification().getName());
-        	model.setNumberFilling(permit.getNumberFilling());
-        	List<ApprovalActivity> approvalActivities = approvalActivityDao.getAllDataByActivityNumberWithDetail(permit.getApprovalActivityNumber(), Order.desc("sequence"));
-        	if(!approvalActivities.isEmpty()) {
-        		HrmUser approver =  hrmUserDao.getByUserId(approvalActivities.get(0).getApprovedBy());
-        		model.setApprovedBy(approver.getEmpData().getNikWithFullName());
-        		
-        	}
-        	listModel.add(model);
+        for (PermitImplementation permit : listPermit) {
+            ReportPermitHistoryModel model = new ReportPermitHistoryModel();
+            model.setNikWithFullName(permit.getEmpData().getNikWithFullName());
+            model.setStartDate(permit.getStartDate());
+            model.setEndDate(permit.getEndDate());
+            model.setPermitClassification(permit.getPermitClassification().getName());
+            model.setNumberFilling(permit.getNumberFilling());
+            List<ApprovalActivity> approvalActivities = approvalActivityDao.getAllDataByActivityNumberWithDetail(permit.getApprovalActivityNumber(), Order.desc("sequence"));
+            if (!approvalActivities.isEmpty()) {
+                HrmUser approver = hrmUserDao.getByUserId(approvalActivities.get(0).getApprovedBy());
+                model.setApprovedBy(approver.getEmpData().getNikWithFullName());
+
+            }
+            listModel.add(model);
         }
-    	return listModel;
+        return listModel;
     }
 
     @Override
@@ -989,110 +986,119 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         return uploadPath;
     }
 
-    
-
     @Override
     public void update(PermitImplementation t) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception{
-            String message = "";
-			// check duplicate number filling
-            long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
-            if (totalDuplicates > 0) {
-                throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception {
+        String message = "";
+        // check duplicate number filling
+
+        Long overTimeId = entity.getPermitClassification().getId();
+        PermitClassification selectedPermitClass = permitDao.getEntiyByPK(overTimeId);
+        Date currentDate = new Date();
+        Integer selisihWaktuMundur = DateTimeUtil.getTotalDayDifference(currentDate, entity.getEndDate());
+        Integer selisihWaktuMaju = DateTimeUtil.getTotalDayDifference(currentDate, entity.getStartDate());
+
+        if (selisihWaktuMundur > selectedPermitClass.getBatasMudur()) {
+            throw new BussinessException("permitimplementation.error_out_off_range");
+        }
+
+        if (selisihWaktuMaju > selectedPermitClass.getBatasMaju()) {
+            throw new BussinessException("permitimplementation.error_out_off_range");
+        }
+
+        long totalDuplicates = permitImplementationDao.getTotalByNumberFilling(entity.getNumberFilling());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("permitimplementation.error_duplicate_filling_number");
+        }
+
+        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+        PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
+        PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+
+        // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
+        Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
+        if (actualPermit > permitDistribution.getBalance()) {
+            throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+        }
+
+        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+        // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
+        if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
+            throw new BussinessException("permitimplementation.error_still_have_waiting_status");
+        }
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
+
+        String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
+        entity.setCreatedBy(createdBy);
+        entity.setCreatedOn(createdOn);
+        if (approvalActivity == null) {
+            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            //Set Kodefikasi pada nomor
+            TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+            Long currentMaxId = permitImplementationDao.getCurrentMaxId();
+            if (currentMaxId == null) {
+                currentMaxId = 0L;
+            }
+            entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int) currentMaxId.longValue()), transactionCodefication.getCode()));
+
+            entity.setEmpData(empData);
+            entity.setPermitClassification(permit);
+            if (documentFile != null) {
+                String uploadPath = getUploadPath(entity.getId(), documentFile);
+                facesIO.transferFile(documentFile);
+                File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                file.renameTo(new File(uploadPath));
+                entity.setUploadPath(uploadPath);
             }
 
-            EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
-            PermitClassification permit = permitDao.getEntiyByPK(entity.getPermitClassification().getId());
-            PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permit.getId(), empData.getId());
+            permitImplementationDao.save(entity);
+            message = "save_without_approval";
 
-            // check actualPermit yg diambil, tidak boleh lebih besar dari balancePermit yg tersedia
-            Double actualPermit = this.getTotalActualPermit(empData.getId(), permit.getId(), entity.getStartDate(), entity.getEndDate());
-            if (actualPermit > permitDistribution.getBalance()) {
-                throw new BussinessException("permitimplementation.error_permit_balance_is_insufficient");
+            this.creditPermitBalance(permitDistribution, actualPermit);
+        } else {
+            String uploadPath = null;
+            if (documentFile != null) {
+                uploadPath = getUploadPath(entity.getId(), documentFile);
+                facesIO.transferFile(documentFile);
+                File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
+                file.renameTo(new File(uploadPath));
+                entity.setUploadPath(uploadPath);
             }
 
-            
-            
-            HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
-            List<ApprovalDefinition> appDefs = Lambda.extract(permit.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
-            // check jika ada ijin yang masih diproses approval, hanya boleh mengajukan ijin jika tidak ada approval yang pending
-            if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
-                throw new BussinessException("permitimplementation.error_still_have_waiting_status");
-            }        
-            ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(appDefs, requestUser.getUserId());
-            
-            String createdBy = org.apache.commons.lang.StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-        	entity.setCreatedBy(createdBy);
-        	entity.setCreatedOn(createdOn);
-            if(approvalActivity == null){
-            	entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-            	//Set Kodefikasi pada nomor
-            	TransactionCodefication transactionCodefication = transactionCodeficationDao.getEntityByModulCode(HRMConstant.PERMIT_KODE);
-        		Long currentMaxId = permitImplementationDao.getCurrentMaxId();
-        		if (currentMaxId == null) {
-        			currentMaxId = 0L;
-        		}
-    			entity.setNumberFilling(KodefikasiUtil.getKodefikasi(((int)currentMaxId.longValue()), transactionCodefication.getCode()));
-    			
-                entity.setEmpData(empData);
-                entity.setPermitClassification(permit);
-                if (documentFile != null) {
-                    String uploadPath = getUploadPath(entity.getId(), documentFile);
-                    facesIO.transferFile(documentFile);
-                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
-                    file.renameTo(new File(uploadPath));
-                    entity.setUploadPath(uploadPath);
-                }
+            JsonParser parser = new JsonParser();
+            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+            jsonObject.addProperty("permitImplementationFile", uploadPath);
+            //save to approval activity
+            approvalActivity.setPendingData(gson.toJson(jsonObject));
+            approvalActivityDao.save(approvalActivity);
 
-                permitImplementationDao.save(entity);
-                message = "save_without_approval";
+            //sending email notification
+            this.sendingApprovalNotification(approvalActivity);
+            message = "success_need_approval";
+        }
 
-                this.creditPermitBalance(permitDistribution, actualPermit);
-            }else{
-            	String uploadPath = null;
-            	if (documentFile != null) {
-                    uploadPath = getUploadPath(entity.getId(), documentFile);
-                    facesIO.transferFile(documentFile);
-                    File file = new File(facesIO.getPathUpload() + documentFile.getFileName());
-                    file.renameTo(new File(uploadPath));
-                    entity.setUploadPath(uploadPath);
-                }
-            	
+        return message;
+    }
 
-            	JsonParser parser = new JsonParser();
-                Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-                JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
-                jsonObject.addProperty("permitImplementationFile", uploadPath);
-                //save to approval activity
-                approvalActivity.setPendingData(gson.toJson(jsonObject));
-                approvalActivityDao.save(approvalActivity);
+    @Override
+    protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+        StringBuffer detail = new StringBuffer();
+        HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        PermitImplementation entity = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
 
-                //sending email notification
-                this.sendingApprovalNotification(approvalActivity);
-                message = "success_need_approval";
-            }
-            
-
-            return message;
-	}
-
-	@Override
-	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
-		StringBuffer detail = new StringBuffer();
-		HrmUser requester = hrmUserDao.getByUserId(appActivity.getRequestBy());
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-		PermitImplementation entity = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
-		
-		detail.append("Pengajuan ijin oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
-		detail.append("Jenis: " + entity.getPermitClassification().getName() + ". ");
-		detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
-		return detail.toString();
-	}
+        detail.append("Pengajuan ijin oleh " + requester.getEmpData().getBioData().getFullName() + ". ");
+        detail.append("Jenis: " + entity.getPermitClassification().getName() + ". ");
+        detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
+        return detail.toString();
+    }
 }
