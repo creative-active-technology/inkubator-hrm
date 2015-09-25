@@ -281,6 +281,8 @@ public class PermitClassificationServiceImpl extends BaseApprovalConfigurationSe
         permitClassification.setAttendanceStatus(attendanceStatus);
         permitClassification.setUpdatedBy(UserInfoUtil.getUserName());
         permitClassification.setUpdatedOn(new Date());
+        permitClassification.setBatasMaju(b.getBatasMaju());
+        permitClassification.setBatasMudur(b.getBatasMudur());
         permitClassificationDao.update(permitClassification);
     }
 

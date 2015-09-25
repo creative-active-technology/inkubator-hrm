@@ -95,7 +95,8 @@ public class PermitClassificationFormController extends BaseController {
                     permitClassificationModel.setAttachmentRequired(permitClassification.getAttachmentRequired());
                     permitClassificationModel.setDescription(permitClassification.getDescription());
                     permitClassificationModel.setIsActive(permitClassification.getIsActive());
-                    isUpdate = Boolean.TRUE;
+                    permitClassificationModel.setBatasMaju(permitClassification.getBatasMaju());
+                    permitClassificationModel.setBatasMudur(permitClassification.getBatasMudur());
                     if (permitClassification.getAvailibility().equals(HRMConstant.PERMIT_AVALILIBILITY_PER_DATE)) {
                     	disabled = Boolean.FALSE;
                     }
@@ -246,6 +247,8 @@ public class PermitClassificationFormController extends BaseController {
         permitClassification.setAttachmentRequired(permitClassificationModel.getAttachmentRequired());
         permitClassification.setDescription(permitClassificationModel.getDescription());
         permitClassification.setIsActive(permitClassificationModel.getIsActive());
+        permitClassification.setBatasMaju(permitClassificationModel.getBatasMaju());
+        permitClassification.setBatasMudur(permitClassificationModel.getBatasMudur());
         return permitClassification;
     }
 
