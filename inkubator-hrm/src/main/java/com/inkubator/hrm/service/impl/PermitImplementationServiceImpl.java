@@ -266,7 +266,24 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+        Long overTimeId = entity.getPermitClassification().getId();
+        PermitClassification selectedPermitClass = permitDao.getEntiyByPK(overTimeId);
+        Date currentDate = new Date();
 
+        Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getStartDate());
+
+        if (selisihWaktu > 0) {
+            if (selisihWaktu > selectedPermitClass.getBatasMaju()) {
+                throw new BussinessException("permitimplementation.error_out_off_range");
+            }
+        }
+
+        if (selisihWaktu < 0) {
+            selisihWaktu = Math.abs(selisihWaktu);
+            if (selisihWaktu > selectedPermitClass.getBatasMudur()) {
+                throw new BussinessException("permitimplementation.error_out_off_range");
+            }
+        }
         long totalDuplicates = permitImplementationDao.getTotalByNumberFillingAndNotId(entity.getNumberFilling(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("permitimplementation.error_duplicate_filling_number");
