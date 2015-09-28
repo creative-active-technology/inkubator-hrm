@@ -109,7 +109,7 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                            	<p:selectOneMenu id="countryId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.countryId}">
+                            	<p:selectOneMenu id="countryId" styleClass="isitext_hrm" required="true" filter="true" style="width:200px" value="#{educationNonFormalFormController.model.countryId}">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{educationNonFormalFormController.countries}" var="country" itemValue="#{country.id}" itemLabel="#{country.countryName}"/>
 	                                <p:ajax listener="#{educationNonFormalFormController.onChangeCountries()}" update="provinceId,cityId"/>
@@ -129,7 +129,7 @@
                                 <h:outputLabel for="provinceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                            	<p:selectOneMenu id="provinceId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.provinceId}">
+                            	<p:selectOneMenu id="provinceId" styleClass="isitext_hrm" required="true" filter="true" style="width:200px" value="#{educationNonFormalFormController.model.provinceId}">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{educationNonFormalFormController.provinces}" var="province" itemValue="#{province.id}" itemLabel="#{province.provinceName}"/>
 	                                <p:ajax listener="#{educationNonFormalFormController.onChangeProvinces()}" update="cityId"/>
@@ -149,7 +149,7 @@
                                 <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                            	<p:selectOneMenu id="cityId" styleClass="isitext_hrm" required="true" filter="true"  value="#{educationNonFormalFormController.model.cityId}">
+                            	<p:selectOneMenu id="cityId" styleClass="isitext_hrm" required="true" filter="true" style="width:200px" value="#{educationNonFormalFormController.model.cityId}">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{educationNonFormalFormController.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}"/>	                                    
 	                            </p:selectOneMenu>
@@ -218,9 +218,8 @@
                                          action="#{educationNonFormalFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formEducationNonFormalFormId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formEducationNonFormalFormId" />  
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{educationNonFormalFormController.doReset()}" immediate="true" update="formEducationNonFormalFormId,:growlEducationNonFormalFormId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >   
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>

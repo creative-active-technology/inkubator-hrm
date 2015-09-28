@@ -200,7 +200,7 @@ public class EducationNonFormalFormController extends BaseController {
         }
     }
 
-    private void getModelFromEntity(EducationNonFormal educationNonFormal) {
+    private EducationNonFormalModel getModelFromEntity(EducationNonFormal educationNonFormal) {
         model.setId(educationNonFormal.getId());
         model.setCode(educationNonFormal.getCode());
         model.setName(educationNonFormal.getName());
@@ -212,6 +212,7 @@ public class EducationNonFormalFormController extends BaseController {
         model.setPostalCode(educationNonFormal.getPostalCode());
         model.setOfficialPhoneNo(educationNonFormal.getOfficialPhoneNo());
         model.setOfficialEmail(educationNonFormal.getOfficialEmail());
+        return model;
     }
 
     private EducationNonFormal getEntityFromViewModel(EducationNonFormalModel model) {
@@ -229,5 +230,18 @@ public class EducationNonFormalFormController extends BaseController {
         educationNonFormal.setOfficialEmail(model.getOfficialEmail());
 
         return educationNonFormal;
+    }
+    
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		EducationNonFormal educationNonFormal = educationNonFormalService.getEntityByPkWithDetail(model.getId());
+    		model = getModelFromEntity(educationNonFormal);
+    	}else {
+    		model = new EducationNonFormalModel();
+    		cities = null;
+    		countries = null;
+    		provinces = null;
+    		
+    	}
     }
 }
