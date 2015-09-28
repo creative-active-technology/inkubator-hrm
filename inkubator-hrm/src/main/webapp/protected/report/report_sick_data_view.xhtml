@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">          
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="laporan_kelompok_kerja.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Report Sick Data" styleClass="header_big" />
+                                <p:outputLabel value="Report Sick Data Based on Parameter" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                        <p:separator/>
+                         <h:form id="formReportSickDataViewId">
+                    	<p:focus context="formReportSickDataViewId"/>
+                        <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
+                            <p:row>
+                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['menu.period']}" for="startDate" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: left;">
+                                        <p:calendar  id="startDate" label="#{appmsg['global.start_date']}"  title="#{appmsg['global.start_date']}" pattern="dd MMMM yyyy" value="#{reportSickDataViewController.searchParameter.startDate}" required="true" readonly="false" >                                    
+                                        </p:calendar>
+                                        <p:outputLabel value=" #{appmsg['global.to']} " style="font-weight: bold"/>
+                                        <p:calendar label="#{appmsg['global.end_date']}" title="#{appmsg['global.end_date']}" id="endDate" pattern="dd MMMM yyyy" value="#{reportSickDataViewController.searchParameter.endDate}" required="true" readonly="false" >                                    
+                                        </p:calendar>
+                                        <p:message for="startDate"/>
+                                        <p:message for="endDate"/>
+                                    </p:column>
+                             </p:row>
+                          
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" for="picklistEmpDepartment" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportSickDataViewController.departmentDualModel}" var="department" itemValue="#{department}" converter="departmentConverter" id="picklistEmpDepartment"
+                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['department.department']}" styleClass="isitext_hrm"
+                                        itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}" immediate="true" required="true"/>
+                            	<p:message for="picklistEmpDepartment"/>
+                                    </p:column>
+                            </p:row>
+                           
+                            
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" for="picklistGolonganjabatan" style="font-weight: bold"/>
+                                    </p:column>
+                                    <p:column style="text-align: center;">
+                                        <p:pickList value="#{reportSickDataViewController.golJabDualModel}" var="golJabatan" itemValue="#{golJabatan}" converter="golonganJabatanPicklistConverter" id="picklistGolonganjabatan"
+                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['functiongroup.function_group']}" styleClass="isitext_hrm"
+                                        itemLabel="#{golJabatan.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}" immediate="true" required="true"/>
+                            	    <p:message for="picklistGolonganjabatan"/>
+                                    </p:column>
+                            </p:row>
+                            
+                        </p:panelGrid>                        
+                        <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" ajax="true" title="#{appmsg['global.search']}" action="#{reportSickDataViewController.doSearch()}" update="formReportSickDataViewId, tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                     
+                    <p:separator/>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >     
+                                    <p:commandButton value="#{appmsg['global.print']}" type="button" icon="ui-icon-print" style="margin-right: 5px">
+    						<p:printer target="tableReportId"  />
+				    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Component"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportSickDataViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                    <p:dataTable  id="tableReportId" var="data"  value="#{reportSickDataViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Sick Data Report List"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column  style="width: 22%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.requestDate}" />                             
+                            </p:column>
+                             <p:column  style="width: 13%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Karyawan"/>
+                                </f:facet>
+                                  <h:outputLabel value= "#{data.empData.bioData.firstName}" />                             
+                            </p:column>
+                            <p:column  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Rumah Sakit"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.hospital.name}" />                             
+                            </p:column>
+                             <p:column  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Dokter"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.docterName}" />                             
+                            </p:column>
+                            <p:column   style="width: 13%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Nama Penyakit"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.disease.name}" />
+                                
+                            </p:column> 
+                                         
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportSickDataViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formReportSickDataViewId" trigger="tableReportId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

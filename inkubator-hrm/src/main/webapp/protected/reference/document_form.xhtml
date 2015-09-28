@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="marital_status.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['unregSalary.unregSalary_form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['unregSalary.unregSalary_header']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="Formulir Dokumen" styleClass="header_big" />
+                                <p:outputLabel value="Formulir Dokumen dari Referensi" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -30,19 +30,19 @@
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
-
+                    
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-
+                        
                         <p:row>
-                            <p:column style="width: 49%">
-                                <p:outputLabel for="code" value="#{appmsg['unregSalary.code']}" styleClass="label_hrm"/>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="code" value="Kode Dokumen" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="code"  value="#{unregSalaryFormController.model.code}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:240px;" />
+                                <p:inputText id="code"  value="#{documentFormController.model.code}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -50,17 +50,17 @@
                                 <p:message for="code"/>
                             </p:column>
                         </p:row>
-
+                        
                         <p:row>
-                            <p:column style="width: 49%">
-                                <p:outputLabel for="name" value="#{appmsg['unregSalary.name']}" styleClass="label_hrm"/>
+                            <p:column style="width: 40%">
+                                <p:outputLabel for="name" value="Nama Dokumen" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="name"  value="#{unregSalaryFormController.model.name}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:240px;" />
+                                <p:inputText id="name"  value="#{documentFormController.model.name}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -68,63 +68,60 @@
                                 <p:message for="name"/>
                             </p:column>
                         </p:row>
-
+                        
+                        
                         <p:row>
-                            <p:column style="width: 49%">
-                                <p:outputLabel for="basePeriod" value="#{appmsg['unregSalary.basePeriode']}" styleClass="label_hrm"/>
+                            <p:column style="width: 37%">
+                                <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="basePeriod" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
-
-                                <p:selectOneMenu id="basePeriod" value="#{unregSalaryFormController.model.month}" style="width: 120px;margin-right: 3px"  >
-                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{unregSalaryFormController.dropDownMonths}"/>
-                                </p:selectOneMenu>
-
-                                <p:selectOneMenu id="basePeriodYear" value="#{unregSalaryFormController.model.year}" style="width: 120px;margin-right: 3px"  >
-                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{unregSalaryFormController.dropDownYears}"/>
-                                </p:selectOneMenu>
+                            <p:column style="width: 50%" >
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{documentFormController.model.description}" 
+                                                 style="width: 210px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="basePeriod"/>
+                                <p:message for="description"/>
                             </p:column>
                         </p:row>
-
                         <p:row>
-                            <p:column style="width: 49%">
-                                <p:outputLabel for="dateEarning" value="#{appmsg['unregSalary.salaryData']}" styleClass="label_hrm"/>
+                            <p:column style="width: 25%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="dateEarning" value=":" styleClass="label_hrm"/>
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 50%">
-
-                                <p:calendar  id="dateEarning" size="34" pattern="dd MMMM yyyy" label="#{appmsg['unregSalary.salaryData']}" value="#{unregSalaryFormController.model.salaryDate}"
-                                             required="true" navigator="true">
-                                    <f:validator validatorId="birthDateValidator"  />
-                                    <f:attribute name="validatorMessage" value="#{appmsg['unregSalary.salaryData']}"/>
-                                </p:calendar>
-
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
                             </p:column>
                         </p:row>
+                        
                         <p:row>
-                            <p:column colspan="3">
-                                <p:message for="dateEarning"/>
+                        	<p:column colspan="3">
+	                        	<p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{documentFormController.handingFileUpload}"
+	                                          mode="advanced"  id="uploadFile"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlId"
+	                                          allowTypes="/(\.|\/)(jpe?g|png|mp4|flv|doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx)$/"/> 
+	                            <p:outputLabel value="#{appmsg['global.file_name']}"/>
+	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+	                            <p:outputLabel value="#{documentFormController.model.uploadFileName}" id="fileNameId"/>  
                             </p:column>
-                        </p:row>
+                            <p:column  style="width: 12%">
+                            </p:column>
+                    	</p:row>    
 
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{unregSalaryFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{documentFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 

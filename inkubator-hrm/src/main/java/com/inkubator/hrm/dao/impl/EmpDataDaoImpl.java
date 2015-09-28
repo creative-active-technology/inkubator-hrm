@@ -39,6 +39,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.OverTimeDistribution;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.BioDataModel;
@@ -52,6 +53,7 @@ import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
 import com.inkubator.hrm.web.model.WtFingerExceptionModel;
 import com.inkubator.hrm.web.search.EmpDataSearchParameter;
+import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
@@ -527,11 +529,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
+    	DetachedCriteria listEmp = DetachedCriteria.forClass(OverTimeDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("wtOverTime.id", model.getOverTimeId()));
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
@@ -545,8 +552,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("ot.wtOverTime", "wt", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
-        if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
+        /*if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
 
             Criterion andCondition = Restrictions.conjunction()
                     .add(Restrictions.isNotNull("ot.empData"))
@@ -561,7 +569,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //            disjunction.add(Restrictions.isNotNull("ot.empData"));
 //            disjunction.add(Restrictions.not(Restrictions.eq("ot.wtOverTime.id", model.getOverTimeId())));
             criteria.add(completeCondition);
-        }
+        }*/
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -601,6 +609,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
@@ -2223,4 +2232,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.addOrder(Order.asc("bi.firstName"));
         return criteria.list();
     }
+
+	@Override
+	public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
 }

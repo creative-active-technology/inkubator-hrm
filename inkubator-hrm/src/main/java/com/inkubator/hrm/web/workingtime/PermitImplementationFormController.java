@@ -35,6 +35,7 @@ import com.inkubator.hrm.service.PermitImplementationService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.PermitImplementationModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -69,6 +70,7 @@ public class PermitImplementationFormController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+        System.out.println("Inisisisifsdifjsdifjdsifd");
         super.initialization();
         try {
             isUpdate = Boolean.FALSE;
@@ -76,7 +78,7 @@ public class PermitImplementationFormController extends BaseController {
             isRequiredAttachment = Boolean.TRUE;
             String param = FacesUtil.getRequestParameter("execution");
             isAdmin = Lambda.exists(HrmUserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
-            
+
             if (!isAdmin) { //jika bukan administrator, langsung di set empData berdasarkan yang login
 
                 model.setEmpData(HrmUserInfoUtil.getEmpData());
@@ -92,15 +94,15 @@ public class PermitImplementationFormController extends BaseController {
                     List<PermitDistribution> permitDistributions = permitDistributionService.getAllDataByEmpIdFetchPermit(permitImplementation.getEmpData().getId());
                     permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
                     isUpdate = Boolean.TRUE;
-                    if(StringUtils.isNotEmpty(permitImplementation.getUploadPath())){
+                    if (StringUtils.isNotEmpty(permitImplementation.getUploadPath())) {
                         isRequiredAttachment = Boolean.FALSE;
                     }
                 }
             } else {
-            	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.PERMIT_KODE);
-            	if(!ObjectUtils.equals(transactionCodefication, null)){
-            		model.setNumberFilling(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
-            	}
+                TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.PERMIT_KODE);
+                if (!ObjectUtils.equals(transactionCodefication, null)) {
+                    model.setNumberFilling(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+                }
             }
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -136,8 +138,6 @@ public class PermitImplementationFormController extends BaseController {
     public void setIsRequiredAttachment(Boolean isRequiredAttachment) {
         this.isRequiredAttachment = isRequiredAttachment;
     }
-    
-    
 
     public Boolean getIsUpdate() {
         return isUpdate;
@@ -156,14 +156,14 @@ public class PermitImplementationFormController extends BaseController {
     }
 
     public TransactionCodeficationService getTransactionCodeficationService() {
-		return transactionCodeficationService;
-	}
+        return transactionCodeficationService;
+    }
 
-	public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
-		this.transactionCodeficationService = transactionCodeficationService;
-	}
+    public void setTransactionCodeficationService(TransactionCodeficationService transactionCodeficationService) {
+        this.transactionCodeficationService = transactionCodeficationService;
+    }
 
-	public void setPermitImplementationService(
+    public void setPermitImplementationService(
             PermitImplementationService permitImplementationService) {
         this.permitImplementationService = permitImplementationService;
     }
@@ -192,16 +192,15 @@ public class PermitImplementationFormController extends BaseController {
         this.uploadFilesUtil = uploadFilesUtil;
     }
 
-    
     public Boolean getIsAdmin() {
-		return isAdmin;
-	}
+        return isAdmin;
+    }
 
-	public void setIsAdmin(Boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 
-	public void doReset() {
+    public void doReset() {
         if (isUpdate) {
             try {
                 PermitImplementation permitImplementation = permitImplementationService.getEntiyByPK(model.getId());
@@ -212,7 +211,7 @@ public class PermitImplementationFormController extends BaseController {
                 LOGGER.error("Error", ex);
             }
         } else {
-        	String tempNumberFilling = model.getNumberFilling();
+            String tempNumberFilling = model.getNumberFilling();
             model = new PermitImplementationModel();
             model.setNumberFilling(tempNumberFilling);
         }
@@ -237,14 +236,14 @@ public class PermitImplementationFormController extends BaseController {
                     MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval",
                             FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 } else {
-                path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                    path = "/protected/working_time/permit_impl_detail.htm?faces-redirect=true&execution=e" + permitImplementation.getId();
+                    MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                            FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 }
             }
 
             return path;
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -321,6 +320,10 @@ public class PermitImplementationFormController extends BaseController {
             model.setRemainingPermit(permitDistribution.getBalance());
             Date latestPermitDate = latestByFillingDate != null ? latestByFillingDate.getEndDate() : null;
             model.setLatestPermitDate(latestPermitDate);
+            String infoMin = ResourceBundleUtil.getAsString("overtime.batas_mundur");
+            String infoMax = ResourceBundleUtil.getAsString("overtime.batas_maju");
+            String dayName= ResourceBundleUtil.getAsString("global.day");
+            model.setPerimtInfoMaxMin(infoMin+ " : " + permitDistribution.getPermitClassification().getBatasMudur()+" "+dayName+" "+infoMax+" : " + permitDistribution.getPermitClassification().getBatasMaju()+" "+dayName+" ");
 
             isRequiredAttachment = !permitDistribution.getPermitClassification().getAttachmentRequired();
             //cek juga actual permit taken-nya
@@ -331,6 +334,7 @@ public class PermitImplementationFormController extends BaseController {
     }
 
     public void onChangeStartOrEndDate() {
+        System.out.println(" Kalkulasi di esekseusisisisii");
         try {
             if (model.getStartDate() != null && model.getEndDate() != null && model.getEmpData() != null && model.getPermitId() != null) {
                 double actualPermit = permitImplementationService.getTotalActualPermit(model.getEmpData().getId(), model.getPermitId(), model.getStartDate(), model.getEndDate());
