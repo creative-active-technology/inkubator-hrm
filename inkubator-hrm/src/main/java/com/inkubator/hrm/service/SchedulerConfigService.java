@@ -6,12 +6,12 @@
 package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
-import com.inkubator.hrm.entity.SchedullerConfig;
+import com.inkubator.hrm.entity.SchedulerConfig;
 
 /**
  *
  * @author denifahri
  */
-public interface SchedullerConfigService extends IService<SchedullerConfig>{
+public interface SchedulerConfigService extends IService<SchedulerConfig>{
     
 }

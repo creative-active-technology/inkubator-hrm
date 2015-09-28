@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author denifahri
  */
-public class SchedullerConfigModel implements Serializable {
+public class SchedulerConfigModel implements Serializable {
 
     private long id;
     private String name;

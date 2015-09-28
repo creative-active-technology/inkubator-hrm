@@ -6,8 +6,8 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.entity.SchedullerConfig;
-import com.inkubator.hrm.service.SchedullerConfigService;
+import com.inkubator.hrm.entity.SchedulerConfig;
+import com.inkubator.hrm.service.SchedulerConfigService;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.context.annotation.Lazy;
@@ -17,107 +17,107 @@ import org.springframework.stereotype.Service;
  *
  * @author denifahri
  */
-@Service(value = "schedullerConfigService")
+@Service(value = "shedulerConfigService")
 @Lazy
-public class SchedullerConfigServiceImpl  extends IServiceImpl implements SchedullerConfigService{
+public class SchedulerConfigServiceImpl  extends IServiceImpl implements SchedulerConfigService{
 
     @Override
-    public SchedullerConfig getEntiyByPK(String id) throws Exception {
+    public SchedulerConfig getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntiyByPK(Integer id) throws Exception {
+    public SchedulerConfig getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntiyByPK(Long id) throws Exception {
+    public SchedulerConfig getEntiyByPK(Long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void save(SchedullerConfig entity) throws Exception {
+    public void save(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void update(SchedullerConfig entity) throws Exception {
+    public void update(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveOrUpdate(SchedullerConfig enntity) throws Exception {
+    public void saveOrUpdate(SchedulerConfig enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig saveData(SchedullerConfig entity) throws Exception {
+    public SchedulerConfig saveData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig updateData(SchedullerConfig entity) throws Exception {
+    public SchedulerConfig updateData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig saveOrUpdateData(SchedullerConfig entity) throws Exception {
+    public SchedulerConfig saveOrUpdateData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SchedullerConfig getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+    public SchedulerConfig getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(SchedullerConfig entity) throws Exception {
+    public void delete(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void softDelete(SchedullerConfig entity) throws Exception {
+    public void softDelete(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -142,42 +142,42 @@ public class SchedullerConfigServiceImpl  extends IServiceImpl implements Schedu
     }
 
     @Override
-    public List<SchedullerConfig> getAllData() throws Exception {
+    public List<SchedulerConfig> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllData(Boolean isActive) throws Exception {
+    public List<SchedulerConfig> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllData(Integer isActive) throws Exception {
+    public List<SchedulerConfig> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllData(Byte isActive) throws Exception {
+    public List<SchedulerConfig> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+    public List<SchedulerConfig> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
+    public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
+    public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<SchedullerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
+    public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -20,7 +20,7 @@ import javax.persistence.Version;
     ,catalog="hrm"
     , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
-public class SchedullerConfig  implements java.io.Serializable {
+public class SchedulerConfig  implements java.io.Serializable {
 
 
      private long id;
@@ -38,14 +38,14 @@ public class SchedullerConfig  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
 
-    public SchedullerConfig() {
+    public SchedulerConfig() {
     }
 
 	
-    public SchedullerConfig(long id) {
+    public SchedulerConfig(long id) {
         this.id = id;
     }
-    public SchedullerConfig(long id, String name, String schedullerType, String repeateType, Date dateStartExecution, Date startDate, Date endDate, Integer repeateNumber, Date schedullerTime, String createdBy, Date cretedOn, String updatedBy, Date updatedOn) {
+    public SchedulerConfig(long id, String name, String schedullerType, String repeateType, Date dateStartExecution, Date startDate, Date endDate, Integer repeateNumber, Date schedullerTime, String createdBy, Date cretedOn, String updatedBy, Date updatedOn) {
        this.id = id;
        this.name = name;
        this.schedullerType = schedullerType;
