@@ -539,17 +539,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         }
 
         //check if the employee still have pending task approval
-        HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
-        long totalPendingTask = 0;
-        if (user != null) {
-            totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
-        } else {
-            throw new BussinessException("emp_data.error_donot_have_user");
-        }
-
-        if (totalPendingTask > 0) {
-            throw new BussinessException("emp_data.error_cannot_do_rotation");
-        }
+//        HrmUser user = hrmUserDao.getByEmpDataId(entity.getId());
+//        long totalPendingTask = 0;
+//        if (user != null) {
+//            totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
+//        } else {
+//            throw new BussinessException("emp_data.error_donot_have_user");
+//        }
+//
+//        if (totalPendingTask > 0) {
+//            throw new BussinessException("emp_data.error_cannot_do_rotation");
+//        }
+        //di tutup karena kebijakan di OHPQ ESS gak di pake
 
         EmpData empData = this.empDataDao.getEntiyByPK(entity.getId());
         empData.setBasicSalary(entity.getBasicSalary());

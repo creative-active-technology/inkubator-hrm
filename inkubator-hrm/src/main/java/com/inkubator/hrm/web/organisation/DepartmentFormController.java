@@ -31,6 +31,7 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name = "departmentFormController")
 @ViewScoped
 public class DepartmentFormController extends BaseController {
+
     @ManagedProperty(value = "#{departmentService}")
     private DepartmentService departmentService;
     @ManagedProperty(value = "#{costCenterDeptService}")
@@ -47,7 +48,7 @@ public class DepartmentFormController extends BaseController {
     public void setDepartmentModel(DepartmentModel departmentModel) {
         this.departmentModel = departmentModel;
     }
-    
+
     public DepartmentService getDepartmentService() {
         return departmentService;
     }
@@ -71,32 +72,33 @@ public class DepartmentFormController extends BaseController {
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
+
     public CostCenterDeptService getCostCenterDeptService() {
-		return costCenterDeptService;
-	}
+        return costCenterDeptService;
+    }
 
-	public void setCostCenterDeptService(CostCenterDeptService costCenterDeptService) {
-		this.costCenterDeptService = costCenterDeptService;
-	}
+    public void setCostCenterDeptService(CostCenterDeptService costCenterDeptService) {
+        this.costCenterDeptService = costCenterDeptService;
+    }
 
-	public List<CostCenterDept> getCostCenterDepts() {
-		return costCenterDepts;
-	}
+    public List<CostCenterDept> getCostCenterDepts() {
+        return costCenterDepts;
+    }
 
-	public void setCostCenterDepts(List<CostCenterDept> costCenterDepts) {
-		this.costCenterDepts = costCenterDepts;
-	}
+    public void setCostCenterDepts(List<CostCenterDept> costCenterDepts) {
+        this.costCenterDepts = costCenterDepts;
+    }
 
-	@PostConstruct
+    @PostConstruct
     @Override
     public void initialization() {
-      
-        super.initialization();        
+
+        super.initialization();
         String param = FacesUtil.getRequestParameter("param");
         departmentModel = new DepartmentModel();
         try {
-        	costCenterDepts = costCenterDeptService.getAllData();
+            costCenterDepts = costCenterDeptService.getAllData();
+            
             if (param != null) {
                 isEdit = Boolean.TRUE;
                 Department department = departmentService.getEntiyByPK(Long.parseLong(param));
@@ -104,8 +106,8 @@ public class DepartmentFormController extends BaseController {
                 departmentModel.setCode(department.getDepartmentCode());
                 departmentModel.setName(department.getDepartmentName());
                 departmentModel.setDescription(department.getDescription());
-                if(department.getCostCenterDept() != null){
-                	departmentModel.setCostCenterDeptId(department.getCostCenterDept().getId());
+                if (department.getCostCenterDept() != null) {
+                    departmentModel.setCostCenterDeptId(department.getCostCenterDept().getId());
                 }
             } else {
                 isEdit = Boolean.FALSE;
@@ -114,9 +116,9 @@ public class DepartmentFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     public void doSave() {
-      
+
         Department department = getEntityFromViewModel(departmentModel);
         try {
             if (isEdit) {
@@ -127,13 +129,13 @@ public class DepartmentFormController extends BaseController {
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     private Department getEntityFromViewModel(DepartmentModel departmentModel) {
         Department department = new Department();
         if (departmentModel.getId() != null) {
@@ -146,7 +148,7 @@ public class DepartmentFormController extends BaseController {
 
         return department;
     }
-    
+
     @PreDestroy
     private void cleanAndExit() {
         //departmentModel = null;

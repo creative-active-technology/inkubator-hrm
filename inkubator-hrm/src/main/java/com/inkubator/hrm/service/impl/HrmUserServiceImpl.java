@@ -109,6 +109,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         hrmUser.setIsExpired(entity.getIsExpired());
         hrmUser.setIsLock(entity.getIsLock());
         hrmUser.setPhoneNumber(entity.getPhoneNumber());
+        hrmUser.setPhoneCode(entity.getPhoneCode());
         hrmUser.setRealName(entity.getRealName());
         hrmUser.setUpdatedBy(UserInfoUtil.getUserName());
         hrmUser.setUpdatedOn(new Date());

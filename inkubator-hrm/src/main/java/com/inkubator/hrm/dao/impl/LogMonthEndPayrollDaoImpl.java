@@ -2,6 +2,7 @@ package com.inkubator.hrm.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -1007,5 +1008,19 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
         query.append(" ) AS jumlahRow ");          
         return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
+
+	@Override
+	public Collection<Long> getAllDataEmpIdByParam(ReportSalaryNoteSearchParameter searchParameter) {
+		StringBuffer selectQuery = new StringBuffer(
+  			  "SELECT empDataId AS empDataId "
+  			+ "FROM LogMonthEndPayroll ");    	
+	  	selectQuery.append(this.getWhereQueryByParamForReportSalaryNote(searchParameter));
+	  	selectQuery.append("GROUP BY periodeId,empDataId ");
+		
+	  	Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+	  	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, searchParameter);
+	
+	  	return hbm.list();
+	}
     
 }

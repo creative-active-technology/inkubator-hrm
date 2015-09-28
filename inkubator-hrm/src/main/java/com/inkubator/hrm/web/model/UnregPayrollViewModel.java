@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 public class UnregPayrollViewModel implements Serializable {
 
 	private Long id;
+	private Long unregSalaryId;
+	private Long empDataId;
 	private String empNik;
 	private String empName;
 	private BigDecimal income;
@@ -22,6 +24,18 @@ public class UnregPayrollViewModel implements Serializable {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public Long getUnregSalaryId() {
+		return unregSalaryId;
+	}
+	public void setUnregSalaryId(Long unregSalaryId) {
+		this.unregSalaryId = unregSalaryId;
+	}
+	public Long getEmpDataId() {
+		return empDataId;
+	}
+	public void setEmpDataId(Long empDataId) {
+		this.empDataId = empDataId;
 	}
 	public String getEmpNik() {
 		return empNik;

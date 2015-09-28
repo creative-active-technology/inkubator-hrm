@@ -20,18 +20,21 @@ import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -242,6 +245,7 @@ public class UserFormController extends BaseController {
 
     public HrmUser getEntityFromView(UserModel userModel) {
         HrmUser hrmUser = new HrmUser();
+        String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumbers();
         if (userModel.getId() != null) {
             hrmUser.setId(userModel.getId());
         }
@@ -264,7 +268,8 @@ public class UserFormController extends BaseController {
             hrmUser.setIsLock(HRMConstant.NOTLOCK);
         }
         hrmUser.setPassword(userModel.getPassword());
-        hrmUser.setPhoneNumber(userModel.getPhoneNumber());
+        hrmUser.setPhoneNumber(phoneNumber);
+        hrmUser.setPhoneCode(userModel.getCountryPhoneCode());
         hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
         if(userModel.getEmpDataId() != null){
@@ -274,7 +279,17 @@ public class UserFormController extends BaseController {
     }
 
     public UserModel getUserModelFromEntity(HrmUser hrmUser) {
-        UserModel us = new UserModel();
+    	UserModel us = new UserModel();
+    	//replace phone number, ex: from +6285720123456 to 085720123456
+    	if(hrmUser.getPhoneCode() != null){
+	    	String phoneWithCode = hrmUser.getPhoneNumber();
+	    	System.out.println(phoneWithCode + " - " + hrmUser.getPhoneNumber() + " - " + hrmUser.getPhoneCode().length() + " - " + hrmUser.getPhoneNumber().length());
+	    	String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
+	        System.out.println(phoneNumberWithoutCode);
+	        us.setPhoneNumbers(Long.valueOf(phoneNumberWithoutCode));
+	        us.setCountryPhoneCode(hrmUser.getPhoneCode());
+    	}
+    	
         us.setId(hrmUser.getId());
         us.setEmailAddress(hrmUser.getEmailAddress());
         if (Objects.equals(hrmUser.getIsActive(), HRMConstant.ACTIVE)) {

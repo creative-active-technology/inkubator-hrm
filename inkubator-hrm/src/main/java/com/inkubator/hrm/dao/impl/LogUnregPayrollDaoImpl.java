@@ -1,11 +1,14 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -45,7 +48,9 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     			+ "WHERE unregSalaryId = :unregSalaryId");
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setParameter("unregSalaryId", unregSalaryId);
     	
-    	return new Long(hbm.uniqueResult().toString());
+    	Object result = hbm.uniqueResult();
+    	
+		return result != null ? new Long(result.toString()) : new Long(0);
 		
 	}
 
@@ -57,13 +62,17 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     			+ "WHERE unregSalaryId = :unregSalaryId");
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setParameter("unregSalaryId", unregSalaryId);
     	
-    	return new BigDecimal(hbm.uniqueResult().toString());
+    	Object result = hbm.uniqueResult();
+    	
+		return result != null ? new BigDecimal(result.toString()) : new BigDecimal(0);
 	}
     
     @Override
     public List<UnregPayrollViewModel> getByParam(UnregPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT id as id, "
+    			+ "unregSalaryId as unregSalaryId, "
+    			+ "empDataId as empDataId, "
     			+ "empNik as empNik, "
     			+ "empName as empName, "
     			+ "SUM(CASE WHEN factor = 1 THEN nominal ELSE 0.0 END) AS income, "
@@ -137,6 +146,28 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     	
     	return hbm;
     }
+
+	@Override
+	public List<LogUnregPayroll> getAllDataByEmpDataIdAndUnregSalaryId(Long empDataId, Long unregSalaryId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empDataId", empDataId));
+		criteria.add(Restrictions.eq("unregSalaryId", unregSalaryId));
+		return criteria.list();
+	}
+
+	@Override
+	public Collection<Long> getAllDataEmpIdByParam(UnregPayrollSearchParameter searchParameter) {
+		StringBuffer selectQuery = new StringBuffer(
+	  			  "SELECT empDataId AS empDataId "
+	  			+ "FROM LogUnregPayroll ");    	
+		selectQuery.append(this.getWhereQueryByParam(searchParameter));
+	  	selectQuery.append("GROUP BY unregSalaryId,empDataId ");
+		
+	  	Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+	  	hbm = this.setValueQueryByParam(hbm, searchParameter);
+	
+	  	return hbm.list();  	
+	}
 
 	
 

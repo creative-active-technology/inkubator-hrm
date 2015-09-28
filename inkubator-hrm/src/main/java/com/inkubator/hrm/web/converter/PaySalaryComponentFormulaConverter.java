@@ -20,8 +20,8 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Deni
  */
-@FacesConverter(value = "paySalaryComponentConverter")
-public class PaySalaryComponentConverter implements Converter{
+@FacesConverter(value = "paySalaryComponentFormulaConverter")
+public class PaySalaryComponentFormulaConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
@@ -34,11 +34,11 @@ public class PaySalaryComponentConverter implements Converter{
         
         String messages = StringUtils.EMPTY;
         Integer data= (Integer) value;
-        if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)){
+        if(Objects.equals(data, 1)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_tunjangan");
-        } else if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)){
+        } else if(Objects.equals(data, -1)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_potongan");
-        } else if(Objects.equals(data, HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)){
+        } else if(Objects.equals(data, 0)){
         	messages = resourceBundle.getString("paySalaryComponent.paySalaryComponent_subsidi");
         } 
         return messages;

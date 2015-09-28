@@ -88,7 +88,10 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['bankTransferDistribution.bankName']}" />
                                 </f:facet>
-                                <h:outputLabel value=" #{listPayReceipt.bioBankAccount.bank.bankName}" />
+                                <p:outputLabel value= "#{listPayReceipt.bioBankAccount.bank.bankName}" rendered="#{!listPayReceipt.bioBankAccount.bank.parent}" />
+                                <p:outputLabel value= "#{listPayReceipt.bioBankAccount.bank.bank.bankName} - #{listPayReceipt.bioBankAccount.bank.branchName} " rendered="#{listPayReceipt.bioBankAccount.bank.parent}" />
+
+<!--<h:outputLabel value=" #{listPayReceipt.bioBankAccount.bank.bankName}" />-->
                             </p:column>
                             <p:column  style="width: 250px"> 
                                 <f:facet name="header">  

@@ -74,23 +74,27 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{publicHolidayData.code} - #{publicHolidayData.leave.name}"/>
                             </p:column>
-<!--                            <p:column sortBy="code" style="width: 15%" >
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.code']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{publicHolidayData.code}"/>
-                            </p:column> -->
+                            <!--                            <p:column sortBy="code" style="width: 15%" >
+                                                            <f:facet name="header">  
+                                                                <h:outputText value="#{appmsg['global.code']}"/>
+                                                            </f:facet>
+                                                            <h:outputLabel value= "#{publicHolidayData.code}"/>
+                                                        </p:column> -->
                             <p:column sortBy="startDate"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_start']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{publicHolidayData.startDate}"/>
+                                <p:outputLabel value= "#{publicHolidayData.startDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
                             </p:column> 
                             <p:column sortBy="endDate"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['publicHoliday.publicHoliday_end']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{publicHolidayData.endDate}"/>
+                                <p:outputLabel value= "#{publicHolidayData.endDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </p:outputLabel>
                             </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 

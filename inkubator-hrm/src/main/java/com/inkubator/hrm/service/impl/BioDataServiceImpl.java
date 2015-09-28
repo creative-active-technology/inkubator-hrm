@@ -6,6 +6,7 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BioDocumentDao;
 import com.inkubator.hrm.dao.CityDao;
@@ -102,7 +103,11 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(BioData entity) throws Exception {
-
+    	System.out.println("save");
+    	Long totalDuplicateNpwp = bioDataDao.getTotalByNpwp(entity.getNpwp());
+    	if(totalDuplicateNpwp > 0){
+    		throw new BussinessException("biodata.error_duplicate_npwp");
+    	}
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         entity.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));
@@ -117,6 +122,12 @@ public class BioDataServiceImpl extends IServiceImpl implements BioDataService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(BioData entity) throws Exception {
+    	System.out.println("update" + entity.getId());
+    	Long totalDuplicateNpwp = bioDataDao.getTotalByNpwpAndNotId(entity.getNpwp(), entity.getId());
+    	System.out.println(totalDuplicateNpwp);
+    	if(totalDuplicateNpwp > 0){
+    		throw new BussinessException("biodata.error_duplicate_npwp");
+    	}
         BioData bioData = this.bioDataDao.getEntiyByPK(entity.getId());
         bioData.setBloodType(entity.getBloodType());
         bioData.setCity(this.cityDao.getEntiyByPK(entity.getCity().getId()));

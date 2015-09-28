@@ -53,7 +53,7 @@
 
 
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Placement"/>
+                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="#{appmsg['employeeschedule.employee_work_schedule']}"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['workschedule.work_schedule_synchronously']}" action="#{empDataViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
 
@@ -232,6 +232,12 @@
                                     <h:outputText value="#{appmsg['global.unit']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{empViewData.jabatanByJabatanId.unitKerja.name}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.workgroup']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{empViewData.wtGroupWorking.name}"/>
                             </p:column>
                         </p:dataTable>
                         <p:blockUI block="userViewId" trigger="tableEmpDataId,btnPencarianId" >

@@ -32,6 +32,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.LeaveDistribution;
+import com.inkubator.hrm.entity.OverTimeDistribution;
+import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -360,6 +363,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getEmployeeBySearchEmployeeLeave(DistributionLeaveSchemeModel model) {
+    	DetachedCriteria listEmp = DetachedCriteria.forClass(LeaveDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("leave", "lv", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("lv.id", model.getLeaveSchemeId()));
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("leaveDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -367,13 +374,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
+        /*if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.isNull("lv.empData"));
             disjunction.add(Restrictions.not(Restrictions.eq("lv.leave.id", model.getLeaveSchemeId())));
             criteria.add(disjunction);
-        }
+        }*/
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -413,20 +421,26 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    	DetachedCriteria listEmp = DetachedCriteria.forClass(OverTimeDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("wtOverTime.id", model.getOverTimeId()));
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("overTimeDistributions", "ot", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("ot.wtOverTime", "wt", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
         criteria.createAlias("jabatan.department", "dept", JoinType.INNER_JOIN);
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
 //        criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
-        if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
+/*        if (model.getOverTimeId() != 0 || model.getOverTimeId() != null) {
 
             Criterion andCondition = Restrictions.conjunction()
                     .add(Restrictions.isNotNull("ot.empData"))
@@ -441,7 +455,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 //            disjunction.add(Restrictions.isNotNull("ot.empData"));
 //            disjunction.add(Restrictions.not(Restrictions.eq("ot.wtOverTime.id", model.getOverTimeId())));
             criteria.add(completeCondition);
-        }
+        }*/
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -481,6 +495,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        /*criteria.setProjection(Projections.distinct(Projections.property("id")));*/
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
@@ -535,6 +551,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getEmployeeBySearchEmployeePermit(PermitDistributionModel model) {
+    	DetachedCriteria listEmp = DetachedCriteria.forClass(PermitDistribution.class)
+                .setProjection(Property.forName("empData.id"))
+                .createAlias("permitClassification", "pc", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("pc.id", model.getPermitId()));
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("permitDistributions", "lv", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
@@ -542,13 +562,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("employeeType", "empType", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
+        criteria.add(Property.forName("id").notIn(listEmp));
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
-        if (model.getPermitId() != 0 || model.getPermitId() != null) {
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.isNull("lv.empData"));
-            disjunction.add(Restrictions.not(Restrictions.eq("lv.permitClassification.id", model.getPermitId())));
-            criteria.add(disjunction);
-        }
+//        if (model.getPermitId() != 0 || model.getPermitId() != null) {
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.isNull("lv.empData"));
+//            disjunction.add(Restrictions.not(Restrictions.eq("lv.permitClassification.id", model.getPermitId())));
+//            criteria.add(disjunction);
+//        }
         //balance
 //        if (model.getStartBalance() != 0.0){
 //            criteria.add(Restrictions.eq("lv.balance", model.getStartBalance()));
@@ -588,6 +609,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         } else {
             criteria.addOrder(Order.desc(sortBy));
         }
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 

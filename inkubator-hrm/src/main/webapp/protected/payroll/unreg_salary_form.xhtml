@@ -105,7 +105,7 @@
                             </p:column>
                             <p:column  style="width: 50%">
 
-                                <p:calendar  id="dateEarning" size="34" pattern="dd MMMM yyyy" label="Tanggal Lahir" value="#{unregSalaryFormController.model.salaryDate}"
+                                <p:calendar  id="dateEarning" size="34" pattern="dd MMMM yyyy" label="#{appmsg['unregSalary.salaryData']}" value="#{unregSalaryFormController.model.salaryDate}"
                                              required="true" navigator="true">
                                     <f:validator validatorId="birthDateValidator"  />
                                     <f:attribute name="validatorMessage" value="#{appmsg['global.salary_date_validator']}"/>
