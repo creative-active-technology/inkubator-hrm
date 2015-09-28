@@ -100,7 +100,11 @@
                             </p:toolbarGroup>
 
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >
+                                <h:panelGrid columns="4" >
+                                	<p:commandButton icon="ui-icon-document" value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" label="#{appmsg['payroll.mass_print']}" 
+	                                                 ajax="false" immediate="true">
+	                                    <p:fileDownload value="#{reportSalaryNoteViewController.doPrintMassSlip()}"/>                                    
+	                                </p:commandButton>
                                     <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to PDF" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableReportId" type="pdf" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Note"/>
                                     </p:commandButton>
