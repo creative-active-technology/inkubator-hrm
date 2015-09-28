@@ -251,7 +251,19 @@ public class ReportSalaryNoteViewController extends BaseController {
 	public StreamedContent doPrintSlip(){
 		StreamedContent file = null;
     	try {
-    		file = reportStreamController.getFileSalarySlip(selectedModel.getPeriodId(), selectedModel.getEmpDataId());
+    		file = reportStreamController.getFilePersonalSalarySlip(selectedModel.getPeriodId(), selectedModel.getEmpDataId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return file;
+		
+	}
+	
+	public StreamedContent doPrintMassSlip(){
+		StreamedContent file = null;
+    	try {
+    		file = reportStreamController.getFileMassSalarySlip(searchParameter);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

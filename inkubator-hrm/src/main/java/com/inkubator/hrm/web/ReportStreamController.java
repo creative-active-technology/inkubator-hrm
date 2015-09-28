@@ -9,6 +9,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
 import com.inkubator.hrm.util.CommonReportUtil;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
@@ -140,11 +141,11 @@ public class ReportStreamController extends BaseController {
         return file;
     }
 
-    public StreamedContent getFileSalarySlip(Long periodId, Long empDataId) {
+    public StreamedContent getFilePersonalSalarySlip(Long periodId, Long empDataId) {
         StreamedContent file = new DefaultStreamedContent();
         try {
-            if (empDataId != null && empDataId != null) {
-                file = logMonthEndPayrollService.generateSalarySlip(periodId, empDataId);
+            if (periodId != null && empDataId != null) {
+                file = logMonthEndPayrollService.generatePersonalSalarySlip(periodId, empDataId);
             }
         } catch (Exception ex) {
             // TODO Auto-generated catch block
@@ -153,6 +154,17 @@ public class ReportStreamController extends BaseController {
         return file;
     }
 
+    public StreamedContent getFileMassSalarySlip(ReportSalaryNoteSearchParameter searchParameter) {
+        StreamedContent file = new DefaultStreamedContent();
+        try {
+        	file = logMonthEndPayrollService.generateMassSalarySlip(searchParameter);
+        } catch (Exception ex) {
+            // TODO Auto-generated catch block
+            LOGGER.error(ex, ex);
+        }
+        return file;
+    }
+    
     public BioDataService getBioDataService() {
         return bioDataService;
     }

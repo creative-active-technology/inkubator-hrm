@@ -3,7 +3,8 @@
 	<property name="ireport.zoom" value="1.000000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="EMP_DATA_ID" class="java.lang.Long">
+	<import value="com.inkubator.hrm.util.TerbilangUtil"/>
+	<parameter name="ARRAY_EMP_DATA_ID" class="java.util.Collection">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -12,14 +13,15 @@
 	<parameter name="PERIOD_ID" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="THP_AS_STRING" class="java.lang.String"/>
+	<parameter name="IS_ALL_PERIOD" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[SELECT pay.*,emp.join_date
-FROM log_month_end_payroll pay
-LEFT JOIN emp_data emp ON emp.id=pay.emp_data_id
-WHERE pay.emp_data_id=$P{EMP_DATA_ID}
-AND pay.periode_id=$P{PERIOD_ID}
-AND pay.model_comp_specific=100]]>
+FROM emp_data emp
+LEFT JOIN log_month_end_payroll pay
+ON emp.id=pay.emp_data_id
+AND (pay.periode_id=$P{PERIOD_ID} OR $P{IS_ALL_PERIOD})
+AND pay.model_comp_specific=100
+WHERE $X{IN, pay.emp_data_id, ARRAY_EMP_DATA_ID}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -221,10 +223,10 @@ AND pay.model_comp_specific=100]]>
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
-					<subreportParameterExpression><![CDATA[$P{EMP_DATA_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$P{PERIOD_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_income_slip.jasper"]]></subreportExpression>
@@ -235,10 +237,10 @@ AND pay.model_comp_specific=100]]>
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
-					<subreportParameterExpression><![CDATA[$P{EMP_DATA_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$P{PERIOD_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_deduction_slip.jasper"]]></subreportExpression>
@@ -249,16 +251,16 @@ AND pay.model_comp_specific=100]]>
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
-					<subreportParameterExpression><![CDATA[$P{EMP_DATA_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$P{PERIOD_ID}]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_subsidy_slip.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="160">
+		<band height="200">
 			<staticText>
 				<reportElement x="0" y="0" width="150" height="20" forecolor="#000000" uuid="dcd16d92-ec20-4e76-bebe-963fa825f8df"/>
 				<textElement textAlignment="Left">
@@ -280,12 +282,12 @@ AND pay.model_comp_specific=100]]>
 				</textElement>
 				<text><![CDATA[Terbilang]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="150" y="20" width="405" height="20" uuid="c2724d32-481c-4460-914f-ea574420b1d4"/>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="150" y="20" width="340" height="20" uuid="c2724d32-481c-4460-914f-ea574420b1d4"/>
 				<textElement>
 					<font fontName="Arial" size="11" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(" + $P{THP_AS_STRING} + ")"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(" + new TerbilangUtil($F{nominal}).toString() + ")"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="100" width="150" height="20" forecolor="#000000" uuid="79999f00-b67e-48cb-b846-b445f963c334"/>
@@ -295,12 +297,15 @@ AND pay.model_comp_specific=100]]>
 				<text><![CDATA[Mengetahui,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="140" width="150" height="20" forecolor="#000000" uuid="7269ee0c-b106-4492-a33c-234d25dcd4cc"/>
+				<reportElement x="0" y="160" width="150" height="20" forecolor="#000000" uuid="7269ee0c-b106-4492-a33c-234d25dcd4cc"/>
 				<textElement textAlignment="Left">
 					<font fontName="Arial" size="11" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Bagian Penggajian]]></text>
 			</staticText>
+			<break>
+				<reportElement x="0" y="199" width="100" height="1" uuid="c575514d-c866-45ba-9acc-525cb589b0a0"/>
+			</break>
 		</band>
 	</detail>
 </jasperReport>
