@@ -50,7 +50,9 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
     
     public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter searchParameter);
 
-	public StreamedContent generateSalarySlip(Long periodId, Long empDataId) throws Exception;
+	public StreamedContent generatePersonalSalarySlip(Long periodId, Long empDataId) throws Exception;
+	
+	public StreamedContent generateMassSalarySlip(ReportSalaryNoteSearchParameter searchParameter) throws Exception;
         
         public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
