@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -56,5 +57,7 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
     public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter);
+    
+    public Collection<Long> getAllDataEmpIdByParam(ReportSalaryNoteSearchParameter searchParameter);
     
 }

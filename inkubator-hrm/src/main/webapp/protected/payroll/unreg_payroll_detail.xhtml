@@ -85,7 +85,10 @@
                                 	<p:commandButton value="#{appmsg['unregpayroll.payment_proses']}" action="#{unregPayrollDetailController.doInitPaymentProcess}"  title="#{appmsg['payroll.month_end_process']}" label="#{appmsg['payroll.month_end_process']}" styleClass="label_button"
                                 					 onclick="PF('statusDialog').show()" oncomplete="if (!args.validationFailed) {PF('paymentProcessWidget').show();} else {PF('statusDialog').hide();}" update=":monthEndProcessForm,:growlId,:paymentProcessWidgetId">
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" styleClass="label_button" action="#{unregPayrollDetailController.doClose()}" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton icon="ui-icon-document" value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" label="#{appmsg['payroll.mass_print']}" 
+	                                                 ajax="false" immediate="true">
+	                                    <p:fileDownload value="#{unregPayrollDetailController.doPrintMassSlip()}"/>                                    
+	                                </p:commandButton>
                                     <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Unreguler_Payroll"/>
                                     </p:commandButton>                                    
@@ -155,6 +158,12 @@
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{unregPayrollDetailController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{unregPayrollDetailController.unregPayrollViewModel}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
+                                                 style="font-size: 10px!important" ajax="false" immediate="true">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{unregPayrollDetailController.unregPayrollViewModel}" />
+                                    <p:fileDownload value="#{unregPayrollDetailController.doPrintPersonalSlip()}"/>                                    
                                 </p:commandButton>
                             </p:column>
                             <f:facet name="footer">

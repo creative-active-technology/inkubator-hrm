@@ -1,10 +1,17 @@
 package com.inkubator.hrm.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -14,14 +21,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LogUnregPayrollDao;
 import com.inkubator.hrm.dao.TempUnregPayrollDao;
 import com.inkubator.hrm.dao.TempUnregPayrollEmpPajakDao;
 import com.inkubator.hrm.dao.UnregSalaryDao;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LogUnregPayroll;
 import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.LogUnregPayrollService;
+import com.inkubator.hrm.util.CommonReportUtil;
 import com.inkubator.hrm.web.model.UnregPayrollViewModel;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 
 /**
@@ -40,6 +51,8 @@ public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnreg
 	private TempUnregPayrollEmpPajakDao tempUnregPayrollEmpPajakDao;
 	@Autowired
 	private UnregSalaryDao unregSalaryDao;
+	@Autowired
+	private EmpDataDao empDataDao;
 	
 	@Override
 	public com.inkubator.hrm.entity.LogUnregPayroll getEntiyByPK(String id)
@@ -319,6 +332,33 @@ public class LogUnregPayrollServiceImpl extends IServiceImpl implements LogUnreg
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<LogUnregPayroll> getAllDataByEmpDataIdAndUnregSalaryId(Long empDataId, Long unregSalaryId) throws Exception {
 		return logUnregPayrollDao.getAllDataByEmpDataIdAndUnregSalaryId(empDataId, unregSalaryId);
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generatePersonalSalarySlip(Long unregSalaryId, Long empDataId) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		Collection<Long> arrayEmpDataId = new ArrayList<>();
+		arrayEmpDataId.add(empDataId);		
+        return generateSalarySlip(unregSalaryId, arrayEmpDataId, empData.getNik());
+		
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generateMassSalarySlip(UnregPayrollSearchParameter searchParameter) throws Exception {
+		Collection<Long> arrayEmpDataId = logUnregPayrollDao.getAllDataEmpIdByParam(searchParameter);
+        return generateSalarySlip(searchParameter.getUnregSalaryId(), arrayEmpDataId, "print_mass");
+		
+	}
+	
+	private StreamedContent generateSalarySlip(Long unregSalaryId, Collection<Long> arrayEmpDataId, String pdf) throws Exception {
+		Map<String, Object> params = new HashMap<>();
+        params.put("ARRAY_EMP_DATA_ID", arrayEmpDataId);
+        params.put("UNREG_SALARY_ID", unregSalaryId);
+        params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/"));
+        StreamedContent file = CommonReportUtil.exportReportToPDFStream("unreg_salary_slip.jasper", params, pdf + ".pdf");
+        return file;
 	}
 
 }

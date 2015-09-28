@@ -26,6 +26,9 @@ public class PermitClassificationModel implements Serializable {
     private Double salaryCut;
     private Boolean attachmentRequired;
     private Boolean isActive;
+     private Integer batasMaju;
+    private Integer batasMudur;
+    
 
     public Long getId() {
         return id;
@@ -163,4 +166,21 @@ public class PermitClassificationModel implements Serializable {
         this.isActive = isActive;
     }
 
+    public Integer getBatasMaju() {
+        return batasMaju;
+    }
+
+    public void setBatasMaju(Integer batasMaju) {
+        this.batasMaju = batasMaju;
+    }
+
+    public Integer getBatasMudur() {
+        return batasMudur;
+    }
+
+    public void setBatasMudur(Integer batasMudur) {
+        this.batasMudur = batasMudur;
+    }
+
+    
 }
