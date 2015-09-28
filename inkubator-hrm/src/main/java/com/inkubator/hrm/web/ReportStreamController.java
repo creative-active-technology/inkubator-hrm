@@ -3,30 +3,34 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.service.BioDataService;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.LogMonthEndPayrollService;
-import com.inkubator.hrm.service.LogMonthEndTaxesService;
-import com.inkubator.hrm.util.CommonReportUtil;
-import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.LogMonthEndPayrollService;
+import com.inkubator.hrm.service.LogMonthEndTaxesService;
+import com.inkubator.hrm.service.LogUnregPayrollService;
+import com.inkubator.hrm.util.CommonReportUtil;
+import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
+import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -44,6 +48,8 @@ public class ReportStreamController extends BaseController {
     private LogMonthEndPayrollService logMonthEndPayrollService;
     @ManagedProperty(value = "#{logMonthEndTaxesService}")
     private LogMonthEndTaxesService logMonthEndTaxesService;
+    @ManagedProperty(value = "#{logUnregPayrollService}")
+    private LogUnregPayrollService logUnregPayrollService;
 
     @PostConstruct
     @Override
@@ -58,6 +64,7 @@ public class ReportStreamController extends BaseController {
         empDataService = null;
         logMonthEndPayrollService = null;
         logMonthEndTaxesService = null;
+        logUnregPayrollService = null;
     }
 
     public StreamedContent getFileCardName() throws JRException, Exception {
@@ -165,6 +172,30 @@ public class ReportStreamController extends BaseController {
         return file;
     }
     
+    public StreamedContent getFilePersonalUnregSalarySlip(Long unregSalaryId, Long empDataId) {
+        StreamedContent file = new DefaultStreamedContent();
+        try {
+            if (unregSalaryId != null && empDataId != null) {
+                file = logUnregPayrollService.generatePersonalSalarySlip(unregSalaryId, empDataId);
+            }
+        } catch (Exception ex) {
+            // TODO Auto-generated catch block
+            LOGGER.error(ex, ex);
+        }
+        return file;
+    }
+
+    public StreamedContent getFileMassUnregSalarySlip(UnregPayrollSearchParameter searchParameter) {
+        StreamedContent file = new DefaultStreamedContent();
+        try {
+        	file = logUnregPayrollService.generateMassSalarySlip(searchParameter);
+        } catch (Exception ex) {
+            // TODO Auto-generated catch block
+            LOGGER.error(ex, ex);
+        }
+        return file;
+    }
+    
     public BioDataService getBioDataService() {
         return bioDataService;
     }
@@ -197,5 +228,13 @@ public class ReportStreamController extends BaseController {
     public void setLogMonthEndTaxesService(LogMonthEndTaxesService logMonthEndTaxesService) {
         this.logMonthEndTaxesService = logMonthEndTaxesService;
     }
+
+	public LogUnregPayrollService getLogUnregPayrollService() {
+		return logUnregPayrollService;
+	}
+
+	public void setLogUnregPayrollService(LogUnregPayrollService logUnregPayrollService) {
+		this.logUnregPayrollService = logUnregPayrollService;
+	}
 
 }
