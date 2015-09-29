@@ -17,11 +17,13 @@
 	<queryString>
 		<![CDATA[SELECT pay.*,emp.join_date
 FROM emp_data emp
+LEFT JOIN bio_data bio ON bio.id=emp.bio_data_id
 LEFT JOIN log_month_end_payroll pay
 ON emp.id=pay.emp_data_id
 AND (pay.periode_id=$P{PERIOD_ID} OR $P{IS_ALL_PERIOD})
 AND pay.model_comp_specific=100
-WHERE $X{IN, pay.emp_data_id, ARRAY_EMP_DATA_ID}]]>
+WHERE $X{IN, pay.emp_data_id, ARRAY_EMP_DATA_ID}
+ORDER BY bio.first_name,bio.last_name]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
