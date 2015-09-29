@@ -31,7 +31,7 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">   
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="scheduleName" value="Nama Penjadwalan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="scheduleName" value="#{appmsg['scheduler_config.name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="scheduleName"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.name}" filter="true"  filterMatchMode="contains" required="true">
@@ -44,7 +44,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="tipeSchedule" value="Jenis Penjadwalan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="tipeSchedule" value="#{appmsg['scheduler_config.type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="tipeSchedule"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.schedullerType}" filter="true"  filterMatchMode="contains" required="true">
@@ -60,7 +60,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="repeateType" value="Kategori Pengulangan Terus Menerus" styleClass="label_hrm"/>
+                                    <p:outputLabel for="repeateType" value="#{appmsg['scheduler_config.category']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="repeateType"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.repeateType}" filter="true"  filterMatchMode="contains" required="true" disabled="#{schedulerConfigFormController.isDisableRepeatType}">
@@ -76,7 +76,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="repeateNumber" value="Jumlah Pelaksanaan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="repeateNumber" value="#{appmsg['scheduler_config.repeate_count']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:spinner id="repeateNumber" value="#{schedulerConfigFormController.schedulerConfigModel.repeateNumber}" size="2" required="true"
@@ -86,7 +86,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="startDate" value="Awal Pengulangan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="startDate" value="#{appmsg['scheduler_config.start_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="startDate" pattern="dd MMMM yyyy" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
@@ -95,7 +95,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="endDate" value="Akhir Pengulangan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="endDate" value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="endDate" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
@@ -105,7 +105,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="stardSchedule" value="Awal Pelaksanaan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="stardSchedule" value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="stardSchedule" value="#{schedulerConfigFormController.schedulerConfigModel.dateStartExecution}" pattern="dd MMMM yyyy" required="true"/>
@@ -114,7 +114,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="istimeDiv" value="Jeda Waktu" styleClass="label_hrm"/>
+                                    <p:outputLabel for="istimeDiv" value="#{appmsg['scheduler_config.time_range']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton value="#{schedulerConfigFormController.schedulerConfigModel.isTimeDiv}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -125,7 +125,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="timeSchedule" value="Waktu Pelaksanaan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="timeSchedule" value="#{appmsg['scheduler_config.time_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <pe:timePicker intervalMinutes="5" id="timeSchedule" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.schedullerTime}" disabled ="#{schedulerConfigFormController.isDisabaleJeda}" />
@@ -136,7 +136,7 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="timeDiv" value="Jeda Waktu Pelaksanaan" styleClass="label_hrm"/>
+                                    <p:outputLabel for="timeDiv" value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <pe:timePicker intervalMinutes="1" id="timeDiv" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.timeDivExecution}" disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
