@@ -272,7 +272,6 @@ public class RmbsApplicationFormController extends BaseController {
         	model.setRmbsTypeId(null);
         	rmbsSchemaListOfType = null;
         	totalRequestThisMoth = new BigDecimal(0);
-        	
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(model.getEmpData().getId());
             if (rmbsSchemaListOfEmp != null) {
                 rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
