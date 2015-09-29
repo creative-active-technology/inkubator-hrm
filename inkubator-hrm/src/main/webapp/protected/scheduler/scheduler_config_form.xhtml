@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Form Aturan Penjadwalan" styleClass="header_big" />
+                                <p:outputLabel value="Definisi Aturan Penjadwalan dari Aplikasi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlapprovalFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="approvalFormId" >
+                        <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">    <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="scheduleName" value="Nama Penjadwalan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="scheduleName"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.name}" filter="true"  filterMatchMode="contains" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Pengiriman Notifikasi User" itemValue="USER_NOTIFICATION" />
+                                        <f:selectItem itemLabel="Pengiriman Notifikasi Approval Matriks" itemValue="APROVAL_MATRIX_NOTIF" />
+                                    </p:selectOneMenu>
+                                    <p:message for="scheduleName"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="tipeSchedule" value="Jenis Penjadwalan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="tipeSchedule"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.schedullerType}" filter="true"  filterMatchMode="contains" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=" "/>
+                                        <f:selectItem itemLabel="Pengulanan Terus" itemValue="REPEAT" />
+                                        <f:selectItem itemLabel="Sekali Pengulangan" itemValue="ONCE" />
+                                        <f:selectItem itemLabel="Pengulangan Rentang Waktu" itemValue="RANGE_TIME" />
+                                        <!--<f:selectItem itemLabel="Pengulangan Jeda Waktu Tertentu" itemValue="REPEATE_BY_TIME_DIV" />-->
+                                        <p:ajax listener="#{schedulerConfigFormController.doChangeTypeSchedule()}" update="repeateType,startDate,endDate"  />
+                                    </p:selectOneMenu>
+                                    <p:message for="tipeSchedule"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="repeateType" value="Kategori Pengulangan Terus Menerus" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="repeateType"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.repeateType}" filter="true"  filterMatchMode="contains" required="true" disabled="#{schedulerConfigFormController.isDisableRepeatType}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Tiap Hari" itemValue="EVERY_DAY" />
+                                        <f:selectItem itemLabel="Tiap Minggu" itemValue="EVERY_WEEK" />
+                                        <f:selectItem itemLabel="Tiap Bulan" itemValue="EVERY_MONTH" />
+                                        <f:selectItem itemLabel="Tiap Tahun" itemValue="EVERTY_YEAR" />
+
+                                    </p:selectOneMenu>
+                                    <p:message for="repeateType"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="repeateNumber" value="Jumlah Pelaksanaan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="repeateNumber" value="#{schedulerConfigFormController.schedulerConfigModel.repeateNumber}" size="2" required="true"
+                                               min="1" max="100" stepFactor="1" /> 
+                                    <p:message for="repeateNumber"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="startDate" value="Awal Pengulangan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="startDate" pattern="dd MMMM yyyy" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
+                                    <p:message for="startDate"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="endDate" value="Akhir Pengulangan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="endDate" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
+                                    <!--<p:message for="startDate"/>-->
+                                    <p:message for="endDate"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="stardSchedule" value="Awal Pelaksanaan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="stardSchedule" value="#{schedulerConfigFormController.schedulerConfigModel.dateStartExecution}" pattern="dd MMMM yyyy"/>
+                                    <p:message for="stardSchedule"/>
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="istimeDiv" value="Jeda Waktu" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanButton value="#{schedulerConfigFormController.schedulerConfigModel.isTimeDiv}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="istimeDiv" styleClass="label_button" >
+                                        <p:ajax listener="#{schedulerConfigFormController.onChange()}"   update="timeSchedule,timeDiv"/>
+                                    </p:selectBooleanButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="timeSchedule" value="Waktu Pelaksanaan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <pe:timePicker intervalMinutes="5" id="timeSchedule" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.schedullerTime}" disabled ="#{schedulerConfigFormController.isDisabaleJeda}" />
+                                    #{appmsg['global.hour']} : #{appmsg['global.minute']}
+                                    <p:message for="timeSchedule"/>
+                                </p:column>
+                            </p:row>  
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="timeDiv" value="Jeda Waktu Pelaksanaan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <pe:timePicker intervalMinutes="1" id="timeDiv" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.timeDivExecution}" disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
+                                    #{appmsg['global.hour']} : #{appmsg['global.minute']}
+                                    <p:message for="timeDiv"/>
+                                </p:column>
+                            </p:row>  
+
+                        </p:panelGrid>
+
+                        <p:separator/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"  update=":growlapprovalFormId,approvalFormId"
+                                             action="#{schedulerConfigFormController.doSave()}" styleClass="label_button"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" action="#{schedulerConfigFormController.initialization()}"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"  styleClass="label_button"  style="margin-right: 5px" update="approvalFormId">  
+                                <p:resetInput target="approvalFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{schedulerConfigFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
+                        <div style="clear: both"/>
+                    </h:form>
+                </div>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
