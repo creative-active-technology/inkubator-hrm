@@ -76,6 +76,7 @@ public class ReimbursmentFormController extends BaseController {
     private Boolean isUpload;
     private Boolean isQuantity;
     private Boolean isNominal;
+    private String code;
 
     @PostConstruct
     @Override
@@ -90,6 +91,7 @@ public class ReimbursmentFormController extends BaseController {
                 Reimbursment reimbursment = reimbursmentService.getEntityByPkWithDetail(Long.parseLong(reimbursmentId.substring(1)));
                 if (reimbursmentId.substring(1) != null) {
                     model = getModelFromEntity(reimbursment);
+                    code = model.getCode();
                     isUpdate = Boolean.TRUE;
                     ReimbursmentSchema reimbursmentSchema = reimbursmentSchemaService.getEntiyByPK(reimbursment.getReimbursmentSchema().getId());
                     if (reimbursmentSchema.getMeasurement() == HRMConstant.REIMBURSMENT_UNIT) {
@@ -108,7 +110,8 @@ public class ReimbursmentFormController extends BaseController {
             } else {
             	TransactionCodefication transactionCodefication = transactionCodeficationService.getEntityByModulCode(HRMConstant.REIMBERS_KODE);
             	if(!ObjectUtils.equals(transactionCodefication, null)){
-            		model.setCode(KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode()));
+            		code = KodefikasiUtil.getKodefikasiOnlyPattern(transactionCodefication.getCode());
+            		model.setCode(code);
             	}            	
             }
 
@@ -135,6 +138,7 @@ public class ReimbursmentFormController extends BaseController {
         isQuantity = null;
         transactionCodeficationService = null;
     }
+    
 
     public void listDrowDown() throws Exception {
         //cost center
@@ -406,7 +410,13 @@ public class ReimbursmentFormController extends BaseController {
 	}
 
 	public void doReset() {
-        cleanAndExit();
+		if(isUpdate){
+			 model.setCode(code);
+		}else{
+			model = new ReimbursmentModel();
+	        model.setCode(code);
+		}
+		
     }
 
     public String doBack() {

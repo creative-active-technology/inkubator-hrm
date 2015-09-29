@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -239,6 +240,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     }
 
     @Override
+    @Cacheable(value = "requestHistory", key = "#userName")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getRequestHistory(String userName) throws Exception {
         return this.approvalActivityDao.getRequestHistory(userName, 0, 5, Order.desc("requestTime"));
@@ -267,12 +269,14 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     }
 
     @Override
+    @Cacheable(value = "pendingRequest", key = "#userName")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getPendingRequest(String userName) throws Exception {
         return this.approvalActivityDao.getPendingRequest(userName);
     }
 
     @Override
+    @Cacheable(value = "pendingTask", key = "#userName")
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getPendingTask(String userName) throws Exception {
         return this.approvalActivityDao.getPendingTask(userName);

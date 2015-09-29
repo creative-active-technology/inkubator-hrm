@@ -318,14 +318,15 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 	@Override
 	public Long getTotalByParamForReportSalaryNote(ReportSalaryNoteSearchParameter parameter) {
 		StringBuffer selectQuery = new StringBuffer(
-    			"SELECT count(distinct empDataId) "
+    			"SELECT id "
     			+ "FROM LogMonthEndPayroll ");    	
     	selectQuery.append(this.getWhereQueryByParamForReportSalaryNote(parameter));
+    	selectQuery.append("GROUP BY periodeId,empDataId ");
     	
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
     	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, parameter);
     	
-        return Long.valueOf(hbm.uniqueResult().toString());
+        return Long.valueOf(hbm.list().size());
 	}
 	
 	private String getWhereQueryByParamForReportSalaryNote(ReportSalaryNoteSearchParameter parameter) {
