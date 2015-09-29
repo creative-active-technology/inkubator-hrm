@@ -44,9 +44,9 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
     }
 
     @Override
-     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public SchedulerConfig getEntiyByPK(Long id) throws Exception {
-   return this.schedulerConfigDao.getEntiyByPK(id);
+        return this.schedulerConfigDao.getEntiyByPK(id);
     }
 
     @Override
@@ -63,8 +63,27 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(SchedulerConfig entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicate = schedulerConfigDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
+        if (totalDuplicate > 0) {
+            throw new BussinessException("scheduler_config.error_name");
+        }
+        SchedulerConfig schedulerConfig = schedulerConfigDao.getEntiyByPK(entity.getId());
+        schedulerConfig.setDateStartExecution(entity.getDateStartExecution());
+        schedulerConfig.setEndDate(entity.getEndDate());
+        schedulerConfig.setIsTimeDiv(entity.getIsTimeDiv());
+        schedulerConfig.setLastExecution(entity.getLastExecution());
+        schedulerConfig.setName(entity.getName());
+        schedulerConfig.setRepeateNumber(entity.getRepeateNumber());
+        schedulerConfig.setRepeateType(entity.getRepeateType());
+        schedulerConfig.setSchedullerTime(entity.getSchedullerTime());
+        schedulerConfig.setSchedullerType(entity.getSchedullerType());
+        schedulerConfig.setStartDate(entity.getStartDate());
+        schedulerConfig.setTimeDivExecution(entity.getTimeDivExecution());
+        schedulerConfig.setUpdatedBy(UserInfoUtil.getUserName());
+        schedulerConfig.setUpdatedOn(new Date());
+        schedulerConfigDao.update(schedulerConfig);
     }
 
     @Override

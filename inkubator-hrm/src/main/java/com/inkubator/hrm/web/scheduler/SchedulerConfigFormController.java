@@ -96,7 +96,7 @@ public class SchedulerConfigFormController extends BaseController {
     }
 
     public void doChangeTypeSchedule() {
-      
+
         if ("ONCE".equalsIgnoreCase(schedulerConfigModel.getSchedullerType()) || schedulerConfigModel.getSchedullerType().equals(" ")) {
             isDisableRepeatType = Boolean.TRUE;
 //            isDisableDateRange = Boolean.FALSE;
@@ -120,10 +120,19 @@ public class SchedulerConfigFormController extends BaseController {
     public String doSave() {
         SchedulerConfig config = getEntityFromModel(schedulerConfigModel);
         try {
-            schedulerConfigService.save(config);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+            if (isEdit) {
+                schedulerConfigService.update(config);
+                System.out.println(" Update terjadi" +config.getRepeateNumber());
+               MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+            } else {
+                schedulerConfigService.save(config);
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+            }
+
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
