@@ -97,7 +97,7 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
      * @return approvalActivity object
      */
 	protected ApprovalActivity checkApprovalProcess(String processName, String requestByEmployee) throws Exception {
-		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));		
+		List<ApprovalDefinition> listAppDef = approvalDefinitionDao.getAllDataByNameAndProcessType(processName, HRMConstant.APPROVAL_PROCESS, Order.asc("sequence"));
 		return this.checkApprovalProcess(listAppDef, requestByEmployee);
 	}
 	
@@ -117,7 +117,6 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 			 *  Looping akan berhenti jika sudah ditemukan approvalActivity yang harus di proses */
 			for(ApprovalDefinition appDef: listAppDef){
 				String approverUserId = this.getApproverByAppDefinition(appDef, requestByEmployee);
-				
 				if(StringUtils.isNotEmpty(approverUserId)){				
 					appActivity = new ApprovalActivity();
 					appActivity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
@@ -189,6 +188,9 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
 				HrmUser approver = empData.getHrmUsers().iterator().next();
 				userId = approver.getUserId();					
 			}
+		}else{
+			//Jika jabatan belum memiliki karyawan throw Bussines Exception
+			throw new BussinessException("approvaldefinition.emp_of_approver_position_is_still_empty");
 		}
 		
 		return userId;
