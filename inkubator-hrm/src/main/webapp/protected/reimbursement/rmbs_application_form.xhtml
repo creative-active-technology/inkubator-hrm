@@ -62,9 +62,9 @@
                                     <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{rmbsApplicationFormController.model.empData}"
                                                     completeMethod="#{rmbsApplicationFormController.doAutoCompleteEmployee}"                                                
                                                     var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                    converter="empDataConverter" styleClass="isitext_hrm" size="45"
+                                                    converter="empDataConverter" styleClass="isitext_hrm" size="45" 
                                                     required="true" readonly="#{not (rmbsApplicationFormController.isAdministator and not rmbsApplicationFormController.isRevised)}">
-                                        <p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,listApproverId"/>
+                                        <p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,tableApproverId"/>
                                     </p:autoComplete>
                                     <p:message for="employeeId"/>
                                 </p:column>
@@ -208,9 +208,27 @@
                                     <p:outputLabel value="#{appmsg['loan.loan_approver']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column id="listApproverId" style="width: 80%">
-                                    <ui:repeat value="#{rmbsApplicationFormController.listApprover}" var="approver" varStatus="no">
-                                        #{no.index+1}. #{approver.nikWithFullName} <br />
-                                    </ui:repeat>
+                                	<h:panelGrid  columns="1" style="margin-left: -10px;">
+                                        <p:dataTable  id="tableApproverId" var="approverData"  value="#{rmbsApplicationFormController.listApprover}" lazy="false" paginator="false" pageLinks="7"
+                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                                      rowIndexVar="no"> 
+                                            <p:column style="text-align: center;width: 5%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{no+1}." />
+                                            </p:column>  
+                                            <p:column style="text-align: center;width: 95%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.loan_approver']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName}">
+
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:panelGrid>                                  
                                 </p:column>
                             </p:row>	                        
                             <p:row rendered="#{rmbsApplicationFormController.isRevised}">
