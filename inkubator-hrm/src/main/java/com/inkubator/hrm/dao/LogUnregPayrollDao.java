@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -27,5 +28,7 @@ public interface LogUnregPayrollDao extends IDAO<LogUnregPayroll> {
 	public List<UnregPayrollViewModel> getByParam(UnregPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
 	public Long getTotalByParam(UnregPayrollSearchParameter parameter);
+
+	public Collection<Long> getAllDataEmpIdByParam(UnregPayrollSearchParameter searchParameter);
 
 }

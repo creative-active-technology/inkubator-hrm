@@ -34,8 +34,9 @@ public class DayAsStringConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
     	DateTime dt = new DateTime((Date) value);
+    	int dayOFWeek = dt.getDayOfWeek()==7 ? 1 : dt.getDayOfWeek()+1;
         DateFormatSymbols dfs = new DateFormatSymbols(new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-        return dfs.getWeekdays()[dt.getDayOfWeek()+1];
+        return dfs.getWeekdays()[dayOFWeek];
     }
     
 }
