@@ -16,6 +16,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.StreamedContent;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -29,6 +30,7 @@ import com.inkubator.hrm.entity.UnregSalary;
 import com.inkubator.hrm.service.LogUnregPayrollService;
 import com.inkubator.hrm.service.TempUnregPayrollService;
 import com.inkubator.hrm.service.UnregSalaryService;
+import com.inkubator.hrm.web.ReportStreamController;
 import com.inkubator.hrm.web.lazymodel.LogUnregPayrollLazyDataModel;
 import com.inkubator.hrm.web.model.UnregPayrollViewModel;
 import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
@@ -63,6 +65,8 @@ public class UnregPayrollDetailController extends BaseController {
     private JobLauncher jobLauncherAsync;
     @ManagedProperty(value = "#{jobUnregPayroll}")
     private Job jobUnregPayroll;
+    @ManagedProperty(value = "#{reportStreamController}")
+    private ReportStreamController reportStreamController;
 
     @PostConstruct
     @Override
@@ -95,6 +99,7 @@ public class UnregPayrollDetailController extends BaseController {
         jobExecution = null;
         progress = null;
         tempUnregPayrollService = null;
+        reportStreamController = null;
     }
 
     public String doBack(){
@@ -202,6 +207,28 @@ public class UnregPayrollDetailController extends BaseController {
 			LOGGER.error("Error ", e);
 		}
     }
+    
+    public StreamedContent doPrintPersonalSlip(){
+		StreamedContent file = null;
+    	try {
+    		file = reportStreamController.getFilePersonalUnregSalarySlip(unregPayrollViewModel.getUnregSalaryId(), unregPayrollViewModel.getEmpDataId());
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
+    	return file;
+		
+	}
+	
+	public StreamedContent doPrintMassSlip(){
+		StreamedContent file = null;
+    	try {
+    		file = reportStreamController.getFileMassUnregSalarySlip(parameter);
+		} catch (Exception e) {
+			LOGGER.error("Error ", e);
+		}
+    	return file;
+		
+	}
 
 	public UnregSalary getUnregSalary() {
 		return unregSalary;
@@ -310,6 +337,14 @@ public class UnregPayrollDetailController extends BaseController {
 
 	public void setUnregPayrollViewModel(UnregPayrollViewModel unregPayrollViewModel) {
 		this.unregPayrollViewModel = unregPayrollViewModel;
-	}  
+	}
+
+	public ReportStreamController getReportStreamController() {
+		return reportStreamController;
+	}
+
+	public void setReportStreamController(ReportStreamController reportStreamController) {
+		this.reportStreamController = reportStreamController;
+	} 
     
 }
