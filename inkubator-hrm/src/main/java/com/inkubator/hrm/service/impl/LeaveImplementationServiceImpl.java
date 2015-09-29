@@ -570,7 +570,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         Leave leave = leaveDao.getEntiyByPK(leaveId);
         List<Date> actualLeaves = new ArrayList<Date>();
 
-        if (leave.getDayType() == HRMConstant.LEAVE_DAY_TYPE_WORKING) {
+        if (StringUtils.equals(leave.getDayType(), HRMConstant.LEAVE_DAY_TYPE_WORKING)) {
             actualLeaves = wtScheduleShiftService.getAllWorkingDaysBetween(empData.getId(), startDate, endDate);
         } else {
             for (int i = 1; i <= DateTimeUtil.getTotalDay(startDate, endDate); i++) {
