@@ -572,7 +572,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
 
         if (StringUtils.equals(leave.getDayType(), HRMConstant.LEAVE_DAY_TYPE_WORKING)) {
             actualLeaves = wtScheduleShiftService.getAllWorkingDaysBetween(empData.getId(), startDate, endDate);
-        } else {
+        } else if(StringUtils.equals(leave.getDayType(), HRMConstant.LEAVE_DAY_TYPE_CALENDAR)) {
             for (int i = 1; i <= DateTimeUtil.getTotalDay(startDate, endDate); i++) {
                 actualLeaves.add(DateUtils.addDays(startDate, i));
             }
