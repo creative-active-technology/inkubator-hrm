@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class SchedulerConfigModel implements Serializable {
 
-    private long id;
+    private Long id;
     private String name;
     private String schedullerType;
     private String repeateType;
@@ -26,11 +26,11 @@ public class SchedulerConfigModel implements Serializable {
     private Date timeDivExecution;
     private Boolean isTimeDiv;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

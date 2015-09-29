@@ -5,12 +5,16 @@
  */
 package com.inkubator.hrm.web.scheduler;
 
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.SchedulerConfigService;
 import com.inkubator.hrm.web.model.SchedulerConfigModel;
 import com.inkubator.webcore.controller.BaseController;
-import java.util.Map;
-import java.util.TreeMap;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -92,8 +96,20 @@ public class SchedulerConfigFormController extends BaseController {
 
     }
 
-    public void doSave() {
+    public String doSave() {
+        SchedulerConfig config = getEntityFromView(schedulerConfigModel);
+        try {
+            schedulerConfigService.save(config);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
 
+        return null;
     }
 
     public void doBack() {
@@ -109,7 +125,26 @@ public class SchedulerConfigFormController extends BaseController {
     }
 
     public void onChange() {
-            isDisabaleJeda = schedulerConfigModel.getIsTimeDiv();
-        
+        isDisabaleJeda = schedulerConfigModel.getIsTimeDiv();
+
     }
+
+    private SchedulerConfig getEntityFromView(SchedulerConfigModel configModel) {
+        SchedulerConfig schedulerConfig = new SchedulerConfig();
+        if (configModel.getId() != null) {
+            schedulerConfig.setId(configModel.getId());
+        }
+        schedulerConfig.setDateStartExecution(configModel.getDateStartExecution());
+        schedulerConfig.setEndDate(configModel.getEndDate());
+        schedulerConfig.setIsTimeDiv(configModel.getIsTimeDiv());
+        schedulerConfig.setName(configModel.getName());
+        schedulerConfig.setRepeateNumber(configModel.getRepeateNumber());
+        schedulerConfig.setRepeateType(configModel.getRepeateType());
+        schedulerConfig.setSchedullerTime(configModel.getSchedullerTime());
+        schedulerConfig.setSchedullerType(configModel.getSchedullerType());
+        schedulerConfig.setStartDate(configModel.getStartDate());
+        schedulerConfig.setTimeDivExecution(configModel.getTimeDivExecution());
+        return schedulerConfig;
+    }
+
 }

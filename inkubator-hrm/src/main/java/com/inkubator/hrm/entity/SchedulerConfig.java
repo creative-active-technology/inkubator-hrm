@@ -35,6 +35,7 @@ public class SchedulerConfig implements java.io.Serializable {
     private Date updatedOn;
     private Boolean isTimeDiv;
     private Date lastExecution;
+    private Date timeDivExecution;
 
     public SchedulerConfig() {
     }
@@ -211,6 +212,16 @@ public class SchedulerConfig implements java.io.Serializable {
 
     public void setLastExecution(Date lastExecution) {
         this.lastExecution = lastExecution;
+    }
+
+    @Temporal(TemporalType.TIME)
+    @Column(name = "time_div_execution", length = 8)
+    public Date getTimeDivExecution() {
+        return timeDivExecution;
+    }
+
+    public void setTimeDivExecution(Date timeDivExecution) {
+        this.timeDivExecution = timeDivExecution;
     }
 
 }
