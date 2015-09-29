@@ -13,6 +13,8 @@ import com.inkubator.hrm.web.model.SchedulerConfigModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -34,17 +36,35 @@ public class SchedulerConfigFormController extends BaseController {
     private Boolean isDisableRepeatType;
     private Boolean isDisableDateRange;
     private Boolean isDisabaleJeda;
+    private Boolean isEdit;
+    private SchedulerConfig selectedSchedulerConfig;
 
     @PostConstruct
     @Override
     public void initialization() {
-        super.initialization();
-        schedulerConfigModel = new SchedulerConfigModel();
-        schedulerConfigModel.setRepeateNumber(1);
-        isDisableRepeatType = Boolean.TRUE;
-        isDisableDateRange = Boolean.TRUE;
-        isDisabaleJeda = Boolean.TRUE;
-        schedulerConfigModel.setIsTimeDiv(Boolean.TRUE);
+        try {
+            super.initialization();
+            schedulerConfigModel = new SchedulerConfigModel();
+            String scheduleId = FacesUtil.getRequestParameter("execution");
+
+            if (scheduleId != null) {
+                selectedSchedulerConfig = schedulerConfigService.getEntiyByPK(Long.parseLong(scheduleId.substring(1)));
+                schedulerConfigModel = getModelFormEntity(selectedSchedulerConfig);
+                isEdit = Boolean.TRUE;
+                isDisabaleJeda = schedulerConfigModel.getIsTimeDiv();
+                doChangeTypeSchedule();
+            } else {
+                isEdit = Boolean.FALSE;
+                schedulerConfigModel.setRepeateNumber(1);
+                isDisableRepeatType = Boolean.TRUE;
+                isDisableDateRange = Boolean.TRUE;
+                isDisabaleJeda = Boolean.TRUE;
+                schedulerConfigModel.setIsTimeDiv(Boolean.TRUE);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(SchedulerConfigFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public SchedulerConfigModel getSchedulerConfigModel() {
@@ -76,7 +96,7 @@ public class SchedulerConfigFormController extends BaseController {
     }
 
     public void doChangeTypeSchedule() {
-        System.out.println("Nilai nya " + schedulerConfigModel.getSchedullerType());
+      
         if ("ONCE".equalsIgnoreCase(schedulerConfigModel.getSchedullerType()) || schedulerConfigModel.getSchedullerType().equals(" ")) {
             isDisableRepeatType = Boolean.TRUE;
 //            isDisableDateRange = Boolean.FALSE;
@@ -98,7 +118,7 @@ public class SchedulerConfigFormController extends BaseController {
     }
 
     public String doSave() {
-        SchedulerConfig config = getEntityFromView(schedulerConfigModel);
+        SchedulerConfig config = getEntityFromModel(schedulerConfigModel);
         try {
             schedulerConfigService.save(config);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
@@ -130,7 +150,7 @@ public class SchedulerConfigFormController extends BaseController {
 
     }
 
-    private SchedulerConfig getEntityFromView(SchedulerConfigModel configModel) {
+    private SchedulerConfig getEntityFromModel(SchedulerConfigModel configModel) {
         SchedulerConfig schedulerConfig = new SchedulerConfig();
         if (configModel.getId() != null) {
             schedulerConfig.setId(configModel.getId());
@@ -148,6 +168,22 @@ public class SchedulerConfigFormController extends BaseController {
         return schedulerConfig;
     }
 
+    private SchedulerConfigModel getModelFormEntity(SchedulerConfig schedulerConfig) {
+        SchedulerConfigModel configModel = new SchedulerConfigModel();
+        configModel.setDateStartExecution(schedulerConfig.getDateStartExecution());
+        configModel.setEndDate(schedulerConfig.getEndDate());
+        configModel.setId(schedulerConfig.getId());
+        configModel.setIsTimeDiv(schedulerConfig.getIsTimeDiv());
+        configModel.setName(schedulerConfig.getName());
+        configModel.setRepeateNumber(schedulerConfig.getRepeateNumber());
+        configModel.setRepeateType(schedulerConfig.getRepeateType());
+        configModel.setSchedullerTime(schedulerConfig.getSchedullerTime());
+        configModel.setSchedullerType(schedulerConfig.getSchedullerType());
+        configModel.setStartDate(schedulerConfig.getStartDate());
+        configModel.setTimeDivExecution(schedulerConfig.getTimeDivExecution());
+        return configModel;
+    }
+
     @PreDestroy
     public void cleanAndExit() {
         schedulerConfigModel = null;
@@ -156,4 +192,21 @@ public class SchedulerConfigFormController extends BaseController {
         isDisableDateRange = null;
         isDisabaleJeda = null;
     }
+
+    public Boolean getIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(Boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    public SchedulerConfig getSelectedSchedulerConfig() {
+        return selectedSchedulerConfig;
+    }
+
+    public void setSelectedSchedulerConfig(SchedulerConfig selectedSchedulerConfig) {
+        this.selectedSchedulerConfig = selectedSchedulerConfig;
+    }
+
 }
