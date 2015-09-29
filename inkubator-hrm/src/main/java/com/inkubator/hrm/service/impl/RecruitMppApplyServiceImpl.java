@@ -344,7 +344,6 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
         entity.setCreatedOn(createdOn);
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
         ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
-       
         if(approvalActivity == null){
         	
              RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());

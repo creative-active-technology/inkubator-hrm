@@ -231,7 +231,7 @@
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
                                 <p:commandLink >
-                                      <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
                                 </p:commandLink>
@@ -252,11 +252,11 @@
                                         <p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" styleClass="label_welcome_header" style="margin-right: 100px"/>
                                     </h:panelGroup>
                                     <h:commandLink id="englishId" title="#{appmsg['global.changed_language_to_english']}" action="#{homeController.doChangeLanguageSession()}">
-                                    	<f:param name="languange" value="en"/>
+                                        <f:param name="languange" value="en"/>
                                         <p:graphicImage library="images" name="England.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
                                     <h:commandLink id="indonesiaId" title="#{appmsg['global.changed_language_to_indonesian']}" action="#{homeController.doChangeLanguageSession()}">
-                                    	<f:param name="languange" value="id"/>
+                                        <f:param name="languange" value="id"/>
                                         <p:graphicImage library="images" name="Indonesia.png" width="22" height="22"  cache="true"/> 
                                     </h:commandLink>
                                     <p:commandLink id="ceckId"  action="#{homeController.doCheckInOut()}" update=":mainGrowl">
@@ -322,6 +322,10 @@
                                             <p:submenu label="#{appmsg['menu.account']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
                                                 <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
+                                            </p:submenu>
+                                            <p:submenu label="Aturan Penjadwalan"  styleClass="menu_child" >
+                                                <p:menuitem value="Konfigurasi Jadwal"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/scheduler/scheduler_config_form.htm"  icon="img-user"/> 
+                                                <p:menuitem value="Monitoring Jadwal"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/scheduler/role_view.htm" icon="img-user-role" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['approvaldefinition.approval_definition']}"  style="color: #003366" title="#{appmsg['approvaldefinition.approval_definition']}" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
@@ -599,7 +603,7 @@
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_implementation']}" icon="img-leave_implementation" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_implementation']}" url="/protected/working_time/leave_impl_form.htm" />
                                                 <p:menuitem value="#{appmsg['leaveimplementation.leave_history']}" icon="img-leave_history" style="font-size: 12px !important;color: #003366" title="#{appmsg['leaveimplementation.leave_history']}" url="/protected/working_time/leave_impl_view.htm" />
                                                 <p:menuitem value="#{appmsg['publicHolidayException.publicHolidayException']}" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['publicHolidayException.publicHolidayException']}" url="/protected/working_time/public_holiday_ex_view.htm" />
-                                            	<p:menuitem value="Resume Cuti Karyawan" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="Resume Cuti Karyawan" url="/protected/working_time/resume_leave_employee.htm" />
+                                                <p:menuitem value="Resume Cuti Karyawan" icon="img-public_holiday_exception" style="font-size: 12px !important;color: #003366" title="Resume Cuti Karyawan" url="/protected/working_time/resume_leave_employee.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['workingTime.permit_information']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['permitdistribution.permit_distribution']}" icon="img-permit_distribution" style="font-size: 12px !important;color: #003366" title="#{appmsg['permitdistribution.permit_distribution']}" url="/protected/employee/permit_distribution_view.htm" />
@@ -631,7 +635,7 @@
                                                 <p:menuitem value="#{appmsg['leave.leave_history_report']}" icon="img-leave_history_report" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave_history_report']}" url="/protected/report/report_leave_hist_view.htm" />
                                                 <p:menuitem value="#{appmsg['leave.permit_history_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.permit_history_report']}" url="/protected/report/report_permit_hist_view.htm" />
                                                 <p:menuitem value="#{appmsg['reportEmployeeAttendance.report_employee_attendance']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['reportEmployeeAttendance.report_employee_attendance']}" url="/protected/report/report_attendance_view.htm" />
-                                            
+
                                             </p:submenu>
                                         </p:submenu>
                                         <p:submenu label="#{appmsg['menu.recruitment']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
