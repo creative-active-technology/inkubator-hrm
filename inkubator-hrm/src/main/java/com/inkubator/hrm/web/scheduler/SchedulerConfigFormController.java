@@ -46,7 +46,6 @@ public class SchedulerConfigFormController extends BaseController {
             super.initialization();
             schedulerConfigModel = new SchedulerConfigModel();
             String scheduleId = FacesUtil.getRequestParameter("execution");
-
             if (scheduleId != null) {
                 selectedSchedulerConfig = schedulerConfigService.getEntiyByPK(Long.parseLong(scheduleId.substring(1)));
                 schedulerConfigModel = getModelFormEntity(selectedSchedulerConfig);
@@ -122,8 +121,7 @@ public class SchedulerConfigFormController extends BaseController {
         try {
             if (isEdit) {
                 schedulerConfigService.update(config);
-                System.out.println(" Update terjadi" +config.getRepeateNumber());
-               MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
                 return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
             } else {
