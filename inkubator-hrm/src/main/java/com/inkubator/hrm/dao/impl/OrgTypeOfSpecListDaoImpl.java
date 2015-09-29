@@ -64,11 +64,11 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
     }
 
     @Override
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) {
+    public OrgTypeOfSpecList getSpecTypeNameByOrgTypeOfSpecListId(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("orgTypeOfSpecList", FetchMode.JOIN);
-        return (OrgTypeOfSpec) criteria.uniqueResult();
+        criteria.setFetchMode("orgTypeOfSpec", FetchMode.JOIN);
+        return (OrgTypeOfSpecList) criteria.uniqueResult();
     }
 
     @Override
