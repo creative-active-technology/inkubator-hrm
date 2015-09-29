@@ -4,10 +4,13 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.PublicHolidayDao;
 import com.inkubator.hrm.entity.PublicHoliday;
 import com.inkubator.hrm.web.search.PublicHolidaySearchParameter;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -33,7 +36,7 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     public List<PublicHoliday> getByParam(String parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPublicHolidayByParam(parameter, criteria);
-        criteria.setFetchMode("leave", FetchMode.JOIN);
+       criteria.setFetchMode("leave", FetchMode.JOIN);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -48,9 +51,13 @@ public class PublicHolidayDaoImpl extends IDAOImpl<PublicHoliday> implements Pub
     }
 
     private void doSearchPublicHolidayByParam(String parameter, Criteria criteria) {
-        if (StringUtils.isNotEmpty(parameter)) {
-            criteria.createAlias("leave", "l", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("l.name", parameter, MatchMode.START));
+    	   
+        if (StringUtils.isNotBlank(parameter)) {
+        	criteria.createAlias("leave", "leave", JoinType.INNER_JOIN); 
+            Disjunction disjunction = Restrictions.disjunction();
+            disjunction.add(Restrictions.like("leave.name", parameter, MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("code", parameter, MatchMode.ANYWHERE));
+            criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
