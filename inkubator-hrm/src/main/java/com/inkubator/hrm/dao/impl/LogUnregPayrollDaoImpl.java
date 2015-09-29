@@ -94,14 +94,15 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     @Override
     public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
     	StringBuffer selectQuery = new StringBuffer(
-    			"SELECT count(distinct empDataId) "
+    			"SELECT id "
     			+ "FROM LogUnregPayroll ");    	
     	selectQuery.append(this.getWhereQueryByParam(parameter));
+    	selectQuery.append("GROUP BY unregSalaryId,empDataId ");
     	
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
     	hbm = this.setValueQueryByParam(hbm, parameter);
     	
-        return Long.valueOf(hbm.uniqueResult().toString());
+        return Long.valueOf(hbm.list().size());
     }
 
     private String getWhereQueryByParam(UnregPayrollSearchParameter parameter) {
