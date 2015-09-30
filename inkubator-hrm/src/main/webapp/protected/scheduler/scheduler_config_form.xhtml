@@ -26,7 +26,7 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator />
-                    <p:growl id="growlapprovalFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <p:growl id="growlschedulerConfigFormId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
                     <h:form id="approvalFormId" >
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">   
                             <p:row>
@@ -149,7 +149,7 @@
 
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"  update="approvalFormId,:growlapprovalFormId"
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true"  update="approvalFormId,:growlschedulerConfigFormId"
                                              action="#{schedulerConfigFormController.doSave()}" styleClass="label_button"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"

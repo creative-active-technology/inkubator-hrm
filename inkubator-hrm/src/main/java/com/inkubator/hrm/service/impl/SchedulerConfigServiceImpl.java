@@ -66,7 +66,9 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(SchedulerConfig entity) throws Exception {
         long totalDuplicate = schedulerConfigDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
+
         if (totalDuplicate > 0) {
+            System.out.println(" total duplicate nya " + totalDuplicate);
             throw new BussinessException("scheduler_config.error_name");
         }
         SchedulerConfig schedulerConfig = schedulerConfigDao.getEntiyByPK(entity.getId());
@@ -84,6 +86,7 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         schedulerConfig.setUpdatedBy(UserInfoUtil.getUserName());
         schedulerConfig.setUpdatedOn(new Date());
         schedulerConfigDao.update(schedulerConfig);
+        System.out.println(" Update sukses");
     }
 
     @Override

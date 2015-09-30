@@ -91,7 +91,7 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
 //        for (SpiRole spiRole : spiRoles) {
 //            dataRole.add(spiRole.getRoleName());
 //        }
-        return new User(userName, password, isActive, true, !isExired, !isLock, grantedAuthorities);
+        return new User(spiUser.getUserId(), password, isActive, true, !isExired, !isLock, grantedAuthorities);
     }
 
     private Collection<GrantedAuthority> toGrantedAuthorities(List<String> roles) {
