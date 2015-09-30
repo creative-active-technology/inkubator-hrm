@@ -282,14 +282,29 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<EmpData> getAllDataByNameOrNik(String param) {
+    public List<EmpData> getAllDataByNameOrNik(String param, Long companyId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
          * company don't create alias for that entity, or will get error :
          * duplicate association path
          */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
+        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(Restrictions.like("bioData.firstName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("bioData.lastName", param, MatchMode.ANYWHERE));
+        disjunction.add(Restrictions.like("nik", param, MatchMode.ANYWHERE));
+        criteria.add(disjunction);
+        criteria.setMaxResults(20);
+        return criteria.list();
+    }
+    
+    @Override
+    public List<EmpData> getAllDataByNameOrNik(String param) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
 
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);

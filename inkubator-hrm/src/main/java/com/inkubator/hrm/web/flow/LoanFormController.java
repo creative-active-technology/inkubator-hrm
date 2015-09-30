@@ -24,6 +24,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LoanPaymentDetailService;
 import com.inkubator.hrm.service.LoanSchemaService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.LoanModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -138,7 +139,7 @@ public class LoanFormController implements Serializable{
 	public List<EmpData> doAutoCompleteEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
-			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}

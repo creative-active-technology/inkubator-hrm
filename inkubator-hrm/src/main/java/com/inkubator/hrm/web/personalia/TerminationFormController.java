@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.TerminationType;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.TerminationService;
 import com.inkubator.hrm.service.TerminationTypeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.TerminationModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -132,7 +133,7 @@ public class TerminationFormController extends BaseController{
     public List<EmpData> doAutoCompletEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
-			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
