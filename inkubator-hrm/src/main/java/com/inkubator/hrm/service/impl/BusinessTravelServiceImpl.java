@@ -17,6 +17,7 @@ import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -28,11 +29,14 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
@@ -440,17 +444,21 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 		if(isDuplicate == Boolean.FALSE){
 			isDuplicate =  businessTravelDao.isDuplicateRequestDate(startRequest, endRequest, empDataId);
 		}
-		
 		//check duplicate request date untuk yang masih menunggu persetujuan
 		if(isDuplicate == Boolean.FALSE){
 			HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
 			List<ApprovalActivity> listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.BUSINESS_TRAVEL);
+			
+			//Filter kembali listApprovalActivities, pastikan ApprovalActivity yang statusnya APPROVAL_STATUS_WAITING_REVISED  tidak di-include ke dalam validasi karena revisi boleh sama tanggal pengajuannya.
+			listApprovalActivities = Lambda.select(listApprovalActivities, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalStatus(), Matchers.not(HRMConstant.APPROVAL_STATUS_WAITING_REVISED)));
 			for(ApprovalActivity appActivity : listApprovalActivities){
+				
 				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 				BusinessTravel businessTravel = gson.fromJson(appActivity.getPendingData(), BusinessTravel.class);
 				
 				Date start = businessTravel.getStartDate();
 				Date end = businessTravel.getEndDate();
+				
 				if(
 					((startRequest.after(start) || DateUtils.isSameDay(startRequest, start)) && 
 					 (startRequest.before(end)  || DateUtils.isSameDay(startRequest, end)))
@@ -705,5 +713,6 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 	public Long getTotalActivityByParam(BusinessTravelSearchParameter parameter) throws Exception {
 		return businessTravelDao.getTotalActivityByParam(parameter);
 	}
-
+	
+	
 }
