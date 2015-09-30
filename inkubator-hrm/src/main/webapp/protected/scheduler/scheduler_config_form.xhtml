@@ -119,7 +119,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton value="#{schedulerConfigFormController.schedulerConfigModel.isTimeDiv}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                            offIcon="ui-icon-close"  id="istimeDiv" styleClass="label_button" >
-                                        <p:ajax listener="#{schedulerConfigFormController.onChange()}"   update="timeSchedule,timeDiv"/>
+                                        <p:ajax listener="#{schedulerConfigFormController.onChange()}"   update="timeSchedule,timeDiv,timeDiv1"/>
                                     </p:selectBooleanButton>
                                 </p:column>
                             </p:row>
@@ -136,15 +136,29 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="timeDiv" value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
+                                    <p:outputLabel  value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <pe:timePicker intervalMinutes="1" id="timeDiv" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.timeDivExecution}" disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
+
+                                    <p:spinner id="timeDiv" value="#{schedulerConfigFormController.schedulerConfigModel.hourDiv}" min="0" max="24" required="true" size="2" disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
+                                    #{appmsg['global.hour']} 
+                                    <p:spinner id="timeDiv1" value="#{schedulerConfigFormController.schedulerConfigModel.minuteDiv}" min="0" max="60" required="true" size="2"  disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
+                                    #{appmsg['global.minute']}
+
+<!--                                    <pe:timePicker intervalMinutes="1" id="timeDiv" required="true" value="#{schedulerConfigFormController.schedulerConfigModel.timeDivExecution}" disabled ="#{!schedulerConfigFormController.isDisabaleJeda}" />
                                     #{appmsg['global.hour']} : #{appmsg['global.minute']}
-                                    <p:message for="timeDiv"/>
+                                    <p:message for="timeDiv"/>-->
                                 </p:column>
                             </p:row>  
-
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['user_form.is_active']}" styleClass="label_hrm" for="isActive"/>
+                                </p:column>
+                                <p:column style="width: 37%">
+                                    <p:selectBooleanButton value="#{schedulerConfigFormController.schedulerConfigModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
 
                         <p:separator/>

@@ -35,7 +35,10 @@ public class SchedulerConfig implements java.io.Serializable {
     private Date updatedOn;
     private Boolean isTimeDiv;
     private Date lastExecution;
-    private Date timeDivExecution;
+//    private Double timeDivExecution;
+    private Boolean isActive;
+    private Integer hourDiv;
+    private Integer minuteDiv;
 
     public SchedulerConfig() {
     }
@@ -214,14 +217,42 @@ public class SchedulerConfig implements java.io.Serializable {
         this.lastExecution = lastExecution;
     }
 
-    @Temporal(TemporalType.TIME)
-    @Column(name = "time_div_execution", length = 8)
-    public Date getTimeDivExecution() {
-        return timeDivExecution;
+//    @Column(name = "time_div_execution", precision = 22, scale = 0)
+//    public Double getTimeDivExecution() {
+//        return this.timeDivExecution;
+//    }
+//
+//    public void setTimeDivExecution(Double timeDivExecution) {
+//        this.timeDivExecution = timeDivExecution;
+//    }
+
+    @Column(name = "is_active")
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setTimeDivExecution(Date timeDivExecution) {
-        this.timeDivExecution = timeDivExecution;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
+
+    @Column(name = "hour_div")
+    public Integer getHourDiv() {
+        return hourDiv;
+    }
+
+    public void setHourDiv(Integer hourDiv) {
+        this.hourDiv = hourDiv;
+    }
+
+    @Column(name = "minute_div")
+    public Integer getMinuteDiv() {
+        return minuteDiv;
+    }
+
+    public void setMinuteDiv(Integer minuteDiv) {
+        this.minuteDiv = minuteDiv;
+    }
+
+   
 
 }

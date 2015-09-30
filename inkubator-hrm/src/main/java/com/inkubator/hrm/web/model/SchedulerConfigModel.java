@@ -23,8 +23,11 @@ public class SchedulerConfigModel implements Serializable {
     private Date endDate;
     private Integer repeateNumber;
     private Date schedullerTime;
-    private Date timeDivExecution;
+    private Double timeDivExecution;
     private Boolean isTimeDiv;
+    private Boolean isActive;
+    private Integer hourDiv;
+    private Integer minuteDiv;
 
     public Long getId() {
         return id;
@@ -98,11 +101,11 @@ public class SchedulerConfigModel implements Serializable {
         this.schedullerTime = schedullerTime;
     }
 
-    public Date getTimeDivExecution() {
+    public Double getTimeDivExecution() {
         return timeDivExecution;
     }
 
-    public void setTimeDivExecution(Date timeDivExecution) {
+    public void setTimeDivExecution(Double timeDivExecution) {
         this.timeDivExecution = timeDivExecution;
     }
 
@@ -114,4 +117,29 @@ public class SchedulerConfigModel implements Serializable {
         this.isTimeDiv = isTimeDiv;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Integer getHourDiv() {
+        return hourDiv;
+    }
+
+    public void setHourDiv(Integer hourDiv) {
+        this.hourDiv = hourDiv;
+    }
+
+    public Integer getMinuteDiv() {
+        return minuteDiv;
+    }
+
+    public void setMinuteDiv(Integer minuteDiv) {
+        this.minuteDiv = minuteDiv;
+    }
+
+    
 }
