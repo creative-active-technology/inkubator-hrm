@@ -23,7 +23,7 @@ public interface OrgTypeOfSpecListService extends IService<OrgTypeOfSpecList> {
 
     public Long getTotalOrgTypeOfSpecListByParam(OrgTypeOfSpecListSearchParameter searchParameter) throws Exception;
 
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception;
+    public OrgTypeOfSpecList getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception;
 
     public List<DualListModel> getAllBySpectJabatan() throws Exception;
 

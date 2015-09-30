@@ -61,7 +61,7 @@ public class OrgTypeOfSpecListViewController extends BaseController{
     
     public void doSelectEntity(){
         try{
-            selected = this.service.getEntiyByPK(selected.getId());
+            selected = this.service.getSpecTypeNameByOrgTypeOfSpecListId(selected.getId());
         } catch (Exception ex){
             LOGGER.error("Error", ex);
         }

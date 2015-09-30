@@ -132,7 +132,7 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
         if (HrmUserInfoUtil.getCompanyId() != null) {
             criteria.add(Restrictions.eq("id", HrmUserInfoUtil.getCompanyId()));
         }
-        return criteria.list();
+        return criteria. list();
     }
 
 }

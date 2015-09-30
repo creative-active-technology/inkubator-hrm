@@ -159,6 +159,10 @@
                             <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['org_type_of_spec_list.job_specification_type']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.orgTypeOfSpec.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{orgTypeOfSpecListViewController.selected.description}"/> </p:column>
                         </p:row>
