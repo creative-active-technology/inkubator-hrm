@@ -3,12 +3,18 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.ApplicantDao;
 import com.inkubator.hrm.entity.Applicant;
 import com.inkubator.hrm.service.ApplicantService;
+import com.inkubator.hrm.web.search.ApplicantSearchParameter;
 
 /**
  *
@@ -18,6 +24,9 @@ import com.inkubator.hrm.service.ApplicantService;
 @Lazy
 public class ApplicantServiceImpl extends IServiceImpl implements ApplicantService {
 
+	@Autowired
+	private ApplicantDao applicantDao;
+	
 	@Override
 	public Applicant getEntiyByPK(String id) throws Exception {
 		// TODO Auto-generated method stub
@@ -211,6 +220,20 @@ public class ApplicantServiceImpl extends IServiceImpl implements ApplicantServi
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<Applicant> getByParam(ApplicantSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+		
+		return applicantDao.getByParam(parameter, first, pageSize, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(ApplicantSearchParameter parameter) throws Exception {
+
+		return applicantDao.getTotalByParam(parameter);
 	}
 
 }
