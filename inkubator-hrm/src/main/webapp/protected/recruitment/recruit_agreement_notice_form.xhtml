@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                <h:form id="formId" >
+                    <div id="box_bg" style="margin: 10px">
+                        <!--<p:panel style="margin: 10px">-->
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="skema_penggantian.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['applicationInformation.applicationInformation_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['applicationInformation.applicationInformation_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{recruitAgreementNoticeFormController.selectedBioData.firstName} #{recruitAgreementNoticeFormController.selectedBioData.lastName}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{recruitAgreementNoticeFormController.selectedBioData.city.cityName}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:outputLabel value="#{recruitAgreementNoticeFormController.selectedBioData.dateOfBirth}" >
+                                		<f:convertDateTime pattern="dd MMMM yyyy"/>      
+                                	</p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:outputLabel value="#{recruitAgreementNoticeFormController.selectedBioData.gender}" >
+                                		<f:converter converterId="genderConverter"/> 
+                                	</p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['maritalstatus.maritalstatus']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:outputLabel value="#{recruitAgreementNoticeFormController.selectedBioData.maritalStatus.name}" />
+                                </p:column>
+                            </p:row>
+                            
+                            
+                        </p:panelGrid>
+                        
+                        <p:fieldset legend="#{appmsg['applicationInformation.note_approval']}">
+						        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                                
+                                <p:row>
+		                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+		                                <p:outputLabel for="uploadFile" value="#{appmsg['applicationInformation.cv_upload']}" styleClass="label_hrm"/>
+		                            </p:column>
+		                            <p:column  style="width: 100%" colspan="5">
+		                                <p:fileUpload required="false" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{recruitAgreementNoticeFormController.handingFileUpload}" 
+		                                           mode="advanced"  id="uploadFile"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+		                                          dragDropSupport="true" multiple="false" update="fileUploadId" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|rar|zip)$/"/> 
+		                                <p:outputLabel value="#{appmsg['global.file_name']}"/>
+		                                <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+		                                <p:outputLabel value="#{recruitAgreementNoticeFormController.uploadFileName}" id="fileUploadId"/>
+		                            </p:column>
+		                        </p:row>
+                        
+                                <p:row>
+                                    <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                        <p:outputLabel for="pastSalary" value="#{appmsg['applicationInformation.last_salary']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column  style="width: 80%">
+                                        <pe:inputNumber  id="pastSalary" required="true" label="#{appmsg['applicationInformation.last_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.lastSalary}" style="width:50px"/>
+                                       	<p:messages for="pastSalary"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                        <p:outputLabel for="expectedSalary" value="#{appmsg['applicationInformation.expected_salary']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column  style="width: 80%">
+                                        <pe:inputNumber  id="expectedSalary" required="true" label="#{appmsg['applicationInformation.expected_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.expectedSalary}" style="width:50px"/>
+                                       
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="description" value="#{appmsg['applicationInformation.note']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 50%" >
+                                <p:inputTextarea id="description" rows="5" cols="17" counter="counter" maxlength="500" value="#{recruitAgreementNoticeFormController.model.description}" 
+                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['applicationInformation.note']}" title="#{appmsg['applicationInformation.note']}" />
+
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 15%;background-color: #e1f0f0!important">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                            </p:panelGrid>
+						    </p:fieldset>
+                        <p:focus context="formId" />
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{recruitAgreementNoticeFormController.doSave()}"
+                                             styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{recruitAgreementNoticeFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{recruitAgreementNoticeFormController.doBack()}"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
