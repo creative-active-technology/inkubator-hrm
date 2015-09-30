@@ -52,7 +52,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3">
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Schedule"/>
+                                        <pe:exporter target="tableEmpDataIdExpand" type="xlsx" pageOnly="false" selectionOnly="false" fileName="#{appmsg['employeeschedule.employee_work_schedule']}"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['workschedule.work_schedule_synchronously']}" action="#{employeeViewController.doPlacementOfEmployee()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
                                     <p:commandButton value="#{appmsg['global.close']}"  styleClass="label_button" action="#{employeeViewController.doClose()}" title="#{appmsg['global.close']}" icon="ui-icon-home"

@@ -241,6 +241,16 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
     }
+    
+    @Override
+    public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        return (EmpData) criteria.uniqueResult();
+    }
 
     @Override
     public EmpData getByBioDataWithDepartment(long id) {
@@ -2249,11 +2259,28 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
 	@Override
-	public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
+	public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
+	}
+
+	@Override
+	public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	public void doSearchEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, Criteria criteria){
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+		
+        if (searchParameter.getEmpDataName() != null) {
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpDataName().toLowerCase(), MatchMode.ANYWHERE));
+        }
 	}
 }
