@@ -62,6 +62,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit);
 
+    public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter);
+
     /**
      * get entity
      */
@@ -82,6 +84,8 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public EmpData getByEmpDataByBioDataId(long bioDataid);
 
     public BioDataModel getEmpNameWithNearestBirthDate();
+    
+    public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id);
 
     /**
      * get pageable/paging
@@ -155,7 +159,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalByParamForOnlyEmployeeNotIncludeCompany(EmpDataSearchParameter searchParameter);
 
-    public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+    public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+
+    
     /**
      * get list
      *

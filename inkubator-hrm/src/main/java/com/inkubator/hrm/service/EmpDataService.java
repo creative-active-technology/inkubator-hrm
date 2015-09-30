@@ -184,6 +184,9 @@ public interface EmpDataService extends IService<EmpData> {
 
     public List<EmpData> getAllByJabatanAndCompanyAndStatus(long jabataId, String status) throws Exception;
 
-    public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+    public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
     
+    public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception;
+
+    public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) throws Exception;
 }

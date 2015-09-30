@@ -234,7 +234,7 @@
                                       <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
-                                </p:commandLink>
+                                </p:commandLink> 
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
@@ -658,7 +658,7 @@
                                                 <p:menuitem value="#{appmsg['recruitment.vacancy_selection_plan']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_selection_plan']}" url="/protected/recruitment/recruit_vacancy_selection_view.htm" /> 
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['recruitment.applicant_tracker']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['recruitment.applicant_information']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_information']}" url="#" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.applicant_information']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_information']}" url="/protected/recruitment/recruit_agreement_notice_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_upload']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_upload']}" url="#" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_statistic']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_statistic']}" url="#" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_competency']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_competency']}" url="#" /> 

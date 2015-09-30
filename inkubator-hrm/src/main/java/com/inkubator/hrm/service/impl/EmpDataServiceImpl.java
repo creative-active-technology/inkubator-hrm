@@ -1299,8 +1299,21 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 
 	@Override
-	public List<EmpData> getEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
-		return empDataDao.getEmployeeForRecruitAggrementNotice(searchParameter, firstResult, maxResults, orderable);
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
+		return empDataDao.getAllEmployeeForRecruitAggrementNotice(searchParameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
+		return empDataDao.getTotalAllEmployeeForRecruitAggrementNotice(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) throws Exception {
+		return empDataDao.getEmpDataWithBioDataAndMaritalStatusById(id);
 	}
 
 }
