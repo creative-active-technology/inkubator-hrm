@@ -2082,7 +2082,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     public List<EmpData> getAllDataByParam(EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("taxFree", "taxFree", JoinType.INNER_JOIN);
+//        criteria.createAlias("taxFree", "taxFree", JoinType.INNER_JOIN);
         criteria.setFetchMode("bioData.city", FetchMode.JOIN);
         criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
@@ -2107,7 +2107,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.INNER_JOIN);
+        criteria.createAlias("wtGroupWorking", "wtGroupWorking", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 
         if (dataSearchParameter.getJabatanKode() != null) {

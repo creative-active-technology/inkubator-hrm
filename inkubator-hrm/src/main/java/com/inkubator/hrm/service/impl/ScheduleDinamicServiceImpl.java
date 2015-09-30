@@ -9,12 +9,9 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.SchedulerConfigDao;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.ScheduleDinamicService;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
@@ -63,10 +60,12 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 
             if ("ONCE".equals(config.getSchedullerType())) {
                 LOGGER.warn(" Eksekusi pada :" + config.getSchedullerType());
+                doCheckCurrentDateEquale(config);
             }
 
             if ("RANGE_TIME".equals(config.getSchedullerType())) {
                 LOGGER.warn(" Eksekusi pada :" + config.getSchedullerType());
+                doCheckCurrentDateRange(config);
             }
         }
     }
@@ -86,10 +85,19 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
                         LOGGER.warn(" Current Date :" + currentDateTime.getTime());
                         LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
-//                        LOGGER.warn(" Time Div :" +  config.getTimeDivExecution().getTime());
-//                        if ((currentDateTime.getTime() - lastExecution.getTime()) == config.getTimeDivExecution().getTime()) {
-//                            LOGGER.warn("Lakukan ekseskusi scheduler jeda waktu 00000000000000000000000000000 " + new Date());
-//                        }
+                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
+                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
+                        Integer hour = config.getHourDiv() * 3600 * 1000;
+                        Integer minute = config.getMinuteDiv() * 60 * 1000;
+                        Integer totalDiv = (hour + minute) / 1000;
+                        Long total = currentDateTime.getTime() - lastExecution.getTime();
+                        LOGGER.warn("Total Time Div:" + totalDiv);
+                        LOGGER.warn("Total:" + total);
+                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
+                        if (totalDiv == total.intValue() / 1000) {
+                            executionSchedullerViaMessaging(config);
+                            LOGGER.warn("Lakukan ekseskusi scheduler lewat messaging " + new Date());
+                        }
                     }
                 } else {
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -97,16 +105,117 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
                     LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
-
-                        LOGGER.warn("Lakukan ekseskusi scheduler [pada :" + config.getSchedullerTime());
+                        executionSchedullerViaMessaging(config);
+                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
                     }
                 }
                 LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
             }
             LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
             LOGGER.warn("Tanggal Hari ini :" + new Date());
-        } catch (ParseException ex) {
-            Logger.getLogger(ScheduleDinamicServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
         }
+    }
+
+    private void doCheckCurrentDateEquale(SchedulerConfig config) {
+        try {
+            Date doDateExecution = config.getDateStartExecution();
+            String currentDateString = new SimpleDateFormat("dd MM yyyy").format(new Date());
+            Date currentDate = new SimpleDateFormat("dd MM yyyy").parse(currentDateString);
+            if (doDateExecution.equals(currentDate)) {
+                if (config.getIsTimeDiv()) {
+//                    LOGGER.warn("Di eksekusi tiap " + config.getTimeDivExecution());
+                    Date lastExecution = config.getLastExecution();
+                    LOGGER.warn("Last Eksekusinya adalahhhhhhh " + config.getLastExecution());
+                    Date currentDateTime = new Date();
+                    if (lastExecution != null) {
+                        LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
+                        LOGGER.warn(" Current Date :" + currentDateTime.getTime());
+                        LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
+                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
+                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
+                        Integer hour = config.getHourDiv() * 3600 * 1000;
+                        Integer minute = config.getMinuteDiv() * 60 * 1000;
+                        Integer totalDiv = (hour + minute) / 1000;
+                        Long total = currentDateTime.getTime() - lastExecution.getTime();
+                        LOGGER.warn("Total Time Div:" + totalDiv);
+                        LOGGER.warn("Total:" + total);
+                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
+                        if (totalDiv == total.intValue() / 1000) {
+                            executionSchedullerViaMessaging(config);
+                            LOGGER.warn("Lakukan ekseskusi scheduler " + new Date());
+                        }
+                    }
+                } else {
+                    String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+                    Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
+                    LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
+                    LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
+                    if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
+                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
+                        executionSchedullerViaMessaging(config);
+                    }
+                }
+                LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
+            }
+            LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
+            LOGGER.warn("Tanggal Hari ini :" + new Date());
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+
+    private void doCheckCurrentDateRange(SchedulerConfig config) {
+        try {
+            Date doDateExecution = config.getDateStartExecution();
+            Date endRangeExecution = config.getEndDate();
+            String currentDateString = new SimpleDateFormat("dd MM yyyy").format(new Date());
+            Date currentDate = new SimpleDateFormat("dd MM yyyy").parse(currentDateString);
+            if (doDateExecution.equals(currentDate) || (doDateExecution.before(currentDate) && endRangeExecution.after(currentDate)) || endRangeExecution.equals(currentDate)) {
+                if (config.getIsTimeDiv()) {
+//                    LOGGER.warn("Di eksekusi tiap " + config.getTimeDivExecution());
+                    Date lastExecution = config.getLastExecution();
+                    LOGGER.warn("Last Eksekusinya adalahhhhhhh " + config.getLastExecution());
+                    Date currentDateTime = new Date();
+                    if (lastExecution != null) {
+                        LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
+                        LOGGER.warn(" Current Date :" + currentDateTime.getTime());
+                        LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
+                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
+                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
+                        Integer hour = config.getHourDiv() * 3600 * 1000;
+                        Integer minute = config.getMinuteDiv() * 60 * 1000;
+                        Integer totalDiv = (hour + minute) / 1000;
+                        Long total = currentDateTime.getTime() - lastExecution.getTime();
+                        LOGGER.warn("Total Time Div:" + totalDiv);
+                        LOGGER.warn("Total:" + total);
+                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
+                        if (totalDiv == total.intValue() / 1000) {
+                            LOGGER.warn("Lakukan ekseskusi scheduler " + new Date());
+                            executionSchedullerViaMessaging(config);
+                        }
+                    }
+                } else {
+                    String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+                    Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
+                    LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
+                    LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
+                    if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
+                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
+                        executionSchedullerViaMessaging(config);
+                    }
+                }
+                LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
+            }
+            LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
+            LOGGER.warn("Tanggal Hari ini :" + new Date());
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+
+    private void executionSchedullerViaMessaging(SchedulerConfig config) {
+
     }
 }
