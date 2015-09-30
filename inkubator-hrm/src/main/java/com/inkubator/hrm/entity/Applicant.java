@@ -122,7 +122,7 @@ public class Applicant implements Serializable {
 		this.educationStartYear = educationStartYear;
 	}
 
-	@Column(name = "education_start_end")
+	@Column(name = "education_end_year")
 	public Integer getEducationEndYear() {
 		return educationEndYear;
 	}
