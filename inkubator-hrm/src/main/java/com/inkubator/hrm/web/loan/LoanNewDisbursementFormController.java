@@ -19,6 +19,7 @@ import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanNewDisbursementService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.lazymodel.LoanNewDisbursementLazyDataModel;
 import com.inkubator.hrm.web.model.LoanNewDisbursementFormModel;
@@ -135,7 +136,7 @@ public class LoanNewDisbursementFormController extends BaseController {
 
     public List<EmpData> completeEmpData(String query) {
         try {
-            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query));
+            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query), HrmUserInfoUtil.getCompanyId());
             return allEmpData;
         } catch (Exception ex) {
             Logger.getLogger(LoanNewDisbursementFormController.class.getName()).log(Level.SEVERE, null, ex);

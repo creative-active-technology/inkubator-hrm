@@ -473,7 +473,7 @@ public class LoanApplicationFormController extends BaseController {
 
     public List<EmpData> completeEmpData(String query) {
         try {
-            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query));
+            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query), HrmUserInfoUtil.getCompanyId());
             return allEmpData;
         } catch (Exception ex) {
             Logger.getLogger(LoanApplicationFormController.class.getName()).log(Level.SEVERE, null, ex);
